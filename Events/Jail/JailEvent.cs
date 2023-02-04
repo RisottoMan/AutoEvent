@@ -36,24 +36,21 @@ namespace AutoEvent.Events
 
         public void OnStart()
         {
-            Exiled.Events.Handlers.Player.Shooting += OnShootEvent;
-            Exiled.Events.Handlers.Player.InteractingLocker += OnInteractLocker;
-            Exiled.Events.Handlers.Server.RespawningTeam += OnTeamRespawn;
-            // Подготовка к ивенту
+            Exiled.Events.Handlers.Player.Shooting += JailHandler.OnShootEvent;
+            Exiled.Events.Handlers.Player.InteractingLocker += JailHandler.OnInteractLocker;
+            Exiled.Events.Handlers.Server.RespawningTeam += JailHandler.OnTeamRespawn;
             OnWaitingEvent();
         }
         public void OnStop()
         {
-            Exiled.Events.Handlers.Player.Shooting -= OnShootEvent;
-            Exiled.Events.Handlers.Player.InteractingLocker -= OnInteractLocker;
-            Exiled.Events.Handlers.Server.RespawningTeam -= OnTeamRespawn;
-
+            Exiled.Events.Handlers.Player.Shooting -= JailHandler.OnShootEvent;
+            Exiled.Events.Handlers.Player.InteractingLocker -= JailHandler.OnInteractLocker;
+            Exiled.Events.Handlers.Server.RespawningTeam -= JailHandler.OnTeamRespawn;
             Timing.CallDelayed(10f, () => EventEnd());
             //Plugin.ActiveEvent = null;
         }
         public void OnWaitingEvent()
         {
-            // Создание карты
             GameMap = Extensions.LoadMap("Jail", new Vector3(115.5f, 1030f, -43.5f), new Quaternion(0, 0, 0, 0), new Vector3(1, 1, 1));
             // Запуск музыки
             //API.API.PlayAudio("Jail.ogg", 15, false, "Инструкция");
@@ -86,9 +83,9 @@ namespace AutoEvent.Events
                     player.Position = GameMap.gameObject.transform.position + RandomPosition();
                 }
             }
-            Timing.RunCoroutine(Cycle(), "jail_time");
+            Timing.RunCoroutine(OnEventRunning(), "jail_run");
         }
-        public IEnumerator<float> Cycle()
+        public IEnumerator<float> OnEventRunning()
         {
             // Обнуление таймера
             EventTime = new TimeSpan(0, 0, 0);
@@ -145,29 +142,6 @@ namespace AutoEvent.Events
             GameObject.Destroy(Button);
             //API.API.StopAudio();
         }
-        public Vector3 RandomPosition()
-        {
-            Vector3 position = new Vector3(0, 0, 0);
-            switch (Random.Range(0, 15))
-            {
-                case 0: position = new Vector3(6.99f, -5.396f, 17.18f); break;
-                case 1: position = new Vector3(14.36f, -5.396f, 17.18f); break;
-                case 2: position = new Vector3(21.49f, -5.396f, 17.18f); break;
-                case 3: position = new Vector3(28.82f, -5.396f, 17.18f); break;
-                case 4: position = new Vector3(36.47f, -5.396f, 17.18f); break;
-                case 5: position = new Vector3(6.99f, -8.686f, 17.18f); break;
-                case 6: position = new Vector3(14.36f, -8.686f, 17.18f); break;
-                case 7: position = new Vector3(21.49f, -8.686f, 17.18f); break;
-                case 8: position = new Vector3(28.82f, -8.686f, 17.18f); break;
-                case 9: position = new Vector3(36.47f, -8.686f, 17.18f); break;
-                case 10: position = new Vector3(6.99f, -12, 17.18f); break;
-                case 11: position = new Vector3(14.36f, -12, 17.18f); break;
-                case 12: position = new Vector3(21.49f, -12, 17.18f); break;
-                case 13: position = new Vector3(28.82f, -12, 17.18f); break;
-                case 14: position = new Vector3(36.47f, -12, 17.18f); break;
-            }
-            return position;
-        }
         public void PhysicDoors()
         {
             foreach (var door in Object.FindObjectsOfType<PrimitiveObject>())
@@ -199,59 +173,28 @@ namespace AutoEvent.Events
                 }
             }
         }
-        // Ивенты
-        public void OnInteractLocker(InteractingLockerEventArgs ev)
+        public Vector3 RandomPosition()
         {
-            ev.IsAllowed = false;
-            if (ev.Locker.StructureType == MapGeneration.Distributors.StructureType.LargeGunLocker)
+            Vector3 position = new Vector3(0, 0, 0);
+            switch (Random.Range(0, 15))
             {
-                ev.Player.ResetInventory(new List<ItemType>
-                {
-                    ItemType.GunE11SR,
-                    ItemType.GunCOM18
-                });
+                case 0: position = new Vector3(6.99f, -5.396f, 17.18f); break;
+                case 1: position = new Vector3(14.36f, -5.396f, 17.18f); break;
+                case 2: position = new Vector3(21.49f, -5.396f, 17.18f); break;
+                case 3: position = new Vector3(28.82f, -5.396f, 17.18f); break;
+                case 4: position = new Vector3(36.47f, -5.396f, 17.18f); break;
+                case 5: position = new Vector3(6.99f, -8.686f, 17.18f); break;
+                case 6: position = new Vector3(14.36f, -8.686f, 17.18f); break;
+                case 7: position = new Vector3(21.49f, -8.686f, 17.18f); break;
+                case 8: position = new Vector3(28.82f, -8.686f, 17.18f); break;
+                case 9: position = new Vector3(36.47f, -8.686f, 17.18f); break;
+                case 10: position = new Vector3(6.99f, -12, 17.18f); break;
+                case 11: position = new Vector3(14.36f, -12, 17.18f); break;
+                case 12: position = new Vector3(21.49f, -12, 17.18f); break;
+                case 13: position = new Vector3(28.82f, -12, 17.18f); break;
+                case 14: position = new Vector3(36.47f, -12, 17.18f); break;
             }
-            if (ev.Locker.StructureType == MapGeneration.Distributors.StructureType.SmallWallCabinet)
-            {
-                if (Vector3.Distance(ev.Player.Position, GameMap.gameObject.transform.position + new Vector3(17.855f, -12.43052f, -23.632f)) < 2)
-                {
-                    ev.Player.AddAhp(100, 100, 0);
-                }
-                else
-                {
-                    ev.Player.Health = ev.Player.MaxHealth;
-                }
-            }
-        }
-        public void OnShootEvent(ShootingEventArgs ev)
-        {
-            if (!Physics.Raycast(ev.Player.ReferenceHub.PlayerCameraReference.transform.position, ev.Player.ReferenceHub.PlayerCameraReference.transform.forward, out RaycastHit raycastHit, 100f))
-            {
-                return;
-            }
-            if (Vector3.Distance(raycastHit.transform.gameObject.transform.position, Button.gameObject.transform.position) < 3)
-            {
-                if (isDoorsOpen)
-                {
-                    foreach (var obj in Object.FindObjectsOfType<PrimitiveObject>())
-                    {
-                        if (obj.name == "PrisonerDoor") obj.Position += new Vector3(2.2f, 0, 0);
-                    }
-                    isDoorsOpen = false;
-                }
-                else
-                {
-                    foreach (var obj in Object.FindObjectsOfType<PrimitiveObject>())
-                    {
-                        if (obj.name == "PrisonerDoor") obj.Position += new Vector3(-2.2f, 0, 0);
-                    }
-                    isDoorsOpen = true;
-                }
-            }
-        }
-        public static void OnTeamRespawn(RespawningTeamEventArgs ev)
-        {
-            ev.IsAllowed = false;
+            return position;
         }
     }
 }

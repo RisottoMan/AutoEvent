@@ -100,12 +100,14 @@
     <Compile Include="Commands\ListEvents.cs" />
     <Compile Include="Commands\RunEvent.cs" />
     <Compile Include="Config.cs" />
-    <Compile Include="Events\Escape\Escape.cs" />
+    <Compile Include="Events\Escape\EscapeEvent.cs" />
     <Compile Include="Events\Escape\EscapeHandler.cs" />
     <Compile Include="Events\Infection\InfectionEvent.cs" />
     <Compile Include="Events\Infection\InfectionHandler.cs" />
-    <Compile Include="Events\JailEvent.cs" />
-    <Compile Include="Events\Versus.cs" />
+    <Compile Include="Events\Jail\JailEvent.cs" />
+    <Compile Include="Events\Jail\JailHandler.cs" />
+    <Compile Include="Events\Versus\VersusEvent.cs" />
+    <Compile Include="Events\Versus\VersusHandler.cs" />
     <Compile Include="Interfaces\IEvent.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
