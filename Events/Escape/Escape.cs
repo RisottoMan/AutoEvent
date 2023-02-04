@@ -18,7 +18,7 @@ using Object = UnityEngine.Object;
 
 namespace AutoEvent.Events
 {
-    internal class Escape : IEvent
+    internal class EscapeEvent : IEvent
     {
         public string Name => "Атомный Побег";
         public string Description => "Сбегите с комплекса Печеньками на сверхзвуковой скорости!";
@@ -29,18 +29,18 @@ namespace AutoEvent.Events
 
         public void OnStart()
         {
-            Exiled.Events.Handlers.Warhead.Stopping += OnNukeDisable;
-            Exiled.Events.Handlers.Player.Verified += OnJoin;
-            Exiled.Events.Handlers.Cassie.SendingCassieMessage += OnSendCassie;
-            Exiled.Events.Handlers.Server.RespawningTeam += OnTeamRespawn;
+            Exiled.Events.Handlers.Warhead.Stopping += EscapeHandler.OnNukeDisable;
+            Exiled.Events.Handlers.Player.Verified += EscapeHandler.OnJoin;
+            Exiled.Events.Handlers.Cassie.SendingCassieMessage += EscapeHandler.OnSendCassie;
+            Exiled.Events.Handlers.Server.RespawningTeam += EscapeHandler.OnTeamRespawn;
             OnEventStarted();
         }
         public void OnStop()
         {
-            Exiled.Events.Handlers.Warhead.Stopping -= OnNukeDisable;
-            Exiled.Events.Handlers.Player.Verified -= OnJoin;
-            Exiled.Events.Handlers.Cassie.SendingCassieMessage -= OnSendCassie;
-            Exiled.Events.Handlers.Server.RespawningTeam -= OnTeamRespawn;
+            Exiled.Events.Handlers.Warhead.Stopping -= EscapeHandler.OnNukeDisable;
+            Exiled.Events.Handlers.Player.Verified -= EscapeHandler.OnJoin;
+            Exiled.Events.Handlers.Cassie.SendingCassieMessage -= EscapeHandler.OnSendCassie;
+            Exiled.Events.Handlers.Server.RespawningTeam -= EscapeHandler.OnTeamRespawn;
             Timing.CallDelayed(5f, () => EventEnd());
         }
 
@@ -53,14 +53,14 @@ namespace AutoEvent.Events
                 player.EnableEffect(EffectType.Ensnared);
             });
 
-            API.API.PlayAudio("Escape.ogg", 25, true, "Побег ДЦП");
+            Extensions.PlayAudio("Escape.ogg", 25, true, "Побег ДЦП");
 
             // Запуск боеголовки
             Warhead.Start();
             Warhead.DetonationTimer = 80f;
-            Timing.RunCoroutine(Cycle(), "escape_time");
+            Timing.RunCoroutine(OnEventRunning(), "escape_run");
         }
-        public IEnumerator<float> Cycle()
+        public IEnumerator<float> OnEventRunning()
         {
             // Обнуление таймера
             EventTime = new TimeSpan(0, 0, 0);
@@ -100,26 +100,9 @@ namespace AutoEvent.Events
             Map.ClearBroadcasts();
             Map.Broadcast(new Exiled.API.Features.Broadcast($"Атомный Побег\n" +
                 $"<color=red>ПОБЕДА SCP</color>", 10));
-            API.API.CleanUpAll();
-            API.API.TeleportEnd();
-            API.API.StopAudio();
-        }
-        // Ивенты
-        public void OnJoin(VerifiedEventArgs ev)
-        {
-            ev.Player.Role.Set(RoleTypeId.Scp173, SpawnReason.None, PlayerRoles.RoleSpawnFlags.All);
-        }
-        public static void OnNukeDisable(StoppingEventArgs ev)
-        {
-            ev.IsAllowed = false;
-        }
-        public static void OnSendCassie(SendingCassieMessageEventArgs ev)
-        {
-            ev.IsAllowed = false;
-        }
-        public static void OnTeamRespawn(RespawningTeamEventArgs ev)
-        {
-            ev.IsAllowed = false;
+            Extensions.CleanUpAll();
+            Extensions.TeleportEnd();
+            Extensions.StopAudio();
         }
     }
 }

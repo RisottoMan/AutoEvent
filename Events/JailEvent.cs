@@ -54,7 +54,7 @@ namespace AutoEvent.Events
         public void OnWaitingEvent()
         {
             // Создание карты
-            GameMap = API.API.LoadMap("Jail", new Vector3(115.5f, 1030f, -43.5f), new Quaternion(0, 0, 0, 0), new Vector3(1, 1, 1));
+            GameMap = Extensions.LoadMap("Jail", new Vector3(115.5f, 1030f, -43.5f), new Quaternion(0, 0, 0, 0), new Vector3(1, 1, 1));
             // Запуск музыки
             //API.API.PlayAudio("Jail.ogg", 15, false, "Инструкция");
             // включить огонь по своим
@@ -70,7 +70,7 @@ namespace AutoEvent.Events
             for (int i = 0; i <= Player.List.Count() / 10; i++)
             {
                 var jailer = Player.List.ToList().RandomItem();
-                jailer.Role.Set(RoleTypeId.NtfCaptain, Exiled.API.Enums.SpawnReason.None, RoleSpawnFlags.None);
+                jailer.Role.Set(RoleTypeId.NtfCaptain);
                 jailer.Position = GameMap.transform.position + new Vector3(13.506f, -10.9f, -13.192f);
                 jailer.ResetInventory(new List<ItemType>
                     {
@@ -82,7 +82,7 @@ namespace AutoEvent.Events
             {
                 if (player.Role.Team != Team.FoundationForces)
                 {
-                    player.Role.Set(RoleTypeId.ClassD, Exiled.API.Enums.SpawnReason.None, RoleSpawnFlags.None);
+                    player.Role.Set(RoleTypeId.ClassD);
                     player.Position = GameMap.gameObject.transform.position + RandomPosition();
                 }
             }
@@ -138,9 +138,9 @@ namespace AutoEvent.Events
             isDoorsOpen = false;
             Server.FriendlyFire = false;
 
-            API.API.CleanUpAll();
-            API.API.TeleportEnd();
-            API.API.UnLoadMap(GameMap);
+            Extensions.CleanUpAll();
+            Extensions.TeleportEnd();
+            Extensions.UnLoadMap(GameMap);
             JailerDoorsTime.Clear();
             GameObject.Destroy(Button);
             //API.API.StopAudio();
@@ -225,8 +225,7 @@ namespace AutoEvent.Events
         }
         public void OnShootEvent(ShootingEventArgs ev)
         {
-            RaycastHit raycastHit;
-            if (!Physics.Raycast(ev.Player.ReferenceHub.PlayerCameraReference.transform.position, ev.Player.ReferenceHub.PlayerCameraReference.transform.forward, out raycastHit, 100f))
+            if (!Physics.Raycast(ev.Player.ReferenceHub.PlayerCameraReference.transform.position, ev.Player.ReferenceHub.PlayerCameraReference.transform.forward, out RaycastHit raycastHit, 100f))
             {
                 return;
             }

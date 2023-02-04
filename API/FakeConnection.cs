@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AutoEvent.API
+namespace AutoEvent
 {
     public class FakeConnection : NetworkConnectionToClient
     {

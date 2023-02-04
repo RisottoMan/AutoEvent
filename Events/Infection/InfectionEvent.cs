@@ -30,18 +30,18 @@ namespace AutoEvent.Events
 
         public void OnStart()
         {
-            Exiled.Events.Handlers.Player.Verified += OnJoin;
-            Exiled.Events.Handlers.Player.Died += OnDead;
-            Exiled.Events.Handlers.Player.Hurting += OnDamage;
-            Exiled.Events.Handlers.Server.RespawningTeam += OnTeamRespawn;
+            Exiled.Events.Handlers.Player.Verified += InfectionHandler.OnJoin;
+            Exiled.Events.Handlers.Player.Died += InfectionHandler.OnDead;
+            Exiled.Events.Handlers.Player.Hurting += InfectionHandler.OnDamage;
+            Exiled.Events.Handlers.Server.RespawningTeam += InfectionHandler.OnTeamRespawn;
             OnEventStarted();
         }
         public void OnStop()
         {
-            Exiled.Events.Handlers.Player.Verified -= OnJoin;
-            Exiled.Events.Handlers.Player.Died -= OnDead;
-            Exiled.Events.Handlers.Player.Hurting -= OnDamage;
-            Exiled.Events.Handlers.Server.RespawningTeam -= OnTeamRespawn;
+            Exiled.Events.Handlers.Player.Verified -= InfectionHandler.OnJoin;
+            Exiled.Events.Handlers.Player.Died -= InfectionHandler.OnDead;
+            Exiled.Events.Handlers.Player.Hurting -= InfectionHandler.OnDamage;
+            Exiled.Events.Handlers.Server.RespawningTeam -= InfectionHandler.OnTeamRespawn;
             Timing.CallDelayed(10f, () => EventEnd());
             AutoEvent.ActiveEvent = null;
         }
@@ -50,9 +50,9 @@ namespace AutoEvent.Events
             // Обнуление Таймера
             EventTime = new TimeSpan(0, 0, 0);
             // Создание карты
-            GameMap = API.API.LoadMap("Zombie", new Vector3(115.5f, 1030f, -43.5f), new Quaternion(0, 0, 0, 0), new Vector3(1, 1, 1));
+            GameMap = Extensions.LoadMap("Zombie", new Vector3(115.5f, 1030f, -43.5f), new Quaternion(0, 0, 0, 0), new Vector3(1, 1, 1));
             // Запуск музыки
-            API.API.PlayAudio("Zombie.ogg", 15, true, "Заражение");
+            Extensions.PlayAudio("Zombie.ogg", 15, true, "Заражение");
             // Телепорт игроков
             foreach(Player player in Player.List)
             {
@@ -129,39 +129,10 @@ namespace AutoEvent.Events
         }
         public void EventEnd()
         {
-            API.API.CleanUpAll();
-            API.API.TeleportEnd();
-            API.API.UnLoadMap(GameMap);
-            API.API.StopAudio();
-        }
-        // Ивенты
-        public void OnDamage(HurtingEventArgs ev)
-        {
-            if (ev.Attacker.Role == RoleTypeId.Scp0492)
-            {
-                ev.Player.Role.Set(RoleTypeId.Scp0492, Exiled.API.Enums.SpawnReason.None, RoleSpawnFlags.None);
-                ev.Attacker.ShowHitMarker();
-            }
-        }
-        public void OnDead(DiedEventArgs ev)
-        {
-            Timing.CallDelayed(2f, () =>
-            {
-                ev.Player.Role.Set(RoleTypeId.Scp0492, Exiled.API.Enums.SpawnReason.None, RoleSpawnFlags.None);
-                ev.Player.Position = GameMap.transform.position + new Vector3(-18.75f, 2.5f, 0f);
-            });
-        }
-        public void OnJoin(VerifiedEventArgs ev)
-        {
-            Timing.CallDelayed(2f, () =>
-            {
-                ev.Player.Role.Set(RoleTypeId.Scp0492, Exiled.API.Enums.SpawnReason.None, RoleSpawnFlags.None);
-                ev.Player.Position = GameMap.transform.position + new Vector3(-18.75f, 2.5f, 0f);
-            });
-        }
-        public static void OnTeamRespawn(RespawningTeamEventArgs ev)
-        {
-            ev.IsAllowed = false;
+            Extensions.CleanUpAll();
+            Extensions.TeleportEnd();
+            Extensions.UnLoadMap(GameMap);
+            Extensions.StopAudio();
         }
     }
 }

@@ -95,13 +95,15 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="API\API.cs" />
+    <Compile Include="API\Extensions.cs" />
     <Compile Include="API\FakeConnection.cs" />
     <Compile Include="Commands\ListEvents.cs" />
     <Compile Include="Commands\RunEvent.cs" />
     <Compile Include="Config.cs" />
-    <Compile Include="Events\Escape.cs" />
-    <Compile Include="Events\InfectionEvent.cs" />
+    <Compile Include="Events\Escape\Escape.cs" />
+    <Compile Include="Events\Escape\EscapeHandler.cs" />
+    <Compile Include="Events\Infection\InfectionEvent.cs" />
+    <Compile Include="Events\Infection\InfectionHandler.cs" />
     <Compile Include="Events\JailEvent.cs" />
     <Compile Include="Events\Versus.cs" />
     <Compile Include="Interfaces\IEvent.cs" />

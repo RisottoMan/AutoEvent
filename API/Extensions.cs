@@ -17,9 +17,9 @@ using UnityEngine;
 using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
 
-namespace AutoEvent.API
+namespace AutoEvent
 {
-    internal class API
+    internal class Extensions
     {
         public static List<ReferenceHub> Dummies;
         /// <summary>Тп игроков после конца игры</summary>
