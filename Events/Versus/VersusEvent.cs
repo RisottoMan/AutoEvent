@@ -18,7 +18,6 @@ namespace AutoEvent.Events
         public Player Scientist { get; set; }
         public Player ClassD { get; set; }
         public TimeSpan EventTime { get; set; }
-        public int Votes { get; set; }
 
         public void OnStart()
         {

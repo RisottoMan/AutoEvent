@@ -32,7 +32,6 @@ namespace AutoEvent.Events
         public static Dictionary<GameObject, float> JailerDoorsTime { get; set; } = new Dictionary<GameObject, float>();
         public static TimeSpan EventTime { get; set; }
         public static bool isDoorsOpen = false;
-        public int Votes { get; set; }
 
         public void OnStart()
         {

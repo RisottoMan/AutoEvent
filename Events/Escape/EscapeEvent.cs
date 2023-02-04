@@ -25,7 +25,6 @@ namespace AutoEvent.Events
         public string Color => "FFFF00";
         public string CommandName => "escape";
         public static TimeSpan EventTime { get; set; }
-        public int Votes { get; set; }
 
         public void OnStart()
         {
@@ -79,7 +78,6 @@ namespace AutoEvent.Events
             // Отсчет времени
             while (Warhead.DetonationTimer != 0)
             {
-
                 foreach (Player player in Player.List)
                 {
                     if (player.CurrentRoom.Name.ToLower() == "ez_gatea" || player.CurrentRoom.Name.ToLower() == "ez_gateb") 

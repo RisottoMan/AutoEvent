@@ -22,8 +22,6 @@ namespace AutoEvent.Interfaces
         /// <summary>Описание</summary>
         string Description { get; }
 
-        int Votes { get; set; }
-
         /// <summary>При запуске</summary>
         void OnStart();
 

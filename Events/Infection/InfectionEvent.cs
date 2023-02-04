@@ -23,10 +23,8 @@ namespace AutoEvent.Events
         public string Description => "Зомби режим, целью которого заразить всех игроков.";
         public string Color => "FF4242";
         public string CommandName => "zombie";
-        public static Player Zombie { get; set; }
         public static SchematicObject GameMap { get; set; }
         public static TimeSpan EventTime { get; set; }
-        public int Votes { get; set; }
 
         public void OnStart()
         {
@@ -77,12 +75,11 @@ namespace AutoEvent.Events
         // Спавн зомби
         public void SpawnZombie()
         {
-            Zombie = Player.List.ToList().RandomItem();
-            Zombie.Role.Set(RoleTypeId.Scp0492);
-            Timing.RunCoroutine(EventBeginning(), "SpawnZombie");
+            Player.List.ToList().RandomItem().Role.Set(RoleTypeId.Scp0492);
+            Timing.RunCoroutine(OnEventRunning(), "infect_run");
         }
         // Ивент начался - отсчет времени и колво людей
-        public IEnumerator<float> EventBeginning()
+        public IEnumerator<float> OnEventRunning()
         {
             while (Player.List.Count(r => r.Role == RoleTypeId.ClassD) > 1)
             {
