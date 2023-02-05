@@ -1,7 +1,7 @@
 # AutoEvent-Exiled
 ## ENG: Allows you to run auto Mini-Games in the game.
 ## RUS: Позволяет запускать автоматические Мини-Игры в игре.
-### Ported to Exiled by KoT0XleB
+### Ported to Exiled
 
 ## Instruction manual:
 - Plugin ``AutoEvent.dll`` move to => ``EXILED/Plugins``
@@ -17,3 +17,5 @@
 ![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/Jail_Xmf.jpg)
 ### Дуель игроков на карте 35hp из cs 1.6.
 ![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/35Hp.png)
+
+Thanks for the MapEditorReborn plugin to the developer Michal78900#8196 and the code for the music to work to the developer ced777ric#8321.
