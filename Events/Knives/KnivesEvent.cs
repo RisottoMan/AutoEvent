@@ -6,8 +6,6 @@ using PlayerRoles;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -41,7 +39,7 @@ namespace AutoEvent.Events
         {
             EventTime = new TimeSpan(0, 0, 0);
             GameMap = Extensions.LoadMap("35hp_2", new Vector3(115.5f, 1030f, -43.5f), new Quaternion(0, 0, 0, 0), new Vector3(1, 1, 1));
-            Extensions.PlayAudio("Knife.ogg", 7, true, "Ножики");
+            Extensions.PlayAudio("Knife.ogg", 10, true, "Ножики");
             var count = 0;
             foreach (Player player in Player.List)
             {
@@ -71,7 +69,7 @@ namespace AutoEvent.Events
 
             foreach(Player player in Player.List)
             {
-                player.DisableEffect<CustomPlayerEffects.Ensnared>();
+                player.DisableAllEffects();
             }
 
             while (Player.List.Count(r => r.Role.Team == Team.FoundationForces) > 0 && Player.List.Count(r => r.Role.Team == Team.ChaosInsurgency) > 0)

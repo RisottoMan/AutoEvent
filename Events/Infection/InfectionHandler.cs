@@ -12,10 +12,13 @@ namespace AutoEvent
     {
         public static void OnDamage(HurtingEventArgs ev)
         {
-            if (ev.Attacker.Role == RoleTypeId.Scp0492)
+            if (ev.Attacker != null)
             {
-                ev.Player.Role.Set(RoleTypeId.Scp0492, Exiled.API.Enums.SpawnReason.None, RoleSpawnFlags.None);
-                ev.Attacker.ShowHitMarker();
+                if (ev.Attacker.Role == RoleTypeId.Scp0492)
+                {
+                    ev.Player.Role.Set(RoleTypeId.Scp0492, Exiled.API.Enums.SpawnReason.None, RoleSpawnFlags.None);
+                    ev.Attacker.ShowHitMarker();
+                }
             }
         }
         public static void OnDead(DiedEventArgs ev)

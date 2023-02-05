@@ -96,7 +96,7 @@ namespace AutoEvent.Events
 
                 Extensions.Broadcast($"<size=20><color=red>Тюрьма Саймона</color>\n" +
                     $"<color=yellow>Зеки: {Player.List.Count(r => r.Role == RoleTypeId.ClassD)}</color> || " +
-                    $"<color=cyan>Охраники: {Player.List.Count(r => r.Role.Team == Team.FoundationForces)}</color>\n" +
+                    $"<color=blue>Охраники: {Player.List.Count(r => r.Role.Team == Team.FoundationForces)}</color>\n" +
                     $"<color=red>{EventTime.Minutes}:{EventTime.Seconds}</color></size>", 1);
 
                 yield return Timing.WaitForSeconds(0.5f);

@@ -7,6 +7,8 @@ using AutoEvent.Interfaces;
 using Exiled.API.Features;
 using MapEditorReborn.API.Features.Objects;
 using UnityEngine;
+using Exiled.API.Enums;
+using Random = UnityEngine.Random;
 
 namespace AutoEvent.Events
 {
@@ -17,8 +19,8 @@ namespace AutoEvent.Events
         public string Color => "FFFF00";
         public string CommandName => "versus";
         public SchematicObject GameMap { get; set; }
-        public Player Scientist { get; set; }
-        public Player ClassD { get; set; }
+        public static Player Scientist { get; set; }
+        public static Player ClassD { get; set; }
         public TimeSpan EventTime { get; set; }
 
         public void OnStart()
@@ -26,6 +28,7 @@ namespace AutoEvent.Events
             Exiled.Events.Handlers.Player.Verified += VersusHandler.OnJoin;
             Exiled.Events.Handlers.Player.DroppingItem += VersusHandler.OnDroppingItem;
             Exiled.Events.Handlers.Server.RespawningTeam += VersusHandler.OnTeamRespawn;
+            Exiled.Events.Handlers.Player.Died += VersusHandler.OnDead;
             OnEventStarted();
         }
         public void OnStop()
@@ -33,14 +36,17 @@ namespace AutoEvent.Events
             Exiled.Events.Handlers.Player.Verified -= VersusHandler.OnJoin;
             Exiled.Events.Handlers.Player.DroppingItem -= VersusHandler.OnDroppingItem;
             Exiled.Events.Handlers.Server.RespawningTeam -= VersusHandler.OnTeamRespawn;
+            Exiled.Events.Handlers.Player.Died -= VersusHandler.OnDead;
             Timing.CallDelayed(10f, () => EventEnd());
             AutoEvent.ActiveEvent = null;
         }
         public void OnEventStarted()
         {
             EventTime = new TimeSpan(0, 0, 0);
-            GameMap = Extensions.LoadMap("35Hp", new Vector3(115.5f, 1030f, -43.5f), new Quaternion(0, 0, 0, 0), new Vector3(1, 1, 1));
-            Extensions.PlayAudio("Knife.ogg", 5, true, "Петушиные Бои");
+            Scientist = null;
+            ClassD = null;
+            GameMap = Extensions.LoadMap("35Hp", new Vector3(127.460f, 1016.707f, -43.68f), new Quaternion(0, 0, 0, 0), new Vector3(1, 1, 1));
+            Extensions.PlayAudio("Knife.ogg", 10, true, "Петушиные Бои");
 
             var count = 0;
             foreach (Player player in Player.List)
@@ -48,18 +54,17 @@ namespace AutoEvent.Events
                 if (count % 2 == 0)
                 {
                     player.Role.Set(RoleTypeId.Scientist);
-                    player.Position = GameMap.Position + new Vector3(-5.445f, -3.424f, -7.284f);
+                    player.Position = GameMap.Position + new Vector3(-2.91f, -3.2f, Random.Range(-1, -13));
                 }
                 else
                 {
                     player.Role.Set(RoleTypeId.ClassD);
-                    player.Position = GameMap.Position + new Vector3(-26.788f, -3.424f, -7.488f);
+                    player.Position = GameMap.Position + new Vector3(-28.65f, -3.2f, Random.Range(-1, -13));
                 }
                 player.ResetInventory(new List<ItemType> { ItemType.Jailbird });
                 count++;
             }
-            //Timing.RunCoroutine(OnEventRunning(), "versus_run");
-
+            Timing.RunCoroutine(OnEventRunning(), "versus_run");
         }
         public IEnumerator<float> OnEventRunning()
         {
@@ -69,51 +74,57 @@ namespace AutoEvent.Events
                 yield return Timing.WaitForSeconds(1f);
             }
 
-            while (Player.List.Count(r => r.Role.Team == Team.Scientists) > 0 && Player.List.Count(r => r.Role.Team == Team.ClassD) > 0)
+            while (Player.List.Count(r => r.Role == RoleTypeId.Scientist) > 0 && Player.List.Count(r => r.Role == RoleTypeId.ClassD) > 0)
             {
-                foreach(Player player in Player.List)
+                foreach (Player player in Player.List)
                 {
-                    if (Vector3.Distance(player.Position, new Vector3(-10.233f, -3.871f, -7.284f)) < 0.5f && (Scientist == null || Scientist.IsDead))
+                    if (Scientist == null)
                     {
-                        Scientist = player;
-                        player.Position = GameMap.Position + new Vector3(-11.351f, -3.424f, -7.284f);
-                        player.AddItem(ItemType.Jailbird);
+                        if (Vector3.Distance(player.Position, GameMap.Position + new Vector3(-10.233f, -3.871f, -7.284f)) <= 0.5f)
+                        {
+                            Scientist = player;
+                            Scientist.Position = GameMap.Position + new Vector3(-11.351f, -3.424f, -7.284f);
+                            Scientist.AddItem(ItemType.Jailbird);
+                        }
                     }
-                    if (Vector3.Distance(player.Position, new Vector3(-21.4718f, -3.871f, -7.284f)) < 0.5f && (ClassD == null || ClassD.IsDead))
+                    if (ClassD == null)
                     {
-                        ClassD = player;
-                        player.Position = GameMap.Position + new Vector3(-20.514f, -3.424f, -7.284f);
-                        player.AddItem(ItemType.Jailbird);
+                        if (Vector3.Distance(player.Position, GameMap.Position + new Vector3(-21.4718f, -3.871f, -7.284f)) <= 0.5f)
+                        {
+                            ClassD = player;
+                            ClassD.Position = GameMap.Position + new Vector3(-20.0f, -3.424f, -7.284f);
+                            ClassD.AddItem(ItemType.Jailbird);
+                        }
                     }
                 }
-                if (ClassD.IsDead || ClassD == null)
+                if (ClassD == null && Scientist == null)
+                {
+                    Extensions.Broadcast($"<color=#D71868><b><i>Петушиные Бои</i></b></color>\n" +
+                    $"Зайдите внутрь арены, чтобы подраться друг с другом!", 1);
+                }
+                else if (ClassD == null)
                 {
                     Extensions.Broadcast($"<color=#D71868><b><i>Петушиные Бои</i></b></color>\n" +
                     $"В живых остался игрок <color=yellow>{Scientist.Nickname}</color>", 1);
                 }
-                else if (Scientist.IsDead || Scientist == null)
+                else if (Scientist == null)
                 {
                     Extensions.Broadcast($"<color=#D71868><b><i>Петушиные Бои</i></b></color>\n" +
                     $"В живых остался игрок <color=orange>{ClassD.Nickname}</color>", 1);
-                }
-                else if ((ClassD.IsDead || ClassD == null) && (Scientist.IsDead || Scientist == null))
-                {
-                    Extensions.Broadcast($"<color=#D71868><b><i>Петушиные Бои</i></b></color>\n" +
-                    $"Зайдите внутрь арены, чтобы подраться друг с другом!", 1);
                 }
                 else
                 {
                     Extensions.Broadcast($"<color=#D71868><b><i>Петушиные Бои</i></b></color>\n" +
                     $"<color=yellow><color=yellow>{Scientist.Nickname}</color> <color=red>VS</color> <color=orange>{ClassD.Nickname}</color></color>", 1);
                 }
-                yield return Timing.WaitForSeconds(1f);
+                yield return Timing.WaitForSeconds(0.3f);
             }
-            if (Player.List.Count(r => r.Role.Team == Team.Scientists) == 0)
+            if (Player.List.Count(r => r.Role == RoleTypeId.Scientist) == 0)
             {
                 Extensions.Broadcast($"<color=#D71868><b><i>Петушиные Бои</i></b></color>\n" +
                 $"<color=yellow>ПОБЕДИТЕЛИ: <color=red>Д КЛАСС</color></color>", 10);
             }
-            else if (Player.List.Count(r => r.Role.Team == Team.ClassD) == 0)
+            else if (Player.List.Count(r => r.Role == RoleTypeId.ClassD) == 0)
             {
                 Extensions.Broadcast($"<color=#D71868><b><i>Петушиные Бои</i></b></color>\n" +
                 $"<color=yellow>ПОБЕДИТЕЛИ: <color=red>УЧЕНЫЕ</color></color>", 10);

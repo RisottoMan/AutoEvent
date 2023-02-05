@@ -6,7 +6,6 @@ using PlayerRoles;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
 
 namespace AutoEvent.Events
 {
@@ -20,7 +19,6 @@ namespace AutoEvent.Events
 
         public void OnStart()
         {
-            Exiled.Events.Handlers.Warhead.Stopping += EscapeHandler.OnNukeDisable;
             Exiled.Events.Handlers.Player.Verified += EscapeHandler.OnJoin;
             Exiled.Events.Handlers.Cassie.SendingCassieMessage += EscapeHandler.OnSendCassie;
             Exiled.Events.Handlers.Server.RespawningTeam += EscapeHandler.OnTeamRespawn;
@@ -28,7 +26,6 @@ namespace AutoEvent.Events
         }
         public void OnStop()
         {
-            Exiled.Events.Handlers.Warhead.Stopping -= EscapeHandler.OnNukeDisable;
             Exiled.Events.Handlers.Player.Verified -= EscapeHandler.OnJoin;
             Exiled.Events.Handlers.Cassie.SendingCassieMessage -= EscapeHandler.OnSendCassie;
             Exiled.Events.Handlers.Server.RespawningTeam -= EscapeHandler.OnTeamRespawn;
@@ -41,15 +38,17 @@ namespace AutoEvent.Events
             // Делаем всех д классами
             Player.List.ToList().ForEach(player =>
             {
-                player.Role.Set(RoleTypeId.Scp173, SpawnReason.None, PlayerRoles.RoleSpawnFlags.All);
+                player.Role.Set(RoleTypeId.Scp173, SpawnReason.None, RoleSpawnFlags.All);
                 player.EnableEffect(EffectType.Ensnared);
             });
-
+            // we need Running in the 90's and Vicky Vale - Dancing lmao :D
             Extensions.PlayAudio("Escape.ogg", 25, true, "Побег ДЦП");
 
             // Запуск боеголовки
+            Warhead.DetonationTimer = 120f;
             Warhead.Start();
-            Warhead.DetonationTimer = 80f;
+            Warhead.IsLocked = true;
+
             Timing.RunCoroutine(OnEventRunning(), "escape_run");
         }
         public IEnumerator<float> OnEventRunning()
@@ -67,22 +66,30 @@ namespace AutoEvent.Events
                 EventTime += TimeSpan.FromSeconds(1f);
             }
             // Выключаем остановку
-            Player.List.ToList().ForEach(player => player.DisableEffect(EffectType.Ensnared));
+            Player.List.ToList().ForEach(player => player.DisableAllEffects());
+            var explosionTime = 80;
             // Отсчет времени
-            while (Warhead.DetonationTimer != 0)
+            while (EventTime.TotalSeconds != explosionTime)
             {
-                foreach (Player player in Player.List)
-                {
-                    if (player.CurrentRoom.Name.ToLower() == "ez_gatea" || player.CurrentRoom.Name.ToLower() == "ez_gateb") 
-                        player.Position = new Vector3(0, 1002, 0);
-                }
-
                 Map.ClearBroadcasts();
                 Map.Broadcast(new Exiled.API.Features.Broadcast($"Атомный Побег\n" +
-                    $"До взрыва: <color=red>{(int)Warhead.DetonationTimer}</color> секунд", 1));
+                    $"До взрыва: <color=red>{explosionTime - EventTime.TotalSeconds}</color> секунд", 1));
                 yield return Timing.WaitForSeconds(1f);
                 EventTime += TimeSpan.FromSeconds(1f);
             }
+
+            Warhead.IsLocked = false;
+            Warhead.Stop();
+
+            foreach(Player player in Player.List)
+            {
+                player.EnableEffect<CustomPlayerEffects.Flashed>(1);
+                if (player.Position.y < 990f)
+                {
+                    player.Kill(DamageType.Warhead);
+                }
+            }
+
             OnStop();
             yield break;
         }

@@ -18,5 +18,16 @@ namespace AutoEvent.Events
         {
             ev.IsAllowed = false;
         }
+        public static void OnDead(DiedEventArgs ev)
+        {
+            if (ev.Player == VersusEvent.ClassD)
+            {
+                VersusEvent.ClassD = null;
+            }
+            if (ev.Player == VersusEvent.Scientist)
+            {
+                VersusEvent.Scientist = null;
+            }
+        }
     }
 }
