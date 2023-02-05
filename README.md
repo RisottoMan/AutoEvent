@@ -18,4 +18,5 @@
 ### Дуель игроков на карте 35hp из cs 1.6.
 ![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/35Hp.png)
 
-Thanks for the MapEditorReborn plugin to the developer Michal78900#8196 and the code for the music to work to the developer ced777ric#8321.
+Thanks for the MapEditorReborn plugin to the developer Michal78900#8196.
+Thanks for the code for the music to work to the developer ced777ric#8321.
