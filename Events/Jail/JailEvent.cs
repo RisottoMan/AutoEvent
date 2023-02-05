@@ -66,7 +66,7 @@ namespace AutoEvent.Events
             }
             foreach (Player player in Player.List)
             {
-                if (player.Role.Team != Team.FoundationForces)
+                if (player.Role != RoleTypeId.NtfCaptain)
                 {
                     player.Role.Set(RoleTypeId.ClassD);
                     player.Position = GameMap.Position + JailRandom.GetRandomPosition();
