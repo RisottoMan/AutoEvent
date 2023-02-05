@@ -52,12 +52,12 @@ namespace AutoEvent.Events
         {
             GameMap = Extensions.LoadMap("Jail", new Vector3(115.5f, 1030f, -43.5f), new Quaternion(0, 0, 0, 0), new Vector3(1, 1, 1));
             // Запуск музыки
-            //API.API.PlayAudio("Jail.ogg", 15, false, "Инструкция");
+            //Extensions.PlayAudio("Jail.ogg", 15, false, "Инструкция");
             // включить огонь по своим
             Server.FriendlyFire = true;
             // Создание кнопки
             Button = new GameObject("button");
-            Button.transform.position = GameMap.gameObject.transform.position + new Vector3(21.88927f, -6.554526f, -2.148565f);
+            Button.transform.position = GameMap.Position + new Vector3(21.88927f, -6.554526f, -2.148565f);
             // Запуск ивента
             OnEventStarted();
         }
@@ -67,7 +67,7 @@ namespace AutoEvent.Events
             {
                 var jailer = Player.List.ToList().RandomItem();
                 jailer.Role.Set(RoleTypeId.NtfCaptain);
-                jailer.Position = GameMap.transform.position + new Vector3(13.506f, -10.9f, -13.192f);
+                jailer.Position = GameMap.Position + new Vector3(13.506f, -10f, -13.192f);
                 jailer.ResetInventory(new List<ItemType>
                     {
                         ItemType.GunE11SR,
@@ -79,7 +79,7 @@ namespace AutoEvent.Events
                 if (player.Role.Team != Team.FoundationForces)
                 {
                     player.Role.Set(RoleTypeId.ClassD);
-                    player.Position = GameMap.gameObject.transform.position + RandomPosition();
+                    player.Position = GameMap.Position + JailRandom.GetRandomPosition();
                 }
             }
             Timing.RunCoroutine(OnEventRunning(), "jail_run");
@@ -103,43 +103,27 @@ namespace AutoEvent.Events
             while (Player.List.Count(r => r.Role == RoleTypeId.ClassD) > 0 && Player.List.Count(r => r.Role.Team == Team.FoundationForces) > 0)
             {
                 PhysicDoors();
-                Player.List.ToList().ForEach(player =>
-                {
-                    player.ClearBroadcasts();
-                    player.Broadcast(new Exiled.API.Features.Broadcast($"<size=20><color=red>Тюрьма Саймона</color>\n" +
+
+                Extensions.Broadcast($"<size=20><color=red>Тюрьма Саймона</color>\n" +
                     $"<color=yellow>Зеки: {Player.List.Count(r => r.Role == RoleTypeId.ClassD)}</color> || " +
                     $"<color=cyan>Охраники: {Player.List.Count(r => r.Role.Team == Team.FoundationForces)}</color>\n" +
-                    $"<color=red>{EventTime.Minutes}:{EventTime.Seconds}</color></size>", 1));
-                });
+                    $"<color=red>{EventTime.Minutes}:{EventTime.Seconds}</color></size>", 1);
+
                 yield return Timing.WaitForSeconds(0.5f);
                 EventTime += TimeSpan.FromSeconds(0.5f);
             }
             if (Player.List.Count(r => r.Role.Team == Team.FoundationForces) == 0)
             {
-                Map.ClearBroadcasts();
-                Map.Broadcast(new Exiled.API.Features.Broadcast($"<color=red><b><i>Победа Заключенных</i></b></color>\n" +
-                    $"<color=red>{EventTime.Minutes}:{EventTime.Seconds}</color>", 10));
+                Extensions.Broadcast($"<color=red><b><i>Победа Заключенных</i></b></color>\n" +
+                    $"<color=red>{EventTime.Minutes}:{EventTime.Seconds}</color>", 10);
             }
             if (Player.List.Count(r => r.Role == RoleTypeId.ClassD) == 0)
             {
-                Map.ClearBroadcasts();
-                Map.Broadcast(new Exiled.API.Features.Broadcast($"<color=blue><b><i>Победа Охранников</i></b></color>\n" +
-                    $"<color=red>{EventTime.Minutes}:{EventTime.Seconds}</color>", 10));
+                Extensions.Broadcast($"<color=blue><b><i>Победа Охранников</i></b></color>\n" +
+                    $"<color=red>{EventTime.Minutes}:{EventTime.Seconds}</color>", 10);
             }
             OnStop();
             yield break;
-        }
-        public void EventEnd()
-        {
-            isDoorsOpen = false;
-            Server.FriendlyFire = false;
-
-            Extensions.CleanUpAll();
-            Extensions.TeleportEnd();
-            Extensions.UnLoadMap(GameMap);
-            JailerDoorsTime.Clear();
-            GameObject.Destroy(Button);
-            //API.API.StopAudio();
         }
         public void PhysicDoors()
         {
@@ -172,28 +156,17 @@ namespace AutoEvent.Events
                 }
             }
         }
-        public Vector3 RandomPosition()
+        public void EventEnd()
         {
-            Vector3 position = new Vector3(0, 0, 0);
-            switch (Random.Range(0, 15))
-            {
-                case 0: position = new Vector3(6.99f, -5.396f, 17.18f); break;
-                case 1: position = new Vector3(14.36f, -5.396f, 17.18f); break;
-                case 2: position = new Vector3(21.49f, -5.396f, 17.18f); break;
-                case 3: position = new Vector3(28.82f, -5.396f, 17.18f); break;
-                case 4: position = new Vector3(36.47f, -5.396f, 17.18f); break;
-                case 5: position = new Vector3(6.99f, -8.686f, 17.18f); break;
-                case 6: position = new Vector3(14.36f, -8.686f, 17.18f); break;
-                case 7: position = new Vector3(21.49f, -8.686f, 17.18f); break;
-                case 8: position = new Vector3(28.82f, -8.686f, 17.18f); break;
-                case 9: position = new Vector3(36.47f, -8.686f, 17.18f); break;
-                case 10: position = new Vector3(6.99f, -12, 17.18f); break;
-                case 11: position = new Vector3(14.36f, -12, 17.18f); break;
-                case 12: position = new Vector3(21.49f, -12, 17.18f); break;
-                case 13: position = new Vector3(28.82f, -12, 17.18f); break;
-                case 14: position = new Vector3(36.47f, -12, 17.18f); break;
-            }
-            return position;
+            isDoorsOpen = false;
+            Server.FriendlyFire = false;
+
+            Extensions.CleanUpAll();
+            Extensions.TeleportEnd();
+            Extensions.UnLoadMap(GameMap);
+            JailerDoorsTime.Clear();
+            GameObject.Destroy(Button);
+            Extensions.StopAudio();
         }
     }
 }

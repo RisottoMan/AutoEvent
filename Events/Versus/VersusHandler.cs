@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AutoEvent.Events.Versus
 {
-    internal class VersusHandler
+    internal class KnivesHandler
     {
     }
 }

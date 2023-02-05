@@ -29,6 +29,7 @@ namespace AutoEvent
             {
                 player.Role.Set(RoleTypeId.Tutorial, Exiled.API.Enums.SpawnReason.None, RoleSpawnFlags.None);
                 player.Position = new Vector3(39.332f, 1014.766f, -31.922f);
+                player.ClearInventory();
             }
         }
         /// <summary>Проиграть аудиофайл</summary>
@@ -102,6 +103,12 @@ namespace AutoEvent
                     Object.Destroy(pickupBase.gameObject);
                 }
             }
+        }
+        /// <summary>Небольшой бродкаст с очисткой других бродкастов</summary>
+        public static void Broadcast(string text, ushort time)
+        {
+            Map.ClearBroadcasts();
+            Map.Broadcast(new Exiled.API.Features.Broadcast(text, time));
         }
     }
 }

@@ -12,7 +12,7 @@ namespace AutoEvent.Events
         public string Name => "Петушиные Бои";
         public string Description => "Дуель игроков на карте 35hp из cs 1.6";
         public string Color => "FFFF00";
-        public string CommandName => "35hp";
+        public string CommandName => "versus";
         public Model GameMap { get; set; }
         public Model Doors { get; set; }
         public Player Scientist { get; set; }

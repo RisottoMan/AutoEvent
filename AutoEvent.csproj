@@ -32,6 +32,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="0Harmony">
+      <HintPath>..\..\..\Рабочий стол\файлы\0Harmony.dll</HintPath>
+    </Reference>
     <Reference Include="Assembly-CSharp-firstpass">
       <HintPath>..\..\Рабочий стол\файлы\Assembly-CSharp-firstpass.dll</HintPath>
     </Reference>
@@ -100,12 +103,15 @@
     <Compile Include="Commands\ListEvents.cs" />
     <Compile Include="Commands\RunEvent.cs" />
     <Compile Include="Config.cs" />
+    <Compile Include="Events\Knives\KnivesEvent.cs" />
+    <Compile Include="Events\Knives\KnivesHandler.cs" />
     <Compile Include="Events\Escape\EscapeEvent.cs" />
     <Compile Include="Events\Escape\EscapeHandler.cs" />
     <Compile Include="Events\Infection\InfectionEvent.cs" />
     <Compile Include="Events\Infection\InfectionHandler.cs" />
     <Compile Include="Events\Jail\JailEvent.cs" />
     <Compile Include="Events\Jail\JailHandler.cs" />
+    <Compile Include="Events\Jail\JailRandom.cs" />
     <Compile Include="Events\Versus\VersusEvent.cs" />
     <Compile Include="Events\Versus\VersusHandler.cs" />
     <Compile Include="Interfaces\IEvent.cs" />
