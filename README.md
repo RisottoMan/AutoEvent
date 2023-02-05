@@ -1,7 +1,6 @@
-# AutoEvent-Exiled
+# AutoEvent (Ported to Exiled)
 ## ENG: Allows you to run auto Mini-Games in the game.
 ## RUS: Позволяет запускать автоматические Мини-Игры в игре.
-### Ported to Exiled
 
 ## Instruction manual:
 - Plugin ``AutoEvent.dll`` move to => ``EXILED/Plugins``
