@@ -1,12 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Exiled.Events.EventArgs.Player;
+using Exiled.Events.EventArgs.Server;
+using PlayerRoles;
 
-namespace AutoEvent.Events.Versus
+namespace AutoEvent.Events
 {
-    internal class KnivesHandler
+    internal class VersusHandler
     {
+        public static void OnJoin(VerifiedEventArgs ev)
+        {
+            ev.Player.Role.Set(RoleTypeId.Spectator);
+        }
+        public static void OnDroppingItem(DroppingItemEventArgs ev)
+        {
+            ev.IsAllowed = false;
+        }
+        public static void OnTeamRespawn(RespawningTeamEventArgs ev)
+        {
+            ev.IsAllowed = false;
+        }
     }
 }

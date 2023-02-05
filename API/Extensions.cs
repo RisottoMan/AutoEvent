@@ -1,21 +1,15 @@
-﻿using Exiled.API.Features;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using Mirror;
+using UnityEngine;
+using PlayerRoles;
+using Exiled.API.Features;
 using InventorySystem.Items.Pickups;
 using MapEditorReborn.API.Features;
 using MapEditorReborn.API.Features.Objects;
-using MEC;
-using Mirror;
-using PlayerRoles;
-using PlayerRoles.FirstPersonControl;
 using SCPSLAudioApi.AudioCore;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
 using Object = UnityEngine.Object;
-using Random = UnityEngine.Random;
 
 namespace AutoEvent
 {
@@ -38,7 +32,7 @@ namespace AutoEvent
             try
             {
                 Dummies = new List<ReferenceHub>();
-                var newPlayer = UnityEngine.Object.Instantiate(NetworkManager.singleton.playerPrefab);
+                var newPlayer = Object.Instantiate(NetworkManager.singleton.playerPrefab);
                 int id = Dummies.Count;
                 var fakeConnection = new FakeConnection(id++);
                 var hubPlayer = newPlayer.GetComponent<ReferenceHub>();

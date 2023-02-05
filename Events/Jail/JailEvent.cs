@@ -1,23 +1,13 @@
-﻿using AdminToys;
-using AutoEvent.Interfaces;
-using Exiled.API.Extensions;
+﻿using AutoEvent.Interfaces;
 using Exiled.API.Features;
-using Exiled.API.Features.Toys;
-using Exiled.Events.EventArgs.Player;
-using Exiled.Events.EventArgs.Server;
-using MapEditorReborn.API.Enums;
 using MapEditorReborn.API.Features.Objects;
 using MEC;
-using Mirror;
 using PlayerRoles;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 using Object = UnityEngine.Object;
-using Random = UnityEngine.Random;
 
 namespace AutoEvent.Events
 {
@@ -46,7 +36,7 @@ namespace AutoEvent.Events
             Exiled.Events.Handlers.Player.InteractingLocker -= JailHandler.OnInteractLocker;
             Exiled.Events.Handlers.Server.RespawningTeam -= JailHandler.OnTeamRespawn;
             Timing.CallDelayed(10f, () => EventEnd());
-            //Plugin.ActiveEvent = null;
+            AutoEvent.ActiveEvent = null;
         }
         public void OnWaitingEvent()
         {

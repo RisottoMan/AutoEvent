@@ -27,6 +27,11 @@ namespace AutoEvent.Commands
                 response = $"Раунд ещё не начался!";
                 return false;
             }
+            if (AutoEvent.ActiveEvent != null)
+            {
+                response = $"Мини-Игра уже проводится!";
+                return false;
+            }
             if (arguments.Count != 1)
             {
                 response = $"Необходим только 1 аргумент - командное название ивента!";

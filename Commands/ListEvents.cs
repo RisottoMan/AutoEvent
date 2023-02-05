@@ -22,12 +22,6 @@ namespace AutoEvent.Commands
         {
             Player admin = Player.Get((sender as CommandSender).SenderId);
 
-            //if (Plugin.CustomConfig.DonatorGroups.Contains(admin.GroupName))
-            //{
-            //    response = $"<color=red>Вы не можете это использовать!</color>";
-            //    return false;
-            //}
-
             string resp = String.Empty;
             resp += "<color=yellow><b>Список ивентов (запуская ивент вы несёте ответственность за него)</color></b>:\n";
             var arr = GetTypesInNamespace(Assembly.GetExecutingAssembly(), "AutoEvent.Events");

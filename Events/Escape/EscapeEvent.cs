@@ -1,20 +1,12 @@
 ﻿using AutoEvent.Interfaces;
 using Exiled.API.Enums;
 using Exiled.API.Features;
-using Exiled.Events.EventArgs.Cassie;
-using Exiled.Events.EventArgs.Player;
-using Exiled.Events.EventArgs.Server;
-using Exiled.Events.EventArgs.Warhead;
-using InventorySystem.Items.Pickups;
 using MEC;
 using PlayerRoles;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
-using Object = UnityEngine.Object;
 
 namespace AutoEvent.Events
 {
@@ -41,6 +33,7 @@ namespace AutoEvent.Events
             Exiled.Events.Handlers.Cassie.SendingCassieMessage -= EscapeHandler.OnSendCassie;
             Exiled.Events.Handlers.Server.RespawningTeam -= EscapeHandler.OnTeamRespawn;
             Timing.CallDelayed(5f, () => EventEnd());
+            AutoEvent.ActiveEvent = null;
         }
 
         public void OnEventStarted()

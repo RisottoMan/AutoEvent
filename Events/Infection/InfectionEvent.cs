@@ -1,19 +1,12 @@
 ﻿using AutoEvent.Interfaces;
 using Exiled.API.Features;
-using Exiled.API.Features.Pickups;
-using Exiled.Events.EventArgs.Player;
-using Exiled.Events.EventArgs.Server;
-using InventorySystem.Items.Pickups;
 using MapEditorReborn.API.Features.Objects;
 using MEC;
 using PlayerRoles;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
-using Object = UnityEngine.Object;
 
 namespace AutoEvent.Events
 {

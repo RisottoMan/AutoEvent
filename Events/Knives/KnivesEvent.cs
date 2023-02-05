@@ -13,7 +13,7 @@ using Random = UnityEngine.Random;
 
 namespace AutoEvent.Events
 {
-    internal class Knives : IEvent
+    internal class KnivesEvent : IEvent
     {
         public string Name => "Ножики";
         public string Description => "Игроки на ножах против друг друга на карте 35hp из cs 1.6";
@@ -35,13 +35,13 @@ namespace AutoEvent.Events
             Exiled.Events.Handlers.Player.DroppingItem -= KnivesHandler.OnDropItem;
             Exiled.Events.Handlers.Server.RespawningTeam -= KnivesHandler.OnTeamRespawn;
             Timing.CallDelayed(10f, () => EventEnd());
-            //Plugin.ActiveEvent = null;
+            AutoEvent.ActiveEvent = null;
         }
         public void OnEventStarted()
         {
             EventTime = new TimeSpan(0, 0, 0);
             GameMap = Extensions.LoadMap("35hp_2", new Vector3(115.5f, 1030f, -43.5f), new Quaternion(0, 0, 0, 0), new Vector3(1, 1, 1));
-            Extensions.PlayAudio("Knife.ogg", 10, true, "Ножики");
+            Extensions.PlayAudio("Knife.ogg", 7, true, "Ножики");
             var count = 0;
             foreach (Player player in Player.List)
             {
@@ -60,7 +60,6 @@ namespace AutoEvent.Events
                 count++;
             }
             Timing.RunCoroutine(OnEventRunning(), "knives_run");
-
         }
         public IEnumerator<float> OnEventRunning()
         {
@@ -75,7 +74,6 @@ namespace AutoEvent.Events
                 player.DisableEffect<CustomPlayerEffects.Ensnared>();
             }
 
-            // cycle
             while (Player.List.Count(r => r.Role.Team == Team.FoundationForces) > 0 && Player.List.Count(r => r.Role.Team == Team.ChaosInsurgency) > 0)
             {
                 Extensions.Broadcast($"<color=#D71868><b><i>НОЖИКИ</i></b></color>\n" +

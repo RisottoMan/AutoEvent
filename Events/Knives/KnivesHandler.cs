@@ -1,10 +1,6 @@
 ﻿using PlayerRoles;
 using Exiled.Events.EventArgs.Player;
 using Exiled.Events.EventArgs.Server;
-using InventorySystem;
-using HarmonyLib;
-using System;
-using Exiled.API.Features;
 
 namespace AutoEvent.Events
 {
