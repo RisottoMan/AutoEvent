@@ -9,5 +9,13 @@ namespace AutoEvent
     {
         public bool IsEnabled { get; set; } = true;
         public bool Debug { get; set; } = false;
+        public bool IsDisableDonators { get; set; } = true;
+        public List<string> DonatorList { get; set; } = new List<string>()
+        {
+            "Пряничный Повелитель",
+            "︻デ═一 Бум",
+            "Донатер Печенек",
+            "Убийца Пряников"
+        };
     }
 }

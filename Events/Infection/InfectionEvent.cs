@@ -51,7 +51,7 @@ namespace AutoEvent.Events
                 player.Position = GameMap.transform.position + new Vector3(-18.75f, 2.5f, 0f);
                 player.ClearInventory();
             }
-            Timing.RunCoroutine(TimingBeginEvent($"Заражение", 15), "zombie_time");
+            Timing.RunCoroutine(TimingBeginEvent($"Заражение", 15), "zombie_run");
         }
         // Отсчет до начала ивента
         public IEnumerator<float> TimingBeginEvent(string eventName, float time)

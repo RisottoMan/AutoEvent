@@ -115,6 +115,7 @@
     <Compile Include="Events\Versus\VersusEvent.cs" />
     <Compile Include="Events\Versus\VersusHandler.cs" />
     <Compile Include="Interfaces\IEvent.cs" />
+    <Compile Include="Patch\RemoteAdminPatch.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

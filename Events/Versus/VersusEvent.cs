@@ -84,7 +84,6 @@ namespace AutoEvent.Events
                         {
                             Scientist = player;
                             Scientist.Position = GameMap.Position + new Vector3(-11.351f, -3.424f, -7.284f);
-                            Scientist.AddItem(ItemType.Jailbird);
                         }
                     }
                     if (ClassD == null)
@@ -93,7 +92,6 @@ namespace AutoEvent.Events
                         {
                             ClassD = player;
                             ClassD.Position = GameMap.Position + new Vector3(-20.0f, -3.424f, -7.284f);
-                            ClassD.AddItem(ItemType.Jailbird);
                         }
                     }
                 }
