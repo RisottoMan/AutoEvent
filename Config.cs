@@ -12,10 +12,10 @@ namespace AutoEvent
         public bool IsDisableDonators { get; set; } = true;
         public List<string> DonatorList { get; set; } = new List<string>()
         {
-            "Пряничный Повелитель",
-            "︻デ═一 Бум",
-            "Донатер Печенек",
-            "Убийца Пряников"
+            "donate4",
+            "donate3",
+            "donate2",
+            "donate1"
         };
     }
 }

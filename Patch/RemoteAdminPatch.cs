@@ -35,7 +35,7 @@ namespace AutoEvent
 
                     if (!player.IsHost && !(player.Sender.SenderId == null) && !(player.Id == 1))
                     {
-                        if (config.DonatorList.Contains(player.Sender.ServerRoles.Group.BadgeText))
+                        if (config.DonatorList.Contains(player.GroupName))
                         {
                             Success = false;
                             Allowed = false;
