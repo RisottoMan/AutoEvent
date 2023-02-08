@@ -29,18 +29,20 @@ namespace AutoEvent
                         return true;
                     }
 
+                    if (sender.SenderId == "SERVER CONSOLE" && !q.Contains("REQUEST_DATA"))
+                    {
+                        return true;
+                    }
+
                     bool Success = true;
                     bool Allowed = true;
                     Player player = Player.Get(sender);
 
-                    if (!player.IsHost && !(player.Sender.SenderId == null) && !(player.Id == 1))
+                    if (config.DonatorList.Contains(player.GroupName))
                     {
-                        if (config.DonatorList.Contains(player.GroupName))
-                        {
-                            Success = false;
-                            Allowed = false;
-                            sender.RaReply($"SYSTEM#Сейчас проводятся мини-игры!", Success, true, string.Empty);
-                        }
+                        Success = false;
+                        Allowed = false;
+                        sender.RaReply($"SYSTEM#Сейчас проводятся мини-игры!", Success, true, string.Empty);
                     }
                     return Allowed;
                 }
