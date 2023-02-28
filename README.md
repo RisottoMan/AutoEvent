@@ -10,13 +10,14 @@
 - Launch the mini-game ``ev_run [name]``, where the name can be found in ``ev_list``
 
 ### Zombie mode, the purpose of which is to infect all players.
-![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/Zombie.png)
+![](https://github.com/KoT0XleB/AutoEvent-Exiled/blob/main/Photos/Zombie.png)
 ### Jail mode, in which you need to hold events.
-![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/Jail.png)
-![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/Jail_Xmf.jpg)
+![](https://github.com/KoT0XleB/AutoEvent-Exiled/blob/main/Photos/Jail.png)
+![](https://github.com/KoT0XleB/AutoEvent-Exiled/blob/main/Photos/Jail_Xmf.jpg)
 ### Duel of players on the 35hp map from cs 1.6.
-![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/35Hp.png)
-### Im added Knifes mod and Escape but im lazy
+![](https://github.com/KoT0XleB/AutoEvent-Exiled/blob/main/Photos/35Hp.png)
+### Deathmatch and GunGame game modes on the Shipment map from COD MW.
+![](https://github.com/KoT0XleB/AutoEvent-Exiled/blob/main/Photos/Shipment.png)
 
 ### All those who helped.
 ##### Thanks to ART0022VI for a little help in fixing plugins.
