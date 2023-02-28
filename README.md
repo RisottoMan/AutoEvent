@@ -18,5 +18,11 @@
 ![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/35Hp.png)
 ### Im added Knifes mod and Escape but im lazy
 
+### All those who helped.
+##### Thanks to ART0022VI for a little help in fixing plugins.
+##### Thanks to Alexander666 for the help at the initial stage of creating the plugin.
+##### Thanks to art15 for writing the command code to run the mini-game.
+
+### Code from other developers.
 ##### Thanks for the MapEditorReborn plugin to the developer Michal78900#8196.
 ##### Thanks for the code for the music to work to the developer ced777ric#8321.
