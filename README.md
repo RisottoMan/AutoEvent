@@ -28,10 +28,8 @@
 ##### Thanks for the MapEditorReborn plugin to the developer Michal78900#8196.
 ##### Thanks for the code for the music to work to the developer ced777ric#8321.
 
-###
-##### A little about myself:
-In the past, I created a project on Qurre. Many people say that this is a copy of Exiled and like to troll, but somehow my project was able to become big thanks to it. 
-I am from Russia and in 2022 you yourself know what happened, but I made it my duty to settle the conflict between Qurre and Exiled, which I did.
+### A little about myself:
+##### In the past, I created a project on Qurre. Many people say that this is a copy of Exiled and like to troll, but somehow my project was able to become big thanks to it. I am from Russia and in 2022 you yourself know what happened, but I made it my duty to settle the conflict between Qurre and Exiled, which I did.
 In 2023, I decided to port my old plugin from Qurre to Exiled, but I had to abandon many old and new ideas, as the NW developers added a stupid fog. It really interferes with making large maps. I had to concentrate on the quality of the code and the quality of the mini-games themselves. 
 I have gone through a long path of suffering and torment, not only mental, but also physical.
 And finally the release.
