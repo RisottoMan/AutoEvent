@@ -28,6 +28,7 @@
 ##### Thanks for the MapEditorReborn plugin to the developer Michal78900#8196.
 ##### Thanks for the code for the music to work to the developer ced777ric#8321.
 
+###
 ##### A little about myself:
 In the past, I created a project on Qurre. Many people say that this is a copy of Exiled and like to troll, but somehow my project was able to become big thanks to it. 
 I am from Russia and in 2022 you yourself know what happened, but I made it my duty to settle the conflict between Qurre and Exiled, which I did.
