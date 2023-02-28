@@ -6,9 +6,9 @@
 - Plugin ``AutoEvent.dll`` move to => ``EXILED/Plugins``
 - Plugin ``MapEditorReborn.dll``  move to => ``EXILED/Plugins``
 - Music files move to => ``EXILED/Configs/Music``
-### https://github.com/KoT0XleB/AutoEvent-Exiled/tree/main/Music
+##### https://github.com/KoT0XleB/AutoEvent-Exiled/tree/main/Music
 - Maps files move to => ``EXILED/MapEditorReborn/Schematics``
-### https://github.com/KoT0XleB/AutoEvent-Exiled/tree/main/Schematics
+##### https://github.com/KoT0XleB/AutoEvent-Exiled/tree/main/Schematics
 - Launch the mini-game ``ev_run [name]``, where the name can be found in ``ev_list``
 
 ### Zombie mode, the purpose of which is to infect all players.
