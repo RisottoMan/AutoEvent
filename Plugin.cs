@@ -3,6 +3,7 @@ using System.IO;
 using AutoEvent.Interfaces;
 using Exiled.API.Features;
 using HarmonyLib;
+using RemoteAdmin;
 
 namespace AutoEvent
 {

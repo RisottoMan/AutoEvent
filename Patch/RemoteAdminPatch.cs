@@ -14,7 +14,7 @@ namespace AutoEvent
         public static Config config = AutoEvent.Singleton.Config;
 
         [HarmonyPatch(typeof(CommandProcessor), nameof(CommandProcessor.ProcessQuery))]
-        static class RemoteAdmin
+        public static class RemoteAdmin
         {
             static bool Prefix(string q, CommandSender sender)
             {

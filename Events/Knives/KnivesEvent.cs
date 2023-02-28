@@ -13,7 +13,7 @@ namespace AutoEvent.Events
 {
     internal class KnivesEvent : IEvent
     {
-        public string Name => "Ножики";
+        public string Name => "Ножики Смерти";
         public string Description => "Игроки на ножах против друг друга на карте 35hp из cs 1.6";
         public string Color => "FFFF00";
         public string CommandName => "knife";
@@ -38,22 +38,22 @@ namespace AutoEvent.Events
         public void OnEventStarted()
         {
             EventTime = new TimeSpan(0, 0, 0);
-            GameMap = Extensions.LoadMap("35hp_2", new Vector3(115.5f, 1030f, -43.5f), new Quaternion(0, 0, 0, 0), new Vector3(1, 1, 1));
-            Extensions.PlayAudio("Knife.ogg", 10, true, "Ножики");
+            GameMap = Extensions.LoadMap("35hp_2", new Vector3(110f, 1030f, -43.5f), new Quaternion(0, 0, 0, 0), new Vector3(1, 1, 1));
+            Extensions.PlayAudio("Knife.ogg", 10, true, "Ножики Смерти");
             var count = 0;
             foreach (Player player in Player.List)
             {
                 if (count % 2 == 0)
                 {
                     player.Role.Set(RoleTypeId.NtfCaptain);
-                    player.Position = GameMap.Position + new Vector3(Random.Range(12, 19), 5, Random.Range(-9, 9));
+                    player.Position = GameMap.Position + new Vector3(Random.Range(20, 30), 7, Random.Range(-16, 16));
                 }
                 else
                 {
                     player.Role.Set(RoleTypeId.ChaosRepressor);
-                    player.Position = GameMap.Position + new Vector3(Random.Range(-18, -11), 5, Random.Range(-9, 9));
+                    player.Position = GameMap.Position + new Vector3(Random.Range(-32, -20), 7, Random.Range(-16, 16));
                 }
-                player.ResetInventory(new List<ItemType> { ItemType.Jailbird, ItemType.Jailbird });
+                player.ResetInventory(new List<ItemType> { ItemType.Jailbird });
                 player.EnableEffect<CustomPlayerEffects.Ensnared>(10);
                 count++;
             }
@@ -81,12 +81,12 @@ namespace AutoEvent.Events
             }
             if (Player.List.Count(r => r.Role.Team == Team.FoundationForces) == 0)
             {
-                Extensions.Broadcast($"<color=#D71868><b><i>НОЖИКИ</i></b></color>\n" +
+                Extensions.Broadcast($"<color=#D71868><b><i>НОЖИКИ СМЕРТИ</i></b></color>\n" +
                 $"<color=yellow>ПОБЕДИТЕЛИ: <color=green>ХАОС</color></color>", 10);
             }
             else if (Player.List.Count(r => r.Role.Team == Team.ChaosInsurgency) == 0)
             {
-                Extensions.Broadcast($"<color=#D71868><b><i>НОЖИКИ</i></b></color>\n" +
+                Extensions.Broadcast($"<color=#D71868><b><i>НОЖИКИ СМЕРТИ</i></b></color>\n" +
                 $"<color=yellow>ПОБЕДИТЕЛИ: <color=blue>МОГ</color></color>", 10);
             }
             OnStop();

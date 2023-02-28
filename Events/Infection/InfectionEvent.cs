@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace AutoEvent.Events
 {
@@ -43,7 +44,11 @@ namespace AutoEvent.Events
             // Создание карты
             GameMap = Extensions.LoadMap("Zombie", new Vector3(115.5f, 1030f, -43.5f), new Quaternion(0, 0, 0, 0), new Vector3(1, 1, 1));
             // Запуск музыки
-            Extensions.PlayAudio("Zombie.ogg", 15, true, "Заражение");
+            switch(Random.Range(0, 1))
+            {
+                case 0: Extensions.PlayAudio("Zombie.ogg", 15, true, "Заражение"); break;
+                case 1: Extensions.PlayAudio("Zombie2.ogg", 15, true, "Заражение"); break;
+            }
             // Телепорт игроков
             foreach(Player player in Player.List)
             {
