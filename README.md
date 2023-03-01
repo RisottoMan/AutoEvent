@@ -5,6 +5,9 @@
 ## Instruction manual:
 - Plugin ``AutoEvent.dll`` move to => ``EXILED/Plugins``
 - Plugin ``MapEditorReborn.dll``  move to => ``EXILED/Plugins``
+##### https://github.com/Michal78900/MapEditorReborn
+- Plugin ``SCPSLAudioApi.dll``  move to => ``EXILED/Plugins/dependencies``
+##### https://github.com/CedModV2/SCPSLAudioApi
 - Music files move to => ``EXILED/Configs/Music``
 ##### https://github.com/KoT0XleB/AutoEvent-Exiled/tree/main/Music
 - Maps files move to => ``EXILED/MapEditorReborn/Schematics``
