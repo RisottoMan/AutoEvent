@@ -7,7 +7,7 @@ using RemoteAdmin;
 
 namespace AutoEvent
 {
-    public class AutoEvent : Plugin<Config>
+    public class AutoEvent : Plugin<Config, Translation>
     {
         public override string Name => "Auto_Event";
         public override string Author => "Ported to Exiled [by KoToXleB]";

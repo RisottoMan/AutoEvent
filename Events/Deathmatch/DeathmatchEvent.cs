@@ -20,8 +20,8 @@ namespace AutoEvent.Events
 {
     internal class DeathmatchEvent : IEvent
     {
-        public string Name => "Территория Смерти";
-        public string Description => "Крутой deathmatch из mw19";
+        public string Name => AutoEvent.Singleton.Translation.DeathmatchName;
+        public string Description => AutoEvent.Singleton.Translation.DeathmatchDescription;
         public string Color => "FFFF00";
         public string CommandName => "deathmatch";
         public TimeSpan EventTime { get; set; }
@@ -29,8 +29,7 @@ namespace AutoEvent.Events
         public static List<Vector3> Spawners { get; set; } = new List<Vector3>();
         public static int MtfKills;
         public static int ChaosKills;
-        public int NeedKills;
-
+        public static int NeedKills;
         public void OnStart()
         {
             Exiled.Events.Handlers.Player.Verified += DeathmatchHandler.OnJoin;
@@ -59,7 +58,7 @@ namespace AutoEvent.Events
         {
             EventTime = new TimeSpan(0, 0, 0);
             GameMap = Extensions.LoadMap("Shipment", new Vector3(120f, 1020f, -43.5f), new Quaternion(0, 0, 0, 0), new Vector3(1, 1, 1));
-            Extensions.PlayAudio("ClassicMusic.ogg", 3, true, "Deathmatch");
+            Extensions.PlayAudio("ClassicMusic.ogg", 3, true, Name);
 
             MtfKills = 0;
             ChaosKills = 0;
@@ -68,7 +67,6 @@ namespace AutoEvent.Events
             {
                 NeedKills += 15;
             }
-
             var count = 0;
             foreach (Player player in Player.List)
             {
@@ -94,6 +92,7 @@ namespace AutoEvent.Events
         }
         public IEnumerator<float> OnEventRunning()
         {
+            var trans = AutoEvent.Singleton.Translation;
             for (int time = 10; time > 0; time--)
             {
                 Extensions.Broadcast($"<size=100><color=red>{time}</color></size>", 1);
@@ -112,25 +111,17 @@ namespace AutoEvent.Events
                     if (ChaosKills >= i) chaosString = "■" + chaosString;
                     else chaosString = "□" + chaosString;
                 }
-                Extensions.Broadcast($"<color=#D71868><b><i>Территория Смерти</i></b></color>\n" +
-                    $"<b><color=yellow><color=#42AAFF> {MtfKills} {mtfString}> </color> <color=red>|</color> <color=green> <{chaosString} {ChaosKills}</color></color></b>", 1);
+                Extensions.Broadcast(trans.DeathmatchCycle.Replace("{name}", Name).Replace("{mtftext}", $"{MtfKills} {mtfString}").Replace("{chaostext}", $"{chaosString} {ChaosKills}"), 1);
 
                 yield return Timing.WaitForSeconds(1f);
             }
             if (MtfKills == NeedKills)
             {
-                Extensions.Broadcast($"<color=#D71868><b><i>Территория Смерти</i></b></color>\n" +
-                    $"<color=yellow>ПОБЕДИТЕЛИ: <color=green>ХАОС</color></color>", 10);
-            }
-            else if (ChaosKills == NeedKills)
-            {
-                Extensions.Broadcast($"<color=#D71868><b><i>Территория Смерти</i></b></color>\n" +
-                    $"<color=yellow>ПОБЕДИТЕЛИ: <color=#42AAFF>МОГ</color></color>", 10);
+                Extensions.Broadcast(trans.DeathmatchMtfWin.Replace("{name}", Name), 10);
             }
             else
             {
-                Extensions.Broadcast($"<color=#D71868><b><i>Территория Смерти</i></b></color>\n" +
-                    $"<color=yellow>Игра была приостановлена Администратором.</color>", 10);
+                Extensions.Broadcast(trans.DeathmatchChaosWin.Replace("{name}", Name), 10);
             }
             OnStop();
             yield break;

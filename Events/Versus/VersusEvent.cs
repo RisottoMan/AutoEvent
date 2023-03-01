@@ -14,8 +14,8 @@ namespace AutoEvent.Events
 {
     internal class VersusEvent : IEvent
     {
-        public string Name => "Петушиные Бои";
-        public string Description => "Дуель игроков на карте 35hp из cs 1.6";
+        public string Name => AutoEvent.Singleton.Translation.VersusName;
+        public string Description => AutoEvent.Singleton.Translation.VersusDescription;
         public string Color => "FFFF00";
         public string CommandName => "versus";
         public SchematicObject GameMap { get; set; }
@@ -46,7 +46,7 @@ namespace AutoEvent.Events
             Scientist = null;
             ClassD = null;
             GameMap = Extensions.LoadMap("35Hp", new Vector3(127.460f, 1016.707f, -43.68f), new Quaternion(0, 0, 0, 0), new Vector3(1, 1, 1));
-            Extensions.PlayAudio("Knife.ogg", 10, true, "Петушиные Бои");
+            Extensions.PlayAudio("Knife.ogg", 10, true, Name);
 
             var count = 0;
             foreach (Player player in Player.List)
@@ -68,12 +68,12 @@ namespace AutoEvent.Events
         }
         public IEnumerator<float> OnEventRunning()
         {
+            var trans = AutoEvent.Singleton.Translation;
             for (int time = 10; time > 0; time--)
             {
                 Extensions.Broadcast($"<size=100><color=red>{time}</color></size>", 1);
                 yield return Timing.WaitForSeconds(1f);
             }
-
             while (Player.List.Count(r => r.Role == RoleTypeId.Scientist) > 0 && Player.List.Count(r => r.Role == RoleTypeId.ClassD) > 0)
             {
                 foreach (Player player in Player.List)
@@ -97,35 +97,29 @@ namespace AutoEvent.Events
                 }
                 if (ClassD == null && Scientist == null)
                 {
-                    Extensions.Broadcast($"<color=#D71868><b><i>Петушиные Бои</i></b></color>\n" +
-                    $"Зайдите внутрь арены, чтобы подраться друг с другом!", 1);
+                    Extensions.Broadcast(trans.VersusPlayersNull.Replace("{name}", Name), 1);
                 }
                 else if (ClassD == null)
                 {
-                    Extensions.Broadcast($"<color=#D71868><b><i>Петушиные Бои</i></b></color>\n" +
-                    $"В живых остался игрок <color=yellow>{Scientist.Nickname}</color>", 1);
+                    Extensions.Broadcast(trans.VersusClassDNull.Replace("{name}", Name).Replace("{scientist}", Scientist.Nickname), 1);
                 }
                 else if (Scientist == null)
                 {
-                    Extensions.Broadcast($"<color=#D71868><b><i>Петушиные Бои</i></b></color>\n" +
-                    $"В живых остался игрок <color=orange>{ClassD.Nickname}</color>", 1);
+                    Extensions.Broadcast(trans.VersusScientistNull.Replace("{name}", Name).Replace("{classd}", ClassD.Nickname), 1);
                 }
                 else
                 {
-                    Extensions.Broadcast($"<color=#D71868><b><i>Петушиные Бои</i></b></color>\n" +
-                    $"<color=yellow><color=yellow>{Scientist.Nickname}</color> <color=red>VS</color> <color=orange>{ClassD.Nickname}</color></color>", 1);
+                    Extensions.Broadcast(trans.VersusPlayersDuel.Replace("{name}", Name).Replace("{scientist}", Scientist.Nickname).Replace("{classd}", ClassD.Nickname), 1);
                 }
                 yield return Timing.WaitForSeconds(0.3f);
             }
             if (Player.List.Count(r => r.Role == RoleTypeId.Scientist) == 0)
             {
-                Extensions.Broadcast($"<color=#D71868><b><i>Петушиные Бои</i></b></color>\n" +
-                $"<color=yellow>ПОБЕДИТЕЛИ: <color=red>Д КЛАСС</color></color>", 10);
+                Extensions.Broadcast(trans.VersusClassDWin.Replace("{name}", Name), 10);
             }
             else if (Player.List.Count(r => r.Role == RoleTypeId.ClassD) == 0)
             {
-                Extensions.Broadcast($"<color=#D71868><b><i>Петушиные Бои</i></b></color>\n" +
-                $"<color=yellow>ПОБЕДИТЕЛИ: <color=red>УЧЕНЫЕ</color></color>", 10);
+                Extensions.Broadcast(trans.VersusScientistWin.Replace("{name}", Name), 10);
             }
             OnStop();
             yield break;

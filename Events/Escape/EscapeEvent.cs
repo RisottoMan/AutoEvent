@@ -11,8 +11,8 @@ namespace AutoEvent.Events
 {
     internal class EscapeEvent : IEvent
     {
-        public string Name => "Атомный Побег";
-        public string Description => "Сбегите с комплекса Печеньками на сверхзвуковой скорости!";
+        public string Name => AutoEvent.Singleton.Translation.EscapeName;
+        public string Description => AutoEvent.Singleton.Translation.EscapeDescription;
         public string Color => "FFFF00";
         public string CommandName => "escape";
         public static TimeSpan EventTime { get; set; }
@@ -35,16 +35,15 @@ namespace AutoEvent.Events
 
         public void OnEventStarted()
         {
-            // Делаем всех д классами
+            EventTime = new TimeSpan(0, 0, 0);
             Player.List.ToList().ForEach(player =>
             {
                 player.Role.Set(RoleTypeId.Scp173, SpawnReason.None, RoleSpawnFlags.All);
-                player.EnableEffect(EffectType.Ensnared);
+                player.EnableEffect(EffectType.Ensnared, 10);
             });
             // we need Running in the 90's and Vicky Vale - Dancing lmao :D
-            Extensions.PlayAudio("Escape.ogg", 25, true, "Побег ДЦП");
-
-            // Запуск боеголовки
+            Extensions.PlayAudio("Escape.ogg", 25, true, Name);
+            // Warhead started
             Warhead.DetonationTimer = 120f;
             Warhead.Start();
             Warhead.IsLocked = true;
@@ -53,35 +52,27 @@ namespace AutoEvent.Events
         }
         public IEnumerator<float> OnEventRunning()
         {
-            // Обнуление таймера
-            EventTime = new TimeSpan(0, 0, 0);
-            // Отсчет обратного времени
+            var trans = AutoEvent.Singleton.Translation;
+            // Countdown before the start of the game
             for (int time = 10; time > 0; time--)
             {
-                Map.ClearBroadcasts();
-                Map.Broadcast(new Exiled.API.Features.Broadcast($"Атомный Побег\n" +
-                    $"Успейте сбежать с комплекса пока он не взоврался!\n" +
-                    $"<color=red>До начала побега: {(int)time} секунд</color>", 1));
+                Extensions.Broadcast(trans.EscapeBeforeStart.Replace("{name}", Name).Replace("{time}", ((int)time).ToString()), 1);
                 yield return Timing.WaitForSeconds(1f);
                 EventTime += TimeSpan.FromSeconds(1f);
             }
-            // Выключаем остановку
-            Player.List.ToList().ForEach(player => player.DisableAllEffects());
             var explosionTime = 80;
-            // Отсчет времени
-            while (EventTime.TotalSeconds != explosionTime)
+            // Counting down
+            while (EventTime.TotalSeconds != explosionTime && Player.List.Count(r => r.IsAlive) > 0)
             {
-                Map.ClearBroadcasts();
-                Map.Broadcast(new Exiled.API.Features.Broadcast($"Атомный Побег\n" +
-                    $"До взрыва: <color=red>{explosionTime - EventTime.TotalSeconds}</color> секунд", 1));
+                Extensions.Broadcast(trans.EscapeCycle.Replace("{name}", Name).Replace("{time}", (explosionTime - EventTime.TotalSeconds).ToString()), 1);
                 yield return Timing.WaitForSeconds(1f);
                 EventTime += TimeSpan.FromSeconds(1f);
             }
-
+            // Disable Warhead
             Warhead.IsLocked = false;
             Warhead.Stop();
-
-            foreach(Player player in Player.List)
+            // We pretend that the warhead exploded so that we can conduct this mini-game many times.
+            foreach (Player player in Player.List)
             {
                 player.EnableEffect<CustomPlayerEffects.Flashed>(1);
                 if (player.Position.y < 990f)
@@ -89,15 +80,12 @@ namespace AutoEvent.Events
                     player.Kill(DamageType.Warhead);
                 }
             }
-
+            Extensions.Broadcast(trans.EscapeEnd.Replace("{name}", Name), 10);
             OnStop();
             yield break;
         }
         public void EventEnd()
         {
-            Map.ClearBroadcasts();
-            Map.Broadcast(new Exiled.API.Features.Broadcast($"Атомный Побег\n" +
-                $"<color=red>ПОБЕДА SCP</color>", 10));
             Extensions.CleanUpAll();
             Extensions.TeleportEnd();
             Extensions.StopAudio();

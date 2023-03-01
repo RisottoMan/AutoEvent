@@ -20,8 +20,8 @@ namespace AutoEvent.Events
 {
     internal class GunGameEvent : IEvent
     {
-        public string Name => "Быстрые Руки";
-        public string Description => "Оружие меняется как только игрок делает убийство.";
+        public string Name => AutoEvent.Singleton.Translation.GunGameName;
+        public string Description => AutoEvent.Singleton.Translation.GunGameDescription;
         public string Color => "FFFF00";
         public string CommandName => "gungame";
         public TimeSpan EventTime { get; set; }
@@ -61,7 +61,7 @@ namespace AutoEvent.Events
             Winner = null;
             PlayerStats = new Dictionary<Player, Stats>();
             GameMap = Extensions.LoadMap("Shipment", new Vector3(120f, 1020f, -43.5f), new Quaternion(0, 0, 0, 0), new Vector3(1, 1, 1));
-            Extensions.PlayAudio("ClassicMusic.ogg", 3, true, "Быстрые Руки");
+            Extensions.PlayAudio("ClassicMusic.ogg", 3, true, Name);
 
             var count = 0;
             foreach (Player player in Player.List)
@@ -84,6 +84,7 @@ namespace AutoEvent.Events
         }
         public IEnumerator<float> OnEventRunning()
         {
+            var trans = AutoEvent.Singleton.Translation;
             for (int time = 10; time > 0; time--)
             {
                 Extensions.Broadcast($"<size=100><color=red>{time}</color></size>", 1);
@@ -102,34 +103,24 @@ namespace AutoEvent.Events
                         Winner = pl;
                     }
                     pl.ClearBroadcasts();
-                    pl.Broadcast(new Exiled.API.Features.Broadcast($"<color=#D71868><b><i>Быстрые Руки</i></b></color>\n" +
-                        $"<b><color=yellow><color=#D71868>{stats.level}</color> LVL <color=#D71868>||</color> Надо <color=#D71868>{ 2 - stats.kill}</color> убийства</color></b>", 1));
+                    pl.Broadcast(1, trans.GunGameCycle.Replace("{name}", Name).Replace("{level}", $"{stats.level}").Replace("{kills}", $"{2 - stats.kill}"));
                 }
                 yield return Timing.WaitForSeconds(1f);
             }
             if (Winner != null)
             {
-                Extensions.Broadcast($"<color=#D71868><b><i>Быстрые Руки</i></b></color>\n" +
-                    $"<color=yellow>Победитель игры: <color=green>{Winner.Nickname}</color></color>", 10);
+                Extensions.Broadcast(trans.GunGameWinner.Replace("{name}", Name).Replace("{winner}", Winner.Nickname), 10);
             }
-            else
-            {
-                Extensions.Broadcast($"<color=#D71868><b><i>Быстрые Руки</i></b></color>\n" +
-                    $"<color=yellow>Игра была приостановлена Администратором.</color>", 10);
-            }
-
             foreach(Player pl in Player.List)
             {
                 pl.ClearInventory();
             }
-
             OnStop();
             yield break;
         }
         public void EventEnd()
         {
             Server.FriendlyFire = false;
-
             Extensions.CleanUpAll();
             Extensions.TeleportEnd();
             Extensions.UnLoadMap(GameMap);
