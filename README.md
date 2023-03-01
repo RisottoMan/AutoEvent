@@ -12,7 +12,7 @@
 ##### https://github.com/KoT0XleB/AutoEvent-Exiled/tree/main/Music
 - Maps files move to => ``EXILED/MapEditorReborn/Schematics``
 ##### https://github.com/KoT0XleB/AutoEvent-Exiled/tree/main/Schematics
-- You can change the text to your language in {port}-translations.yml
+- You can change the text to your language in ``{port}-translations.yml``
 - Launch the mini-game ``ev_run [name]``, where the name can be found in ``ev_list``
 
 ### Zombie mode, the purpose of which is to infect all players.
