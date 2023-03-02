@@ -11,7 +11,7 @@ namespace AutoEvent
     {
         public override string Name => "AutoEvent";
         public override string Author => "Ported to Exiled [by KoToXleB]";
-        public override Version Version => new Version(1, 0, 2);
+        public override Version Version => new Version(1, 0, 3);
         public static IEvent ActiveEvent = null;
         public static AutoEvent Singleton;
         public static Harmony HarmonyPatch;
