@@ -9,9 +9,9 @@ namespace AutoEvent
 {
     public class AutoEvent : Plugin<Config, Translation>
     {
-        public override string Name => "Auto_Event";
+        public override string Name => "AutoEvent";
         public override string Author => "Ported to Exiled [by KoToXleB]";
-        public override Version Version => new Version(4, 0, 0);
+        public override Version Version => new Version(1, 0, 2);
         public static IEvent ActiveEvent = null;
         public static AutoEvent Singleton;
         public static Harmony HarmonyPatch;
