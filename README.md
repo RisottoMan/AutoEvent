@@ -3,9 +3,8 @@
 ## RUS: Позволяет запускать автоматические Мини-Игры в игре.
 
 ## Instruction manual:
-- Plugin ``AutoEvent.dll`` move to => ``EXILED/Plugins``
-- Plugin ``MapEditorReborn.dll``  move to => ``EXILED/Plugins``
-##### https://github.com/Michal78900/MapEditorReborn (updates in discord)
+- Plugin [``AutoEvent.dll``](https://github.com/KoT0XleB/AutoEvent-Exiled/releases/tag/1.0.2) move to => ``EXILED/Plugins``
+- Plugin [``MapEditorReborn.dll``](https://github.com/Michal78900/MapEditorReborn)  move to => ``EXILED/Plugins``
 - Plugin [SCPSLAudioApi](https://github.com/CedModV2/SCPSLAudioApi) ``SCPSLAudioApi.dll``  move to => ``EXILED/Plugins/dependencies``
 - [Music](https://github.com/KoT0XleB/AutoEvent-Exiled/tree/main/Music) files move to => ``EXILED/Configs/Music``
 - [Maps](https://github.com/KoT0XleB/AutoEvent-Exiled/tree/main/Schematics) files move to => ``EXILED/MapEditorReborn/Schematics``
