@@ -16,7 +16,7 @@ namespace AutoEvent.Commands
         // Therefore, the easiest thing to do for those who will write their own mini-game is to come up with good logic.
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            if (!((CommandSender)sender).CheckPermission("autoevent"))
+            if (!((CommandSender)sender).CheckPermission("ev.stop"))
             {
                 response = "You do not have permission to use this command";
                 return false;

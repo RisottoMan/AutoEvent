@@ -17,7 +17,7 @@ namespace AutoEvent.Commands
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            if (!((CommandSender)sender).CheckPermission("autoevent"))
+            if (!((CommandSender)sender).CheckPermission("ev.run"))
             {
                 response = "You do not have permission to use this command";
                 return false;
