@@ -1,12 +1,10 @@
 ﻿using AutoEvent.Interfaces;
 using CommandSystem;
-using Exiled.API.Features;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
+using Exiled.API.Features;
+using Exiled.Permissions.Extensions;
 
 namespace AutoEvent.Commands
 {
@@ -14,27 +12,30 @@ namespace AutoEvent.Commands
     internal class RunEvent : ICommand
     {
         public string Command => "ev_run";
-
+        public string Description => "Run the event, takes on 1 argument - the command name of the event.";
         public string[] Aliases => null;
-
-        public string Description => "Запускает ивент, берёт на себя 1 аргумент - командное название ивента.";
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
+            if (!((CommandSender)sender).CheckPermission("autoevent"))
+            {
+                response = "You do not have permission to use this command";
+                return false;
+            }
             Player admin = Player.Get((sender as CommandSender).SenderId);
             if (!Round.IsStarted)
             {
-                response = $"Раунд ещё не начался!";
+                response = "The round has not started!";
                 return false;
             }
             if (AutoEvent.ActiveEvent != null)
             {
-                response = $"Мини-Игра уже проводится!";
+                response = "The mini-game is already running!";
                 return false;
             }
             if (arguments.Count != 1)
             {
-                response = $"Необходим только 1 аргумент - командное название ивента!";
+                response = "Only 1 argument is needed - the command name of the event!";
                 return false;
             }
             var arr = GetTypesInNamespace(Assembly.GetExecutingAssembly(), "AutoEvent.Events");
@@ -50,24 +51,24 @@ namespace AutoEvent.Commands
                             var eng = type.GetMethod("OnStart");
                             if (eng != null)
                             {
-                                sender.Respond("Пытаюсь запустить ивент, OnStart не null...");
+                                sender.Respond("Trying to run an event, OnStart is not null...");
                                 eng.Invoke(Activator.CreateInstance(type), null);
                                 Round.IsLocked = true;
                                 AutoEvent.ActiveEvent = (IEvent)ev;
-                                response = "Ивент найден, запускаю.";
+                                response = "The event is found, run it.";
                                 return true;
                             }
-                            response = "eng оказался нуллом. Каким-то образом, класс который был выбран не имеет в себе OnStart()";
+                            response = "Somehow, the class that was selected does not have OnStart() in it";
                             return false;
                         }
                     }
                     catch (Exception ex)
                     {
-                        response = $"Произошла ошибка при запуске ивента. Ошибка: {ex.Message}";
+                        response = $"An error occurred when running the event. Error: {ex.Message}";
                     }
                 }
             }
-            response = "Ивент не найден, ничего не произошло.";
+            response = "The event was not found, nothing happened.";
             return false;
         }
 

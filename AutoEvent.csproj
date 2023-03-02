@@ -68,8 +68,9 @@
     <Reference Include="Exiled.Updater, Version=3.1.1.0, Culture=neutral, processorArchitecture=AMD64">
       <HintPath>packages\EXILED.6.0.0-beta.21\lib\net48\Exiled.Updater.dll</HintPath>
     </Reference>
-    <Reference Include="MapEditorReborn">
-      <HintPath>..\..\Рабочий стол\MapEditorReborn.dll</HintPath>
+    <Reference Include="MapEditorReborn, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Рабочий стол\файлы\MapEditorReborn.dll</HintPath>
     </Reference>
     <Reference Include="Mirror">
       <HintPath>..\..\Рабочий стол\файлы\Mirror.dll</HintPath>
@@ -80,11 +81,9 @@
     <Reference Include="PluginAPI, Version=12.0.0.0, Culture=neutral, processorArchitecture=AMD64">
       <HintPath>packages\EXILED.6.0.0-beta.21\lib\net48\PluginAPI.dll</HintPath>
     </Reference>
-    <Reference Include="SchematicUnity">
-      <HintPath>..\..\Рабочий стол\Хлеб ноябрь\Qurre\Plugins\SchematicUnity.dll</HintPath>
-    </Reference>
-    <Reference Include="SCPSLAudioApi">
-      <HintPath>..\..\Рабочий стол\SCPSLAudioApi.dll</HintPath>
+    <Reference Include="SCPSLAudioApi, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Рабочий стол\файлы\SCPSLAudioApi.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="UnityEngine">
@@ -102,6 +101,7 @@
     <Compile Include="API\FakeConnection.cs" />
     <Compile Include="Commands\ListEvents.cs" />
     <Compile Include="Commands\RunEvent.cs" />
+    <Compile Include="Commands\StopEvent.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="Events\Deathmatch\DeathmatchClass.cs" />
     <Compile Include="Events\Deathmatch\DeathmatchEvent.cs" />
