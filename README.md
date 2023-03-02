@@ -8,7 +8,7 @@
 - Plugin [``SCPSLAudioApi.dll``](https://github.com/CedModV2/SCPSLAudioApi/releases/latest)  move to => ``EXILED/Plugins/dependencies``
 - [Music](https://github.com/KoT0XleB/AutoEvent-Exiled/tree/main/Music) files move to => ``EXILED/Configs/Music``
 - [Maps](https://github.com/KoT0XleB/AutoEvent-Exiled/tree/main/Schematics) files move to => ``EXILED/MapEditorReborn/Schematics``
-- To run commands, you need to give ``autoevent`` permission in ``permissions.yml``
+- To run commands, you need to give `` - ev.*`` permission in ``permissions.yml``
 - You can change the text to your language in ``{port}-translations.yml``
 - Launch the mini-game ``ev_run [name]``, where the name can be found in ``ev_list``
 
