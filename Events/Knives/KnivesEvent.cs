@@ -72,7 +72,7 @@ namespace AutoEvent.Events
             {
                 string mtfCount = Player.List.Count(r => r.Role.Team == Team.FoundationForces).ToString();
                 string chaosCount = Player.List.Count(r => r.Role.Team == Team.ChaosInsurgency).ToString();
-                Extensions.Broadcast(trans.KnivesCycle.Replace("{name}", Name).Replace("mtfcount", mtfCount).Replace("chaoscount", chaosCount), 1);
+                Extensions.Broadcast(trans.KnivesCycle.Replace("{name}", Name).Replace("{mtfcount}", mtfCount).Replace("{chaoscount}", chaosCount), 1);
 
                 yield return Timing.WaitForSeconds(1f);
             }

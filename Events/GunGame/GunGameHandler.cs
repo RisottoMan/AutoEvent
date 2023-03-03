@@ -57,6 +57,7 @@ namespace AutoEvent.Events
             if (ev.Player != null)
             {
                 ev.Player.Role.Set(GunGameRandom.GetRandomRole());
+                ev.Player.IsSpawnProtected = false;
                 ev.Player.ClearInventory();
                 ev.Player.CurrentItem = Item.Create(GunGameGuns.GunForLevel[PlayerStats[ev.Player].level], ev.Player);
                 ev.Player.Position = GameMap.Position + GunGameRandom.GetRandomPosition();

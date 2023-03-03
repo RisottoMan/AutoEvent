@@ -75,7 +75,7 @@ namespace AutoEvent.Events
             foreach (Player player in Player.List)
             {
                 player.EnableEffect<CustomPlayerEffects.Flashed>(1);
-                if (player.Position.y < 990f)
+                if (player.Position.y < 980f)
                 {
                     player.Kill(DamageType.Warhead);
                 }
