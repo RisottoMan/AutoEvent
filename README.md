@@ -20,18 +20,20 @@
 ##### Escape from the facility behind SCP-173 at supersonic speed!
 ##### We need to escape from the complex behind SCP-173 before it explodes. There is music in the background that adds to the anxiety.
 ![](https://github.com/KoT0XleB/AutoEvent-Exiled/blob/main/Photos/Escape.png)
-### Jail mode, in which you need to hold events.
+### Simon's Prison [jail]
 ##### You play as a Jailer and have to conduct games for Prisoners, for example, get into parkour or Simon says.
 ##### This mini-game requires an understanding of how to conduct the Jail mode, which is why I find it difficult.
 ![](https://github.com/KoT0XleB/AutoEvent-Exiled/blob/main/Photos/Jail.png)
-### Duel of players on the 35hp map from cs 1.6.
+### Cock Fights [versus]
 ##### The players are divided into teams. There is a box on the map in which members of different teams duel. To participate, you need to go through the door.
 ![](https://github.com/KoT0XleB/AutoEvent-Exiled/blob/main/Photos/Duel.png)
-### Deathmatch on the Shipment map from COD MW.
-##### Players are divided into teams and they need to kill players to become a winner.
-##### A small closed map with a lot of spawns on it, so the gameplay is cheerful.
+### Knives of Death [knife]
+##### The battle of the teams on knives.
+![](https://github.com/KoT0XleB/AutoEvent-Exiled/blob/main/Photos/Knife.png)
+### Territory of Death or Deathmatch [deathmatch]
+##### Players are divided into teams and they need to kill players to become a winner. A small closed map with a lot of spawns on it, so the gameplay is cheerful.
 ![](https://github.com/KoT0XleB/AutoEvent-Exiled/blob/main/Photos/Deathmatch.png)
-### GunGame on the Shipment map from COD MW.
+### Quick Hands or GunGame [gungame]
 ##### Every man for himself. Each player starts with a pistol and gradually finishes with big guns. In the end, you have to kill the players with a bat.
 ##### A small closed map with a lot of spawns on it, so the gameplay is cheerful.
 ![](https://github.com/KoT0XleB/AutoEvent-Exiled/blob/main/Photos/GunGame.png)
