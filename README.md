@@ -29,9 +29,11 @@
 ![](https://github.com/KoT0XleB/AutoEvent-Exiled/blob/main/Photos/Duel.png)
 ### Knives of Death [knife]
 ##### The battle of the teams on knives.
+##### It's very simple! The team that remains last survives.
 ![](https://github.com/KoT0XleB/AutoEvent-Exiled/blob/main/Photos/Knife.png)
 ### Territory of Death or Deathmatch [deathmatch]
-##### Players are divided into teams and they need to kill players to become a winner. A small closed map with a lot of spawns on it, so the gameplay is cheerful.
+##### Players are divided into teams and they need to kill players to become a winner.
+##### A small closed map with a lot of spawns on it, so the gameplay is cheerful.
 ![](https://github.com/KoT0XleB/AutoEvent-Exiled/blob/main/Photos/Deathmatch.png)
 ### Quick Hands or GunGame [gungame]
 ##### Every man for himself. Each player starts with a pistol and gradually finishes with big guns. In the end, you have to kill the players with a bat.
