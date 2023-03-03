@@ -11,7 +11,7 @@
 - To run commands, you need to give `` - ev.*`` permission in ``permissions.yml``
 - You can change the text to your language in ``{port}-translations.yml``
 - Launch the mini-game ``ev_run [name]``, where the name can be found in ``ev_list``
-
+## I will introduce you to the Mini-Games:
 ### Zombie Infection [zombie]
 ##### Zombie mode, the purpose of which is to infect all players. 
 ##### It's a pretty nice map, where it's nice to run away from zombies, but it's easy to get infected if you're careless.
