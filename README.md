@@ -25,7 +25,8 @@
 ##### This mini-game requires an understanding of how to conduct the Jail mode, which is why I find it difficult.
 ![](https://github.com/KoT0XleB/AutoEvent-Exiled/blob/main/Photos/Jail.png)
 ### Cock Fights [versus]
-##### The players are divided into teams. There is a box on the map in which members of different teams duel. To participate, you need to go through the door.
+##### The players are divided into teams. There is a box on the map in which members of different teams duel.
+##### To participate, you need to go through the door.
 ![](https://github.com/KoT0XleB/AutoEvent-Exiled/blob/main/Photos/Duel.png)
 ### Knives of Death [knife]
 ##### The battle of the teams on knives.
