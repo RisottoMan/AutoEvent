@@ -34,7 +34,7 @@
 ### GunGame on the Shipment map from COD MW.
 ##### Every man for himself. Each player starts with a pistol and gradually finishes with big guns. In the end, you have to kill the players with a bat.
 ##### A small closed map with a lot of spawns on it, so the gameplay is cheerful.
-![](https://github.com/KoT0XleB/AutoEvent-Exiled/blob/main/Photos/Gugname.png)
+![](https://github.com/KoT0XleB/AutoEvent-Exiled/blob/main/Photos/GunGame.png)
 
 ### All those who helped.
 ##### Thanks to ART0022VI for a little help in fixing plugins.
