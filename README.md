@@ -15,6 +15,7 @@
 ### Zombie mode, the purpose of which is to infect all players.
 ![](https://github.com/KoT0XleB/AutoEvent-Exiled/blob/main/Photos/Zombie.png)
 ### Jail mode, in which you need to hold events.
+##### This mini-game requires an understanding of how to conduct the Jail mode, which is why I find it difficult. Read how to conduct games from CS 1.6 or CS GO.
 ![](https://github.com/KoT0XleB/AutoEvent-Exiled/blob/main/Photos/Jail.png)
 ![](https://github.com/KoT0XleB/AutoEvent-Exiled/blob/main/Photos/Jail_Xmf.jpg)
 ### Duel of players on the 35hp map from cs 1.6.
