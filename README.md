@@ -12,16 +12,29 @@
 - You can change the text to your language in ``{port}-translations.yml``
 - Launch the mini-game ``ev_run [name]``, where the name can be found in ``ev_list``
 
-### Zombie mode, the purpose of which is to infect all players.
+### Zombie Infection [zombie]
+##### Zombie mode, the purpose of which is to infect all players. 
+##### It's a pretty nice map, where it's nice to run away from zombies, but it's easy to get infected if you're careless.
 ![](https://github.com/KoT0XleB/AutoEvent-Exiled/blob/main/Photos/Zombie.png)
+### Atomic Escape [escape]
+##### Escape from the facility behind SCP-173 at supersonic speed!
+##### We need to escape from the complex behind SCP-173 before it explodes. There is music in the background that adds to the anxiety.
+![](https://github.com/KoT0XleB/AutoEvent-Exiled/blob/main/Photos/Escape.png)
 ### Jail mode, in which you need to hold events.
-##### This mini-game requires an understanding of how to conduct the Jail mode, which is why I find it difficult. Read how to conduct games from CS 1.6 or CS GO.
+##### You play as a Jailer and have to conduct games for Prisoners, for example, get into parkour or Simon says.
+##### This mini-game requires an understanding of how to conduct the Jail mode, which is why I find it difficult.
 ![](https://github.com/KoT0XleB/AutoEvent-Exiled/blob/main/Photos/Jail.png)
-![](https://github.com/KoT0XleB/AutoEvent-Exiled/blob/main/Photos/Jail_Xmf.jpg)
 ### Duel of players on the 35hp map from cs 1.6.
-![](https://github.com/KoT0XleB/AutoEvent-Exiled/blob/main/Photos/35Hp.png)
-### Deathmatch and GunGame game modes on the Shipment map from COD MW.
-![](https://github.com/KoT0XleB/AutoEvent-Exiled/blob/main/Photos/Shipment.png)
+##### The players are divided into teams. There is a box on the map in which members of different teams duel. To participate, you need to go through the door.
+![](https://github.com/KoT0XleB/AutoEvent-Exiled/blob/main/Photos/Duel.png)
+### Deathmatch on the Shipment map from COD MW.
+##### Players are divided into teams and they need to kill players to become a winner.
+##### A small closed map with a lot of spawns on it, so the gameplay is cheerful.
+![](https://github.com/KoT0XleB/AutoEvent-Exiled/blob/main/Photos/Deathmatch.png)
+### GunGame on the Shipment map from COD MW.
+##### Every man for himself. Each player starts with a pistol and gradually finishes with big guns. In the end, you have to kill the players with a bat.
+##### A small closed map with a lot of spawns on it, so the gameplay is cheerful.
+![](https://github.com/KoT0XleB/AutoEvent-Exiled/blob/main/Photos/GunGame.png)
 
 ### All those who helped.
 ##### Thanks to ART0022VI for a little help in fixing plugins.
