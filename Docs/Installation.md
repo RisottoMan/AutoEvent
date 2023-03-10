@@ -13,7 +13,7 @@
 - [Maps](https://github.com/KoT0XleB/AutoEvent-Exiled/tree/main/Schematics) files move to => ``EXILED/MapEditorReborn/Schematics``
 
 ## 2. Permission
-### *Give permission to your role in ``permissions.yml``:*
+### *Give permission to your role in ``EXILED/Configs/permissions.yml``:*
 
 ```
 owner:
