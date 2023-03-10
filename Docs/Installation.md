@@ -22,7 +22,7 @@ owner:
     - ev.*
 ```
 
-## 3. Run Mini-games
+## 3. Run Mini-games :white_check_mark:
 ### [Follow this link to learn how to run mini-games.](https://github.com/KoT0XleB/AutoEvent-Exiled/blob/main/Docs/Commands.md)
 
 ## 4. Problems :trollface:
