@@ -1,4 +1,4 @@
-# Commands :frog:
+# Commands
 
 | Command                              | Description                                                                    |
 |--------------------------------------|--------------------------------------------------------------------------------|
@@ -8,7 +8,7 @@
 
 ----
 
-# Description :trollface:
+# Description :frog:
 ## To see all the mini-games, enter the command in the admin console:
 ``ev_list``
 #### This command will show all the mini-games.
