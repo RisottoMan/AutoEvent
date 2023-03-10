@@ -6,8 +6,9 @@
 |         `ev_run [argument]`          | Starts the mini-game by an argument from the `ev_list` command                 |
 |             `ev_stop`                | Kills a stuck mini-game (Just kills all the players)                           |
 
-# More details for understanding.
+----
 
+## Description
 ## To see all the mini-games, enter the command in the admin console:
 ``ev_list``
 #### This command will show all the mini-games.
