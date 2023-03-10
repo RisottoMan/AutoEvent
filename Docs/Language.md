@@ -135,3 +135,4 @@ auto_event:
     <color=yellow>The Winner of the game: <color=green>{winner}</color></color>
 ```
 ## Russian
+Jesus not again
