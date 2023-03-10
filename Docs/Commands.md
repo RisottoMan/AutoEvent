@@ -10,7 +10,7 @@
 ## To start the mini-game, enter the command:
 ``ev_run [name]``
 #### This command starts the mini-game via the specified argument.
-#### For example, ev_run escape
+#### For example, ``ev_run escape``
 
 ## If the mini-games are stuck during the game, then enter the command:
 ``ev_stop``
