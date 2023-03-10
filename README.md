@@ -4,8 +4,8 @@
 
 ## Guides:
  - [Installation](https://github.com/KoT0XleB/AutoEvent-Exiled/blob/main/Docs/Installation.md)
- - Commands
- - Language
+ - [Commands](https://github.com/KoT0XleB/AutoEvent-Exiled/blob/main/Docs/Commands.md)
+ - [Language](https://github.com/KoT0XleB/AutoEvent-Exiled/blob/main/Docs/Language.md)
 
 ## I will introduce you to the Mini-Games:
 ### Zombie Infection [zombie]
