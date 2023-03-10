@@ -33,7 +33,7 @@ owner:
  - You didn't grant the rights for the role. Look at the point "2. Permission"
 ----
  >  Only 1 argument is needed - the command name of the event!
- - You have run the command incorrectly. (Follow this link to understand)
+ - You have run the command incorrectly. [(Follow this link to understand)](https://github.com/KoT0XleB/AutoEvent-Exiled/blob/main/Docs/Commands.md)
 ----
  >  The event was not found, nothing happened.
  - This is the most common cause, but it's easy to fix. There may be several reasons:
