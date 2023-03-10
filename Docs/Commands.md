@@ -1,5 +1,5 @@
 # Commands
-## How to launch mini-games?!
+#### How to launch mini-games?!
 
 ## To see all the mini-games, enter the command in the admin console:
 ``ev_list``
