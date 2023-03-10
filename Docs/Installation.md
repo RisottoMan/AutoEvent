@@ -26,10 +26,10 @@ owner:
 ### You may encounter a problem because of which the mini-games will not run.
 ### So I left hints on how to fix the problems:
 ----
- - You do not have permission to use this command
+ >  You do not have permission to use this command
     - You didn't grant the rights for the role. Look at the point "2. Permission"
 ----
- - Only 1 argument is needed - the command name of the event!
+ >  Only 1 argument is needed - the command name of the event!
     - You have run the command incorrectly. (Follow this link to understand)
 ----
  >  The event was not found, nothing happened.
