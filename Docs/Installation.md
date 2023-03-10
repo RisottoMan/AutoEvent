@@ -22,7 +22,7 @@ owner:
     - ev.*
 ```
 
-## 3. :trollface: Problems :trollface:
+## 3. Problems :trollface:
 ### *You may encounter a problem because of which the mini-games will not run.*
 ### *So I left hints on how to fix the problems:*
 ----
