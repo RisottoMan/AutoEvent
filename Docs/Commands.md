@@ -1,7 +1,7 @@
 # Commands
 ## How to launch mini-games?!
 
-## To see all the mini-games, enter the command in the server admin console:
+## To see all the mini-games, enter the command in the admin console:
 ``ev_list``
 #### This command will show all the mini-games.
 #### For example, ``[escape] <= Escape from the facility behind SCP-173 at supersonic speed!``
