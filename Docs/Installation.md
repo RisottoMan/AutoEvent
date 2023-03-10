@@ -25,5 +25,5 @@ owner:
 ## 3. Run Mini-games :white_check_mark:
 ### [Follow this link to learn how to run mini-games.](https://github.com/KoT0XleB/AutoEvent-Exiled/blob/main/Docs/Commands.md)
 
-## 4. Problem :trollface: 
+## 4. Problems :trollface: 
 ### [If you have any problems, then follow this link.](https://github.com/KoT0XleB/AutoEvent-Exiled/blob/main/Docs/Problem.md)
