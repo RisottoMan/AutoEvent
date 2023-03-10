@@ -22,7 +22,10 @@ owner:
     - ev.*
 ```
 
-## 3. Problems :trollface:
+## 3. Run Mini-games
+### [Follow this link to learn how to run mini-games.](https://github.com/KoT0XleB/AutoEvent-Exiled/blob/main/Docs/Commands.md)
+
+## 4. Problems :trollface:
 ### *You may encounter a problem because of which the mini-games will not run.*
 ### *So I left hints on how to fix the problems:*
 ----
