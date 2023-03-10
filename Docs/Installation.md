@@ -37,3 +37,4 @@ owner:
 #### 1) You have installed the plugins incorrectly. Try again.
 #### 2) Or the problem is that you have not installed Maps and Music.
 #### 3) The problem may be in MapEditorReborn, which depends on the Exiled version. Make sure that MER is working.
+:trollface:
