@@ -1,12 +1,10 @@
 # Commands
 
-|--------------------------------------|--------------------------------------------------------------------------------|
 | Command                              | Description                                                                    |
 |--------------------------------------|--------------------------------------------------------------------------------|
 |             `ev_list`                | Shows a list of available mini-games.                                          |
 |         `ev_run [argument]`          | Starts the mini-game by an argument from the `ev_list` command                 |
 |             `ev_stop`                | Kills a stuck mini-game (Just kills all the players)                           |
-|--------------------------------------|--------------------------------------------------------------------------------|
 
 # More details for understanding.
 
