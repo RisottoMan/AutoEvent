@@ -23,7 +23,9 @@ owner:
 ```
 
 ## 3. Problems
-### *You may encounter a problem that the mini-games don't run, so I left hints on how to fix them:*
+### *The plugin for Mini-Games being developed may work for a long time without Exiled updates, 
+### but you may encounter a problem that will cause mini-games not to run for reasons beyond our control, 
+### so I left hints on how to fix the problems.:*
  >  You do not have permission to use this command
 #### You didn't grant the rights for the role. Look at the point "2. Permission"
 
