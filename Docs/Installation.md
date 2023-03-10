@@ -24,13 +24,13 @@ owner:
 
 ## 3. Problems
 ### You may encounter a problem that the mini-games don't run, so I left hints on how to fix them:
-#### - You do not have permission to use this command
+ >  - You do not have permission to use this command
 ##### You didn't grant the rights for the role. Look at the point "2. Permission"
 
-#### - Only 1 argument is needed - the command name of the event!
+ >  - Only 1 argument is needed - the command name of the event!
 ##### You have run the command incorrectly. (Follow this link to understand)
 
-#### - The event was not found, nothing happened.
+ >  - The event was not found, nothing happened.
 ##### This is the most common cause, but it's easy to fix. There may be several reasons:
 ##### 1) You have installed the plugins incorrectly. Try again.
 ##### 2) Or the problem is that you have not installed Maps and Music.
