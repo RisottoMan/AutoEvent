@@ -35,5 +35,5 @@ owner:
  >  The event was not found, nothing happened.
  - This is the most common cause, but it's easy to fix. There may be several reasons:
     - You have installed the plugins incorrectly. Try again.
-    - Or the problem is that you have not installed Maps and Music.
+    - Or the problem is that you have not installed [Maps](https://github.com/KoT0XleB/AutoEvent-Exiled/tree/main/Schematics) and [Music](https://github.com/KoT0XleB/AutoEvent-Exiled/tree/main/Music).
     - The problem may be in MapEditorReborn, which depends on the Exiled version. Make sure that MER is working.
