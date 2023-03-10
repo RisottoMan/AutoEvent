@@ -23,8 +23,8 @@ owner:
 ```
 
 ## 3. :trollface: Problems :trollface:
-### You may encounter a problem because of which the mini-games will not run.
-### So I left hints on how to fix the problems:
+### *You may encounter a problem because of which the mini-games will not run.*
+### *So I left hints on how to fix the problems:*
 ----
  >  You do not have permission to use this command
  - You didn't grant the rights for the role. Look at the point "2. Permission"
