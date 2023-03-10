@@ -22,16 +22,16 @@ owner:
     - ev.*
 ```
 
-## 3. Problems
+## 3. :trollface: Problems :trollface:
 ### You may encounter a problem because of which the mini-games will not run.
 ### So I left hints on how to fix the problems:
-
+----
  >  You do not have permission to use this command
 #### You didn't grant the rights for the role. Look at the point "2. Permission"
-
+----
  >  Only 1 argument is needed - the command name of the event!
 #### You have run the command incorrectly. (Follow this link to understand)
-
+----
  >  The event was not found, nothing happened.
 ### This is the most common cause, but it's easy to fix. There may be several reasons:
 #### 1) You have installed the plugins incorrectly. Try again.
