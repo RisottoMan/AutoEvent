@@ -1,5 +1,5 @@
 # Installation
-## 1. Download and Setup
+## 1. Download and Setup :moyai:
 ### *You need to download the latest release:*
 
 - Plugin [``AutoEvent.dll``](https://github.com/KoT0XleB/AutoEvent-Exiled/releases/tag/1.0.2) move to => ``EXILED/Plugins``
@@ -12,7 +12,7 @@
 
 - [Maps](https://github.com/KoT0XleB/AutoEvent-Exiled/tree/main/Schematics) files move to => ``EXILED/MapEditorReborn/Schematics``
 
-## 2. Permission
+## 2. Permission :gem:
 ### *Give permission to your role in ``EXILED/Configs/permissions.yml``:*
 
 ```
