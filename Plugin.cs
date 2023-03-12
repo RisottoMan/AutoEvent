@@ -11,7 +11,7 @@ namespace AutoEvent
     {
         public override string Name => "AutoEvent";
         public override string Author => "Ported to Exiled [by KoToXleB]";
-        public override Version Version => new Version(1, 0, 4);
+        public override Version Version => new Version(1, 0, 6);
         public static IEvent ActiveEvent = null;
         public static AutoEvent Singleton;
         public static Harmony HarmonyPatch;
@@ -23,7 +23,7 @@ namespace AutoEvent
             HarmonyPatch.PatchAll();
 
             if (!Config.IsEnabled) return;
-            // Проверка на директорию музыки
+            // Checking for the music directory
             if (!Directory.Exists(Path.Combine(Paths.Configs, "Music"))) Directory.CreateDirectory(Path.Combine(Paths.Configs, "Music"));
         }
         public override void OnDisabled()

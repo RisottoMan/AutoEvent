@@ -33,24 +33,26 @@ namespace AutoEvent.Events
         {
             Exiled.Events.Handlers.Player.Verified += GunGameHandler.OnJoin;
             Exiled.Events.Handlers.Server.RespawningTeam += GunGameHandler.OnTeamRespawn;
-            Exiled.Events.Handlers.Player.Died += GunGameHandler.OnDied;
+            Exiled.Events.Handlers.Player.Dying += GunGameHandler.OnPlayerDying;
             Exiled.Events.Handlers.Player.SpawningRagdoll += GunGameHandler.OnSpawnRagdoll;
             Exiled.Events.Handlers.Player.Spawned += GunGameHandler.OnSpawned;
             Exiled.Events.Handlers.Player.DroppingItem += GunGameHandler.OnDropItem;
             Exiled.Events.Handlers.Map.PlacingBulletHole += GunGameHandler.OnPlaceBullet;
             Exiled.Events.Handlers.Map.PlacingBlood += GunGameHandler.OnPlaceBlood;
+            Exiled.Events.Handlers.Player.Shooting += GunGameHandler.OnShooting;
             OnEventStarted();
         }
         public void OnStop()
         {
             Exiled.Events.Handlers.Player.Verified -= GunGameHandler.OnJoin;
             Exiled.Events.Handlers.Server.RespawningTeam -= GunGameHandler.OnTeamRespawn;
-            Exiled.Events.Handlers.Player.Died -= GunGameHandler.OnDied;
+            Exiled.Events.Handlers.Player.Dying -= GunGameHandler.OnPlayerDying;
             Exiled.Events.Handlers.Player.SpawningRagdoll -= GunGameHandler.OnSpawnRagdoll;
             Exiled.Events.Handlers.Player.Spawned -= GunGameHandler.OnSpawned;
             Exiled.Events.Handlers.Player.DroppingItem -= GunGameHandler.OnDropItem;
             Exiled.Events.Handlers.Map.PlacingBulletHole -= GunGameHandler.OnPlaceBullet;
             Exiled.Events.Handlers.Map.PlacingBlood -= GunGameHandler.OnPlaceBlood;
+            Exiled.Events.Handlers.Player.Shooting -= GunGameHandler.OnShooting;
 
             Timing.CallDelayed(10f, () => EventEnd());
             AutoEvent.ActiveEvent = null;
@@ -80,7 +82,7 @@ namespace AutoEvent.Events
 
                 count++;
             }
-            Timing.RunCoroutine(OnEventRunning(), "deathmatch_run");
+            Timing.RunCoroutine(OnEventRunning(), "gungame_run");
         }
         public IEnumerator<float> OnEventRunning()
         {

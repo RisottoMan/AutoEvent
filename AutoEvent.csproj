@@ -38,35 +38,36 @@
     <Reference Include="Assembly-CSharp-firstpass">
       <HintPath>..\..\Рабочий стол\файлы\Assembly-CSharp-firstpass.dll</HintPath>
     </Reference>
-    <Reference Include="Assembly-CSharp-Publicized">
-      <HintPath>..\..\Рабочий стол\файлы\Assembly-CSharp-Publicized.dll</HintPath>
+    <Reference Include="Assembly-CSharp-Publicized, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Рабочий стол\файлы\Assembly-CSharp-Publicized.dll</HintPath>
     </Reference>
     <Reference Include="CommandSystem.Core, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\EXILED.6.0.0-beta.21\lib\net48\CommandSystem.Core.dll</HintPath>
+      <HintPath>packages\EXILED.6.0.0-beta.26\lib\net48\CommandSystem.Core.dll</HintPath>
     </Reference>
     <Reference Include="Exiled.API, Version=6.0.0.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>packages\EXILED.6.0.0-beta.21\lib\net48\Exiled.API.dll</HintPath>
+      <HintPath>packages\EXILED.6.0.0-beta.26\lib\net48\Exiled.API.dll</HintPath>
     </Reference>
     <Reference Include="Exiled.CreditTags, Version=6.0.0.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>packages\EXILED.6.0.0-beta.21\lib\net48\Exiled.CreditTags.dll</HintPath>
+      <HintPath>packages\EXILED.6.0.0-beta.26\lib\net48\Exiled.CreditTags.dll</HintPath>
     </Reference>
     <Reference Include="Exiled.CustomItems, Version=6.0.0.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>packages\EXILED.6.0.0-beta.21\lib\net48\Exiled.CustomItems.dll</HintPath>
+      <HintPath>packages\EXILED.6.0.0-beta.26\lib\net48\Exiled.CustomItems.dll</HintPath>
     </Reference>
     <Reference Include="Exiled.CustomRoles, Version=6.0.0.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>packages\EXILED.6.0.0-beta.21\lib\net48\Exiled.CustomRoles.dll</HintPath>
+      <HintPath>packages\EXILED.6.0.0-beta.26\lib\net48\Exiled.CustomRoles.dll</HintPath>
     </Reference>
     <Reference Include="Exiled.Events, Version=6.0.0.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>packages\EXILED.6.0.0-beta.21\lib\net48\Exiled.Events.dll</HintPath>
+      <HintPath>packages\EXILED.6.0.0-beta.26\lib\net48\Exiled.Events.dll</HintPath>
     </Reference>
     <Reference Include="Exiled.Loader, Version=6.0.0.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>packages\EXILED.6.0.0-beta.21\lib\net48\Exiled.Loader.dll</HintPath>
+      <HintPath>packages\EXILED.6.0.0-beta.26\lib\net48\Exiled.Loader.dll</HintPath>
     </Reference>
     <Reference Include="Exiled.Permissions, Version=6.0.0.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>packages\EXILED.6.0.0-beta.21\lib\net48\Exiled.Permissions.dll</HintPath>
+      <HintPath>packages\EXILED.6.0.0-beta.26\lib\net48\Exiled.Permissions.dll</HintPath>
     </Reference>
     <Reference Include="Exiled.Updater, Version=3.1.1.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>packages\EXILED.6.0.0-beta.21\lib\net48\Exiled.Updater.dll</HintPath>
+      <HintPath>packages\EXILED.6.0.0-beta.26\lib\net48\Exiled.Updater.dll</HintPath>
     </Reference>
     <Reference Include="MapEditorReborn, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -76,10 +77,10 @@
       <HintPath>..\..\Рабочий стол\файлы\Mirror.dll</HintPath>
     </Reference>
     <Reference Include="NorthwoodLib, Version=1.2.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\EXILED.6.0.0-beta.21\lib\net48\NorthwoodLib.dll</HintPath>
+      <HintPath>packages\EXILED.6.0.0-beta.26\lib\net48\NorthwoodLib.dll</HintPath>
     </Reference>
     <Reference Include="PluginAPI, Version=12.0.0.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>packages\EXILED.6.0.0-beta.21\lib\net48\PluginAPI.dll</HintPath>
+      <HintPath>packages\EXILED.6.0.0-beta.26\lib\net48\PluginAPI.dll</HintPath>
     </Reference>
     <Reference Include="SCPSLAudioApi, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -103,7 +104,6 @@
     <Compile Include="Commands\RunEvent.cs" />
     <Compile Include="Commands\StopEvent.cs" />
     <Compile Include="Config.cs" />
-    <Compile Include="Events\Deathmatch\DeathmatchClass.cs" />
     <Compile Include="Events\Deathmatch\DeathmatchEvent.cs" />
     <Compile Include="Events\Deathmatch\DeathmatchHandler.cs" />
     <Compile Include="Events\Deathmatch\DeathmatchRandom.cs" />
@@ -128,7 +128,6 @@
     <Compile Include="Events\Versus\VersusEvent.cs" />
     <Compile Include="Events\Versus\VersusHandler.cs" />
     <Compile Include="Interfaces\IEvent.cs" />
-    <Compile Include="Patch\CleanupPatch.cs" />
     <Compile Include="Patch\JailBirdPatch.cs" />
     <Compile Include="Patch\RemoteAdminPatch.cs" />
     <Compile Include="Plugin.cs" />

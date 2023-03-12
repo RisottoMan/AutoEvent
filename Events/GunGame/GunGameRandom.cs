@@ -47,16 +47,15 @@ namespace AutoEvent.Events
         }
         public static RoleTypeId GetRandomRole()
         {
-            RoleTypeId role = RoleTypeId.None;
-            switch(Random.Range(0, 4))
-            {
-                case 0: return RoleTypeId.ClassD;
-                case 1: return RoleTypeId.Scientist;
-                case 2: return RoleTypeId.NtfSpecialist;
-                case 3: return RoleTypeId.ChaosConscript;
-                case 4: return RoleTypeId.FacilityGuard;
-            }
-            return role;
+            return HumanRoles.RandomItem();
         }
+        public static List<RoleTypeId> HumanRoles = new List<RoleTypeId>()
+        {
+            RoleTypeId.ClassD,
+            RoleTypeId.Scientist,
+            RoleTypeId.NtfSergeant,
+            RoleTypeId.ChaosRifleman,
+            RoleTypeId.FacilityGuard
+        };
     }
 }

@@ -37,8 +37,10 @@ namespace AutoEvent.Events
             ev.Player.CurrentItem = Item.Create(GunGameGuns.GunForLevel[PlayerStats[ev.Player].level], ev.Player);
             ev.Player.Position = GameMap.Position + GunGameRandom.GetRandomPosition();
         }
-        public static void OnDied(DiedEventArgs ev)
+        public static void OnPlayerDying(DyingEventArgs ev)
         {
+            ev.IsAllowed = false;
+            ev.Player.Health = 100;
             // Attacker shit
             if (ev.Attacker != null)
             {
@@ -56,20 +58,34 @@ namespace AutoEvent.Events
             // Target shit
             if (ev.Player != null)
             {
-                ev.Player.Role.Set(GunGameRandom.GetRandomRole());
-                ev.Player.IsSpawnProtected = false;
                 ev.Player.ClearInventory();
                 ev.Player.CurrentItem = Item.Create(GunGameGuns.GunForLevel[PlayerStats[ev.Player].level], ev.Player);
+                ev.Player.EnableEffect<CustomPlayerEffects.SpawnProtected>(1);
                 ev.Player.Position = GameMap.Position + GunGameRandom.GetRandomPosition();
+            }
+        }
+        public static void OnShooting(ShootingEventArgs ev)
+        {
+            switch (ev.Player.Inventory.CurItem.TypeId)
+            {
+                case (ItemType.GunCOM15):
+                case (ItemType.GunCOM18):
+                case (ItemType.GunCrossvec):
+                case (ItemType.GunFSP9): { ev.Player.AddAmmo(AmmoType.Nato9, 1); } break;
+                case (ItemType.GunRevolver): { ev.Player.AddAmmo(AmmoType.Ammo44Cal, 1); } break;
+                case (ItemType.GunE11SR): { ev.Player.AddAmmo(AmmoType.Nato556, 1); } break;
+                case (ItemType.GunAK):
+                case (ItemType.GunLogicer): { ev.Player.AddAmmo(AmmoType.Nato762, 1); } break;
+                case (ItemType.GunShotgun): { ev.Player.AddAmmo(AmmoType.Ammo12Gauge, 1); } break;
             }
         }
         public static void OnSpawned(SpawnedEventArgs ev)
         {
-            ev.Player.AddAmmo(AmmoType.Nato9, 100);
-            ev.Player.AddAmmo(AmmoType.Ammo44Cal, 100);
-            ev.Player.AddAmmo(AmmoType.Nato556, 100);
-            ev.Player.AddAmmo(AmmoType.Nato762, 100);
-            ev.Player.AddAmmo(AmmoType.Ammo12Gauge, 100);
+            ev.Player.AddAmmo(AmmoType.Nato9, 50);
+            ev.Player.AddAmmo(AmmoType.Ammo44Cal, 50);
+            ev.Player.AddAmmo(AmmoType.Nato556, 50);
+            ev.Player.AddAmmo(AmmoType.Nato762, 50);
+            ev.Player.AddAmmo(AmmoType.Ammo12Gauge, 50);
         }
         public static void OnDropItem(DroppingItemEventArgs ev) => ev.IsAllowed = false;
         public static void OnTeamRespawn(RespawningTeamEventArgs ev) => ev.IsAllowed = false;

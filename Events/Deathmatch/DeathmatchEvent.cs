@@ -2,6 +2,7 @@
 using Exiled.API.Enums;
 using Exiled.API.Features;
 using Exiled.API.Features.Items;
+using Exiled.Events.EventArgs.Player;
 using HarmonyLib;
 using InventorySystem;
 using InventorySystem.Items;
@@ -34,22 +35,26 @@ namespace AutoEvent.Events
         {
             Exiled.Events.Handlers.Player.Verified += DeathmatchHandler.OnJoin;
             Exiled.Events.Handlers.Server.RespawningTeam += DeathmatchHandler.OnTeamRespawn;
-            Exiled.Events.Handlers.Player.Died += DeathmatchHandler.OnDied;
             Exiled.Events.Handlers.Player.SpawningRagdoll += DeathmatchHandler.OnSpawnRagdoll;
             Exiled.Events.Handlers.Player.Spawned += DeathmatchHandler.OnSpawned;
             Exiled.Events.Handlers.Map.PlacingBulletHole += DeathmatchHandler.OnPlaceBullet;
             Exiled.Events.Handlers.Map.PlacingBlood += DeathmatchHandler.OnPlaceBlood;
+            Exiled.Events.Handlers.Player.Dying += DeathmatchHandler.OnDying;
+            Exiled.Events.Handlers.Player.Shooting += DeathmatchHandler.OnShooting;
+            Exiled.Events.Handlers.Player.DroppingItem += DeathmatchHandler.OnDropItem;
             OnEventStarted();
         }
         public void OnStop()
         {
             Exiled.Events.Handlers.Player.Verified -= DeathmatchHandler.OnJoin;
             Exiled.Events.Handlers.Server.RespawningTeam -= DeathmatchHandler.OnTeamRespawn;
-            Exiled.Events.Handlers.Player.Died -= DeathmatchHandler.OnDied;
             Exiled.Events.Handlers.Player.SpawningRagdoll -= DeathmatchHandler.OnSpawnRagdoll;
             Exiled.Events.Handlers.Player.Spawned -= DeathmatchHandler.OnSpawned;
             Exiled.Events.Handlers.Map.PlacingBulletHole -= DeathmatchHandler.OnPlaceBullet;
             Exiled.Events.Handlers.Map.PlacingBlood -= DeathmatchHandler.OnPlaceBlood;
+            Exiled.Events.Handlers.Player.Dying -= DeathmatchHandler.OnDying;
+            Exiled.Events.Handlers.Player.Shooting -= DeathmatchHandler.OnShooting;
+            Exiled.Events.Handlers.Player.DroppingItem += DeathmatchHandler.OnDropItem;
 
             Timing.CallDelayed(10f, () => EventEnd());
             AutoEvent.ActiveEvent = null;
@@ -72,18 +77,18 @@ namespace AutoEvent.Events
             {
                 if (count % 2 == 0)
                 {
-                    player.Role.Set(DeathmatchClass.GetRandomClass(Team.FoundationForces));
+                    player.Role.Set(RoleTypeId.NtfSergeant);
                     player.CurrentItem = player.Items.ElementAt(1);
                     player.Position = GameMap.Position + DeathmatchRandom.GetRandomPosition();
                 }
                 else
                 {
-                    player.Role.Set(DeathmatchClass.GetRandomClass(Team.ChaosInsurgency));
+                    player.Role.Set(RoleTypeId.ChaosRifleman);
                     player.CurrentItem = player.Items.ElementAt(1);
                     player.Position = GameMap.Position + DeathmatchRandom.GetRandomPosition();
                 }
-                player.EnableEffect<CustomPlayerEffects.Scp1853>(30);
-                player.EnableEffect(EffectType.MovementBoost, 30);
+                player.EnableEffect<CustomPlayerEffects.Scp1853>(300);
+                player.EnableEffect(EffectType.MovementBoost, 300);
                 player.ChangeEffectIntensity(EffectType.MovementBoost, 25);
                 player.EnableEffect<CustomPlayerEffects.SpawnProtected>(10);
                 count++;
