@@ -2,15 +2,12 @@
 ## ENG: Allows you to run auto Mini-Games in the game.
 ## RUS: Позволяет запускать автоматические Мини-Игры в игре.
 
-## Instruction manual:
-- Plugin [``AutoEvent.dll``](https://github.com/KoT0XleB/AutoEvent-Exiled/releases/tag/1.0.2) move to => ``EXILED/Plugins``
-- Plugin [``MapEditorReborn.dll``](https://github.com/Michal78900/MapEditorReborn) (or [update in discord](https://discord.gg/sQcSSPjf8p)) move to => ``EXILED/Plugins``
-- Plugin [``SCPSLAudioApi.dll``](https://github.com/CedModV2/SCPSLAudioApi/releases/latest)  move to => ``EXILED/Plugins/dependencies``
-- [Music](https://github.com/KoT0XleB/AutoEvent-Exiled/tree/main/Music) files move to => ``EXILED/Configs/Music``
-- [Maps](https://github.com/KoT0XleB/AutoEvent-Exiled/tree/main/Schematics) files move to => ``EXILED/MapEditorReborn/Schematics``
-- To run commands, you need to give `` - ev.*`` permission in ``permissions.yml``
-- You can change the text to your language in ``{port}-translations.yml``
-- Launch the mini-game ``ev_run [name]``, where the name can be found in ``ev_list``
+## Guides:
+ - [Installation](https://github.com/KoT0XleB/AutoEvent-Exiled/blob/main/Docs/Installation.md)
+ - [Commands](https://github.com/KoT0XleB/AutoEvent-Exiled/blob/main/Docs/Commands.md)
+ - [Language](https://github.com/KoT0XleB/AutoEvent-Exiled/blob/main/Docs/Language.md)
+ - [Problems](https://github.com/KoT0XleB/AutoEvent-Exiled/blob/main/Docs/Problem.md)
+
 ## I will introduce you to the Mini-Games:
 ### Zombie Infection [zombie]
 ##### Zombie mode, the purpose of which is to infect all players. 
