@@ -91,5 +91,6 @@ namespace AutoEvent.Events
         public static void OnPlaceBullet(PlacingBulletHole ev) => ev.IsAllowed = false;
         public static void OnPlaceBlood(PlacingBloodEventArgs ev) => ev.IsAllowed = false;
         public static void OnDropItem(DroppingItemEventArgs ev) => ev.IsAllowed = false;
+        public static void OnDropAmmo(DroppingAmmoEventArgs ev) => ev.IsAllowed = false;
     }
 }

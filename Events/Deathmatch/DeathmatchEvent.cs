@@ -1,12 +1,6 @@
 ﻿using AutoEvent.Interfaces;
 using Exiled.API.Enums;
 using Exiled.API.Features;
-using Exiled.API.Features.Items;
-using Exiled.Events.EventArgs.Player;
-using HarmonyLib;
-using InventorySystem;
-using InventorySystem.Items;
-using InventorySystem.Items.Pickups;
 using MapEditorReborn.API.Features.Objects;
 using MEC;
 using PlayerRoles;
@@ -14,8 +8,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using Object = UnityEngine.Object;
-using Random = UnityEngine.Random;
 
 namespace AutoEvent.Events
 {
@@ -42,6 +34,7 @@ namespace AutoEvent.Events
             Exiled.Events.Handlers.Player.Dying += DeathmatchHandler.OnDying;
             Exiled.Events.Handlers.Player.Shooting += DeathmatchHandler.OnShooting;
             Exiled.Events.Handlers.Player.DroppingItem += DeathmatchHandler.OnDropItem;
+            Exiled.Events.Handlers.Player.DroppingAmmo += GunGameHandler.OnDropAmmo;
             OnEventStarted();
         }
         public void OnStop()
@@ -54,7 +47,8 @@ namespace AutoEvent.Events
             Exiled.Events.Handlers.Map.PlacingBlood -= DeathmatchHandler.OnPlaceBlood;
             Exiled.Events.Handlers.Player.Dying -= DeathmatchHandler.OnDying;
             Exiled.Events.Handlers.Player.Shooting -= DeathmatchHandler.OnShooting;
-            Exiled.Events.Handlers.Player.DroppingItem += DeathmatchHandler.OnDropItem;
+            Exiled.Events.Handlers.Player.DroppingItem -= DeathmatchHandler.OnDropItem;
+            Exiled.Events.Handlers.Player.DroppingAmmo -= GunGameHandler.OnDropAmmo;
 
             Timing.CallDelayed(10f, () => EventEnd());
             AutoEvent.ActiveEvent = null;

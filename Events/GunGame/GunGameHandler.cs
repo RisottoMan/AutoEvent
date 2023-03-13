@@ -92,6 +92,6 @@ namespace AutoEvent.Events
         public static void OnSpawnRagdoll(SpawningRagdollEventArgs ev) => ev.IsAllowed = false;
         public static void OnPlaceBullet(PlacingBulletHole ev) => ev.IsAllowed = false;
         public static void OnPlaceBlood(PlacingBloodEventArgs ev) => ev.IsAllowed = false;
-
+        public static void OnDropAmmo(DroppingAmmoEventArgs ev) => ev.IsAllowed = false;
     }
 }

@@ -40,6 +40,7 @@ namespace AutoEvent.Events
             Exiled.Events.Handlers.Map.PlacingBulletHole += GunGameHandler.OnPlaceBullet;
             Exiled.Events.Handlers.Map.PlacingBlood += GunGameHandler.OnPlaceBlood;
             Exiled.Events.Handlers.Player.Shooting += GunGameHandler.OnShooting;
+            Exiled.Events.Handlers.Player.DroppingAmmo += GunGameHandler.OnDropAmmo;
             OnEventStarted();
         }
         public void OnStop()
@@ -53,6 +54,7 @@ namespace AutoEvent.Events
             Exiled.Events.Handlers.Map.PlacingBulletHole -= GunGameHandler.OnPlaceBullet;
             Exiled.Events.Handlers.Map.PlacingBlood -= GunGameHandler.OnPlaceBlood;
             Exiled.Events.Handlers.Player.Shooting -= GunGameHandler.OnShooting;
+            Exiled.Events.Handlers.Player.DroppingAmmo -= GunGameHandler.OnDropAmmo;
 
             Timing.CallDelayed(10f, () => EventEnd());
             AutoEvent.ActiveEvent = null;
