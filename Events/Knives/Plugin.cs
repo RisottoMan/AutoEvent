@@ -10,9 +10,9 @@ using System.Linq;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-namespace AutoEvent.Events
+namespace AutoEvent.Events.Knifes
 {
-    internal class KnivesEvent : IEvent
+    public class Plugin : IEvent
     {
         public string Name => AutoEvent.Singleton.Translation.KnivesName;
         public string Description => AutoEvent.Singleton.Translation.KnivesDescription;
@@ -21,20 +21,28 @@ namespace AutoEvent.Events
         public SchematicObject GameMap { get; set; }
         public TimeSpan EventTime { get; set; }
 
+        EventHandler _eventHandler;
+
         public void OnStart()
         {
-            Exiled.Events.Handlers.Player.Verified += KnivesHandler.OnJoin;
-            Exiled.Events.Handlers.Player.DroppingItem += KnivesHandler.OnDropItem;
-            Exiled.Events.Handlers.Server.RespawningTeam += KnivesHandler.OnTeamRespawn;
+            _eventHandler = new EventHandler();
+
+            Exiled.Events.Handlers.Player.Verified += _eventHandler.OnJoin;
+            Exiled.Events.Handlers.Player.DroppingItem += _eventHandler.OnDropItem;
+            Exiled.Events.Handlers.Server.RespawningTeam += _eventHandler.OnTeamRespawn;
+            Exiled.Events.Handlers.Item.ChargingJailbird += _eventHandler.OnChargeJailbird;
             OnEventStarted();
         }
         public void OnStop()
         {
-            Exiled.Events.Handlers.Player.Verified -= KnivesHandler.OnJoin;
-            Exiled.Events.Handlers.Player.DroppingItem -= KnivesHandler.OnDropItem;
-            Exiled.Events.Handlers.Server.RespawningTeam -= KnivesHandler.OnTeamRespawn;
+            Exiled.Events.Handlers.Player.Verified -= _eventHandler.OnJoin;
+            Exiled.Events.Handlers.Player.DroppingItem -= _eventHandler.OnDropItem;
+            Exiled.Events.Handlers.Server.RespawningTeam -= _eventHandler.OnTeamRespawn;
+            Exiled.Events.Handlers.Item.ChargingJailbird -= _eventHandler.OnChargeJailbird;
+
             Timing.CallDelayed(10f, () => EventEnd());
             AutoEvent.ActiveEvent = null;
+            _eventHandler = null;
         }
         public void OnEventStarted()
         {

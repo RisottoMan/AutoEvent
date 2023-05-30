@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace AutoEvent.Events
+namespace AutoEvent.Events.GunGame
 {
     internal class GunGameGuns
     {

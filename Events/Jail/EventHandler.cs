@@ -1,19 +1,20 @@
 ﻿using Exiled.Events.EventArgs.Player;
 using Exiled.Events.EventArgs.Server;
 using MapEditorReborn.API.Features.Objects;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace AutoEvent.Events
+namespace AutoEvent.Events.Jail
 {
-    internal class JailHandler
+    public class EventHandler
     {
-        public static void OnInteractLocker(InteractingLockerEventArgs ev)
+        Plugin _plugin;
+        public EventHandler(Plugin plugin)
+        {
+            _plugin = plugin;
+        }
+        public void OnInteractLocker(InteractingLockerEventArgs ev)
         {
             ev.IsAllowed = false;
             if (ev.Locker.StructureType == MapGeneration.Distributors.StructureType.LargeGunLocker)
@@ -26,7 +27,7 @@ namespace AutoEvent.Events
             }
             if (ev.Locker.StructureType == MapGeneration.Distributors.StructureType.SmallWallCabinet)
             {
-                if (Vector3.Distance(ev.Player.Position, JailEvent.GameMap.gameObject.transform.position + new Vector3(17.855f, -12.43052f, -23.632f)) < 2)
+                if (Vector3.Distance(ev.Player.Position, _plugin.GameMap.gameObject.transform.position + new Vector3(17.855f, -12.43052f, -23.632f)) < 2)
                 {
                     ev.Player.AddAhp(100, 100, 0);
                 }
@@ -36,21 +37,21 @@ namespace AutoEvent.Events
                 }
             }
         }
-        public static void OnShootEvent(ShootingEventArgs ev)
+        public void OnShootEvent(ShootingEventArgs ev)
         {
             if (!Physics.Raycast(ev.Player.ReferenceHub.PlayerCameraReference.transform.position, ev.Player.ReferenceHub.PlayerCameraReference.transform.forward, out RaycastHit raycastHit, 100f))
             {
                 return;
             }
-            if (Vector3.Distance(raycastHit.transform.gameObject.transform.position, JailEvent.Button.gameObject.transform.position) < 3)
+            if (Vector3.Distance(raycastHit.transform.gameObject.transform.position, _plugin.Button.gameObject.transform.position) < 3)
             {
-                if (JailEvent.isDoorsOpen)
+                if (_plugin.isDoorsOpen)
                 {
                     foreach (var obj in Object.FindObjectsOfType<PrimitiveObject>())
                     {
                         if (obj.name == "PrisonerDoor") obj.Position += new Vector3(2.2f, 0, 0);
                     }
-                    JailEvent.isDoorsOpen = false;
+                    _plugin.isDoorsOpen = false;
                 }
                 else
                 {
@@ -58,13 +59,10 @@ namespace AutoEvent.Events
                     {
                         if (obj.name == "PrisonerDoor") obj.Position += new Vector3(-2.2f, 0, 0);
                     }
-                    JailEvent.isDoorsOpen = true;
+                    _plugin.isDoorsOpen = true;
                 }
             }
         }
-        public static void OnTeamRespawn(RespawningTeamEventArgs ev)
-        {
-            ev.IsAllowed = false;
-        }
+        public void OnTeamRespawn(RespawningTeamEventArgs ev) { ev.IsAllowed = false; }
     }
 }

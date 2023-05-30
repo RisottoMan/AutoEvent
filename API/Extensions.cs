@@ -5,10 +5,11 @@ using Mirror;
 using UnityEngine;
 using PlayerRoles;
 using Exiled.API.Features;
-using InventorySystem.Items.Pickups;
 using MapEditorReborn.API.Features;
 using MapEditorReborn.API.Features.Objects;
 using SCPSLAudioApi.AudioCore;
+using VoiceChat;
+
 using Object = UnityEngine.Object;
 
 namespace AutoEvent
@@ -26,7 +27,7 @@ namespace AutoEvent
                 player.ClearInventory();
             }
         }
-        /// <summary>Проиграть аудиофайл</summary>
+        /// <summary>Тп игроков после конца игры</summary>
         public static void PlayAudio(string audioFile, byte volume, bool loop, string eventName)
         {
             try
@@ -53,7 +54,7 @@ namespace AutoEvent
 
                 audioPlayer.Enqueue(path, -1);
                 audioPlayer.LogDebug = false;
-                audioPlayer.BroadcastChannel = VoiceChat.VoiceChatChannel.Intercom;
+                audioPlayer.BroadcastChannel = VoiceChatChannel.Intercom;
                 audioPlayer.Volume = volume;
                 audioPlayer.Loop = loop;
                 audioPlayer.Play(0);
@@ -86,17 +87,8 @@ namespace AutoEvent
         /// <summary>Очистка мусора после ивента.</summary>
         public static void CleanUpAll()
         {
-            foreach (BasicRagdoll ragdoll in Object.FindObjectsOfType<BasicRagdoll>())
-            {
-                Object.Destroy(ragdoll.gameObject);
-            }
-            foreach (ItemPickupBase pickupBase in Object.FindObjectsOfType<ItemPickupBase>())
-            {
-                if (pickupBase != null)
-                {
-                    Object.Destroy(pickupBase.gameObject);
-                }
-            }
+            Map.CleanAllItems();
+            Map.CleanAllRagdolls();
         }
         /// <summary>Небольшой бродкаст с очисткой других бродкастов</summary>
         public static void Broadcast(string text, ushort time)

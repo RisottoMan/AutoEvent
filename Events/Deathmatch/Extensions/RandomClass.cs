@@ -1,19 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
+﻿using UnityEngine;
 using Random = UnityEngine.Random;
 
-namespace AutoEvent.Events
+namespace AutoEvent.Events.Deathmatch
 {
-    internal class DeathmatchRandom
+    internal class RandomClass
     {
         public static Vector3 GetRandomPosition()
         {
             Vector3 position = new Vector3(0, 0, 0);
-            switch (Random.Range(0, 25))
+            switch (Random.Range(0, 26))
             {
                 case 0: position = new Vector3(-17.34f, 1.26f, 5.4f); break;
                 case 1: position = new Vector3(-2.748f, 1.26f, -10.362f); break;

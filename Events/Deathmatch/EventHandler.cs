@@ -1,29 +1,21 @@
 ﻿using Exiled.API.Enums;
 using Exiled.API.Features;
-using Exiled.API.Features.Items;
 using Exiled.Events.EventArgs.Map;
 using Exiled.Events.EventArgs.Player;
 using Exiled.Events.EventArgs.Server;
-using HarmonyLib;
-using InventorySystem;
-using InventorySystem.Items;
-using InventorySystem.Items.Pickups;
-using MapEditorReborn.API.Features.Objects;
-using MEC;
 using PlayerRoles;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
-using Object = UnityEngine.Object;
 
-namespace AutoEvent.Events
+namespace AutoEvent.Events.Deathmatch
 {
-    internal class DeathmatchHandler
+    public class EventHandler
     {
-        public static void OnJoin(VerifiedEventArgs ev)
+        Plugin _plugin;
+        public EventHandler(Plugin plugin)
+        {
+            _plugin = plugin;
+        }
+        public void OnJoin(VerifiedEventArgs ev)
         {
             // Give role
             if (Player.List.Count(r => r.Role.Team == Team.FoundationForces) > Player.List.Count(r => r.Role.Team == Team.ChaosInsurgency))
@@ -41,29 +33,29 @@ namespace AutoEvent.Events
             ev.Player.ChangeEffectIntensity(EffectType.MovementBoost, 25);
             ev.Player.EnableEffect<CustomPlayerEffects.SpawnProtected>(5);
             // Position
-            ev.Player.Position = DeathmatchEvent.GameMap.Position + DeathmatchRandom.GetRandomPosition();
+            ev.Player.Position = _plugin.GameMap.Position + RandomClass.GetRandomPosition();
         }
-        public static void OnDying(DyingEventArgs ev)
+        public void OnDying(DyingEventArgs ev)
         {
             // We don't kill the player, but move them around the arena.
             ev.IsAllowed = false;
             // Get exp
             if (ev.Player.Role.Team == Team.FoundationForces)
             {
-                DeathmatchEvent.ChaosKills++;
+                _plugin.ChaosKills++;
             }
             else if (ev.Player.Role.Team == Team.ChaosInsurgency)
             {
-                DeathmatchEvent.MtfKills++;
+                _plugin.MtfKills++;
             }
             // Respawn player
             ev.Player.EnableEffect(EffectType.Flashed, 0.1f);
             ev.Player.CurrentItem = ev.Player.Items.ElementAt(1);
-            ev.Player.Position = DeathmatchEvent.GameMap.Position + DeathmatchRandom.GetRandomPosition();
+            ev.Player.Position = _plugin.GameMap.Position + RandomClass.GetRandomPosition();
             ev.Player.EnableEffect<CustomPlayerEffects.SpawnProtected>(1);
             ev.Player.Health = 100;
         }
-        public static void OnShooting(ShootingEventArgs ev)
+        public void OnShooting(ShootingEventArgs ev)
         {
             switch (ev.Player.Inventory.CurItem.TypeId)
             {
@@ -78,7 +70,7 @@ namespace AutoEvent.Events
                 case (ItemType.GunShotgun): { ev.Player.AddAmmo(AmmoType.Ammo12Gauge, 1); } break;
             }
         }
-        public static void OnSpawned(SpawnedEventArgs ev)
+        public void OnSpawned(SpawnedEventArgs ev)
         {
             ev.Player.AddAmmo(AmmoType.Nato9, 100);
             ev.Player.AddAmmo(AmmoType.Ammo44Cal, 100);
@@ -86,11 +78,11 @@ namespace AutoEvent.Events
             ev.Player.AddAmmo(AmmoType.Nato762, 100);
             ev.Player.AddAmmo(AmmoType.Ammo12Gauge, 100);
         }
-        public static void OnTeamRespawn(RespawningTeamEventArgs ev) => ev.IsAllowed = false;
-        public static void OnSpawnRagdoll(SpawningRagdollEventArgs ev) => ev.IsAllowed = false;
-        public static void OnPlaceBullet(PlacingBulletHole ev) => ev.IsAllowed = false;
-        public static void OnPlaceBlood(PlacingBloodEventArgs ev) => ev.IsAllowed = false;
-        public static void OnDropItem(DroppingItemEventArgs ev) => ev.IsAllowed = false;
-        public static void OnDropAmmo(DroppingAmmoEventArgs ev) => ev.IsAllowed = false;
+        public void OnTeamRespawn(RespawningTeamEventArgs ev) => ev.IsAllowed = false;
+        public void OnSpawnRagdoll(SpawningRagdollEventArgs ev) => ev.IsAllowed = false;
+        public void OnPlaceBullet(PlacingBulletHole ev) => ev.IsAllowed = false;
+        public void OnPlaceBlood(PlacingBloodEventArgs ev) => ev.IsAllowed = false;
+        public void OnDropItem(DroppingItemEventArgs ev) => ev.IsAllowed = false;
+        public void OnDropAmmo(DroppingAmmoEventArgs ev) => ev.IsAllowed = false;
     }
 }

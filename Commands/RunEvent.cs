@@ -17,7 +17,7 @@ namespace AutoEvent.Commands
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            if (!((CommandSender)sender).CheckPermission("ev.run"))
+            if (!((CommandSender)sender).CheckPermission(".run"))
             {
                 response = "You do not have permission to use this command";
                 return false;
@@ -38,10 +38,10 @@ namespace AutoEvent.Commands
                 response = "Only 1 argument is needed - the command name of the event!";
                 return false;
             }
-            var arr = GetTypesInNamespace(Assembly.GetExecutingAssembly(), "AutoEvent.Events");
-            foreach (var type in arr)
+
+            foreach (var type in Assembly.GetExecutingAssembly().GetTypes())
             {
-                if (type.GetProperty("CommandName") != null)
+                if (type.Namespace.Contains("AutoEvent") && !type.IsInterface && typeof(IEvent).IsAssignableFrom(type) && type.GetProperty("CommandName") != null)
                 {
                     var ev = Activator.CreateInstance(type);
                     try

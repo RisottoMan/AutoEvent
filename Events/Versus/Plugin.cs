@@ -7,38 +7,42 @@ using AutoEvent.Interfaces;
 using Exiled.API.Features;
 using MapEditorReborn.API.Features.Objects;
 using UnityEngine;
-using Exiled.API.Enums;
 using Random = UnityEngine.Random;
 
-namespace AutoEvent.Events
+namespace AutoEvent.Events.Versus
 {
-    internal class VersusEvent : IEvent
+    public class Plugin : IEvent
     {
         public string Name => AutoEvent.Singleton.Translation.VersusName;
         public string Description => AutoEvent.Singleton.Translation.VersusDescription;
         public string Color => "FFFF00";
         public string CommandName => "versus";
         public SchematicObject GameMap { get; set; }
-        public static Player Scientist { get; set; }
-        public static Player ClassD { get; set; }
+        public Player Scientist { get; set; }
+        public Player ClassD { get; set; }
         public TimeSpan EventTime { get; set; }
+
+        EventHandler _eventHandler;
 
         public void OnStart()
         {
-            Exiled.Events.Handlers.Player.Verified += VersusHandler.OnJoin;
-            Exiled.Events.Handlers.Player.DroppingItem += VersusHandler.OnDroppingItem;
-            Exiled.Events.Handlers.Server.RespawningTeam += VersusHandler.OnTeamRespawn;
-            Exiled.Events.Handlers.Player.Died += VersusHandler.OnDead;
+            _eventHandler = new EventHandler(this);
+
+            Exiled.Events.Handlers.Player.Verified += _eventHandler.OnJoin;
+            Exiled.Events.Handlers.Player.DroppingItem += _eventHandler.OnDroppingItem;
+            Exiled.Events.Handlers.Server.RespawningTeam += _eventHandler.OnTeamRespawn;
+            Exiled.Events.Handlers.Player.Died += _eventHandler.OnDead;
             OnEventStarted();
         }
         public void OnStop()
         {
-            Exiled.Events.Handlers.Player.Verified -= VersusHandler.OnJoin;
-            Exiled.Events.Handlers.Player.DroppingItem -= VersusHandler.OnDroppingItem;
-            Exiled.Events.Handlers.Server.RespawningTeam -= VersusHandler.OnTeamRespawn;
-            Exiled.Events.Handlers.Player.Died -= VersusHandler.OnDead;
+            Exiled.Events.Handlers.Player.Verified -= _eventHandler.OnJoin;
+            Exiled.Events.Handlers.Player.DroppingItem -= _eventHandler.OnDroppingItem;
+            Exiled.Events.Handlers.Server.RespawningTeam -= _eventHandler.OnTeamRespawn;
+            Exiled.Events.Handlers.Player.Died -= _eventHandler.OnDead;
             Timing.CallDelayed(10f, () => EventEnd());
             AutoEvent.ActiveEvent = null;
+            _eventHandler = null;
         }
         public void OnEventStarted()
         {

@@ -1,63 +1,61 @@
 ﻿using AutoEvent.Interfaces;
-using Exiled.API.Enums;
 using Exiled.API.Features;
 using Exiled.API.Features.Items;
-using HarmonyLib;
-using InventorySystem;
-using InventorySystem.Items;
-using InventorySystem.Items.Pickups;
 using MapEditorReborn.API.Features.Objects;
 using MEC;
-using PlayerRoles;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using Object = UnityEngine.Object;
-using Random = UnityEngine.Random;
 
-namespace AutoEvent.Events
+namespace AutoEvent.Events.GunGame
 {
-    internal class GunGameEvent : IEvent
+    public class Plugin : IEvent
     {
         public string Name => AutoEvent.Singleton.Translation.GunGameName;
         public string Description => AutoEvent.Singleton.Translation.GunGameDescription;
         public string Color => "FFFF00";
         public string CommandName => "gungame";
         public TimeSpan EventTime { get; set; }
-        public static SchematicObject GameMap { get; set; }
-        public static List<Vector3> Spawners { get; set; } = new List<Vector3>();
-        public static Player Winner { get; set; }
-        public static Dictionary<Player, Stats> PlayerStats;
+        public SchematicObject GameMap { get; set; }
+        public List<Vector3> Spawners { get; set; } = new List<Vector3>();
+        public Player Winner { get; set; }
+        public Dictionary<Player, Stats> PlayerStats;
+
+        EventHandler _eventHandler;
+
         public void OnStart()
         {
-            Exiled.Events.Handlers.Player.Verified += GunGameHandler.OnJoin;
-            Exiled.Events.Handlers.Server.RespawningTeam += GunGameHandler.OnTeamRespawn;
-            Exiled.Events.Handlers.Player.Dying += GunGameHandler.OnPlayerDying;
-            Exiled.Events.Handlers.Player.SpawningRagdoll += GunGameHandler.OnSpawnRagdoll;
-            Exiled.Events.Handlers.Player.Spawned += GunGameHandler.OnSpawned;
-            Exiled.Events.Handlers.Player.DroppingItem += GunGameHandler.OnDropItem;
-            Exiled.Events.Handlers.Map.PlacingBulletHole += GunGameHandler.OnPlaceBullet;
-            Exiled.Events.Handlers.Map.PlacingBlood += GunGameHandler.OnPlaceBlood;
-            Exiled.Events.Handlers.Player.Shooting += GunGameHandler.OnShooting;
-            Exiled.Events.Handlers.Player.DroppingAmmo += GunGameHandler.OnDropAmmo;
+            _eventHandler = new EventHandler(this);
+
+            Exiled.Events.Handlers.Player.Verified += _eventHandler.OnJoin;
+            Exiled.Events.Handlers.Server.RespawningTeam += _eventHandler.OnTeamRespawn;
+            Exiled.Events.Handlers.Player.Dying += _eventHandler.OnPlayerDying;
+            Exiled.Events.Handlers.Player.SpawningRagdoll += _eventHandler.OnSpawnRagdoll;
+            Exiled.Events.Handlers.Player.Spawned += _eventHandler.OnSpawned;
+            Exiled.Events.Handlers.Player.DroppingItem += _eventHandler.OnDropItem;
+            Exiled.Events.Handlers.Map.PlacingBulletHole += _eventHandler.OnPlaceBullet;
+            Exiled.Events.Handlers.Map.PlacingBlood += _eventHandler.OnPlaceBlood;
+            Exiled.Events.Handlers.Player.Shooting += _eventHandler.OnShooting;
+            Exiled.Events.Handlers.Player.DroppingAmmo += _eventHandler.OnDropAmmo;
             OnEventStarted();
         }
         public void OnStop()
         {
-            Exiled.Events.Handlers.Player.Verified -= GunGameHandler.OnJoin;
-            Exiled.Events.Handlers.Server.RespawningTeam -= GunGameHandler.OnTeamRespawn;
-            Exiled.Events.Handlers.Player.Dying -= GunGameHandler.OnPlayerDying;
-            Exiled.Events.Handlers.Player.SpawningRagdoll -= GunGameHandler.OnSpawnRagdoll;
-            Exiled.Events.Handlers.Player.Spawned -= GunGameHandler.OnSpawned;
-            Exiled.Events.Handlers.Player.DroppingItem -= GunGameHandler.OnDropItem;
-            Exiled.Events.Handlers.Map.PlacingBulletHole -= GunGameHandler.OnPlaceBullet;
-            Exiled.Events.Handlers.Map.PlacingBlood -= GunGameHandler.OnPlaceBlood;
-            Exiled.Events.Handlers.Player.Shooting -= GunGameHandler.OnShooting;
-            Exiled.Events.Handlers.Player.DroppingAmmo -= GunGameHandler.OnDropAmmo;
+            Exiled.Events.Handlers.Player.Verified -= _eventHandler.OnJoin;
+            Exiled.Events.Handlers.Server.RespawningTeam -= _eventHandler.OnTeamRespawn;
+            Exiled.Events.Handlers.Player.Dying -= _eventHandler.OnPlayerDying;
+            Exiled.Events.Handlers.Player.SpawningRagdoll -= _eventHandler.OnSpawnRagdoll;
+            Exiled.Events.Handlers.Player.Spawned -= _eventHandler.OnSpawned;
+            Exiled.Events.Handlers.Player.DroppingItem -= _eventHandler.OnDropItem;
+            Exiled.Events.Handlers.Map.PlacingBulletHole -= _eventHandler.OnPlaceBullet;
+            Exiled.Events.Handlers.Map.PlacingBlood -= _eventHandler.OnPlaceBlood;
+            Exiled.Events.Handlers.Player.Shooting -= _eventHandler.OnShooting;
+            Exiled.Events.Handlers.Player.DroppingAmmo -= _eventHandler.OnDropAmmo;
 
             Timing.CallDelayed(10f, () => EventEnd());
             AutoEvent.ActiveEvent = null;
+            _eventHandler = null;
         }
         public void OnEventStarted()
         {

@@ -1,16 +1,15 @@
 ﻿using MEC;
 using PlayerRoles;
 using UnityEngine;
-using AutoEvent.Events;
 
 using Exiled.Events.EventArgs.Player;
 using Exiled.Events.EventArgs.Server;
 
-namespace AutoEvent
+namespace AutoEvent.Events.Infection
 {
-    internal class InfectionHandler
+    public class EventHandler
     {
-        public static void OnDamage(HurtingEventArgs ev)
+        public void OnDamage(HurtingEventArgs ev)
         {
             if (ev.Attacker != null)
             {
@@ -21,25 +20,22 @@ namespace AutoEvent
                 }
             }
         }
-        public static void OnDead(DiedEventArgs ev)
+        public void OnDead(DiedEventArgs ev)
         {
             Timing.CallDelayed(2f, () =>
             {
                 ev.Player.Role.Set(RoleTypeId.Scp0492, Exiled.API.Enums.SpawnReason.None, RoleSpawnFlags.None);
-                ev.Player.Position = InfectionEvent.GameMap.transform.position + new Vector3(-18.75f, 2.5f, 0f);
+                ev.Player.Position = Plugin.GameMap.transform.position + new Vector3(-18.75f, 2.5f, 0f);
             });
         }
-        public static void OnJoin(VerifiedEventArgs ev)
+        public void OnJoin(VerifiedEventArgs ev)
         {
             Timing.CallDelayed(2f, () =>
             {
                 ev.Player.Role.Set(RoleTypeId.Scp0492, Exiled.API.Enums.SpawnReason.None, RoleSpawnFlags.None);
-                ev.Player.Position = InfectionEvent.GameMap.transform.position + new Vector3(-18.75f, 2.5f, 0f);
+                ev.Player.Position = Plugin.GameMap.transform.position + new Vector3(-18.75f, 2.5f, 0f);
             });
         }
-        public static void OnTeamRespawn(RespawningTeamEventArgs ev)
-        {
-            ev.IsAllowed = false;
-        }
+        public void OnTeamRespawn(RespawningTeamEventArgs ev) { ev.IsAllowed = false; }
     }
 }

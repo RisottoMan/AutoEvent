@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 using Random = UnityEngine.Random;
 
-namespace AutoEvent.Events
+namespace AutoEvent.Events.Jail
 {
-    internal class JailRandom
+    public class JailRandom
     {
         public static Vector3 GetRandomPosition()
         {

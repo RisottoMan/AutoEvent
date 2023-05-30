@@ -7,30 +7,38 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace AutoEvent.Events
+namespace AutoEvent.Events.Escape
 {
-    internal class EscapeEvent : IEvent
+    public class Plugin : IEvent
     {
         public string Name => AutoEvent.Singleton.Translation.EscapeName;
         public string Description => AutoEvent.Singleton.Translation.EscapeDescription;
         public string Color => "FFFF00";
         public string CommandName => "escape";
-        public static TimeSpan EventTime { get; set; }
+        public TimeSpan EventTime { get; set; }
+
+        EventHandler _eventHandler;
 
         public void OnStart()
         {
-            Exiled.Events.Handlers.Player.Verified += EscapeHandler.OnJoin;
-            Exiled.Events.Handlers.Cassie.SendingCassieMessage += EscapeHandler.OnSendCassie;
-            Exiled.Events.Handlers.Server.RespawningTeam += EscapeHandler.OnTeamRespawn;
+            _eventHandler = new EventHandler();
+
+            Exiled.Events.Handlers.Player.Verified += _eventHandler.OnJoin;
+            Exiled.Events.Handlers.Cassie.SendingCassieMessage += _eventHandler.OnSendCassie;
+            Exiled.Events.Handlers.Server.RespawningTeam += _eventHandler.OnTeamRespawn;
+            Exiled.Events.Handlers.Scp173.PlacingTantrum += _eventHandler.OnPlaceTantrum;
             OnEventStarted();
         }
         public void OnStop()
         {
-            Exiled.Events.Handlers.Player.Verified -= EscapeHandler.OnJoin;
-            Exiled.Events.Handlers.Cassie.SendingCassieMessage -= EscapeHandler.OnSendCassie;
-            Exiled.Events.Handlers.Server.RespawningTeam -= EscapeHandler.OnTeamRespawn;
+            Exiled.Events.Handlers.Player.Verified -= _eventHandler.OnJoin;
+            Exiled.Events.Handlers.Cassie.SendingCassieMessage -= _eventHandler.OnSendCassie;
+            Exiled.Events.Handlers.Server.RespawningTeam -= _eventHandler.OnTeamRespawn;
+            Exiled.Events.Handlers.Scp173.PlacingTantrum -= _eventHandler.OnPlaceTantrum;
+
             Timing.CallDelayed(5f, () => EventEnd());
             AutoEvent.ActiveEvent = null;
+            _eventHandler = null;
         }
 
         public void OnEventStarted()

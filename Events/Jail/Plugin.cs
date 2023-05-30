@@ -9,40 +9,46 @@ using System.Linq;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace AutoEvent.Events
+namespace AutoEvent.Events.Jail
 {
-    internal class JailEvent : IEvent
+    public class Plugin : IEvent
     {
         public string Name => AutoEvent.Singleton.Translation.JailName;
         public string Description => AutoEvent.Singleton.Translation.JailDescription;
         public string Color => "FFFF00";
         public string CommandName => "jail";
-        public static SchematicObject GameMap { get; set; }
-        public static GameObject Button { get; set; }
-        public static Dictionary<GameObject, float> JailerDoorsTime { get; set; } = new Dictionary<GameObject, float>();
-        public static TimeSpan EventTime { get; set; }
-        public static bool isDoorsOpen = false;
+        public SchematicObject GameMap { get; set; }
+        public GameObject Button { get; set; }
+        public Dictionary<GameObject, float> JailerDoorsTime { get; set; } = new Dictionary<GameObject, float>();
+        public TimeSpan EventTime { get; set; }
+        public bool isDoorsOpen = false;
+
+        EventHandler _eventHandler;
 
         public void OnStart()
         {
-            Exiled.Events.Handlers.Player.Shooting += JailHandler.OnShootEvent;
-            Exiled.Events.Handlers.Player.InteractingLocker += JailHandler.OnInteractLocker;
-            Exiled.Events.Handlers.Server.RespawningTeam += JailHandler.OnTeamRespawn;
+            _eventHandler = new EventHandler(this);
+
+            Exiled.Events.Handlers.Player.Shooting += _eventHandler.OnShootEvent;
+            Exiled.Events.Handlers.Player.InteractingLocker += _eventHandler.OnInteractLocker;
+            Exiled.Events.Handlers.Server.RespawningTeam += _eventHandler.OnTeamRespawn;
             OnWaitingEvent();
         }
         public void OnStop()
         {
-            Exiled.Events.Handlers.Player.Shooting -= JailHandler.OnShootEvent;
-            Exiled.Events.Handlers.Player.InteractingLocker -= JailHandler.OnInteractLocker;
-            Exiled.Events.Handlers.Server.RespawningTeam -= JailHandler.OnTeamRespawn;
+            Exiled.Events.Handlers.Player.Shooting -= _eventHandler.OnShootEvent;
+            Exiled.Events.Handlers.Player.InteractingLocker -= _eventHandler.OnInteractLocker;
+            Exiled.Events.Handlers.Server.RespawningTeam -= _eventHandler.OnTeamRespawn;
+
             Timing.CallDelayed(10f, () => EventEnd());
             AutoEvent.ActiveEvent = null;
+            _eventHandler = null;
         }
         public void OnWaitingEvent()
         {
             GameMap = Extensions.LoadMap("Jail", new Vector3(115.5f, 1030f, -43.5f), new Quaternion(0, 0, 0, 0), new Vector3(1, 1, 1));
             // Setup instruction
-            //Extensions.PlayAudio("Jail.ogg", 15, false, "Instruction");
+            Extensions.PlayAudio("Jail.ogg", 15, false, "Instruction");
             Server.FriendlyFire = true;
             // The button for the shot
             Button = new GameObject("button");
@@ -142,12 +148,12 @@ namespace AutoEvent.Events
         {
             isDoorsOpen = false;
             Server.FriendlyFire = false;
+            JailerDoorsTime.Clear();
+            GameObject.Destroy(Button);
 
             Extensions.CleanUpAll();
             Extensions.TeleportEnd();
             Extensions.UnLoadMap(GameMap);
-            JailerDoorsTime.Clear();
-            GameObject.Destroy(Button);
             Extensions.StopAudio();
         }
     }

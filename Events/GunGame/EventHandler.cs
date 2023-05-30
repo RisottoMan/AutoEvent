@@ -4,29 +4,23 @@ using Exiled.API.Features.Items;
 using Exiled.Events.EventArgs.Map;
 using Exiled.Events.EventArgs.Player;
 using Exiled.Events.EventArgs.Server;
-using HarmonyLib;
-using InventorySystem;
-using InventorySystem.Items;
-using InventorySystem.Items.Pickups;
 using MapEditorReborn.API.Features.Objects;
-using MEC;
-using PlayerRoles;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
-using static AutoEvent.Events.GunGameEvent;
-using Object = UnityEngine.Object;
 
-namespace AutoEvent.Events
+namespace AutoEvent.Events.GunGame
 {
-    internal class GunGameHandler
+    public class EventHandler
     {
-        public static void OnJoin(VerifiedEventArgs ev)
+        SchematicObject _gameMap;
+        Dictionary<Player, Stats> _playerStats;
+        public EventHandler(Plugin plugin)
         {
-            PlayerStats.Add(ev.Player, new Stats
+            _gameMap = plugin.GameMap;
+            _playerStats = plugin.PlayerStats;
+        }
+        public void OnJoin(VerifiedEventArgs ev)
+        {
+            _playerStats.Add(ev.Player, new Stats
             {
                 kill = 0,
                 level = 1
@@ -34,17 +28,17 @@ namespace AutoEvent.Events
 
             ev.Player.Role.Set(GunGameRandom.GetRandomRole());
             ev.Player.ClearInventory();
-            ev.Player.CurrentItem = Item.Create(GunGameGuns.GunForLevel[PlayerStats[ev.Player].level], ev.Player);
-            ev.Player.Position = GameMap.Position + GunGameRandom.GetRandomPosition();
+            ev.Player.CurrentItem = Item.Create(GunGameGuns.GunForLevel[_playerStats[ev.Player].level], ev.Player);
+            ev.Player.Position = _gameMap.Position + GunGameRandom.GetRandomPosition();
         }
-        public static void OnPlayerDying(DyingEventArgs ev)
+        public void OnPlayerDying(DyingEventArgs ev)
         {
             ev.IsAllowed = false;
             ev.Player.Health = 100;
             // Attacker shit
             if (ev.Attacker != null)
             {
-                PlayerStats.TryGetValue(ev.Attacker, out Stats statsAttacker);
+                _playerStats.TryGetValue(ev.Attacker, out Stats statsAttacker);
                 statsAttacker.kill++;
                 if (statsAttacker.kill >= 2)
                 {
@@ -52,19 +46,19 @@ namespace AutoEvent.Events
                     statsAttacker.kill = 0;
 
                     ev.Attacker.ClearInventory();
-                    ev.Attacker.CurrentItem = Item.Create(GunGameGuns.GunForLevel[PlayerStats[ev.Attacker].level], ev.Attacker);
+                    ev.Attacker.CurrentItem = Item.Create(GunGameGuns.GunForLevel[_playerStats[ev.Attacker].level], ev.Attacker);
                 }
             }
             // Target shit
             if (ev.Player != null)
             {
                 ev.Player.ClearInventory();
-                ev.Player.CurrentItem = Item.Create(GunGameGuns.GunForLevel[PlayerStats[ev.Player].level], ev.Player);
+                ev.Player.CurrentItem = Item.Create(GunGameGuns.GunForLevel[_playerStats[ev.Player].level], ev.Player);
                 ev.Player.EnableEffect<CustomPlayerEffects.SpawnProtected>(1);
-                ev.Player.Position = GameMap.Position + GunGameRandom.GetRandomPosition();
+                ev.Player.Position = _gameMap.Position + GunGameRandom.GetRandomPosition();
             }
         }
-        public static void OnShooting(ShootingEventArgs ev)
+        public void OnShooting(ShootingEventArgs ev)
         {
             switch (ev.Player.Inventory.CurItem.TypeId)
             {
@@ -79,7 +73,7 @@ namespace AutoEvent.Events
                 case (ItemType.GunShotgun): { ev.Player.AddAmmo(AmmoType.Ammo12Gauge, 1); } break;
             }
         }
-        public static void OnSpawned(SpawnedEventArgs ev)
+        public void OnSpawned(SpawnedEventArgs ev)
         {
             ev.Player.AddAmmo(AmmoType.Nato9, 50);
             ev.Player.AddAmmo(AmmoType.Ammo44Cal, 50);
@@ -87,11 +81,11 @@ namespace AutoEvent.Events
             ev.Player.AddAmmo(AmmoType.Nato762, 50);
             ev.Player.AddAmmo(AmmoType.Ammo12Gauge, 50);
         }
-        public static void OnDropItem(DroppingItemEventArgs ev) => ev.IsAllowed = false;
-        public static void OnTeamRespawn(RespawningTeamEventArgs ev) => ev.IsAllowed = false;
-        public static void OnSpawnRagdoll(SpawningRagdollEventArgs ev) => ev.IsAllowed = false;
-        public static void OnPlaceBullet(PlacingBulletHole ev) => ev.IsAllowed = false;
-        public static void OnPlaceBlood(PlacingBloodEventArgs ev) => ev.IsAllowed = false;
-        public static void OnDropAmmo(DroppingAmmoEventArgs ev) => ev.IsAllowed = false;
+        public void OnDropItem(DroppingItemEventArgs ev) => ev.IsAllowed = false;
+        public void OnTeamRespawn(RespawningTeamEventArgs ev) => ev.IsAllowed = false;
+        public void OnSpawnRagdoll(SpawningRagdollEventArgs ev) => ev.IsAllowed = false;
+        public void OnPlaceBullet(PlacingBulletHole ev) => ev.IsAllowed = false;
+        public void OnPlaceBlood(PlacingBloodEventArgs ev) => ev.IsAllowed = false;
+        public void OnDropAmmo(DroppingAmmoEventArgs ev) => ev.IsAllowed = false;
     }
 }

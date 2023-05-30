@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-namespace AutoEvent.Events
+namespace AutoEvent.Events.GunGame
 {
     internal class GunGameRandom
     {

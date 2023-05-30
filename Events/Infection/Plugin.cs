@@ -9,9 +9,9 @@ using System.Linq;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-namespace AutoEvent.Events
+namespace AutoEvent.Events.Infection
 {
-    internal class InfectionEvent : IEvent
+    public class Plugin : IEvent
     {
         public string Name => AutoEvent.Singleton.Translation.ZombieName;
         public string Description => AutoEvent.Singleton.Translation.ZombieDescription;
@@ -20,33 +20,37 @@ namespace AutoEvent.Events
         public static SchematicObject GameMap { get; set; }
         public static TimeSpan EventTime { get; set; }
 
+        EventHandler _eventHandler;
+
         public void OnStart()
         {
-            Exiled.Events.Handlers.Player.Verified += InfectionHandler.OnJoin;
-            Exiled.Events.Handlers.Player.Died += InfectionHandler.OnDead;
-            Exiled.Events.Handlers.Player.Hurting += InfectionHandler.OnDamage;
-            Exiled.Events.Handlers.Server.RespawningTeam += InfectionHandler.OnTeamRespawn;
+            _eventHandler = new EventHandler();
+            Exiled.Events.Handlers.Player.Verified += _eventHandler.OnJoin;
+            Exiled.Events.Handlers.Player.Died += _eventHandler.OnDead;
+            Exiled.Events.Handlers.Player.Hurting += _eventHandler.OnDamage;
+            Exiled.Events.Handlers.Server.RespawningTeam += _eventHandler.OnTeamRespawn;
             OnEventStarted();
         }
         public void OnStop()
         {
-            Exiled.Events.Handlers.Player.Verified -= InfectionHandler.OnJoin;
-            Exiled.Events.Handlers.Player.Died -= InfectionHandler.OnDead;
-            Exiled.Events.Handlers.Player.Hurting -= InfectionHandler.OnDamage;
-            Exiled.Events.Handlers.Server.RespawningTeam -= InfectionHandler.OnTeamRespawn;
+            Exiled.Events.Handlers.Player.Verified -= _eventHandler.OnJoin;
+            Exiled.Events.Handlers.Player.Died -= _eventHandler.OnDead;
+            Exiled.Events.Handlers.Player.Hurting -= _eventHandler.OnDamage;
+            Exiled.Events.Handlers.Server.RespawningTeam -= _eventHandler.OnTeamRespawn;
             Timing.CallDelayed(10f, () => EventEnd());
             AutoEvent.ActiveEvent = null;
+            _eventHandler = null;
         }
         public void OnEventStarted()
         {
             EventTime = new TimeSpan(0, 0, 0);
             GameMap = Extensions.LoadMap("Zombie", new Vector3(115.5f, 1030f, -43.5f), new Quaternion(0, 0, 0, 0), new Vector3(1, 1, 1));
-            switch(Random.Range(0, 1))
+            switch(Random.Range(0, 2))
             {
                 case 0: Extensions.PlayAudio("Zombie.ogg", 15, true, Name); break;
                 case 1: Extensions.PlayAudio("Zombie2.ogg", 15, true, Name); break;
             }
-            foreach(Player player in Player.List)
+            foreach (Player player in Player.List)
             {
                 player.Role.Set(RoleTypeId.ClassD, Exiled.API.Enums.SpawnReason.None, RoleSpawnFlags.None);
                 player.Position = GameMap.transform.position + new Vector3(-18.75f, 2.5f, 0f);

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AutoEvent.Events
+namespace AutoEvent.Events.GunGame
 {
     public class Stats
     {
