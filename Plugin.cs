@@ -1,15 +1,15 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using AutoEvent.Interfaces;
 using Exiled.API.Features;
 using HarmonyLib;
-using Version = System.Version;
 
 namespace AutoEvent
 {
     public class AutoEvent : Plugin<Config, Translation>
     {
         public override string Name => "AutoEvent";
-        public override string Author => "Created by KoT0XleB (:D)";
+        public override string Author => "Created by KoT0XleB :D";
         public override Version Version => new Version(7, 1, 0);
         public static IEvent ActiveEvent = null;
         public static AutoEvent Singleton;

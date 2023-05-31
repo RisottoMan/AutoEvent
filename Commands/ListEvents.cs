@@ -3,7 +3,6 @@ using CommandSystem;
 using Exiled.API.Features;
 using Exiled.Permissions.Extensions;
 using System;
-using System.Linq;
 using System.Reflection;
 
 namespace AutoEvent.Commands
@@ -17,7 +16,7 @@ namespace AutoEvent.Commands
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
             Log.Info("List");
-            if (!((CommandSender)sender).CheckPermission(".list"))
+            if (!((CommandSender)sender).CheckPermission("ev.list"))
             {
                 response = "You do not have permission to use this command";
                 return false;
@@ -50,13 +49,6 @@ namespace AutoEvent.Commands
             }
             response = resp;
             return true;
-        }
-        static private Type[] GetTypesInNamespace(Assembly assembly, string nameSpace)
-        {
-            return
-              assembly.GetTypes()
-                      .Where(t => String.Equals(t.Namespace, nameSpace, StringComparison.Ordinal))
-                      .ToArray();
         }
     }
 }
