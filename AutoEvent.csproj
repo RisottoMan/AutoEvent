@@ -112,6 +112,8 @@
     <Compile Include="Events\Deathmatch\Plugin.cs" />
     <Compile Include="Events\Deathmatch\EventHandler.cs" />
     <Compile Include="Events\Deathmatch\Extensions\RandomClass.cs" />
+    <Compile Include="Events\Example\EventHandler.cs" />
+    <Compile Include="Events\Example\Plugin.cs" />
     <Compile Include="Events\GunGame\Plugin.cs" />
     <Compile Include="Events\GunGame\Extensions\GunGameGuns.cs" />
     <Compile Include="Events\GunGame\EventHandler.cs" />
