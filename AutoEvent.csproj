@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -33,73 +33,36 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="0Harmony">
-      <HintPath>..\..\..\Рабочий стол\файлы\0Harmony.dll</HintPath>
+      <HintPath>D:\d\0Harmony.dll</HintPath>
+    </Reference>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>D:\d\13\Assembly-CSharp.dll</HintPath>
     </Reference>
     <Reference Include="Assembly-CSharp-firstpass, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Рабочий стол\файлы\Assembly-CSharp-firstpass.dll</HintPath>
-    </Reference>
-    <Reference Include="Assembly-CSharp-Publicized, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Рабочий стол\файлы\Assembly-CSharp-Publicized.dll</HintPath>
-    </Reference>
-    <Reference Include="CommandSystem.Core, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\EXILED.7.0.0-rc.3-1\lib\net48\CommandSystem.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="Exiled.API, Version=7.0.0.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>packages\EXILED.7.0.0-rc.3-1\lib\net48\Exiled.API.dll</HintPath>
-    </Reference>
-    <Reference Include="Exiled.CreditTags, Version=7.0.0.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>packages\EXILED.7.0.0-rc.3-1\lib\net48\Exiled.CreditTags.dll</HintPath>
-    </Reference>
-    <Reference Include="Exiled.CustomItems, Version=7.0.0.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>packages\EXILED.7.0.0-rc.3-1\lib\net48\Exiled.CustomItems.dll</HintPath>
-    </Reference>
-    <Reference Include="Exiled.CustomRoles, Version=7.0.0.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>packages\EXILED.7.0.0-rc.3-1\lib\net48\Exiled.CustomRoles.dll</HintPath>
-    </Reference>
-    <Reference Include="Exiled.Events, Version=7.0.0.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>packages\EXILED.7.0.0-rc.3-1\lib\net48\Exiled.Events.dll</HintPath>
-    </Reference>
-    <Reference Include="Exiled.Loader, Version=7.0.0.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>packages\EXILED.7.0.0-rc.3-1\lib\net48\Exiled.Loader.dll</HintPath>
-    </Reference>
-    <Reference Include="Exiled.Permissions, Version=7.0.0.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>packages\EXILED.7.0.0-rc.3-1\lib\net48\Exiled.Permissions.dll</HintPath>
-    </Reference>
-    <Reference Include="Exiled.Updater, Version=3.1.2.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>packages\EXILED.7.0.0-rc.3-1\lib\net48\Exiled.Updater.dll</HintPath>
+      <HintPath>D:\d\13\Assembly-CSharp-firstpass.dll</HintPath>
     </Reference>
     <Reference Include="MapEditorReborn, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Рабочий стол\файлы\MapEditorReborn.dll</HintPath>
+      <HintPath>D:\d\13\MapEditorReborn.dll</HintPath>
     </Reference>
     <Reference Include="Mirror, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Рабочий стол\файлы\Mirror.dll</HintPath>
-    </Reference>
-    <Reference Include="NorthwoodLib, Version=1.2.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\EXILED.7.0.0-rc.3-1\lib\net48\NorthwoodLib.dll</HintPath>
-    </Reference>
-    <Reference Include="PluginAPI, Version=12.0.0.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>packages\EXILED.7.0.0-rc.3-1\lib\net48\PluginAPI.dll</HintPath>
+      <HintPath>D:\d\13\Mirror.dll</HintPath>
     </Reference>
     <Reference Include="SCPSLAudioApi, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Users\Roman\AppData\Roaming\EXILED\Plugins\dependencies\SCPSLAudioApi.dll</HintPath>
+      <HintPath>D:\d\13\SCPSLAudioApi.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="UnityEngine">
-      <HintPath>..\..\Рабочий стол\файлы\UnityEngine.dll</HintPath>
+      <HintPath>D:\d\13\UnityEngine.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.CoreModule">
-      <HintPath>..\..\Рабочий стол\файлы\UnityEngine.CoreModule.dll</HintPath>
+      <HintPath>D:\d\13\UnityEngine.CoreModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.PhysicsModule">
-      <HintPath>..\..\Рабочий стол\файлы\UnityEngine.PhysicsModule.dll</HintPath>
-    </Reference>
-    <Reference Include="YamlDotNet, Version=11.0.0.0, Culture=neutral, PublicKeyToken=ec19458f3c15af5e, processorArchitecture=MSIL">
-      <HintPath>packages\EXILED.7.0.0-rc.3-1\lib\net48\YamlDotNet.dll</HintPath>
+      <HintPath>D:\d\13\UnityEngine.PhysicsModule.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -119,8 +82,6 @@
     <Compile Include="Events\GunGame\EventHandler.cs" />
     <Compile Include="Events\GunGame\Extensions\GunGameRandom.cs" />
     <Compile Include="Events\GunGame\Extensions\Stats.cs" />
-    <Compile Include="Events\HideAndSeek\Plugin.cs" />
-    <Compile Include="Events\HideAndSeek\EventHandler.cs" />
     <Compile Include="Events\Knives\Plugin.cs" />
     <Compile Include="Events\Knives\EventHandler.cs" />
     <Compile Include="Events\Escape\Plugin.cs" />
@@ -130,9 +91,6 @@
     <Compile Include="Events\Jail\Plugin.cs" />
     <Compile Include="Events\Jail\EventHandler.cs" />
     <Compile Include="Events\Jail\Extensions\JailRandom.cs" />
-    <Compile Include="Events\Survival\Extensions\RandomClass.cs" />
-    <Compile Include="Events\Survival\Plugin.cs" />
-    <Compile Include="Events\Survival\EventHandler.cs" />
     <Compile Include="Events\Versus\Plugin.cs" />
     <Compile Include="Events\Versus\EventHandler.cs" />
     <Compile Include="Interfaces\IEvent.cs" />
@@ -142,7 +100,9 @@
     <Compile Include="Translation.cs" />
   </ItemGroup>
   <ItemGroup>
-    <WCFMetadata Include="Connected Services\" />
+    <PackageReference Include="EXILED">
+      <Version>7.0.0-rc.3-1</Version>
+    </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
