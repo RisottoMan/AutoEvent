@@ -30,8 +30,8 @@ jobs:
       - name: Get Build References
         shell: pwsh
         run: |
-          Invoke-WebRequest -Uri ${{ env.REFERENCES_URL }} -OutFile ${{ github.workspace }}/Dev.zip
-          Expand-Archive -Path Dev.zip -DestinationPath ${{ env.REFERENCES_PATH }}
+          Invoke-WebRequest -Uri ${{ env.REFERENCES_URL }} -OutFile ${{ github.workspace }}/Libs.zip
+          Expand-Archive -Path Libs.zip -DestinationPath ${{ env.REFERENCES_PATH }}
 
       - name: Setup MSBuild.exe
         uses: microsoft/Setup-MSBuild@v1
