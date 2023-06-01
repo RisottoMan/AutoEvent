@@ -1,6 +1,6 @@
-# Modification
+# Modify
 ## You can easily learn the structure of mini games and can create your own mini games
-## Or you can view the source code in the Example folder
+## Or you can view the source code in the Example folder [here](https://github.com/KoT0XleB/AutoEvent-Exiled/blob/main/Events/Example/Plugin.cs)
 ```
 namespace AutoEvent.Events.Example
 {
