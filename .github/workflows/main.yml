@@ -1,0 +1,49 @@
+name: AutoEventExiled Build
+on:
+  push:
+    branches:
+    - main
+    - dev
+    - MERfix
+  pull_request:
+    branches:
+    - main
+    - dev
+    - MERfix
+  workflow_dispatch:
+env:
+  REFERENCES_URL: https://katsuragigroup.net/Libs.zip
+  REFERENCES_PATH: ${{ github.workspace }}/References
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Setup .NET Core SDK
+        uses: actions/setup-dotnet@v3
+
+      - uses: actions/checkout@v3.3.0
+
+      - name: Restore Packages
+        run: nuget restore
+
+      - name: Get Build References
+        shell: pwsh
+        run: |
+          Invoke-WebRequest -Uri ${{ env.REFERENCES_URL }} -OutFile ${{ github.workspace }}/Dev.zip
+          Expand-Archive -Path Dev.zip -DestinationPath ${{ env.REFERENCES_PATH }}
+
+      - name: Setup MSBuild.exe
+        uses: microsoft/Setup-MSBuild@v1
+        env:
+          ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
+
+      - name: Build
+        run: | 
+          msbuild AutoEvent-Exiled\AutoEvent.csproj -t:rebuild -property:Configuration=Release -property:ReferencePath="${{ env.REFERENCES_PATH }}"
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: Scripted Events
+          path: "AutoEvent-Exiled/bin/Release/AutoEvent.dll"
