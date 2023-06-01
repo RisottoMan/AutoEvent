@@ -40,10 +40,10 @@ jobs:
 
       - name: Build
         run: | 
-          msbuild AutoEvent-Exiled\AutoEvent.csproj -t:rebuild -property:Configuration=Release -property:ReferencePath="${{ env.REFERENCES_PATH }}"
+          msbuild AutoEvent.csproj -t:rebuild -property:Configuration=Release -property:ReferencePath="${{ env.REFERENCES_PATH }}"
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: Scripted Events
+          name: AutoEvent Build
           path: "AutoEvent-Exiled/bin/Release/AutoEvent.dll"
