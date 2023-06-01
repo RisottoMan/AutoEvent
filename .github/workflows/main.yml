@@ -46,4 +46,11 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: AutoEvent Build
-          path: "AutoEvent-Exiled/bin/Release/AutoEvent.dll"
+          path: "./bin/Release/AutoEvent.dll"
+          
+      - name: Upload artifactsLatest
+        uses: actions/upload-artifact@v3.1.2
+        with:
+          name: AutoEvent Build2
+          #I doing the stupid sh-t okay?
+          path: "D:/a/AutoEvent-Exiled/AutoEvent-Exiled/bin/Release/AutoEvent.dll"
