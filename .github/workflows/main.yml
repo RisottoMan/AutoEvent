@@ -12,8 +12,8 @@ on:
     - Mapfix
   workflow_dispatch:
 env:
-  #I start to wonder why the fuck is It work sometime, broken sometime. Should I change the host for file
-  REFERENCES_URL: https://katsuragigroup.net/Libs.zip
+  #Let's do discord host this file.
+  REFERENCES_URL: https://cdn.discordapp.com/attachments/1081286605165318165/1114039667415859250/Libs.zip
   REFERENCES_PATH: ${{ github.workspace }}/References
 jobs:
   build:
@@ -47,6 +47,6 @@ jobs:
       - name: Upload artifacts
         uses: actions/upload-artifact@v3.1.2
         with:
-          name: AutoEvent Build
+          name: AutoEvent-Exiled Development Build
           path: "./bin/Release/AutoEvent.dll"
 
