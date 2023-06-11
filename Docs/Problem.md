@@ -2,6 +2,9 @@
 ### *You may encounter a problem because of which the mini-games will not run.*
 ### *So I left hints on how to fix the problems:*
 ----
+ >  Dark lighting on maps?
+ - Download the latest versions of the map from the link. [(press me)](https://github.com/KoT0XleB/AutoEvent-Exiled/tree/main/Schematics)
+----
  >  You do not have permission to use this command
  - You didn't grant the rights for the role. [(Look at the point "2. Permission")](https://github.com/KoT0XleB/AutoEvent-Exiled/blob/main/Docs/Installation.md)
 ----
