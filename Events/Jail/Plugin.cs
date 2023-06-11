@@ -48,7 +48,7 @@ namespace AutoEvent.Events.Jail
         {
             GameMap = Extensions.LoadMap("Jail", new Vector3(115.5f, 1030f, -43.5f), new Quaternion(0, 0, 0, 0), new Vector3(1, 1, 1));
             // Setup instruction
-            Extensions.PlayAudio("Jail.ogg", 15, false, "Instruction");
+            // Extensions.PlayAudio("Jail.ogg", 15, false, "Instruction");
             Server.FriendlyFire = true;
             // The button for the shot
             Button = new GameObject("button");
