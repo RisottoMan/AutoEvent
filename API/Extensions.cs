@@ -11,6 +11,7 @@ using SCPSLAudioApi.AudioCore;
 using VoiceChat;
 
 using Object = UnityEngine.Object;
+using System.Collections;
 
 namespace AutoEvent
 {
@@ -68,9 +69,12 @@ namespace AutoEvent
         /// <summary>Остановить прогирывание</summary>
         public static void StopAudio()
         {
+
             foreach (var dummies in Dummies)
             {
-                NetworkServer.Destroy(dummies.gameObject);
+                NetworkConnectionToClient conn = dummies.connectionToClient;
+                CustomNetworkManager.TypedSingleton.OnServerDisconnect(conn);
+                Object.Destroy(dummies.gameObject);
             }
             Dummies.Clear();
         }
