@@ -67,7 +67,6 @@ namespace AutoEvent
         /// <summary>Остановить прогирывание</summary>
         public static void StopAudio()
         {
-
             foreach (var dummies in Dummies)
             {
                 NetworkConnectionToClient conn = dummies.connectionToClient;
