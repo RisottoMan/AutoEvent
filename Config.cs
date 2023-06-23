@@ -1,4 +1,5 @@
-﻿using Exiled.API.Interfaces;
+﻿using AutoEvent.Events.Infection;
+using Exiled.API.Interfaces;
 using System.Collections.Generic;
 using System.ComponentModel;
 
@@ -20,5 +21,7 @@ namespace AutoEvent
             "donate2",
             "donate1"
         };
+        [Description("Infection config..")]
+        public InfectionConfig InfectionConfig { get; set; } = new InfectionConfig();
     }
 }
