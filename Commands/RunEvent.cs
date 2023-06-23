@@ -22,7 +22,6 @@ namespace AutoEvent.Commands
                 response = "You do not have permission to use this command";
                 return false;
             }
-            Player admin = Player.Get((sender as CommandSender).SenderId);
             if (!Round.IsStarted)
             {
                 response = "The round has not started!";
