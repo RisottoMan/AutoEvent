@@ -24,11 +24,23 @@ namespace AutoEvent
             if (!Config.IsEnabled) return;
             // Checking for the music directory
             if (!Directory.Exists(Path.Combine(Paths.Configs, "Music"))) Directory.CreateDirectory(Path.Combine(Paths.Configs, "Music"));
+            
+
+            Exiled.Events.Handlers.Server.RestartingRound += OnRestarting;
         }
         public override void OnDisabled()
         {
             HarmonyPatch.UnpatchAll();
             Singleton = null;
+
+            Exiled.Events.Handlers.Server.RestartingRound -= OnRestarting;
+        }
+        private void OnRestarting()
+        {
+            if (ActiveEvent == null) return;
+
+            // lmao, best way to prevent server crashes
+            ServerStatic.StopNextRound = ServerStatic.NextRoundAction.Restart;
         }
     }
 }
