@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>AutoEvent</RootNamespace>
     <AssemblyName>AutoEvent</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
   </PropertyGroup>
@@ -54,7 +54,7 @@
     <Reference Include="Pooling" HintPath="$(SL_REFERENCES)\Pooling.dll" />
     <Reference Include="Mirror" HintPath="$(SL_REFERENCES)\Mirror.dll" />
     <Reference Include="Caress" HintPath="$(SL_REFERENCES)\Caress.dll" />
-	<Reference Include="MapEditorReborn" HintPath="$(OTHER_REFERENCES)\MapEditorReborn.dll" />
+    <Reference Include="MapEditorReborn" HintPath="$(OTHER_REFERENCES)\MapEditorReborn.dll" />
     <Reference Include="SCPSLAudioApi" HintPath="$(OTHER_REFERENCES)\SCPSLAudioApi.dll" />
   </ItemGroup>
   <ItemGroup>
@@ -72,6 +72,7 @@
     <Compile Include="Events\GunGame\EventHandler.cs" />
     <Compile Include="Events\GunGame\Extensions\GunGameRandom.cs" />
     <Compile Include="Events\GunGame\Extensions\Stats.cs" />
+    <Compile Include="Events\Infection\Config.cs" />
     <Compile Include="Events\Knives\Plugin.cs" />
     <Compile Include="Events\Knives\EventHandler.cs" />
     <Compile Include="Events\Escape\Plugin.cs" />
