@@ -44,7 +44,7 @@ namespace AutoEvent.Events.Infection
         public void OnEventStarted()
         {
             EventTime = new TimeSpan(0, 0, 0);
-            GameMap = Extensions.LoadMap("Zombie", new Vector3(115.5f, 1030f, -43.5f), new Quaternion(0, 0, 0, 0), new Vector3(1, 1, 1));
+            GameMap = Extensions.LoadMap("Zombie", new Vector3(115.5f, 1030f, -43.5f), Quaternion.Euler(Vector3.zero), new Vector3(1, 1, 1));
             switch(Random.Range(0, 2))
             {
                 case 0: Extensions.PlayAudio("Zombie.ogg", 15, true, Name); break;

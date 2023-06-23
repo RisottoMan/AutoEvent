@@ -62,7 +62,7 @@ namespace AutoEvent.Events.Deathmatch
         public void OnEventStarted()
         {
             EventTime = new TimeSpan(0, 0, 0);
-            GameMap = Extensions.LoadMap("Shipment", new Vector3(120f, 1020f, -43.5f), new Quaternion(0, 0, 0, 0), new Vector3(1, 1, 1));
+            GameMap = Extensions.LoadMap("Shipment", new Vector3(120f, 1020f, -43.5f), Quaternion.Euler(Vector3.zero), new Vector3(1, 1, 1));
             //Extensions.PlayAudio("ClassicMusic.ogg", 3, true, Name);
 
             MtfKills = 0;

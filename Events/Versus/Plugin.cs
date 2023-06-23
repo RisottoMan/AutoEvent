@@ -49,7 +49,7 @@ namespace AutoEvent.Events.Versus
             EventTime = new TimeSpan(0, 0, 0);
             Scientist = null;
             ClassD = null;
-            GameMap = Extensions.LoadMap("35Hp", new Vector3(127.460f, 1016.707f, -43.68f), new Quaternion(0, 0, 0, 0), new Vector3(1, 1, 1));
+            GameMap = Extensions.LoadMap("35Hp", new Vector3(127.460f, 1016.707f, -43.68f), Quaternion.Euler(Vector3.zero), Vector3.one);
             Extensions.PlayAudio("Knife.ogg", 10, true, Name);
 
             var count = 0;
