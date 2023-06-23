@@ -9,9 +9,7 @@ using MapEditorReborn.API.Features;
 using MapEditorReborn.API.Features.Objects;
 using SCPSLAudioApi.AudioCore;
 using VoiceChat;
-
 using Object = UnityEngine.Object;
-using System.Collections;
 
 namespace AutoEvent
 {

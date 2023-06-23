@@ -62,7 +62,7 @@ namespace AutoEvent.Events.GunGame
             EventTime = new TimeSpan(0, 0, 0);
             Winner = null;
             PlayerStats = new Dictionary<Player, Stats>();
-            GameMap = Extensions.LoadMap("Shipment", new Vector3(120f, 1020f, -43.5f), Quaternion.Euler(Vector3.zero), new Vector3(1, 1, 1));
+            GameMap = Extensions.LoadMap("Shipment", new Vector3(120f, 1020f, -43.5f), Quaternion.Euler(Vector3.zero), Vector3.one);
             Extensions.PlayAudio("ClassicMusic.ogg", 3, true, Name);
 
             var count = 0;
