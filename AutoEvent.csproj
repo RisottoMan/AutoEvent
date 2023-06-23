@@ -85,6 +85,7 @@
     <Compile Include="Events\Versus\Plugin.cs" />
     <Compile Include="Events\Versus\EventHandler.cs" />
     <Compile Include="Interfaces\IEvent.cs" />
+    <Compile Include="Patch\JailBirdPatch.cs" />
     <Compile Include="Patch\RemoteAdminPatch.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
