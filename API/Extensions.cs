@@ -70,6 +70,7 @@ namespace AutoEvent
             foreach (var dummies in Dummies)
             {
                 NetworkConnectionToClient conn = dummies.connectionToClient;
+                dummies.OnDestroy();
                 CustomNetworkManager.TypedSingleton.OnServerDisconnect(conn);
                 Object.Destroy(dummies.gameObject);
             }
