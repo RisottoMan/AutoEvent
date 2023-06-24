@@ -79,7 +79,7 @@ namespace AutoEvent.Events.GunGame
                 player.ClearInventory();
 
                 player.CurrentItem = player.AddItem(GunGameGuns.GunForLevel[PlayerStats[player].level]);
-
+                player.EnableEffect<CustomPlayerEffects.SpawnProtected>(10);
                 player.Position = GameMap.Position + GunGameRandom.GetRandomPosition();
 
                 count++;
