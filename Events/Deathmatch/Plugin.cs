@@ -11,7 +11,7 @@ using UnityEngine;
 
 namespace AutoEvent.Events.Deathmatch
 {
-    public class Plugin// : IEvent
+    public class Plugin : IEvent
     {
         public string Name => AutoEvent.Singleton.Translation.DeathmatchName;
         public string Description => AutoEvent.Singleton.Translation.DeathmatchDescription;

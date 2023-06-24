@@ -10,7 +10,7 @@ using UnityEngine;
 
 namespace AutoEvent.Events.GunGame
 {
-    public class Plugin// : IEvent
+    public class Plugin : IEvent
     {
         public string Name => AutoEvent.Singleton.Translation.GunGameName;
         public string Description => AutoEvent.Singleton.Translation.GunGameDescription;
