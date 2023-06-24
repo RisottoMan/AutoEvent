@@ -22,10 +22,16 @@ namespace AutoEvent.Events.Versus
         public Player ClassD { get; set; }
         public TimeSpan EventTime { get; set; }
 
+        private bool isFreindlyFireEnabled;
+
         EventHandler _eventHandler;
 
         public void OnStart()
         {
+            isFreindlyFireEnabled = Server.FriendlyFire;
+
+            Server.FriendlyFire = false;
+
             _eventHandler = new EventHandler(this);
 
             Exiled.Events.Handlers.Player.Verified += _eventHandler.OnJoin;
@@ -36,6 +42,8 @@ namespace AutoEvent.Events.Versus
         }
         public void OnStop()
         {
+            Server.FriendlyFire = isFreindlyFireEnabled;
+
             Exiled.Events.Handlers.Player.Verified -= _eventHandler.OnJoin;
             Exiled.Events.Handlers.Player.DroppingItem -= _eventHandler.OnDroppingItem;
             Exiled.Events.Handlers.Server.RespawningTeam -= _eventHandler.OnTeamRespawn;
