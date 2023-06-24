@@ -18,9 +18,9 @@ namespace AutoEvent.Events.Infection
                     ev.Player.Role.Set(RoleTypeId.Scp0492, Exiled.API.Enums.SpawnReason.None, RoleSpawnFlags.None);
                     ev.Attacker.ShowHitMarker();
                 }
-                else if (!AutoEvent.Singleton.Config.InfectionConfig.FallDamageEnabled
-                    && ev.DamageHandler.Type == Exiled.API.Enums.DamageType.Falldown) ev.IsAllowed = false;
             }
+            else if (!AutoEvent.Singleton.Config.InfectionConfig.FallDamageEnabled
+                && ev.DamageHandler.Type == Exiled.API.Enums.DamageType.Falldown) ev.IsAllowed = false;
         }
         public void OnDead(DiedEventArgs ev)
         {
