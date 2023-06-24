@@ -1,5 +1,4 @@
-﻿using Exiled.API.Features;
-using HarmonyLib;
+﻿using HarmonyLib;
 using InventorySystem.Items.Jailbird;
 using Mirror;
 
