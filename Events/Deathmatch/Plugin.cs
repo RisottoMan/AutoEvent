@@ -28,6 +28,8 @@ namespace AutoEvent.Events.Deathmatch
 
         public void OnStart()
         {
+            OnEventStarted();
+
             _eventHandler = new EventHandler(this);
 
             Exiled.Events.Handlers.Player.Verified += _eventHandler.OnJoin;
@@ -40,7 +42,6 @@ namespace AutoEvent.Events.Deathmatch
             Exiled.Events.Handlers.Player.Shooting += _eventHandler.OnShooting;
             Exiled.Events.Handlers.Player.DroppingItem += _eventHandler.OnDropItem;
             Exiled.Events.Handlers.Player.DroppingAmmo += _eventHandler.OnDropAmmo;
-            OnEventStarted();
         }
         public void OnStop()
         {
