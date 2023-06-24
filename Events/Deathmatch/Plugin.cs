@@ -39,7 +39,7 @@ namespace AutoEvent.Events.Deathmatch
             Exiled.Events.Handlers.Map.PlacingBulletHole += _eventHandler.OnPlaceBullet;
             Exiled.Events.Handlers.Map.PlacingBlood += _eventHandler.OnPlaceBlood;
             Exiled.Events.Handlers.Player.Dying += _eventHandler.OnDying;
-            Exiled.Events.Handlers.Player.Shooting += _eventHandler.OnShooting;
+            Exiled.Events.Handlers.Player.ReloadingWeapon += _eventHandler.OnReloading;
             Exiled.Events.Handlers.Player.DroppingItem += _eventHandler.OnDropItem;
             Exiled.Events.Handlers.Player.DroppingAmmo += _eventHandler.OnDropAmmo;
         }
@@ -52,7 +52,7 @@ namespace AutoEvent.Events.Deathmatch
             Exiled.Events.Handlers.Map.PlacingBulletHole -= _eventHandler.OnPlaceBullet;
             Exiled.Events.Handlers.Map.PlacingBlood -= _eventHandler.OnPlaceBlood;
             Exiled.Events.Handlers.Player.Dying -= _eventHandler.OnDying;
-            Exiled.Events.Handlers.Player.Shooting -= _eventHandler.OnShooting;
+            Exiled.Events.Handlers.Player.ReloadingWeapon -= _eventHandler.OnReloading;
             Exiled.Events.Handlers.Player.DroppingItem -= _eventHandler.OnDropItem;
             Exiled.Events.Handlers.Player.DroppingAmmo -= _eventHandler.OnDropAmmo;
 
