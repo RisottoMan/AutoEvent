@@ -23,5 +23,11 @@ namespace AutoEvent
         };
         [Description("Infection config..")]
         public InfectionConfig InfectionConfig { get; set; } = new InfectionConfig();
+
+        [Description("Enable/Disable jailbird ability..")]
+        public bool IsJailbirdAbilityEnable { get; set; } = false;
+
+        [Description("Enable/Disable infinity charges of jailbird..")]
+        public bool IsJailbirdHasInfinityCharges { get; set; } = true;
     }
 }
