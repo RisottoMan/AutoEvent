@@ -1,4 +1,4 @@
-I do not sure, that disabled events working normal. Please report bugs with them in [here](https://github.com/swdmeow/AutoEvent-Exiled/issues)
+I do not sure, that disabled events working normal. Please report bugs with them [here](https://github.com/swdmeow/AutoEvent-Exiled/issues)
 
 # AutoEvent (Ported to Exiled)
 ## ENG: Allows you to run auto Mini-Games in the game.
