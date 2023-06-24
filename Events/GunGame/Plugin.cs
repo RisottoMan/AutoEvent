@@ -10,6 +10,7 @@ using UnityEngine;
 
 namespace AutoEvent.Events.GunGame
 {
+    
     public class Plugin : IEvent
     {
         public string Name => AutoEvent.Singleton.Translation.GunGameName;
@@ -20,12 +21,14 @@ namespace AutoEvent.Events.GunGame
         public SchematicObject GameMap { get; set; }
         public List<Vector3> Spawners { get; set; } = new List<Vector3>();
         public Player Winner { get; set; }
-        public Dictionary<Player, Stats> PlayerStats;
+        public Dictionary<Player, Stats> PlayerStats = new Dictionary<Player, Stats>();
 
         EventHandler _eventHandler;
 
         public void OnStart()
         {
+            OnEventStarted();
+
             _eventHandler = new EventHandler(this);
 
             Exiled.Events.Handlers.Player.Verified += _eventHandler.OnJoin;
@@ -36,9 +39,8 @@ namespace AutoEvent.Events.GunGame
             Exiled.Events.Handlers.Player.DroppingItem += _eventHandler.OnDropItem;
             Exiled.Events.Handlers.Map.PlacingBulletHole += _eventHandler.OnPlaceBullet;
             Exiled.Events.Handlers.Map.PlacingBlood += _eventHandler.OnPlaceBlood;
-            Exiled.Events.Handlers.Player.Shooting += _eventHandler.OnShooting;
+            Exiled.Events.Handlers.Player.ReloadingWeapon += _eventHandler.OnReloading;
             Exiled.Events.Handlers.Player.DroppingAmmo += _eventHandler.OnDropAmmo;
-            OnEventStarted();
         }
         public void OnStop()
         {
@@ -50,7 +52,7 @@ namespace AutoEvent.Events.GunGame
             Exiled.Events.Handlers.Player.DroppingItem -= _eventHandler.OnDropItem;
             Exiled.Events.Handlers.Map.PlacingBulletHole -= _eventHandler.OnPlaceBullet;
             Exiled.Events.Handlers.Map.PlacingBlood -= _eventHandler.OnPlaceBlood;
-            Exiled.Events.Handlers.Player.Shooting -= _eventHandler.OnShooting;
+            Exiled.Events.Handlers.Player.ReloadingWeapon -= _eventHandler.OnReloading;
             Exiled.Events.Handlers.Player.DroppingAmmo -= _eventHandler.OnDropAmmo;
 
             Timing.CallDelayed(10f, () => EventEnd());
@@ -61,14 +63,13 @@ namespace AutoEvent.Events.GunGame
         {
             EventTime = new TimeSpan(0, 0, 0);
             Winner = null;
-            PlayerStats = new Dictionary<Player, Stats>();
             GameMap = Extensions.LoadMap("Shipment", new Vector3(120f, 1020f, -43.5f), Quaternion.Euler(Vector3.zero), Vector3.one);
             Extensions.PlayAudio("ClassicMusic.ogg", 3, true, Name);
 
             var count = 0;
             foreach (Player player in Player.List)
             {
-                PlayerStats.Add(player, new Stats
+                PlayerStats.Add(player, new Stats()
                 {
                     kill = 0,
                     level = 1
@@ -76,9 +77,10 @@ namespace AutoEvent.Events.GunGame
 
                 player.Role.Set(GunGameRandom.GetRandomRole());
                 player.ClearInventory();
-                player.CurrentItem = Item.Create(GunGameGuns.GunForLevel[PlayerStats[player].level], player);
+
+                player.CurrentItem = player.AddItem(GunGameGuns.GunForLevel[PlayerStats[player].level]);
+
                 player.Position = GameMap.Position + GunGameRandom.GetRandomPosition();
-                player.EnableEffect<CustomPlayerEffects.SpawnProtected>(10);
 
                 count++;
             }
