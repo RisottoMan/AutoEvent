@@ -1,9 +1,9 @@
-﻿using Exiled.API.Enums;
+﻿using Exiled.API.Extensions;
 using Exiled.API.Features;
-using Exiled.API.Features.Items;
 using Exiled.Events.EventArgs.Map;
 using Exiled.Events.EventArgs.Player;
 using Exiled.Events.EventArgs.Server;
+using InventorySystem.Configs;
 using MapEditorReborn.API.Features.Objects;
 using System.Collections.Generic;
 
@@ -63,11 +63,11 @@ namespace AutoEvent.Events.GunGame
         }
         public void OnReloading(ReloadingWeaponEventArgs ev)
         {
-            SetAmmo(ev.Player, 50);
+            SetMaxAmmo(ev.Player);
         }
         public void OnSpawned(SpawnedEventArgs ev)
         {
-            SetAmmo(ev.Player, 50);
+            SetMaxAmmo(ev.Player);
         }
         public void OnDropItem(DroppingItemEventArgs ev) => ev.IsAllowed = false;
         public void OnTeamRespawn(RespawningTeamEventArgs ev) => ev.IsAllowed = false;
@@ -75,13 +75,10 @@ namespace AutoEvent.Events.GunGame
         public void OnPlaceBullet(PlacingBulletHole ev) => ev.IsAllowed = false;
         public void OnPlaceBlood(PlacingBloodEventArgs ev) => ev.IsAllowed = false;
         public void OnDropAmmo(DroppingAmmoEventArgs ev) => ev.IsAllowed = false;
-        private void SetAmmo(Player pl, ushort Amount)
+        private void SetMaxAmmo(Player pl)
         {
-            pl.SetAmmo(AmmoType.Nato9, Amount);
-            pl.SetAmmo(AmmoType.Ammo44Cal, Amount);
-            pl.SetAmmo(AmmoType.Nato556, Amount);
-            pl.SetAmmo(AmmoType.Nato762, Amount);
-            pl.SetAmmo(AmmoType.Ammo12Gauge, Amount);
+            foreach (KeyValuePair<ItemType, ushort> AmmoLimit in InventoryLimits.StandardAmmoLimits)
+                pl.SetAmmo(AmmoLimit.Key.GetAmmoType(), AmmoLimit.Value);
         }
     }
 }
