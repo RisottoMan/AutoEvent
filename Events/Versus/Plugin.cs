@@ -95,6 +95,7 @@ namespace AutoEvent.Events.Versus
                         if (Vector3.Distance(player.Position, GameMap.Position + new Vector3(-10.233f, -3.871f, -7.284f)) <= 0.5f)
                         {
                             Scientist = player;
+                            if (ClassD != null && AutoEvent.Singleton.Config.VersusConfig.HealApponentWhenSomeoneEnterArea) ClassD.Heal(100);
                             Scientist.Position = GameMap.Position + new Vector3(-11.351f, -3.424f, -7.284f);
                         }
                     }
@@ -103,6 +104,7 @@ namespace AutoEvent.Events.Versus
                         if (Vector3.Distance(player.Position, GameMap.Position + new Vector3(-21.4718f, -3.871f, -7.284f)) <= 0.5f)
                         {
                             ClassD = player;
+                            if (Scientist != null && AutoEvent.Singleton.Config.VersusConfig.HealApponentWhenSomeoneEnterArea) ClassD.Heal(100);
                             ClassD.Position = GameMap.Position + new Vector3(-20.0f, -3.424f, -7.284f);
                         }
                     }

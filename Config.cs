@@ -1,4 +1,5 @@
 ﻿using AutoEvent.Events.Infection;
+using AutoEvent.Events.Versus;
 using Exiled.API.Interfaces;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -23,11 +24,14 @@ namespace AutoEvent
         };
         [Description("Infection config..")]
         public InfectionConfig InfectionConfig { get; set; } = new InfectionConfig();
+        [Description("Versus config..")]
+        public VersusConfig VersusConfig { get; set; } = new VersusConfig();
 
         [Description("Enable/Disable jailbird ability..")]
         public bool IsJailbirdAbilityEnable { get; set; } = false;
 
         [Description("Enable/Disable infinity charges of jailbird..")]
         public bool IsJailbirdHasInfinityCharges { get; set; } = true;
+
     }
 }

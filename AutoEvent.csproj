@@ -12,7 +12,7 @@
     <TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
-	<LangVersion>default</LangVersion>
+    <LangVersion>default</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>x64</PlatformTarget>
@@ -24,7 +24,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-	<LangVersion>default</LangVersion>
+    <LangVersion>default</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>x64</PlatformTarget>
@@ -34,7 +34,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-	<LangVersion>default</LangVersion>
+    <LangVersion>default</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -85,6 +85,7 @@
     <Compile Include="Events\Jail\Plugin.cs" />
     <Compile Include="Events\Jail\EventHandler.cs" />
     <Compile Include="Events\Jail\Extensions\JailRandom.cs" />
+    <Compile Include="Events\Versus\Config.cs" />
     <Compile Include="Events\Versus\Plugin.cs" />
     <Compile Include="Events\Versus\EventHandler.cs" />
     <Compile Include="Interfaces\IEvent.cs" />
