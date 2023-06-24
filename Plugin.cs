@@ -39,9 +39,8 @@ namespace AutoEvent
         {
             if (ActiveEvent == null) return;
 
-            // lmao, best way to prevent server crashes
             Extensions.StopAudio();
-            ServerStatic.StopNextRound = ServerStatic.NextRoundAction.Restart;
+            //ServerStatic.StopNextRound = ServerStatic.NextRoundAction.Restart;
         }
     }
 }
