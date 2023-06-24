@@ -40,7 +40,6 @@ namespace AutoEvent
             if (ActiveEvent == null) return;
 
             Extensions.StopAudio();
-            //ServerStatic.StopNextRound = ServerStatic.NextRoundAction.Restart;
         }
     }
 }
