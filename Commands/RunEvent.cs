@@ -1,5 +1,8 @@
-﻿using CommandSystem;
+﻿using AutoEvent.Interfaces;
+using CommandSystem;
 using System;
+using System.Linq;
+using System.Reflection;
 using Exiled.API.Features;
 using Exiled.Permissions.Extensions;
 
@@ -35,10 +38,37 @@ namespace AutoEvent.Commands
                 return false;
             }
 
-            string resp = Extensions.GetEvent(arguments.At(0), (CommandSender)sender);
-
-            response = resp;
-            return true;
+            foreach (var type in Assembly.GetExecutingAssembly().GetTypes())
+            {
+                if (type.Namespace.Contains("AutoEvent") && !type.IsInterface && typeof(IEvent).IsAssignableFrom(type) && type.GetProperty("CommandName") != null)
+                {
+                    var ev = Activator.CreateInstance(type);
+                    try
+                    {
+                        if ((string)type.GetProperty("CommandName").GetValue(ev) == arguments.ElementAt(0))
+                        {
+                            var eng = type.GetMethod("OnStart");
+                            if (eng != null)
+                            {
+                                sender.Respond("Trying to run an event, OnStart is not null...");
+                                eng.Invoke(Activator.CreateInstance(type), null);
+                                Round.IsLocked = true;
+                                AutoEvent.ActiveEvent = (IEvent)ev;
+                                response = "The event is found, run it.";
+                                return true;
+                            }
+                            response = "Somehow, the class that was selected does not have OnStart() in it";
+                            return false;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        response = $"An error occurred when running the event. Error: {ex.Message}";
+                    }
+                }
+            }
+            response = "The event was not found, nothing happened.";
+            return false;
         }
     }
 }

@@ -10,8 +10,6 @@ using MapEditorReborn.API.Features.Objects;
 using SCPSLAudioApi.AudioCore;
 using VoiceChat;
 using Object = UnityEngine.Object;
-using AutoEvent.Interfaces;
-using System.Reflection;
 
 namespace AutoEvent
 {
@@ -107,38 +105,6 @@ namespace AutoEvent
         {
             Map.ClearBroadcasts();
             Map.Broadcast(new Exiled.API.Features.Broadcast(text, time));
-        }
-        public static string GetEvent(string EventName, CommandSender sender)
-        {
-            foreach (var type in Assembly.GetExecutingAssembly().GetTypes())
-            {
-                if (type.Namespace.Contains("AutoEvent") && !type.IsInterface && typeof(IEvent).IsAssignableFrom(type) && type.GetProperty("CommandName") != null)
-                {
-                    var ev = Activator.CreateInstance(type);
-                    try
-                    {
-                        if ((string)type.GetProperty("CommandName").GetValue(ev) == EventName)
-                        {
-                            var eng = type.GetMethod("OnStart");
-                            if (eng != null)
-                            {
-                                sender.Respond("Trying to run an event, OnStart is not null...");
-                                eng.Invoke(Activator.CreateInstance(type), null);
-                                Round.IsLocked = true;
-                                AutoEvent.ActiveEvent = (IEvent)ev;
-                                return "The event is found, run it.";
-                            }
-                            return "Somehow, the class that was selected does not have OnStart() in it";
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        return $"An error occurred when running the event. Error: {ex.Message}";
-                    }
-                }
-            }
-
-            return "The event was not found, nothing happened.";
         }
     }
 }
