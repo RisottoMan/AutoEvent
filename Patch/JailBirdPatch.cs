@@ -11,9 +11,8 @@ namespace AutoEvent.Patch
         {
             internal static bool Prefix(JailbirdItem __instance, NetworkReader reader)
             {
-                if (AutoEvent.Singleton.Config.IsJailbirdAbilityEnable)
+                if (!AutoEvent.Singleton.Config.IsJailbirdAbilityEnable)
                 {
-
                     JailbirdMessageType jailbirdMessageType = (JailbirdMessageType)reader.ReadByte();
 
                     switch (jailbirdMessageType)
