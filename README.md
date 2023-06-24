@@ -1,3 +1,5 @@
+# I do not sure, that disabled events working normal. Please report bugs with them in [here](https://github.com/swdmeow/AutoEvent-Exiled/issues)
+
 # AutoEvent (Ported to Exiled)
 ## ENG: Allows you to run auto Mini-Games in the game.
 ## RUS: Позволяет запускать автоматические Мини-Игры в игре.
