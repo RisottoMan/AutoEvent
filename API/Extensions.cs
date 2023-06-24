@@ -69,6 +69,14 @@ namespace AutoEvent
         {
             foreach (var dummies in Dummies)
             {
+                var audioPlayer = AudioPlayerBase.Get(dummies);
+
+                if(audioPlayer.CurrentPlay != null)
+                {
+                    audioPlayer.Stoptrack(true);
+                    audioPlayer.OnDestroy();
+                }
+
                 NetworkConnectionToClient conn = dummies.connectionToClient;
                 dummies.OnDestroy();
                 CustomNetworkManager.TypedSingleton.OnServerDisconnect(conn);
