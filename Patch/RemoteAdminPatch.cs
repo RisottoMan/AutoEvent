@@ -16,31 +16,16 @@ namespace AutoEvent
             {
                 try
                 {
+                    if (AutoEvent.ActiveEvent == null) return true;
                     if (!config.IsDisableDonators) return true;
 
-                    if (AutoEvent.ActiveEvent == null) return true;
-
-                    if (q.Contains("$"))
-                    {
-                        return true;
-                    }
-
-                    if (sender.SenderId == "SERVER CONSOLE" && !q.Contains("REQUEST_DATA"))
-                    {
-                        return true;
-                    }
-
-                    bool Success = true;
-                    bool Allowed = true;
                     Player player = Player.Get(sender);
 
-                    if (config.DonatorList.Contains(player.GroupName))
-                    {
-                        Success = false;
-                        Allowed = false;
-                        sender.RaReply($"SYSTEM#Сейчас проводятся мини-игры!", Success, true, string.Empty);
-                    }
-                    return Allowed;
+                    if (q.StartsWith("$") || player == null || !config.DonatorList.Contains(player.GroupName)) return true;
+
+                    sender.RaReply($"AutoEvent#A mini-game is currently underway, acess denied!", false, true, string.Empty);
+                    
+                    return false;
                 }
                 catch (Exception e)
                 {
