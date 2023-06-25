@@ -16,7 +16,6 @@ namespace AutoEvent
     internal class Extensions
     {
         public static List<ReferenceHub> Dummies = new List<ReferenceHub>();
-        /// <summary>Тп игроков после конца игры</summary>
         public static void TeleportEnd()
         {
             foreach (Player player in Player.List)
@@ -26,7 +25,6 @@ namespace AutoEvent
                 player.ClearInventory();
             }
         }
-        /// <summary>Тп игроков после конца игры</summary>
         public static void PlayAudio(string audioFile, byte volume, bool loop, string eventName)
         {
             try
@@ -63,7 +61,6 @@ namespace AutoEvent
                 Log.Error($"Error on: {e.Data} -- {e.StackTrace}");
             }
         }
-        /// <summary>Остановить прогирывание</summary>
         public static void StopAudio()
         {
             foreach (var dummies in Dummies)
@@ -83,23 +80,19 @@ namespace AutoEvent
             }
             Dummies.Clear();
         }
-        /// <summary>Загрузить карту</summary>
         public static SchematicObject LoadMap(string nameSchematic , Vector3 pos, Quaternion rot, Vector3 scale)
         {
             return ObjectSpawner.SpawnSchematic(nameSchematic, pos, rot, scale);
         }
-        /// <summary>Удалить карту</summary>
         public static void UnLoadMap(SchematicObject scheme)
         {
             scheme.Destroy();
         }
-        /// <summary>Очистка мусора после ивента.</summary>
         public static void CleanUpAll()
         {
             Map.CleanAllItems();
             Map.CleanAllRagdolls();
         }
-        /// <summary>Небольшой бродкаст с очисткой других бродкастов</summary>
         public static void Broadcast(string text, ushort time)
         {
             Map.ClearBroadcasts();
