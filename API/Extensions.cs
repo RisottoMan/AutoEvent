@@ -15,7 +15,7 @@ namespace AutoEvent
 {
     internal class Extensions
     {
-        public static List<ReferenceHub> Dummies;
+        public static List<ReferenceHub> Dummies = new List<ReferenceHub>();
         /// <summary>Тп игроков после конца игры</summary>
         public static void TeleportEnd()
         {
@@ -31,7 +31,6 @@ namespace AutoEvent
         {
             try
             {
-                Dummies = new List<ReferenceHub>();
                 var newPlayer = Object.Instantiate(NetworkManager.singleton.playerPrefab);
                 int id = Dummies.Count;
                 var fakeConnection = new FakeConnection(id++);

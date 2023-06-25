@@ -67,9 +67,10 @@
     <Compile Include="Commands\RunEvent.cs" />
     <Compile Include="Commands\StopEvent.cs" />
     <Compile Include="Config.cs" />
+    <Compile Include="Events\Deathmatch\Extensions\RandomClass.cs" />
     <Compile Include="Events\Deathmatch\Plugin.cs" />
     <Compile Include="Events\Deathmatch\EventHandler.cs" />
-    <Compile Include="Events\Deathmatch\Extensions\RandomClass.cs" />
+    <Compile Include="Events\Infection\Extensions\RandomClass.cs" />
     <Compile Include="Events\GunGame\Plugin.cs" />
     <Compile Include="Events\GunGame\Extensions\GunGameGuns.cs" />
     <Compile Include="Events\GunGame\EventHandler.cs" />
