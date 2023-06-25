@@ -15,7 +15,6 @@ namespace AutoEvent.Commands
         public string[] Aliases => null;
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            Log.Info("List");
             if (!((CommandSender)sender).CheckPermission("ev.list"))
             {
                 response = "You do not have permission to use this command";
