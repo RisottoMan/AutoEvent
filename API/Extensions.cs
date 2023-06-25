@@ -9,14 +9,13 @@ using MapEditorReborn.API.Features;
 using MapEditorReborn.API.Features.Objects;
 using SCPSLAudioApi.AudioCore;
 using VoiceChat;
-
 using Object = UnityEngine.Object;
 
 namespace AutoEvent
 {
     internal class Extensions
     {
-        public static List<ReferenceHub> Dummies;
+        public static List<ReferenceHub> Dummies = new List<ReferenceHub>();
         /// <summary>Тп игроков после конца игры</summary>
         public static void TeleportEnd()
         {
@@ -32,7 +31,6 @@ namespace AutoEvent
         {
             try
             {
-                Dummies = new List<ReferenceHub>();
                 var newPlayer = Object.Instantiate(NetworkManager.singleton.playerPrefab);
                 int id = Dummies.Count;
                 var fakeConnection = new FakeConnection(id++);
@@ -70,7 +68,18 @@ namespace AutoEvent
         {
             foreach (var dummies in Dummies)
             {
-                NetworkServer.Destroy(dummies.gameObject);
+                var audioPlayer = AudioPlayerBase.Get(dummies);
+
+                if(audioPlayer.CurrentPlay != null)
+                {
+                    audioPlayer.Stoptrack(true);
+                    audioPlayer.OnDestroy();
+                }
+
+                NetworkConnectionToClient conn = dummies.connectionToClient;
+                dummies.OnDestroy();
+                CustomNetworkManager.TypedSingleton.OnServerDisconnect(conn);
+                Object.Destroy(dummies.gameObject);
             }
             Dummies.Clear();
         }

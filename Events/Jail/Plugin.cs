@@ -46,7 +46,7 @@ namespace AutoEvent.Events.Jail
         }
         public void OnWaitingEvent()
         {
-            GameMap = Extensions.LoadMap("Jail", new Vector3(115.5f, 1030f, -43.5f), new Quaternion(0, 0, 0, 0), new Vector3(1, 1, 1));
+            GameMap = Extensions.LoadMap("Jail", new Vector3(115.5f, 1030f, -43.5f), Quaternion.Euler(Vector3.zero), Vector3.one);
             // Setup instruction
             // Extensions.PlayAudio("Jail.ogg", 15, false, "Instruction");
             Server.FriendlyFire = true;

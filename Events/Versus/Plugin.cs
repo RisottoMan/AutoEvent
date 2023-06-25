@@ -22,10 +22,16 @@ namespace AutoEvent.Events.Versus
         public Player ClassD { get; set; }
         public TimeSpan EventTime { get; set; }
 
+        private bool isFreindlyFireEnabled;
+
         EventHandler _eventHandler;
 
         public void OnStart()
         {
+            isFreindlyFireEnabled = Server.FriendlyFire;
+
+            Server.FriendlyFire = false;
+
             _eventHandler = new EventHandler(this);
 
             Exiled.Events.Handlers.Player.Verified += _eventHandler.OnJoin;
@@ -36,6 +42,8 @@ namespace AutoEvent.Events.Versus
         }
         public void OnStop()
         {
+            Server.FriendlyFire = isFreindlyFireEnabled;
+
             Exiled.Events.Handlers.Player.Verified -= _eventHandler.OnJoin;
             Exiled.Events.Handlers.Player.DroppingItem -= _eventHandler.OnDroppingItem;
             Exiled.Events.Handlers.Server.RespawningTeam -= _eventHandler.OnTeamRespawn;
@@ -49,7 +57,7 @@ namespace AutoEvent.Events.Versus
             EventTime = new TimeSpan(0, 0, 0);
             Scientist = null;
             ClassD = null;
-            GameMap = Extensions.LoadMap("35Hp", new Vector3(127.460f, 1016.707f, -43.68f), new Quaternion(0, 0, 0, 0), new Vector3(1, 1, 1));
+            GameMap = Extensions.LoadMap("35Hp", new Vector3(127.460f, 1016.707f, -43.68f), Quaternion.Euler(Vector3.zero), Vector3.one);
             Extensions.PlayAudio("Knife.ogg", 10, true, Name);
 
             var count = 0;
@@ -87,6 +95,7 @@ namespace AutoEvent.Events.Versus
                         if (Vector3.Distance(player.Position, GameMap.Position + new Vector3(-10.233f, -3.871f, -7.284f)) <= 0.5f)
                         {
                             Scientist = player;
+                            if (ClassD != null && AutoEvent.Singleton.Config.VersusConfig.HealApponentWhenSomeoneEnterArea) ClassD.Heal(100);
                             Scientist.Position = GameMap.Position + new Vector3(-11.351f, -3.424f, -7.284f);
                         }
                     }
@@ -95,6 +104,7 @@ namespace AutoEvent.Events.Versus
                         if (Vector3.Distance(player.Position, GameMap.Position + new Vector3(-21.4718f, -3.871f, -7.284f)) <= 0.5f)
                         {
                             ClassD = player;
+                            if (Scientist != null && AutoEvent.Singleton.Config.VersusConfig.HealApponentWhenSomeoneEnterArea) ClassD.Heal(100);
                             ClassD.Position = GameMap.Position + new Vector3(-20.0f, -3.424f, -7.284f);
                         }
                     }

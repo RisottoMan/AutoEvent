@@ -47,7 +47,7 @@ namespace AutoEvent.Events.Knifes
         public void OnEventStarted()
         {
             EventTime = new TimeSpan(0, 0, 0);
-            GameMap = Extensions.LoadMap("35hp_2", new Vector3(110f, 1030f, -43.5f), new Quaternion(0, 0, 0, 0), new Vector3(1, 1, 1));
+            GameMap = Extensions.LoadMap("35hp_2", new Vector3(110f, 1030f, -43.5f), Quaternion.Euler(Vector3.zero), Vector3.one);
             Extensions.PlayAudio("Knife.ogg", 10, true, Name);
             var count = 0;
             foreach (Player player in Player.List)

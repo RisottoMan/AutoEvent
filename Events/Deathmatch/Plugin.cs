@@ -11,7 +11,7 @@ using UnityEngine;
 
 namespace AutoEvent.Events.Deathmatch
 {
-    public class Plugin// : IEvent
+    public class Plugin : IEvent
     {
         public string Name => AutoEvent.Singleton.Translation.DeathmatchName;
         public string Description => AutoEvent.Singleton.Translation.DeathmatchDescription;
@@ -28,6 +28,8 @@ namespace AutoEvent.Events.Deathmatch
 
         public void OnStart()
         {
+            OnEventStarted();
+
             _eventHandler = new EventHandler(this);
 
             Exiled.Events.Handlers.Player.Verified += _eventHandler.OnJoin;
@@ -37,10 +39,9 @@ namespace AutoEvent.Events.Deathmatch
             Exiled.Events.Handlers.Map.PlacingBulletHole += _eventHandler.OnPlaceBullet;
             Exiled.Events.Handlers.Map.PlacingBlood += _eventHandler.OnPlaceBlood;
             Exiled.Events.Handlers.Player.Dying += _eventHandler.OnDying;
-            Exiled.Events.Handlers.Player.Shooting += _eventHandler.OnShooting;
+            Exiled.Events.Handlers.Player.ReloadingWeapon += _eventHandler.OnReloading;
             Exiled.Events.Handlers.Player.DroppingItem += _eventHandler.OnDropItem;
             Exiled.Events.Handlers.Player.DroppingAmmo += _eventHandler.OnDropAmmo;
-            OnEventStarted();
         }
         public void OnStop()
         {
@@ -51,7 +52,7 @@ namespace AutoEvent.Events.Deathmatch
             Exiled.Events.Handlers.Map.PlacingBulletHole -= _eventHandler.OnPlaceBullet;
             Exiled.Events.Handlers.Map.PlacingBlood -= _eventHandler.OnPlaceBlood;
             Exiled.Events.Handlers.Player.Dying -= _eventHandler.OnDying;
-            Exiled.Events.Handlers.Player.Shooting -= _eventHandler.OnShooting;
+            Exiled.Events.Handlers.Player.ReloadingWeapon -= _eventHandler.OnReloading;
             Exiled.Events.Handlers.Player.DroppingItem -= _eventHandler.OnDropItem;
             Exiled.Events.Handlers.Player.DroppingAmmo -= _eventHandler.OnDropAmmo;
 
@@ -62,7 +63,7 @@ namespace AutoEvent.Events.Deathmatch
         public void OnEventStarted()
         {
             EventTime = new TimeSpan(0, 0, 0);
-            GameMap = Extensions.LoadMap("Shipment", new Vector3(120f, 1020f, -43.5f), new Quaternion(0, 0, 0, 0), new Vector3(1, 1, 1));
+            GameMap = Extensions.LoadMap("Shipment", new Vector3(120f, 1020f, -43.5f), Quaternion.Euler(Vector3.zero), Vector3.one);
             //Extensions.PlayAudio("ClassicMusic.ogg", 3, true, Name);
 
             MtfKills = 0;
