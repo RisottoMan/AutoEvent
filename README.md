@@ -1,5 +1,3 @@
-# CURRENTLY UNAVALIBLE WAITING FOR https://github.com/CedModV2/SCPSLAudioApi RELEASE
-
 # AutoEvent (Ported to Exiled)
 ## ENG: Allows you to run auto Mini-Games in the game.
 ## RUS: Позволяет запускать автоматические Мини-Игры в игре.
