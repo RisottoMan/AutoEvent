@@ -12,18 +12,18 @@ using Random = UnityEngine.Random;
 
 namespace AutoEvent.Events.Knifes
 {
-    public class Plugin : IEvent
+    public class Plugin : Event
     {
-        public string Name => AutoEvent.Singleton.Translation.KnivesName;
-        public string Description => AutoEvent.Singleton.Translation.KnivesDescription;
-        public string Color => "FFFF00";
-        public string CommandName => "knife";
+        public override string Name { get; set; } = AutoEvent.Singleton.Translation.KnivesName;
+        public override string Description { get; set; } = AutoEvent.Singleton.Translation.KnivesDescription;
+        public override string Color { get; set; } = "FFFF00";
+        public override string CommandName { get; set; } = "knife";
         public SchematicObject GameMap { get; set; }
         public TimeSpan EventTime { get; set; }
 
         EventHandler _eventHandler;
 
-        public void OnStart()
+        public override void OnStart()
         {
             _eventHandler = new EventHandler();
 
@@ -33,7 +33,7 @@ namespace AutoEvent.Events.Knifes
             Exiled.Events.Handlers.Item.ChargingJailbird += _eventHandler.OnChargeJailbird;
             OnEventStarted();
         }
-        public void OnStop()
+        public override void OnStop()
         {
             Exiled.Events.Handlers.Player.Verified -= _eventHandler.OnJoin;
             Exiled.Events.Handlers.Player.DroppingItem -= _eventHandler.OnDropItem;

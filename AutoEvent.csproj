@@ -9,10 +9,11 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>AutoEvent</RootNamespace>
     <AssemblyName>AutoEvent</AssemblyName>
-    <TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
     <LangVersion>default</LangVersion>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>x64</PlatformTarget>
@@ -61,15 +62,19 @@
     <Reference Include="SCPSLAudioApi" HintPath="$(OTHER_REFERENCES)\SCPSLAudioApi.dll" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="API\Attributes\DisabledFeaturesAttribute.cs" />
     <Compile Include="API\Extensions.cs" />
     <Compile Include="API\FakeConnection.cs" />
     <Compile Include="Commands\ListEvents.cs" />
+    <Compile Include="Commands\MainCommand.cs" />
     <Compile Include="Commands\RunEvent.cs" />
     <Compile Include="Commands\StopEvent.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="Events\Deathmatch\Extensions\RandomClass.cs" />
     <Compile Include="Events\Deathmatch\Plugin.cs" />
     <Compile Include="Events\Deathmatch\EventHandler.cs" />
+    <Compile Include="Events\Example\EventHandler.cs" />
+    <Compile Include="Events\Example\Plugin.cs" />
     <Compile Include="Events\Infection\Extensions\RandomClass.cs" />
     <Compile Include="Events\GunGame\Plugin.cs" />
     <Compile Include="Events\GunGame\Extensions\GunGameGuns.cs" />
@@ -89,6 +94,7 @@
     <Compile Include="Events\Versus\Config.cs" />
     <Compile Include="Events\Versus\Plugin.cs" />
     <Compile Include="Events\Versus\EventHandler.cs" />
+    <Compile Include="Interfaces\Event.cs" />
     <Compile Include="Interfaces\IEvent.cs" />
     <Compile Include="Patch\JailBirdPatch.cs" />
     <Compile Include="Patch\RemoteAdminPatch.cs" />

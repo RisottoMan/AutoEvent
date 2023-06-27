@@ -11,12 +11,12 @@ using UnityEngine;
 namespace AutoEvent.Events.GunGame
 {
     
-    public class Plugin : IEvent
+    public class Plugin : Event
     {
-        public string Name => AutoEvent.Singleton.Translation.GunGameName;
-        public string Description => AutoEvent.Singleton.Translation.GunGameDescription;
-        public string Color => "FFFF00";
-        public string CommandName => "gungame";
+        public override string Name { get; set; } = AutoEvent.Singleton.Translation.GunGameName;
+        public override string Description { get; set; } = AutoEvent.Singleton.Translation.GunGameDescription;
+        public override string Color { get; set; } = "FFFF00";
+        public override string CommandName { get; set; } = "gungame";
         public TimeSpan EventTime { get; set; }
         public SchematicObject GameMap { get; set; }
         public List<Vector3> Spawners { get; set; } = new List<Vector3>();
@@ -25,10 +25,9 @@ namespace AutoEvent.Events.GunGame
 
         EventHandler _eventHandler;
 
-        public void OnStart()
+        public override void OnStart()
         {
             OnEventStarted();
-
             _eventHandler = new EventHandler(this);
 
             Exiled.Events.Handlers.Player.Verified += _eventHandler.OnJoin;
@@ -42,7 +41,7 @@ namespace AutoEvent.Events.GunGame
             Exiled.Events.Handlers.Player.ReloadingWeapon += _eventHandler.OnReloading;
             Exiled.Events.Handlers.Player.DroppingAmmo += _eventHandler.OnDropAmmo;
         }
-        public void OnStop()
+        public override void OnStop()
         {
             Exiled.Events.Handlers.Player.Verified -= _eventHandler.OnJoin;
             Exiled.Events.Handlers.Server.RespawningTeam -= _eventHandler.OnTeamRespawn;

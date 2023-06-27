@@ -11,12 +11,12 @@ using Random = UnityEngine.Random;
 
 namespace AutoEvent.Events.Versus
 {
-    public class Plugin : IEvent
+    public class Plugin : Event
     {
-        public string Name => AutoEvent.Singleton.Translation.VersusName;
-        public string Description => AutoEvent.Singleton.Translation.VersusDescription;
-        public string Color => "FFFF00";
-        public string CommandName => "versus";
+        public override string Name { get; set; } = AutoEvent.Singleton.Translation.VersusName;
+        public override string Description { get; set; } = AutoEvent.Singleton.Translation.VersusDescription;
+        public override string Color { get; set; } = "FFFF00";
+        public override string CommandName { get; set; } = "versus";
         public SchematicObject GameMap { get; set; }
         public Player Scientist { get; set; }
         public Player ClassD { get; set; }
@@ -26,7 +26,7 @@ namespace AutoEvent.Events.Versus
 
         EventHandler _eventHandler;
 
-        public void OnStart()
+        public override void OnStart()
         {
             isFreindlyFireEnabled = Server.FriendlyFire;
 
@@ -40,7 +40,7 @@ namespace AutoEvent.Events.Versus
             Exiled.Events.Handlers.Player.Died += _eventHandler.OnDead;
             OnEventStarted();
         }
-        public void OnStop()
+        public override void OnStop()
         {
             Server.FriendlyFire = isFreindlyFireEnabled;
 

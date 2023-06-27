@@ -11,18 +11,18 @@ using Random = UnityEngine.Random;
 
 namespace AutoEvent.Events.Infection
 {
-    public class Plugin : IEvent
+    public class Plugin : Event
     {
-        public string Name => AutoEvent.Singleton.Translation.ZombieName;
-        public string Description => AutoEvent.Singleton.Translation.ZombieDescription;
-        public string Color => "FF4242";
-        public string CommandName => "zombie";
+        public override string Name { get; set; } = AutoEvent.Singleton.Translation.ZombieName;
+        public override string Description { get; set; } = AutoEvent.Singleton.Translation.ZombieDescription;
+        public override string Color { get; set; } = "FF4242";
+        public override string CommandName { get; set; } = "zombie";
         public static SchematicObject GameMap { get; set; }
         public static TimeSpan EventTime { get; set; }
 
         EventHandler _eventHandler;
 
-        public void OnStart()
+        public override void OnStart()
         {
             _eventHandler = new EventHandler();
             Exiled.Events.Handlers.Player.Verified += _eventHandler.OnJoin;
@@ -31,7 +31,7 @@ namespace AutoEvent.Events.Infection
             Exiled.Events.Handlers.Server.RespawningTeam += _eventHandler.OnTeamRespawn;
             OnEventStarted();
         }
-        public void OnStop()
+        public override void OnStop()
         {
             Exiled.Events.Handlers.Player.Verified -= _eventHandler.OnJoin;
             Exiled.Events.Handlers.Player.Died -= _eventHandler.OnDead;

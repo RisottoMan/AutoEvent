@@ -9,17 +9,17 @@ using System.Linq;
 
 namespace AutoEvent.Events.Escape
 {
-    public class Plugin : IEvent
+    public class Plugin : Event
     {
-        public string Name => AutoEvent.Singleton.Translation.EscapeName;
-        public string Description => AutoEvent.Singleton.Translation.EscapeDescription;
-        public string Color => "FFFF00";
-        public string CommandName => "escape";
+        public override string Name { get; set; } = AutoEvent.Singleton.Translation.EscapeName;
+        public override string Description { get; set; } = AutoEvent.Singleton.Translation.EscapeDescription;
+        public override string Color { get; set; } = "FFFF00";
+        public override string CommandName { get; set; } = "escape";
         public TimeSpan EventTime { get; set; }
 
         EventHandler _eventHandler;
 
-        public void OnStart()
+        public override void OnStart()
         {
             _eventHandler = new EventHandler();
 
@@ -29,7 +29,7 @@ namespace AutoEvent.Events.Escape
             Exiled.Events.Handlers.Scp173.PlacingTantrum += _eventHandler.OnPlaceTantrum;
             OnEventStarted();
         }
-        public void OnStop()
+        public override void OnStop()
         {
             Exiled.Events.Handlers.Player.Verified -= _eventHandler.OnJoin;
             Exiled.Events.Handlers.Cassie.SendingCassieMessage -= _eventHandler.OnSendCassie;
