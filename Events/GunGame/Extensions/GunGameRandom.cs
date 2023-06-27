@@ -6,7 +6,7 @@ namespace AutoEvent.Events.GunGame
 {
     internal class GunGameRandom
     {
-        private static readonly List<Vector3> spawnPos = new()
+        private static readonly List<Vector3> spawnPos = new()  // нужно исправить под динамические спавны
         {
             new Vector3(-17.34f, 1.26f, 5.4f),
             new Vector3(-2.748f, 1.26f, -10.362f),
@@ -34,7 +34,7 @@ namespace AutoEvent.Events.GunGame
             new Vector3(1.9266f, 1.26f, 15.564f),
             new Vector3(-15.066f, 1.26f, 15.336f),
             new Vector3(-18.21f, 1.26f, 16.704f)
-    };
+        };
         public static Vector3 GetRandomPosition() => spawnPos.RandomItem();
         public static RoleTypeId GetRandomRole() => HumanRoles.RandomItem();
         private static List<RoleTypeId> HumanRoles = new List<RoleTypeId>()

@@ -18,7 +18,6 @@ namespace AutoEvent.Commands
                 response = "You do not have permission to use this command";
                 return false;
             }
-            //Player admin = Player.Get((sender as CommandSender).SenderId);
 
             StringBuilder builder = new StringBuilder();
             builder.AppendLine("\"<color=yellow><b>List of events (when running an event, you are responsible for it)</color></b>:");
