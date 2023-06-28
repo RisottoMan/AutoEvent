@@ -38,28 +38,61 @@
     <LangVersion>default</LangVersion>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Assembly-CSharp_publicized">
+      <HintPath>..\..\..\..\OneDrive\Документы\DLLs Library\3\Assembly-CSharp_publicized.dll</HintPath>
+    </Reference>
+    <Reference Include="AudioPlayer">
+      <HintPath>..\..\..\..\Downloads\AudioPlayer.dll</HintPath>
+    </Reference>
+    <Reference Include="CommandSystem.Core, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\EXILED.7.1.0\lib\net48\CommandSystem.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Exiled.API, Version=7.1.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>packages\EXILED.7.1.0\lib\net48\Exiled.API.dll</HintPath>
+    </Reference>
+    <Reference Include="Exiled.CreditTags, Version=7.1.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>packages\EXILED.7.1.0\lib\net48\Exiled.CreditTags.dll</HintPath>
+    </Reference>
+    <Reference Include="Exiled.CustomItems, Version=7.1.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>packages\EXILED.7.1.0\lib\net48\Exiled.CustomItems.dll</HintPath>
+    </Reference>
+    <Reference Include="Exiled.CustomRoles, Version=7.1.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>packages\EXILED.7.1.0\lib\net48\Exiled.CustomRoles.dll</HintPath>
+    </Reference>
+    <Reference Include="Exiled.Events, Version=7.1.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>packages\EXILED.7.1.0\lib\net48\Exiled.Events.dll</HintPath>
+    </Reference>
+    <Reference Include="Exiled.Loader, Version=7.1.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>packages\EXILED.7.1.0\lib\net48\Exiled.Loader.dll</HintPath>
+    </Reference>
+    <Reference Include="Exiled.Permissions, Version=7.1.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>packages\EXILED.7.1.0\lib\net48\Exiled.Permissions.dll</HintPath>
+    </Reference>
+    <Reference Include="Exiled.Updater, Version=3.1.2.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>packages\EXILED.7.1.0\lib\net48\Exiled.Updater.dll</HintPath>
+    </Reference>
+    <Reference Include="NorthwoodLib, Version=1.2.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\EXILED.7.1.0\lib\net48\NorthwoodLib.dll</HintPath>
+    </Reference>
+    <Reference Include="PluginAPI, Version=12.0.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>packages\EXILED.7.1.0\lib\net48\PluginAPI.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
-    <Reference Include="UnityEngine.CoreModule" HintPath="$(UNITY_REFERENCES)\UnityEngine.CoreModule.dll" />
-    <Reference Include="UnityEngine.UnityWebRequestModule" HintPath="$(UNITY_REFERENCES)\UnityEngine.UnityWebRequestModule.dll" />
-    <Reference Include="UnityEngine.AnimationModule" HintPath="$(UNITY_REFERENCES)\UnityEngine.AnimationModule.dll" />
-    <Reference Include="UnityEngine.PhysicsModule" HintPath="$(UNITY_REFERENCES)\UnityEngine.PhysicsModule.dll" />
-    <Reference Include="Assembly-CSharp-Publicized" HintPath="$(SL_REFERENCES)\Assembly-CSharp-Publicized.dll" />
-    <Reference Include="Assembly-CSharp-firstpass" HintPath="$(SL_REFERENCES)\Assembly-CSharp-firstpass.dll" />
-    <Reference Include="UnityEngine.AudioModule" HintPath="$(UNITY_REFERENCES)\UnityEngine.AudioModule.dll" />
-    <Reference Include="Exiled.Permissions" HintPath="$(EXILED_REFERENCES)\Exiled.Permissions.dll" />
-    <Reference Include="CommandSystem.Core" HintPath="$(SL_REFERENCES)\CommandSystem.Core.dll" />
-    <Reference Include="Exiled.Loader" HintPath="$(EXILED_REFERENCES)\Exiled.Loader.dll" />
-    <Reference Include="Exiled.Events" HintPath="$(EXILED_REFERENCES)\Exiled.Events.dll" />
-    <Reference Include="Exiled.API" HintPath="$(EXILED_REFERENCES)\Exiled.API.dll" />
-    <Reference Include="NorthwoodLib" HintPath="$(SL_REFERENCES)\NorthwoodLib.dll" />
-    <Reference Include="YamlDotNet" HintPath="$(SL_REFERENCES)\YamlDotNet.dll" />
-    <Reference Include="0Harmony" HintPath="$(EXILED_REFERENCES)\0Harmony.dll" />
-    <Reference Include="PluginAPI" HintPath="$(SL_REFERENCES)\PluginAPI.dll" />
-    <Reference Include="Pooling" HintPath="$(SL_REFERENCES)\Pooling.dll" />
-    <Reference Include="Mirror" HintPath="$(SL_REFERENCES)\Mirror.dll" />
-    <Reference Include="Caress" HintPath="$(SL_REFERENCES)\Caress.dll" />
-    <Reference Include="MapEditorReborn" HintPath="$(OTHER_REFERENCES)\MapEditorReborn.dll" />
-    <Reference Include="SCPSLAudioApi" HintPath="$(OTHER_REFERENCES)\SCPSLAudioApi.dll" />
+    <Reference Include="UnityEngine.CoreModule" HintPath="..\..\..\..\OneDrive\Документы\DLLs Library\3\UnityEngine.CoreModule.dll" />
+    <Reference Include="UnityEngine.UnityWebRequestModule" HintPath="..\..\..\..\OneDrive\Документы\DLLs Library\2\UnityEngine.UnityWebRequestModule.dll" />
+    <Reference Include="UnityEngine.AnimationModule" HintPath="..\..\..\..\OneDrive\Документы\DLLs Library\2\UnityEngine.AnimationModule.dll" />
+    <Reference Include="UnityEngine.PhysicsModule" HintPath="..\..\..\..\OneDrive\Документы\DLLs Library\3\UnityEngine.PhysicsModule.dll" />
+    <Reference Include="Assembly-CSharp-firstpass" HintPath="..\..\..\..\OneDrive\Документы\DLLs Library\3\Assembly-CSharp-firstpass.dll" />
+    <Reference Include="UnityEngine.AudioModule" HintPath="..\..\..\..\OneDrive\Документы\DLLs Library\2\UnityEngine.AudioModule.dll" />
+    <Reference Include="0Harmony" HintPath="..\..\..\..\Downloads\0Harmony.dll" />
+    <Reference Include="Pooling" HintPath="..\..\..\..\OneDrive\Документы\DLLs Library\2\Pooling.dll" />
+    <Reference Include="Mirror" HintPath="..\..\..\..\OneDrive\Документы\DLLs Library\1\Mirror.dll" />
+    <Reference Include="Caress" HintPath="..\..\..\..\OneDrive\Документы\DLLs Library\2\Caress.dll" />
+    <Reference Include="MapEditorReborn" HintPath="..\..\..\..\OneDrive\Документы\DLLs Library\2\MapEditorReborn.dll" />
+    <Reference Include="SCPSLAudioApi" HintPath="..\..\..\..\OneDrive\Документы\DLLs Library\2\SCPSLAudioApi.dll" />
+    <Reference Include="YamlDotNet, Version=11.0.0.0, Culture=neutral, PublicKeyToken=ec19458f3c15af5e, processorArchitecture=MSIL">
+      <HintPath>packages\EXILED.7.1.0\lib\net48\YamlDotNet.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="API\Attributes\DisabledFeaturesAttribute.cs" />
@@ -76,6 +109,9 @@
     <Compile Include="Events\Deathmatch\Extensions\RandomClass.cs" />
     <Compile Include="Events\Deathmatch\Plugin.cs" />
     <Compile Include="Events\Deathmatch\EventHandler.cs" />
+    <Compile Include="Events\DeathParty\EventHandler.cs" />
+    <Compile Include="Events\DeathParty\Plugin.cs" />
+    <Compile Include="Events\DeathParty\RandomRoles.cs" />
     <Compile Include="Events\Example\EventHandler.cs" />
     <Compile Include="Events\Example\Plugin.cs" />
     <Compile Include="Events\Infection\Extensions\RandomClass.cs" />
