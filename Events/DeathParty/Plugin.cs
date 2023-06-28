@@ -1,16 +1,14 @@
-﻿using AutoEvent.Events;
-using Exiled.API.Enums;
+﻿using Exiled.API.Enums;
 using Exiled.API.Features;
 using Exiled.API.Features.Items;
 using MapEditorReborn.API.Features.Objects;
 using MEC;
-using PlayerRoles;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using AutoEvent.Interfaces;
 using UnityEngine;
-using Random = UnityEngine.Random;
+using AutoEvent.Events.DeathParty.Features;
 
 namespace AutoEvent.Events.DeathParty
 {

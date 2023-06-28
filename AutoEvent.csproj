@@ -76,6 +76,9 @@
     <Compile Include="Events\Deathmatch\Extensions\RandomClass.cs" />
     <Compile Include="Events\Deathmatch\Plugin.cs" />
     <Compile Include="Events\Deathmatch\EventHandler.cs" />
+    <Compile Include="Events\DeathParty\EventHandler.cs" />
+    <Compile Include="Events\DeathParty\Plugin.cs" />
+    <Compile Include="Events\DeathParty\Features\RandomRoles.cs" />
     <Compile Include="Events\Example\EventHandler.cs" />
     <Compile Include="Events\Example\Plugin.cs" />
     <Compile Include="Events\Football\EventHandler.cs" />

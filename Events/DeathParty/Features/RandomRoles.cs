@@ -1,12 +1,10 @@
 ﻿using PlayerRoles;
 using System.Collections.Generic;
 
-namespace AutoEvent.Events.DeathParty
+namespace AutoEvent.Events.DeathParty.Features
 {
-    internal class RandomRoles
+    public class RandomRoles
     {
-        public static RoleTypeId GetRandomRole() => HumanRoles.RandomItem();
-
         private static List<RoleTypeId> HumanRoles = new List<RoleTypeId>()
         {
             RoleTypeId.ClassD,
@@ -15,5 +13,6 @@ namespace AutoEvent.Events.DeathParty
             RoleTypeId.ChaosRifleman,
             RoleTypeId.FacilityGuard
         };
+        public static RoleTypeId GetRandomRole() => HumanRoles.RandomItem();
     }
 }
