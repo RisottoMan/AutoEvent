@@ -1,4 +1,5 @@
-﻿using AutoEvent.Interfaces;
+﻿using AutoEvent.Events.Lava.Features;
+using AutoEvent.Interfaces;
 using Exiled.API.Enums;
 using Exiled.API.Features;
 using Exiled.API.Features.Pickups;
@@ -15,8 +16,8 @@ namespace AutoEvent.Events.Lava
 {
     public class Plugin : Event
     {
-        public override string Name { get; set; } = "Пол - это ЛАВА";
-        public override string Description { get; set; } = "Выживание, в котором необходимо избегать лавы и стрелять в других.";
+        public override string Name { get; set; } = "Пол - это ЛАВА [Testing]";
+        public override string Description { get; set; } = "Выживание, в котором необходимо избегать лавы и стрелять в других. [Testing]";
         public override string Color { get; set; } = "FFFF00";
         public override string CommandName { get; set; } = "lava";
         public TimeSpan EventTime { get; set; }

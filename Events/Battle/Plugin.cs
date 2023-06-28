@@ -14,8 +14,8 @@ namespace AutoEvent.Events.Battle
 {
     public class Plugin : Event
     {
-        public override string Name { get; set; } = "Мясная Заруба";
-        public override string Description { get; set; } = "Битва, в которой одна из команд должна одолеть другую.";
+        public override string Name { get; set; } = "Мясная Заруба [Testing]";
+        public override string Description { get; set; } = "Битва, в которой одна из команд должна одолеть другую. [Testing]";
         public override string Color { get; set; } = "FFFF00";
         public override string CommandName { get; set; } = "battle";
         public TimeSpan EventTime { get; set; }

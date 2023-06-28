@@ -3,7 +3,7 @@ using PlayerRoles;
 using Exiled.Events.EventArgs.Player;
 using Exiled.Events.EventArgs.Server;
 
-namespace AutoEvent.Events.Survival
+namespace AutoEvent.Events.Breakout
 {
     public class EventHandler
     {

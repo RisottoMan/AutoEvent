@@ -1,9 +1,9 @@
 ﻿using Exiled.API.Features;
 using UnityEngine;
 
-namespace AutoEvent.Events.Lava
+namespace AutoEvent.Events.Lava.Features
 {
-    public class LavaComponent : MonoBehaviour
+    public class Component : MonoBehaviour
     {
         private BoxCollider collider;
         private void Start()
