@@ -10,19 +10,18 @@ using UnityEngine;
 
 namespace AutoEvent.Events.HideAndSeek
 {
-    public class Plugin : Event
+    public class Plugin // not supported
     {
-        public override string Name { get; set; } = "Догонялки [Testing]";
-        public override string Description { get; set; } = "Надо догнать всех игроков на карте. [Testing]";
-        public override string Color { get; set; } = "FF4242";
-        public override string CommandName { get; set; } = "hide";
+        public string Name => "Догонялки и Салки";
+        public string Description => "Надо догнать всех игроков на карте.";
+        public string Color => "FF4242";
+        public string CommandName => "hide";
         public SchematicObject GameMap { get; set; }
-        //public static Model Ledders { get; set; }
         public TimeSpan EventTime { get; set; }
 
         EventHandler _eventHandler;
 
-        public override void OnStart()
+        public void OnStart()
         {
             _eventHandler = new EventHandler(this);
 
@@ -32,7 +31,7 @@ namespace AutoEvent.Events.HideAndSeek
             Exiled.Events.Handlers.Server.RespawningTeam += _eventHandler.OnTeamRespawn;
             OnEventStarted();
         }
-        public override void OnStop()
+        public void OnStop()
         {
             Exiled.Events.Handlers.Player.Verified -= _eventHandler.OnJoin;
             Exiled.Events.Handlers.Player.Died -= _eventHandler.OnDead;

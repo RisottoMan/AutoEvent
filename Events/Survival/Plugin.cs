@@ -10,36 +10,34 @@ using UnityEngine;
 
 namespace AutoEvent.Events.Survival
 {
-    public class Plugin : Event
+    public class Plugin // not supported
     {
-        public override string Name { get; set; } = "Зомби Выживание [Testing]";
-        public override string Description { get; set; } = "Выживание людей против зомби. [Testing]";
-        public override string Color { get; set; } = "FF4242";
-        public override string CommandName { get; set; } = "survival";
+        public string Name => "Зомби Выживание";
+        public string Description => "Выживание людей против зомби.";
+        public string Color => "FF4242";
+        public string CommandName => "toxic";
         public SchematicObject GameMap { get; set; }
         public TimeSpan EventTime { get; set; }
 
         EventHandler _eventHandler;
 
-        public override void OnStart()
+        public void OnStart()
         {
-            //_eventHandler = new EventHandler();
-            /*
+            _eventHandler = new EventHandler(this);
+
             Exiled.Events.Handlers.Player.Verified += _eventHandler.OnJoin;
             Exiled.Events.Handlers.Player.Died += _eventHandler.OnDead;
             Exiled.Events.Handlers.Player.Hurting += _eventHandler.OnDamage;
             Exiled.Events.Handlers.Server.RespawningTeam += _eventHandler.OnTeamRespawn;
-            */
             OnEventStarted();
         }
-        public override void OnStop()
+        public void OnStop()
         {
-            /*
             Exiled.Events.Handlers.Player.Verified -= _eventHandler.OnJoin;
             Exiled.Events.Handlers.Player.Died -= _eventHandler.OnDead;
             Exiled.Events.Handlers.Player.Hurting -= _eventHandler.OnDamage;
             Exiled.Events.Handlers.Server.RespawningTeam -= _eventHandler.OnTeamRespawn;
-            */
+
             Timing.CallDelayed(10f, () => EventEnd());
             AutoEvent.ActiveEvent = null;
             _eventHandler = null;
@@ -49,15 +47,15 @@ namespace AutoEvent.Events.Survival
             // Обнуление Таймера
             EventTime = new TimeSpan(0, 5, 0);
             // Создание карты
-            GameMap = Extensions.LoadMap("Zm_Dust_World.json", new Vector3(115.5f, 1035f, -43.5f), new Quaternion(0, 0, 0, 0), new Vector3(1, 1, 1));
+            GameMap = Extensions.LoadMap("Zombie_Tower", new Vector3(115.5f, 1035f, -43.5f), new Quaternion(0, 0, 0, 0), new Vector3(1, 1, 1));
             Extensions.PlayAudio("Survival.ogg", 5, false, "Выживание");
             // Телепорт игроков
             foreach (Player player in Player.List)
             {
                 player.Role.Set(RoleTypeId.NtfSergeant, Exiled.API.Enums.SpawnReason.None, RoleSpawnFlags.AssignInventory);
-                //player.Position = GameMap.Position + RandomClass.GetRandomSpawn();
+                player.Position = GameMap.Position + RandomClass.GetRandomSpawn();
             }
-            Timing.RunCoroutine(TimingBeginEvent($"Выживание", 15), "survival_run");
+            Timing.RunCoroutine(TimingBeginEvent($"Выживание", 15), "toxic_run");
         }
         // Отсчет до начала ивента
         public IEnumerator<float> TimingBeginEvent(string eventName, float time)
@@ -71,7 +69,7 @@ namespace AutoEvent.Events.Survival
             SpawnZombie();
             yield break;
         }
-
+        // Спавн зомби
         public void SpawnZombie()
         {
             for(int i = 0; i <= Player.List.Count() / 10; i++)
@@ -80,7 +78,7 @@ namespace AutoEvent.Events.Survival
             }
             Timing.RunCoroutine(OnEventRunning(), "infect_run");
         }
-
+        // Ивент начался - отсчет времени и колво людей
         public IEnumerator<float> OnEventRunning()
         {
             while (Player.List.Count(r => r.Role == RoleTypeId.NtfSergeant) > 0 && Player.List.Count(r => r.Role == RoleTypeId.Scp0492) > 0 && EventTime.TotalSeconds > 0)
