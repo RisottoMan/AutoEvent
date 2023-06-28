@@ -2,17 +2,11 @@
 using PlayerRoles;
 using Exiled.Events.EventArgs.Player;
 using Exiled.Events.EventArgs.Server;
-using MapEditorReborn.API.Features.Objects;
 
 namespace AutoEvent.Events.Survival
 {
     public class EventHandler
     {
-        SchematicObject _gameMap;
-        public EventHandler(Plugin plugin)
-        {
-            _gameMap = plugin.GameMap;
-        }
         public void OnDamage(HurtingEventArgs ev)
         {
             if (ev.Attacker != null)
@@ -29,7 +23,7 @@ namespace AutoEvent.Events.Survival
             Timing.CallDelayed(2f, () =>
             {
                 ev.Player.Role.Set(RoleTypeId.Scp0492, Exiled.API.Enums.SpawnReason.None, RoleSpawnFlags.AssignInventory);
-                ev.Player.Position = _gameMap.Position + RandomClass.GetRandomSpawn();
+                //ev.Player.Position = _gameMap.Position + RandomClass.GetRandomSpawn();
             });
         }
         public void OnJoin(VerifiedEventArgs ev)
@@ -37,7 +31,7 @@ namespace AutoEvent.Events.Survival
             Timing.CallDelayed(2f, () =>
             {
                 ev.Player.Role.Set(RoleTypeId.Scp0492, Exiled.API.Enums.SpawnReason.None, RoleSpawnFlags.AssignInventory);
-                ev.Player.Position = _gameMap.Position + RandomClass.GetRandomSpawn();
+                //ev.Player.Position = _gameMap.Position + RandomClass.GetRandomSpawn();
             });
         }
         public void OnTeamRespawn(RespawningTeamEventArgs ev)
