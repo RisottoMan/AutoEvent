@@ -116,6 +116,8 @@
     <Compile Include="Events\Survival\EventHandler.cs" />
     <Compile Include="Events\Survival\Extensions\RandomClass.cs" />
     <Compile Include="Events\Survival\Plugin.cs" />
+    <Compile Include="Events\Pazzle\EventHandler.cs" />
+    <Compile Include="Events\Pazzle\Plugin.cs" />
     <Compile Include="Events\Versus\Config.cs" />
     <Compile Include="Events\Versus\Plugin.cs" />
     <Compile Include="Events\Versus\EventHandler.cs" />
