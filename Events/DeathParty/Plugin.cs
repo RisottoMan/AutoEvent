@@ -17,7 +17,7 @@ namespace AutoEvent.Events.DeathParty
         public override string Name { get; set; } = "Death Party";
         public override string Description { get; set; } = "Survive in grenade rain";
         public override string Color { get; set; } = "FFFF00";
-        public override string CommandName { get; set; } = "death";
+        public override string CommandName { get; set; } = "deathparty";
         public TimeSpan EventTime { get; set; }
         public SchematicObject GameMap { get; set; }
         public bool EventStarted;
