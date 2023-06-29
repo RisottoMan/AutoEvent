@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using MEC;
 using PlayerRoles;
 using AutoEvent.Interfaces;
 using Exiled.API.Features;
 using MapEditorReborn.API.Features.Objects;
 using UnityEngine;
-using Exiled.Events.Commands.Reload;
 
 namespace AutoEvent.Events.Football
 {
@@ -18,8 +16,7 @@ namespace AutoEvent.Events.Football
         public override string Color { get; set; } = "FFFF00";
         public override string CommandName { get; set; } = "football";
         public SchematicObject GameMap { get; set; }
-        //public static Model GameMap { get; set; }
-        //public static Model Ball { get; set; }
+        public GameObject Ball { get; set; }
         public int BluePoints { get; set; } = 0;
         public int RedPoints { get; set; } = 0;
         public TimeSpan EventTime { get; set; }
@@ -50,8 +47,8 @@ namespace AutoEvent.Events.Football
         {
             EventTime = new TimeSpan(0, 0, 0);
 
-            GameMap = Extensions.LoadMap("Football.json", new Vector3(127.460f, 1016.707f, -43.68f), Quaternion.Euler(Vector3.zero), Vector3.one); // спавнпоинты
-            Extensions.PlayAudio("FallGuys_DnB.ogg", 5, true, Name);
+            GameMap = Extensions.LoadMap("Football", new Vector3(76f, 1026.5f, -43.68f), Quaternion.Euler(Vector3.zero), Vector3.one); // спавнпоинты
+            //Extensions.PlayAudio("ClassicMusic.ogg", 5, true, Name);
 
             // Create ball
             /*
@@ -78,7 +75,7 @@ namespace AutoEvent.Events.Football
                 count++;
             }
 
-            Timing.RunCoroutine(OnEventRunning(), "glass_time");
+            //Timing.RunCoroutine(OnEventRunning(), "glass_time");
         }
         public IEnumerator<float> OnEventRunning()
         {
