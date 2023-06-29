@@ -2,8 +2,6 @@
 using AutoEvent.Interfaces;
 using Exiled.API.Enums;
 using Exiled.API.Features;
-using Exiled.API.Features.Pickups;
-using Exiled.API.Features.Toys;
 using MapEditorReborn.API.Features.Objects;
 using MEC;
 using PlayerRoles;
@@ -11,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Component = AutoEvent.Events.Lava.Features.Component;
 
 namespace AutoEvent.Events.Lava
 {
@@ -22,7 +21,7 @@ namespace AutoEvent.Events.Lava
         public override string CommandName { get; set; } = "lava";
         public TimeSpan EventTime { get; set; }
         public SchematicObject GameMap { get; set; }
-        public Primitive Lava { get; set; }
+        public GameObject Lava { get; set; }
 
         EventHandler _eventHandler;
 
@@ -30,7 +29,7 @@ namespace AutoEvent.Events.Lava
         {
             OnEventStarted();
 
-            _eventHandler = new EventHandler(this);
+            _eventHandler = new EventHandler();
 
             Exiled.Events.Handlers.Player.Verified += _eventHandler.OnJoin;
             Exiled.Events.Handlers.Server.RespawningTeam += _eventHandler.OnTeamRespawn;
@@ -65,32 +64,20 @@ namespace AutoEvent.Events.Lava
             EventTime = new TimeSpan(0, 0, 0);
             Server.FriendlyFire = true;
 
-            GameMap = Extensions.LoadMap("Lava.json", new Vector3(120f, 1020f, -43.5f), Quaternion.Euler(Vector3.zero), Vector3.one);
-            //Extensions.PlayAudio("FallGuys_DnB.ogg", 5, true, Name); // ???
+            GameMap = Extensions.LoadMap("Lava", new Vector3(120f, 1020f, -43.5f), Quaternion.Euler(Vector3.zero), Vector3.one);
+            Extensions.PlayAudio("ClassicMusic.ogg", 5, true, Name);
 
-            /*
-            // Переписать
-            for (int i = 0; i < 20; i++)
-            {
-                var item = ItemType.GunCOM15;
-                var rand = Random.Range(0, 100);
-                if (rand < 40) item = ItemType.GunCOM15;
-                else if (rand >= 40 && rand < 80) item = ItemType.GunCOM18;
-                else if (rand >= 80 && rand < 90) item = ItemType.GunRevolver;
-                else if (rand >= 90 && rand < 100) item = ItemType.GunFSP9;
-                Pickup pickup = new Item(item).Spawn(GameMap.GameObject.transform.position + new Vector3(Random.Range(-30, 31), 30, Random.Range(-30, 31)));
-            }
-            */
+            Lava = GameMap.AttachedBlocks.First(x => x.name == "LavaObject");
+            Lava.AddComponent<Component>();
 
-            // Делаем всех д классами
             foreach (var player in Player.List)
             {
                 player.Role.Set(RoleTypeId.ClassD);
                 player.EnableEffect(EffectType.Ensnared);
-                player.Position = GameMap.Position + RandomClass.GetRandomPosition();
+                player.Position = RandomClass.GetSpawnPosition(GameMap);
             }
 
-            Timing.RunCoroutine(OnEventRunning(), "battle_time");
+            Timing.RunCoroutine(OnEventRunning(), "lava_time");
         }
         public IEnumerator<float> OnEventRunning()
         {
@@ -99,24 +86,13 @@ namespace AutoEvent.Events.Lava
                 Extensions.Broadcast($"<size=100><color=red>{time}</color></size>", 1);
                 yield return Timing.WaitForSeconds(1f);
             }
-            Player.List.ToList().ForEach(player =>
+            
+            foreach(Player player in Player.List)
             {
                 player.DisableEffect(EffectType.Ensnared);
-                player.GameObject.AddComponent<BoxCollider>();
-                player.GameObject.AddComponent<BoxCollider>().size = new Vector3(1f, 3f, 1f);
-            });
-
-            /*
-            // Создание лавы
-            Lava.Position = GameMap.Position;
-            Lava.AddPart(new ModelPrimitive(LavaModel, PrimitiveType.Cube, new Color32(255, 0, 0, 255), new Vector3(0, 0, 0), new Vector3(0, 0, 0), new Vector3(100, 1, 100)));
-            foreach (var prim in LavaModel.Primitives)
-            {
-                prim.GameObject.AddComponent<LavaComponent>();
             }
-            */
 
-            while (Player.List.Count(r => r.Role != RoleTypeId.Spectator) > 1)
+            while (Player.List.Count(r => r.IsAlive) > 1)
             {
                 string text = string.Empty;
                 if (EventTime.TotalSeconds % 2 == 0)
@@ -125,28 +101,30 @@ namespace AutoEvent.Events.Lava
                 }
                 else
                 {
-                    text = "<size=90><color=red><b>  !  </b></color></size>\n";
+                    text = "<size=90><color=red><b>!</b></color></size>\n";
                 }
-                Extensions.Broadcast(text + $"<size=20><color=red><b>Живых: {Player.List.ToList().Count(r => r.Role != RoleTypeId.Spectator)} Игроков</b></color></size>", 1);
-                Lava.Position += new Vector3(0, 0.1f, 0);
+                Extensions.Broadcast(text + $"<size=20><color=red><b>Живых: {Player.List.Count(r => r.IsAlive)} Игроков</b></color></size>", 1);
+                Lava.transform.position += new Vector3(0, 0.06f, 0);
                 yield return Timing.WaitForSeconds(1f);
                 EventTime += TimeSpan.FromSeconds(1f);
             }
-            if (Player.List.ToList().Count(r => r.Role != RoleTypeId.Spectator) == 1)
+
+            if (Player.List.Count(r => r.IsAlive) == 1)
             {
-                Extensions.Broadcast($"<size=80><color=red><b>Победитель\n{Player.List.ToList().First(r => r.Role != RoleTypeId.Spectator).Nickname}</b></color></size>", 10);
+                Extensions.Broadcast($"<color=red><b>Победитель\nИгрок - {Player.List.First(r => r.IsAlive).Nickname}</b></color>", 10);
             }
             else
             {
-                Extensions.Broadcast($"<size=70><color=red><b>Все утонули в Лаве)))))</b></color></size>", 10);
+                Extensions.Broadcast($"<color=red><b>Никто до конца не выжил\nКонец игры.</b></color>", 10);
             }
+
             OnStop();
             yield break;
         }
         public void EventEnd()
         {
             Server.FriendlyFire = false;
-            Lava.Destroy();
+            GameObject.Destroy(Lava);
             Extensions.CleanUpAll();
             Extensions.TeleportEnd();
             Extensions.UnLoadMap(GameMap);

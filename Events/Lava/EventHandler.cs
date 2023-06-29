@@ -11,11 +11,6 @@ namespace AutoEvent.Events.Lava
 {
     public class EventHandler
     {
-        Plugin _plugin;
-        public EventHandler(Plugin plugin)
-        {
-            _plugin = plugin;
-        }
         public void OnJoin(VerifiedEventArgs ev)
         {
             ev.Player.Role.Set(RoleTypeId.Spectator);
@@ -41,7 +36,7 @@ namespace AutoEvent.Events.Lava
         }
         public void OnHurt(HurtingEventArgs ev)
         {
-            if (ev.Player.Role.Type != RoleTypeId.Spectator) ev.Player.Hurt(3.5f, "Lava");
+            //if (ev.Player.Role.Type != RoleTypeId.Spectator) ev.Player.Hurt(3.5f, "Shooting");
         }
     }
 }

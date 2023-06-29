@@ -1,4 +1,4 @@
-﻿using AutoEvent.Events.Infection;
+﻿using AutoEvent.Events.Battle.Features;
 using AutoEvent.Interfaces;
 using Exiled.API.Enums;
 using Exiled.API.Features;
@@ -58,8 +58,8 @@ namespace AutoEvent.Events.Battle
         public void OnEventStarted()
         {
             EventTime = new TimeSpan(0, 0, 0);
-            GameMap = Extensions.LoadMap("Battle.json", new Vector3(120f, 1020f, -43.5f), Quaternion.Euler(Vector3.zero), Vector3.one);
-            //Extensions.PlayAudio("MGS4.ogg", 3, true, Name); // ???? найти подходящую музыку
+            GameMap = Extensions.LoadMap("Battle", new Vector3(120f, 1020f, -43.5f), Quaternion.Euler(Vector3.zero), Vector3.one);
+            Extensions.PlayAudio("ClassicMusic.ogg", 5, true, Name);
 
             var count = 0;
             foreach (Player player in Player.List)
@@ -68,13 +68,13 @@ namespace AutoEvent.Events.Battle
                 {
                     player.Role.Set(RoleTypeId.NtfSergeant, RoleSpawnFlags.None);
                     RandomClass.CreateSoldier(player);
-                    player.Position = RandomPosition.GetSpawnPosition(GameMap); // ???? как понять кого куда спавнить
+                    player.Position = RandomClass.GetSpawnPosition(GameMap, true);
                 }
                 else
                 {
                     player.Role.Set(RoleTypeId.ChaosConscript, RoleSpawnFlags.None);
                     RandomClass.CreateSoldier(player);
-                    player.Position = RandomPosition.GetSpawnPosition(GameMap); // ????
+                    player.Position = RandomClass.GetSpawnPosition(GameMap, false);
                 }
                 count++;
             }
@@ -90,6 +90,7 @@ namespace AutoEvent.Events.Battle
             }
 
             Player.List.ToList().ForEach(player => player.DisableEffect(EffectType.Ensnared));
+
             while (Player.List.Count(r => r.Role.Team == Team.FoundationForces) > 0 && Player.List.Count(r => r.Role.Team == Team.ChaosInsurgency) > 0)
             {
                 Extensions.Broadcast($"<color=#D71868><b><i>Заруба</i></b></color>\n" +
@@ -113,6 +114,7 @@ namespace AutoEvent.Events.Battle
                 $"<color=yellow>ПОБЕДИЛИ - <color=blue>{Player.List.Count(r => r.Role.Team == Team.FoundationForces)} МОГ</color></color>\n" +
                 $"<color=yellow>Конец ивент: <color=red>{EventTime.Minutes}:{EventTime.Seconds}</color></color>", 10);
             }
+
             OnStop();
             yield break;
         }
