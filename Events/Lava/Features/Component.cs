@@ -16,7 +16,7 @@ namespace AutoEvent.Events.Lava.Features
             if (Player.Get(other.gameObject) is Player)
             {
                 var pl = Player.Get(other.gameObject);
-                pl.Hurt(0.5f, "<color=red>Сгорел в Лаве!</color>");
+                pl.Hurt(0.1f, "<color=red>Сгорел в Лаве!</color>");
                 /* пока что нужно подумать
                 if (pl.Health < 1)
                 {

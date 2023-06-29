@@ -15,7 +15,7 @@ namespace AutoEvent.Events.Lava.Features
             return GameMap.AttachedBlocks.Where(x => x.name == "Spawngun").ToList().RandomItem().transform.position;
         }
         /*
-        // Переписать
+        // Code for random guns from area
         for (int i = 0; i < 20; i++)
         {
             var item = ItemType.GunCOM15;

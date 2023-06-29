@@ -2,8 +2,6 @@
 using AutoEvent.Interfaces;
 using Exiled.API.Enums;
 using Exiled.API.Features;
-using Exiled.API.Features.Pickups;
-using Exiled.API.Features.Toys;
 using MapEditorReborn.API.Features.Objects;
 using MEC;
 using PlayerRoles;
@@ -11,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Component = AutoEvent.Events.Lava.Features.Component;
 
 namespace AutoEvent.Events.Lava
 {
@@ -22,7 +21,7 @@ namespace AutoEvent.Events.Lava
         public override string CommandName { get; set; } = "lava";
         public TimeSpan EventTime { get; set; }
         public SchematicObject GameMap { get; set; }
-        public Primitive Lava { get; set; }
+        public GameObject Lava { get; set; }
 
         EventHandler _eventHandler;
 
@@ -68,17 +67,9 @@ namespace AutoEvent.Events.Lava
             GameMap = Extensions.LoadMap("Lava", new Vector3(120f, 1020f, -43.5f), Quaternion.Euler(Vector3.zero), Vector3.one);
             Extensions.PlayAudio("ClassicMusic.ogg", 5, true, Name);
 
-            /*
-            // Создание лавы
-            Lava.Position = GameMap.Position;
-            Lava.AddPart(new ModelPrimitive(LavaModel, PrimitiveType.Cube, new Color32(255, 0, 0, 255), new Vector3(0, 0, 0), new Vector3(0, 0, 0), new Vector3(100, 1, 100)));
-            foreach (var prim in LavaModel.Primitives)
-            {
-                prim.GameObject.AddComponent<LavaComponent>();
-            }
-            */
+            Lava = GameMap.AttachedBlocks.First(x => x.name == "LavaObject");
+            Lava.AddComponent<Component>();
 
-            // Делаем всех д классами
             foreach (var player in Player.List)
             {
                 player.Role.Set(RoleTypeId.ClassD);
@@ -95,14 +86,12 @@ namespace AutoEvent.Events.Lava
                 Extensions.Broadcast($"<size=100><color=red>{time}</color></size>", 1);
                 yield return Timing.WaitForSeconds(1f);
             }
-            /*
+            
             foreach(Player player in Player.List)
             {
                 player.DisableEffect(EffectType.Ensnared);
-                player.GameObject.AddComponent<BoxCollider>();
-                player.GameObject.AddComponent<BoxCollider>().size = new Vector3(1f, 3f, 1f);
             }
-            */
+
             while (Player.List.Count(r => r.IsAlive) > 1)
             {
                 string text = string.Empty;
@@ -114,19 +103,19 @@ namespace AutoEvent.Events.Lava
                 {
                     text = "<size=90><color=red><b>!</b></color></size>\n";
                 }
-                Extensions.Broadcast(text + $"<size=20><color=red><b>Живых: {Player.List.Count(r => r.Role != RoleTypeId.Spectator)} Игроков</b></color></size>", 1);
-                //Lava.Position += new Vector3(0, 0.1f, 0);
+                Extensions.Broadcast(text + $"<size=20><color=red><b>Живых: {Player.List.Count(r => r.IsAlive)} Игроков</b></color></size>", 1);
+                Lava.transform.position += new Vector3(0, 0.06f, 0);
                 yield return Timing.WaitForSeconds(1f);
                 EventTime += TimeSpan.FromSeconds(1f);
             }
 
             if (Player.List.Count(r => r.IsAlive) == 1)
             {
-                Extensions.Broadcast($"<size=80><color=red><b>Победитель\n{Player.List.First(r => r.IsAlive).Nickname}</b></color></size>", 10);
+                Extensions.Broadcast($"<color=red><b>Победитель\nИгрок - {Player.List.First(r => r.IsAlive).Nickname}</b></color>", 10);
             }
             else
             {
-                Extensions.Broadcast($"<size=70><color=red><b>Все утонули в Лаве)))))</b></color></size>", 10);
+                Extensions.Broadcast($"<color=red><b>Никто до конца не выжил\nКонец игры.</b></color>", 10);
             }
 
             OnStop();
@@ -135,7 +124,7 @@ namespace AutoEvent.Events.Lava
         public void EventEnd()
         {
             Server.FriendlyFire = false;
-            //Lava.Destroy();
+            GameObject.Destroy(Lava);
             Extensions.CleanUpAll();
             Extensions.TeleportEnd();
             Extensions.UnLoadMap(GameMap);
