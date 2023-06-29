@@ -6,6 +6,7 @@ using PlayerRoles;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 namespace AutoEvent.Events.Escape
 {
@@ -44,12 +45,19 @@ namespace AutoEvent.Events.Escape
         public void OnEventStarted()
         {
             EventTime = new TimeSpan(0, 0, 0);
+
+            GameObject _startPos = new GameObject();
+            _startPos.transform.parent = Room.Get(RoomType.Lcz173).transform;
+            _startPos.transform.localPosition = new Vector3(16.5f, 13f, 8f);
+
             Player.List.ToList().ForEach(player =>
             {
-                player.Role.Set(RoleTypeId.Scp173, SpawnReason.None, RoleSpawnFlags.All);
+                player.Role.Set(RoleTypeId.Scp173, SpawnReason.None, RoleSpawnFlags.None);
+                player.Position = _startPos.transform.position;
+                //player.Rotation = _startPos.transform.localEulerAngles; // camera to door
                 player.EnableEffect(EffectType.Ensnared, 10);
             });
-            // we need Running in the 90's and Vicky Vale - Dancing lmao :D
+
             Extensions.PlayAudio("Escape.ogg", 25, true, Name);
             // Warhead started
             Warhead.DetonationTimer = 120f;
