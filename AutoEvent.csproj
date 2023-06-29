@@ -71,7 +71,7 @@
     <Compile Include="Commands\StopEvent.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="Events\Battle\EventHandler.cs" />
-    <Compile Include="Events\Battle\Extensions\RandomClass.cs" />
+    <Compile Include="Events\Battle\Features\RandomClass.cs" />
     <Compile Include="Events\Battle\Plugin.cs" />
     <Compile Include="Events\Deathmatch\Extensions\RandomClass.cs" />
     <Compile Include="Events\Deathmatch\Plugin.cs" />

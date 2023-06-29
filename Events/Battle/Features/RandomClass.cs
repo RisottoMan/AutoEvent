@@ -4,7 +4,7 @@ using System.Linq;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-namespace AutoEvent.Events.Battle
+namespace AutoEvent.Events.Battle.Features
 {
     internal class RandomClass
     {
@@ -46,9 +46,10 @@ namespace AutoEvent.Events.Battle
                     break;
             }
         }
-        public static Vector3 GetSpawnPosition(SchematicObject GameMap)
+        public static Vector3 GetSpawnPosition(SchematicObject GameMap, bool isMtf)
         {
-            return GameMap.AttachedBlocks.Where(x => x.name == "Spawnpoint").FirstOrDefault().transform.position;
+            if (isMtf) return GameMap.AttachedBlocks.Where(x => x.name == "Spawnpoint").FirstOrDefault().transform.position;
+            else return GameMap.AttachedBlocks.Where(x => x.name == "Spawnpoint1").FirstOrDefault().transform.position;
         }
     }
 }
