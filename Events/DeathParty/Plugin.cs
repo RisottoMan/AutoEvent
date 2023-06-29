@@ -9,6 +9,9 @@ using System.Linq;
 using AutoEvent.Interfaces;
 using UnityEngine;
 using AutoEvent.Events.DeathParty.Features;
+using Discord;
+using Exiled.Events.EventArgs.Player;
+using Random = UnityEngine.Random;
 
 namespace AutoEvent.Events.DeathParty
 {
@@ -21,6 +24,9 @@ namespace AutoEvent.Events.DeathParty
         public TimeSpan EventTime { get; set; }
         public SchematicObject GameMap { get; set; }
         public bool EventStarted;
+        public int PlayerCount;
+        public string EvWinner;
+        public float ExplosionRadius;
 
         EventHandler _eventHandler;
 
@@ -29,84 +35,111 @@ namespace AutoEvent.Events.DeathParty
             _eventHandler = new EventHandler();
 
             Exiled.Events.Handlers.Server.RespawningTeam += _eventHandler.OnTeamRespawn;
+            Exiled.Events.Handlers.Player.Died += OnDied;
+            Exiled.Events.Handlers.Player.Left += OnLeft;
             OnEventStarted();
             EventStarted = true;
+            ExplosionRadius = 12;
         }
 
         public override void OnStop()
         {
             Exiled.Events.Handlers.Server.RespawningTeam -= _eventHandler.OnTeamRespawn;
+            Exiled.Events.Handlers.Player.Died -= OnDied;
+            Exiled.Events.Handlers.Player.Left -= OnLeft;
 
-            Timing.CallDelayed(5f, () => EventEnd());
+            Timing.CallDelayed(5f, EventEnd);
             AutoEvent.ActiveEvent = null;
             _eventHandler = null;
             EventStarted = false;
+            ExplosionRadius = 0;
+            EvWinner = null;
         }
 
         public void OnEventStarted()
         {
+            Extensions.PlayAudio("Escape.ogg", 4, true, Name);
+            GameMap = Extensions.LoadMap("DeathParty", new Vector3(130f, 1012f, -40f), Quaternion.Euler(Vector3.zero), Vector3.one);
             EventTime = new TimeSpan(0, 0, 0);
             Player.List.ToList().ForEach(player =>
             {
-                GameMap = Extensions.LoadMap("DeathParty", new Vector3(130f, 1012f, -40f), Quaternion.Euler(Vector3.zero), Vector3.one);
                 player.Role.Set(RandomRoles.GetRandomRole());
+                PlayerCount++;
                 player.ClearInventory();
-                player.Teleport(new Vector3(130f, 1013, -40f));
-                player.Broadcast(5, "<color=red>Уворачивайтесь от гранат!</color>");
-                player.EnableEffect(EffectType.Ensnared, 10);
+                player.Teleport(new Vector3(Random.Range(120, 140), 1015, Random.Range(-30, -50)));
                 Server.FriendlyFire = true;
+                Round.IsLocked = true;
+                
             });
-
-            Extensions.PlayAudio("ClassicMusic.ogg", 100, true, "Death");
 
             Timing.RunCoroutine(OnEventRunning(), "death");
         }
 
         public IEnumerator<float> OnEventRunning()
         {
-            for (int time = 10; time > 0; time--)
+            while (PlayerCount >= 2)
             {
-                Extensions.Broadcast($"Уворачивайтесь от гранат.\nПрошло {EventTime}", 1);
+                Extensions.Broadcast($"<color=yellow>Уворачивайтесь от гранат!</color>\n<color=green>Прошло {EventTime} секунд</color>\n<color=red>Осталось {PlayerCount} человек</color>", 1);
                 yield return Timing.WaitForSeconds(1f);
                 EventTime += TimeSpan.FromSeconds(1f);
-            }
-
-            while (Player.List.Count(r => r.IsHuman) > 5 && Player.List.Count(r => r.IsAlive) > 0)
-            {
-                Extensions.Broadcast($"С начала ивента прошло {EventTime} секунд", 1);
-                yield return Timing.WaitForSeconds(1f);
-                EventTime += TimeSpan.FromSeconds(1f);
-                Timing.CallDelayed(1, () =>
+                Timing.CallDelayed(2f, GrenadeSpawn);
+                if (PlayerCount == 1)
                 {
-                    GrenadeSpawn();
-                });
-            }
+                    foreach (Player ply in Player.List)
+                    {
+                        if (ply.IsAlive)
+                        {
+                            EvWinner = ply.DisplayNickname;
+                            ply.IsGodModeEnabled = true;
+                            Extensions.Broadcast($"<color=red>Победил {EvWinner}</color>", 5);
+                            Timing.CallDelayed(5f, () =>
+                            {
+                                OnStop();
+                                ply.IsGodModeEnabled = false;
+                            });
+                        }
+                    }
+                } 
+                else if (PlayerCount <= 0)
+                {
+                    Extensions.Broadcast($"<color=red>Победитель неопределен</color>", 5);
+                    Timing.CallDelayed(5f, OnStop);
+                }
 
-            foreach (Player player in Player.List)
-            {
-                player.Kill("End game");
+                if (PlayerCount < 5)
+                {
+                    ExplosionRadius = 20f;
+                }
             }
-            Extensions.Broadcast($"Ивент закончен. Вы выжили {EventTime} секунд!", 10);
+        }
 
-            OnStop();
-            yield break;
+        public void OnDied(DiedEventArgs ev)
+        {
+            ev.Player.ShowHint($"<color=yellow>Вы смогли выжить {EventTime} секунд</color>", 5f);
+            PlayerCount--;
+        }
+
+        public void OnLeft(LeftEventArgs ev)
+        {
+            PlayerCount--;
         }
 
         public void GrenadeSpawn()
         {
             ExplosiveGrenade grenade = (ExplosiveGrenade)Item.Create(ItemType.GrenadeHE);
-            grenade.FuseTime = 2f;
-            grenade.SpawnActive(new Vector3(130, 1023f, -40));
-            grenade.Scale = new Vector3(3f, 3f, 3f);
+            grenade.Scale = new Vector3(2, 3, 2);
+            grenade.FuseTime = 1.5f;
+            grenade.MaxRadius = ExplosionRadius;
+            grenade.SpawnActive(new Vector3(Random.Range(110f, 150f), 1020f, Random.Range(-20f, -60f)));
         }
 
         public void EventEnd()
         {
+            Server.FriendlyFire = false;
             Extensions.CleanUpAll();
             Extensions.TeleportEnd();
             Extensions.StopAudio();
             Extensions.UnLoadMap(GameMap);
-            Server.FriendlyFire = false;
         }
     }
 }
