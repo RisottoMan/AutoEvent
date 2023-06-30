@@ -86,7 +86,7 @@ namespace AutoEvent.Events.Puzzle
             }
 
             List<GameObject> ListPlatformes = Platformes;
-            while (stage < 5 && Player.List.Count(r=>r.IsAlive) > 0)
+            while (stage <= 5 && Player.List.Count(r=>r.IsAlive) > 0)
             {
                 for (int time = speed * 2; time > 0; time--)
                 {

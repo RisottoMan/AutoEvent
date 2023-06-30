@@ -8,6 +8,8 @@ using Exiled.API.Features;
 using MapEditorReborn.API.Features.Objects;
 using UnityEngine;
 using AutoEvent.Events.Glass.Features;
+using Object = UnityEngine.Object;
+using Mirror;
 
 namespace AutoEvent.Events.Glass
 {
@@ -18,8 +20,8 @@ namespace AutoEvent.Events.Glass
         public override string Color { get; set; } = "FF4242";
         public override string CommandName { get; set; } = "glass";
         public SchematicObject GameMap { get; set; }
-        //public static Model Platformes { get; set; }
-        //public static Model ModelCheckPoint { get; set; }
+        public List<GameObject> Platformes { get; set; }
+        public GameObject Lava { get; set; }
         public TimeSpan EventTime { get; set; }
 
         EventHandler _eventHandler;
@@ -31,6 +33,7 @@ namespace AutoEvent.Events.Glass
             Exiled.Events.Handlers.Player.Verified += _eventHandler.OnJoin;
             Exiled.Events.Handlers.Player.DroppingItem += _eventHandler.OnDroppingItem;
             Exiled.Events.Handlers.Server.RespawningTeam += _eventHandler.OnTeamRespawn;
+            Exiled.Events.Handlers.Player.SpawningRagdoll += _eventHandler.OnSpawnRagdoll;
 
             OnEventStarted();
         }
@@ -39,6 +42,7 @@ namespace AutoEvent.Events.Glass
             Exiled.Events.Handlers.Player.Verified -= _eventHandler.OnJoin;
             Exiled.Events.Handlers.Player.DroppingItem -= _eventHandler.OnDroppingItem;
             Exiled.Events.Handlers.Server.RespawningTeam -= _eventHandler.OnTeamRespawn;
+            Exiled.Events.Handlers.Player.SpawningRagdoll -= _eventHandler.OnSpawnRagdoll;
 
             Timing.CallDelayed(10f, () => EventEnd());
             AutoEvent.ActiveEvent = null;
@@ -46,64 +50,93 @@ namespace AutoEvent.Events.Glass
         }
         public void OnEventStarted()
         {
-            EventTime = new TimeSpan(0, 0, 0);
+            GameMap = Extensions.LoadMap("Glass", new Vector3(76f, 1026.5f, -43.68f), Quaternion.Euler(Vector3.zero), Vector3.one);
+            Extensions.PlayAudio("ClassicMusic.ogg", 5, true, Name);
+            
+            Lava = GameMap.AttachedBlocks.First(x => x.name == "Lava");
+            Lava.AddComponent<LavaComponent>();
+ 
+            int platformCount;
+            int playerCount = Player.List.Count(r => r.IsAlive);
+            if (playerCount <= 5)
+            {
+                platformCount = 3;
+                EventTime = new TimeSpan(0, 1, 0);
+            }
+            else if (playerCount > 5 && playerCount <= 15)
+            {
+                platformCount = 6;
+                EventTime = new TimeSpan(0, 1, 30);
+            }
+            else if (playerCount > 15 && playerCount <= 25)
+            {
+                platformCount = 9;
+                EventTime = new TimeSpan(0, 2, 0);
+            }
+            else
+            {
+                platformCount = 12;
+                EventTime = new TimeSpan(0, 2, 30);
+            }
 
-            GameMap = Extensions.LoadMap("Glass.json", new Vector3(127.460f, 1016.707f, -43.68f), Quaternion.Euler(Vector3.zero), Vector3.one);
-            Extensions.PlayAudio("FallGuys_BeanThieves.ogg", 10, true, Name);
+            var platform = GameMap.AttachedBlocks.First(x => x.name == "Platform");
+            var platform1 = GameMap.AttachedBlocks.First(x => x.name == "Platform1");
+
+            Platformes = new List<GameObject>();
+            var delta = new Vector3(3.69f, 0, 0);
+            for (int i = 0; i < platformCount; i++)
+            {
+                var newPlatform = Object.Instantiate(platform, platform.transform.position + delta * (i + 1), Quaternion.identity);
+                NetworkServer.Spawn(newPlatform);
+                Platformes.Add(newPlatform);
+
+                var newPlatform1 = Object.Instantiate(platform1, platform1.transform.position + delta * (i + 1), Quaternion.identity);
+                NetworkServer.Spawn(newPlatform1);
+                Platformes.Add(newPlatform1);
+
+                if (UnityEngine.Random.Range(0, 2) == 0) newPlatform.AddComponent<GlassComponent>();
+                else newPlatform1.AddComponent<GlassComponent>();
+            }
+
+            var finish = GameMap.AttachedBlocks.First(x => x.name == "Finish");
+            finish.transform.position = (platform.transform.position + platform1.transform.position) / 2f + delta * (platformCount + 2);
 
             foreach (Player player in Player.List)
             {
-                player.Role.Set(RoleTypeId.ClassD);
-                //player.Position = GameMap.Position + new Vector3(-28.65f, -3.2f, Random.Range(-1, -13)); // ???
-
-                player.GameObject.AddComponent<BoxCollider>();
-                player.GameObject.AddComponent<BoxCollider>().size = new Vector3(1f, 3.5f, 1f);
+                player.Role.Set(RoleTypeId.ClassD, RoleSpawnFlags.None);
+                player.Position = RandomClass.GetSpawnPosition(GameMap);
             }
             Timing.RunCoroutine(OnEventRunning(), "glass_time");
         }
         public IEnumerator<float> OnEventRunning()
         {
-            while (EventTime.TotalSeconds == 10)
+            while (EventTime.TotalSeconds > 0 && Player.List.Count(r => r.IsAlive) > 0)
             {
-                int count = Player.List.ToList().Count(r => r.Role != RoleTypeId.Spectator);
-
-                // Если все сдохли, то обнуляем;
-                if (count <= 0) EventTime = new TimeSpan(0, 0, 0);
-
                 Extensions.Broadcast($"<size=50>Прыжок Веры\nПройдите до конца уровня!</size>\n" +
-                    $"<size=20>Игроков: {count} | <color=red>До конца: {EventTime.Minutes}:{EventTime.Seconds} секунд</color></size>", 1);
+                    $"<size=20>Игроков: {Player.List.Count(r=>r.IsAlive)} | <color=red>До конца: {EventTime.Minutes}:{EventTime.Seconds} секунд</color></size>", 1);
 
                 yield return Timing.WaitForSeconds(1f);
-                EventTime += TimeSpan.FromSeconds(1f);
+                EventTime -= TimeSpan.FromSeconds(1f);
             }
 
-            /*
-            // Проверка нахождения на примитиве
-            foreach (Player player in Player.List.ToList())
+            foreach (Player player in Player.List)
             {
-                if (Vector3.Distance(ModelCheckPoint.GameObject.transform.position, player.Position) >= 8) // ????
+                if (Vector3.Distance(player.Position, GameMap.AttachedBlocks.First(x => x.name == "Finish").transform.position) >= 10)
                 {
-                    player.Hurt(100, "Не успел дойти до финиша.");
+                    player.Hurt(500, "Не успел дойти до финиша.");
                 }
             }
-            */
-            /// Вообще лучше переделать рестарт на один раунд
 
-            if (Player.List.ToList().Count(r => r.Role != RoleTypeId.Spectator) > 1)
+            if (Player.List.Count(r => r.IsAlive) > 1)
             {
-                Extensions.Broadcast($"Прыжок Веры\nОсталось много игроков.\nРестарт Ивента!", 5);
-                // рестарт мини-игры
-                // RestartEvent(); // ???
-                yield break;
+                Extensions.Broadcast($"Победа. Спаслось {Player.List.Count(r => r.IsAlive)} игроков", 10);
             }
-            else if (Player.List.ToList().Count(r => r.Role.Type != RoleTypeId.Spectator) == 1)
+            else if (Player.List.Count(r => r.IsAlive) == 1)
             {
-                // Победитель
-                Extensions.Broadcast($"Прыжок Веры\n<color=yellow>ПОБЕДИТЕЛЬ </color>", 10); // {Player.List.ToList().First(r => r.Role != RoleType.Spectator).Nickname}
+                Extensions.Broadcast($"Прыжок Веры\n<color=yellow>Победитель {Player.List.First(r =>r.IsAlive).Nickname}</color>", 10);
             }
-            else if (Player.List.ToList().Count(r => r.Role != RoleTypeId.Spectator) == 0)
+            else if (Player.List.Count(r => r.IsAlive) < 1)
             {
-                // Все проиграли
                 Extensions.Broadcast($"Прыжок Веры\n<color=red>Все погибли)))))))</color>", 10);
             }
 
@@ -112,9 +145,8 @@ namespace AutoEvent.Events.Glass
         }
         public void EventEnd()
         {
-            //GameObject.Destroy(Platformes.GameObject);
-            //Platformes.Destroy();
-            //ModelCheckPoint.Destroy();
+            Platformes.ForEach(Object.Destroy);
+            GameObject.Destroy(Lava);
             Extensions.CleanUpAll();
             Extensions.TeleportEnd();
             Extensions.UnLoadMap(GameMap);

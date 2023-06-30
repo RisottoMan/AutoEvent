@@ -86,8 +86,9 @@
     <Compile Include="Events\Football\Features\RandomClass.cs" />
     <Compile Include="Events\Football\Plugin.cs" />
     <Compile Include="Events\Glass\EventHandler.cs" />
-    <Compile Include="Events\Glass\Features\Component.cs" />
-    <Compile Include="Events\Glass\Features\Platformes.cs" />
+    <Compile Include="Events\Glass\Features\LavaComponent.cs" />
+    <Compile Include="Events\Glass\Features\GlassComponent.cs" />
+    <Compile Include="Events\Glass\Features\RandomClass.cs" />
     <Compile Include="Events\Glass\Plugin.cs" />
     <Compile Include="Events\HideAndSeek\EventHandler.cs" />
     <Compile Include="Events\HideAndSeek\Plugin.cs" />

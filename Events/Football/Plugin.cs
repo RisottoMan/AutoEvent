@@ -9,7 +9,6 @@ using System.Linq;
 using UnityEngine;
 using Component = AutoEvent.Events.Football.Features.Component;
 using AutoEvent.Events.Football.Features;
-using Exiled.Events.Commands.Reload;
 
 namespace AutoEvent.Events.Football
 {
@@ -104,7 +103,7 @@ namespace AutoEvent.Events.Football
                     if (Vector3.Distance(Ball.transform.position, player.Position) < 2)
                     {
                         Ball.gameObject.TryGetComponent<Rigidbody>(out Rigidbody rig);
-                        rig.AddForce(player.Transform.forward + new Vector3(0, 0.1f, 0), ForceMode.Impulse);
+                        rig.AddForce(player.Transform.forward + new Vector3(0, 0.3f, 0), ForceMode.Impulse);
                     }
 
                     Extensions.Broadcast(text + $"<color=blue>{BluePoints}</color> VS <color=red>{RedPoints}</color>\n" +
@@ -125,8 +124,8 @@ namespace AutoEvent.Events.Football
                     BluePoints++;
                 }
 
-                yield return Timing.WaitForSeconds(0.1f);
-                EventTime -= TimeSpan.FromSeconds(0.1f);
+                yield return Timing.WaitForSeconds(0.5f);
+                EventTime -= TimeSpan.FromSeconds(0.5f);
             }
 
             if (BluePoints > RedPoints)

@@ -18,9 +18,5 @@ namespace AutoEvent.Events.Football.Features
             rigid.mass = 0.5f;
             rigid.drag = 1f;
         }
-        private void FixedUpdate()
-        {
-            transform.position += rigid.velocity * Time.fixedDeltaTime;
-        }
     }
 }

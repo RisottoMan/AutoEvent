@@ -31,5 +31,6 @@ namespace AutoEvent.Events.Glass
                 }
             }
         }
+        public void OnSpawnRagdoll(SpawningRagdollEventArgs ev) => ev.IsAllowed = false;
     }
 }
