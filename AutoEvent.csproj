@@ -83,6 +83,7 @@
     <Compile Include="Events\Example\Plugin.cs" />
     <Compile Include="Events\Football\EventHandler.cs" />
     <Compile Include="Events\Football\Features\Component.cs" />
+    <Compile Include="Events\Football\Features\RandomClass.cs" />
     <Compile Include="Events\Football\Plugin.cs" />
     <Compile Include="Events\Glass\EventHandler.cs" />
     <Compile Include="Events\Glass\Features\Component.cs" />
@@ -113,11 +114,12 @@
     <Compile Include="Events\Breakout\EventHandler.cs" />
     <Compile Include="Events\Breakout\Extensions\RandomClass.cs" />
     <Compile Include="Events\Breakout\Plugin.cs" />
+    <Compile Include="Events\Puzzle\Features\Component.cs" />
     <Compile Include="Events\Survival\EventHandler.cs" />
     <Compile Include="Events\Survival\Extensions\RandomClass.cs" />
     <Compile Include="Events\Survival\Plugin.cs" />
-    <Compile Include="Events\Pazzle\EventHandler.cs" />
-    <Compile Include="Events\Pazzle\Plugin.cs" />
+    <Compile Include="Events\Puzzle\EventHandler.cs" />
+    <Compile Include="Events\Puzzle\Plugin.cs" />
     <Compile Include="Events\Versus\Config.cs" />
     <Compile Include="Events\Versus\Plugin.cs" />
     <Compile Include="Events\Versus\EventHandler.cs" />
