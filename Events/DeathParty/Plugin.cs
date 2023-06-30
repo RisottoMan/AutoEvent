@@ -59,17 +59,17 @@ namespace AutoEvent.Events.DeathParty
         public void OnEventStarted()
         {
             Extensions.PlayAudio("Escape.ogg", 4, true, Name);
-            GameMap = Extensions.LoadMap("DeathParty", new Vector3(130f, 1012f, -40f), Quaternion.Euler(Vector3.zero), Vector3.one);
+            GameMap = Extensions.LoadMap("DeathParty", new Vector3(100f, 1012f, -40f), Quaternion.Euler(Vector3.zero), Vector3.one);
             EventTime = new TimeSpan(0, 0, 0);
             Player.List.ToList().ForEach(player =>
             {
+                Round.IsLocked = true;
                 player.Role.Set(RandomRoles.GetRandomRole());
                 PlayerCount++;
                 player.ClearInventory();
-                player.Teleport(new Vector3(Random.Range(120, 140), 1015, Random.Range(-30, -50)));
+                player.Teleport(new Vector3(Random.Range(80, 120), 1015, Random.Range(-30, -50)));
                 Server.FriendlyFire = true;
-                Round.IsLocked = true;
-                
+
             });
 
             Timing.RunCoroutine(OnEventRunning(), "death");
@@ -127,10 +127,10 @@ namespace AutoEvent.Events.DeathParty
         public void GrenadeSpawn()
         {
             ExplosiveGrenade grenade = (ExplosiveGrenade)Item.Create(ItemType.GrenadeHE);
-            grenade.Scale = new Vector3(2, 3, 2);
+            grenade.Scale  = new Vector3(2f, 3f, 2f);
             grenade.FuseTime = 1.5f;
             grenade.MaxRadius = ExplosionRadius;
-            grenade.SpawnActive(new Vector3(Random.Range(110f, 150f), 1020f, Random.Range(-20f, -60f)));
+            grenade.SpawnActive(new Vector3(Random.Range(80, 120), 1020, Random.Range(-20, -60)));
         }
 
         public void EventEnd()
