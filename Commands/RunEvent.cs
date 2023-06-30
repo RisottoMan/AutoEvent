@@ -39,6 +39,8 @@ namespace AutoEvent.Commands
                 return false;
             }
 
+            Round.IsLocked = true;
+
             if (!Round.IsStarted)
             {
                 Round.Start();
