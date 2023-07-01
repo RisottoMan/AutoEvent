@@ -17,7 +17,7 @@ namespace AutoEvent.Events.DeathParty
 {
     public class Plugin : Event
     {
-        public override string Name { get; set; } = "Death Party";
+        public override string Name { get; set; } = "Death Party [TESTING]";
         public override string Description { get; set; } = "Survive in grenade rain";
         public override string Color { get; set; } = "FFFF00";
         public override string CommandName { get; set; } = "death";
