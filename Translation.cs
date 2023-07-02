@@ -52,5 +52,32 @@ namespace AutoEvent
         public string GunGameDescription { get; set; } = "Cool GunGame on the Shipment map from MW19.";
         public string GunGameCycle { get; set; } = "<color=#D71868><b><i>{name}</i></b></color>\n<b><color=yellow><color=#D71868>{level}</color> LVL <color=#D71868>||</color> Need <color=#D71868>{kills}</color> kills</color></b>";
         public string GunGameWinner { get; set; } = "<color=#D71868><b><i>{name}</i></b></color>\n<color=yellow>The Winner of the game: <color=green>{winner}</color></color>";
+
+        [Description("Battle Game Mode")] 
+        public string BattleTimeLeft { get; set; } = "<size=100><color=red>Starts in {time} </color></size>";
+
+        public string BattleCiWin { get; set; } = "<color=green>Winner: Chaos Insurgency </color>\n<color=red>Event time: {time} </color>";
+
+        public string BattleMtfWin { get; set; } = "<color=blue>Winner: Foundation forces</color>\n<color=red>Event time: {time} </color>";
+
+        public string BattleCounter { get; set; } = "<color=blue> MTF: {FoundationForces} vs CI: {ChaosForces}\n Elapsed time: {time} </color>";
+
+        [Description("Football Game Mode")]
+        public string FootballRedTeam { get; set; } = "<color=red>You play as Red Team\n</color>";
+        public string FootballBlueTeam { get; set; } = "<color=blue>You play as Blue Team\n</color>";
+
+        public string FootballTimeLeft { get; set; } = "<color=blue>{BluePnt}</color> : <color=red>{RedPnt}</color>\nTime left: {eventTime}";
+
+        public string FootballRedWins { get; set; } = "<color=red>Red Team Wins</color>";
+        public string FootballBlueWins { get; set; } = "<color=blue>Blue Team Wins</color>";
+        public string FootballTie { get; set; } = "Tie\n<color=blue>{BluePnt}</color> vs <color=red>{RedPnt}</color>";
+
+        [Description("Dead Jump Game Mode")]//
+        public string GlassStart { get; set; } = "<size=50>Dead Jump\nJump on fragile platforms</size>\n<size=20>Alive players: {plyAlive} \nTime left: {eventTime}</size>";
+        public string GlassDied { get; set; } = "You fallen into lava";
+        public string GlassWinSurvived { get; set; } = "<color=yellow>Human wins! Survived {countAlive} players</color>";
+
+        public string GlassWinner { get; set; } = "<color=red>Dead Jump</color>\n<color=yellow>Winner: {winner}</color>";
+        public string GlassFail { get; set; } = "<color=red>Dead Jump</color>\n<color=yellow>All players died</color>";
     }
 }

@@ -15,8 +15,8 @@ namespace AutoEvent.Events.Glass
 {
     public class Plugin : Event
     {
-        public override string Name { get; set; } = "Прыжок Веры [Testing]";
-        public override string Description { get; set; } = "Пропрыгайте в конец карты через препятствия. [Testing]";
+        public override string Name { get; set; } = "Dead Jump [Testing]";
+        public override string Description { get; set; } = "Jump on fragile platforms [Testing]";
         public override string Color { get; set; } = "FF4242";
         public override string CommandName { get; set; } = "glass";
         public SchematicObject GameMap { get; set; }
@@ -112,8 +112,7 @@ namespace AutoEvent.Events.Glass
         {
             while (EventTime.TotalSeconds > 0 && Player.List.Count(r => r.IsAlive) > 0)
             {
-                Extensions.Broadcast($"<size=50>Прыжок Веры\nПройдите до конца уровня!</size>\n" +
-                    $"<size=20>Игроков: {Player.List.Count(r=>r.IsAlive)} | <color=red>До конца: {EventTime.Minutes}:{EventTime.Seconds} секунд</color></size>", 1);
+                Extensions.Broadcast(AutoEvent.Singleton.Translation.GlassStart.Replace("{plyAlive}", $"{Player.List.Count(r=>r.IsAlive)}").Replace("{eventTime}", $"{EventTime.Minutes} : {EventTime.Seconds}"), 1);
 
                 yield return Timing.WaitForSeconds(1f);
                 EventTime -= TimeSpan.FromSeconds(1f);
@@ -123,21 +122,21 @@ namespace AutoEvent.Events.Glass
             {
                 if (Vector3.Distance(player.Position, GameMap.AttachedBlocks.First(x => x.name == "Finish").transform.position) >= 10)
                 {
-                    player.Hurt(500, "Не успел дойти до финиша.");
+                    player.Hurt(500, $"{AutoEvent.Singleton.Translation.GlassDied}");
                 }
             }
 
             if (Player.List.Count(r => r.IsAlive) > 1)
             {
-                Extensions.Broadcast($"Победа. Спаслось {Player.List.Count(r => r.IsAlive)} игроков", 10);
+                Extensions.Broadcast(AutoEvent.Singleton.Translation.GlassWinSurvived.Replace("{countAlive}", $"{Player.List.Count(r => r.IsAlive)}"), 3);
             }
             else if (Player.List.Count(r => r.IsAlive) == 1)
             {
-                Extensions.Broadcast($"Прыжок Веры\n<color=yellow>Победитель {Player.List.First(r =>r.IsAlive).Nickname}</color>", 10);
+                Extensions.Broadcast(AutoEvent.Singleton.Translation.GlassWinner.Replace("{winner}", $"{Player.List.First(r =>r.IsAlive).Nickname}"), 10);
             }
             else if (Player.List.Count(r => r.IsAlive) < 1)
             {
-                Extensions.Broadcast($"Прыжок Веры\n<color=red>Все погибли)))))))</color>", 10);
+                Extensions.Broadcast($"{AutoEvent.Singleton.Translation.GlassFail}", 10);
             }
 
             OnStop();
