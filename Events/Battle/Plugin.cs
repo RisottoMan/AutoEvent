@@ -1,5 +1,4 @@
-﻿using AutoEvent.Commands;
-using AutoEvent.Events.Battle.Features;
+﻿using AutoEvent.Events.Battle.Features;
 using AutoEvent.Interfaces;
 using Exiled.API.Enums;
 using Exiled.API.Features;
@@ -59,7 +58,7 @@ namespace AutoEvent.Events.Battle
         public void OnEventStarted()
         {
             EventTime = new TimeSpan(0, 0, 0);
-            GameMap = Extensions.LoadMap("Battle", new Vector3(120f, 1020f, -43.5f), Quaternion.Euler(Vector3.zero), Vector3.one);
+            GameMap = Extensions.LoadMap("Battle", new Vector3(6f, 1020f, -43.5f), Quaternion.Euler(Vector3.zero), Vector3.one);
             Extensions.PlayAudio("ClassicMusic.ogg", 5, true, Name);
 
             var count = 0;
@@ -67,34 +66,46 @@ namespace AutoEvent.Events.Battle
             {
                 if (count % 2 == 0)
                 {
-                    player.Role.Set(RoleTypeId.NtfSergeant, RoleSpawnFlags.None);
-                    RandomClass.CreateSoldier(player);
+                    player.Role.Set(RoleTypeId.NtfSergeant, SpawnReason.None, RoleSpawnFlags.None);
                     player.Position = RandomClass.GetSpawnPosition(GameMap, true);
                 }
                 else
                 {
-                    player.Role.Set(RoleTypeId.ChaosConscript, RoleSpawnFlags.None);
-                    RandomClass.CreateSoldier(player);
+                    player.Role.Set(RoleTypeId.ChaosConscript, SpawnReason.None, RoleSpawnFlags.None);
                     player.Position = RandomClass.GetSpawnPosition(GameMap, false);
                 }
                 count++;
+
+                RandomClass.CreateSoldier(player);
+                Timing.CallDelayed(0.1f, () =>
+                {
+                    player.CurrentItem = player.Items.First();
+                });
             }
+
             Timing.RunCoroutine(OnEventRunning(), "battle_time");
         }
         public IEnumerator<float> OnEventRunning()
         {
-            Player.List.ToList().ForEach(player => player.EnableEffect(EffectType.Ensnared));
-            for (int time = 10; time > 0; time--)
+            for (int time = 30; time > 0; time--)
             {
                 Extensions.Broadcast($"{AutoEvent.Singleton.Translation.BattleTimeLeft.Replace("{time}", $"{time}")}", 5);
                 yield return Timing.WaitForSeconds(1f);
             }
 
-            Player.List.ToList().ForEach(player => player.DisableEffect(EffectType.Ensnared));
+            foreach (var wall in GameMap.AttachedBlocks.Where(x => x.name == "Wall"))
+            {
+                GameObject.Destroy(wall);
+            }
 
             while (Player.List.Count(r => r.Role.Team == Team.FoundationForces) > 0 && Player.List.Count(r => r.Role.Team == Team.ChaosInsurgency) > 0)
             {
-                Extensions.Broadcast(AutoEvent.Singleton.Translation.BattleCounter.Replace("{FoundationForces}", $"{Player.List.Count(r => r.Role.Team == Team.FoundationForces)}").Replace("{ChaosForces}", $"{Player.List.Count(r => r.Role.Team == Team.ChaosInsurgency)}").Replace("{EvTime}", $"{EventTime.Minutes}:{EventTime.Seconds}"), 1);
+                var text = AutoEvent.Singleton.Translation.BattleCounter;
+                text = text.Replace("{FoundationForces}", $"{Player.List.Count(r => r.Role.Team == Team.FoundationForces)}");
+                text = text.Replace("{ChaosForces}", $"{Player.List.Count(r => r.Role.Team == Team.ChaosInsurgency)}");
+                text = text.Replace("{EvTime}", $"{EventTime.Minutes}:{EventTime.Seconds}");
+
+                Extensions.Broadcast(text, 1);
 
                 yield return Timing.WaitForSeconds(1f);
                 EventTime += TimeSpan.FromSeconds(1f);
@@ -102,9 +113,7 @@ namespace AutoEvent.Events.Battle
 
             if (Player.List.Count(r => r.Role.Team == Team.FoundationForces) == 0)
             {
-                Extensions.Broadcast(
-                    $"{AutoEvent.Singleton.Translation.BattleCiWin.Replace("{time}", $"{EventTime.Minutes}:{EventTime.Seconds}")}",
-                    3);
+                Extensions.Broadcast($"{AutoEvent.Singleton.Translation.BattleCiWin.Replace("{time}", $"{EventTime.Minutes}:{EventTime.Seconds}")}", 3);
             }
             else if (Player.List.Count(r => r.Role.Team == Team.ChaosInsurgency) == 0)
             {

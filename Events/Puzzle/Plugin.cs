@@ -7,7 +7,8 @@ using AutoEvent.Interfaces;
 using Exiled.API.Features;
 using MapEditorReborn.API.Features.Objects;
 using UnityEngine;
-using Component = AutoEvent.Events.Puzzle.Features.Component;
+using Exiled.API.Enums;
+using AutoEvent.Events.Puzzle.Features;
 using Random = UnityEngine.Random;
 
 namespace AutoEvent.Events.Puzzle
@@ -15,7 +16,7 @@ namespace AutoEvent.Events.Puzzle
     public class Plugin : Event
     {
         public override string Name { get; set; } = "Puzzle";
-        public override string Description { get; set; } = "alpha testing";
+        public override string Description { get; set; } = "Get up the fastest on the right color.";
         public override string Color { get; set; } = "FFFF00";
         public override string CommandName { get; set; } = "puzzle";
         public SchematicObject GameMap { get; set; }
@@ -63,44 +64,46 @@ namespace AutoEvent.Events.Puzzle
 
             Platformes = GameMap.AttachedBlocks.Where(x => x.name == "Platform").ToList();
             Lava = GameMap.AttachedBlocks.First(x => x.name == "Lava");
-            Lava.AddComponent<Component>();
+            Lava.AddComponent<LavaComponent>();
 
             foreach (Player player in Player.List)
             {
-                player.Role.Set(RoleTypeId.ClassD, RoleSpawnFlags.None);
-                player.Position = GameMap.Position + new Vector3(0, 8.2f, 0);
+                player.Role.Set(RoleTypeId.ClassD, SpawnReason.None ,RoleSpawnFlags.None);
+                player.Position = RandomClass.GetSpawnPosition(GameMap);
             }
 
             Timing.RunCoroutine(OnEventRunning(), "puzzle_run");
         }
         public IEnumerator<float> OnEventRunning()
         {
-            int stage = 1;
-            int speed = 5;
-            float timing = 0.5f;
-
             for (int time = 15; time > 0; time--)
             {
-                Extensions.Broadcast($"Ивент {Name}\nДо начала игры <color=red>{time}</color> секунд.", 1);
+                Extensions.Broadcast($"{Name}\nДо начала игры <color=red>{time}</color> секунд.", 1);
                 yield return Timing.WaitForSeconds(1f);
             }
 
+            int stage = 1;
+            int finaleStage = 10;
+            float speed = 5;
+            float timing = 0.5f;
             List<GameObject> ListPlatformes = Platformes;
-            while (stage <= 5 && Player.List.Count(r=>r.IsAlive) > 0)
+
+            while (stage <= finaleStage && Player.List.Count(r=>r.IsAlive) > 0)
             {
-                for (int time = speed * 2; time > 0; time--)
+                for (float time = speed * 2; time > 0; time--)
                 {
                     foreach (var platform in Platformes)
                     {
                         platform.GetComponent<PrimitiveObject>().Primitive.Color = new Color(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f), 1f);
                     }
-                    Extensions.Broadcast($"Ивент {Name}\nЭтап {stage}\nОсталось {Player.List.Count(r => r.IsAlive)} игроков", 1);
+                    Extensions.Broadcast($"<b>{Name}</b>\nЭтап <color=red>{stage}/{finaleStage}</color>\nОсталось <color=green>{Player.List.Count(r => r.IsAlive)} игроков</color>", 1);
                     yield return Timing.WaitForSeconds(timing);
                 }
 
                 var randPlatform = ListPlatformes.RandomItem();
                 ListPlatformes = new List<GameObject>();
                 randPlatform.GetComponent<PrimitiveObject>().Primitive.Color = UnityEngine.Color.green;
+
                 foreach (var platform in Platformes)
                 {
                     if (platform != randPlatform)
@@ -109,7 +112,8 @@ namespace AutoEvent.Events.Puzzle
                         ListPlatformes.Add(platform);
                     }
                 }
-                Extensions.Broadcast($"Ивент {Name}\nЭтап {stage}\nОсталось {Player.List.Count(r => r.IsAlive)} игроков", (ushort)speed);
+                Extensions.Broadcast($"<b>{Name}</b>\nЭтап <color=red>{stage}/{finaleStage}</color>\n" +
+                    $"Осталось <color=green>{Player.List.Count(r => r.IsAlive)} игроков</color>", (ushort)(speed + 1));
                 yield return Timing.WaitForSeconds(speed);
 
                 foreach (var platform in Platformes)
@@ -119,7 +123,8 @@ namespace AutoEvent.Events.Puzzle
                         platform.transform.position += Vector3.down * 5;
                     }
                 }
-                Extensions.Broadcast($"Ивент {Name}\nЭтап {stage}\nОсталось {Player.List.Count(r => r.IsAlive)} игроков", (ushort)speed);
+                Extensions.Broadcast($"<b>{Name}</b>\nЭтап <color=red>{stage}/{finaleStage}</color>\n" +
+                    $"Осталось <color=green>{Player.List.Count(r => r.IsAlive)} игроков</color>", (ushort)(speed + 1));
                 yield return Timing.WaitForSeconds(speed);
 
                 foreach (var platform in Platformes)
@@ -129,17 +134,22 @@ namespace AutoEvent.Events.Puzzle
                         platform.transform.position += Vector3.up * 5;
                     }
                 }
-                Extensions.Broadcast($"Ивент {Name}\nЭтап {stage}\nОсталось {Player.List.Count(r => r.IsAlive)} игроков", (ushort)speed);
+                Extensions.Broadcast($"<b>{Name}</b>\nЭтап <color=red>{stage}/{finaleStage}</color>\n" +
+                    $"Осталось <color=green>{Player.List.Count(r => r.IsAlive)} игроков</color>", (ushort)(speed + 1));
                 yield return Timing.WaitForSeconds(speed);
 
-                speed--;
+                speed -= 0.35f;
                 stage++;
-                timing -= 0.1f;
+                timing -= 0.035f;
             }
 
             if (Player.List.Count(r => r.IsAlive) < 1)
             {
                 Extensions.Broadcast($"<color=red>Никто не выжил.\nКонец мини-игры.</color>", 10);
+            }
+            else if (Player.List.Count(r => r.IsAlive) == 1)
+            {
+                Extensions.Broadcast($"<color=green>Победил игрок <b>{Player.List.Count(r => r.IsAlive)}</b>.\nКонец мини-игры.</color>", 10);
             }
             else
             {

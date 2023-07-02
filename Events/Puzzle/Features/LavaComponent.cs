@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace AutoEvent.Events.Puzzle.Features
 {
-    public class Component : MonoBehaviour
+    public class LavaComponent : MonoBehaviour
     {
         private BoxCollider collider;
         private void Start()

@@ -14,7 +14,6 @@ namespace AutoEvent.Events.Battle.Features
             {
                 case 0:
                     {
-                        //player.Broadcast("Вы играете за ПЕХОТУ", 6);  // Может сделать в масс-бродкасте описание класса игрока - Вы медик - лечите игроков...
                         player.AddItem(ItemType.GunE11SR);
                         player.AddItem(ItemType.Medkit, 2);
                         player.AddItem(ItemType.GrenadeHE, 2);
@@ -25,7 +24,6 @@ namespace AutoEvent.Events.Battle.Features
                     break;
                 case 1:
                     {
-                        //player.Broadcast("Вы играете за МЕДИКА", 6);
                         player.AddItem(ItemType.GunShotgun);
                         player.AddItem(ItemType.Medkit, 5);
                         player.AddItem(ItemType.ArmorCombat);
@@ -34,7 +32,6 @@ namespace AutoEvent.Events.Battle.Features
                     break;
                 case 2:
                     {
-                        //player.Broadcast("Вы играете за ТАНК", 6);
                         player.AddAhp(100, 500);
                         player.AddItem(ItemType.GunLogicer);
                         player.AddItem(ItemType.ArmorHeavy);
