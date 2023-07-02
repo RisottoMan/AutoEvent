@@ -10,10 +10,11 @@ namespace AutoEvent.Events.Glass.Features
         {
             collider = gameObject.AddComponent<BoxCollider>();
             collider.isTrigger = true;
-            collider.size = new Vector3(1, 20, 1);
+            //collider.size = new Vector3(1, 2, 1);
         }
         void OnTriggerEnter(Collider other)
         {
+            Log.Info("Trigger");
             if (Player.Get(other.gameObject) is Player)
             {
                 Destroy(gameObject);
