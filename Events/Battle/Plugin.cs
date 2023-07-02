@@ -1,4 +1,5 @@
-﻿using AutoEvent.Events.Battle.Features;
+﻿using AutoEvent.Commands;
+using AutoEvent.Events.Battle.Features;
 using AutoEvent.Interfaces;
 using Exiled.API.Enums;
 using Exiled.API.Features;
@@ -14,8 +15,8 @@ namespace AutoEvent.Events.Battle
 {
     public class Plugin : Event
     {
-        public override string Name { get; set; } = "Мясная Заруба [Testing]";
-        public override string Description { get; set; } = "Битва, в которой одна из команд должна одолеть другую. [Testing]";
+        public override string Name { get; set; } = "Battle [Testing]";
+        public override string Description { get; set; } = "MTF vs CI [Testing]";
         public override string Color { get; set; } = "FFFF00";
         public override string CommandName { get; set; } = "battle";
         public TimeSpan EventTime { get; set; }
@@ -85,7 +86,7 @@ namespace AutoEvent.Events.Battle
             Player.List.ToList().ForEach(player => player.EnableEffect(EffectType.Ensnared));
             for (int time = 10; time > 0; time--)
             {
-                Extensions.Broadcast($"<size=100><color=red>{time}</color></size>", 1);
+                Extensions.Broadcast($"{AutoEvent.Singleton.Translation.BattleTimeLeft.Replace("{time}", $"{time}")}", 5);
                 yield return Timing.WaitForSeconds(1f);
             }
 
@@ -93,10 +94,7 @@ namespace AutoEvent.Events.Battle
 
             while (Player.List.Count(r => r.Role.Team == Team.FoundationForces) > 0 && Player.List.Count(r => r.Role.Team == Team.ChaosInsurgency) > 0)
             {
-                Extensions.Broadcast($"<color=#D71868><b><i>Заруба</i></b></color>\n" +
-                $"<color=yellow><color=blue>{Player.List.Count(r => r.Role.Team == Team.FoundationForces)}</color> " +
-                $"VS <color=green>{Player.List.Count(r => r.Role.Team == Team.ChaosInsurgency)}</color></color>\n" +
-                $"<color=yellow>Время ивента <color=red>{EventTime.Minutes}:{EventTime.Seconds}</color></color>", 1);
+                Extensions.Broadcast(AutoEvent.Singleton.Translation.BattleCounter.Replace("{FoundationForces}", $"{Player.List.Count(r => r.Role.Team == Team.FoundationForces)}").Replace("{ChaosForces}", $"{Player.List.Count(r => r.Role.Team == Team.ChaosInsurgency)}").Replace("{EvTime}", $"{EventTime.Minutes}:{EventTime.Seconds}"), 1);
 
                 yield return Timing.WaitForSeconds(1f);
                 EventTime += TimeSpan.FromSeconds(1f);
@@ -104,15 +102,13 @@ namespace AutoEvent.Events.Battle
 
             if (Player.List.Count(r => r.Role.Team == Team.FoundationForces) == 0)
             {
-                Extensions.Broadcast($"<color=#D71868><b><i>Заруба</i></b></color>\n" +
-                $"<color=yellow>ПОБЕДИЛИ - <color=green>{Player.List.Count(r => r.Role.Team == Team.ChaosInsurgency)} ХАОС</color></color>\n" +
-                $"<color=yellow>Конец ивент: <color=red>{EventTime.Minutes}:{EventTime.Seconds}</color></color>", 10);
+                Extensions.Broadcast(
+                    $"{AutoEvent.Singleton.Translation.BattleCiWin.Replace("{time}", $"{EventTime.Minutes}:{EventTime.Seconds}")}",
+                    3);
             }
             else if (Player.List.Count(r => r.Role.Team == Team.ChaosInsurgency) == 0)
             {
-                Extensions.Broadcast($"<color=#D71868><b><i>Заруба</i></b></color>\n" +
-                $"<color=yellow>ПОБЕДИЛИ - <color=blue>{Player.List.Count(r => r.Role.Team == Team.FoundationForces)} МОГ</color></color>\n" +
-                $"<color=yellow>Конец ивент: <color=red>{EventTime.Minutes}:{EventTime.Seconds}</color></color>", 10);
+                Extensions.Broadcast(AutoEvent.Singleton.Translation.BattleMtfWin.Replace("{time}", $"{EventTime.Minutes}:{EventTime.Seconds}"), 10);
             }
 
             OnStop();

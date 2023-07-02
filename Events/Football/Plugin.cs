@@ -9,13 +9,14 @@ using System.Linq;
 using UnityEngine;
 using Component = AutoEvent.Events.Football.Features.Component;
 using AutoEvent.Events.Football.Features;
+using AutoEvent.Commands;
 
 namespace AutoEvent.Events.Football
 {
     public class Plugin : Event
     {
-        public override string Name { get; set; } = "Футбольчик [Testing]";
-        public override string Description { get; set; } = "Режим Футбол, в котором надо забить 3 гола противоположной команде. [Testing]";
+        public override string Name { get; set; } = "Football [Testing]";
+        public override string Description { get; set; } = "Football. Score 3 goals to win [Testing]";
         public override string Color { get; set; } = "FFFF00";
         public override string CommandName { get; set; } = "football";
         public SchematicObject GameMap { get; set; }
@@ -93,11 +94,11 @@ namespace AutoEvent.Events.Football
                     var text = string.Empty;
                     if (player.Role.Type == RoleTypeId.NtfCaptain)
                     {
-                        text += "<color=blue>Вы играете за Синюю Команду</color>\n";
+                        text += $"{AutoEvent.Singleton.Translation.FootballBlueTeam}";
                     }
                     else
                     {
-                        text += "<color=red>Вы играете за Красную Команду</color>\n";
+                        text += $"{AutoEvent.Singleton.Translation.FootballRedTeam}";
                     }
 
                     if (Vector3.Distance(Ball.transform.position, player.Position) < 2)
@@ -106,8 +107,7 @@ namespace AutoEvent.Events.Football
                         rig.AddForce(player.Transform.forward + new Vector3(0, 0.3f, 0), ForceMode.Impulse);
                     }
 
-                    Extensions.Broadcast(text + $"<color=blue>{BluePoints}</color> VS <color=red>{RedPoints}</color>\n" +
-                        $"Время до конца: {EventTime.Minutes}:{EventTime.Seconds}", 1);
+                    Extensions.Broadcast(text + AutoEvent.Singleton.Translation.FootballTimeLeft.Replace("{BluePnt}", $"{BluePoints}").Replace("{RedPnt}", $"{RedPoints}").Replace("{eventTime}", $"{EventTime.Minutes}:{EventTime.Seconds}"), 1);
                 }
 
                 if (Vector3.Distance(Ball.transform.position, TriggerBlue.transform.position) < 3)
@@ -130,15 +130,15 @@ namespace AutoEvent.Events.Football
 
             if (BluePoints > RedPoints)
             {
-                Extensions.Broadcast($"<color=blue>ПОБЕДА СИНИХ!</color>", 10);
+                Extensions.Broadcast($"{AutoEvent.Singleton.Translation.FootballBlueWins}", 10);
             }
             else if (RedPoints > BluePoints)
             {
-                Extensions.Broadcast($"<color=red>ПОБЕДА КРАСНЫХ!</color>", 10);
+                Extensions.Broadcast($"{AutoEvent.Singleton.Translation.FootballRedWins}", 10);
             }
             else
             {
-                Extensions.Broadcast($"<color=#808080>Ничья</color>\n<color=blue>{BluePoints}</color> VS <color=red>{RedPoints}</color>", 10);
+                Extensions.Broadcast($"{AutoEvent.Singleton.Translation.FootballTie.Replace("{BluePnt}", $"{BluePoints}").Replace("{RedPnt}", $"{RedPoints}")}", 3);
             }
 
             OnStop();
