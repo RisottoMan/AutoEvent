@@ -99,14 +99,15 @@
     <Compile Include="Events\Glass\Features\RandomClass.cs" />
     <Compile Include="Events\Glass\Plugin.cs" />
     <Compile Include="Events\HideAndSeek\EventHandler.cs" />
+    <Compile Include="Events\HideAndSeek\Features\RandomClass.cs" />
     <Compile Include="Events\HideAndSeek\Plugin.cs" />
+    <Compile Include="Events\Infection\Config.cs" />
     <Compile Include="Events\Infection\Extensions\RandomClass.cs" />
     <Compile Include="Events\GunGame\Plugin.cs" />
     <Compile Include="Events\GunGame\Extensions\GunGameGuns.cs" />
     <Compile Include="Events\GunGame\EventHandler.cs" />
     <Compile Include="Events\GunGame\Extensions\GunGameRandom.cs" />
     <Compile Include="Events\GunGame\Extensions\Stats.cs" />
-    <Compile Include="Events\Infection\Config.cs" />
     <Compile Include="Events\Knives\Plugin.cs" />
     <Compile Include="Events\Knives\EventHandler.cs" />
     <Compile Include="Events\Escape\Plugin.cs" />
