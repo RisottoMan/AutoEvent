@@ -24,10 +24,14 @@ namespace AutoEvent.Events.Deathmatch
         public int MtfKills;
         public int ChaosKills;
         public int NeedKills;
+        private bool isFreindlyFireEnabled;
         EventHandler _eventHandler;
 
         public override void OnStart()
         {
+            isFreindlyFireEnabled = Server.FriendlyFire;
+            Server.FriendlyFire = false;
+
             OnEventStarted();
 
             _eventHandler = new EventHandler(this);
@@ -45,6 +49,8 @@ namespace AutoEvent.Events.Deathmatch
         }
         public override void OnStop()
         {
+            Server.FriendlyFire = isFreindlyFireEnabled;
+
             Exiled.Events.Handlers.Player.Verified -= _eventHandler.OnJoin;
             Exiled.Events.Handlers.Server.RespawningTeam -= _eventHandler.OnTeamRespawn;
             Exiled.Events.Handlers.Player.SpawningRagdoll -= _eventHandler.OnSpawnRagdoll;
@@ -60,42 +66,50 @@ namespace AutoEvent.Events.Deathmatch
             AutoEvent.ActiveEvent = null;
             _eventHandler = null;
         }
+
         public void OnEventStarted()
         {
             EventTime = new TimeSpan(0, 0, 0);
-            GameMap = Extensions.LoadMap("Shipment", new Vector3(120f, 1020f, -43.5f), Quaternion.Euler(Vector3.zero), Vector3.one);
-            //Extensions.PlayAudio("ClassicMusic.ogg", 3, true, Name);
+            GameMap = Extensions.LoadMap("Shipment", new Vector3(5f, 1030f, -45f), Quaternion.Euler(Vector3.zero), Vector3.one); // new Vector3(120f, 1020f, -43.5f)
+            Extensions.PlayAudio("ClassicMusic.ogg", 3, true, Name);
 
             MtfKills = 0;
             ChaosKills = 0;
-            // Choosing the number of kills for the end of the mini-game
+
             for (int i = 0; i < Player.List.Count(); i += 5)
             {
                 NeedKills += 15;
             }
+
             var count = 0;
             foreach (Player player in Player.List)
             {
                 if (count % 2 == 0)
                 {
-                    player.Role.Set(RoleTypeId.NtfSergeant);
-                    player.CurrentItem = player.Items.ElementAt(1);
-                    player.Position = GameMap.Position + RandomClass.GetRandomPosition();
+                    player.Role.Set(RoleTypeId.NtfSergeant, SpawnReason.None, RoleSpawnFlags.AssignInventory);
+                    player.Position = RandomClass.GetRandomPosition(GameMap);
                 }
                 else
                 {
-                    player.Role.Set(RoleTypeId.ChaosRifleman);
-                    player.CurrentItem = player.Items.ElementAt(1);
-                    player.Position = GameMap.Position + RandomClass.GetRandomPosition();
+                    player.Role.Set(RoleTypeId.ChaosRifleman, SpawnReason.None, RoleSpawnFlags.AssignInventory);
+                    player.Position = RandomClass.GetRandomPosition(GameMap);
                 }
-                player.EnableEffect<CustomPlayerEffects.Scp1853>(300);
-                player.EnableEffect(EffectType.MovementBoost, 300);
-                player.ChangeEffectIntensity(EffectType.MovementBoost, 25);
-                player.EnableEffect<CustomPlayerEffects.SpawnProtected>(10);
                 count++;
+
+                player.EnableEffect<CustomPlayerEffects.Scp1853>(150);
+                player.EnableEffect(EffectType.MovementBoost, 150);
+                player.ChangeEffectIntensity(EffectType.MovementBoost, 10);
+                player.EnableEffect<CustomPlayerEffects.SpawnProtected>(10);
+
+                Timing.CallDelayed(0.1f, () =>
+                {
+                    player.CurrentItem = player.Items.ElementAt(1);
+                });
             }
+
             Timing.RunCoroutine(OnEventRunning(), "deathmatch_run");
         }
+
         public IEnumerator<float> OnEventRunning()
         {
             var trans = AutoEvent.Singleton.Translation;
@@ -104,7 +118,7 @@ namespace AutoEvent.Events.Deathmatch
                 Extensions.Broadcast($"<size=100><color=red>{time}</color></size>", 1);
                 yield return Timing.WaitForSeconds(1f);
             }
-            // If you need to stop the game, then just kill all the players
+
             while (MtfKills < NeedKills && ChaosKills < NeedKills && Player.List.Count(r => r.IsAlive) > 0)
             {
                 string mtfString = string.Empty;
@@ -117,10 +131,11 @@ namespace AutoEvent.Events.Deathmatch
                     if (ChaosKills >= i) chaosString = "■" + chaosString;
                     else chaosString = "□" + chaosString;
                 }
-                Extensions.Broadcast(trans.DeathmatchCycle.Replace("{name}", Name).Replace("{mtftext}", $"{MtfKills} {mtfString}").Replace("{chaostext}", $"{chaosString} {ChaosKills}"), 1);
 
+                Extensions.Broadcast(trans.DeathmatchCycle.Replace("{name}", Name).Replace("{mtftext}", $"{MtfKills} {mtfString}").Replace("{chaostext}", $"{chaosString} {ChaosKills}"), 1);
                 yield return Timing.WaitForSeconds(1f);
             }
+
             if (MtfKills == NeedKills)
             {
                 Extensions.Broadcast(trans.DeathmatchMtfWin.Replace("{name}", Name), 10);
@@ -129,9 +144,11 @@ namespace AutoEvent.Events.Deathmatch
             {
                 Extensions.Broadcast(trans.DeathmatchChaosWin.Replace("{name}", Name), 10);
             }
+
             OnStop();
             yield break;
         }
+
         public void EventEnd()
         {
             Extensions.CleanUpAll();

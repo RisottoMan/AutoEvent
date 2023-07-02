@@ -72,7 +72,7 @@ namespace AutoEvent.Events.Lava
 
             foreach (var player in Player.List)
             {
-                player.Role.Set(RoleTypeId.ClassD);
+                player.Role.Set(RoleTypeId.ClassD, SpawnReason.None, RoleSpawnFlags.None);
                 player.EnableEffect(EffectType.Ensnared);
                 player.Position = RandomClass.GetSpawnPosition(GameMap);
             }

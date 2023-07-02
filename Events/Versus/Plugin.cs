@@ -116,7 +116,7 @@ namespace AutoEvent.Events.Versus
                 {
                     if (Scientist == null)
                     {
-                        if (Vector3.Distance(player.Position, triggerScintist.transform.position) <= 1f)
+                        if (player.Role.Type == RoleTypeId.Scientist && Vector3.Distance(player.Position, triggerScintist.transform.position) <= 1f)
                         {
                             Scientist = player;
                             Scientist.Position = GameMap.Position + new Vector3(-11.351f, -3.424f, -7.284f);
@@ -130,7 +130,7 @@ namespace AutoEvent.Events.Versus
 
                     if (ClassD == null)
                     {
-                        if (Vector3.Distance(player.Position, triggerClassD.transform.position) <= 1f)
+                        if (player.Role.Type == RoleTypeId.ClassD && Vector3.Distance(player.Position, triggerClassD.transform.position) <= 1f)
                         {
                             ClassD = player;
                             ClassD.Position = GameMap.Position + new Vector3(-20.0f, -3.424f, -7.284f);

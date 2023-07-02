@@ -10,6 +10,7 @@ using UnityEngine;
 using AutoEvent.Events.Glass.Features;
 using Object = UnityEngine.Object;
 using Mirror;
+using Exiled.API.Enums;
 
 namespace AutoEvent.Events.Glass
 {
@@ -113,7 +114,7 @@ namespace AutoEvent.Events.Glass
 
             foreach (Player player in Player.List)
             {
-                player.Role.Set(RoleTypeId.ClassD, RoleSpawnFlags.None);
+                player.Role.Set(RoleTypeId.ClassD, SpawnReason.None, RoleSpawnFlags.None);
                 player.Position = RandomClass.GetSpawnPosition(GameMap);
 
                 //player.GameObject.AddComponent<BoxCollider>();
