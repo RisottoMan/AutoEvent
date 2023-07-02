@@ -56,7 +56,7 @@ namespace AutoEvent.Events.Infection
         public void OnEventStarted()
         {
             EventTime = new TimeSpan(0, 0, 0);
-            GameMap = Extensions.LoadMap("Zombie", new Vector3(115.5f, 1030f, -43.5f), Quaternion.Euler(Vector3.zero), Vector3.one);
+            GameMap = Extensions.LoadMap(AutoEvent.Singleton.Config.InfectionConfig.ListOfMap.RandomItem(), new Vector3(115.5f, 1030f, -43.5f), Quaternion.Euler(Vector3.zero), Vector3.one);
             Extensions.PlayAudio(AutoEvent.Singleton.Config.InfectionConfig.ListOfMusic.RandomItem(), 15, true, Name);
 
             foreach (Player player in Player.List)
@@ -90,6 +90,7 @@ namespace AutoEvent.Events.Infection
                 yield return Timing.WaitForSeconds(1f);
                 EventTime += TimeSpan.FromSeconds(1f);
             }
+
             Timing.RunCoroutine(DopTime(), "EventBeginning");
             yield break;
         }

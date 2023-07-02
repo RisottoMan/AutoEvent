@@ -1,4 +1,5 @@
-﻿using HarmonyLib;
+﻿using Exiled.API.Features;
+using HarmonyLib;
 using InventorySystem.Items.Jailbird;
 using Mirror;
 
@@ -6,11 +7,12 @@ namespace AutoEvent.Patch
 {
     internal class JailBirdPatch
     {
-        [HarmonyPatch(typeof(JailbirdItem), nameof(JailbirdItem.ServerProcessCmd))]
+        //[HarmonyPatch(typeof(JailbirdItem), nameof(JailbirdItem.ServerProcessCmd))]
         static class ServerProcessCmdPatch
         {
             internal static bool Prefix(JailbirdItem __instance, NetworkReader reader)
             {
+                Log.Info("JailBird Patch");
                 if (AutoEvent.ActiveEvent == null) return true;
 
                 if (!AutoEvent.Singleton.Config.IsJailbirdAbilityEnable)

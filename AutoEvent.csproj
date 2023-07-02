@@ -108,6 +108,7 @@
     <Compile Include="Events\GunGame\EventHandler.cs" />
     <Compile Include="Events\GunGame\Extensions\GunGameRandom.cs" />
     <Compile Include="Events\GunGame\Extensions\Stats.cs" />
+    <Compile Include="Events\Knives\Features\RandomClass.cs" />
     <Compile Include="Events\Knives\Plugin.cs" />
     <Compile Include="Events\Knives\EventHandler.cs" />
     <Compile Include="Events\Escape\Plugin.cs" />
@@ -131,6 +132,7 @@
     <Compile Include="Events\Puzzle\EventHandler.cs" />
     <Compile Include="Events\Puzzle\Plugin.cs" />
     <Compile Include="Events\Versus\Config.cs" />
+    <Compile Include="Events\Versus\Features\RandomClass.cs" />
     <Compile Include="Events\Versus\Plugin.cs" />
     <Compile Include="Events\Versus\EventHandler.cs" />
     <Compile Include="Interfaces\Event.cs" />
