@@ -1,0 +1,497 @@
+{
+  "RootObjectId": -1192,
+  "Blocks": [
+    {
+      "Name": "LightSource",
+      "ObjectId": -1196,
+      "ParentId": -1192,
+      "Position": {
+        "x": 0.0,
+        "y": 16.27,
+        "z": 0.0
+      },
+      "BlockType": 2,
+      "Properties": {
+        "Color": "FFFFFFFF",
+        "Intensity": 75.0,
+        "Range": 75.0,
+        "Shadows": false
+      }
+    },
+    {
+      "Name": "Spawnpoint",
+      "ObjectId": -1198,
+      "ParentId": -1192,
+      "Position": {
+        "x": 0.0,
+        "y": 3.04,
+        "z": 0.0
+      },
+      "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "Scale": {
+        "x": -0.01,
+        "y": -0.01,
+        "z": -0.01
+      },
+      "BlockType": 1,
+      "Properties": {
+        "PrimitiveType": 3,
+        "Color": "00000000"
+      }
+    },
+    {
+      "Name": "Quad (1)",
+      "ObjectId": -1202,
+      "ParentId": -1192,
+      "Position": {
+        "x": 0.0,
+        "y": 7.559,
+        "z": 14.21
+      },
+      "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "Scale": {
+        "x": 28.6208134,
+        "y": 14.3510218,
+        "z": 1.0
+      },
+      "BlockType": 1,
+      "Properties": {
+        "PrimitiveType": 5,
+        "Color": "FFFF00FF"
+      }
+    },
+    {
+      "Name": "Quad (2)",
+      "ObjectId": -1204,
+      "ParentId": -1192,
+      "Position": {
+        "x": 0.0,
+        "y": 7.559,
+        "z": -14.19
+      },
+      "Rotation": {
+        "x": 0.0,
+        "y": 180.0,
+        "z": 0.0
+      },
+      "Scale": {
+        "x": 28.6208134,
+        "y": 14.3510218,
+        "z": 1.0
+      },
+      "BlockType": 1,
+      "Properties": {
+        "PrimitiveType": 5,
+        "Color": "FFFF00FF"
+      }
+    },
+    {
+      "Name": "Quad (3)",
+      "ObjectId": -1206,
+      "ParentId": -1192,
+      "Position": {
+        "x": 14.2,
+        "y": 7.559,
+        "z": 0.06
+      },
+      "Rotation": {
+        "x": 0.0,
+        "y": 90.0,
+        "z": 0.0
+      },
+      "Scale": {
+        "x": 28.6208134,
+        "y": 14.3510218,
+        "z": 1.0
+      },
+      "BlockType": 1,
+      "Properties": {
+        "PrimitiveType": 5,
+        "Color": "FFFF00FF"
+      }
+    },
+    {
+      "Name": "Quad (4)",
+      "ObjectId": -1208,
+      "ParentId": -1192,
+      "Position": {
+        "x": -14.15,
+        "y": 7.559,
+        "z": 0.06
+      },
+      "Rotation": {
+        "x": 0.0,
+        "y": 270.0,
+        "z": 0.0
+      },
+      "Scale": {
+        "x": 28.6208134,
+        "y": 14.3510218,
+        "z": 1.0
+      },
+      "BlockType": 1,
+      "Properties": {
+        "PrimitiveType": 5,
+        "Color": "FFFF00FF"
+      }
+    },
+    {
+      "Name": "Quad (1)",
+      "ObjectId": -3060,
+      "ParentId": -1192,
+      "Position": {
+        "x": 5.437932,
+        "y": 7.559,
+        "z": 13.1283283
+      },
+      "Rotation": {
+        "x": 0.0,
+        "y": 22.4999981,
+        "z": 0.0
+      },
+      "Scale": {
+        "x": 28.6208115,
+        "y": 14.3510218,
+        "z": 1.0
+      },
+      "BlockType": 1,
+      "Properties": {
+        "PrimitiveType": 5,
+        "Color": "FFFF00FF"
+      }
+    },
+    {
+      "Name": "Quad (2)",
+      "ObjectId": -3058,
+      "ParentId": -1192,
+      "Position": {
+        "x": -5.4302783,
+        "y": 7.559,
+        "z": -13.10985
+      },
+      "Rotation": {
+        "x": 0.0,
+        "y": 202.5,
+        "z": 0.0
+      },
+      "Scale": {
+        "x": 28.6208076,
+        "y": 14.3510218,
+        "z": 1.0
+      },
+      "BlockType": 1,
+      "Properties": {
+        "PrimitiveType": 5,
+        "Color": "FFFF00FF"
+      }
+    },
+    {
+      "Name": "Quad (3)",
+      "ObjectId": -3056,
+      "ParentId": -1192,
+      "Position": {
+        "x": 13.14205,
+        "y": 7.559,
+        "z": -5.378672
+      },
+      "Rotation": {
+        "x": 0.0,
+        "y": 112.5,
+        "z": 0.0
+      },
+      "Scale": {
+        "x": 28.62082,
+        "y": 14.3510218,
+        "z": 1.0
+      },
+      "BlockType": 1,
+      "Properties": {
+        "PrimitiveType": 5,
+        "Color": "FFFF00FF"
+      }
+    },
+    {
+      "Name": "Quad (4)",
+      "ObjectId": -3054,
+      "ParentId": -1192,
+      "Position": {
+        "x": -13.0499344,
+        "y": 7.559,
+        "z": 5.47040367
+      },
+      "Rotation": {
+        "x": 0.0,
+        "y": 292.5,
+        "z": 0.0
+      },
+      "Scale": {
+        "x": 28.62082,
+        "y": 14.3510218,
+        "z": 1.0
+      },
+      "BlockType": 1,
+      "Properties": {
+        "PrimitiveType": 5,
+        "Color": "FFFF00FF"
+      }
+    },
+    {
+      "Name": "Quad",
+      "ObjectId": -1200,
+      "ParentId": -1192,
+      "Position": {
+        "x": 0.0,
+        "y": 0.39,
+        "z": -0.06
+      },
+      "Rotation": {
+        "x": 90.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "Scale": {
+        "x": 28.6208134,
+        "y": 28.6884975,
+        "z": 1.0
+      },
+      "BlockType": 1,
+      "Properties": {
+        "PrimitiveType": 5,
+        "Color": "FFFFFFFF"
+      }
+    },
+    {
+      "Name": "Quad (5)",
+      "ObjectId": -1210,
+      "ParentId": -1192,
+      "Position": {
+        "x": 0.0,
+        "y": 14.58,
+        "z": -0.06
+      },
+      "Rotation": {
+        "x": 270.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "Scale": {
+        "x": 28.6208134,
+        "y": 28.6884975,
+        "z": 1.0
+      },
+      "BlockType": 1,
+      "Properties": {
+        "PrimitiveType": 5,
+        "Color": "FFFFFFFF"
+      }
+    },
+    {
+      "Name": "Quad (1)",
+      "ObjectId": -3314,
+      "ParentId": -1192,
+      "Position": {
+        "x": 13.1283283,
+        "y": 7.559,
+        "z": 5.437933
+      },
+      "Rotation": {
+        "x": 0.0,
+        "y": 67.49999,
+        "z": 0.0
+      },
+      "Scale": {
+        "x": 28.6208134,
+        "y": 14.3510218,
+        "z": 1.0
+      },
+      "BlockType": 1,
+      "Properties": {
+        "PrimitiveType": 5,
+        "Color": "FFFF00FF"
+      }
+    },
+    {
+      "Name": "Quad (2)",
+      "ObjectId": -3312,
+      "ParentId": -1192,
+      "Position": {
+        "x": -13.1098509,
+        "y": 7.559,
+        "z": -5.430279
+      },
+      "Rotation": {
+        "x": 0.0,
+        "y": 247.499985,
+        "z": 0.0
+      },
+      "Scale": {
+        "x": 28.62081,
+        "y": 14.3510218,
+        "z": 1.0
+      },
+      "BlockType": 1,
+      "Properties": {
+        "PrimitiveType": 5,
+        "Color": "FFFF00FF"
+      }
+    },
+    {
+      "Name": "Quad (3)",
+      "ObjectId": -3310,
+      "ParentId": -1192,
+      "Position": {
+        "x": 5.48953867,
+        "y": 7.559,
+        "z": -13.0961285
+      },
+      "Rotation": {
+        "x": 0.0,
+        "y": 157.5,
+        "z": 0.0
+      },
+      "Scale": {
+        "x": 28.6208229,
+        "y": 14.3510218,
+        "z": 1.0
+      },
+      "BlockType": 1,
+      "Properties": {
+        "PrimitiveType": 5,
+        "Color": "FFFF00FF"
+      }
+    },
+    {
+      "Name": "Quad (4)",
+      "ObjectId": -3308,
+      "ParentId": -1192,
+      "Position": {
+        "x": -5.35953856,
+        "y": 7.559,
+        "z": 13.0958567
+      },
+      "Rotation": {
+        "x": 0.0,
+        "y": 337.5,
+        "z": 0.0
+      },
+      "Scale": {
+        "x": 28.6208172,
+        "y": 14.3510218,
+        "z": 1.0
+      },
+      "BlockType": 1,
+      "Properties": {
+        "PrimitiveType": 5,
+        "Color": "FFFF00FF"
+      }
+    },
+    {
+      "Name": "Quad (1)",
+      "ObjectId": -3186,
+      "ParentId": -1192,
+      "Position": {
+        "x": 10.047987,
+        "y": 7.559,
+        "z": 10.047987
+      },
+      "Rotation": {
+        "x": 0.0,
+        "y": 44.9999962,
+        "z": 0.0
+      },
+      "Scale": {
+        "x": 28.6208153,
+        "y": 14.3510218,
+        "z": 1.0
+      },
+      "BlockType": 1,
+      "Properties": {
+        "PrimitiveType": 5,
+        "Color": "FFFF00FF"
+      }
+    },
+    {
+      "Name": "Quad (2)",
+      "ObjectId": -3188,
+      "ParentId": -1192,
+      "Position": {
+        "x": -10.0338449,
+        "y": 7.559,
+        "z": -10.0338449
+      },
+      "Rotation": {
+        "x": 0.0,
+        "y": 225.0,
+        "z": 0.0
+      },
+      "Scale": {
+        "x": 28.6208076,
+        "y": 14.3510218,
+        "z": 1.0
+      },
+      "BlockType": 1,
+      "Properties": {
+        "PrimitiveType": 5,
+        "Color": "FFFF00FF"
+      }
+    },
+    {
+      "Name": "Quad (3)",
+      "ObjectId": -3190,
+      "ParentId": -1192,
+      "Position": {
+        "x": 10.0833426,
+        "y": 7.559,
+        "z": -9.998489
+      },
+      "Rotation": {
+        "x": 0.0,
+        "y": 135.0,
+        "z": 0.0
+      },
+      "Scale": {
+        "x": 28.620821,
+        "y": 14.3510218,
+        "z": 1.0
+      },
+      "BlockType": 1,
+      "Properties": {
+        "PrimitiveType": 5,
+        "Color": "FFFF00FF"
+      }
+    },
+    {
+      "Name": "Quad (4)",
+      "ObjectId": -3192,
+      "ParentId": -1192,
+      "Position": {
+        "x": -9.963135,
+        "y": 7.559,
+        "z": 10.0479879
+      },
+      "Rotation": {
+        "x": 0.0,
+        "y": 315.0,
+        "z": 0.0
+      },
+      "Scale": {
+        "x": 28.620821,
+        "y": 14.3510218,
+        "z": 1.0
+      },
+      "BlockType": 1,
+      "Properties": {
+        "PrimitiveType": 5,
+        "Color": "FFFF00FF"
+      }
+    }
+  ]
+}
