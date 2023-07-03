@@ -60,7 +60,7 @@ namespace AutoEvent
 
         public string BattleMtfWin { get; set; } = "<color=blue>Winner: Foundation forces</color>\n<color=red>Event time: {time} </color>";
 
-        public string BattleCounter { get; set; } = "<color=blue> MTF: {FoundationForces} vs CI: {ChaosForces}\n Elapsed time: {time} </color>";
+        public string BattleCounter { get; set; } = "<color=blue> MTF: {FoundationForces} </color> vs <color=green> CI: {ChaosForces} </color> \n Elapsed time: {time}";
 
         [Description("Football Game Mode")]
         public string FootballRedTeam { get; set; } = "<color=red>You play as Red Team\n</color>";

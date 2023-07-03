@@ -103,7 +103,7 @@ namespace AutoEvent.Events.Battle
                 var text = AutoEvent.Singleton.Translation.BattleCounter;
                 text = text.Replace("{FoundationForces}", $"{Player.List.Count(r => r.Role.Team == Team.FoundationForces)}");
                 text = text.Replace("{ChaosForces}", $"{Player.List.Count(r => r.Role.Team == Team.ChaosInsurgency)}");
-                text = text.Replace("{EvTime}", $"{EventTime.Minutes}:{EventTime.Seconds}");
+                text = text.Replace("{time}", $"{EventTime.Minutes}:{EventTime.Seconds}");
 
                 Extensions.Broadcast(text, 1);
 
