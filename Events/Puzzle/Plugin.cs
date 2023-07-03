@@ -25,6 +25,8 @@ namespace AutoEvent.Events.Puzzle
         public List<GameObject> Platformes { get; set; }
         public GameObject Lava { get; set; }
 
+        private string broadcastName = "<color=#F59F00>P</color><color=#F68523>u</color><color=#F76B46>z</color><color=#F85169>z</color><color=#F9378C>l</color><color=#FA1DAF>e</color>";
+
         EventHandler _eventHandler;
 
         public override void OnStart()
@@ -76,9 +78,10 @@ namespace AutoEvent.Events.Puzzle
         }
         public IEnumerator<float> OnEventRunning()
         {
+            var translation = AutoEvent.Singleton.Translation;
             for (int time = 15; time > 0; time--)
             {
-                Extensions.Broadcast($"{Name}\nДо начала игры <color=red>{time}</color> секунд.", 1);
+                Extensions.Broadcast($"{broadcastName}\n{translation.PuzzleStart.Replace("%time%", $"{time}")}", 1);
                 yield return Timing.WaitForSeconds(1f);
             }
 
@@ -90,13 +93,19 @@ namespace AutoEvent.Events.Puzzle
 
             while (stage <= finaleStage && Player.List.Count(r=>r.IsAlive) > 0)
             {
+                var stageText = translation.PuzzleStage;
+                stageText = stageText.Replace("%stageNum%", $"{stage}");
+                stageText = stageText.Replace("%stageFinal%", $"{finaleStage}");
+                stageText = stageText.Replace("%plyCount%", $"{Player.List.Count(r => r.IsAlive)}");
                 for (float time = speed * 2; time > 0; time--)
                 {
                     foreach (var platform in Platformes)
                     {
                         platform.GetComponent<PrimitiveObject>().Primitive.Color = new Color(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f), 1f);
                     }
-                    Extensions.Broadcast($"<b>{Name}</b>\nЭтап <color=red>{stage}/{finaleStage}</color>\nОсталось <color=green>{Player.List.Count(r => r.IsAlive)} игроков</color>", 1);
+
+                    
+                    Extensions.Broadcast($"<b>{Name}</b>\n{stageText}", 1);
                     yield return Timing.WaitForSeconds(timing);
                 }
 
@@ -112,8 +121,7 @@ namespace AutoEvent.Events.Puzzle
                         ListPlatformes.Add(platform);
                     }
                 }
-                Extensions.Broadcast($"<b>{Name}</b>\nЭтап <color=red>{stage}/{finaleStage}</color>\n" +
-                    $"Осталось <color=green>{Player.List.Count(r => r.IsAlive)} игроков</color>", (ushort)(speed + 1));
+                Extensions.Broadcast($"<b>{broadcastName}</b>\n{stageText}", (ushort)(speed + 1));
                 yield return Timing.WaitForSeconds(speed);
 
                 foreach (var platform in Platformes)
@@ -123,8 +131,7 @@ namespace AutoEvent.Events.Puzzle
                         platform.transform.position += Vector3.down * 5;
                     }
                 }
-                Extensions.Broadcast($"<b>{Name}</b>\nЭтап <color=red>{stage}/{finaleStage}</color>\n" +
-                    $"Осталось <color=green>{Player.List.Count(r => r.IsAlive)} игроков</color>", (ushort)(speed + 1));
+                Extensions.Broadcast($"<b>{broadcastName}</b>\n{stageText}", (ushort)(speed + 1));
                 yield return Timing.WaitForSeconds(speed);
 
                 foreach (var platform in Platformes)
@@ -134,8 +141,7 @@ namespace AutoEvent.Events.Puzzle
                         platform.transform.position += Vector3.up * 5;
                     }
                 }
-                Extensions.Broadcast($"<b>{Name}</b>\nЭтап <color=red>{stage}/{finaleStage}</color>\n" +
-                    $"Осталось <color=green>{Player.List.Count(r => r.IsAlive)} игроков</color>", (ushort)(speed + 1));
+                Extensions.Broadcast($"<b>{broadcastName}</b>\n{stageText}", (ushort)(speed + 1));
                 yield return Timing.WaitForSeconds(speed);
 
                 speed -= 0.35f;
@@ -145,15 +151,16 @@ namespace AutoEvent.Events.Puzzle
 
             if (Player.List.Count(r => r.IsAlive) < 1)
             {
-                Extensions.Broadcast($"<color=red>Никто не выжил.\nКонец мини-игры.</color>", 10);
+                Extensions.Broadcast($"<b>{broadcastName}</b>\n{translation.PuzzleAllDied}", 10);
             }
             else if (Player.List.Count(r => r.IsAlive) == 1)
             {
-                Extensions.Broadcast($"<color=green>Победил игрок <b>{Player.List.Count(r => r.IsAlive)}</b>.\nКонец мини-игры.</color>", 10);
+                var player = Player.List.First(r => r.IsAlive).DisplayNickname;
+                Extensions.Broadcast($"<b>{broadcastName}</b>\n{translation.PuzzleWinner.Replace("%plyWinner%", $"{player}")}", 10);
             }
             else
             {
-                Extensions.Broadcast($"<color=green>Поздравляем всех выживших с победой.\nВыжило {Player.List.Count(r=>r.IsAlive)} игроков.</color>", 10);
+                Extensions.Broadcast($"<b>{broadcastName}</b>\n{translation.PuzzleSeveralSurvivors}", 10);
             }
 
             OnStop();

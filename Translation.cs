@@ -79,5 +79,13 @@ namespace AutoEvent
 
         public string GlassWinner { get; set; } = "<color=red>Dead Jump</color>\n<color=yellow>Winner: {winner}</color>";
         public string GlassFail { get; set; } = "<color=red>Dead Jump</color>\n<color=yellow>All players died</color>";
+
+        [Description("Puzzle Game Mode")]
+        public string PuzzleStart { get; set; } = "<color=red>Starts in: </color>%time%";
+
+        public string PuzzleStage { get; set; } = "<color=red>Stage: </color>%stageNum%<color=red> / </color>%stageFinal%\n<color=yellow>Remaining players:</color> %plyCount%";
+        public string PuzzleAllDied { get; set; } = "<color=red>All players died</color>\nMini-game ended";
+        public string PuzzleSeveralSurvivors { get; set; } = "<color=red>Several people survived</color>\nMini-game ended";
+        public string PuzzleWinner { get; set; } = "<color=red>Winner: %plyWinner%</color>\nMini-game ended";
     }
 }
