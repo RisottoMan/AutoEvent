@@ -14,7 +14,7 @@ namespace AutoEvent.Events.GunGame
     public class Plugin : Event
     {
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.GunGameName;
-        public override string Description { get; set; } = AutoEvent.Singleton.Translation.GunGameDescription;
+        public override string Description { get; set; } = AutoEvent.Singleton.Translation.GunGameDescription + " [Beta]";
         public override string Color { get; set; } = "FFFF00";
         public override string CommandName { get; set; } = "gungame";
         public TimeSpan EventTime { get; set; }

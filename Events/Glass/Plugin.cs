@@ -16,8 +16,8 @@ namespace AutoEvent.Events.Glass
 {
     public class Plugin : Event
     {
-        public override string Name { get; set; } = "Dead Jump [Testing]";
-        public override string Description { get; set; } = "Jump on fragile platforms [Testing]";
+        public override string Name { get; set; } = "Dead Jump";
+        public override string Description { get; set; } = "Jump on fragile platforms [Beta]";
         public override string Color { get; set; } = "FF4242";
         public override string CommandName { get; set; } = "glass";
         public SchematicObject GameMap { get; set; }

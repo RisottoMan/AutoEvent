@@ -14,8 +14,8 @@ namespace AutoEvent.Events.Lava
 {
     public class Plugin : Event
     {
-        public override string Name { get; set; } = "Пол - это ЛАВА [Testing]";
-        public override string Description { get; set; } = "Выживание, в котором необходимо избегать лавы и стрелять в других. [Testing]";
+        public override string Name { get; set; } = "The floor is LAVA [Testing]";
+        public override string Description { get; set; } = "Survival, in which you need to avoid lava and shoot at others. [Alpha]";
         public override string Color { get; set; } = "FFFF00";
         public override string CommandName { get; set; } = "lava";
         public TimeSpan EventTime { get; set; }

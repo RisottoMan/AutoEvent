@@ -13,8 +13,8 @@ namespace AutoEvent.Events.HideAndSeek
 {
     public class Plugin : Event
     {
-        public override string Name { get; set; } = "Догонялки [Testing]"; // Переработать патч
-        public override string Description { get; set; } = "Надо догнать всех игроков на карте. [Testing]";
+        public override string Name { get; set; } = "Догонялки [Testing]";
+        public override string Description { get; set; } = "Надо догнать всех игроков на карте. [Alpha]";
         public override string Color { get; set; } = "FF4242";
         public override string CommandName { get; set; } = "hide";
         public SchematicObject GameMap { get; set; }

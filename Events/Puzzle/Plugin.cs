@@ -16,7 +16,7 @@ namespace AutoEvent.Events.Puzzle
     public class Plugin : Event
     {
         public override string Name { get; set; } = $"{AutoEvent.Singleton.Translation.PuzzleName}";
-        public override string Description { get; set; } = $"{AutoEvent.Singleton.Translation.PuzzleDescription}";
+        public override string Description { get; set; } = $"{AutoEvent.Singleton.Translation.PuzzleDescription} [Beta]";
         public override string Color { get; set; } = "FFFF00";
         public override string CommandName { get; set; } = "puzzle";
         public SchematicObject GameMap { get; set; }

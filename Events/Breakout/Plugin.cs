@@ -12,8 +12,8 @@ namespace AutoEvent.Events.Breakout
 {
     public class Plugin : Event
     {
-        public override string Name { get; set; } = "Зомби Побег";
-        public override string Description { get; set; } = "Побег людей от зомби.";
+        public override string Name { get; set; } = "Zombie escape [TESTING]";
+        public override string Description { get; set; } = "Zombie escape [Alpha]";
         public override string Color { get; set; } = "FF4242";
         public override string CommandName { get; set; } = "breakout";
         public SchematicObject GameMap { get; set; }
