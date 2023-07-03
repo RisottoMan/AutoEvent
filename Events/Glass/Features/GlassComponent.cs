@@ -10,7 +10,7 @@ namespace AutoEvent.Events.Glass.Features
         {
             collider = gameObject.AddComponent<BoxCollider>();
             collider.isTrigger = true;
-            //collider.size = new Vector3(1, 2, 1);
+            collider.size = new Vector3(1, 10, 1);
         }
         void OnTriggerEnter(Collider other)
         {

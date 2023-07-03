@@ -35,6 +35,7 @@ namespace AutoEvent.Events.Glass
             Exiled.Events.Handlers.Player.DroppingItem += _eventHandler.OnDroppingItem;
             Exiled.Events.Handlers.Server.RespawningTeam += _eventHandler.OnTeamRespawn;
             Exiled.Events.Handlers.Player.SpawningRagdoll += _eventHandler.OnSpawnRagdoll;
+            //Exiled.Events.Handlers.Player.TogglingNoClip += _eventHandler.OnTogglingNoclip;
 
             OnEventStarted();
         }
@@ -44,6 +45,7 @@ namespace AutoEvent.Events.Glass
             Exiled.Events.Handlers.Player.DroppingItem -= _eventHandler.OnDroppingItem;
             Exiled.Events.Handlers.Server.RespawningTeam -= _eventHandler.OnTeamRespawn;
             Exiled.Events.Handlers.Player.SpawningRagdoll -= _eventHandler.OnSpawnRagdoll;
+            //Exiled.Events.Handlers.Player.TogglingNoClip -= _eventHandler.OnTogglingNoclip;
 
             Timing.CallDelayed(10f, () => EventEnd());
             AutoEvent.ActiveEvent = null;
@@ -74,9 +76,14 @@ namespace AutoEvent.Events.Glass
                 platformCount = 9;
                 EventTime = new TimeSpan(0, 2, 0);
             }
-            else
+            else if (playerCount > 25 && playerCount <= 30)
             {
                 platformCount = 12;
+                EventTime = new TimeSpan(0, 2, 30);
+            }
+            else
+            {
+                platformCount = 15;
                 EventTime = new TimeSpan(0, 2, 30);
             }
 
@@ -88,10 +95,6 @@ namespace AutoEvent.Events.Glass
             for (int i = 0; i < platformCount; i++)
             {
                 var newPlatform = Object.Instantiate(platform, platform.transform.position + delta * (i + 1), Quaternion.identity);
-                //NetworkServer.UnSpawn(newPlatform);
-                //newPlatform.GetComponent<PrimitiveObject>().Primitive.Color = UnityEngine.Color.magenta; // У него есть этот компонент, если розовый
-                //newPlatform.AddComponent<Collider>().isTrigger = false;
-                //newPlatform.GetComponent<PrimitiveObject>().Primitive.Collidable = false;
                 NetworkServer.Spawn(newPlatform);
                 Platformes.Add(newPlatform);
 
@@ -116,9 +119,6 @@ namespace AutoEvent.Events.Glass
             {
                 player.Role.Set(RoleTypeId.ClassD, SpawnReason.None, RoleSpawnFlags.None);
                 player.Position = RandomClass.GetSpawnPosition(GameMap);
-
-                //player.GameObject.AddComponent<BoxCollider>();
-                //player.GameObject.AddComponent<BoxCollider>().size = new Vector3(1f, 20f, 1f);
             }
             Timing.RunCoroutine(OnEventRunning(), "glass_time");
         }

@@ -1,4 +1,5 @@
-﻿using Exiled.API.Enums;
+﻿using AutoEvent.Events.DeathParty.Features;
+using Exiled.API.Enums;
 using Exiled.API.Features;
 using Exiled.API.Features.Items;
 using MapEditorReborn.API.Features.Objects;
@@ -8,9 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using AutoEvent.Interfaces;
 using UnityEngine;
-using AutoEvent.Events.DeathParty.Features;
-using Discord;
-using Exiled.Events.EventArgs.Player;
+using PlayerRoles;
 using Random = UnityEngine.Random;
 
 namespace AutoEvent.Events.DeathParty
@@ -23,119 +22,138 @@ namespace AutoEvent.Events.DeathParty
         public override string CommandName { get; set; } = "death";
         public TimeSpan EventTime { get; set; }
         public SchematicObject GameMap { get; set; }
-        public bool EventStarted;
-        public int PlayerCount;
-        public string EvWinner;
-        public float ExplosionRadius;
 
         EventHandler _eventHandler;
+        int Stage { get; set; }
 
         public override void OnStart()
         {
             _eventHandler = new EventHandler();
 
+            Exiled.Events.Handlers.Player.Verified += _eventHandler.OnJoin;
             Exiled.Events.Handlers.Server.RespawningTeam += _eventHandler.OnTeamRespawn;
-            Exiled.Events.Handlers.Player.Died += OnDied;
-            Exiled.Events.Handlers.Player.Left += OnLeft;
+            Exiled.Events.Handlers.Player.SpawningRagdoll += _eventHandler.OnSpawnRagdoll;
+            Exiled.Events.Handlers.Map.PlacingBulletHole += _eventHandler.OnPlaceBullet;
+            Exiled.Events.Handlers.Map.PlacingBlood += _eventHandler.OnPlaceBlood;
+            Exiled.Events.Handlers.Player.DroppingItem += _eventHandler.OnDropItem;
+            Exiled.Events.Handlers.Player.DroppingAmmo += _eventHandler.OnDropAmmo;
+
             OnEventStarted();
-            EventStarted = true;
-            ExplosionRadius = 12;
         }
 
         public override void OnStop()
         {
+            Exiled.Events.Handlers.Player.Verified -= _eventHandler.OnJoin;
             Exiled.Events.Handlers.Server.RespawningTeam -= _eventHandler.OnTeamRespawn;
-            Exiled.Events.Handlers.Player.Died -= OnDied;
-            Exiled.Events.Handlers.Player.Left -= OnLeft;
+            Exiled.Events.Handlers.Player.SpawningRagdoll -= _eventHandler.OnSpawnRagdoll;
+            Exiled.Events.Handlers.Map.PlacingBulletHole -= _eventHandler.OnPlaceBullet;
+            Exiled.Events.Handlers.Map.PlacingBlood -= _eventHandler.OnPlaceBlood;
+            Exiled.Events.Handlers.Player.DroppingItem -= _eventHandler.OnDropItem;
+            Exiled.Events.Handlers.Player.DroppingAmmo -= _eventHandler.OnDropAmmo;
 
             Timing.CallDelayed(5f, EventEnd);
             AutoEvent.ActiveEvent = null;
             _eventHandler = null;
-            EventStarted = false;
-            ExplosionRadius = 0;
-            EvWinner = null;
         }
 
         public void OnEventStarted()
         {
-            Extensions.PlayAudio("Escape.ogg", 4, true, Name);
-            GameMap = Extensions.LoadMap("DeathParty", new Vector3(100f, 1012f, -40f), Quaternion.Euler(Vector3.zero), Vector3.one);
             EventTime = new TimeSpan(0, 0, 0);
-            Player.List.ToList().ForEach(player =>
+            GameMap = Extensions.LoadMap("DeathParty", new Vector3(100f, 1012f, -40f), Quaternion.Euler(Vector3.zero), Vector3.one);
+            //Extensions.PlayAudio("Escape.ogg", 4, true, Name);
+
+            foreach (Player player in Player.List)
             {
-                Round.IsLocked = true;
-                player.Role.Set(RandomRoles.GetRandomRole());
-                PlayerCount++;
-                player.ClearInventory();
-                player.Teleport(new Vector3(Random.Range(80, 120), 1015, Random.Range(-30, -50)));
-                Server.FriendlyFire = true;
-
-            });
-
-            Timing.RunCoroutine(OnEventRunning(), "death");
+                player.Role.Set(RoleTypeId.ClassD, SpawnReason.None, RoleSpawnFlags.None);
+                player.Position = RandomClass.GetSpawnPosition(GameMap);
+            }
+            Timing.RunCoroutine(OnEventRunning(), "death_run");
+            Timing.RunCoroutine(OnGrenadeEvent(), "death_grenade");
         }
 
         public IEnumerator<float> OnEventRunning()
         {
-            while (PlayerCount >= 2)
+            for (int time = 10; time > 0; time--)
             {
-                Extensions.Broadcast($"<color=yellow>Уворачивайтесь от гранат!</color>\n<color=green>Прошло {EventTime} секунд</color>\n<color=red>Осталось {PlayerCount} человек</color>", 1);
+                Extensions.Broadcast($"<size=100><color=red>{time}</color></size>", 1);
+                yield return Timing.WaitForSeconds(1f);
+            }
+
+            while (Player.List.Count(r => r.IsAlive) > 0)
+            {
+                Extensions.Broadcast("<color=yellow>Уворачивайтесь от гранат!</color>\n" +
+                    $"<color=green>Прошло {EventTime.Minutes}:{EventTime.Seconds} секунд</color>\n" +
+                    $"<color=red>Осталось {Player.List.Count(r => r.IsAlive)} игроков</color>", 1);
+
                 yield return Timing.WaitForSeconds(1f);
                 EventTime += TimeSpan.FromSeconds(1f);
-                Timing.CallDelayed(2f, GrenadeSpawn);
-                if (PlayerCount == 1)
-                {
-                    foreach (Player ply in Player.List)
-                    {
-                        if (ply.IsAlive)
-                        {
-                            EvWinner = ply.DisplayNickname;
-                            ply.IsGodModeEnabled = true;
-                            Extensions.Broadcast($"<color=red>Победил {EvWinner}</color>", 5);
-                            Timing.CallDelayed(5f, () =>
-                            {
-                                OnStop();
-                                ply.IsGodModeEnabled = false;
-                            });
-                        }
-                    }
-                } 
-                else if (PlayerCount <= 0)
-                {
-                    Extensions.Broadcast($"<color=red>Победитель неопределен</color>", 5);
-                    Timing.CallDelayed(5f, OnStop);
-                }
+            }
 
-                if (PlayerCount < 5)
-                {
-                    ExplosionRadius = 20f;
-                }
+            if (Player.List.Count(r => r.IsAlive) > 1)
+            {
+                Extensions.Broadcast($"<color=red>Смертельная вечеринка</color>\n" +
+                    $"<color=yellow>Выжило <color=red>{Player.List.Count(r => r.IsAlive)}</color> игроков.</color>\n" +
+                    $"<color=#ffc0cb>{EventTime.Minutes}:{EventTime.Seconds}</color>", 10);
+            }
+            else if (Player.List.Count(r => r.IsAlive) == 1)
+            {
+                var player = Player.List.First(r => r.IsAlive);
+                player.Health = 1000;
+                Extensions.Broadcast($"<color=red>Смертельная вечеринка</color>\n" +
+                    $"<color=yellow>ПОБЕДИТЕЛЬ - <color=red>{player.Nickname}</color></color>\n" +
+                    $"<color=#ffc0cb>{EventTime.Minutes}:{EventTime.Seconds}</color>", 10);
+            }
+            else
+            {
+                Extensions.Broadcast($"<color=red>Смертельная вечеринка</color>\n" +
+                    $"<color=yellow>Все погибли(((</color>\n" +
+                    $"<color=#ffc0cb>{EventTime.Minutes}:{EventTime.Seconds}</color>", 10);
             }
         }
-
-        public void OnDied(DiedEventArgs ev)
+        public IEnumerator<float> OnGrenadeEvent()
         {
-            ev.Player.ShowHint($"<color=yellow>Вы смогли выжить {EventTime} секунд</color>", 5f);
-            PlayerCount--;
+            Stage = 1;
+            float fuse = 10f;
+            float radius = 7f;
+            float height = 20f;
+            float count = 50;
+            float timing = 1f;
+
+            while (Player.List.Count(r => r.IsAlive) > 0) //
+            {
+                for (int i = 0; i < count; i++)
+                {
+                    GrenadeSpawn(fuse, radius, height);
+                    yield return Timing.WaitForSeconds(timing);
+                }
+
+                yield return Timing.WaitForSeconds(15f);
+
+                if (Stage < 4)
+                {
+                    fuse -= 2f;
+                    height -= 5f;
+                    timing -= 0.3f;
+                }
+                radius += 7f;
+                count += 40;
+                Stage++;
+            }
+            yield break;
         }
 
-        public void OnLeft(LeftEventArgs ev)
-        {
-            PlayerCount--;
-        }
-
-        public void GrenadeSpawn()
+        public void GrenadeSpawn(float fuseTime, float radius, float height)
         {
             ExplosiveGrenade grenade = (ExplosiveGrenade)Item.Create(ItemType.GrenadeHE);
-            grenade.Scale  = new Vector3(2f, 3f, 2f);
-            grenade.FuseTime = 1.5f;
-            grenade.MaxRadius = ExplosionRadius;
-            grenade.SpawnActive(new Vector3(Random.Range(80, 120), 1020, Random.Range(-20, -60)));
+            //grenade.Scale  = new Vector3(2f, 3f, 2f);
+            grenade.FuseTime = fuseTime;
+            grenade.MaxRadius = radius;
+            grenade.SpawnActive(GameMap.Position + new Vector3(Random.Range(-5, 5), height, Random.Range(-5, 5)));
+            //grenade.Scale.Set(10f, 10f, 10f);
         }
 
         public void EventEnd()
         {
-            Server.FriendlyFire = false;
             Extensions.CleanUpAll();
             Extensions.TeleportEnd();
             Extensions.StopAudio();

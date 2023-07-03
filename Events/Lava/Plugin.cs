@@ -9,7 +9,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using Component = AutoEvent.Events.Lava.Features.Component;
 
 namespace AutoEvent.Events.Lava
 {
@@ -24,9 +23,13 @@ namespace AutoEvent.Events.Lava
         public GameObject Lava { get; set; }
 
         EventHandler _eventHandler;
+        private bool isFreindlyFireEnabled;
 
         public override void OnStart()
         {
+            isFreindlyFireEnabled = Server.FriendlyFire;
+            Server.FriendlyFire = true;
+
             OnEventStarted();
 
             _eventHandler = new EventHandler();
@@ -44,6 +47,8 @@ namespace AutoEvent.Events.Lava
         }
         public override void OnStop()
         {
+            Server.FriendlyFire = isFreindlyFireEnabled;
+
             Exiled.Events.Handlers.Player.Verified -= _eventHandler.OnJoin;
             Exiled.Events.Handlers.Server.RespawningTeam -= _eventHandler.OnTeamRespawn;
             Exiled.Events.Handlers.Player.SpawningRagdoll -= _eventHandler.OnSpawnRagdoll;
@@ -62,13 +67,12 @@ namespace AutoEvent.Events.Lava
         public void OnEventStarted()
         {
             EventTime = new TimeSpan(0, 0, 0);
-            Server.FriendlyFire = true;
 
             GameMap = Extensions.LoadMap("Lava", new Vector3(120f, 1020f, -43.5f), Quaternion.Euler(Vector3.zero), Vector3.one);
             Extensions.PlayAudio("ClassicMusic.ogg", 5, true, Name);
 
             Lava = GameMap.AttachedBlocks.First(x => x.name == "LavaObject");
-            Lava.AddComponent<Component>();
+            Lava.AddComponent<LavaComponent>();
 
             foreach (var player in Player.List)
             {
@@ -123,7 +127,6 @@ namespace AutoEvent.Events.Lava
         }
         public void EventEnd()
         {
-            Server.FriendlyFire = false;
             GameObject.Destroy(Lava);
             Extensions.CleanUpAll();
             Extensions.TeleportEnd();

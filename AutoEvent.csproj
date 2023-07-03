@@ -86,7 +86,7 @@
     <Compile Include="Events\Deathmatch\EventHandler.cs" />
     <Compile Include="Events\DeathParty\EventHandler.cs" />
     <Compile Include="Events\DeathParty\Plugin.cs" />
-    <Compile Include="Events\DeathParty\Features\RandomRoles.cs" />
+    <Compile Include="Events\DeathParty\Features\RandomClass.cs" />
     <Compile Include="Events\Example\EventHandler.cs" />
     <Compile Include="Events\Example\Plugin.cs" />
     <Compile Include="Events\Football\EventHandler.cs" />
@@ -119,7 +119,7 @@
     <Compile Include="Events\Jail\EventHandler.cs" />
     <Compile Include="Events\Jail\Extensions\JailRandom.cs" />
     <Compile Include="Events\Lava\EventHandler.cs" />
-    <Compile Include="Events\Lava\Features\Component.cs" />
+    <Compile Include="Events\Lava\Features\LavaComponent.cs" />
     <Compile Include="Events\Lava\Features\RandomClass.cs" />
     <Compile Include="Events\Lava\Plugin.cs" />
     <Compile Include="Events\Breakout\EventHandler.cs" />
