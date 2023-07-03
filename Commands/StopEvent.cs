@@ -6,10 +6,9 @@ using PlayerRoles;
 
 namespace AutoEvent.Commands
 {
-    [CommandHandler(typeof(RemoteAdminCommandHandler))]
     internal class StopEvent : ICommand
     {
-        public string Command => "ev_stop";
+        public string Command => "stop";
         public string Description => "Kills the running mini-game (just kills all the players)";
         public string[] Aliases => null;
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)

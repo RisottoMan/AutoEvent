@@ -5,6 +5,7 @@ using Exiled.Events.EventArgs.Map;
 using Exiled.Events.EventArgs.Player;
 using Exiled.Events.EventArgs.Server;
 using InventorySystem.Configs;
+using MEC;
 using PlayerRoles;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,9 +19,9 @@ namespace AutoEvent.Events.Deathmatch
         {
             _plugin = plugin;
         }
+
         public void OnJoin(VerifiedEventArgs ev)
         {
-            // Give role
             if (Player.List.Count(r => r.Role.Team == Team.FoundationForces) > Player.List.Count(r => r.Role.Team == Team.ChaosInsurgency))
             {
                 ev.Player.Role.Set(RoleTypeId.ChaosRifleman);
@@ -29,19 +30,24 @@ namespace AutoEvent.Events.Deathmatch
             {
                 ev.Player.Role.Set(RoleTypeId.NtfSergeant);
             }
-            ev.Player.CurrentItem = ev.Player.Items.ElementAt(1);
-            // Effects
-            ev.Player.EnableEffect<CustomPlayerEffects.Scp1853>(300);
-            ev.Player.EnableEffect(EffectType.MovementBoost, 300);
-            ev.Player.ChangeEffectIntensity(EffectType.MovementBoost, 25);
-            // Position
-            ev.Player.Position = _plugin.GameMap.Position + RandomClass.GetRandomPosition();
+
+            ev.Player.EnableEffect<CustomPlayerEffects.Scp1853>(150);
+            ev.Player.EnableEffect(EffectType.MovementBoost, 150);
+            ev.Player.ChangeEffectIntensity(EffectType.MovementBoost, 10);
+
+            ev.Player.Position = RandomClass.GetRandomPosition(_plugin.GameMap);
+
+            Timing.CallDelayed(0.1f, () =>
+            {
+                ev.Player.CurrentItem = ev.Player.Items.ElementAt(1);
+            });
+
         }
+
         public void OnDying(DyingEventArgs ev)
         {
-            // We don't kill the player, but move them around the arena.
             ev.IsAllowed = false;
-            // Get exp
+
             if (ev.Player.Role.Team == Team.FoundationForces)
             {
                 _plugin.ChaosKills++;
@@ -50,20 +56,27 @@ namespace AutoEvent.Events.Deathmatch
             {
                 _plugin.MtfKills++;
             }
-            // Respawn player
+
             ev.Player.EnableEffect(EffectType.Flashed, 0.1f);
-            ev.Player.CurrentItem = ev.Player.Items.ElementAt(1);
-            ev.Player.Position = _plugin.GameMap.Position + RandomClass.GetRandomPosition();
+            ev.Player.Position = RandomClass.GetRandomPosition(_plugin.GameMap);
             ev.Player.Health = 100;
+
+            Timing.CallDelayed(0.1f, () =>
+            {
+                ev.Player.CurrentItem = ev.Player.Items.ElementAt(1);
+            });
         }
+
         public void OnReloading(ReloadingWeaponEventArgs ev)
         {
             SetMaxAmmo(ev.Player);
         }
+
         public void OnSpawned(SpawnedEventArgs ev)
         {
             SetMaxAmmo(ev.Player);
         }
+
         public void OnTeamRespawn(RespawningTeamEventArgs ev) => ev.IsAllowed = false;
         public void OnSpawnRagdoll(SpawningRagdollEventArgs ev) => ev.IsAllowed = false;
         public void OnPlaceBullet(PlacingBulletHole ev) => ev.IsAllowed = false;

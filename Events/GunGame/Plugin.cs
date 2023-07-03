@@ -1,8 +1,9 @@
 ﻿using AutoEvent.Interfaces;
+using Exiled.API.Enums;
 using Exiled.API.Features;
-using Exiled.API.Features.Items;
 using MapEditorReborn.API.Features.Objects;
 using MEC;
+using PlayerRoles;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,25 +11,27 @@ using UnityEngine;
 
 namespace AutoEvent.Events.GunGame
 {
-    
-    public class Plugin : IEvent
+    public class Plugin : Event
     {
-        public string Name => AutoEvent.Singleton.Translation.GunGameName;
-        public string Description => AutoEvent.Singleton.Translation.GunGameDescription;
-        public string Color => "FFFF00";
-        public string CommandName => "gungame";
+        public override string Name { get; set; } = AutoEvent.Singleton.Translation.GunGameName;
+        public override string Description { get; set; } = AutoEvent.Singleton.Translation.GunGameDescription + " [Beta]";
+        public override string Color { get; set; } = "FFFF00";
+        public override string CommandName { get; set; } = "gungame";
         public TimeSpan EventTime { get; set; }
         public SchematicObject GameMap { get; set; }
         public List<Vector3> Spawners { get; set; } = new List<Vector3>();
         public Player Winner { get; set; }
         public Dictionary<Player, Stats> PlayerStats = new Dictionary<Player, Stats>();
 
+        private bool isFreindlyFireEnabled;
         EventHandler _eventHandler;
 
-        public void OnStart()
+        public override void OnStart()
         {
-            OnEventStarted();
+            isFreindlyFireEnabled = Server.FriendlyFire;
+            Server.FriendlyFire = false;
 
+            OnEventStarted();
             _eventHandler = new EventHandler(this);
 
             Exiled.Events.Handlers.Player.Verified += _eventHandler.OnJoin;
@@ -42,8 +45,10 @@ namespace AutoEvent.Events.GunGame
             Exiled.Events.Handlers.Player.ReloadingWeapon += _eventHandler.OnReloading;
             Exiled.Events.Handlers.Player.DroppingAmmo += _eventHandler.OnDropAmmo;
         }
-        public void OnStop()
+        public override void OnStop()
         {
+            Server.FriendlyFire = isFreindlyFireEnabled;
+
             Exiled.Events.Handlers.Player.Verified -= _eventHandler.OnJoin;
             Exiled.Events.Handlers.Server.RespawningTeam -= _eventHandler.OnTeamRespawn;
             Exiled.Events.Handlers.Player.Dying -= _eventHandler.OnPlayerDying;
@@ -55,34 +60,36 @@ namespace AutoEvent.Events.GunGame
             Exiled.Events.Handlers.Player.ReloadingWeapon -= _eventHandler.OnReloading;
             Exiled.Events.Handlers.Player.DroppingAmmo -= _eventHandler.OnDropAmmo;
 
-            Timing.CallDelayed(10f, () => EventEnd());
-            AutoEvent.ActiveEvent = null;
             _eventHandler = null;
+            Timing.CallDelayed(10f, () => EventEnd());
         }
         public void OnEventStarted()
         {
             EventTime = new TimeSpan(0, 0, 0);
             Winner = null;
-            GameMap = Extensions.LoadMap("Shipment", new Vector3(120f, 1020f, -43.5f), Quaternion.Euler(Vector3.zero), Vector3.one);
+            GameMap = Extensions.LoadMap("Shipment", new Vector3(5f, 1030f, -45f), Quaternion.Euler(Vector3.zero), Vector3.one); // new Vector3(120f, 1020f, -43.5f)
             Extensions.PlayAudio("ClassicMusic.ogg", 3, true, Name);
 
             var count = 0;
             foreach (Player player in Player.List)
             {
+                count++;
+
                 PlayerStats.Add(player, new Stats()
                 {
                     kill = 0,
                     level = 1
                 });
 
-                player.Role.Set(GunGameRandom.GetRandomRole());
-                player.ClearInventory();
-
-                player.CurrentItem = player.AddItem(GunGameGuns.GunForLevel[PlayerStats[player].level]);
+                player.Role.Set(GunGameRandom.GetRandomRole(), SpawnReason.None, RoleSpawnFlags.None);
+                player.Position = GunGameRandom.GetRandomPosition(GameMap);
                 player.EnableEffect<CustomPlayerEffects.SpawnProtected>(10);
-                player.Position = GameMap.Position + GunGameRandom.GetRandomPosition();
 
-                count++;
+                var item = player.AddItem(GunGameGuns.GunForLevel[PlayerStats[player].level]);
+                Timing.CallDelayed(0.1f, () =>
+                {
+                    player.CurrentItem = item;
+                });
             }
             Timing.RunCoroutine(OnEventRunning(), "gungame_run");
         }
@@ -94,9 +101,9 @@ namespace AutoEvent.Events.GunGame
                 Extensions.Broadcast($"<size=100><color=red>{time}</color></size>", 1);
                 yield return Timing.WaitForSeconds(1f);
             }
+
             Server.FriendlyFire = true;
 
-            // If you need to stop the game, then just kill all the players
             while (Winner == null && Player.List.Count(r => r.IsAlive) > 0)
             {
                 foreach (Player pl in Player.List)
@@ -106,11 +113,13 @@ namespace AutoEvent.Events.GunGame
                     {
                         Winner = pl;
                     }
+
                     pl.ClearBroadcasts();
                     pl.Broadcast(1, trans.GunGameCycle.Replace("{name}", Name).Replace("{level}", $"{stats.level}").Replace("{kills}", $"{2 - stats.kill}"));
                 }
                 yield return Timing.WaitForSeconds(1f);
             }
+
             if (Winner != null)
             {
                 Extensions.Broadcast(trans.GunGameWinner.Replace("{name}", Name).Replace("{winner}", Winner.Nickname), 10);
@@ -119,6 +128,7 @@ namespace AutoEvent.Events.GunGame
             {
                 pl.ClearInventory();
             }
+
             OnStop();
             yield break;
         }
@@ -129,6 +139,8 @@ namespace AutoEvent.Events.GunGame
             Extensions.TeleportEnd();
             Extensions.UnLoadMap(GameMap);
             Extensions.StopAudio();
+
+            AutoEvent.ActiveEvent = null;
         }
     }
 }

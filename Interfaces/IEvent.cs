@@ -3,23 +3,23 @@
     public interface IEvent
     {
         /// <summary>
-        /// Название ивента в команде, при котором он вызывается. Например: ev_run [CommandName].
+        /// the name of the event (in ev run [CommandName])
         /// </summary>
         string CommandName { get; }
 
-        /// <summary>Название</summary>
+        /// <summary>Title</summary>
         string Name { get; }
 
-        /// <summary>Цвет</summary>
+        /// <summary>Color</summary>
         string Color { get; }
 
-        /// <summary>Описание</summary>
+        /// <summary>Description</summary>
         string Description { get; }
 
-        /// <summary>При запуске</summary>
+        /// <summary>On starting</summary>
         void OnStart();
 
-        /// <summary>При окончании</summary>
+        /// <summary>On stopping</summary>
         void OnStop();
     }
 }

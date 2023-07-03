@@ -1,17 +1,15 @@
 ﻿using AutoEvent.Interfaces;
 using CommandSystem;
 using System;
-using System.Linq;
-using System.Reflection;
 using Exiled.API.Features;
 using Exiled.Permissions.Extensions;
+using MEC;
 
 namespace AutoEvent.Commands
 {
-    [CommandHandler(typeof(RemoteAdminCommandHandler))]
     internal class RunEvent : ICommand
     {
-        public string Command => "ev_run";
+        public string Command => "run";
         public string Description => "Run the event, takes on 1 argument - the command name of the event.";
         public string[] Aliases => null;
 
@@ -22,11 +20,7 @@ namespace AutoEvent.Commands
                 response = "You do not have permission to use this command";
                 return false;
             }
-            if (!Round.IsStarted)
-            {
-                response = "The round has not started!";
-                return false;
-            }
+
             if (AutoEvent.ActiveEvent != null)
             {
                 response = "The mini-game is already running!";
@@ -38,36 +32,30 @@ namespace AutoEvent.Commands
                 return false;
             }
 
-            foreach (var type in Assembly.GetExecutingAssembly().GetTypes())
+            Event ev = Event.GetEvent(arguments.At(0));
+            if (ev == null)
             {
-                if (type.Namespace.Contains("AutoEvent") && !type.IsInterface && typeof(IEvent).IsAssignableFrom(type) && type.GetProperty("CommandName") != null)
-                {
-                    var ev = Activator.CreateInstance(type);
-                    try
-                    {
-                        if ((string)type.GetProperty("CommandName").GetValue(ev) == arguments.ElementAt(0))
-                        {
-                            var eng = type.GetMethod("OnStart");
-                            if (eng != null)
-                            {
-                                sender.Respond("Trying to run an event, OnStart is not null...");
-                                eng.Invoke(Activator.CreateInstance(type), null);
-                                Round.IsLocked = true;
-                                AutoEvent.ActiveEvent = (IEvent)ev;
-                                response = "The event is found, run it.";
-                                return true;
-                            }
-                            response = "Somehow, the class that was selected does not have OnStart() in it";
-                            return false;
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        response = $"An error occurred when running the event. Error: {ex.Message}";
-                    }
-                }
+                response = "event not found.";
+                return false;
             }
-            response = "The event was not found, nothing happened.";
+
+            Round.IsLocked = true;
+
+            if (!Round.IsStarted)
+            {
+                Round.Start();
+                Timing.CallDelayed(2f, () => {
+                    ev.OnStart();
+                    AutoEvent.ActiveEvent = ev;
+                });
+            }
+            else
+            {
+                ev.OnStart();
+                AutoEvent.ActiveEvent = ev;
+            }
+
+            response = "Event started !";
             return false;
         }
     }

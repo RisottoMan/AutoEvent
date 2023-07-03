@@ -11,12 +11,12 @@ using Object = UnityEngine.Object;
 
 namespace AutoEvent.Events.Jail
 {
-    public class Plugin : IEvent
+    public class Plugin : Event
     {
-        public string Name => AutoEvent.Singleton.Translation.JailName;
-        public string Description => AutoEvent.Singleton.Translation.JailDescription;
-        public string Color => "FFFF00";
-        public string CommandName => "jail";
+        public override string Name { get; set; } = AutoEvent.Singleton.Translation.JailName;
+        public override string Description { get; set; } = AutoEvent.Singleton.Translation.JailDescription + " [Beta]";
+        public override string Color { get; set; } = "FFFF00";
+        public override string CommandName { get; set; } = "jail";
         public SchematicObject GameMap { get; set; }
         public GameObject Button { get; set; }
         public Dictionary<GameObject, float> JailerDoorsTime { get; set; } = new Dictionary<GameObject, float>();
@@ -25,7 +25,7 @@ namespace AutoEvent.Events.Jail
 
         EventHandler _eventHandler;
 
-        public void OnStart()
+        public override void OnStart()
         {
             _eventHandler = new EventHandler(this);
 
@@ -34,15 +34,14 @@ namespace AutoEvent.Events.Jail
             Exiled.Events.Handlers.Server.RespawningTeam += _eventHandler.OnTeamRespawn;
             OnWaitingEvent();
         }
-        public void OnStop()
+        public override void OnStop()
         {
             Exiled.Events.Handlers.Player.Shooting -= _eventHandler.OnShootEvent;
             Exiled.Events.Handlers.Player.InteractingLocker -= _eventHandler.OnInteractLocker;
             Exiled.Events.Handlers.Server.RespawningTeam -= _eventHandler.OnTeamRespawn;
 
-            Timing.CallDelayed(10f, () => EventEnd());
-            AutoEvent.ActiveEvent = null;
             _eventHandler = null;
+            Timing.CallDelayed(10f, () => EventEnd());
         }
         public void OnWaitingEvent()
         {
@@ -155,6 +154,7 @@ namespace AutoEvent.Events.Jail
             Extensions.TeleportEnd();
             Extensions.UnLoadMap(GameMap);
             Extensions.StopAudio();
+            AutoEvent.ActiveEvent = null;
         }
     }
 }

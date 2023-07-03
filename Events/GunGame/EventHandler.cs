@@ -1,10 +1,13 @@
-﻿using Exiled.API.Extensions;
+﻿using Exiled.API.Enums;
+using Exiled.API.Extensions;
 using Exiled.API.Features;
 using Exiled.Events.EventArgs.Map;
 using Exiled.Events.EventArgs.Player;
 using Exiled.Events.EventArgs.Server;
 using InventorySystem.Configs;
 using MapEditorReborn.API.Features.Objects;
+using MEC;
+using PlayerRoles;
 using System.Collections.Generic;
 
 namespace AutoEvent.Events.GunGame
@@ -26,18 +29,20 @@ namespace AutoEvent.Events.GunGame
                 level = 1
             });
 
-            ev.Player.Role.Set(GunGameRandom.GetRandomRole());
-            ev.Player.ClearInventory();
+            ev.Player.Role.Set(GunGameRandom.GetRandomRole(), SpawnReason.None , RoleSpawnFlags.None);
+            ev.Player.Position = GunGameRandom.GetRandomPosition(_gameMap);
 
-            ev.Player.CurrentItem = ev.Player.AddItem(GunGameGuns.GunForLevel[_playerStats[ev.Player].level]);
-
-            ev.Player.Position = _gameMap.Position + GunGameRandom.GetRandomPosition();
+            var item = ev.Player.AddItem(GunGameGuns.GunForLevel[_playerStats[ev.Player].level]);
+            Timing.CallDelayed(0.1f, () =>
+            {
+                ev.Player.CurrentItem = item;
+            });
         }
         public void OnPlayerDying(DyingEventArgs ev)
         {
             ev.IsAllowed = false;
             ev.Player.Health = 100;
-            // Attacker shit
+
             if (ev.Attacker != null)
             {
                 _playerStats.TryGetValue(ev.Attacker, out Stats statsAttacker);
@@ -48,17 +53,25 @@ namespace AutoEvent.Events.GunGame
                     statsAttacker.level++;
                     statsAttacker.kill = 0;
                     ev.Attacker.ClearInventory();
-                    ev.Attacker.CurrentItem = ev.Attacker.AddItem(GunGameGuns.GunForLevel[_playerStats[ev.Attacker].level]);
+
+                    var item = ev.Attacker.AddItem(GunGameGuns.GunForLevel[_playerStats[ev.Attacker].level]);
+                    Timing.CallDelayed(0.1f, () =>
+                    {
+                        ev.Attacker.CurrentItem = item;
+                    });
                 }
             }
-            // Target shit
+
             if (ev.Player != null)
             {
                 ev.Player.ClearInventory();
+                ev.Player.Position = GunGameRandom.GetRandomPosition(_gameMap);
 
-                ev.Player.CurrentItem = ev.Player.AddItem(GunGameGuns.GunForLevel[_playerStats[ev.Player].level]);
-
-                ev.Player.Position = _gameMap.Position + GunGameRandom.GetRandomPosition();
+                var item = ev.Player.AddItem(GunGameGuns.GunForLevel[_playerStats[ev.Player].level]);
+                Timing.CallDelayed(0.1f, () =>
+                {
+                    ev.Player.CurrentItem = item;
+                });
             }
         }
         public void OnReloading(ReloadingWeaponEventArgs ev)

@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AutoEvent.Events.Infection
 {
@@ -11,5 +7,17 @@ namespace AutoEvent.Events.Infection
     {
         [Description("Enable/Disable fall damage for people.")]
         public bool FallDamageEnabled { get; set; } = false;
+        [Description("A list that contains maps. You also need to add maps to the Schematic folder. Specify the folder name of map.")]
+        public List<string> ListOfMap { get; set; } = new List<string>()
+        {
+            "Zombie",
+            "ZombieRework",
+        };
+        [Description("A list containing the name of the music. They need to be manually added to the Music folder.")]
+        public List<string> ListOfMusic { get; set; } = new List<string>()
+        {
+            "Zombie.ogg",
+            "Zombie2.ogg",
+        };
     }
 }
