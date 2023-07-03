@@ -11,6 +11,7 @@ using AutoEvent.Interfaces;
 using UnityEngine;
 using PlayerRoles;
 using Random = UnityEngine.Random;
+using MapEditorReborn.Commands.ModifyingCommands.Scale;
 
 namespace AutoEvent.Events.DeathParty
 {
@@ -121,12 +122,13 @@ namespace AutoEvent.Events.DeathParty
             float height = 20f;
             float count = 50;
             float timing = 1f;
+            float scale = 3;
 
             while (Player.List.Count(r => r.IsAlive) > 0 && Stage != 4)
             {
                 for (int i = 0; i < count; i++)
                 {
-                    GrenadeSpawn(fuse, radius, height);
+                    GrenadeSpawn(fuse, radius, height, scale);
                     yield return Timing.WaitForSeconds(timing);
                 }
 
@@ -145,7 +147,7 @@ namespace AutoEvent.Events.DeathParty
             yield break;
         }
 
-        public void GrenadeSpawn(float fuseTime, float radius, float height)
+        public void GrenadeSpawn(float fuseTime, float radius, float height, float scale)
         {
             ExplosiveGrenade grenade = (ExplosiveGrenade)Item.Create(ItemType.GrenadeHE);
             grenade.FuseTime = fuseTime;
@@ -153,7 +155,7 @@ namespace AutoEvent.Events.DeathParty
 
             var projectile = grenade.SpawnActive(GameMap.Position + new Vector3(Random.Range(-5, 5), height, Random.Range(-5, 5)));
             projectile.Weight = 50f;
-            projectile.Scale = new Vector3(10f, 10f, 10f);
+            projectile.Scale = new Vector3(scale, scale, scale);
         }
 
         public void EventEnd()
