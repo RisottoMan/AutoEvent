@@ -37,9 +37,8 @@ namespace AutoEvent.Events.Escape
             Exiled.Events.Handlers.Server.RespawningTeam -= _eventHandler.OnTeamRespawn;
             Exiled.Events.Handlers.Scp173.PlacingTantrum -= _eventHandler.OnPlaceTantrum;
 
-            Timing.CallDelayed(5f, () => EventEnd());
-            AutoEvent.ActiveEvent = null;
             _eventHandler = null;
+            Timing.CallDelayed(5f, () => EventEnd());
         }
 
         public void OnEventStarted()
@@ -59,7 +58,7 @@ namespace AutoEvent.Events.Escape
             });
 
             Extensions.PlayAudio("Escape.ogg", 25, true, Name);
-            // Warhead started
+
             Warhead.DetonationTimer = 120f;
             Warhead.Start();
             Warhead.IsLocked = true;
@@ -69,7 +68,7 @@ namespace AutoEvent.Events.Escape
         public IEnumerator<float> OnEventRunning()
         {
             var trans = AutoEvent.Singleton.Translation;
-            // Countdown before the start of the game
+
             for (int time = 10; time > 0; time--)
             {
                 Extensions.Broadcast(trans.EscapeBeforeStart.Replace("{name}", Name).Replace("{time}", ((int)time).ToString()), 1);
@@ -77,17 +76,17 @@ namespace AutoEvent.Events.Escape
                 EventTime += TimeSpan.FromSeconds(1f);
             }
             var explosionTime = 80;
-            // Counting down
+
             while (EventTime.TotalSeconds != explosionTime && Player.List.Count(r => r.IsAlive) > 0)
             {
                 Extensions.Broadcast(trans.EscapeCycle.Replace("{name}", Name).Replace("{time}", (explosionTime - EventTime.TotalSeconds).ToString()), 1);
                 yield return Timing.WaitForSeconds(1f);
                 EventTime += TimeSpan.FromSeconds(1f);
             }
-            // Disable Warhead
+
             Warhead.IsLocked = false;
             Warhead.Stop();
-            // We pretend that the warhead exploded so that we can conduct this mini-game many times.
+
             foreach (Player player in Player.List)
             {
                 player.EnableEffect<CustomPlayerEffects.Flashed>(1);
@@ -105,6 +104,7 @@ namespace AutoEvent.Events.Escape
             Extensions.CleanUpAll();
             Extensions.TeleportEnd();
             Extensions.StopAudio();
+            AutoEvent.ActiveEvent = null;
         }
     }
 }

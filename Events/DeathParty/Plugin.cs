@@ -11,7 +11,6 @@ using AutoEvent.Interfaces;
 using UnityEngine;
 using PlayerRoles;
 using Random = UnityEngine.Random;
-using MapEditorReborn.Commands.ModifyingCommands.Scale;
 
 namespace AutoEvent.Events.DeathParty
 {
@@ -52,9 +51,8 @@ namespace AutoEvent.Events.DeathParty
             Exiled.Events.Handlers.Player.DroppingItem -= _eventHandler.OnDropItem;
             Exiled.Events.Handlers.Player.DroppingAmmo -= _eventHandler.OnDropAmmo;
 
-            Timing.CallDelayed(5f, EventEnd);
-            AutoEvent.ActiveEvent = null;
             _eventHandler = null;
+            Timing.CallDelayed(5f, () => EventEnd());
         }
 
         public void OnEventStarted()
@@ -147,14 +145,14 @@ namespace AutoEvent.Events.DeathParty
             yield break;
         }
 
-        public void GrenadeSpawn(float fuseTime, float radius, float height, float scale)
+        public void GrenadeSpawn(float fuseTime, float radius, float height, float scale) // Пожирнее и помедленее
         {
             ExplosiveGrenade grenade = (ExplosiveGrenade)Item.Create(ItemType.GrenadeHE);
             grenade.FuseTime = fuseTime;
             grenade.MaxRadius = radius;
 
             var projectile = grenade.SpawnActive(GameMap.Position + new Vector3(Random.Range(-5, 5), height, Random.Range(-5, 5)));
-            projectile.Weight = 50f;
+            projectile.Weight = 1000f;
             projectile.Scale = new Vector3(scale, scale, scale);
         }
 
@@ -164,6 +162,7 @@ namespace AutoEvent.Events.DeathParty
             Extensions.TeleportEnd();
             Extensions.StopAudio();
             Extensions.UnLoadMap(GameMap);
+            AutoEvent.ActiveEvent = null;
         }
     }
 }

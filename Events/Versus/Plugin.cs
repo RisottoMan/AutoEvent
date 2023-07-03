@@ -59,9 +59,8 @@ namespace AutoEvent.Events.Versus
             Exiled.Events.Handlers.Player.DroppingItem -= _eventHandler.OnDropItem;
             Exiled.Events.Handlers.Player.DroppingAmmo -= _eventHandler.OnDropAmmo;
 
-            Timing.CallDelayed(10f, () => EventEnd());
-            AutoEvent.ActiveEvent = null;
             _eventHandler = null;
+            Timing.CallDelayed(10f, () => EventEnd());
         }
 
         public void OnEventStarted()
@@ -182,6 +181,7 @@ namespace AutoEvent.Events.Versus
             Extensions.TeleportEnd();
             Extensions.UnLoadMap(GameMap);
             Extensions.StopAudio();
+            AutoEvent.ActiveEvent = null;
         }
     }
 }

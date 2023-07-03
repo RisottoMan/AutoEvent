@@ -40,9 +40,8 @@ namespace AutoEvent.Events.Jail
             Exiled.Events.Handlers.Player.InteractingLocker -= _eventHandler.OnInteractLocker;
             Exiled.Events.Handlers.Server.RespawningTeam -= _eventHandler.OnTeamRespawn;
 
-            Timing.CallDelayed(10f, () => EventEnd());
-            AutoEvent.ActiveEvent = null;
             _eventHandler = null;
+            Timing.CallDelayed(10f, () => EventEnd());
         }
         public void OnWaitingEvent()
         {
@@ -155,6 +154,7 @@ namespace AutoEvent.Events.Jail
             Extensions.TeleportEnd();
             Extensions.UnLoadMap(GameMap);
             Extensions.StopAudio();
+            AutoEvent.ActiveEvent = null;
         }
     }
 }

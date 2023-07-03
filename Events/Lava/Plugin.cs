@@ -60,10 +60,10 @@ namespace AutoEvent.Events.Lava
             Exiled.Events.Handlers.Player.DroppingAmmo -= _eventHandler.OnDropAmmo;
             Exiled.Events.Handlers.Player.Hurting -= _eventHandler.OnHurt;
 
-            Timing.CallDelayed(10f, () => EventEnd());
-            AutoEvent.ActiveEvent = null;
             _eventHandler = null;
+            Timing.CallDelayed(10f, () => EventEnd());
         }
+
         public void OnEventStarted()
         {
             EventTime = new TimeSpan(0, 0, 0);
@@ -83,6 +83,7 @@ namespace AutoEvent.Events.Lava
 
             Timing.RunCoroutine(OnEventRunning(), "lava_time");
         }
+
         public IEnumerator<float> OnEventRunning()
         {
             for (int time = 10; time > 0; time--)
@@ -125,6 +126,7 @@ namespace AutoEvent.Events.Lava
             OnStop();
             yield break;
         }
+
         public void EventEnd()
         {
             GameObject.Destroy(Lava);
@@ -132,6 +134,7 @@ namespace AutoEvent.Events.Lava
             Extensions.TeleportEnd();
             Extensions.UnLoadMap(GameMap);
             Extensions.StopAudio();
+            AutoEvent.ActiveEvent = null;
         }
     }
 }

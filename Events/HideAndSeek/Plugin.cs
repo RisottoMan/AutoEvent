@@ -51,9 +51,8 @@ namespace AutoEvent.Events.HideAndSeek
             Exiled.Events.Handlers.Player.PickingUpItem -= _eventHandler.OnPickUpItem;
             //Exiled.Events.Handlers.Item.ChargingJailbird -= _eventHandler.OnCharge;
 
-            Timing.CallDelayed(10f, () => EventEnd());
-            AutoEvent.ActiveEvent = null;
             _eventHandler = null;
+            Timing.CallDelayed(10f, () => EventEnd());
         }
         public void OnEventStarted()
         {
@@ -162,6 +161,7 @@ namespace AutoEvent.Events.HideAndSeek
             Extensions.TeleportEnd();
             Extensions.UnLoadMap(GameMap);
             Extensions.StopAudio();
+            AutoEvent.ActiveEvent = null;
         }
     }
 }

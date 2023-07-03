@@ -41,9 +41,8 @@ namespace AutoEvent.Events.Breakout
             Exiled.Events.Handlers.Player.Hurting -= _eventHandler.OnDamage;
             Exiled.Events.Handlers.Server.RespawningTeam -= _eventHandler.OnTeamRespawn;
             */
-            Timing.CallDelayed(10f, () => EventEnd());
-            AutoEvent.ActiveEvent = null;
             _eventHandler = null;
+            Timing.CallDelayed(10f, () => EventEnd());
         }
         public void OnEventStarted()
         {
@@ -121,6 +120,7 @@ namespace AutoEvent.Events.Breakout
             Extensions.TeleportEnd();
             Extensions.UnLoadMap(GameMap);
             Extensions.StopAudio();
+            AutoEvent.ActiveEvent = null;
         }
     }
 }

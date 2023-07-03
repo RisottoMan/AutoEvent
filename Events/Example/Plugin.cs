@@ -34,9 +34,8 @@ namespace AutoEvent.Events.Example
             Exiled.Events.Handlers.Player.Verified -= _eventHandler.OnJoin;
             Exiled.Events.Handlers.Server.RespawningTeam -= _eventHandler.OnTeamRespawn;
 
-            Timing.CallDelayed(5f, () => EventEnd()); // The delay that takes five seconds to do the cleanup
-            AutoEvent.ActiveEvent = null;
             _eventHandler = null;
+            Timing.CallDelayed(5f, () => EventEnd()); // The delay that takes five seconds to do the cleanup
         }
 
         // It starts after OnStart() and performs actions before the start of the mini-game
@@ -93,6 +92,8 @@ namespace AutoEvent.Events.Example
             Extensions.CleanUpAll(); // We clean all ragdolls and items
             Extensions.TeleportEnd(); // We'll teleport everyone to the tower
             Extensions.StopAudio(); // We turn off the music
+
+            AutoEvent.ActiveEvent = null; // The current mini-game is considered finished and now you can call a new one.
         }
     }
 }

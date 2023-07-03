@@ -49,10 +49,10 @@ namespace AutoEvent.Events.Infection
             Exiled.Events.Handlers.Player.DroppingItem -= _eventHandler.OnDropItem;
             Exiled.Events.Handlers.Player.DroppingAmmo -= _eventHandler.OnDropAmmo;
 
-            Timing.CallDelayed(10f, () => EventEnd());
-            AutoEvent.ActiveEvent = null;
             _eventHandler = null;
+            Timing.CallDelayed(10f, () => EventEnd());
         }
+
         public void OnEventStarted()
         {
             EventTime = new TimeSpan(0, 0, 0);
@@ -68,6 +68,7 @@ namespace AutoEvent.Events.Infection
 
             Timing.RunCoroutine(OnEventRunning(), "zombie_run");
         }
+
         public IEnumerator<float> OnEventRunning()
         {
             var trans = AutoEvent.Singleton.Translation;
@@ -94,6 +95,7 @@ namespace AutoEvent.Events.Infection
             Timing.RunCoroutine(DopTime(), "EventBeginning");
             yield break;
         }
+
         public IEnumerator<float> DopTime()
         {
             var trans = AutoEvent.Singleton.Translation;
@@ -119,12 +121,14 @@ namespace AutoEvent.Events.Infection
             OnStop();
             yield break;
         }
+
         public void EventEnd()
         {
             Extensions.CleanUpAll();
             Extensions.TeleportEnd();
             Extensions.UnLoadMap(GameMap);
             Extensions.StopAudio();
+            AutoEvent.ActiveEvent = null;
         }
     }
 }

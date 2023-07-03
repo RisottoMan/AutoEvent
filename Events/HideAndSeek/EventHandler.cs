@@ -20,12 +20,12 @@ namespace AutoEvent.Events.HideAndSeek
         public void OnHurt(HurtingEventArgs ev)
         {
             Log.Info("Hurt");
-            /*
+
             if (ev.Player != null && ev.DamageHandler.Type == DamageType.Falldown)
             {
                 ev.IsAllowed = false;
             }
-            */
+
             if (ev.Attacker.HasItem(ItemType.Jailbird) == true && ev.Player.HasItem(ItemType.Jailbird) == false)
             {
                 ev.Attacker.ClearInventory();

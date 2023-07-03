@@ -53,9 +53,8 @@ namespace AutoEvent.Events.Puzzle
             Exiled.Events.Handlers.Player.DroppingItem -= _eventHandler.OnDropItem;
             Exiled.Events.Handlers.Player.DroppingAmmo -= _eventHandler.OnDropAmmo;
 
-            Timing.CallDelayed(10f, () => EventEnd());
-            AutoEvent.ActiveEvent = null;
             _eventHandler = null;
+            Timing.CallDelayed(10f, () => EventEnd());
         }
         public void OnEventStarted()
         {
@@ -103,7 +102,6 @@ namespace AutoEvent.Events.Puzzle
                     {
                         platform.GetComponent<PrimitiveObject>().Primitive.Color = new Color(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f), 1f);
                     }
-
                     
                     Extensions.Broadcast($"<b>{Name}</b>\n{stageText}", 1);
                     yield return Timing.WaitForSeconds(timing);
@@ -172,6 +170,7 @@ namespace AutoEvent.Events.Puzzle
             Extensions.TeleportEnd();
             Extensions.UnLoadMap(GameMap);
             Extensions.StopAudio();
+            AutoEvent.ActiveEvent = null;
         }
     }
 }
