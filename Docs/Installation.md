@@ -10,7 +10,7 @@
 
 - [Music](https://github.com/KoT0XleB/AutoEvent-Exiled/tree/main/Music) files move to => ``EXILED/Configs/Music``
 
-- [Maps](https://github.com/KoT0XleB/AutoEvent-Exiled/tree/main/Schematics) folderы with a fileы move to => ``EXILED/Configs/MapEditorReborn/Schematics``
+- [Maps](https://github.com/KoT0XleB/AutoEvent-Exiled/tree/main/Schematics) folders with a fileы move to => ``EXILED/Configs/MapEditorReborn/Schematics``
 
 ## 2. Permission :gem:
 ### *Give permission to your role in ``EXILED/Configs/permissions.yml``:*
