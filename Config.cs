@@ -17,9 +17,6 @@ namespace AutoEvent
         [Description("List of donaters. Specify the GroupName from the RemoteAdmin config.")]
         public List<string> DonatorList { get; set; } = new List<string>()
         {
-            "donate4",
-            "donate3",
-            "donate2",
             "donate1"
         };
         [Description("Infection config..")]
