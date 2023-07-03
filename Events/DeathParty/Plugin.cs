@@ -79,7 +79,7 @@ namespace AutoEvent.Events.DeathParty
                 yield return Timing.WaitForSeconds(1f);
             }
 
-            while (Player.List.Count(r => r.IsAlive) > 0)
+            while (Player.List.Count(r => r.IsAlive) > 0 && Stage != 4)
             {
                 Extensions.Broadcast("<color=yellow>Уворачивайтесь от гранат!</color>\n" +
                     $"<color=green>Прошло {EventTime.Minutes}:{EventTime.Seconds} секунд</color>\n" +
@@ -109,6 +109,9 @@ namespace AutoEvent.Events.DeathParty
                     $"<color=yellow>Все погибли(((</color>\n" +
                     $"<color=#ffc0cb>{EventTime.Minutes}:{EventTime.Seconds}</color>", 10);
             }
+
+            OnStop();
+            yield break;
         }
         public IEnumerator<float> OnGrenadeEvent()
         {
@@ -119,7 +122,7 @@ namespace AutoEvent.Events.DeathParty
             float count = 50;
             float timing = 1f;
 
-            while (Player.List.Count(r => r.IsAlive) > 0) //
+            while (Player.List.Count(r => r.IsAlive) > 0 && Stage != 4)
             {
                 for (int i = 0; i < count; i++)
                 {
@@ -145,11 +148,12 @@ namespace AutoEvent.Events.DeathParty
         public void GrenadeSpawn(float fuseTime, float radius, float height)
         {
             ExplosiveGrenade grenade = (ExplosiveGrenade)Item.Create(ItemType.GrenadeHE);
-            //grenade.Scale  = new Vector3(2f, 3f, 2f);
             grenade.FuseTime = fuseTime;
             grenade.MaxRadius = radius;
-            grenade.SpawnActive(GameMap.Position + new Vector3(Random.Range(-5, 5), height, Random.Range(-5, 5)));
-            //grenade.Scale.Set(10f, 10f, 10f);
+
+            var projectile = grenade.SpawnActive(GameMap.Position + new Vector3(Random.Range(-5, 5), height, Random.Range(-5, 5)));
+            projectile.Weight = 50f;
+            projectile.Scale = new Vector3(10f, 10f, 10f);
         }
 
         public void EventEnd()
