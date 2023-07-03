@@ -15,8 +15,8 @@ namespace AutoEvent.Events.Puzzle
 {
     public class Plugin : Event
     {
-        public override string Name { get; set; } = "Puzzle";
-        public override string Description { get; set; } = "Get up the fastest on the right color.";
+        public override string Name { get; set; } = $"{AutoEvent.Singleton.Translation.PuzzleName}";
+        public override string Description { get; set; } = $"{AutoEvent.Singleton.Translation.PuzzleDescription}";
         public override string Color { get; set; } = "FFFF00";
         public override string CommandName { get; set; } = "puzzle";
         public SchematicObject GameMap { get; set; }
@@ -25,7 +25,7 @@ namespace AutoEvent.Events.Puzzle
         public List<GameObject> Platformes { get; set; }
         public GameObject Lava { get; set; }
 
-        private string broadcastName = "<color=#F59F00>P</color><color=#F68523>u</color><color=#F76B46>z</color><color=#F85169>z</color><color=#F9378C>l</color><color=#FA1DAF>e</color>";
+        private readonly string _broadcastName = "<color=#F59F00>P</color><color=#F68523>u</color><color=#F76B46>z</color><color=#F85169>z</color><color=#F9378C>l</color><color=#FA1DAF>e</color>";
 
         EventHandler _eventHandler;
 
@@ -81,7 +81,7 @@ namespace AutoEvent.Events.Puzzle
             var translation = AutoEvent.Singleton.Translation;
             for (int time = 15; time > 0; time--)
             {
-                Extensions.Broadcast($"{broadcastName}\n{translation.PuzzleStart.Replace("%time%", $"{time}")}", 1);
+                Extensions.Broadcast($"{_broadcastName}\n{translation.PuzzleStart.Replace("%time%", $"{time}")}", 1);
                 yield return Timing.WaitForSeconds(1f);
             }
 
@@ -121,7 +121,7 @@ namespace AutoEvent.Events.Puzzle
                         ListPlatformes.Add(platform);
                     }
                 }
-                Extensions.Broadcast($"<b>{broadcastName}</b>\n{stageText}", (ushort)(speed + 1));
+                Extensions.Broadcast($"<b>{_broadcastName}</b>\n{stageText}", (ushort)(speed + 1));
                 yield return Timing.WaitForSeconds(speed);
 
                 foreach (var platform in Platformes)
@@ -131,7 +131,7 @@ namespace AutoEvent.Events.Puzzle
                         platform.transform.position += Vector3.down * 5;
                     }
                 }
-                Extensions.Broadcast($"<b>{broadcastName}</b>\n{stageText}", (ushort)(speed + 1));
+                Extensions.Broadcast($"<b>{_broadcastName}</b>\n{stageText}", (ushort)(speed + 1));
                 yield return Timing.WaitForSeconds(speed);
 
                 foreach (var platform in Platformes)
@@ -141,7 +141,7 @@ namespace AutoEvent.Events.Puzzle
                         platform.transform.position += Vector3.up * 5;
                     }
                 }
-                Extensions.Broadcast($"<b>{broadcastName}</b>\n{stageText}", (ushort)(speed + 1));
+                Extensions.Broadcast($"<b>{_broadcastName}</b>\n{stageText}", (ushort)(speed + 1));
                 yield return Timing.WaitForSeconds(speed);
 
                 speed -= 0.35f;
@@ -151,16 +151,16 @@ namespace AutoEvent.Events.Puzzle
 
             if (Player.List.Count(r => r.IsAlive) < 1)
             {
-                Extensions.Broadcast($"<b>{broadcastName}</b>\n{translation.PuzzleAllDied}", 10);
+                Extensions.Broadcast($"<b>{_broadcastName}</b>\n{translation.PuzzleAllDied}", 10);
             }
             else if (Player.List.Count(r => r.IsAlive) == 1)
             {
                 var player = Player.List.First(r => r.IsAlive).DisplayNickname;
-                Extensions.Broadcast($"<b>{broadcastName}</b>\n{translation.PuzzleWinner.Replace("%plyWinner%", $"{player}")}", 10);
+                Extensions.Broadcast($"<b>{_broadcastName}</b>\n{translation.PuzzleWinner.Replace("%plyWinner%", $"{player}")}", 10);
             }
             else
             {
-                Extensions.Broadcast($"<b>{broadcastName}</b>\n{translation.PuzzleSeveralSurvivors}", 10);
+                Extensions.Broadcast($"<b>{_broadcastName}</b>\n{translation.PuzzleSeveralSurvivors}", 10);
             }
 
             OnStop();
