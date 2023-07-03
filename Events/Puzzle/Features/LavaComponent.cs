@@ -16,7 +16,7 @@ namespace AutoEvent.Events.Puzzle.Features
             if (Player.Get(other.gameObject) is Player)
             {
                 var pl = Player.Get(other.gameObject);
-                pl.Hurt(500f, "<color=red>Сгорел в Лаве!</color>");
+                pl.Hurt(500f, $"{AutoEvent.Singleton.Translation.PuzzleDied}");
             }
         }
     }

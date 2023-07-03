@@ -88,5 +88,6 @@ namespace AutoEvent
         public string PuzzleAllDied { get; set; } = "<color=red>All players died</color>\nMini-game ended";
         public string PuzzleSeveralSurvivors { get; set; } = "<color=red>Several people survived</color>\nMini-game ended";
         public string PuzzleWinner { get; set; } = "<color=red>Winner: %plyWinner%</color>\nMini-game ended";
+        public string PuzzleDied { get; set; } = "<color=red>Burned in Lava</color>";
     }
 }
