@@ -3,6 +3,7 @@ using System;
 using Exiled.API.Features;
 using Exiled.Permissions.Extensions;
 using PlayerRoles;
+using AutoEvent.Interfaces;
 
 namespace AutoEvent.Commands
 {
@@ -18,12 +19,27 @@ namespace AutoEvent.Commands
                 response = "You do not have permission to use this command";
                 return false;
             }
+
             if (AutoEvent.ActiveEvent == null)
             {
                 response = "The mini-game is not running!";
                 return false;
             }
+
+            /*
+            Event ev = Event.GetEvent(arguments.At(0));
+            if (ev == null)
+            {
+                response = "event not found.";
+                return false;
+            }
+
+            ev.OnStop();
+            AutoEvent.ActiveEvent = null;
+            */
+
             foreach (Player player in Player.List) player.Role.Set(RoleTypeId.Spectator);
+
             response = "Killed all the players and the mini-game itself will end soon.";
             return true;
         }

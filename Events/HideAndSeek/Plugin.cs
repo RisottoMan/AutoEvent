@@ -13,7 +13,7 @@ namespace AutoEvent.Events.HideAndSeek
 {
     public class Plugin : Event
     {
-        public override string Name { get; set; } = "Догонялки [Testing]";
+        public override string Name { get; set; } = "Hide And Seek [Testing]";
         public override string Description { get; set; } = "Надо догнать всех игроков на карте. [Alpha]";
         public override string Color { get; set; } = "FF4242";
         public override string CommandName { get; set; } = "hide";
@@ -35,7 +35,7 @@ namespace AutoEvent.Events.HideAndSeek
             Exiled.Events.Handlers.Player.DroppingAmmo += _eventHandler.OnDropAmmo;
             Exiled.Events.Handlers.Player.PickingUpItem += _eventHandler.OnPickUpItem;
             //Exiled.Events.Handlers.Item.ChargingJailbird += _eventHandler.OnCharge;
-            Exiled.Events.Handlers.Player.Shooting += _eventHandler.OnShooting;
+            //Exiled.Events.Handlers.Player.Shooting += _eventHandler.OnShooting;
 
             OnEventStarted();
         }
@@ -66,7 +66,6 @@ namespace AutoEvent.Events.HideAndSeek
             {
                 player.Role.Set(RoleTypeId.ClassD, RoleSpawnFlags.AssignInventory);
                 player.Position = RandomClass.GetSpawnPosition(GameMap);
-                // player.SetFriendlyFire(RoleTypeId.ClassD, 0);
             }
 
             Timing.RunCoroutine(OnEventRunning(), "hns_run");
@@ -96,10 +95,12 @@ namespace AutoEvent.Events.HideAndSeek
 
             for(int i = 0; i < catchCount; i++)
             {
-                Log.Info(Player.List.Count(r => r.IsAlive && r.HasItem(ItemType.Jailbird) == false));
                 var player = Player.List.Where(r => r.IsAlive && r.HasItem(ItemType.Jailbird) == false).ToList().RandomItem();
-                Log.Info(player.Nickname);
-                player.AddItem(ItemType.Jailbird);
+                var item = player.AddItem(ItemType.Jailbird);
+                Timing.CallDelayed(0.1f, () =>
+                {
+                    player.CurrentItem = item;
+                });
             }
 
             for (int doptime = 10; doptime > 0; doptime--) // 30

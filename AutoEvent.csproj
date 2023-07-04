@@ -89,6 +89,14 @@
     <Compile Include="Events\DeathParty\Features\RandomClass.cs" />
     <Compile Include="Events\Example\EventHandler.cs" />
     <Compile Include="Events\Example\Plugin.cs" />
+    <Compile Include="Events\FallDown\Extensions\LavaComponent.cs" />
+    <Compile Include="Events\FinishWay\Extensions\LavaComponent.cs" />
+    <Compile Include="Events\Speedrun\EventHandler.cs" />
+    <Compile Include="Events\Speedrun\Extensions\RandomClass.cs" />
+    <Compile Include="Events\Speedrun\Plugin.cs" />
+    <Compile Include="Events\FallDown\EventHandler.cs" />
+    <Compile Include="Events\FallDown\Extensions\RandomClass.cs" />
+    <Compile Include="Events\FallDown\Plugin.cs" />
     <Compile Include="Events\Football\EventHandler.cs" />
     <Compile Include="Events\Football\Features\Component.cs" />
     <Compile Include="Events\Football\Features\RandomClass.cs" />
@@ -101,6 +109,9 @@
     <Compile Include="Events\HideAndSeek\EventHandler.cs" />
     <Compile Include="Events\HideAndSeek\Features\RandomClass.cs" />
     <Compile Include="Events\HideAndSeek\Plugin.cs" />
+    <Compile Include="Events\FinishWay\EventHandler.cs" />
+    <Compile Include="Events\FinishWay\Extensions\RandomClass.cs" />
+    <Compile Include="Events\FinishWay\Plugin.cs" />
     <Compile Include="Events\Infection\Config.cs" />
     <Compile Include="Events\Infection\Extensions\RandomClass.cs" />
     <Compile Include="Events\GunGame\Plugin.cs" />

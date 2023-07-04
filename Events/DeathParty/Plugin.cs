@@ -25,6 +25,7 @@ namespace AutoEvent.Events.DeathParty
 
         EventHandler _eventHandler;
         int Stage { get; set; }
+        int MaxStage { get; set; }
 
         public override void OnStart()
         {
@@ -58,8 +59,9 @@ namespace AutoEvent.Events.DeathParty
         public void OnEventStarted()
         {
             EventTime = new TimeSpan(0, 0, 0);
+            MaxStage = 5;
             GameMap = Extensions.LoadMap("DeathParty", new Vector3(100f, 1012f, -40f), Quaternion.Euler(Vector3.zero), Vector3.one);
-            //Extensions.PlayAudio("Escape.ogg", 4, true, Name);
+            Extensions.PlayAudio("Escape.ogg", 4, true, Name);
 
             foreach (Player player in Player.List)
             {
@@ -78,7 +80,7 @@ namespace AutoEvent.Events.DeathParty
                 yield return Timing.WaitForSeconds(1f);
             }
 
-            while (Player.List.Count(r => r.IsAlive) > 0 && Stage != 4)
+            while (Player.List.Count(r => r.IsAlive) > 0 && (MaxStage + 1) != 6)
             {
                 Extensions.Broadcast("<color=yellow>Уворачивайтесь от гранат!</color>\n" +
                     $"<color=green>Прошло {EventTime.Minutes}:{EventTime.Seconds} секунд</color>\n" +
@@ -116,30 +118,35 @@ namespace AutoEvent.Events.DeathParty
         {
             Stage = 1;
             float fuse = 10f;
-            float radius = 7f;
             float height = 20f;
-            float count = 50;
+            float count = 20;
             float timing = 1f;
-            float scale = 3;
+            float scale = 4;
+            float radius = GameMap.AttachedBlocks.First(x => x.name == "Arena").transform.localScale.x / 2;
 
-            while (Player.List.Count(r => r.IsAlive) > 0 && Stage != 4)
+            while (Player.List.Count(r => r.IsAlive) > 0 && Stage != (MaxStage + 1))
             {
-                for (int i = 0; i < count; i++)
+                if (Stage < MaxStage)
                 {
-                    GrenadeSpawn(fuse, radius, height, scale);
-                    yield return Timing.WaitForSeconds(timing);
+                    for (int i = 0; i < count; i++)
+                    {
+                        GrenadeSpawn(fuse, radius, height, scale);
+                        yield return Timing.WaitForSeconds(timing);
+                    }
+                }
+                else
+                {
+                    GrenadeSpawn(fuse, radius, height, 100);
                 }
 
                 yield return Timing.WaitForSeconds(15f);
 
-                if (Stage < 4)
-                {
-                    fuse -= 2f;
-                    height -= 5f;
-                    timing -= 0.3f;
-                }
+                fuse -= 2f;
+                height -= 5f;
+                timing -= 0.3f;
                 radius += 7f;
-                count += 40;
+                count += 20;
+                scale -= 1;
                 Stage++;
             }
             yield break;
@@ -151,7 +158,7 @@ namespace AutoEvent.Events.DeathParty
             grenade.FuseTime = fuseTime;
             grenade.MaxRadius = radius;
 
-            var projectile = grenade.SpawnActive(GameMap.Position + new Vector3(Random.Range(-5, 5), height, Random.Range(-5, 5)));
+            var projectile = grenade.SpawnActive(GameMap.Position + new Vector3(Random.Range(-radius, radius), height, Random.Range(-radius, radius)));
             projectile.Weight = 1000f;
             projectile.Scale = new Vector3(scale, scale, scale);
         }

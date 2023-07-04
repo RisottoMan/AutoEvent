@@ -21,7 +21,6 @@ namespace AutoEvent.Events.Puzzle
         public override string CommandName { get; set; } = "puzzle";
         public SchematicObject GameMap { get; set; }
         public TimeSpan EventTime { get; set; }
-
         public List<GameObject> Platformes { get; set; }
         public GameObject Lava { get; set; }
 
@@ -90,12 +89,13 @@ namespace AutoEvent.Events.Puzzle
             float timing = 0.5f;
             List<GameObject> ListPlatformes = Platformes;
 
-            while (stage <= finaleStage && Player.List.Count(r=>r.IsAlive) > 0)
+            while (stage <= finaleStage && Player.List.Count(r => r.IsAlive) > 0)
             {
                 var stageText = translation.PuzzleStage;
                 stageText = stageText.Replace("%stageNum%", $"{stage}");
                 stageText = stageText.Replace("%stageFinal%", $"{finaleStage}");
                 stageText = stageText.Replace("%plyCount%", $"{Player.List.Count(r => r.IsAlive)}");
+
                 for (float time = speed * 2; time > 0; time--)
                 {
                     foreach (var platform in Platformes)
