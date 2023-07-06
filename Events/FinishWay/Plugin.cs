@@ -54,7 +54,7 @@ namespace AutoEvent.Events.FinishWay
         public void OnEventStarted()
         {
             GameMap = Extensions.LoadMap("FinishWay", new Vector3(115.5f, 1030f, -43.5f), Quaternion.Euler(Vector3.zero), Vector3.one);
-            Extensions.PlayAudio("ClassicMusic.ogg", 5, true, Name);
+            //Extensions.PlayAudio("ClassicMusic.ogg", 5, true, Name);
 
             foreach (Player player in Player.List)
             {
