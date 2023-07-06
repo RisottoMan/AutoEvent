@@ -101,7 +101,7 @@
     <Compile Include="Events\FallDown\Extensions\RandomClass.cs" />
     <Compile Include="Events\FallDown\Plugin.cs" />
     <Compile Include="Events\Football\EventHandler.cs" />
-    <Compile Include="Events\Football\Features\Component.cs" />
+    <Compile Include="Events\Football\Features\BallComponent.cs" />
     <Compile Include="Events\Football\Features\RandomClass.cs" />
     <Compile Include="Events\Football\Plugin.cs" />
     <Compile Include="Events\Glass\EventHandler.cs" />

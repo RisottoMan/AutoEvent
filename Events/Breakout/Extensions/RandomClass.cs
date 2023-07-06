@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace AutoEvent.Events.Survival
+namespace AutoEvent.Events.Breakout
 {
     public class RandomClass
     {
