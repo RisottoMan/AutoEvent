@@ -141,6 +141,7 @@
     <Compile Include="Events\Breakout\Plugin.cs" />
     <Compile Include="Events\Puzzle\Features\LavaComponent.cs" />
     <Compile Include="Events\Puzzle\Features\RandomClass.cs" />
+    <Compile Include="Events\Survival\Config.cs" />
     <Compile Include="Events\Survival\EventHandler.cs" />
     <Compile Include="Events\Survival\Extensions\RandomClass.cs" />
     <Compile Include="Events\Survival\Plugin.cs" />

@@ -15,7 +15,7 @@ namespace AutoEvent.Events.Speedrun
         public override string Name { get; set; } = "Speedrun";
         public override string Description { get; set; } = "Crab game [Alpha]";
         public override string Color { get; set; } = "FF4242";
-        public override string CommandName { get; set; } = "fall";
+        public override string CommandName { get; set; } = "speedrun";
         public static SchematicObject GameMap { get; set; }
         public static TimeSpan EventTime { get; set; }
 

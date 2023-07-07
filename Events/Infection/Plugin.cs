@@ -63,7 +63,6 @@ namespace AutoEvent.Events.Infection
             {
                 player.Role.Set(RoleTypeId.ClassD, Exiled.API.Enums.SpawnReason.None, RoleSpawnFlags.None);
                 player.Position = RandomPosition.GetSpawnPosition(Plugin.GameMap);
-                player.ClearInventory();
             }
 
             Timing.RunCoroutine(OnEventRunning(), "zombie_run");

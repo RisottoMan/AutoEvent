@@ -80,7 +80,7 @@ namespace AutoEvent.Events.DeathParty
                 yield return Timing.WaitForSeconds(1f);
             }
 
-            while (Player.List.Count(r => r.IsAlive) > 0 && (MaxStage + 1) != 6)
+            while (Player.List.Count(r => r.IsAlive) > 0 && Stage != (MaxStage + 1))
             {
                 Extensions.Broadcast("<color=yellow>Уворачивайтесь от гранат!</color>\n" +
                     $"<color=green>Прошло {EventTime.Minutes}:{EventTime.Seconds} секунд</color>\n" +

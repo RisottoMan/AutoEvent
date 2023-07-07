@@ -1,4 +1,5 @@
 ﻿using AutoEvent.Interfaces;
+using CustomPlayerEffects;
 using Exiled.API.Enums;
 using Exiled.API.Features;
 using MapEditorReborn.API.Features.Objects;
@@ -13,8 +14,8 @@ namespace AutoEvent.Events.Survival
 {
     public class Plugin : Event
     {
-        public override string Name { get; set; } = "Zombie Survival [Testing]";
-        public override string Description { get; set; } = "Survival of humans against zombies. [Alpha]";
+        public override string Name { get; set; } = "Zombie Survival";
+        public override string Description { get; set; } = "Survival of humans against zombies. [Beta]";
         public override string Color { get; set; } = "FF4242";
         public override string CommandName { get; set; } = "zombie2";
         public SchematicObject GameMap { get; set; }
@@ -41,6 +42,8 @@ namespace AutoEvent.Events.Survival
             Exiled.Events.Handlers.Player.ReloadingWeapon += _eventHandler.OnReloading;
             Exiled.Events.Handlers.Player.DroppingItem += _eventHandler.OnDropItem;
             Exiled.Events.Handlers.Player.DroppingAmmo += _eventHandler.OnDropAmmo;
+            Exiled.Events.Handlers.Player.Hurting += _eventHandler.OnDamage;
+            Exiled.Events.Handlers.Player.Died += _eventHandler.OnDead;
         }
         public override void OnStop()
         {
@@ -55,6 +58,8 @@ namespace AutoEvent.Events.Survival
             Exiled.Events.Handlers.Player.ReloadingWeapon -= _eventHandler.OnReloading;
             Exiled.Events.Handlers.Player.DroppingItem -= _eventHandler.OnDropItem;
             Exiled.Events.Handlers.Player.DroppingAmmo -= _eventHandler.OnDropAmmo;
+            Exiled.Events.Handlers.Player.Hurting -= _eventHandler.OnDamage;
+            Exiled.Events.Handlers.Player.Died -= _eventHandler.OnDead;
 
             _eventHandler = null;
             Timing.CallDelayed(10f, () => EventEnd());
@@ -64,36 +69,59 @@ namespace AutoEvent.Events.Survival
         {
             EventTime = new TimeSpan(0, 5, 0);
 
-            GameMap = Extensions.LoadMap("Survival", new Vector3(115.5f, 1035f, -43.5f), new Quaternion(0, 0, 0, 0), new Vector3(1, 1, 1));
-            //Extensions.PlayAudio("Survival.ogg", 5, false, "Выживание");
+            GameMap = Extensions.LoadMap("Survival", new Vector3(15f, 1030f, -43.68f), Quaternion.identity, Vector3.one);
+            Extensions.PlayAudio("Survival.ogg", 10, false, Name);
 
             foreach (Player player in Player.List)
             {
                 player.Role.Set(RoleTypeId.NtfSergeant, SpawnReason.None, RoleSpawnFlags.AssignInventory);
                 player.Position = RandomClass.GetSpawnPosition(GameMap);
+                player.AddAhp(100, 100, 0, 0, 0, true);
+
+                Timing.CallDelayed(0.1f, () =>
+                {
+                    player.CurrentItem = player.Items.ElementAt(1);
+                });
             }
 
-            //Timing.RunCoroutine(TimingBeginEvent($"Выживание", 15), "survival_run");
+            Timing.RunCoroutine(OnEventRunning(), "survival_run");
         }
 
         public IEnumerator<float> OnEventRunning()
         {
-            for (float _time = 15; _time > 0; _time--)
+            for (float _time = 20; _time > 0; _time--)
             {
-                Extensions.Broadcast($"<color=#D71868><b><i>{Name}</i></b></color>\n<color=#ABF000>До начала заражения осталось <color=red>{_time}</color> секунд.</color>", 1);
+                Extensions.Broadcast($"<color=#D71868><b><i>{Name}</i></b></color>\n<color=#ABF000>There are <color=red>{_time}</color> seconds left before the infection begins</color>", 1);
                 yield return Timing.WaitForSeconds(1f);
             }
 
             for (int i = 0; i <= Player.List.Count() / 10; i++)
             {
-                Player.List.ToList().RandomItem().Role.Set(RoleTypeId.Scp0492, SpawnReason.Revived, RoleSpawnFlags.AssignInventory);
+                var player = Player.List.Where(r => r.IsHuman).ToList().RandomItem();
+                player.Role.Set(RoleTypeId.Scp0492, SpawnReason.None, RoleSpawnFlags.AssignInventory);
+                player.EnableEffect<Disabled>();
+                player.EnableEffect<Scp1853>();
+                player.Health = 10000;
             }
+
+            var teleport = GameMap.AttachedBlocks.First(x => x.name == "Teleport");
+            var teleport1 = GameMap.AttachedBlocks.First(x => x.name == "Teleport1");
 
             while (Player.List.Count(r => r.IsHuman) > 0 && Player.List.Count(r => r.IsScp) > 0 && EventTime.TotalSeconds > 0)
             {
-                Extensions.Broadcast($"<color=#D71868><b><i>Зомби Выживание</i></b></color>\n" +
-                $"<color=yellow>Осталось людей: <color=green>{Player.List.Count(r => r.IsHuman)}</color></color>\n" +
-                $"<color=yellow>Время до конца: <color=red>{EventTime.Minutes}:{EventTime.Seconds}</color></color>", 1);
+
+                foreach(var player in Player.List)
+                {
+                    player.ClearBroadcasts();
+                    player.Broadcast(1, $"<color=#D71868><b><i>{Name}</i></b></color>\n" +
+                    $"<color=yellow>Humans: <color=green>{Player.List.Count(r => r.IsHuman)}</color></color>\n" +
+                    $"<color=yellow>Time to the end: <color=red>{EventTime.Minutes}:{EventTime.Seconds}</color></color>");
+
+                    if (Vector3.Distance(player.Position, teleport.transform.position) < 1)
+                    {
+                        player.Position = teleport1.transform.position;
+                    }
+                }
 
                 yield return Timing.WaitForSeconds(1f);
                 EventTime -= TimeSpan.FromSeconds(1f);
@@ -101,18 +129,18 @@ namespace AutoEvent.Events.Survival
 
             if (Player.List.Count(r => r.IsHuman) == 0)
             {
-                Extensions.Broadcast($"<color=red>Зомби Победили!</color>\n" +
-                $"<color=yellow>Зомби всех заразили</color>", 10);
+                Extensions.Broadcast($"<color=red>Zombies Win!</color>\n" +
+                $"<color=yellow>Zombies have infected all humans.</color>", 10);
             }
             else if (Player.List.Count(r => r.IsScp) == 0)
             {
-                Extensions.Broadcast($"<color=yellow><color=#D71868><b><i>Люди</i></b></color> Победили!</color>\n" +
-                $"<color=yellow>Люди остановили чуму и убили всех зомби</color>", 10);
+                Extensions.Broadcast($"<color=yellow><color=#D71868><b><i>Humans</i></b></color> Win!</color>\n" +
+                $"<color=yellow>Humans stopped the plague and killed all the zombies.</color>", 10);
             }
             else
             {
-                Extensions.Broadcast($"<color=yellow><color=#D71868><b><i>Люди</i></b></color> Победили!</color>\n" +
-                $"<color=yellow>Люди выжили, но это ещё не конец</color>", 10);
+                Extensions.Broadcast($"<color=yellow><color=#D71868><b><i>Humans</i></b></color> Win!</color>\n" +
+                $"<color=yellow>Humans survived, but it's not over yet...</color>", 10);
             }
 
             OnStop();
