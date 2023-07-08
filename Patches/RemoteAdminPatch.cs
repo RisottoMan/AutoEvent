@@ -3,7 +3,7 @@ using HarmonyLib;
 using RemoteAdmin;
 using System;
 
-namespace AutoEvent
+namespace AutoEvent.Patches
 {
     internal class RemoteAdminPatch
     {
