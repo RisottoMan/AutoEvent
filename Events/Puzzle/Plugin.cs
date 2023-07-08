@@ -15,8 +15,8 @@ namespace AutoEvent.Events.Puzzle
 {
     public class Plugin : Event
     {
-        public override string Name { get; set; } = $"{AutoEvent.Singleton.Translation.PuzzleName}";
-        public override string Description { get; set; } = $"{AutoEvent.Singleton.Translation.PuzzleDescription}";
+        public override string Name { get; set; } = AutoEvent.Singleton.Translation.PuzzleName;
+        public override string Description { get; set; } = AutoEvent.Singleton.Translation.PuzzleDescription;
         public override string Color { get; set; } = "FFFF00";
         public override string CommandName { get; set; } = "puzzle";
         public SchematicObject GameMap { get; set; }
@@ -60,7 +60,7 @@ namespace AutoEvent.Events.Puzzle
             EventTime = new TimeSpan(0, 0, 0);
 
             GameMap = Extensions.LoadMap("Puzzle", new Vector3(76f, 1026.5f, -43.68f), Quaternion.Euler(Vector3.zero), Vector3.one);
-            Extensions.PlayAudio("Puzzle.ogg", 5, false, Name);
+            Extensions.PlayAudio("Puzzle.ogg", 15, true, Name);
 
             Platformes = GameMap.AttachedBlocks.Where(x => x.name == "Platform").ToList();
             Lava = GameMap.AttachedBlocks.First(x => x.name == "Lava");
@@ -89,7 +89,7 @@ namespace AutoEvent.Events.Puzzle
             float timing = 0.5f;
             List<GameObject> ListPlatformes = Platformes;
 
-            while (stage <= finaleStage && Player.List.Count(r => r.IsAlive) > 0) // 0
+            while (stage <= finaleStage && Player.List.Count(r => r.IsAlive) > 0)
             {
                 var stageText = translation.PuzzleStage;
                 stageText = stageText.Replace("%stageNum%", $"{stage}");
@@ -142,9 +142,9 @@ namespace AutoEvent.Events.Puzzle
                 Extensions.Broadcast($"<b>{_broadcastName}</b>\n{stageText}", (ushort)(speed + 1));
                 yield return Timing.WaitForSeconds(speed);
 
-                speed -= 0.3f; // 0.35
+                speed -= 0.3f;
                 stage++;
-                timing -= 0.03f; // 0.035
+                timing -= 0.03f;
             }
 
             if (Player.List.Count(r => r.IsAlive) < 1)

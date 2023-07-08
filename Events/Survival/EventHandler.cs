@@ -63,7 +63,7 @@ namespace AutoEvent.Events.Survival
                 ev.Player.Position = RandomClass.GetSpawnPosition(_plugin.GameMap);
                 ev.Player.EnableEffect<Disabled>();
                 ev.Player.EnableEffect<Scp1853>();
-                ev.Player.Health = 5000;
+                ev.Player.Health = 3000;
             });
         }
 
@@ -76,7 +76,7 @@ namespace AutoEvent.Events.Survival
                 ev.Player.Position = RandomClass.GetSpawnPosition(_plugin.GameMap);
                 ev.Player.EnableEffect<Disabled>();
                 ev.Player.EnableEffect<Scp1853>();
-                ev.Player.Health = 5000;
+                ev.Player.Health = 3000;
             }
             else
             {

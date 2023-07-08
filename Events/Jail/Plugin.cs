@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Exiled.Permissions.Extensions;
 
 namespace AutoEvent.Events.Jail
 {
@@ -19,12 +20,10 @@ namespace AutoEvent.Events.Jail
         public override string CommandName { get; set; } = "jail";
         public SchematicObject GameMap { get; set; }
         public TimeSpan EventTime { get; set; }
-        EventHandler _eventHandler;
-
         public GameObject Button { get; set; }
         public List<GameObject> Doors { get; set; }
         public List<GameObject> JailerDoors { get; set; }
-        public bool isDoorsOpen = false;
+        EventHandler _eventHandler;
 
         public override void OnStart()
         {
@@ -70,7 +69,7 @@ namespace AutoEvent.Events.Jail
 
             foreach(Player player in Player.List)
             {
-                if (AutoEvent.Singleton.Config.JailConfig.AdminRoles.Contains(player.GroupName))
+                if (player.Sender.CheckPermission("ev.run"))
                 {
                     player.Role.Set(RoleTypeId.NtfCaptain, SpawnReason.None, RoleSpawnFlags.None);
                     player.Position = JailRandom.GetRandomPosition(GameMap, true);
@@ -80,7 +79,13 @@ namespace AutoEvent.Events.Jail
             
             foreach (Player player in Player.List)
             {
-                if (player.Role != RoleTypeId.NtfCaptain)
+                if (Player.List.Count(r => r.IsNTF) < 0)
+                {
+                    player.Role.Set(RoleTypeId.NtfCaptain, SpawnReason.None, RoleSpawnFlags.None);
+                    player.Position = JailRandom.GetRandomPosition(GameMap, true);
+                    player.AddItem(new List<ItemType> { ItemType.GunE11SR, ItemType.GunCOM18 });
+                }
+                else if (player.Role != RoleTypeId.NtfCaptain)
                 {
                     player.Role.Set(RoleTypeId.ClassD, SpawnReason.None, RoleSpawnFlags.None);
                     player.Position = JailRandom.GetRandomPosition(GameMap, false);
@@ -105,7 +110,7 @@ namespace AutoEvent.Events.Jail
             {
                 string dClassCount = Player.List.Count(r => r.Role == RoleTypeId.ClassD).ToString();
                 string mtfCount = Player.List.Count(r => r.Role.Team == Team.FoundationForces).ToString();
-                string time = $"{ EventTime.Minutes }:{ EventTime.Seconds }";
+                string time = $"{EventTime.Minutes}:{EventTime.Seconds}";
                 Extensions.Broadcast(trans.JailCycle.Replace("{name}", Name).Replace("{dclasscount}", dClassCount).Replace("{mtfcount}", mtfCount).Replace("{time}", time), 1);
 
                 foreach (var doorComponent in Doors)
@@ -140,9 +145,7 @@ namespace AutoEvent.Events.Jail
         }
         public void EventEnd()
         {
-            isDoorsOpen = false;
             Server.FriendlyFire = false;
-
             Extensions.CleanUpAll();
             Extensions.TeleportEnd();
             Extensions.UnLoadMap(GameMap);

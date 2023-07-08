@@ -12,12 +12,12 @@ using UnityEngine;
 
 namespace AutoEvent.Events.Lava
 {
-    public class Plugin : Event
+    public class Plugin// : Event
     {
-        public override string Name { get; set; } = "The floor is LAVA [Testing]";
-        public override string Description { get; set; } = "Survival, in which you need to avoid lava and shoot at others. [Alpha]";
-        public override string Color { get; set; } = "FFFF00";
-        public override string CommandName { get; set; } = "lava";
+        public string Name { get; set; } = "The floor is LAVA [Testing]";
+        public string Description { get; set; } = "Survival, in which you need to avoid lava and shoot at others. [Alpha]";
+        public string Color { get; set; } = "FFFF00";
+        public string CommandName { get; set; } = "lava";
         public TimeSpan EventTime { get; set; }
         public SchematicObject GameMap { get; set; }
         public GameObject Lava { get; set; }
@@ -25,7 +25,7 @@ namespace AutoEvent.Events.Lava
         EventHandler _eventHandler;
         private bool isFreindlyFireEnabled;
 
-        public override void OnStart()
+        public void OnStart()
         {
             isFreindlyFireEnabled = Server.FriendlyFire;
             Server.FriendlyFire = true;
@@ -45,7 +45,7 @@ namespace AutoEvent.Events.Lava
             Exiled.Events.Handlers.Player.DroppingAmmo += _eventHandler.OnDropAmmo;
             Exiled.Events.Handlers.Player.Hurting += _eventHandler.OnHurt;
         }
-        public override void OnStop()
+        public void OnStop()
         {
             Server.FriendlyFire = isFreindlyFireEnabled;
 

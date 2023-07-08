@@ -70,7 +70,6 @@ namespace AutoEvent.Events.Survival
             EventTime = new TimeSpan(0, 5, 0);
 
             GameMap = Extensions.LoadMap("Survival", new Vector3(15f, 1030f, -43.68f), Quaternion.identity, Vector3.one);
-            Extensions.PlayAudio("Survival.ogg", 10, false, Name);
 
             foreach (Player player in Player.List)
             {
@@ -89,11 +88,18 @@ namespace AutoEvent.Events.Survival
 
         public IEnumerator<float> OnEventRunning()
         {
+            Extensions.PlayAudio("Survival.ogg", 10, false, Name);
             for (float _time = 20; _time > 0; _time--)
             {
                 Extensions.Broadcast(AutoEvent.Singleton.Translation.SurvivalBeforeInfection.Replace("%name%", Name).Replace("%time%", $"{_time}"), 1);
                 yield return Timing.WaitForSeconds(1f);
             }
+
+            Extensions.StopAudio();
+            Timing.CallDelayed(0.1f, () =>
+            {
+                Extensions.PlayAudio("Zombie2.ogg", 10, false, Name);
+            });
 
             for (int i = 0; i <= Player.List.Count() / 10; i++)
             {
@@ -109,12 +115,15 @@ namespace AutoEvent.Events.Survival
 
             while (Player.List.Count(r => r.IsHuman) > 0 && Player.List.Count(r => r.IsScp) > 0 && EventTime.TotalSeconds > 0)
             {
+                var text = AutoEvent.Singleton.Translation.SurvivalAfterInfection;
+                text = text.Replace("%name%", Name);
+                text = text.Replace("%humanCount%", Player.List.Count(r => r.IsHuman).ToString());
+                text = text.Replace("%time%", $"{EventTime.Minutes}:{EventTime.Seconds}");
 
-                foreach(var player in Player.List)
+                foreach (var player in Player.List)
                 {
                     player.ClearBroadcasts();
-                    player.Broadcast(1, AutoEvent.Singleton.Translation.SurvivalAfterInfection.Replace("%name%", Name).Replace("%humanCount%", $"{Player.List.Count(r => r.IsHuman)}")
-                            .Replace("%time%", $"{EventTime.Minutes}:{EventTime.Seconds}"));
+                    player.Broadcast(1, text);
 
                     if (Vector3.Distance(player.Position, teleport.transform.position) < 1)
                     {
@@ -129,14 +138,32 @@ namespace AutoEvent.Events.Survival
             if (Player.List.Count(r => r.IsHuman) == 0)
             {
                 Extensions.Broadcast(AutoEvent.Singleton.Translation.SurvivalZombieWin, 10);
+
+                Extensions.StopAudio();
+                Timing.CallDelayed(0.1f, () =>
+                {
+                    Extensions.PlayAudio("ZombieWin.ogg", 10, false, Name);
+                });
             }
             else if (Player.List.Count(r => r.IsScp) == 0)
             {
                 Extensions.Broadcast(AutoEvent.Singleton.Translation.SurvivalHumanWin, 10);
+
+                Extensions.StopAudio();
+                Timing.CallDelayed(0.1f, () =>
+                {
+                    Extensions.PlayAudio("HumanWin.ogg", 10, false, Name);
+                });
             }
             else
             {
                 Extensions.Broadcast(AutoEvent.Singleton.Translation.SurvivalHumanWinTime, 10);
+
+                Extensions.StopAudio();
+                Timing.CallDelayed(0.1f, () =>
+                {
+                    Extensions.PlayAudio("HumanWin.ogg", 10, false, Name);
+                });
             }
 
             OnStop();

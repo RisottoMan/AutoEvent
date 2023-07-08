@@ -8,9 +8,9 @@ using Exiled.API.Features;
 using MapEditorReborn.API.Features.Objects;
 using UnityEngine;
 using AutoEvent.Events.Glass.Features;
-using Object = UnityEngine.Object;
 using Mirror;
 using Exiled.API.Enums;
+using Object = UnityEngine.Object;
 
 namespace AutoEvent.Events.Glass
 {
@@ -51,8 +51,8 @@ namespace AutoEvent.Events.Glass
         public void OnEventStarted()
         {
             GameMap = Extensions.LoadMap("Glass", new Vector3(76f, 1026.5f, -43.68f), Quaternion.Euler(Vector3.zero), Vector3.one);
-            Extensions.PlayAudio("ClassicMusic.ogg", 5, true, Name);
-            
+            Extensions.PlayAudio("CrabGame.ogg", 15, true, Name);
+
             Lava = GameMap.AttachedBlocks.First(x => x.name == "Lava");
             Lava.AddComponent<LavaComponent>();
  

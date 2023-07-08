@@ -2,6 +2,7 @@
 using System.IO;
 using AutoEvent.Interfaces;
 using Exiled.API.Features;
+using Exiled.Events.EventArgs.Map;
 using HarmonyLib;
 
 namespace AutoEvent
@@ -26,22 +27,34 @@ namespace AutoEvent
             if (!Directory.Exists(Path.Combine(Paths.Configs, "Music"))) Directory.CreateDirectory(Path.Combine(Paths.Configs, "Music"));
 
             Exiled.Events.Handlers.Server.RestartingRound += OnRestarting;
+            Exiled.Events.Handlers.Map.Decontaminating += OnDecontamination;
             base.OnEnabled();
         }
+
         public override void OnDisabled()
         {
             HarmonyPatch.UnpatchAll();
             Singleton = null;
 
             Exiled.Events.Handlers.Server.RestartingRound -= OnRestarting;
+            Exiled.Events.Handlers.Map.Decontaminating -= OnDecontamination;
             base.OnDisabled();
         }
+
         private void OnRestarting()
         {
             if (ActiveEvent == null) return;
 
             Extensions.StopAudio();
             ServerStatic.StopNextRound = ServerStatic.NextRoundAction.Restart;
+        }
+
+        private void OnDecontamination(DecontaminatingEventArgs ev)
+        {
+            if (ActiveEvent == null)
+            {
+                ev.IsAllowed = false;
+            }
         }
     }
 }

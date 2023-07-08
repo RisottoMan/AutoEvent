@@ -58,7 +58,7 @@ namespace AutoEvent.Events.Battle
         {
             EventTime = new TimeSpan(0, 0, 0);
             GameMap = Extensions.LoadMap("Battle", new Vector3(6f, 1030f, -43.5f), Quaternion.Euler(Vector3.zero), Vector3.one);
-            Extensions.PlayAudio("ClassicMusic.ogg", 5, true, Name);
+            Extensions.PlayAudio("MetalGearSolid.ogg", 10, false, Name);
 
             var count = 0;
             foreach (Player player in Player.List)

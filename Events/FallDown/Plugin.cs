@@ -55,7 +55,7 @@ namespace AutoEvent.Events.FallDown
         {
             EventTime = new TimeSpan(0, 0, 0);
             GameMap = Extensions.LoadMap("FallDown", new Vector3(10f, 1020f, -43.68f), Quaternion.Euler(Vector3.zero), Vector3.one);
-            Extensions.PlayAudio("ClassicMusic.ogg", 5, true, Name);
+            Extensions.PlayAudio("Puzzle.ogg", 15, true, Name);
 
             foreach (Player player in Player.List)
             {

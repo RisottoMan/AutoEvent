@@ -67,7 +67,7 @@ namespace AutoEvent.Events.GunGame
         {
             EventTime = new TimeSpan(0, 0, 0);
             Winner = null;
-            GameMap = Extensions.LoadMap("Shipment", new Vector3(5f, 1030f, -45f), Quaternion.Euler(Vector3.zero), Vector3.one); // new Vector3(120f, 1020f, -43.5f)
+            GameMap = Extensions.LoadMap("Shipment", new Vector3(5f, 1030f, -45f), Quaternion.identity, Vector3.one);
             Extensions.PlayAudio("ClassicMusic.ogg", 3, true, Name);
 
             var count = 0;
@@ -91,6 +91,7 @@ namespace AutoEvent.Events.GunGame
                     player.CurrentItem = item;
                 });
             }
+
             Timing.RunCoroutine(OnEventRunning(), "gungame_run");
         }
         public IEnumerator<float> OnEventRunning()
@@ -117,6 +118,7 @@ namespace AutoEvent.Events.GunGame
                     pl.ClearBroadcasts();
                     pl.Broadcast(1, trans.GunGameCycle.Replace("{name}", Name).Replace("{level}", $"{stats.level}").Replace("{kills}", $"{2 - stats.kill}"));
                 }
+
                 yield return Timing.WaitForSeconds(1f);
             }
 
@@ -139,7 +141,6 @@ namespace AutoEvent.Events.GunGame
             Extensions.TeleportEnd();
             Extensions.UnLoadMap(GameMap);
             Extensions.StopAudio();
-
             AutoEvent.ActiveEvent = null;
         }
     }

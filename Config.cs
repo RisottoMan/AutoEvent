@@ -24,8 +24,6 @@ namespace AutoEvent
         public InfectionConfig InfectionConfig { get; set; } = new InfectionConfig();
         [Description("Versus config..")]
         public VersusConfig VersusConfig { get; set; } = new VersusConfig();
-        [Description("Jail config..")]
-        public JailConfig JailConfig { get; set; } = new JailConfig();
 
         [Description("Enable/Disable jailbird ability..")]
         public bool IsJailbirdAbilityEnable { get; set; } = false;

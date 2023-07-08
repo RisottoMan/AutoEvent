@@ -47,7 +47,7 @@ namespace AutoEvent.Events.Football
         public void OnEventStarted()
         {
             GameMap = Extensions.LoadMap("Football", new Vector3(76f, 1026.5f, -43.68f), Quaternion.Euler(Vector3.zero), Vector3.one);
-            Extensions.PlayAudio("ClassicMusic.ogg", 5, true, Name);
+            Extensions.PlayAudio("Football.ogg", 5, true, Name);
 
             EventTime = new TimeSpan(0, 3, 0);
             BluePoints = 0;
@@ -79,7 +79,7 @@ namespace AutoEvent.Events.Football
             var triggerBlue = GameMap.AttachedBlocks.First(x => x.name == "TriggerBlue");
             var triggerOrange = GameMap.AttachedBlocks.First(x => x.name == "TriggerOrange");
 
-            while (BluePoints < 2 && RedPoints < 2 && EventTime.TotalSeconds > 0 && Player.List.Count(r => r.IsAlive) > 1) // всё-равно переработать эту хуйню
+            while (BluePoints < 2 && RedPoints < 2 && EventTime.TotalSeconds > 0 && Player.List.Count(r => r.IsAlive) > 0)
             {
                 var text = string.Empty;
                 foreach (Player player in Player.List)
@@ -87,7 +87,7 @@ namespace AutoEvent.Events.Football
                     if (Vector3.Distance(ball.transform.position, player.Position) < 2)
                     {
                         ball.gameObject.TryGetComponent<Rigidbody>(out Rigidbody rig);
-                        rig.AddForce(player.Transform.forward + new Vector3(0, 0.5f, 0), ForceMode.Impulse);
+                        rig.AddForce(player.Transform.forward + new Vector3(0, 1f, 0), ForceMode.Impulse);
                     }
 
                     if (player.Role.Type == RoleTypeId.NtfCaptain)
