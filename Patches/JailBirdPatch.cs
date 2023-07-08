@@ -1,11 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Reflection.Emit;
-using Exiled.Events.EventArgs.Item;
-using HarmonyLib;
+﻿using HarmonyLib;
 using InventorySystem.Items.Jailbird;
 using Mirror;
-using NorthwoodLib.Pools;
-using static HarmonyLib.AccessTools;
 
 namespace AutoEvent.Patches
 {
