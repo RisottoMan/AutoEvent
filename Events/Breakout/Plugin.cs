@@ -19,7 +19,7 @@ namespace AutoEvent.Events.Breakout
         public SchematicObject GameMap { get; set; }
         public TimeSpan EventTime { get; set; }
 
-        //EventHandler _eventHandler;
+        EventHandler _eventHandler;
 
         public void OnStart()
         {
@@ -41,7 +41,7 @@ namespace AutoEvent.Events.Breakout
             Exiled.Events.Handlers.Player.Hurting -= _eventHandler.OnDamage;
             Exiled.Events.Handlers.Server.RespawningTeam -= _eventHandler.OnTeamRespawn;
             */
-            //_eventHandler = null;
+            _eventHandler = null;
             Timing.CallDelayed(10f, () => EventEnd());
         }
         public void OnEventStarted()
