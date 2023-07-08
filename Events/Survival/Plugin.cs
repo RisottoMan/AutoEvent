@@ -42,7 +42,7 @@ namespace AutoEvent.Events.Survival
             */
             Timing.CallDelayed(10f, () => EventEnd());
             AutoEvent.ActiveEvent = null;
-            _eventHandler = null;
+            //_eventHandler = null;
         }
         public void OnEventStarted()
         {
