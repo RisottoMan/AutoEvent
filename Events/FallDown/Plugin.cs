@@ -13,8 +13,8 @@ namespace AutoEvent.Events.FallDown
 {
     public class Plugin : Event
     {
-        public override string Name { get; set; } = "Fall Down";
-        public override string Description { get; set; } = "All platforms are destroyed. It is necessary to survive.";
+        public override string Name { get; set; } = AutoEvent.Singleton.Translation.FallName;
+        public override string Description { get; set; } = AutoEvent.Singleton.Translation.FallDescription;
         public override string Color { get; set; } = "FF4242";
         public override string CommandName { get; set; } = "fall";
         public static SchematicObject GameMap { get; set; }
@@ -85,7 +85,7 @@ namespace AutoEvent.Events.FallDown
             {
                 var count = Player.List.Count(r => r.IsAlive);
                 var time = $"{EventTime.Minutes}:{EventTime.Seconds}";
-                Extensions.Broadcast($"{Name}\n{time}\nОсталось {count} игроков", 1);
+                Extensions.Broadcast($"{AutoEvent.Singleton.Translation.FallBroadcast.Replace("%name%", $"{Name}").Replace("%time%", $"{time}").Replace("%count%", $"{count}")}", 1);
 
                 var platform = platformes.RandomItem();
                 platformes.Remove(platform);
@@ -97,11 +97,11 @@ namespace AutoEvent.Events.FallDown
 
             if (Player.List.Count(r => r.IsAlive) == 1)
             {
-                Extensions.Broadcast($"Победил игрок {Player.List.First(r => r.IsAlive).Nickname}", 10);
+                Extensions.Broadcast($"{AutoEvent.Singleton.Translation.FallWinner.Replace("%winner%", $"{Player.List.First(r => r.IsAlive).Nickname}")}", 10);
             }
             else
             {
-                Extensions.Broadcast($"Все сдохли)))))\nКонец игры.", 10);
+                Extensions.Broadcast($"{AutoEvent.Singleton.Translation.FallDied}", 10);
             }
             
             OnStop();
