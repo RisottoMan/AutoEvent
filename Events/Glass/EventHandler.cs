@@ -8,18 +8,6 @@ namespace AutoEvent.Events.Glass
 {
     public class EventHandler
     {
-        public void OnTogglingNoclip(TogglingNoClipEventArgs ev)
-        {
-            foreach (Player player in Player.List)
-            {
-                if (ev.Player != player)
-                {
-                    //player..AddForce(player.Transform.forward * 0.5f, ForceMode.Impulse);
-                    //player.ReferenceHub.
-                }
-            }
-        }
-
         public void OnJoin(VerifiedEventArgs ev) => ev.Player.Role.Set(RoleTypeId.Spectator);
         public void OnDroppingItem(DroppingItemEventArgs ev) => ev.IsAllowed = false;
         public void OnTeamRespawn(RespawningTeamEventArgs ev) => ev.IsAllowed = false;

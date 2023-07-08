@@ -16,8 +16,8 @@ namespace AutoEvent.Events.Glass
 {
     public class Plugin : Event
     {
-        public override string Name { get; set; } = "Dead Jump";
-        public override string Description { get; set; } = "Jump on fragile platforms [Beta]";
+        public override string Name { get; set; } = AutoEvent.Singleton.Translation.GlassName;
+        public override string Description { get; set; } = AutoEvent.Singleton.Translation.GlassDescription;
         public override string Color { get; set; } = "FF4242";
         public override string CommandName { get; set; } = "glass";
         public SchematicObject GameMap { get; set; }
@@ -35,7 +35,6 @@ namespace AutoEvent.Events.Glass
             Exiled.Events.Handlers.Player.DroppingItem += _eventHandler.OnDroppingItem;
             Exiled.Events.Handlers.Server.RespawningTeam += _eventHandler.OnTeamRespawn;
             Exiled.Events.Handlers.Player.SpawningRagdoll += _eventHandler.OnSpawnRagdoll;
-            //Exiled.Events.Handlers.Player.TogglingNoClip += _eventHandler.OnTogglingNoclip;
 
             OnEventStarted();
         }
@@ -45,7 +44,6 @@ namespace AutoEvent.Events.Glass
             Exiled.Events.Handlers.Player.DroppingItem -= _eventHandler.OnDroppingItem;
             Exiled.Events.Handlers.Server.RespawningTeam -= _eventHandler.OnTeamRespawn;
             Exiled.Events.Handlers.Player.SpawningRagdoll -= _eventHandler.OnSpawnRagdoll;
-            //Exiled.Events.Handlers.Player.TogglingNoClip -= _eventHandler.OnTogglingNoclip;
 
             _eventHandler = null;
             Timing.CallDelayed(10f, () => EventEnd());
@@ -125,7 +123,11 @@ namespace AutoEvent.Events.Glass
         {
             while (EventTime.TotalSeconds > 0 && Player.List.Count(r => r.IsAlive) > 0)
             {
-                Extensions.Broadcast(AutoEvent.Singleton.Translation.GlassStart.Replace("{plyAlive}", $"{Player.List.Count(r=>r.IsAlive)}").Replace("{eventTime}", $"{EventTime.Minutes} : {EventTime.Seconds}"), 1);
+                var text = AutoEvent.Singleton.Translation.GlassStart;
+                text = text.Replace("{plyAlive}", Player.List.Count(r => r.IsAlive).ToString());
+                text = text.Replace("{eventTime}", $"{EventTime.Minutes}:{EventTime.Seconds}");
+
+                Extensions.Broadcast(text, 1);
 
                 yield return Timing.WaitForSeconds(1f);
                 EventTime -= TimeSpan.FromSeconds(1f);
@@ -135,21 +137,21 @@ namespace AutoEvent.Events.Glass
             {
                 if (Vector3.Distance(player.Position, GameMap.AttachedBlocks.First(x => x.name == "Finish").transform.position) >= 10)
                 {
-                    player.Hurt(500, $"{AutoEvent.Singleton.Translation.GlassDied}");
+                    player.Hurt(500, AutoEvent.Singleton.Translation.GlassDied);
                 }
             }
 
             if (Player.List.Count(r => r.IsAlive) > 1)
             {
-                Extensions.Broadcast(AutoEvent.Singleton.Translation.GlassWinSurvived.Replace("{countAlive}", $"{Player.List.Count(r => r.IsAlive)}"), 3);
+                Extensions.Broadcast(AutoEvent.Singleton.Translation.GlassWinSurvived.Replace("{countAlive}", Player.List.Count(r => r.IsAlive).ToString()), 3);
             }
             else if (Player.List.Count(r => r.IsAlive) == 1)
             {
-                Extensions.Broadcast(AutoEvent.Singleton.Translation.GlassWinner.Replace("{winner}", $"{Player.List.First(r =>r.IsAlive).Nickname}"), 10);
+                Extensions.Broadcast(AutoEvent.Singleton.Translation.GlassWinner.Replace("{winner}", Player.List.First(r =>r.IsAlive).Nickname), 10);
             }
             else if (Player.List.Count(r => r.IsAlive) < 1)
             {
-                Extensions.Broadcast($"{AutoEvent.Singleton.Translation.GlassFail}", 10);
+                Extensions.Broadcast(AutoEvent.Singleton.Translation.GlassFail, 10);
             }
 
             OnStop();
@@ -163,7 +165,6 @@ namespace AutoEvent.Events.Glass
             Extensions.TeleportEnd();
             Extensions.UnLoadMap(GameMap);
             Extensions.StopAudio();
-
             AutoEvent.ActiveEvent = null;
         }
     }

@@ -54,6 +54,9 @@ namespace AutoEvent
         public string GunGameWinner { get; set; } = "<color=#D71868><b><i>{name}</i></b></color>\n<color=yellow>The Winner of the game: <color=green>{winner}</color></color>";
 
         [Description("Battle Game Mode")] 
+        public string BattleName { get; set; } = "Battle";
+
+        public string BattleDescription { get; set; } = "MTF fight against CI";
         public string BattleTimeLeft { get; set; } = "<size=100><color=red>Starts in {time} </color></size>";
 
         public string BattleCiWin { get; set; } = "<color=green>Winner: Chaos Insurgency </color>\n<color=red>Event time: {time} </color>";
@@ -62,7 +65,9 @@ namespace AutoEvent
 
         public string BattleCounter { get; set; } = "<color=blue> MTF: {FoundationForces} </color> vs <color=green> CI: {ChaosForces} </color> \n Elapsed time: {time}";
 
-        [Description("Football Game Mode")]
+        [Description("Football Game Mode")] 
+        public string FootballName { get; set; } = "Football";
+        public string FootballDescription { get; set; } = "Score 3 goals to win";
         public string FootballRedTeam { get; set; } = "<color=red>You play as Red Team\n</color>";
         public string FootballBlueTeam { get; set; } = "<color=blue>You play as Blue Team\n</color>";
 
@@ -72,7 +77,9 @@ namespace AutoEvent
         public string FootballBlueWins { get; set; } = "<color=blue>Blue Team Wins</color>";
         public string FootballTie { get; set; } = "Tie\n<color=blue>{BluePnt}</color> vs <color=red>{RedPnt}</color>";
 
-        [Description("Dead Jump Game Mode")]//
+        [Description("Dead Jump Game Mode (Glass)")]
+        public string GlassName { get; set; } = "Dead Jump";
+        public string GlassDescription { get; set; } = "Jump on fragile platforms";
         public string GlassStart { get; set; } = "<size=50>Dead Jump\nJump on fragile platforms</size>\n<size=20>Alive players: {plyAlive} \nTime left: {eventTime}</size>";
         public string GlassDied { get; set; } = "You fallen into lava";
         public string GlassWinSurvived { get; set; } = "<color=yellow>Human wins! Survived {countAlive} players</color>";
@@ -89,5 +96,22 @@ namespace AutoEvent
         public string PuzzleSeveralSurvivors { get; set; } = "<color=red>Several people survived</color>\nMini-game ended";
         public string PuzzleWinner { get; set; } = "<color=red>Winner: %plyWinner%</color>\nMini-game ended";
         public string PuzzleDied { get; set; } = "<color=red>Burned in Lava</color>";
+
+        [Description("Zombie Survival Game Mode (Zombie 2)")]
+        public string SurvivalName { get; set; } = "Zombie Survival";
+        public string SurvivalDescription { get; set; } = "Humans surviving from zombies";
+        public string SurvivalBeforeInfection { get; set; } = "<b>%name%</b>\n<color=yellow>There are </color> %time% <color=yellow>second before infection begins</color>";
+        public string SurvivalAfterInfection { get; set; } = "<b>%name%</b>\n<color=blue>Humans:</color> %humanCount%\n<color=green>Time to the end:</color> %time%";
+        public string SurvivalZombieWin { get; set; } = "<color=red>Zombie infected all humans and wins!</color>";
+        public string SurvivalHumanWin { get; set; } = "<color=blue>Humans killed all zombies and stopped infection</color>";
+        public string SurvivalHumanWinTime { get; set; } = "<color=yellow>Humans survived, but infection is not stopped</color>";
+
+        [Description("Fall Down Game Mode")] 
+        public string FallName { get; set; } = "FallDown";
+        public string FallDescription { get; set; } = "All platforms are destroyed. It is necessary to survive";
+
+        public string FallBroadcast { get; set; } = "%name%\n%time%\n<color=yellow>Remaining: </color>%count%<color=yellow> players</color>";
+        public string FallWinner { get; set; } = "<color=red>Winner:</color> %winner%";
+        public string FallDied { get; set; } = "<color=red>All players died</color>";
     }
 }

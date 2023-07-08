@@ -14,8 +14,8 @@ namespace AutoEvent.Events.Battle
 {
     public class Plugin : Event
     {
-        public override string Name { get; set; } = "Battle";
-        public override string Description { get; set; } = "MTF vs CI [Beta]";
+        public override string Name { get; set; } = AutoEvent.Singleton.Translation.BattleName;
+        public override string Description { get; set; } = AutoEvent.Singleton.Translation.BattleDescription;
         public override string Color { get; set; } = "FFFF00";
         public override string CommandName { get; set; } = "battle";
         public TimeSpan EventTime { get; set; }
@@ -57,7 +57,7 @@ namespace AutoEvent.Events.Battle
         public void OnEventStarted()
         {
             EventTime = new TimeSpan(0, 0, 0);
-            GameMap = Extensions.LoadMap("Battle", new Vector3(6f, 1020f, -43.5f), Quaternion.Euler(Vector3.zero), Vector3.one);
+            GameMap = Extensions.LoadMap("Battle", new Vector3(6f, 1030f, -43.5f), Quaternion.Euler(Vector3.zero), Vector3.one);
             Extensions.PlayAudio("ClassicMusic.ogg", 5, true, Name);
 
             var count = 0;

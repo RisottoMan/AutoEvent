@@ -2,9 +2,9 @@
 using System.Linq;
 using UnityEngine;
 
-namespace AutoEvent.Events.HideAndSeek.Features
+namespace AutoEvent.Events.FinishWay
 {
-    internal class RandomClass
+    internal class RandomPosition
     {
         public static Vector3 GetSpawnPosition(SchematicObject GameMap)
         {

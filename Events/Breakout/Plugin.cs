@@ -10,18 +10,18 @@ using UnityEngine;
 
 namespace AutoEvent.Events.Breakout
 {
-    public class Plugin : Event
+    public class Plugin// : Event
     {
-        public override string Name { get; set; } = "Zombie escape [TESTING]";
-        public override string Description { get; set; } = "Zombie escape [Alpha]";
-        public override string Color { get; set; } = "FF4242";
-        public override string CommandName { get; set; } = "breakout";
+        public string Name { get; set; } = "Zombie escape [TESTING]";
+        public string Description { get; set; } = "Zombie escape [Alpha]";
+        public string Color { get; set; } = "FF4242";
+        public string CommandName { get; set; } = "breakout";
         public SchematicObject GameMap { get; set; }
         public TimeSpan EventTime { get; set; }
 
         //EventHandler _eventHandler;
 
-        public override void OnStart()
+        public void OnStart()
         {
             /*
             _eventHandler = new EventHandler(this);
@@ -33,7 +33,7 @@ namespace AutoEvent.Events.Breakout
             */
             OnEventStarted();
         }
-        public override void OnStop()
+        public void OnStop()
         {
             /*
             Exiled.Events.Handlers.Player.Verified -= _eventHandler.OnJoin;

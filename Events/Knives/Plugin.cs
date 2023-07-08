@@ -15,7 +15,7 @@ namespace AutoEvent.Events.Knives
     public class Plugin : Event
     {
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.KnivesName;
-        public override string Description { get; set; } = AutoEvent.Singleton.Translation.KnivesDescription + " [Beta]";
+        public override string Description { get; set; } = AutoEvent.Singleton.Translation.KnivesDescription;
         public override string Color { get; set; } = "FFFF00";
         public override string CommandName { get; set; } = "knife";
         public SchematicObject GameMap { get; set; }

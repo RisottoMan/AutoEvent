@@ -16,12 +16,11 @@ namespace AutoEvent.Events.Puzzle
     public class Plugin : Event
     {
         public override string Name { get; set; } = $"{AutoEvent.Singleton.Translation.PuzzleName}";
-        public override string Description { get; set; } = $"{AutoEvent.Singleton.Translation.PuzzleDescription} [Beta]";
+        public override string Description { get; set; } = $"{AutoEvent.Singleton.Translation.PuzzleDescription}";
         public override string Color { get; set; } = "FFFF00";
         public override string CommandName { get; set; } = "puzzle";
         public SchematicObject GameMap { get; set; }
         public TimeSpan EventTime { get; set; }
-
         public List<GameObject> Platformes { get; set; }
         public GameObject Lava { get; set; }
 
@@ -61,7 +60,7 @@ namespace AutoEvent.Events.Puzzle
             EventTime = new TimeSpan(0, 0, 0);
 
             GameMap = Extensions.LoadMap("Puzzle", new Vector3(76f, 1026.5f, -43.68f), Quaternion.Euler(Vector3.zero), Vector3.one);
-            Extensions.PlayAudio("ClassicMusic.ogg", 5, true, Name);
+            Extensions.PlayAudio("Puzzle.ogg", 5, false, Name);
 
             Platformes = GameMap.AttachedBlocks.Where(x => x.name == "Platform").ToList();
             Lava = GameMap.AttachedBlocks.First(x => x.name == "Lava");
@@ -90,12 +89,13 @@ namespace AutoEvent.Events.Puzzle
             float timing = 0.5f;
             List<GameObject> ListPlatformes = Platformes;
 
-            while (stage <= finaleStage && Player.List.Count(r=>r.IsAlive) > 0)
+            while (stage <= finaleStage && Player.List.Count(r => r.IsAlive) > 0) // 0
             {
                 var stageText = translation.PuzzleStage;
                 stageText = stageText.Replace("%stageNum%", $"{stage}");
                 stageText = stageText.Replace("%stageFinal%", $"{finaleStage}");
                 stageText = stageText.Replace("%plyCount%", $"{Player.List.Count(r => r.IsAlive)}");
+
                 for (float time = speed * 2; time > 0; time--)
                 {
                     foreach (var platform in Platformes)
@@ -142,9 +142,9 @@ namespace AutoEvent.Events.Puzzle
                 Extensions.Broadcast($"<b>{_broadcastName}</b>\n{stageText}", (ushort)(speed + 1));
                 yield return Timing.WaitForSeconds(speed);
 
-                speed -= 0.35f;
+                speed -= 0.3f; // 0.35
                 stage++;
-                timing -= 0.035f;
+                timing -= 0.03f; // 0.035
             }
 
             if (Player.List.Count(r => r.IsAlive) < 1)

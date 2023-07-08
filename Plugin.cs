@@ -20,16 +20,28 @@ namespace AutoEvent
             HarmonyPatch = new Harmony("autoevent");
             HarmonyPatch.PatchAll();
             Event.RegisterEvents();
+
             if (!Config.IsEnabled) return;
-            // Checking for the music directory
+
             if (!Directory.Exists(Path.Combine(Paths.Configs, "Music"))) Directory.CreateDirectory(Path.Combine(Paths.Configs, "Music"));
+
+            Exiled.Events.Handlers.Server.RestartingRound += OnRestarting;
             base.OnEnabled();
         }
         public override void OnDisabled()
         {
             HarmonyPatch.UnpatchAll();
             Singleton = null;
+
+            Exiled.Events.Handlers.Server.RestartingRound -= OnRestarting;
             base.OnDisabled();
+        }
+        private void OnRestarting()
+        {
+            if (ActiveEvent == null) return;
+
+            Extensions.StopAudio();
+            ServerStatic.StopNextRound = ServerStatic.NextRoundAction.Restart;
         }
     }
 }

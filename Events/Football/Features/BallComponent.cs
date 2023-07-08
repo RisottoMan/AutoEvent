@@ -2,7 +2,7 @@
 
 namespace AutoEvent.Events.Football.Features
 {
-    public class Component : MonoBehaviour
+    public class BallComponent : MonoBehaviour
     {
         private SphereCollider sphere;
         private Rigidbody rigid;
@@ -15,8 +15,8 @@ namespace AutoEvent.Events.Football.Features
             rigid = gameObject.AddComponent<Rigidbody>();
             rigid.isKinematic = false;
             rigid.useGravity = true;
-            rigid.mass = 0.5f;
-            rigid.drag = 1f;
+            rigid.mass = 1;
+            rigid.drag = 1;
         }
     }
 }

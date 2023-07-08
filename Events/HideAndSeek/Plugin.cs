@@ -1,5 +1,6 @@
 ﻿using AutoEvent.Events.HideAndSeek.Features;
 using AutoEvent.Interfaces;
+using CustomPlayerEffects;
 using Exiled.API.Features;
 using MapEditorReborn.API.Features.Objects;
 using MEC;
@@ -11,18 +12,18 @@ using UnityEngine;
 
 namespace AutoEvent.Events.HideAndSeek
 {
-    public class Plugin : Event
+    public class Plugin// : Event
     {
-        public override string Name { get; set; } = "Догонялки [Testing]";
-        public override string Description { get; set; } = "Надо догнать всех игроков на карте. [Alpha]";
-        public override string Color { get; set; } = "FF4242";
-        public override string CommandName { get; set; } = "hide";
+        public string Name { get; set; } = "Hide And Seek [Testing]";
+        public string Description { get; set; } = "We need to catch up with all the players on the map. [Alpha]";
+        public string Color { get; set; } = "FF4242";
+        public string CommandName { get; set; } = "hide";
         public SchematicObject GameMap { get; set; }
         public TimeSpan EventTime { get; set; }
 
         EventHandler _eventHandler;
 
-        public override void OnStart()
+        public void OnStart()
         {
             _eventHandler = new EventHandler();
 
@@ -34,12 +35,10 @@ namespace AutoEvent.Events.HideAndSeek
             Exiled.Events.Handlers.Player.DroppingItem += _eventHandler.OnDropItem;
             Exiled.Events.Handlers.Player.DroppingAmmo += _eventHandler.OnDropAmmo;
             Exiled.Events.Handlers.Player.PickingUpItem += _eventHandler.OnPickUpItem;
-            //Exiled.Events.Handlers.Item.ChargingJailbird += _eventHandler.OnCharge;
-            Exiled.Events.Handlers.Player.Shooting += _eventHandler.OnShooting;
 
             OnEventStarted();
         }
-        public override void OnStop()
+        public void OnStop()
         {
             Exiled.Events.Handlers.Player.Verified -= _eventHandler.OnJoin;
             Exiled.Events.Handlers.Player.Hurting -= _eventHandler.OnHurt;
@@ -49,7 +48,6 @@ namespace AutoEvent.Events.HideAndSeek
             Exiled.Events.Handlers.Player.DroppingItem -= _eventHandler.OnDropItem;
             Exiled.Events.Handlers.Player.DroppingAmmo -= _eventHandler.OnDropAmmo;
             Exiled.Events.Handlers.Player.PickingUpItem -= _eventHandler.OnPickUpItem;
-            //Exiled.Events.Handlers.Item.ChargingJailbird -= _eventHandler.OnCharge;
 
             _eventHandler = null;
             Timing.CallDelayed(10f, () => EventEnd());
@@ -66,7 +64,9 @@ namespace AutoEvent.Events.HideAndSeek
             {
                 player.Role.Set(RoleTypeId.ClassD, RoleSpawnFlags.AssignInventory);
                 player.Position = RandomClass.GetSpawnPosition(GameMap);
-                // player.SetFriendlyFire(RoleTypeId.ClassD, 0);
+
+                player.EnableEffect<MovementBoost>();
+                player.ChangeEffectIntensity<MovementBoost>(50);
             }
 
             Timing.RunCoroutine(OnEventRunning(), "hns_run");
@@ -75,9 +75,7 @@ namespace AutoEvent.Events.HideAndSeek
         {
             for (float _time = 15; _time > 0; _time--)
             {
-                //Extensions.Broadcast($"<color=#D71868><b><i>{Name}</i></b></color>\n" +
-                //    $"<color=#ABF000>БЕГИТЕ!\nОсталось <color=red>{_time}</color> секунд.</color>", 1);
-                Extensions.Broadcast($"Выбор новых догоняющих игроков.\nДо начала осталось {_time} секунд.", 1);
+                Extensions.Broadcast($"RUN\nSelection of new catching up players.\n{_time}", 1);
                 yield return Timing.WaitForSeconds(1f);
                 EventTime += TimeSpan.FromSeconds(1f);
             }
@@ -96,17 +94,18 @@ namespace AutoEvent.Events.HideAndSeek
 
             for(int i = 0; i < catchCount; i++)
             {
-                Log.Info(Player.List.Count(r => r.IsAlive && r.HasItem(ItemType.Jailbird) == false));
                 var player = Player.List.Where(r => r.IsAlive && r.HasItem(ItemType.Jailbird) == false).ToList().RandomItem();
-                Log.Info(player.Nickname);
-                player.AddItem(ItemType.Jailbird);
+                var item = player.AddItem(ItemType.Jailbird);
+                Timing.CallDelayed(0.1f, () =>
+                {
+                    player.CurrentItem = item;
+                });
             }
 
-            for (int doptime = 10; doptime > 0; doptime--) // 30
+            for (int doptime = 30; doptime > 0; doptime--)
             {
-                Extensions.Broadcast($"Передайте биту другому игроку\n" +
-                $"<color=yellow>Осталось <b><i>{doptime}</i></b> секунд!</color>", 1);
-                //$"<color=yellow>Время ивента <color=red>{EventTime.Minutes}:{EventTime.Seconds}</color></color>", 1);
+                Extensions.Broadcast($"Pass the bat to another player\n" +
+                $"<color=yellow><b><i>{doptime}</i></b> seconds left</color>", 1);
 
                 yield return Timing.WaitForSeconds(1f);
                 EventTime += TimeSpan.FromSeconds(1f);
@@ -117,7 +116,7 @@ namespace AutoEvent.Events.HideAndSeek
                 if (player.HasItem(ItemType.Jailbird))
                 {
                     player.ClearInventory();
-                    player.Hurt(200, "Вы не успели передать биту.");
+                    player.Hurt(200, "You didn't have time to pass the bat.");
                 }
             }
 
@@ -129,25 +128,26 @@ namespace AutoEvent.Events.HideAndSeek
         {
             if (Player.List.Count(r => r.IsAlive) > 1)
             {
-                Extensions.Broadcast($"Осталось много игроков.\n" +
-                $"Ожидание перезагрузки.\n" +
-                $"<color=yellow>Время ивента <color=red>{EventTime.Minutes}:{EventTime.Seconds}</color></color>", 10);
+                Extensions.Broadcast($"There are a lot of players left.\n" +
+                $"Waiting for a reboot.\n" +
+                $"<color=yellow>Event time <color=red>{EventTime.Minutes}:{EventTime.Seconds}</color></color>", 10);
 
                 yield return Timing.WaitForSeconds(10f);
                 EventTime += TimeSpan.FromSeconds(10f);
+
                 Timing.RunCoroutine(OnEventRunning(), "hns_end");
                 yield break;
             }
             else if (Player.List.Count(r => r.IsAlive) == 1)
             {
-                Extensions.Broadcast($"Победил игрок {Player.List.First(r=>r.IsAlive).Nickname}\n" +
-                $"<color=yellow>Время ивента <color=red>{EventTime.Minutes}:{EventTime.Seconds}</color></color>", 10);
+                Extensions.Broadcast($"The player won {Player.List.First(r=>r.IsAlive).Nickname}\n" +
+                $"<color=yellow>Event time <color=red>{EventTime.Minutes}:{EventTime.Seconds}</color></color>", 10);
             }
             else
             {
-                Extensions.Broadcast($"Никто не выжил.\n" +
-                $"Конец игры\n" +
-                $"<color=yellow>Время ивента <color=red>{EventTime.Minutes}:{EventTime.Seconds}</color></color>", 10);
+                Extensions.Broadcast($"No one survived.\n" +
+                $"End of the game\n" +
+                $"<color=yellow>Event time <color=red>{EventTime.Minutes}:{EventTime.Seconds}</color></color>", 10);
             }
 
             OnStop();

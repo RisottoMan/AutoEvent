@@ -1,4 +1,5 @@
-﻿using AutoEvent.Interfaces;
+﻿using AutoEvent.Events.FinishWay.Features;
+using AutoEvent.Interfaces;
 using Exiled.API.Features;
 using MapEditorReborn.API.Features.Objects;
 using MEC;
@@ -8,26 +9,25 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace AutoEvent.Events.Infection
+namespace AutoEvent.Events.FinishWay
 {
-    public class Plugin : Event
+    public class Plugin// : Event
     {
-        public override string Name { get; set; } = AutoEvent.Singleton.Translation.ZombieName;
-        public override string Description { get; set; } = AutoEvent.Singleton.Translation.ZombieDescription;
-        public override string Color { get; set; } = "FF4242";
-        public override string CommandName { get; set; } = "zombie";
+        public string Name { get; set; } = "Finish Way";
+        public string Description { get; set; } = "Go to the end of the finish to win. [Alpha]";
+        public string Color { get; set; } = "FF4242";
+        public string CommandName { get; set; } = "finish";
         public static SchematicObject GameMap { get; set; }
         public static TimeSpan EventTime { get; set; }
 
         EventHandler _eventHandler;
+        public GameObject Lava { get; set; }
 
-        public override void OnStart()
+        public void OnStart()
         {
             _eventHandler = new EventHandler();
 
             Exiled.Events.Handlers.Player.Verified += _eventHandler.OnJoin;
-            Exiled.Events.Handlers.Player.Died += _eventHandler.OnDead;
-            Exiled.Events.Handlers.Player.Hurting += _eventHandler.OnDamage;
             Exiled.Events.Handlers.Server.RespawningTeam += _eventHandler.OnTeamRespawn;
             Exiled.Events.Handlers.Player.SpawningRagdoll += _eventHandler.OnSpawnRagdoll;
             Exiled.Events.Handlers.Map.PlacingBulletHole += _eventHandler.OnPlaceBullet;
@@ -37,11 +37,9 @@ namespace AutoEvent.Events.Infection
 
             OnEventStarted();
         }
-        public override void OnStop()
+        public void OnStop()
         {
             Exiled.Events.Handlers.Player.Verified -= _eventHandler.OnJoin;
-            Exiled.Events.Handlers.Player.Died -= _eventHandler.OnDead;
-            Exiled.Events.Handlers.Player.Hurting -= _eventHandler.OnDamage;
             Exiled.Events.Handlers.Server.RespawningTeam -= _eventHandler.OnTeamRespawn;
             Exiled.Events.Handlers.Player.SpawningRagdoll -= _eventHandler.OnSpawnRagdoll;
             Exiled.Events.Handlers.Map.PlacingBulletHole -= _eventHandler.OnPlaceBullet;
@@ -55,9 +53,8 @@ namespace AutoEvent.Events.Infection
 
         public void OnEventStarted()
         {
-            EventTime = new TimeSpan(0, 0, 0);
-            GameMap = Extensions.LoadMap(AutoEvent.Singleton.Config.InfectionConfig.ListOfMap.RandomItem(), new Vector3(115.5f, 1030f, -43.5f), Quaternion.Euler(Vector3.zero), Vector3.one);
-            Extensions.PlayAudio(AutoEvent.Singleton.Config.InfectionConfig.ListOfMusic.RandomItem(), 15, true, Name);
+            GameMap = Extensions.LoadMap("FinishWay", new Vector3(115.5f, 1030f, -43.5f), Quaternion.Euler(Vector3.zero), Vector3.one);
+            //Extensions.PlayAudio("ClassicMusic.ogg", 5, true, Name);
 
             foreach (Player player in Player.List)
             {
@@ -65,56 +62,53 @@ namespace AutoEvent.Events.Infection
                 player.Position = RandomPosition.GetSpawnPosition(Plugin.GameMap);
             }
 
-            Timing.RunCoroutine(OnEventRunning(), "zombie_run");
+            Lava = GameMap.AttachedBlocks.First(x => x.name == "Lava");
+            Lava.AddComponent<LavaComponent>();
+
+            Timing.RunCoroutine(OnEventRunning(), "finish_run");
         }
 
         public IEnumerator<float> OnEventRunning()
         {
-            var trans = AutoEvent.Singleton.Translation;
-
             for (float time = 15; time > 0; time--)
             {
-                Extensions.Broadcast(trans.ZombieBeforeStart.Replace("{name}", Name).Replace("{time}", time.ToString()), 1);
+                Extensions.Broadcast($"Ивент {Name}", 1);
                 yield return Timing.WaitForSeconds(1f);
             }
 
-            Player.List.ToList().RandomItem().Role.Set(RoleTypeId.Scp0492);
-
-            while (Player.List.Count(r => r.Role == RoleTypeId.ClassD) > 1)
+            EventTime = new TimeSpan(0, 2, 0);
+            while (Player.List.Count(r => r.IsAlive) > 0 && EventTime.TotalSeconds != 0)
             {
                 var count = Player.List.Count(r => r.Role == RoleTypeId.ClassD);
                 var time = $"{EventTime.Minutes}:{EventTime.Seconds}";
 
-                Extensions.Broadcast(trans.ZombieCycle.Replace("{name}", Name).Replace("{count}", count.ToString()).Replace("{time}", time), 1);
+                Extensions.Broadcast($"{Name}\nВы должны дойти до Финиша\nОсталось {EventTime.Minutes}:{EventTime.Seconds}", 1);
 
                 yield return Timing.WaitForSeconds(1f);
-                EventTime += TimeSpan.FromSeconds(1f);
+                EventTime -= TimeSpan.FromSeconds(1f);
             }
 
-            Timing.RunCoroutine(DopTime(), "EventBeginning");
-            yield break;
-        }
+            var point = GameMap.AttachedBlocks.First(x => x.name == "FinishTrigger");
 
-        public IEnumerator<float> DopTime()
-        {
-            var trans = AutoEvent.Singleton.Translation;
-            var time = $"{EventTime.Minutes}:{EventTime.Seconds}";
-
-            for (int extratime = 30; extratime > 0; extratime--)
+            foreach(Player player in Player.List)
             {
-                if (Player.List.Count(r => r.Role == RoleTypeId.ClassD) == 0) break;
-                Extensions.Broadcast(trans.ZombieExtraTime.Replace("{extratime}", extratime.ToString()).Replace("{time}", time), 1);
-                yield return Timing.WaitForSeconds(1f);
-                EventTime += TimeSpan.FromSeconds(1f);
+                if (Vector3.Distance(player.Position, point.transform.position) > 10)
+                {
+                    player.Kill("Вы не успели добраться до Финиша.");
+                }
             }
 
-            if (Player.List.Count(r => r.Role == RoleTypeId.ClassD) == 0)
+            if (Player.List.Count(r => r.IsAlive) > 1)
             {
-                Extensions.Broadcast(trans.ZombieWin.Replace("{time}", time), 10);
+                Extensions.Broadcast($"Победа\nФинишировали {Player.List.Count(r => r.IsAlive)} человек", 10);
+            }
+            else if (Player.List.Count(r => r.IsAlive) == 1)
+            {
+                Extensions.Broadcast($"Победа\nФинишировал игрок {Player.List.First(r => r.IsAlive).Nickname}", 10);
             }
             else
             {
-                Extensions.Broadcast(trans.ZombieLose.Replace("{time}", time), 10);
+                Extensions.Broadcast($"Никто не успел добраться до финиша\nКонец игры", 10);
             }
 
             OnStop();

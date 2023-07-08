@@ -1,20 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using MapEditorReborn.API.Features.Objects;
+using System.Linq;
 using UnityEngine;
 
-namespace AutoEvent.Events.Breakout
+namespace AutoEvent.Events.Survival
 {
     public class RandomClass
     {
-        public static Vector3 GetRandomSpawn()
+        public static Vector3 GetSpawnPosition(SchematicObject GameMap)
         {
-            return Spawn.RandomItem();
+            return GameMap.AttachedBlocks.Where(x => x.name == "Spawnpoint").ToList().RandomItem().transform.position;
         }
-        public static readonly List<Vector3> Spawn = new List<Vector3>()
-        {
-            new Vector3(-68, 8, 0),
-            new Vector3(68, 8, 0),
-            new Vector3(0, 8, 68),
-            new Vector3(0, 8, -68)
-        };
     }
 }

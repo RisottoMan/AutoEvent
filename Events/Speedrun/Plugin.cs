@@ -8,20 +8,20 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace AutoEvent.Events.Infection
+namespace AutoEvent.Events.Speedrun
 {
-    public class Plugin : Event
+    public class Plugin// : Event
     {
-        public override string Name { get; set; } = AutoEvent.Singleton.Translation.ZombieName;
-        public override string Description { get; set; } = AutoEvent.Singleton.Translation.ZombieDescription;
-        public override string Color { get; set; } = "FF4242";
-        public override string CommandName { get; set; } = "zombie";
+        public string Name { get; set; } = "Speedrun";
+        public string Description { get; set; } = "Crab game [Alpha]";
+        public string Color { get; set; } = "FF4242";
+        public string CommandName { get; set; } = "speedrun";
         public static SchematicObject GameMap { get; set; }
         public static TimeSpan EventTime { get; set; }
 
         EventHandler _eventHandler;
 
-        public override void OnStart()
+        public void OnStart()
         {
             _eventHandler = new EventHandler();
 
@@ -37,7 +37,7 @@ namespace AutoEvent.Events.Infection
 
             OnEventStarted();
         }
-        public override void OnStop()
+        public void OnStop()
         {
             Exiled.Events.Handlers.Player.Verified -= _eventHandler.OnJoin;
             Exiled.Events.Handlers.Player.Died -= _eventHandler.OnDead;
@@ -56,8 +56,8 @@ namespace AutoEvent.Events.Infection
         public void OnEventStarted()
         {
             EventTime = new TimeSpan(0, 0, 0);
-            GameMap = Extensions.LoadMap(AutoEvent.Singleton.Config.InfectionConfig.ListOfMap.RandomItem(), new Vector3(115.5f, 1030f, -43.5f), Quaternion.Euler(Vector3.zero), Vector3.one);
-            Extensions.PlayAudio(AutoEvent.Singleton.Config.InfectionConfig.ListOfMusic.RandomItem(), 15, true, Name);
+            GameMap = Extensions.LoadMap("Speedrun", new Vector3(115.5f, 1030f, -43.5f), Quaternion.Euler(Vector3.zero), Vector3.one);
+            //Extensions.PlayAudio(, 15, true, Name);
 
             foreach (Player player in Player.List)
             {
@@ -65,7 +65,7 @@ namespace AutoEvent.Events.Infection
                 player.Position = RandomPosition.GetSpawnPosition(Plugin.GameMap);
             }
 
-            Timing.RunCoroutine(OnEventRunning(), "zombie_run");
+            Timing.RunCoroutine(OnEventRunning(), "speed_run");
         }
 
         public IEnumerator<float> OnEventRunning()
@@ -74,40 +74,27 @@ namespace AutoEvent.Events.Infection
 
             for (float time = 15; time > 0; time--)
             {
-                Extensions.Broadcast(trans.ZombieBeforeStart.Replace("{name}", Name).Replace("{time}", time.ToString()), 1);
+                Extensions.Broadcast($"Ивент {Name}", 1);
                 yield return Timing.WaitForSeconds(1f);
             }
 
-            Player.List.ToList().RandomItem().Role.Set(RoleTypeId.Scp0492);
+            //List<GameObject> platformes = GameMap.AttachedBlocks.Where(x => x.name == "Platform").ToList();
 
-            while (Player.List.Count(r => r.Role == RoleTypeId.ClassD) > 1)
+            while (Player.List.Count(r => r.IsAlive) > 0) // EventTime.TotalMinutes == 3
             {
-                var count = Player.List.Count(r => r.Role == RoleTypeId.ClassD);
-                var time = $"{EventTime.Minutes}:{EventTime.Seconds}";
+                //var count = Player.List.Count(r => r.Role == RoleTypeId.ClassD);
+                //var time = $"{EventTime.Minutes}:{EventTime.Seconds}";
+                //Extensions.Broadcast(trans.ZombieCycle.Replace("{name}", Name).Replace("{count}", count.ToString()).Replace("{time}", time), 1);
 
-                Extensions.Broadcast(trans.ZombieCycle.Replace("{name}", Name).Replace("{count}", count.ToString()).Replace("{time}", time), 1);
+                //var platform = platformes.RandomItem();
+                //platformes.Remove(platform);
+                //GameObject.Destroy(platform);
 
-                yield return Timing.WaitForSeconds(1f);
-                EventTime += TimeSpan.FromSeconds(1f);
+                yield return Timing.WaitForSeconds(0.1f);
+                EventTime += TimeSpan.FromSeconds(0.1f);
             }
 
-            Timing.RunCoroutine(DopTime(), "EventBeginning");
-            yield break;
-        }
-
-        public IEnumerator<float> DopTime()
-        {
-            var trans = AutoEvent.Singleton.Translation;
-            var time = $"{EventTime.Minutes}:{EventTime.Seconds}";
-
-            for (int extratime = 30; extratime > 0; extratime--)
-            {
-                if (Player.List.Count(r => r.Role == RoleTypeId.ClassD) == 0) break;
-                Extensions.Broadcast(trans.ZombieExtraTime.Replace("{extratime}", extratime.ToString()).Replace("{time}", time), 1);
-                yield return Timing.WaitForSeconds(1f);
-                EventTime += TimeSpan.FromSeconds(1f);
-            }
-
+            /*
             if (Player.List.Count(r => r.Role == RoleTypeId.ClassD) == 0)
             {
                 Extensions.Broadcast(trans.ZombieWin.Replace("{time}", time), 10);
@@ -116,7 +103,7 @@ namespace AutoEvent.Events.Infection
             {
                 Extensions.Broadcast(trans.ZombieLose.Replace("{time}", time), 10);
             }
-
+            */
             OnStop();
             yield break;
         }
