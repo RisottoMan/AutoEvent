@@ -14,8 +14,8 @@ namespace AutoEvent.Events.Football
 {
     public class Plugin : Event
     {
-        public override string Name { get; set; } = "Football";
-        public override string Description { get; set; } = "Football. Score 3 goals to win.";
+        public override string Name { get; set; } = AutoEvent.Singleton.Translation.FootballName;
+        public override string Description { get; set; } = AutoEvent.Singleton.Translation.FootballDescription;
         public override string Color { get; set; } = "FFFF00";
         public override string CommandName { get; set; } = "football";
         public SchematicObject GameMap { get; set; }
