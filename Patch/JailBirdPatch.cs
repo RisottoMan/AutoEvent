@@ -1,39 +1,55 @@
-﻿using Exiled.API.Features;
+﻿using System.Collections.Generic;
+using System.Reflection.Emit;
 using HarmonyLib;
 using InventorySystem.Items.Jailbird;
 using Mirror;
+using NorthwoodLib.Pools;
+using static HarmonyLib.AccessTools;
 
-namespace AutoEvent.Patch
+namespace AutoEvent.Patches
 {
     internal class JailBirdPatch
     {
-        //[HarmonyPatch(typeof(JailbirdItem), nameof(JailbirdItem.ServerProcessCmd))] // НУжны люди для проверки
-        static class ServerProcessCmdPatch
+        [HarmonyPatch(typeof(JailbirdItem), nameof(JailbirdItem.ServerProcessCmd))]
+        internal static class JailbirdPatch
         {
-            internal static bool Prefix(JailbirdItem __instance, NetworkReader reader)
+            private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
             {
-                Log.Info("JailBird Patch");
+                List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+
+                Label retLabel = generator.DefineLabel();
+
+                const int offset = 2;
+                int index = newInstructions.FindIndex(instruction => instruction.Calls(Method(typeof(NetworkReader), nameof(NetworkReader.ReadByte)))) + offset;
+
+                newInstructions.InsertRange(
+                    index,
+                    new[]
+                    {
+                    new CodeInstruction(OpCodes.Ldarg_0),
+                    new CodeInstruction(OpCodes.Ldloc_0),
+                    new(OpCodes.Call, Method(typeof(JailbirdPatch), nameof(HandleJailbird))),
+                    new(OpCodes.Brfalse_S, retLabel),
+                    });
+
+                newInstructions[newInstructions.Count - 1].WithLabels(retLabel);
+
+                for (int z = 0; z < newInstructions.Count; z++)
+                    yield return newInstructions[z];
+
+                ListPool<CodeInstruction>.Shared.Return(newInstructions);
+            }
+            private static bool HandleJailbird(JailbirdItem instance, JailbirdMessageType messageType)
+            {
                 if (AutoEvent.ActiveEvent == null) return true;
 
-                if (!AutoEvent.Singleton.Config.IsJailbirdAbilityEnable)
+                switch (messageType)
                 {
-                    JailbirdMessageType jailbirdMessageType = (JailbirdMessageType)reader.ReadByte();
-
-                    switch (jailbirdMessageType)
-                    {
-                        case JailbirdMessageType.ChargeStarted:
-                        case JailbirdMessageType.ChargeLoadTriggered:
-                        case JailbirdMessageType.ChargeFailed:
-                            return false;
-                        default:
-                            return true;
-                    }
+                    case JailbirdMessageType.ChargeLoadTriggered:
+                        return AutoEvent.Singleton.Config.IsJailbirdAbilityEnable;
+                    default:
+                        return true;
                 }
-                if (AutoEvent.Singleton.Config.IsJailbirdHasInfinityCharges)
-                {
-                    __instance.TotalChargesPerformed = 0;
-                }
-                return true;
             }
         }
     }
