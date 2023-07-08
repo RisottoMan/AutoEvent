@@ -12,18 +12,18 @@ using UnityEngine;
 
 namespace AutoEvent.Events.HideAndSeek
 {
-    public class Plugin : Event
+    public class Plugin// : Event
     {
-        public override string Name { get; set; } = "Hide And Seek [Testing]";
-        public override string Description { get; set; } = "We need to catch up with all the players on the map. [Alpha]";
-        public override string Color { get; set; } = "FF4242";
-        public override string CommandName { get; set; } = "hide";
+        public string Name { get; set; } = "Hide And Seek [Testing]";
+        public string Description { get; set; } = "We need to catch up with all the players on the map. [Alpha]";
+        public string Color { get; set; } = "FF4242";
+        public string CommandName { get; set; } = "hide";
         public SchematicObject GameMap { get; set; }
         public TimeSpan EventTime { get; set; }
 
         EventHandler _eventHandler;
 
-        public override void OnStart()
+        public void OnStart()
         {
             _eventHandler = new EventHandler();
 
@@ -38,7 +38,7 @@ namespace AutoEvent.Events.HideAndSeek
 
             OnEventStarted();
         }
-        public override void OnStop()
+        public void OnStop()
         {
             Exiled.Events.Handlers.Player.Verified -= _eventHandler.OnJoin;
             Exiled.Events.Handlers.Player.Hurting -= _eventHandler.OnHurt;

@@ -10,18 +10,18 @@ using UnityEngine;
 
 namespace AutoEvent.Events.Speedrun
 {
-    public class Plugin : Event
+    public class Plugin// : Event
     {
-        public override string Name { get; set; } = "Speedrun";
-        public override string Description { get; set; } = "Crab game [Alpha]";
-        public override string Color { get; set; } = "FF4242";
-        public override string CommandName { get; set; } = "speedrun";
+        public string Name { get; set; } = "Speedrun";
+        public string Description { get; set; } = "Crab game [Alpha]";
+        public string Color { get; set; } = "FF4242";
+        public string CommandName { get; set; } = "speedrun";
         public static SchematicObject GameMap { get; set; }
         public static TimeSpan EventTime { get; set; }
 
         EventHandler _eventHandler;
 
-        public override void OnStart()
+        public void OnStart()
         {
             _eventHandler = new EventHandler();
 
@@ -37,7 +37,7 @@ namespace AutoEvent.Events.Speedrun
 
             OnEventStarted();
         }
-        public override void OnStop()
+        public void OnStop()
         {
             Exiled.Events.Handlers.Player.Verified -= _eventHandler.OnJoin;
             Exiled.Events.Handlers.Player.Died -= _eventHandler.OnDead;

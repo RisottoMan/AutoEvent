@@ -15,7 +15,7 @@ namespace AutoEvent.Events.Versus
     public class Plugin : Event
     {
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.VersusName;
-        public override string Description { get; set; } = AutoEvent.Singleton.Translation.VersusDescription + " [Beta]";
+        public override string Description { get; set; } = AutoEvent.Singleton.Translation.VersusDescription;
         public override string Color { get; set; } = "FFFF00";
         public override string CommandName { get; set; } = "versus";
         public SchematicObject GameMap { get; set; }

@@ -14,12 +14,12 @@ using Random = UnityEngine.Random;
 
 namespace AutoEvent.Events.DeathParty
 {
-    public class Plugin : Event
+    public class Plugin// : Event
     {
-        public override string Name { get; set; } = "Death Party [TESTING]";
-        public override string Description { get; set; } = "Survive in grenade rain [Alpha]";
-        public override string Color { get; set; } = "FFFF00";
-        public override string CommandName { get; set; } = "death";
+        public string Name { get; set; } = "Death Party [TESTING]";
+        public string Description { get; set; } = "Survive in grenade rain [Alpha]";
+        public string Color { get; set; } = "FFFF00";
+        public string CommandName { get; set; } = "death";
         public TimeSpan EventTime { get; set; }
         public SchematicObject GameMap { get; set; }
 
@@ -27,7 +27,7 @@ namespace AutoEvent.Events.DeathParty
         int Stage { get; set; }
         int MaxStage { get; set; }
 
-        public override void OnStart()
+        public void OnStart()
         {
             _eventHandler = new EventHandler();
 
@@ -42,7 +42,7 @@ namespace AutoEvent.Events.DeathParty
             OnEventStarted();
         }
 
-        public override void OnStop()
+        public void OnStop()
         {
             Exiled.Events.Handlers.Player.Verified -= _eventHandler.OnJoin;
             Exiled.Events.Handlers.Server.RespawningTeam -= _eventHandler.OnTeamRespawn;

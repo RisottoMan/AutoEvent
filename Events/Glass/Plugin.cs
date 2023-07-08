@@ -17,7 +17,7 @@ namespace AutoEvent.Events.Glass
     public class Plugin : Event
     {
         public override string Name { get; set; } = "Dead Jump";
-        public override string Description { get; set; } = "Jump on fragile platforms [Beta]";
+        public override string Description { get; set; } = "Jump on fragile platforms.";
         public override string Color { get; set; } = "FF4242";
         public override string CommandName { get; set; } = "glass";
         public SchematicObject GameMap { get; set; }
@@ -35,7 +35,6 @@ namespace AutoEvent.Events.Glass
             Exiled.Events.Handlers.Player.DroppingItem += _eventHandler.OnDroppingItem;
             Exiled.Events.Handlers.Server.RespawningTeam += _eventHandler.OnTeamRespawn;
             Exiled.Events.Handlers.Player.SpawningRagdoll += _eventHandler.OnSpawnRagdoll;
-            //Exiled.Events.Handlers.Player.TogglingNoClip += _eventHandler.OnTogglingNoclip;
 
             OnEventStarted();
         }
@@ -45,7 +44,6 @@ namespace AutoEvent.Events.Glass
             Exiled.Events.Handlers.Player.DroppingItem -= _eventHandler.OnDroppingItem;
             Exiled.Events.Handlers.Server.RespawningTeam -= _eventHandler.OnTeamRespawn;
             Exiled.Events.Handlers.Player.SpawningRagdoll -= _eventHandler.OnSpawnRagdoll;
-            //Exiled.Events.Handlers.Player.TogglingNoClip -= _eventHandler.OnTogglingNoclip;
 
             _eventHandler = null;
             Timing.CallDelayed(10f, () => EventEnd());

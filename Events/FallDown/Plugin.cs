@@ -14,7 +14,7 @@ namespace AutoEvent.Events.FallDown
     public class Plugin : Event
     {
         public override string Name { get; set; } = "Fall Down";
-        public override string Description { get; set; } = "All platforms are destroyed. It is necessary to survive.[Beta]";
+        public override string Description { get; set; } = "All platforms are destroyed. It is necessary to survive.";
         public override string Color { get; set; } = "FF4242";
         public override string CommandName { get; set; } = "fall";
         public static SchematicObject GameMap { get; set; }

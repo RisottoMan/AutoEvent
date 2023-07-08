@@ -15,7 +15,7 @@ namespace AutoEvent.Events.Survival
     public class Plugin : Event
     {
         public override string Name { get; set; } = "Zombie Survival";
-        public override string Description { get; set; } = "Survival of humans against zombies. [Beta]";
+        public override string Description { get; set; } = "Survival of humans against zombies.";
         public override string Color { get; set; } = "FF4242";
         public override string CommandName { get; set; } = "zombie2";
         public SchematicObject GameMap { get; set; }

@@ -15,7 +15,7 @@ namespace AutoEvent.Events.Battle
     public class Plugin : Event
     {
         public override string Name { get; set; } = "Battle";
-        public override string Description { get; set; } = "MTF vs CI [Beta]";
+        public override string Description { get; set; } = "Mtf vs Chaos Battle";
         public override string Color { get; set; } = "FFFF00";
         public override string CommandName { get; set; } = "battle";
         public TimeSpan EventTime { get; set; }

@@ -14,7 +14,7 @@ namespace AutoEvent.Events.Jail
     public class Plugin : Event
     {
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.JailName;
-        public override string Description { get; set; } = AutoEvent.Singleton.Translation.JailDescription + " [Beta]";
+        public override string Description { get; set; } = AutoEvent.Singleton.Translation.JailDescription;
         public override string Color { get; set; } = "FFFF00";
         public override string CommandName { get; set; } = "jail";
         public SchematicObject GameMap { get; set; }

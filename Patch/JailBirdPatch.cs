@@ -7,7 +7,7 @@ namespace AutoEvent.Patch
 {
     internal class JailBirdPatch
     {
-        //[HarmonyPatch(typeof(JailbirdItem), nameof(JailbirdItem.ServerProcessCmd))]
+        //[HarmonyPatch(typeof(JailbirdItem), nameof(JailbirdItem.ServerProcessCmd))] // НУжны люди для проверки
         static class ServerProcessCmdPatch
         {
             internal static bool Prefix(JailbirdItem __instance, NetworkReader reader)

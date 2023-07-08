@@ -14,7 +14,7 @@ namespace AutoEvent.Events.Deathmatch
     public class Plugin : Event
     {
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.DeathmatchName;
-        public override string Description { get; set; } = AutoEvent.Singleton.Translation.DeathmatchDescription + " [Beta]";
+        public override string Description { get; set; } = AutoEvent.Singleton.Translation.DeathmatchDescription;
         public override string Color { get; set; } = "FFFF00";
         public override string CommandName { get; set; } = "deathmatch";
         public TimeSpan EventTime { get; set; }
