@@ -19,7 +19,7 @@ namespace AutoEvent.Events.Survival
         public SchematicObject GameMap { get; set; }
         public TimeSpan EventTime { get; set; }
 
-        EventHandler _eventHandler;
+        //EventHandler _eventHandler;
 
         public override void OnStart()
         {
