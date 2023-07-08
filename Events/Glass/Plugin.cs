@@ -123,7 +123,11 @@ namespace AutoEvent.Events.Glass
         {
             while (EventTime.TotalSeconds > 0 && Player.List.Count(r => r.IsAlive) > 0)
             {
-                Extensions.Broadcast(AutoEvent.Singleton.Translation.GlassStart.Replace("{plyAlive}", $"{Player.List.Count(r=>r.IsAlive)}").Replace("{eventTime}", $"{EventTime.Minutes} : {EventTime.Seconds}"), 1);
+                var text = AutoEvent.Singleton.Translation.GlassStart;
+                text = text.Replace("{plyAlive}", Player.List.Count(r => r.IsAlive).ToString());
+                text = text.Replace("{eventTime}", $"{EventTime.Minutes}:{EventTime.Seconds}");
+
+                Extensions.Broadcast(text, 1);
 
                 yield return Timing.WaitForSeconds(1f);
                 EventTime -= TimeSpan.FromSeconds(1f);
@@ -133,21 +137,21 @@ namespace AutoEvent.Events.Glass
             {
                 if (Vector3.Distance(player.Position, GameMap.AttachedBlocks.First(x => x.name == "Finish").transform.position) >= 10)
                 {
-                    player.Hurt(500, $"{AutoEvent.Singleton.Translation.GlassDied}");
+                    player.Hurt(500, AutoEvent.Singleton.Translation.GlassDied);
                 }
             }
 
             if (Player.List.Count(r => r.IsAlive) > 1)
             {
-                Extensions.Broadcast(AutoEvent.Singleton.Translation.GlassWinSurvived.Replace("{countAlive}", $"{Player.List.Count(r => r.IsAlive)}"), 3);
+                Extensions.Broadcast(AutoEvent.Singleton.Translation.GlassWinSurvived.Replace("{countAlive}", Player.List.Count(r => r.IsAlive).ToString()), 3);
             }
             else if (Player.List.Count(r => r.IsAlive) == 1)
             {
-                Extensions.Broadcast(AutoEvent.Singleton.Translation.GlassWinner.Replace("{winner}", $"{Player.List.First(r =>r.IsAlive).Nickname}"), 10);
+                Extensions.Broadcast(AutoEvent.Singleton.Translation.GlassWinner.Replace("{winner}", Player.List.First(r =>r.IsAlive).Nickname), 10);
             }
             else if (Player.List.Count(r => r.IsAlive) < 1)
             {
-                Extensions.Broadcast($"{AutoEvent.Singleton.Translation.GlassFail}", 10);
+                Extensions.Broadcast(AutoEvent.Singleton.Translation.GlassFail, 10);
             }
 
             OnStop();
@@ -161,7 +165,6 @@ namespace AutoEvent.Events.Glass
             Extensions.TeleportEnd();
             Extensions.UnLoadMap(GameMap);
             Extensions.StopAudio();
-
             AutoEvent.ActiveEvent = null;
         }
     }

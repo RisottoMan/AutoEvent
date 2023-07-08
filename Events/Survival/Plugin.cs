@@ -14,8 +14,8 @@ namespace AutoEvent.Events.Survival
 {
     public class Plugin : Event
     {
-        public override string Name { get; set; } = AutoEvent.Singleton.Translation.Zombie2Name;
-        public override string Description { get; set; } = AutoEvent.Singleton.Translation.Zombie2Description;
+        public override string Name { get; set; } = AutoEvent.Singleton.Translation.SurvivalName;
+        public override string Description { get; set; } = AutoEvent.Singleton.Translation.SurvivalDescription;
         public override string Color { get; set; } = "FF4242";
         public override string CommandName { get; set; } = "zombie2";
         public SchematicObject GameMap { get; set; }
@@ -91,7 +91,7 @@ namespace AutoEvent.Events.Survival
         {
             for (float _time = 20; _time > 0; _time--)
             {
-                Extensions.Broadcast($"{AutoEvent.Singleton.Translation.Zombie2BeforeInfection.Replace("%name%", $"{Name}").Replace("%time%", $"{_time}")}", 1);
+                Extensions.Broadcast(AutoEvent.Singleton.Translation.SurvivalBeforeInfection.Replace("%name%", Name).Replace("%time%", $"{_time}"), 1);
                 yield return Timing.WaitForSeconds(1f);
             }
 
@@ -113,9 +113,8 @@ namespace AutoEvent.Events.Survival
                 foreach(var player in Player.List)
                 {
                     player.ClearBroadcasts();
-                    player.Broadcast(1,
-                        $"{AutoEvent.Singleton.Translation.Zombie2AfterInfection.Replace("%name%", $"{Name}").Replace("%humanCount%", $"{Player.List.Count(r => r.IsHuman)}")
-                            .Replace("%time%", $"{EventTime.Minutes} : {EventTime.Seconds}")}");
+                    player.Broadcast(1, AutoEvent.Singleton.Translation.SurvivalAfterInfection.Replace("%name%", Name).Replace("%humanCount%", $"{Player.List.Count(r => r.IsHuman)}")
+                            .Replace("%time%", $"{EventTime.Minutes}:{EventTime.Seconds}"));
 
                     if (Vector3.Distance(player.Position, teleport.transform.position) < 1)
                     {
@@ -129,15 +128,15 @@ namespace AutoEvent.Events.Survival
 
             if (Player.List.Count(r => r.IsHuman) == 0)
             {
-                Extensions.Broadcast($"{AutoEvent.Singleton.Translation.Zombie2ZombieWin}", 10);
+                Extensions.Broadcast(AutoEvent.Singleton.Translation.SurvivalZombieWin, 10);
             }
             else if (Player.List.Count(r => r.IsScp) == 0)
             {
-                Extensions.Broadcast($"{AutoEvent.Singleton.Translation.Zombie2HumanWin}", 10);
+                Extensions.Broadcast(AutoEvent.Singleton.Translation.SurvivalHumanWin, 10);
             }
             else
             {
-                Extensions.Broadcast($"{AutoEvent.Singleton.Translation.Zombie2HumanWinTime}", 10);
+                Extensions.Broadcast(AutoEvent.Singleton.Translation.SurvivalHumanWinTime, 10);
             }
 
             OnStop();

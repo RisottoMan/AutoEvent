@@ -98,14 +98,13 @@ namespace AutoEvent
         public string PuzzleDied { get; set; } = "<color=red>Burned in Lava</color>";
 
         [Description("Zombie Survival Game Mode (Zombie 2)")]
-        public string Zombie2Name { get; set; } = "Zombie Survival";
-        public string Zombie2Description { get; set; } = "Humans surviving from zombies";
-        public string Zombie2BeforeInfection { get; set; } = "<b>%name%</b>\n<color=yellow>There are </color> %time% <color=yellow>second before infection begins</color>";
-        public string Zombie2AfterInfection { get; set; } = "<b>%name%</b>\n<color=blue>Humans:</color> %humanCount%\n<color=green>Time to the end:</color> %time%";
-        public string Zombie2ZombieWin { get; set; } = "<color=red>Zombie infected all humans and wins!</color>";
-
-        public string Zombie2HumanWin { get; set; } = "<color=blue>Humans killed all zombies and stopped infection</color>";
-        public string Zombie2HumanWinTime { get; set; } = "<color=yellow>Humans survived, but infection is not stopped</color>";
+        public string SurvivalName { get; set; } = "Zombie Survival";
+        public string SurvivalDescription { get; set; } = "Humans surviving from zombies";
+        public string SurvivalBeforeInfection { get; set; } = "<b>%name%</b>\n<color=yellow>There are </color> %time% <color=yellow>second before infection begins</color>";
+        public string SurvivalAfterInfection { get; set; } = "<b>%name%</b>\n<color=blue>Humans:</color> %humanCount%\n<color=green>Time to the end:</color> %time%";
+        public string SurvivalZombieWin { get; set; } = "<color=red>Zombie infected all humans and wins!</color>";
+        public string SurvivalHumanWin { get; set; } = "<color=blue>Humans killed all zombies and stopped infection</color>";
+        public string SurvivalHumanWinTime { get; set; } = "<color=yellow>Humans survived, but infection is not stopped</color>";
 
         [Description("Fall Down Game Mode")] 
         public string FallName { get; set; } = "FallDown";

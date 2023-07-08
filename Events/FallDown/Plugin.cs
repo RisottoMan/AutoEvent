@@ -85,7 +85,7 @@ namespace AutoEvent.Events.FallDown
             {
                 var count = Player.List.Count(r => r.IsAlive);
                 var time = $"{EventTime.Minutes}:{EventTime.Seconds}";
-                Extensions.Broadcast($"{AutoEvent.Singleton.Translation.FallBroadcast.Replace("%name%", $"{Name}").Replace("%time%", $"{time}").Replace("%count%", $"{count}")}", 1);
+                Extensions.Broadcast(AutoEvent.Singleton.Translation.FallBroadcast.Replace("%name%", Name).Replace("%time%", time).Replace("%count%", $"{count}"), 1);
 
                 var platform = platformes.RandomItem();
                 platformes.Remove(platform);
@@ -97,11 +97,11 @@ namespace AutoEvent.Events.FallDown
 
             if (Player.List.Count(r => r.IsAlive) == 1)
             {
-                Extensions.Broadcast($"{AutoEvent.Singleton.Translation.FallWinner.Replace("%winner%", $"{Player.List.First(r => r.IsAlive).Nickname}")}", 10);
+                Extensions.Broadcast(AutoEvent.Singleton.Translation.FallWinner.Replace("%winner%", Player.List.First(r => r.IsAlive).Nickname), 10);
             }
             else
             {
-                Extensions.Broadcast($"{AutoEvent.Singleton.Translation.FallDied}", 10);
+                Extensions.Broadcast(AutoEvent.Singleton.Translation.FallDied, 10);
             }
             
             OnStop();
