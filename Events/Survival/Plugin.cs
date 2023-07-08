@@ -14,19 +14,19 @@ namespace AutoEvent.Events.Survival
 {
     public class Plugin : Event
     {
-        public override string Name { get; set; } = "Zombie Survival";
-        public override string Description { get; set; } = "Survival of humans against zombies.";
+        public override string Name { get; set; } = AutoEvent.Singleton.Translation.Zombie2Name;
+        public override string Description { get; set; } = AutoEvent.Singleton.Translation.Zombie2Description;
         public override string Color { get; set; } = "FF4242";
         public override string CommandName { get; set; } = "zombie2";
         public SchematicObject GameMap { get; set; }
         public TimeSpan EventTime { get; set; }
 
-        private bool isFreindlyFireEnabled;
+        private bool isFriendlyFireEnabled;
         EventHandler _eventHandler;
 
         public override void OnStart()
         {
-            isFreindlyFireEnabled = Server.FriendlyFire;
+            isFriendlyFireEnabled = Server.FriendlyFire;
             Server.FriendlyFire = false;
 
             OnEventStarted();
@@ -47,7 +47,7 @@ namespace AutoEvent.Events.Survival
         }
         public override void OnStop()
         {
-            Server.FriendlyFire = isFreindlyFireEnabled;
+            Server.FriendlyFire = isFriendlyFireEnabled;
 
             Exiled.Events.Handlers.Player.Verified -= _eventHandler.OnJoin;
             Exiled.Events.Handlers.Server.RespawningTeam -= _eventHandler.OnTeamRespawn;
@@ -91,7 +91,7 @@ namespace AutoEvent.Events.Survival
         {
             for (float _time = 20; _time > 0; _time--)
             {
-                Extensions.Broadcast($"<color=#D71868><b><i>{Name}</i></b></color>\n<color=#ABF000>There are <color=red>{_time}</color> seconds left before the infection begins</color>", 1);
+                Extensions.Broadcast($"{AutoEvent.Singleton.Translation.Zombie2BeforeInfection.Replace("%name%", $"{Name}").Replace("%time%", $"{_time}")}", 1);
                 yield return Timing.WaitForSeconds(1f);
             }
 
@@ -113,9 +113,9 @@ namespace AutoEvent.Events.Survival
                 foreach(var player in Player.List)
                 {
                     player.ClearBroadcasts();
-                    player.Broadcast(1, $"<color=#D71868><b><i>{Name}</i></b></color>\n" +
-                    $"<color=yellow>Humans: <color=green>{Player.List.Count(r => r.IsHuman)}</color></color>\n" +
-                    $"<color=yellow>Time to the end: <color=red>{EventTime.Minutes}:{EventTime.Seconds}</color></color>");
+                    player.Broadcast(1,
+                        $"{AutoEvent.Singleton.Translation.Zombie2AfterInfection.Replace("%name%", $"{Name}").Replace("%humanCount%", $"{Player.List.Count(r => r.IsHuman)}")
+                            .Replace("%time%", $"{EventTime.Minutes} : {EventTime.Seconds}")}");
 
                     if (Vector3.Distance(player.Position, teleport.transform.position) < 1)
                     {
@@ -129,18 +129,15 @@ namespace AutoEvent.Events.Survival
 
             if (Player.List.Count(r => r.IsHuman) == 0)
             {
-                Extensions.Broadcast($"<color=red>Zombies Win!</color>\n" +
-                $"<color=yellow>Zombies have infected all humans.</color>", 10);
+                Extensions.Broadcast($"{AutoEvent.Singleton.Translation.Zombie2ZombieWin}", 10);
             }
             else if (Player.List.Count(r => r.IsScp) == 0)
             {
-                Extensions.Broadcast($"<color=yellow><color=#D71868><b><i>Humans</i></b></color> Win!</color>\n" +
-                $"<color=yellow>Humans stopped the plague and killed all the zombies.</color>", 10);
+                Extensions.Broadcast($"{AutoEvent.Singleton.Translation.Zombie2HumanWin}", 10);
             }
             else
             {
-                Extensions.Broadcast($"<color=yellow><color=#D71868><b><i>Humans</i></b></color> Win!</color>\n" +
-                $"<color=yellow>Humans survived, but it's not over yet...</color>", 10);
+                Extensions.Broadcast($"{AutoEvent.Singleton.Translation.Zombie2HumanWinTime}", 10);
             }
 
             OnStop();
