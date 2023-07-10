@@ -23,7 +23,7 @@ namespace AutoEvent.Events.Survival
 
         private bool isFriendlyFireEnabled;
         EventHandler _eventHandler;
-
+        public Player firstZombie;
         public override void OnStart()
         {
             isFriendlyFireEnabled = Server.FriendlyFire;
@@ -108,6 +108,11 @@ namespace AutoEvent.Events.Survival
                 player.EnableEffect<Disabled>();
                 player.EnableEffect<Scp1853>();
                 player.Health = 10000;
+
+                if (Player.List.Count(r => r.IsScp) == 1)
+                {
+                    firstZombie = player;
+                }
             }
 
             var teleport = GameMap.AttachedBlocks.First(x => x.name == "Teleport");

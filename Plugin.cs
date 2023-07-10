@@ -51,7 +51,7 @@ namespace AutoEvent
 
         private void OnDecontamination(DecontaminatingEventArgs ev)
         {
-            if (ActiveEvent == null)
+            if (ActiveEvent != null)
             {
                 ev.IsAllowed = false;
             }

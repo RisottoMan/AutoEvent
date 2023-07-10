@@ -11,6 +11,7 @@ using AutoEvent.Events.Glass.Features;
 using Mirror;
 using Exiled.API.Enums;
 using Object = UnityEngine.Object;
+using CustomPlayerEffects;
 
 namespace AutoEvent.Events.Glass
 {
@@ -116,11 +117,20 @@ namespace AutoEvent.Events.Glass
             {
                 player.Role.Set(RoleTypeId.ClassD, SpawnReason.None, RoleSpawnFlags.None);
                 player.Position = RandomClass.GetSpawnPosition(GameMap);
+                player.EnableEffect<Disabled>();
             }
             Timing.RunCoroutine(OnEventRunning(), "glass_time");
         }
         public IEnumerator<float> OnEventRunning()
         {
+            for (int time = 15; time > 0; time--)
+            {
+                Extensions.Broadcast($"<size=100><color=red>{time}</color></size>", 1);
+                yield return Timing.WaitForSeconds(1f);
+            }
+
+            GameObject.Destroy(GameMap.AttachedBlocks.First(x => x.name == "Wall"));
+
             while (EventTime.TotalSeconds > 0 && Player.List.Count(r => r.IsAlive) > 0)
             {
                 var text = AutoEvent.Singleton.Translation.GlassStart;
