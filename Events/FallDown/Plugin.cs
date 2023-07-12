@@ -1,6 +1,7 @@
 ﻿using AutoEvent.Events.Speedrun.Features;
 using AutoEvent.Interfaces;
 using Exiled.API.Features;
+using Exiled.Events.Commands.Reload;
 using MapEditorReborn.API.Features.Objects;
 using MEC;
 using PlayerRoles;
@@ -80,6 +81,7 @@ namespace AutoEvent.Events.FallDown
             }
 
             List<GameObject> platformes = GameMap.AttachedBlocks.Where(x => x.name == "Platform").ToList();
+            GameObject.Destroy(GameMap.AttachedBlocks.First(x => x.name == "Wall"));
 
             while (Player.List.Count(r => r.IsAlive) > 1 && platformes.Count > 1)
             {

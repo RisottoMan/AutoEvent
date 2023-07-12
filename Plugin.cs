@@ -11,7 +11,7 @@ namespace AutoEvent
     {
         public override string Name => "AutoEvent";
         public override string Author => "Created by KoT0XleB, extended by swd and sky";
-        public override Version Version => new Version(8, 0, 1);
+        public override Version Version => new Version(8, 0, 2);
         public static IEvent ActiveEvent = null;
         public static AutoEvent Singleton;
         public static Harmony HarmonyPatch;

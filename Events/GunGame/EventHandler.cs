@@ -52,10 +52,10 @@ namespace AutoEvent.Events.GunGame
                 {
                     statsAttacker.level++;
                     statsAttacker.kill = 0;
-                    ev.Attacker.ClearInventory();
 
+                    ev.Attacker.ClearInventory();
                     var item = ev.Attacker.AddItem(GunGameGuns.GunForLevel[_playerStats[ev.Attacker].level]);
-                    Timing.CallDelayed(0.1f, () =>
+                    Timing.CallDelayed(0.2f, () =>
                     {
                         ev.Attacker.CurrentItem = item;
                     });
@@ -64,11 +64,11 @@ namespace AutoEvent.Events.GunGame
 
             if (ev.Player != null)
             {
-                ev.Player.ClearInventory();
                 ev.Player.Position = GunGameRandom.GetRandomPosition(_gameMap);
 
+                ev.Player.ClearInventory();
                 var item = ev.Player.AddItem(GunGameGuns.GunForLevel[_playerStats[ev.Player].level]);
-                Timing.CallDelayed(0.1f, () =>
+                Timing.CallDelayed(0.2f, () =>
                 {
                     ev.Player.CurrentItem = item;
                 });

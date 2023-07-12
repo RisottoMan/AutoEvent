@@ -24,6 +24,7 @@ namespace AutoEvent.Events.Glass
         public SchematicObject GameMap { get; set; }
         public List<GameObject> Platformes { get; set; }
         public GameObject Lava { get; set; }
+        public GameObject Finish { get; set; }
         public TimeSpan EventTime { get; set; }
 
         EventHandler _eventHandler;
@@ -62,22 +63,22 @@ namespace AutoEvent.Events.Glass
             if (playerCount <= 5)
             {
                 platformCount = 3;
-                EventTime = new TimeSpan(0, 1, 0);
+                EventTime = new TimeSpan(0, 0, 30);
             }
             else if (playerCount > 5 && playerCount <= 15)
             {
                 platformCount = 6;
-                EventTime = new TimeSpan(0, 1, 30);
+                EventTime = new TimeSpan(0, 1, 0);
             }
             else if (playerCount > 15 && playerCount <= 25)
             {
                 platformCount = 9;
-                EventTime = new TimeSpan(0, 2, 0);
+                EventTime = new TimeSpan(0, 1, 30);
             }
             else if (playerCount > 25 && playerCount <= 30)
             {
                 platformCount = 12;
-                EventTime = new TimeSpan(0, 2, 30);
+                EventTime = new TimeSpan(0, 2, 0);
             }
             else
             {
@@ -110,8 +111,8 @@ namespace AutoEvent.Events.Glass
                 }
             }
 
-            var finish = GameMap.AttachedBlocks.First(x => x.name == "Finish");
-            finish.transform.position = (platform.transform.position + platform1.transform.position) / 2f + delta * (platformCount + 2);
+            Finish = GameMap.AttachedBlocks.First(x => x.name == "Finish");
+            Finish.transform.position = (platform.transform.position + platform1.transform.position) / 2f + delta * (platformCount + 2);
 
             foreach (Player player in Player.List)
             {
@@ -145,12 +146,12 @@ namespace AutoEvent.Events.Glass
 
             foreach (Player player in Player.List)
             {
-                if (Vector3.Distance(player.Position, GameMap.AttachedBlocks.First(x => x.name == "Finish").transform.position) >= 10)
+                if (Vector3.Distance(player.Position, Finish.transform.position) >= 10)
                 {
                     player.Hurt(500, AutoEvent.Singleton.Translation.GlassDied);
                 }
             }
-
+            
             if (Player.List.Count(r => r.IsAlive) > 1)
             {
                 Extensions.Broadcast(AutoEvent.Singleton.Translation.GlassWinSurvived.Replace("{countAlive}", Player.List.Count(r => r.IsAlive).ToString()), 3);
@@ -170,7 +171,6 @@ namespace AutoEvent.Events.Glass
         public void EventEnd()
         {
             Platformes.ForEach(Object.Destroy);
-            GameObject.Destroy(Lava);
             Extensions.CleanUpAll();
             Extensions.TeleportEnd();
             Extensions.UnLoadMap(GameMap);

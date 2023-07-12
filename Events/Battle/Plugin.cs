@@ -86,7 +86,7 @@ namespace AutoEvent.Events.Battle
         }
         public IEnumerator<float> OnEventRunning()
         {
-            for (int time = 30; time > 0; time--)
+            for (int time = 20; time > 0; time--)
             {
                 Extensions.Broadcast($"{AutoEvent.Singleton.Translation.BattleTimeLeft.Replace("{time}", $"{time}")}", 5);
                 yield return Timing.WaitForSeconds(1f);

@@ -14,7 +14,6 @@ namespace AutoEvent.Events.Glass.Features
         }
         void OnTriggerEnter(Collider other)
         {
-            Log.Info("Trigger");
             if (Player.Get(other.gameObject) is Player)
             {
                 Destroy(gameObject);

@@ -16,7 +16,6 @@ namespace AutoEvent.Events.Battle.Features
                     {
                         player.AddItem(ItemType.GunE11SR);
                         player.AddItem(ItemType.Medkit, 2);
-                        player.AddItem(ItemType.GrenadeHE, 2);
                         player.AddItem(ItemType.ArmorCombat);
                         player.AddItem(ItemType.SCP1853);
                         player.AddItem(ItemType.Adrenaline);
@@ -35,7 +34,6 @@ namespace AutoEvent.Events.Battle.Features
                         player.AddAhp(100, 500);
                         player.AddItem(ItemType.GunLogicer);
                         player.AddItem(ItemType.ArmorHeavy);
-                        player.AddItem(ItemType.GrenadeHE, 2);
                         player.AddItem(ItemType.SCP500, 2);
                         player.AddItem(ItemType.SCP1853);
                         player.AddItem(ItemType.Medkit);
@@ -43,6 +41,7 @@ namespace AutoEvent.Events.Battle.Features
                     break;
             }
         }
+
         public static Vector3 GetSpawnPosition(SchematicObject GameMap, bool isMtf)
         {
             if (isMtf) return GameMap.AttachedBlocks.Where(x => x.name == "Spawnpoint").FirstOrDefault().transform.position;

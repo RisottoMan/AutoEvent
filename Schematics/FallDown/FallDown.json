@@ -1,30 +1,13 @@
 {
-  "RootObjectId": -69056,
+  "RootObjectId": -119394,
   "Blocks": [
     {
-      "Name": "Point Light",
-      "ObjectId": -69064,
-      "ParentId": -69056,
-      "Position": {
-        "x": 0.0,
-        "y": 16.0,
-        "z": 0.0
-      },
-      "BlockType": 2,
-      "Properties": {
-        "Color": "FFFFFFFF",
-        "Intensity": 50.0,
-        "Range": 50.0,
-        "Shadows": false
-      }
-    },
-    {
       "Name": "Spawnpoint",
-      "ObjectId": -69070,
-      "ParentId": -69056,
+      "ObjectId": -119398,
+      "ParentId": -119394,
       "Position": {
         "x": -0.34,
-        "y": 12.44,
+        "y": 16.47,
         "z": -0.22
       },
       "Rotation": {
@@ -44,9 +27,26 @@
       }
     },
     {
+      "Name": "Point Light",
+      "ObjectId": -119478,
+      "ParentId": -119394,
+      "Position": {
+        "x": 0.0,
+        "y": 20.24,
+        "z": 0.0
+      },
+      "BlockType": 2,
+      "Properties": {
+        "Color": "FFFFFFFF",
+        "Intensity": 50.0,
+        "Range": 50.0,
+        "Shadows": false
+      }
+    },
+    {
       "Name": "Lava",
-      "ObjectId": -69080,
-      "ParentId": -69056,
+      "ObjectId": -119408,
+      "ParentId": -119394,
       "Position": {
         "x": 0.025,
         "y": 2.284,
@@ -70,8 +70,8 @@
     },
     {
       "Name": "Quad",
-      "ObjectId": -69090,
-      "ParentId": -69056,
+      "ObjectId": -119418,
+      "ParentId": -119394,
       "Position": {
         "x": 12.0620012,
         "y": 8.848002,
@@ -95,8 +95,8 @@
     },
     {
       "Name": "Quad (1)",
-      "ObjectId": -69100,
-      "ParentId": -69056,
+      "ObjectId": -119428,
+      "ParentId": -119394,
       "Position": {
         "x": -12.3779993,
         "y": 8.769002,
@@ -120,8 +120,8 @@
     },
     {
       "Name": "Quad (2)",
-      "ObjectId": -69110,
-      "ParentId": -69056,
+      "ObjectId": -119438,
+      "ParentId": -119394,
       "Position": {
         "x": -0.1749978,
         "y": 8.853002,
@@ -145,8 +145,8 @@
     },
     {
       "Name": "Quad (3)",
-      "ObjectId": -69120,
-      "ParentId": -69056,
+      "ObjectId": -119448,
+      "ParentId": -119394,
       "Position": {
         "x": -0.221000671,
         "y": 8.809001,
@@ -170,8 +170,8 @@
     },
     {
       "Name": "Quad (4)",
-      "ObjectId": -69130,
-      "ParentId": -69056,
+      "ObjectId": -119458,
+      "ParentId": -119394,
       "Position": {
         "x": 0.0,
         "y": 0.0,
@@ -195,8 +195,8 @@
     },
     {
       "Name": "Quad (5)",
-      "ObjectId": -69140,
-      "ParentId": -69056,
+      "ObjectId": -119468,
+      "ParentId": -119394,
       "Position": {
         "x": -0.07899857,
         "y": 17.8139248,
@@ -219,13 +219,38 @@
       }
     },
     {
-      "Name": "Platform",
-      "ObjectId": -69150,
-      "ParentId": -69056,
+      "Name": "Wall",
+      "ObjectId": -125418,
+      "ParentId": -119394,
       "Position": {
-        "x": -8.26,
+        "x": 0.0,
+        "y": 13.15,
+        "z": 0.0
+      },
+      "Rotation": {
+        "x": 90.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "Scale": {
+        "x": 24.71248,
+        "y": 25.3504143,
+        "z": 0.5
+      },
+      "BlockType": 1,
+      "Properties": {
+        "PrimitiveType": 5,
+        "Color": "FFFFFF64"
+      }
+    },
+    {
+      "Name": "Platform",
+      "ObjectId": -119484,
+      "ParentId": -119394,
+      "Position": {
+        "x": -11.47,
         "y": 9.35,
-        "z": -8.219999
+        "z": -11.63
       },
       "Rotation": {
         "x": 0.0,
@@ -245,12 +270,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -69160,
-      "ParentId": -69056,
+      "ObjectId": -119494,
+      "ParentId": -119394,
       "Position": {
-        "x": -8.26,
+        "x": -11.47,
         "y": 9.35,
-        "z": -6.9199996
+        "z": -9.7300005
       },
       "Rotation": {
         "x": 0.0,
@@ -270,12 +295,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -69170,
-      "ParentId": -69056,
+      "ObjectId": -119504,
+      "ParentId": -119394,
       "Position": {
-        "x": -8.26,
+        "x": -11.47,
         "y": 9.35,
-        "z": -5.62
+        "z": -7.83
       },
       "Rotation": {
         "x": 0.0,
@@ -295,12 +320,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -69180,
-      "ParentId": -69056,
+      "ObjectId": -119514,
+      "ParentId": -119394,
       "Position": {
-        "x": -8.26,
+        "x": -11.47,
         "y": 9.35,
-        "z": -4.32
+        "z": -5.93000031
       },
       "Rotation": {
         "x": 0.0,
@@ -320,12 +345,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -69190,
-      "ParentId": -69056,
+      "ObjectId": -119524,
+      "ParentId": -119394,
       "Position": {
-        "x": -8.26,
+        "x": -11.47,
         "y": 9.35,
-        "z": -3.02
+        "z": -4.03
       },
       "Rotation": {
         "x": 0.0,
@@ -345,12 +370,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -69200,
-      "ParentId": -69056,
+      "ObjectId": -119534,
+      "ParentId": -119394,
       "Position": {
-        "x": -8.26,
+        "x": -11.47,
         "y": 9.35,
-        "z": -1.71999979
+        "z": -2.13
       },
       "Rotation": {
         "x": 0.0,
@@ -370,12 +395,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -69210,
-      "ParentId": -69056,
+      "ObjectId": -119544,
+      "ParentId": -119394,
       "Position": {
-        "x": -8.26,
+        "x": -11.47,
         "y": 9.35,
-        "z": -0.420000076
+        "z": -0.230000377
       },
       "Rotation": {
         "x": 0.0,
@@ -395,12 +420,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -69220,
-      "ParentId": -69056,
+      "ObjectId": -119554,
+      "ParentId": -119394,
       "Position": {
-        "x": -8.26,
+        "x": -11.47,
         "y": 9.35,
-        "z": 0.879999638
+        "z": 1.6700002
       },
       "Rotation": {
         "x": 0.0,
@@ -420,12 +445,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -69230,
-      "ParentId": -69056,
+      "ObjectId": -119564,
+      "ParentId": -119394,
       "Position": {
-        "x": -8.26,
+        "x": -11.47,
         "y": 9.35,
-        "z": 2.17999983
+        "z": 3.56999969
       },
       "Rotation": {
         "x": 0.0,
@@ -445,12 +470,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -69240,
-      "ParentId": -69056,
+      "ObjectId": -119574,
+      "ParentId": -119394,
       "Position": {
-        "x": -8.26,
+        "x": -11.47,
         "y": 9.35,
-        "z": 3.48
+        "z": 5.47000027
       },
       "Rotation": {
         "x": 0.0,
@@ -470,12 +495,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -69250,
-      "ParentId": -69056,
+      "ObjectId": -119584,
+      "ParentId": -119394,
       "Position": {
-        "x": -8.26,
+        "x": -11.47,
         "y": 9.35,
-        "z": 4.78
+        "z": 7.37
       },
       "Rotation": {
         "x": 0.0,
@@ -495,12 +520,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -69260,
-      "ParentId": -69056,
+      "ObjectId": -119594,
+      "ParentId": -119394,
       "Position": {
-        "x": -8.26,
+        "x": -11.47,
         "y": 9.35,
-        "z": 6.07999945
+        "z": 9.2699995
       },
       "Rotation": {
         "x": 0.0,
@@ -520,12 +545,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -69270,
-      "ParentId": -69056,
+      "ObjectId": -119604,
+      "ParentId": -119394,
       "Position": {
-        "x": -8.26,
+        "x": -11.47,
         "y": 9.35,
-        "z": 7.37999964
+        "z": 11.1699991
       },
       "Rotation": {
         "x": 0.0,
@@ -545,12 +570,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -69280,
-      "ParentId": -69056,
+      "ObjectId": -119614,
+      "ParentId": -119394,
       "Position": {
-        "x": -6.96,
+        "x": -9.57,
         "y": 9.35,
-        "z": -8.219999
+        "z": -11.63
       },
       "Rotation": {
         "x": 0.0,
@@ -570,12 +595,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -69290,
-      "ParentId": -69056,
+      "ObjectId": -119624,
+      "ParentId": -119394,
       "Position": {
-        "x": -6.96,
+        "x": -9.57,
         "y": 9.35,
-        "z": -6.9199996
+        "z": -9.7300005
       },
       "Rotation": {
         "x": 0.0,
@@ -595,12 +620,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -69300,
-      "ParentId": -69056,
+      "ObjectId": -119634,
+      "ParentId": -119394,
       "Position": {
-        "x": -6.96,
+        "x": -9.57,
         "y": 9.35,
-        "z": -5.62
+        "z": -7.83
       },
       "Rotation": {
         "x": 0.0,
@@ -620,12 +645,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -69310,
-      "ParentId": -69056,
+      "ObjectId": -119644,
+      "ParentId": -119394,
       "Position": {
-        "x": -6.96,
+        "x": -9.57,
         "y": 9.35,
-        "z": -4.32
+        "z": -5.93000031
       },
       "Rotation": {
         "x": 0.0,
@@ -645,12 +670,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -69320,
-      "ParentId": -69056,
+      "ObjectId": -119654,
+      "ParentId": -119394,
       "Position": {
-        "x": -6.96,
+        "x": -9.57,
         "y": 9.35,
-        "z": -3.02
+        "z": -4.03
       },
       "Rotation": {
         "x": 0.0,
@@ -670,12 +695,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -69330,
-      "ParentId": -69056,
+      "ObjectId": -119664,
+      "ParentId": -119394,
       "Position": {
-        "x": -6.96,
+        "x": -9.57,
         "y": 9.35,
-        "z": -1.71999979
+        "z": -2.13
       },
       "Rotation": {
         "x": 0.0,
@@ -695,12 +720,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -69340,
-      "ParentId": -69056,
+      "ObjectId": -119674,
+      "ParentId": -119394,
       "Position": {
-        "x": -6.96,
+        "x": -9.57,
         "y": 9.35,
-        "z": -0.420000076
+        "z": -0.230000377
       },
       "Rotation": {
         "x": 0.0,
@@ -720,12 +745,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -69350,
-      "ParentId": -69056,
+      "ObjectId": -119684,
+      "ParentId": -119394,
       "Position": {
-        "x": -6.96,
+        "x": -9.57,
         "y": 9.35,
-        "z": 0.879999638
+        "z": 1.6700002
       },
       "Rotation": {
         "x": 0.0,
@@ -745,12 +770,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -69360,
-      "ParentId": -69056,
+      "ObjectId": -119694,
+      "ParentId": -119394,
       "Position": {
-        "x": -6.96,
+        "x": -9.57,
         "y": 9.35,
-        "z": 2.17999983
+        "z": 3.56999969
       },
       "Rotation": {
         "x": 0.0,
@@ -770,12 +795,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -69370,
-      "ParentId": -69056,
+      "ObjectId": -119704,
+      "ParentId": -119394,
       "Position": {
-        "x": -6.96,
+        "x": -9.57,
         "y": 9.35,
-        "z": 3.48
+        "z": 5.47000027
       },
       "Rotation": {
         "x": 0.0,
@@ -795,12 +820,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -69380,
-      "ParentId": -69056,
+      "ObjectId": -119714,
+      "ParentId": -119394,
       "Position": {
-        "x": -6.96,
+        "x": -9.57,
         "y": 9.35,
-        "z": 4.78
+        "z": 7.37
       },
       "Rotation": {
         "x": 0.0,
@@ -820,12 +845,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -69390,
-      "ParentId": -69056,
+      "ObjectId": -119724,
+      "ParentId": -119394,
       "Position": {
-        "x": -6.96,
+        "x": -9.57,
         "y": 9.35,
-        "z": 6.07999945
+        "z": 9.2699995
       },
       "Rotation": {
         "x": 0.0,
@@ -845,12 +870,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -69400,
-      "ParentId": -69056,
+      "ObjectId": -119734,
+      "ParentId": -119394,
       "Position": {
-        "x": -6.96,
+        "x": -9.57,
         "y": 9.35,
-        "z": 7.37999964
+        "z": 11.1699991
       },
       "Rotation": {
         "x": 0.0,
@@ -870,12 +895,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -69410,
-      "ParentId": -69056,
+      "ObjectId": -119744,
+      "ParentId": -119394,
       "Position": {
-        "x": -5.66000032,
+        "x": -7.67,
         "y": 9.35,
-        "z": -8.219999
+        "z": -11.63
       },
       "Rotation": {
         "x": 0.0,
@@ -895,12 +920,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -69420,
-      "ParentId": -69056,
+      "ObjectId": -119754,
+      "ParentId": -119394,
       "Position": {
-        "x": -5.66000032,
+        "x": -7.67,
         "y": 9.35,
-        "z": -6.9199996
+        "z": -9.7300005
       },
       "Rotation": {
         "x": 0.0,
@@ -920,12 +945,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -69430,
-      "ParentId": -69056,
+      "ObjectId": -119764,
+      "ParentId": -119394,
       "Position": {
-        "x": -5.66000032,
+        "x": -7.67,
         "y": 9.35,
-        "z": -5.62
+        "z": -7.83
       },
       "Rotation": {
         "x": 0.0,
@@ -945,12 +970,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -69440,
-      "ParentId": -69056,
+      "ObjectId": -119774,
+      "ParentId": -119394,
       "Position": {
-        "x": -5.66000032,
+        "x": -7.67,
         "y": 9.35,
-        "z": -4.32
+        "z": -5.93000031
       },
       "Rotation": {
         "x": 0.0,
@@ -970,12 +995,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -69450,
-      "ParentId": -69056,
+      "ObjectId": -119784,
+      "ParentId": -119394,
       "Position": {
-        "x": -5.66000032,
+        "x": -7.67,
         "y": 9.35,
-        "z": -3.02
+        "z": -4.03
       },
       "Rotation": {
         "x": 0.0,
@@ -995,12 +1020,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -69460,
-      "ParentId": -69056,
+      "ObjectId": -119794,
+      "ParentId": -119394,
       "Position": {
-        "x": -5.66000032,
+        "x": -7.67,
         "y": 9.35,
-        "z": -1.71999979
+        "z": -2.13
       },
       "Rotation": {
         "x": 0.0,
@@ -1020,12 +1045,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -69470,
-      "ParentId": -69056,
+      "ObjectId": -119804,
+      "ParentId": -119394,
       "Position": {
-        "x": -5.66000032,
+        "x": -7.67,
         "y": 9.35,
-        "z": -0.420000076
+        "z": -0.230000377
       },
       "Rotation": {
         "x": 0.0,
@@ -1045,12 +1070,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -69480,
-      "ParentId": -69056,
+      "ObjectId": -119814,
+      "ParentId": -119394,
       "Position": {
-        "x": -5.66000032,
+        "x": -7.67,
         "y": 9.35,
-        "z": 0.879999638
+        "z": 1.6700002
       },
       "Rotation": {
         "x": 0.0,
@@ -1070,12 +1095,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -69490,
-      "ParentId": -69056,
+      "ObjectId": -119824,
+      "ParentId": -119394,
       "Position": {
-        "x": -5.66000032,
+        "x": -7.67,
         "y": 9.35,
-        "z": 2.17999983
+        "z": 3.56999969
       },
       "Rotation": {
         "x": 0.0,
@@ -1095,12 +1120,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -69500,
-      "ParentId": -69056,
+      "ObjectId": -119834,
+      "ParentId": -119394,
       "Position": {
-        "x": -5.66000032,
+        "x": -7.67,
         "y": 9.35,
-        "z": 3.48
+        "z": 5.47000027
       },
       "Rotation": {
         "x": 0.0,
@@ -1120,12 +1145,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -69510,
-      "ParentId": -69056,
+      "ObjectId": -119844,
+      "ParentId": -119394,
       "Position": {
-        "x": -5.66000032,
+        "x": -7.67,
         "y": 9.35,
-        "z": 4.78
+        "z": 7.37
       },
       "Rotation": {
         "x": 0.0,
@@ -1145,12 +1170,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -69520,
-      "ParentId": -69056,
+      "ObjectId": -119854,
+      "ParentId": -119394,
       "Position": {
-        "x": -5.66000032,
+        "x": -7.67,
         "y": 9.35,
-        "z": 6.07999945
+        "z": 9.2699995
       },
       "Rotation": {
         "x": 0.0,
@@ -1170,12 +1195,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -69530,
-      "ParentId": -69056,
+      "ObjectId": -119864,
+      "ParentId": -119394,
       "Position": {
-        "x": -5.66000032,
+        "x": -7.67,
         "y": 9.35,
-        "z": 7.37999964
+        "z": 11.1699991
       },
       "Rotation": {
         "x": 0.0,
@@ -1195,12 +1220,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -69540,
-      "ParentId": -69056,
+      "ObjectId": -119874,
+      "ParentId": -119394,
       "Position": {
-        "x": -4.36000061,
+        "x": -5.77000046,
         "y": 9.35,
-        "z": -8.219999
+        "z": -11.63
       },
       "Rotation": {
         "x": 0.0,
@@ -1220,12 +1245,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -69550,
-      "ParentId": -69056,
+      "ObjectId": -119884,
+      "ParentId": -119394,
       "Position": {
-        "x": -4.36000061,
+        "x": -5.77000046,
         "y": 9.35,
-        "z": -6.9199996
+        "z": -9.7300005
       },
       "Rotation": {
         "x": 0.0,
@@ -1245,12 +1270,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -69560,
-      "ParentId": -69056,
+      "ObjectId": -119894,
+      "ParentId": -119394,
       "Position": {
-        "x": -4.36000061,
+        "x": -5.77000046,
         "y": 9.35,
-        "z": -5.62
+        "z": -7.83
       },
       "Rotation": {
         "x": 0.0,
@@ -1270,12 +1295,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -69570,
-      "ParentId": -69056,
+      "ObjectId": -119904,
+      "ParentId": -119394,
       "Position": {
-        "x": -4.36000061,
+        "x": -5.77000046,
         "y": 9.35,
-        "z": -4.32
+        "z": -5.93000031
       },
       "Rotation": {
         "x": 0.0,
@@ -1295,12 +1320,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -69580,
-      "ParentId": -69056,
+      "ObjectId": -119914,
+      "ParentId": -119394,
       "Position": {
-        "x": -4.36000061,
+        "x": -5.77000046,
         "y": 9.35,
-        "z": -3.02
+        "z": -4.03
       },
       "Rotation": {
         "x": 0.0,
@@ -1320,12 +1345,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -69590,
-      "ParentId": -69056,
+      "ObjectId": -119924,
+      "ParentId": -119394,
       "Position": {
-        "x": -4.36000061,
+        "x": -5.77000046,
         "y": 9.35,
-        "z": -1.71999979
+        "z": -2.13
       },
       "Rotation": {
         "x": 0.0,
@@ -1345,12 +1370,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -69600,
-      "ParentId": -69056,
+      "ObjectId": -119934,
+      "ParentId": -119394,
       "Position": {
-        "x": -4.36000061,
+        "x": -5.77000046,
         "y": 9.35,
-        "z": -0.420000076
+        "z": -0.230000377
       },
       "Rotation": {
         "x": 0.0,
@@ -1370,12 +1395,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -69610,
-      "ParentId": -69056,
+      "ObjectId": -119944,
+      "ParentId": -119394,
       "Position": {
-        "x": -4.36000061,
+        "x": -5.77000046,
         "y": 9.35,
-        "z": 0.879999638
+        "z": 1.6700002
       },
       "Rotation": {
         "x": 0.0,
@@ -1395,12 +1420,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -69620,
-      "ParentId": -69056,
+      "ObjectId": -119954,
+      "ParentId": -119394,
       "Position": {
-        "x": -4.36000061,
+        "x": -5.77000046,
         "y": 9.35,
-        "z": 2.17999983
+        "z": 3.56999969
       },
       "Rotation": {
         "x": 0.0,
@@ -1420,12 +1445,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -69630,
-      "ParentId": -69056,
+      "ObjectId": -119964,
+      "ParentId": -119394,
       "Position": {
-        "x": -4.36000061,
+        "x": -5.77000046,
         "y": 9.35,
-        "z": 3.48
+        "z": 5.47000027
       },
       "Rotation": {
         "x": 0.0,
@@ -1445,12 +1470,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -69640,
-      "ParentId": -69056,
+      "ObjectId": -119974,
+      "ParentId": -119394,
       "Position": {
-        "x": -4.36000061,
+        "x": -5.77000046,
         "y": 9.35,
-        "z": 4.78
+        "z": 7.37
       },
       "Rotation": {
         "x": 0.0,
@@ -1470,12 +1495,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -69650,
-      "ParentId": -69056,
+      "ObjectId": -119984,
+      "ParentId": -119394,
       "Position": {
-        "x": -4.36000061,
+        "x": -5.77000046,
         "y": 9.35,
-        "z": 6.07999945
+        "z": 9.2699995
       },
       "Rotation": {
         "x": 0.0,
@@ -1495,12 +1520,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -69660,
-      "ParentId": -69056,
+      "ObjectId": -119994,
+      "ParentId": -119394,
       "Position": {
-        "x": -4.36000061,
+        "x": -5.77000046,
         "y": 9.35,
-        "z": 7.37999964
+        "z": 11.1699991
       },
       "Rotation": {
         "x": 0.0,
@@ -1520,12 +1545,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -69670,
-      "ParentId": -69056,
+      "ObjectId": -120004,
+      "ParentId": -119394,
       "Position": {
-        "x": -3.06000042,
+        "x": -3.87000036,
         "y": 9.35,
-        "z": -8.219999
+        "z": -11.63
       },
       "Rotation": {
         "x": 0.0,
@@ -1545,12 +1570,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -69680,
-      "ParentId": -69056,
+      "ObjectId": -120014,
+      "ParentId": -119394,
       "Position": {
-        "x": -3.06000042,
+        "x": -3.87000036,
         "y": 9.35,
-        "z": -6.9199996
+        "z": -9.7300005
       },
       "Rotation": {
         "x": 0.0,
@@ -1570,12 +1595,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -69690,
-      "ParentId": -69056,
+      "ObjectId": -120024,
+      "ParentId": -119394,
       "Position": {
-        "x": -3.06000042,
+        "x": -3.87000036,
         "y": 9.35,
-        "z": -5.62
+        "z": -7.83
       },
       "Rotation": {
         "x": 0.0,
@@ -1595,12 +1620,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -69700,
-      "ParentId": -69056,
+      "ObjectId": -120034,
+      "ParentId": -119394,
       "Position": {
-        "x": -3.06000042,
+        "x": -3.87000036,
         "y": 9.35,
-        "z": -4.32
+        "z": -5.93000031
       },
       "Rotation": {
         "x": 0.0,
@@ -1620,12 +1645,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -69710,
-      "ParentId": -69056,
+      "ObjectId": -120044,
+      "ParentId": -119394,
       "Position": {
-        "x": -3.06000042,
+        "x": -3.87000036,
         "y": 9.35,
-        "z": -3.02
+        "z": -4.03
       },
       "Rotation": {
         "x": 0.0,
@@ -1645,12 +1670,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -69720,
-      "ParentId": -69056,
+      "ObjectId": -120054,
+      "ParentId": -119394,
       "Position": {
-        "x": -3.06000042,
+        "x": -3.87000036,
         "y": 9.35,
-        "z": -1.71999979
+        "z": -2.13
       },
       "Rotation": {
         "x": 0.0,
@@ -1670,12 +1695,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -69730,
-      "ParentId": -69056,
+      "ObjectId": -120064,
+      "ParentId": -119394,
       "Position": {
-        "x": -3.06000042,
+        "x": -3.87000036,
         "y": 9.35,
-        "z": -0.420000076
+        "z": -0.230000377
       },
       "Rotation": {
         "x": 0.0,
@@ -1695,12 +1720,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -69740,
-      "ParentId": -69056,
+      "ObjectId": -120074,
+      "ParentId": -119394,
       "Position": {
-        "x": -3.06000042,
+        "x": -3.87000036,
         "y": 9.35,
-        "z": 0.879999638
+        "z": 1.6700002
       },
       "Rotation": {
         "x": 0.0,
@@ -1720,12 +1745,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -69750,
-      "ParentId": -69056,
+      "ObjectId": -120084,
+      "ParentId": -119394,
       "Position": {
-        "x": -3.06000042,
+        "x": -3.87000036,
         "y": 9.35,
-        "z": 2.17999983
+        "z": 3.56999969
       },
       "Rotation": {
         "x": 0.0,
@@ -1745,12 +1770,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -69760,
-      "ParentId": -69056,
+      "ObjectId": -120094,
+      "ParentId": -119394,
       "Position": {
-        "x": -3.06000042,
+        "x": -3.87000036,
         "y": 9.35,
-        "z": 3.48
+        "z": 5.47000027
       },
       "Rotation": {
         "x": 0.0,
@@ -1770,12 +1795,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -69770,
-      "ParentId": -69056,
+      "ObjectId": -120104,
+      "ParentId": -119394,
       "Position": {
-        "x": -3.06000042,
+        "x": -3.87000036,
         "y": 9.35,
-        "z": 4.78
+        "z": 7.37
       },
       "Rotation": {
         "x": 0.0,
@@ -1795,12 +1820,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -69780,
-      "ParentId": -69056,
+      "ObjectId": -120114,
+      "ParentId": -119394,
       "Position": {
-        "x": -3.06000042,
+        "x": -3.87000036,
         "y": 9.35,
-        "z": 6.07999945
+        "z": 9.2699995
       },
       "Rotation": {
         "x": 0.0,
@@ -1820,12 +1845,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -69790,
-      "ParentId": -69056,
+      "ObjectId": -120124,
+      "ParentId": -119394,
       "Position": {
-        "x": -3.06000042,
+        "x": -3.87000036,
         "y": 9.35,
-        "z": 7.37999964
+        "z": 11.1699991
       },
       "Rotation": {
         "x": 0.0,
@@ -1845,12 +1870,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -69800,
-      "ParentId": -69056,
+      "ObjectId": -120134,
+      "ParentId": -119394,
       "Position": {
-        "x": -1.76000023,
+        "x": -1.97000027,
         "y": 9.35,
-        "z": -8.219999
+        "z": -11.63
       },
       "Rotation": {
         "x": 0.0,
@@ -1870,12 +1895,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -69810,
-      "ParentId": -69056,
+      "ObjectId": -120144,
+      "ParentId": -119394,
       "Position": {
-        "x": -1.76000023,
+        "x": -1.97000027,
         "y": 9.35,
-        "z": -6.9199996
+        "z": -9.7300005
       },
       "Rotation": {
         "x": 0.0,
@@ -1895,12 +1920,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -69820,
-      "ParentId": -69056,
+      "ObjectId": -120154,
+      "ParentId": -119394,
       "Position": {
-        "x": -1.76000023,
+        "x": -1.97000027,
         "y": 9.35,
-        "z": -5.62
+        "z": -7.83
       },
       "Rotation": {
         "x": 0.0,
@@ -1920,12 +1945,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -69830,
-      "ParentId": -69056,
+      "ObjectId": -120164,
+      "ParentId": -119394,
       "Position": {
-        "x": -1.76000023,
+        "x": -1.97000027,
         "y": 9.35,
-        "z": -4.32
+        "z": -5.93000031
       },
       "Rotation": {
         "x": 0.0,
@@ -1945,12 +1970,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -69840,
-      "ParentId": -69056,
+      "ObjectId": -120174,
+      "ParentId": -119394,
       "Position": {
-        "x": -1.76000023,
+        "x": -1.97000027,
         "y": 9.35,
-        "z": -3.02
+        "z": -4.03
       },
       "Rotation": {
         "x": 0.0,
@@ -1970,12 +1995,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -69850,
-      "ParentId": -69056,
+      "ObjectId": -120184,
+      "ParentId": -119394,
       "Position": {
-        "x": -1.76000023,
+        "x": -1.97000027,
         "y": 9.35,
-        "z": -1.71999979
+        "z": -2.13
       },
       "Rotation": {
         "x": 0.0,
@@ -1995,12 +2020,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -69860,
-      "ParentId": -69056,
+      "ObjectId": -120194,
+      "ParentId": -119394,
       "Position": {
-        "x": -1.76000023,
+        "x": -1.97000027,
         "y": 9.35,
-        "z": -0.420000076
+        "z": -0.230000377
       },
       "Rotation": {
         "x": 0.0,
@@ -2020,12 +2045,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -69870,
-      "ParentId": -69056,
+      "ObjectId": -120204,
+      "ParentId": -119394,
       "Position": {
-        "x": -1.76000023,
+        "x": -1.97000027,
         "y": 9.35,
-        "z": 0.879999638
+        "z": 1.6700002
       },
       "Rotation": {
         "x": 0.0,
@@ -2045,12 +2070,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -69880,
-      "ParentId": -69056,
+      "ObjectId": -120214,
+      "ParentId": -119394,
       "Position": {
-        "x": -1.76000023,
+        "x": -1.97000027,
         "y": 9.35,
-        "z": 2.17999983
+        "z": 3.56999969
       },
       "Rotation": {
         "x": 0.0,
@@ -2070,12 +2095,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -69890,
-      "ParentId": -69056,
+      "ObjectId": -120224,
+      "ParentId": -119394,
       "Position": {
-        "x": -1.76000023,
+        "x": -1.97000027,
         "y": 9.35,
-        "z": 3.48
+        "z": 5.47000027
       },
       "Rotation": {
         "x": 0.0,
@@ -2095,12 +2120,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -69900,
-      "ParentId": -69056,
+      "ObjectId": -120234,
+      "ParentId": -119394,
       "Position": {
-        "x": -1.76000023,
+        "x": -1.97000027,
         "y": 9.35,
-        "z": 4.78
+        "z": 7.37
       },
       "Rotation": {
         "x": 0.0,
@@ -2120,12 +2145,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -69910,
-      "ParentId": -69056,
+      "ObjectId": -120244,
+      "ParentId": -119394,
       "Position": {
-        "x": -1.76000023,
+        "x": -1.97000027,
         "y": 9.35,
-        "z": 6.07999945
+        "z": 9.2699995
       },
       "Rotation": {
         "x": 0.0,
@@ -2145,12 +2170,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -69920,
-      "ParentId": -69056,
+      "ObjectId": -120254,
+      "ParentId": -119394,
       "Position": {
-        "x": -1.76000023,
+        "x": -1.97000027,
         "y": 9.35,
-        "z": 7.37999964
+        "z": 11.1699991
       },
       "Rotation": {
         "x": 0.0,
@@ -2170,12 +2195,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -69930,
-      "ParentId": -69056,
+      "ObjectId": -120264,
+      "ParentId": -119394,
       "Position": {
-        "x": -0.460000515,
+        "x": -0.07000065,
         "y": 9.35,
-        "z": -8.219999
+        "z": -11.63
       },
       "Rotation": {
         "x": 0.0,
@@ -2195,12 +2220,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -69940,
-      "ParentId": -69056,
+      "ObjectId": -120274,
+      "ParentId": -119394,
       "Position": {
-        "x": -0.460000515,
+        "x": -0.07000065,
         "y": 9.35,
-        "z": -6.9199996
+        "z": -9.7300005
       },
       "Rotation": {
         "x": 0.0,
@@ -2220,12 +2245,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -69950,
-      "ParentId": -69056,
+      "ObjectId": -120284,
+      "ParentId": -119394,
       "Position": {
-        "x": -0.460000515,
+        "x": -0.07000065,
         "y": 9.35,
-        "z": -5.62
+        "z": -7.83
       },
       "Rotation": {
         "x": 0.0,
@@ -2245,12 +2270,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -69960,
-      "ParentId": -69056,
+      "ObjectId": -120294,
+      "ParentId": -119394,
       "Position": {
-        "x": -0.460000515,
+        "x": -0.07000065,
         "y": 9.35,
-        "z": -4.32
+        "z": -5.93000031
       },
       "Rotation": {
         "x": 0.0,
@@ -2270,12 +2295,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -69970,
-      "ParentId": -69056,
+      "ObjectId": -120304,
+      "ParentId": -119394,
       "Position": {
-        "x": -0.460000515,
+        "x": -0.07000065,
         "y": 9.35,
-        "z": -3.02
+        "z": -4.03
       },
       "Rotation": {
         "x": 0.0,
@@ -2295,12 +2320,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -69980,
-      "ParentId": -69056,
+      "ObjectId": -120314,
+      "ParentId": -119394,
       "Position": {
-        "x": -0.460000515,
+        "x": -0.07000065,
         "y": 9.35,
-        "z": -1.71999979
+        "z": -2.13
       },
       "Rotation": {
         "x": 0.0,
@@ -2320,37 +2345,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -69990,
-      "ParentId": -69056,
+      "ObjectId": -120324,
+      "ParentId": -119394,
       "Position": {
-        "x": -0.460000515,
+        "x": -0.07000065,
         "y": 9.35,
-        "z": -0.420000076
-      },
-      "Rotation": {
-        "x": 0.0,
-        "y": 0.0,
-        "z": 0.0
-      },
-      "Scale": {
-        "x": 1.2,
-        "y": 0.2,
-        "z": 1.2
-      },
-      "BlockType": 1,
-      "Properties": {
-        "PrimitiveType": 3,
-        "Color": "00FFC6FF"
-      }
-    },
-    {
-      "Name": "Platform",
-      "ObjectId": -70000,
-      "ParentId": -69056,
-      "Position": {
-        "x": -0.460000515,
-        "y": 9.35,
-        "z": 0.879999638
+        "z": -0.230000377
       },
       "Rotation": {
         "x": 0.0,
@@ -2370,262 +2370,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -70010,
-      "ParentId": -69056,
+      "ObjectId": -120334,
+      "ParentId": -119394,
       "Position": {
-        "x": -0.460000515,
+        "x": -0.07000065,
         "y": 9.35,
-        "z": 2.17999983
-      },
-      "Rotation": {
-        "x": 0.0,
-        "y": 0.0,
-        "z": 0.0
-      },
-      "Scale": {
-        "x": 1.2,
-        "y": 0.2,
-        "z": 1.2
-      },
-      "BlockType": 1,
-      "Properties": {
-        "PrimitiveType": 3,
-        "Color": "A9FF00FF"
-      }
-    },
-    {
-      "Name": "Platform",
-      "ObjectId": -70020,
-      "ParentId": -69056,
-      "Position": {
-        "x": -0.460000515,
-        "y": 9.35,
-        "z": 3.48
-      },
-      "Rotation": {
-        "x": 0.0,
-        "y": 0.0,
-        "z": 0.0
-      },
-      "Scale": {
-        "x": 1.2,
-        "y": 0.2,
-        "z": 1.2
-      },
-      "BlockType": 1,
-      "Properties": {
-        "PrimitiveType": 3,
-        "Color": "FFFF00FF"
-      }
-    },
-    {
-      "Name": "Platform",
-      "ObjectId": -70030,
-      "ParentId": -69056,
-      "Position": {
-        "x": -0.460000515,
-        "y": 9.35,
-        "z": 4.78
-      },
-      "Rotation": {
-        "x": 0.0,
-        "y": 0.0,
-        "z": 0.0
-      },
-      "Scale": {
-        "x": 1.2,
-        "y": 0.2,
-        "z": 1.2
-      },
-      "BlockType": 1,
-      "Properties": {
-        "PrimitiveType": 3,
-        "Color": "FFCB00FF"
-      }
-    },
-    {
-      "Name": "Platform",
-      "ObjectId": -70040,
-      "ParentId": -69056,
-      "Position": {
-        "x": -0.460000515,
-        "y": 9.35,
-        "z": 6.07999945
-      },
-      "Rotation": {
-        "x": 0.0,
-        "y": 0.0,
-        "z": 0.0
-      },
-      "Scale": {
-        "x": 1.2,
-        "y": 0.2,
-        "z": 1.2
-      },
-      "BlockType": 1,
-      "Properties": {
-        "PrimitiveType": 3,
-        "Color": "FF8B00FF"
-      }
-    },
-    {
-      "Name": "Platform",
-      "ObjectId": -70050,
-      "ParentId": -69056,
-      "Position": {
-        "x": -0.460000515,
-        "y": 9.35,
-        "z": 7.37999964
-      },
-      "Rotation": {
-        "x": 0.0,
-        "y": 0.0,
-        "z": 0.0
-      },
-      "Scale": {
-        "x": 1.2,
-        "y": 0.2,
-        "z": 1.2
-      },
-      "BlockType": 1,
-      "Properties": {
-        "PrimitiveType": 3,
-        "Color": "FF0000FF"
-      }
-    },
-    {
-      "Name": "Platform",
-      "ObjectId": -70060,
-      "ParentId": -69056,
-      "Position": {
-        "x": 0.8399992,
-        "y": 9.35,
-        "z": -8.219999
-      },
-      "Rotation": {
-        "x": 0.0,
-        "y": 0.0,
-        "z": 0.0
-      },
-      "Scale": {
-        "x": 1.2,
-        "y": 0.2,
-        "z": 1.2
-      },
-      "BlockType": 1,
-      "Properties": {
-        "PrimitiveType": 3,
-        "Color": "FF0000FF"
-      }
-    },
-    {
-      "Name": "Platform",
-      "ObjectId": -70070,
-      "ParentId": -69056,
-      "Position": {
-        "x": 0.8399992,
-        "y": 9.35,
-        "z": -6.9199996
-      },
-      "Rotation": {
-        "x": 0.0,
-        "y": 0.0,
-        "z": 0.0
-      },
-      "Scale": {
-        "x": 1.2,
-        "y": 0.2,
-        "z": 1.2
-      },
-      "BlockType": 1,
-      "Properties": {
-        "PrimitiveType": 3,
-        "Color": "FF8B00FF"
-      }
-    },
-    {
-      "Name": "Platform",
-      "ObjectId": -70080,
-      "ParentId": -69056,
-      "Position": {
-        "x": 0.8399992,
-        "y": 9.35,
-        "z": -5.62
-      },
-      "Rotation": {
-        "x": 0.0,
-        "y": 0.0,
-        "z": 0.0
-      },
-      "Scale": {
-        "x": 1.2,
-        "y": 0.2,
-        "z": 1.2
-      },
-      "BlockType": 1,
-      "Properties": {
-        "PrimitiveType": 3,
-        "Color": "FFCB00FF"
-      }
-    },
-    {
-      "Name": "Platform",
-      "ObjectId": -70090,
-      "ParentId": -69056,
-      "Position": {
-        "x": 0.8399992,
-        "y": 9.35,
-        "z": -4.32
-      },
-      "Rotation": {
-        "x": 0.0,
-        "y": 0.0,
-        "z": 0.0
-      },
-      "Scale": {
-        "x": 1.2,
-        "y": 0.2,
-        "z": 1.2
-      },
-      "BlockType": 1,
-      "Properties": {
-        "PrimitiveType": 3,
-        "Color": "FFFF00FF"
-      }
-    },
-    {
-      "Name": "Platform",
-      "ObjectId": -70100,
-      "ParentId": -69056,
-      "Position": {
-        "x": 0.8399992,
-        "y": 9.35,
-        "z": -3.02
-      },
-      "Rotation": {
-        "x": 0.0,
-        "y": 0.0,
-        "z": 0.0
-      },
-      "Scale": {
-        "x": 1.2,
-        "y": 0.2,
-        "z": 1.2
-      },
-      "BlockType": 1,
-      "Properties": {
-        "PrimitiveType": 3,
-        "Color": "A9FF00FF"
-      }
-    },
-    {
-      "Name": "Platform",
-      "ObjectId": -70110,
-      "ParentId": -69056,
-      "Position": {
-        "x": 0.8399992,
-        "y": 9.35,
-        "z": -1.71999979
+        "z": 1.6700002
       },
       "Rotation": {
         "x": 0.0,
@@ -2645,12 +2395,262 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -70120,
-      "ParentId": -69056,
+      "ObjectId": -120344,
+      "ParentId": -119394,
       "Position": {
-        "x": 0.8399992,
+        "x": -0.07000065,
         "y": 9.35,
-        "z": -0.420000076
+        "z": 3.56999969
+      },
+      "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "Scale": {
+        "x": 1.2,
+        "y": 0.2,
+        "z": 1.2
+      },
+      "BlockType": 1,
+      "Properties": {
+        "PrimitiveType": 3,
+        "Color": "A9FF00FF"
+      }
+    },
+    {
+      "Name": "Platform",
+      "ObjectId": -120354,
+      "ParentId": -119394,
+      "Position": {
+        "x": -0.07000065,
+        "y": 9.35,
+        "z": 5.47000027
+      },
+      "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "Scale": {
+        "x": 1.2,
+        "y": 0.2,
+        "z": 1.2
+      },
+      "BlockType": 1,
+      "Properties": {
+        "PrimitiveType": 3,
+        "Color": "FFFF00FF"
+      }
+    },
+    {
+      "Name": "Platform",
+      "ObjectId": -120364,
+      "ParentId": -119394,
+      "Position": {
+        "x": -0.07000065,
+        "y": 9.35,
+        "z": 7.37
+      },
+      "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "Scale": {
+        "x": 1.2,
+        "y": 0.2,
+        "z": 1.2
+      },
+      "BlockType": 1,
+      "Properties": {
+        "PrimitiveType": 3,
+        "Color": "FFCB00FF"
+      }
+    },
+    {
+      "Name": "Platform",
+      "ObjectId": -120374,
+      "ParentId": -119394,
+      "Position": {
+        "x": -0.07000065,
+        "y": 9.35,
+        "z": 9.2699995
+      },
+      "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "Scale": {
+        "x": 1.2,
+        "y": 0.2,
+        "z": 1.2
+      },
+      "BlockType": 1,
+      "Properties": {
+        "PrimitiveType": 3,
+        "Color": "FF8B00FF"
+      }
+    },
+    {
+      "Name": "Platform",
+      "ObjectId": -120384,
+      "ParentId": -119394,
+      "Position": {
+        "x": -0.07000065,
+        "y": 9.35,
+        "z": 11.1699991
+      },
+      "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "Scale": {
+        "x": 1.2,
+        "y": 0.2,
+        "z": 1.2
+      },
+      "BlockType": 1,
+      "Properties": {
+        "PrimitiveType": 3,
+        "Color": "FF0000FF"
+      }
+    },
+    {
+      "Name": "Platform",
+      "ObjectId": -120394,
+      "ParentId": -119394,
+      "Position": {
+        "x": 1.82999992,
+        "y": 9.35,
+        "z": -11.63
+      },
+      "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "Scale": {
+        "x": 1.2,
+        "y": 0.2,
+        "z": 1.2
+      },
+      "BlockType": 1,
+      "Properties": {
+        "PrimitiveType": 3,
+        "Color": "FF0000FF"
+      }
+    },
+    {
+      "Name": "Platform",
+      "ObjectId": -120404,
+      "ParentId": -119394,
+      "Position": {
+        "x": 1.82999992,
+        "y": 9.35,
+        "z": -9.7300005
+      },
+      "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "Scale": {
+        "x": 1.2,
+        "y": 0.2,
+        "z": 1.2
+      },
+      "BlockType": 1,
+      "Properties": {
+        "PrimitiveType": 3,
+        "Color": "FF8B00FF"
+      }
+    },
+    {
+      "Name": "Platform",
+      "ObjectId": -120414,
+      "ParentId": -119394,
+      "Position": {
+        "x": 1.82999992,
+        "y": 9.35,
+        "z": -7.83
+      },
+      "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "Scale": {
+        "x": 1.2,
+        "y": 0.2,
+        "z": 1.2
+      },
+      "BlockType": 1,
+      "Properties": {
+        "PrimitiveType": 3,
+        "Color": "FFCB00FF"
+      }
+    },
+    {
+      "Name": "Platform",
+      "ObjectId": -120424,
+      "ParentId": -119394,
+      "Position": {
+        "x": 1.82999992,
+        "y": 9.35,
+        "z": -5.93000031
+      },
+      "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "Scale": {
+        "x": 1.2,
+        "y": 0.2,
+        "z": 1.2
+      },
+      "BlockType": 1,
+      "Properties": {
+        "PrimitiveType": 3,
+        "Color": "FFFF00FF"
+      }
+    },
+    {
+      "Name": "Platform",
+      "ObjectId": -120434,
+      "ParentId": -119394,
+      "Position": {
+        "x": 1.82999992,
+        "y": 9.35,
+        "z": -4.03
+      },
+      "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "Scale": {
+        "x": 1.2,
+        "y": 0.2,
+        "z": 1.2
+      },
+      "BlockType": 1,
+      "Properties": {
+        "PrimitiveType": 3,
+        "Color": "A9FF00FF"
+      }
+    },
+    {
+      "Name": "Platform",
+      "ObjectId": -120444,
+      "ParentId": -119394,
+      "Position": {
+        "x": 1.82999992,
+        "y": 9.35,
+        "z": -2.13
       },
       "Rotation": {
         "x": 0.0,
@@ -2670,12 +2670,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -70130,
-      "ParentId": -69056,
+      "ObjectId": -120454,
+      "ParentId": -119394,
       "Position": {
-        "x": 0.8399992,
+        "x": 1.82999992,
         "y": 9.35,
-        "z": 0.879999638
+        "z": -0.230000377
       },
       "Rotation": {
         "x": 0.0,
@@ -2695,12 +2695,37 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -70140,
-      "ParentId": -69056,
+      "ObjectId": -120464,
+      "ParentId": -119394,
       "Position": {
-        "x": 0.8399992,
+        "x": 1.82999992,
         "y": 9.35,
-        "z": 2.17999983
+        "z": 1.6700002
+      },
+      "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "Scale": {
+        "x": 1.2,
+        "y": 0.2,
+        "z": 1.2
+      },
+      "BlockType": 1,
+      "Properties": {
+        "PrimitiveType": 3,
+        "Color": "6CE960FF"
+      }
+    },
+    {
+      "Name": "Platform",
+      "ObjectId": -120474,
+      "ParentId": -119394,
+      "Position": {
+        "x": 1.82999992,
+        "y": 9.35,
+        "z": 3.56999969
       },
       "Rotation": {
         "x": 0.0,
@@ -2720,12 +2745,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -70150,
-      "ParentId": -69056,
+      "ObjectId": -120484,
+      "ParentId": -119394,
       "Position": {
-        "x": 0.8399992,
+        "x": 1.82999992,
         "y": 9.35,
-        "z": 3.48
+        "z": 5.47000027
       },
       "Rotation": {
         "x": 0.0,
@@ -2745,12 +2770,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -70160,
-      "ParentId": -69056,
+      "ObjectId": -120494,
+      "ParentId": -119394,
       "Position": {
-        "x": 0.8399992,
+        "x": 1.82999992,
         "y": 9.35,
-        "z": 4.78
+        "z": 7.37
       },
       "Rotation": {
         "x": 0.0,
@@ -2770,12 +2795,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -70170,
-      "ParentId": -69056,
+      "ObjectId": -120504,
+      "ParentId": -119394,
       "Position": {
-        "x": 0.8399992,
+        "x": 1.82999992,
         "y": 9.35,
-        "z": 6.07999945
+        "z": 9.2699995
       },
       "Rotation": {
         "x": 0.0,
@@ -2795,12 +2820,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -70180,
-      "ParentId": -69056,
+      "ObjectId": -120514,
+      "ParentId": -119394,
       "Position": {
-        "x": 0.8399992,
+        "x": 1.82999992,
         "y": 9.35,
-        "z": 7.37999964
+        "z": 11.1699991
       },
       "Rotation": {
         "x": 0.0,
@@ -2820,12 +2845,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -70190,
-      "ParentId": -69056,
+      "ObjectId": -120524,
+      "ParentId": -119394,
       "Position": {
-        "x": 2.13999939,
+        "x": 3.72999954,
         "y": 9.35,
-        "z": -8.219999
+        "z": -11.63
       },
       "Rotation": {
         "x": 0.0,
@@ -2845,12 +2870,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -70200,
-      "ParentId": -69056,
+      "ObjectId": -120534,
+      "ParentId": -119394,
       "Position": {
-        "x": 2.13999939,
+        "x": 3.72999954,
         "y": 9.35,
-        "z": -6.9199996
+        "z": -9.7300005
       },
       "Rotation": {
         "x": 0.0,
@@ -2870,12 +2895,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -70210,
-      "ParentId": -69056,
+      "ObjectId": -120544,
+      "ParentId": -119394,
       "Position": {
-        "x": 2.13999939,
+        "x": 3.72999954,
         "y": 9.35,
-        "z": -5.62
+        "z": -7.83
       },
       "Rotation": {
         "x": 0.0,
@@ -2895,12 +2920,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -70220,
-      "ParentId": -69056,
+      "ObjectId": -120554,
+      "ParentId": -119394,
       "Position": {
-        "x": 2.13999939,
+        "x": 3.72999954,
         "y": 9.35,
-        "z": -4.32
+        "z": -5.93000031
       },
       "Rotation": {
         "x": 0.0,
@@ -2920,12 +2945,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -70230,
-      "ParentId": -69056,
+      "ObjectId": -120564,
+      "ParentId": -119394,
       "Position": {
-        "x": 2.13999939,
+        "x": 3.72999954,
         "y": 9.35,
-        "z": -3.02
+        "z": -4.03
       },
       "Rotation": {
         "x": 0.0,
@@ -2945,12 +2970,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -70240,
-      "ParentId": -69056,
+      "ObjectId": -120574,
+      "ParentId": -119394,
       "Position": {
-        "x": 2.13999939,
+        "x": 3.72999954,
         "y": 9.35,
-        "z": -1.71999979
+        "z": -2.13
       },
       "Rotation": {
         "x": 0.0,
@@ -2970,12 +2995,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -70250,
-      "ParentId": -69056,
+      "ObjectId": -120584,
+      "ParentId": -119394,
       "Position": {
-        "x": 2.13999939,
+        "x": 3.72999954,
         "y": 9.35,
-        "z": -0.420000076
+        "z": -0.230000377
       },
       "Rotation": {
         "x": 0.0,
@@ -2995,12 +3020,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -70260,
-      "ParentId": -69056,
+      "ObjectId": -120594,
+      "ParentId": -119394,
       "Position": {
-        "x": 2.13999939,
+        "x": 3.72999954,
         "y": 9.35,
-        "z": 0.879999638
+        "z": 1.6700002
       },
       "Rotation": {
         "x": 0.0,
@@ -3020,12 +3045,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -70270,
-      "ParentId": -69056,
+      "ObjectId": -120604,
+      "ParentId": -119394,
       "Position": {
-        "x": 2.13999939,
+        "x": 3.72999954,
         "y": 9.35,
-        "z": 2.17999983
+        "z": 3.56999969
       },
       "Rotation": {
         "x": 0.0,
@@ -3045,12 +3070,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -70280,
-      "ParentId": -69056,
+      "ObjectId": -120614,
+      "ParentId": -119394,
       "Position": {
-        "x": 2.13999939,
+        "x": 3.72999954,
         "y": 9.35,
-        "z": 3.48
+        "z": 5.47000027
       },
       "Rotation": {
         "x": 0.0,
@@ -3070,12 +3095,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -70290,
-      "ParentId": -69056,
+      "ObjectId": -120624,
+      "ParentId": -119394,
       "Position": {
-        "x": 2.13999939,
+        "x": 3.72999954,
         "y": 9.35,
-        "z": 4.78
+        "z": 7.37
       },
       "Rotation": {
         "x": 0.0,
@@ -3095,12 +3120,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -70300,
-      "ParentId": -69056,
+      "ObjectId": -120634,
+      "ParentId": -119394,
       "Position": {
-        "x": 2.13999939,
+        "x": 3.72999954,
         "y": 9.35,
-        "z": 6.07999945
+        "z": 9.2699995
       },
       "Rotation": {
         "x": 0.0,
@@ -3120,12 +3145,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -70310,
-      "ParentId": -69056,
+      "ObjectId": -120644,
+      "ParentId": -119394,
       "Position": {
-        "x": 2.13999939,
+        "x": 3.72999954,
         "y": 9.35,
-        "z": 7.37999964
+        "z": 11.1699991
       },
       "Rotation": {
         "x": 0.0,
@@ -3145,12 +3170,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -70320,
-      "ParentId": -69056,
+      "ObjectId": -120654,
+      "ParentId": -119394,
       "Position": {
-        "x": 3.43999958,
+        "x": 5.63,
         "y": 9.35,
-        "z": -8.219999
+        "z": -11.63
       },
       "Rotation": {
         "x": 0.0,
@@ -3170,12 +3195,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -70330,
-      "ParentId": -69056,
+      "ObjectId": -120664,
+      "ParentId": -119394,
       "Position": {
-        "x": 3.43999958,
+        "x": 5.63,
         "y": 9.35,
-        "z": -6.9199996
+        "z": -9.7300005
       },
       "Rotation": {
         "x": 0.0,
@@ -3195,12 +3220,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -70340,
-      "ParentId": -69056,
+      "ObjectId": -120674,
+      "ParentId": -119394,
       "Position": {
-        "x": 3.43999958,
+        "x": 5.63,
         "y": 9.35,
-        "z": -5.62
+        "z": -7.83
       },
       "Rotation": {
         "x": 0.0,
@@ -3220,12 +3245,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -70350,
-      "ParentId": -69056,
+      "ObjectId": -120684,
+      "ParentId": -119394,
       "Position": {
-        "x": 3.43999958,
+        "x": 5.63,
         "y": 9.35,
-        "z": -4.32
+        "z": -5.93000031
       },
       "Rotation": {
         "x": 0.0,
@@ -3245,12 +3270,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -70360,
-      "ParentId": -69056,
+      "ObjectId": -120694,
+      "ParentId": -119394,
       "Position": {
-        "x": 3.43999958,
+        "x": 5.63,
         "y": 9.35,
-        "z": -3.02
+        "z": -4.03
       },
       "Rotation": {
         "x": 0.0,
@@ -3270,12 +3295,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -70370,
-      "ParentId": -69056,
+      "ObjectId": -120704,
+      "ParentId": -119394,
       "Position": {
-        "x": 3.43999958,
+        "x": 5.63,
         "y": 9.35,
-        "z": -1.71999979
+        "z": -2.13
       },
       "Rotation": {
         "x": 0.0,
@@ -3295,12 +3320,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -70380,
-      "ParentId": -69056,
+      "ObjectId": -120714,
+      "ParentId": -119394,
       "Position": {
-        "x": 3.43999958,
+        "x": 5.63,
         "y": 9.35,
-        "z": -0.420000076
+        "z": -0.230000377
       },
       "Rotation": {
         "x": 0.0,
@@ -3320,12 +3345,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -70390,
-      "ParentId": -69056,
+      "ObjectId": -120724,
+      "ParentId": -119394,
       "Position": {
-        "x": 3.43999958,
+        "x": 5.63,
         "y": 9.35,
-        "z": 0.879999638
+        "z": 1.6700002
       },
       "Rotation": {
         "x": 0.0,
@@ -3345,12 +3370,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -70400,
-      "ParentId": -69056,
+      "ObjectId": -120734,
+      "ParentId": -119394,
       "Position": {
-        "x": 3.43999958,
+        "x": 5.63,
         "y": 9.35,
-        "z": 2.17999983
+        "z": 3.56999969
       },
       "Rotation": {
         "x": 0.0,
@@ -3370,12 +3395,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -70410,
-      "ParentId": -69056,
+      "ObjectId": -120744,
+      "ParentId": -119394,
       "Position": {
-        "x": 3.43999958,
+        "x": 5.63,
         "y": 9.35,
-        "z": 3.48
+        "z": 5.47000027
       },
       "Rotation": {
         "x": 0.0,
@@ -3395,12 +3420,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -70420,
-      "ParentId": -69056,
+      "ObjectId": -120754,
+      "ParentId": -119394,
       "Position": {
-        "x": 3.43999958,
+        "x": 5.63,
         "y": 9.35,
-        "z": 4.78
+        "z": 7.37
       },
       "Rotation": {
         "x": 0.0,
@@ -3420,12 +3445,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -70430,
-      "ParentId": -69056,
+      "ObjectId": -120764,
+      "ParentId": -119394,
       "Position": {
-        "x": 3.43999958,
+        "x": 5.63,
         "y": 9.35,
-        "z": 6.07999945
+        "z": 9.2699995
       },
       "Rotation": {
         "x": 0.0,
@@ -3445,12 +3470,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -70440,
-      "ParentId": -69056,
+      "ObjectId": -120774,
+      "ParentId": -119394,
       "Position": {
-        "x": 3.43999958,
+        "x": 5.63,
         "y": 9.35,
-        "z": 7.37999964
+        "z": 11.1699991
       },
       "Rotation": {
         "x": 0.0,
@@ -3470,12 +3495,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -70450,
-      "ParentId": -69056,
+      "ObjectId": -120784,
+      "ParentId": -119394,
       "Position": {
-        "x": 4.74,
+        "x": 7.52999973,
         "y": 9.35,
-        "z": -8.219999
+        "z": -11.63
       },
       "Rotation": {
         "x": 0.0,
@@ -3495,12 +3520,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -70460,
-      "ParentId": -69056,
+      "ObjectId": -120794,
+      "ParentId": -119394,
       "Position": {
-        "x": 4.74,
+        "x": 7.52999973,
         "y": 9.35,
-        "z": -6.9199996
+        "z": -9.7300005
       },
       "Rotation": {
         "x": 0.0,
@@ -3520,12 +3545,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -70470,
-      "ParentId": -69056,
+      "ObjectId": -120804,
+      "ParentId": -119394,
       "Position": {
-        "x": 4.74,
+        "x": 7.52999973,
         "y": 9.35,
-        "z": -5.62
+        "z": -7.83
       },
       "Rotation": {
         "x": 0.0,
@@ -3545,12 +3570,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -70480,
-      "ParentId": -69056,
+      "ObjectId": -120814,
+      "ParentId": -119394,
       "Position": {
-        "x": 4.74,
+        "x": 7.52999973,
         "y": 9.35,
-        "z": -4.32
+        "z": -5.93000031
       },
       "Rotation": {
         "x": 0.0,
@@ -3570,12 +3595,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -70490,
-      "ParentId": -69056,
+      "ObjectId": -120824,
+      "ParentId": -119394,
       "Position": {
-        "x": 4.74,
+        "x": 7.52999973,
         "y": 9.35,
-        "z": -3.02
+        "z": -4.03
       },
       "Rotation": {
         "x": 0.0,
@@ -3595,12 +3620,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -70500,
-      "ParentId": -69056,
+      "ObjectId": -120834,
+      "ParentId": -119394,
       "Position": {
-        "x": 4.74,
+        "x": 7.52999973,
         "y": 9.35,
-        "z": -1.71999979
+        "z": -2.13
       },
       "Rotation": {
         "x": 0.0,
@@ -3620,12 +3645,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -70510,
-      "ParentId": -69056,
+      "ObjectId": -120844,
+      "ParentId": -119394,
       "Position": {
-        "x": 4.74,
+        "x": 7.52999973,
         "y": 9.35,
-        "z": -0.420000076
+        "z": -0.230000377
       },
       "Rotation": {
         "x": 0.0,
@@ -3645,12 +3670,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -70520,
-      "ParentId": -69056,
+      "ObjectId": -120854,
+      "ParentId": -119394,
       "Position": {
-        "x": 4.74,
+        "x": 7.52999973,
         "y": 9.35,
-        "z": 0.879999638
+        "z": 1.6700002
       },
       "Rotation": {
         "x": 0.0,
@@ -3670,12 +3695,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -70530,
-      "ParentId": -69056,
+      "ObjectId": -120864,
+      "ParentId": -119394,
       "Position": {
-        "x": 4.74,
+        "x": 7.52999973,
         "y": 9.35,
-        "z": 2.17999983
+        "z": 3.56999969
       },
       "Rotation": {
         "x": 0.0,
@@ -3695,12 +3720,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -70540,
-      "ParentId": -69056,
+      "ObjectId": -120874,
+      "ParentId": -119394,
       "Position": {
-        "x": 4.74,
+        "x": 7.52999973,
         "y": 9.35,
-        "z": 3.48
+        "z": 5.47000027
       },
       "Rotation": {
         "x": 0.0,
@@ -3720,12 +3745,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -70550,
-      "ParentId": -69056,
+      "ObjectId": -120884,
+      "ParentId": -119394,
       "Position": {
-        "x": 4.74,
+        "x": 7.52999973,
         "y": 9.35,
-        "z": 4.78
+        "z": 7.37
       },
       "Rotation": {
         "x": 0.0,
@@ -3745,12 +3770,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -70560,
-      "ParentId": -69056,
+      "ObjectId": -120894,
+      "ParentId": -119394,
       "Position": {
-        "x": 4.74,
+        "x": 7.52999973,
         "y": 9.35,
-        "z": 6.07999945
+        "z": 9.2699995
       },
       "Rotation": {
         "x": 0.0,
@@ -3770,12 +3795,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -70570,
-      "ParentId": -69056,
+      "ObjectId": -120904,
+      "ParentId": -119394,
       "Position": {
-        "x": 4.74,
+        "x": 7.52999973,
         "y": 9.35,
-        "z": 7.37999964
+        "z": 11.1699991
       },
       "Rotation": {
         "x": 0.0,
@@ -3795,12 +3820,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -70580,
-      "ParentId": -69056,
+      "ObjectId": -120914,
+      "ParentId": -119394,
       "Position": {
-        "x": 6.039999,
+        "x": 9.429999,
         "y": 9.35,
-        "z": -8.219999
+        "z": -11.63
       },
       "Rotation": {
         "x": 0.0,
@@ -3820,12 +3845,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -70590,
-      "ParentId": -69056,
+      "ObjectId": -120924,
+      "ParentId": -119394,
       "Position": {
-        "x": 6.039999,
+        "x": 9.429999,
         "y": 9.35,
-        "z": -6.9199996
+        "z": -9.7300005
       },
       "Rotation": {
         "x": 0.0,
@@ -3845,12 +3870,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -70600,
-      "ParentId": -69056,
+      "ObjectId": -120934,
+      "ParentId": -119394,
       "Position": {
-        "x": 6.039999,
+        "x": 9.429999,
         "y": 9.35,
-        "z": -5.62
+        "z": -7.83
       },
       "Rotation": {
         "x": 0.0,
@@ -3870,12 +3895,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -70610,
-      "ParentId": -69056,
+      "ObjectId": -120944,
+      "ParentId": -119394,
       "Position": {
-        "x": 6.039999,
+        "x": 9.429999,
         "y": 9.35,
-        "z": -4.32
+        "z": -5.93000031
       },
       "Rotation": {
         "x": 0.0,
@@ -3895,12 +3920,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -70620,
-      "ParentId": -69056,
+      "ObjectId": -120954,
+      "ParentId": -119394,
       "Position": {
-        "x": 6.039999,
+        "x": 9.429999,
         "y": 9.35,
-        "z": -3.02
+        "z": -4.03
       },
       "Rotation": {
         "x": 0.0,
@@ -3920,12 +3945,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -70630,
-      "ParentId": -69056,
+      "ObjectId": -120964,
+      "ParentId": -119394,
       "Position": {
-        "x": 6.039999,
+        "x": 9.429999,
         "y": 9.35,
-        "z": -1.71999979
+        "z": -2.13
       },
       "Rotation": {
         "x": 0.0,
@@ -3945,12 +3970,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -70640,
-      "ParentId": -69056,
+      "ObjectId": -120974,
+      "ParentId": -119394,
       "Position": {
-        "x": 6.039999,
+        "x": 9.429999,
         "y": 9.35,
-        "z": -0.420000076
+        "z": -0.230000377
       },
       "Rotation": {
         "x": 0.0,
@@ -3970,12 +3995,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -70650,
-      "ParentId": -69056,
+      "ObjectId": -120984,
+      "ParentId": -119394,
       "Position": {
-        "x": 6.039999,
+        "x": 9.429999,
         "y": 9.35,
-        "z": 0.879999638
+        "z": 1.6700002
       },
       "Rotation": {
         "x": 0.0,
@@ -3995,12 +4020,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -70660,
-      "ParentId": -69056,
+      "ObjectId": -120994,
+      "ParentId": -119394,
       "Position": {
-        "x": 6.039999,
+        "x": 9.429999,
         "y": 9.35,
-        "z": 2.17999983
+        "z": 3.56999969
       },
       "Rotation": {
         "x": 0.0,
@@ -4020,12 +4045,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -70670,
-      "ParentId": -69056,
+      "ObjectId": -121004,
+      "ParentId": -119394,
       "Position": {
-        "x": 6.039999,
+        "x": 9.429999,
         "y": 9.35,
-        "z": 3.48
+        "z": 5.47000027
       },
       "Rotation": {
         "x": 0.0,
@@ -4045,12 +4070,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -70680,
-      "ParentId": -69056,
+      "ObjectId": -121014,
+      "ParentId": -119394,
       "Position": {
-        "x": 6.039999,
+        "x": 9.429999,
         "y": 9.35,
-        "z": 4.78
+        "z": 7.37
       },
       "Rotation": {
         "x": 0.0,
@@ -4070,12 +4095,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -70690,
-      "ParentId": -69056,
+      "ObjectId": -121024,
+      "ParentId": -119394,
       "Position": {
-        "x": 6.039999,
+        "x": 9.429999,
         "y": 9.35,
-        "z": 6.07999945
+        "z": 9.2699995
       },
       "Rotation": {
         "x": 0.0,
@@ -4095,12 +4120,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -70700,
-      "ParentId": -69056,
+      "ObjectId": -121034,
+      "ParentId": -119394,
       "Position": {
-        "x": 6.039999,
+        "x": 9.429999,
         "y": 9.35,
-        "z": 7.37999964
+        "z": 11.1699991
       },
       "Rotation": {
         "x": 0.0,
@@ -4120,12 +4145,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -70710,
-      "ParentId": -69056,
+      "ObjectId": -121044,
+      "ParentId": -119394,
       "Position": {
-        "x": 7.339999,
+        "x": 11.329999,
         "y": 9.35,
-        "z": -8.219999
+        "z": -11.63
       },
       "Rotation": {
         "x": 0.0,
@@ -4145,12 +4170,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -70720,
-      "ParentId": -69056,
+      "ObjectId": -121054,
+      "ParentId": -119394,
       "Position": {
-        "x": 7.339999,
+        "x": 11.329999,
         "y": 9.35,
-        "z": -6.9199996
+        "z": -9.7300005
       },
       "Rotation": {
         "x": 0.0,
@@ -4170,12 +4195,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -70730,
-      "ParentId": -69056,
+      "ObjectId": -121064,
+      "ParentId": -119394,
       "Position": {
-        "x": 7.339999,
+        "x": 11.329999,
         "y": 9.35,
-        "z": -5.62
+        "z": -7.83
       },
       "Rotation": {
         "x": 0.0,
@@ -4195,12 +4220,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -70740,
-      "ParentId": -69056,
+      "ObjectId": -121074,
+      "ParentId": -119394,
       "Position": {
-        "x": 7.339999,
+        "x": 11.329999,
         "y": 9.35,
-        "z": -4.32
+        "z": -5.93000031
       },
       "Rotation": {
         "x": 0.0,
@@ -4220,12 +4245,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -70750,
-      "ParentId": -69056,
+      "ObjectId": -121084,
+      "ParentId": -119394,
       "Position": {
-        "x": 7.339999,
+        "x": 11.329999,
         "y": 9.35,
-        "z": -3.02
+        "z": -4.03
       },
       "Rotation": {
         "x": 0.0,
@@ -4245,12 +4270,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -70760,
-      "ParentId": -69056,
+      "ObjectId": -121094,
+      "ParentId": -119394,
       "Position": {
-        "x": 7.339999,
+        "x": 11.329999,
         "y": 9.35,
-        "z": -1.71999979
+        "z": -2.13
       },
       "Rotation": {
         "x": 0.0,
@@ -4270,12 +4295,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -70770,
-      "ParentId": -69056,
+      "ObjectId": -121104,
+      "ParentId": -119394,
       "Position": {
-        "x": 7.339999,
+        "x": 11.329999,
         "y": 9.35,
-        "z": -0.420000076
+        "z": -0.230000377
       },
       "Rotation": {
         "x": 0.0,
@@ -4295,12 +4320,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -70780,
-      "ParentId": -69056,
+      "ObjectId": -121114,
+      "ParentId": -119394,
       "Position": {
-        "x": 7.339999,
+        "x": 11.329999,
         "y": 9.35,
-        "z": 0.879999638
+        "z": 1.6700002
       },
       "Rotation": {
         "x": 0.0,
@@ -4320,12 +4345,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -70790,
-      "ParentId": -69056,
+      "ObjectId": -121124,
+      "ParentId": -119394,
       "Position": {
-        "x": 7.339999,
+        "x": 11.329999,
         "y": 9.35,
-        "z": 2.17999983
+        "z": 3.56999969
       },
       "Rotation": {
         "x": 0.0,
@@ -4345,12 +4370,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -70800,
-      "ParentId": -69056,
+      "ObjectId": -121134,
+      "ParentId": -119394,
       "Position": {
-        "x": 7.339999,
+        "x": 11.329999,
         "y": 9.35,
-        "z": 3.48
+        "z": 5.47000027
       },
       "Rotation": {
         "x": 0.0,
@@ -4370,12 +4395,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -70810,
-      "ParentId": -69056,
+      "ObjectId": -121144,
+      "ParentId": -119394,
       "Position": {
-        "x": 7.339999,
+        "x": 11.329999,
         "y": 9.35,
-        "z": 4.78
+        "z": 7.37
       },
       "Rotation": {
         "x": 0.0,
@@ -4395,12 +4420,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -70820,
-      "ParentId": -69056,
+      "ObjectId": -121154,
+      "ParentId": -119394,
       "Position": {
-        "x": 7.339999,
+        "x": 11.329999,
         "y": 9.35,
-        "z": 6.07999945
+        "z": 9.2699995
       },
       "Rotation": {
         "x": 0.0,
@@ -4420,12 +4445,12 @@
     },
     {
       "Name": "Platform",
-      "ObjectId": -70830,
-      "ParentId": -69056,
+      "ObjectId": -121164,
+      "ParentId": -119394,
       "Position": {
-        "x": 7.339999,
+        "x": 11.329999,
         "y": 9.35,
-        "z": 7.37999964
+        "z": 11.1699991
       },
       "Rotation": {
         "x": 0.0,

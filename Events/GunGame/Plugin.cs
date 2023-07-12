@@ -65,7 +65,6 @@ namespace AutoEvent.Events.GunGame
         }
         public void OnEventStarted()
         {
-            EventTime = new TimeSpan(0, 0, 0);
             Winner = null;
             GameMap = Extensions.LoadMap("Shipment", new Vector3(5f, 1030f, -45f), Quaternion.identity, Vector3.one);
             Extensions.PlayAudio("ClassicMusic.ogg", 3, true, Name);
@@ -118,17 +117,12 @@ namespace AutoEvent.Events.GunGame
                     pl.ClearBroadcasts();
                     pl.Broadcast(1, trans.GunGameCycle.Replace("{name}", Name).Replace("{level}", $"{stats.level}").Replace("{kills}", $"{2 - stats.kill}"));
                 }
-
                 yield return Timing.WaitForSeconds(1f);
             }
 
             if (Winner != null)
             {
                 Extensions.Broadcast(trans.GunGameWinner.Replace("{name}", Name).Replace("{winner}", Winner.Nickname), 10);
-            }
-            foreach(Player pl in Player.List)
-            {
-                pl.ClearInventory();
             }
 
             OnStop();

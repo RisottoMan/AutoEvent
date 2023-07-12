@@ -9,6 +9,7 @@ using MapEditorReborn.API.Features;
 using MapEditorReborn.API.Features.Objects;
 using SCPSLAudioApi.AudioCore;
 using VoiceChat;
+using Exiled.API.Enums;
 using Object = UnityEngine.Object;
 
 namespace AutoEvent
@@ -20,9 +21,8 @@ namespace AutoEvent
         {
             foreach (Player player in Player.List)
             {
-                player.Role.Set(RoleTypeId.Tutorial, Exiled.API.Enums.SpawnReason.None, RoleSpawnFlags.None);
+                player.Role.Set(RoleTypeId.Tutorial, SpawnReason.None, RoleSpawnFlags.AssignInventory);
                 player.Position = new Vector3(39.332f, 1014.766f, -31.922f);
-                player.ClearInventory();
             }
         }
         public static void PlayAudio(string audioFile, byte volume, bool loop, string eventName)

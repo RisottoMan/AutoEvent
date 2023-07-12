@@ -73,13 +73,17 @@ namespace AutoEvent.Events.Survival
 
             foreach (Player player in Player.List)
             {
-                player.Role.Set(RoleTypeId.NtfSergeant, SpawnReason.None, RoleSpawnFlags.AssignInventory);
+                player.Role.Set(RoleTypeId.NtfSergeant, SpawnReason.None, RoleSpawnFlags.None);
                 player.Position = RandomClass.GetSpawnPosition(GameMap);
                 player.AddAhp(100, 100, 0, 0, 0, true);
 
+                player.AddItem(RandomClass.GetRandomGun());
+                player.AddItem(ItemType.GunCOM18);
+                player.AddItem(ItemType.ArmorCombat);
+
                 Timing.CallDelayed(0.1f, () =>
                 {
-                    player.CurrentItem = player.Items.ElementAt(1);
+                    player.CurrentItem = player.Items.ElementAt(0);
                 });
             }
 
@@ -98,7 +102,7 @@ namespace AutoEvent.Events.Survival
             Extensions.StopAudio();
             Timing.CallDelayed(0.1f, () =>
             {
-                Extensions.PlayAudio("Zombie2.ogg", 10, false, Name);
+                Extensions.PlayAudio("Zombie2.ogg", 7, false, Name);
             });
 
             for (int i = 0; i <= Player.List.Count() / 10; i++)
@@ -147,7 +151,7 @@ namespace AutoEvent.Events.Survival
                 Extensions.StopAudio();
                 Timing.CallDelayed(0.1f, () =>
                 {
-                    Extensions.PlayAudio("ZombieWin.ogg", 10, false, Name);
+                    Extensions.PlayAudio("ZombieWin.ogg", 7, false, Name);
                 });
             }
             else if (Player.List.Count(r => r.IsScp) == 0)
@@ -157,7 +161,7 @@ namespace AutoEvent.Events.Survival
                 Extensions.StopAudio();
                 Timing.CallDelayed(0.1f, () =>
                 {
-                    Extensions.PlayAudio("HumanWin.ogg", 10, false, Name);
+                    Extensions.PlayAudio("HumanWin.ogg", 7, false, Name);
                 });
             }
             else
@@ -167,7 +171,7 @@ namespace AutoEvent.Events.Survival
                 Extensions.StopAudio();
                 Timing.CallDelayed(0.1f, () =>
                 {
-                    Extensions.PlayAudio("HumanWin.ogg", 10, false, Name);
+                    Extensions.PlayAudio("HumanWin.ogg", 7, false, Name);
                 });
             }
 
