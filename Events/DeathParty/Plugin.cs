@@ -14,12 +14,12 @@ using Random = UnityEngine.Random;
 
 namespace AutoEvent.Events.DeathParty
 {
-    public class Plugin// : Event
+    public class Plugin : Event
     {
-        public string Name { get; set; } = "Death Party [TESTING]";
-        public string Description { get; set; } = "Survive in grenade rain [Alpha]";
-        public string Color { get; set; } = "FFFF00";
-        public string CommandName { get; set; } = "death";
+        public override string Name { get; set; } = "Death Party [TESTING]";
+        public override string Description { get; set; } = "Survive in grenade rain [Alpha]";
+        public override string Color { get; set; } = "FFFF00";
+        public override string CommandName { get; set; } = "death";
         public TimeSpan EventTime { get; set; }
         public SchematicObject GameMap { get; set; }
 
@@ -27,7 +27,7 @@ namespace AutoEvent.Events.DeathParty
         int Stage { get; set; }
         int MaxStage { get; set; }
 
-        public void OnStart()
+        public override void OnStart()
         {
             _eventHandler = new EventHandler();
 
@@ -38,11 +38,12 @@ namespace AutoEvent.Events.DeathParty
             Exiled.Events.Handlers.Map.PlacingBlood += _eventHandler.OnPlaceBlood;
             Exiled.Events.Handlers.Player.DroppingItem += _eventHandler.OnDropItem;
             Exiled.Events.Handlers.Player.DroppingAmmo += _eventHandler.OnDropAmmo;
+            
 
             OnEventStarted();
         }
 
-        public void OnStop()
+        public override void OnStop()
         {
             Exiled.Events.Handlers.Player.Verified -= _eventHandler.OnJoin;
             Exiled.Events.Handlers.Server.RespawningTeam -= _eventHandler.OnTeamRespawn;
@@ -82,9 +83,10 @@ namespace AutoEvent.Events.DeathParty
 
             while (Player.List.Count(r => r.IsAlive) > 0 && Stage != (MaxStage + 1))
             {
-                Extensions.Broadcast("<color=yellow>Уворачивайтесь от гранат!</color>\n" +
+                Extensions.Broadcast("<color=yellow>Увернитесь от гранат</color>\n" +
                     $"<color=green>Прошло {EventTime.Minutes}:{EventTime.Seconds} секунд</color>\n" +
-                    $"<color=red>Осталось {Player.List.Count(r => r.IsAlive)} игроков</color>", 1);
+                    $"<color=green>Осталось: {Player.List.Count(r => r.IsAlive)} игроков</color>\n" +
+                    $"<color=red><b>Стадия: {Stage}</b></color>", 1);
 
                 yield return Timing.WaitForSeconds(1f);
                 EventTime += TimeSpan.FromSeconds(1f);
@@ -118,11 +120,12 @@ namespace AutoEvent.Events.DeathParty
         {
             Stage = 1;
             float fuse = 10f;
-            float height = 20f;
+            float height = 18f;
             float count = 20;
-            float timing = 1f;
-            float scale = 4;
-            float radius = GameMap.AttachedBlocks.First(x => x.name == "Arena").transform.localScale.x / 2;
+            float timing = 4f;
+            float scale = 4f;
+            float spawn_radius = 14f;
+            float grenade_radius = 4f; 
 
             while (Player.List.Count(r => r.IsAlive) > 0 && Stage != (MaxStage + 1))
             {
@@ -130,36 +133,68 @@ namespace AutoEvent.Events.DeathParty
                 {
                     for (int i = 0; i < count; i++)
                     {
-                        GrenadeSpawn(fuse, radius, height, scale);
+                        GrenadeSpawn(fuse, spawn_radius, grenade_radius, height, scale);
                         yield return Timing.WaitForSeconds(timing);
                     }
                 }
                 else
                 {
-                    GrenadeSpawn(fuse, radius, height, 100);
+                    GrenadeSpawn(fuse, spawn_radius, grenade_radius, height, 100);
                 }
 
                 yield return Timing.WaitForSeconds(15f);
 
-                fuse -= 2f;
-                height -= 5f;
-                timing -= 0.3f;
-                radius += 7f;
-                count += 20;
-                scale -= 1;
                 Stage++;
+
+                switch (Stage)
+                {
+                    case 2:
+                        fuse -= 1.5f;
+                        //height;
+                        timing -= 0.45f;
+                        //radius;
+                        count += 5;
+                        break;
+
+                    case 3:
+                        fuse -= 1.5f;
+                        //height;
+                        timing -= 0.45f;
+                        grenade_radius += 3f;
+                        count += 5;
+                        break;
+
+                    case 4:
+                        fuse -= 3f;
+                        //height;
+                        timing -= 0.45f;
+                        grenade_radius += grenade_radius / 2;
+                        count += 5;
+                        scale = 1;
+                        break;
+
+                    case 5:
+                        fuse += 6f;
+                        //height;
+                        //timing;
+                        grenade_radius = spawn_radius * 2 - 5f;
+                        count = 1;
+                        scale = 8;
+                        break;
+                }
             }
             yield break;
         }
 
-        public void GrenadeSpawn(float fuseTime, float radius, float height, float scale) // Пожирнее и помедленее
+        public void GrenadeSpawn(float fuseTime, float spawn_radius, float grenade_radius, float height, float scale) // Пожирнее и помедленее | grenade_radius использовать для радиуса урона
         {
             ExplosiveGrenade grenade = (ExplosiveGrenade)Item.Create(ItemType.GrenadeHE);
             grenade.FuseTime = fuseTime;
-            grenade.MaxRadius = radius;
+            grenade.MaxRadius = spawn_radius; // Бесполезная настройка
 
-            var projectile = grenade.SpawnActive(GameMap.Position + new Vector3(Random.Range(-radius, radius), height, Random.Range(-radius, radius)));
+            var projectile = grenade.SpawnActive(GameMap.Position + new Vector3(Random.Range(-spawn_radius, spawn_radius), height, Random.Range(-spawn_radius, spawn_radius)));
             projectile.Weight = 1000f;
+            projectile.MaxRadius = spawn_radius; // Бесполезная настройка
             projectile.Scale = new Vector3(scale, scale, scale);
         }
 
