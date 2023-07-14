@@ -112,9 +112,5 @@ namespace AutoEvent
         public string FallBroadcast { get; set; } = "%name%\n%time%\n<color=yellow>Remaining: </color>%count%<color=yellow> players</color>";
         public string FallWinner { get; set; } = "<color=red>Winner:</color> %winner%";
         public string FallDied { get; set; } = "<color=red>All players died</color>";
-        [Description("RandItems Game Mode")]
-        public string RandName { get; set; } = "RandItems";
-        public string RandDescription { get; set; } = "Every 3 minutes a random item as given";
-        public string RandDied { get; set; } = "<color=red>All players died</color>";
     }
 }
