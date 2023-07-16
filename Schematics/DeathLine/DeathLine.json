@@ -1,0 +1,641 @@
+{
+  "RootObjectId": 22706,
+  "Blocks": [
+    {
+      "Name": "Cylinder",
+      "ObjectId": 22996,
+      "ParentId": 22706,
+      "Position": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "Scale": {
+        "x": 20.0,
+        "y": 0.2,
+        "z": 20.0
+      },
+      "BlockType": 1,
+      "Properties": {
+        "PrimitiveType": 2,
+        "Color": "8C8624FF"
+      }
+    },
+    {
+      "Name": "Cylinder (1)",
+      "ObjectId": 23104,
+      "ParentId": 22706,
+      "Position": {
+        "x": 0.0,
+        "y": 5.32,
+        "z": 0.0
+      },
+      "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "Scale": {
+        "x": 2.0,
+        "y": 5.0,
+        "z": 2.0
+      },
+      "BlockType": 1,
+      "Properties": {
+        "PrimitiveType": 2,
+        "Color": "3A1807FF"
+      }
+    },
+    {
+      "Name": "Line",
+      "ObjectId": 22946,
+      "ParentId": 22706,
+      "AnimatorName": "Line 1",
+      "Position": {
+        "x": 0.0,
+        "y": 0.41,
+        "z": 0.0
+      },
+      "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "Scale": {
+        "x": -19.7,
+        "y": -0.25,
+        "z": -0.4
+      },
+      "BlockType": 1,
+      "Properties": {
+        "PrimitiveType": 3,
+        "Color": "FF0000FF"
+      }
+    },
+    {
+      "Name": "Cylinder (2)",
+      "ObjectId": 22694,
+      "ParentId": 22706,
+      "Position": {
+        "x": 0.0,
+        "y": 0.09,
+        "z": 0.0
+      },
+      "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "Scale": {
+        "x": 18.0,
+        "y": 0.2,
+        "z": 18.0
+      },
+      "BlockType": 1,
+      "Properties": {
+        "PrimitiveType": 2,
+        "Color": "C0B229FF"
+      }
+    },
+    {
+      "Name": "Cylinder (3)",
+      "ObjectId": 22892,
+      "ParentId": 22706,
+      "Position": {
+        "x": 0.0,
+        "y": 0.497,
+        "z": 0.0
+      },
+      "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "Scale": {
+        "x": 1.5,
+        "y": 0.01,
+        "z": 1.5
+      },
+      "BlockType": 1,
+      "Properties": {
+        "PrimitiveType": 2,
+        "Color": "BC745FFF"
+      }
+    },
+    {
+      "Name": "Cylinder (4)",
+      "ObjectId": 22812,
+      "ParentId": 22706,
+      "Position": {
+        "x": 0.0,
+        "y": 0.727,
+        "z": 0.0
+      },
+      "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "Scale": {
+        "x": 1.5,
+        "y": 0.01,
+        "z": 1.5
+      },
+      "BlockType": 1,
+      "Properties": {
+        "PrimitiveType": 2,
+        "Color": "BC745FFF"
+      }
+    },
+    {
+      "Name": "Cylinder (5)",
+      "ObjectId": 22672,
+      "ParentId": 22706,
+      "Position": {
+        "x": 0.0,
+        "y": 5.13,
+        "z": 0.0
+      },
+      "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "Scale": {
+        "x": 2.5,
+        "y": 6.0,
+        "z": 2.5
+      },
+      "BlockType": 1,
+      "Properties": {
+        "PrimitiveType": 2,
+        "Color": "BC745F00"
+      }
+    },
+    {
+      "Name": "Plane (1)",
+      "ObjectId": 23034,
+      "ParentId": 22706,
+      "Position": {
+        "x": 0.0,
+        "y": -3.92,
+        "z": 0.0
+      },
+      "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "Scale": {
+        "x": 2.0,
+        "y": 1.0,
+        "z": 2.0
+      },
+      "BlockType": 1,
+      "Properties": {
+        "PrimitiveType": 4,
+        "Color": "000000FF"
+      }
+    },
+    {
+      "Name": "Plane (2)",
+      "ObjectId": 23046,
+      "ParentId": 22706,
+      "Position": {
+        "x": 0.0,
+        "y": 10.25,
+        "z": 0.0
+      },
+      "Rotation": {
+        "x": 0.0,
+        "y": 180.0,
+        "z": 180.0
+      },
+      "Scale": {
+        "x": 2.0,
+        "y": 1.0,
+        "z": 2.0
+      },
+      "BlockType": 1,
+      "Properties": {
+        "PrimitiveType": 4,
+        "Color": "000000FF"
+      }
+    },
+    {
+      "Name": "Plane (3)",
+      "ObjectId": 23042,
+      "ParentId": 22706,
+      "Position": {
+        "x": 0.07,
+        "y": 3.17,
+        "z": -9.95
+      },
+      "Rotation": {
+        "x": 90.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "Scale": {
+        "x": 2.0,
+        "y": 0.3,
+        "z": 1.42264
+      },
+      "BlockType": 1,
+      "Properties": {
+        "PrimitiveType": 4,
+        "Color": "000000FF"
+      }
+    },
+    {
+      "Name": "Plane (4)",
+      "ObjectId": 23058,
+      "ParentId": 22706,
+      "Position": {
+        "x": 0.07,
+        "y": 3.17,
+        "z": 9.95
+      },
+      "Rotation": {
+        "x": 270.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "Scale": {
+        "x": 2.0,
+        "y": 0.3,
+        "z": 1.42264
+      },
+      "BlockType": 1,
+      "Properties": {
+        "PrimitiveType": 4,
+        "Color": "000000FF"
+      }
+    },
+    {
+      "Name": "Plane (5)",
+      "ObjectId": 23074,
+      "ParentId": 22706,
+      "Position": {
+        "x": 9.95,
+        "y": 3.17,
+        "z": 0.0
+      },
+      "Rotation": {
+        "x": 270.0,
+        "y": 90.0,
+        "z": 0.0
+      },
+      "Scale": {
+        "x": 2.0,
+        "y": 0.3,
+        "z": 1.42264
+      },
+      "BlockType": 1,
+      "Properties": {
+        "PrimitiveType": 4,
+        "Color": "000000FF"
+      }
+    },
+    {
+      "Name": "Plane (6)",
+      "ObjectId": 23062,
+      "ParentId": 22706,
+      "Position": {
+        "x": -9.95,
+        "y": 3.17,
+        "z": 0.0
+      },
+      "Rotation": {
+        "x": 90.0,
+        "y": 90.0,
+        "z": 0.0
+      },
+      "Scale": {
+        "x": 2.0,
+        "y": 0.3,
+        "z": 1.42264
+      },
+      "BlockType": 1,
+      "Properties": {
+        "PrimitiveType": 4,
+        "Color": "000000FF"
+      }
+    },
+    {
+      "Name": "LightSource",
+      "ObjectId": 22944,
+      "ParentId": 22706,
+      "Position": {
+        "x": 0.0,
+        "y": 5.0,
+        "z": 9.33
+      },
+      "BlockType": 2,
+      "Properties": {
+        "Color": "FAE0A9FF",
+        "Intensity": 3.0,
+        "Range": 16.5030746,
+        "Shadows": false
+      }
+    },
+    {
+      "Name": "LightSource (1)",
+      "ObjectId": -47220,
+      "ParentId": 22706,
+      "Position": {
+        "x": 0.0,
+        "y": 5.0,
+        "z": -9.33
+      },
+      "BlockType": 2,
+      "Properties": {
+        "Color": "FAE0A9FF",
+        "Intensity": 3.0,
+        "Range": 16.5030746,
+        "Shadows": false
+      }
+    },
+    {
+      "Name": "LightSource (2)",
+      "ObjectId": -47236,
+      "ParentId": 22706,
+      "Position": {
+        "x": 9.33,
+        "y": 5.0,
+        "z": 0.0
+      },
+      "BlockType": 2,
+      "Properties": {
+        "Color": "FAE0A9FF",
+        "Intensity": 3.0,
+        "Range": 16.5030746,
+        "Shadows": false
+      }
+    },
+    {
+      "Name": "LightSource (3)",
+      "ObjectId": -47248,
+      "ParentId": 22706,
+      "Position": {
+        "x": -9.33,
+        "y": 5.0,
+        "z": 0.0
+      },
+      "BlockType": 2,
+      "Properties": {
+        "Color": "FAE0A9FF",
+        "Intensity": 3.0,
+        "Range": 16.5030746,
+        "Shadows": false
+      }
+    },
+    {
+      "Name": "GameObject",
+      "ObjectId": 22880,
+      "ParentId": 22706,
+      "AnimatorName": "GameObject 1",
+      "Position": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "BlockType": 0
+    },
+    {
+      "Name": "Cylinder (5)",
+      "ObjectId": 22860,
+      "ParentId": 22880,
+      "Position": {
+        "x": 9.54,
+        "y": 3.17,
+        "z": -0.38
+      },
+      "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "Scale": {
+        "x": 1.5,
+        "y": 6.67248,
+        "z": 1.5
+      },
+      "BlockType": 1,
+      "Properties": {
+        "PrimitiveType": 2,
+        "Color": "FFFFFF00"
+      }
+    },
+    {
+      "Name": "Cylinder (6)",
+      "ObjectId": 22626,
+      "ParentId": 22880,
+      "Position": {
+        "x": 9.54,
+        "y": 3.17,
+        "z": -0.38
+      },
+      "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "Scale": {
+        "x": 1.0,
+        "y": 6.67247963,
+        "z": 1.0
+      },
+      "BlockType": 1,
+      "Properties": {
+        "PrimitiveType": 2,
+        "Color": "FF0200FF"
+      }
+    },
+    {
+      "Name": "Plane",
+      "ObjectId": 23002,
+      "ParentId": 22880,
+      "Position": {
+        "x": 0.0,
+        "y": -4.54,
+        "z": 0.0
+      },
+      "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "Scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      },
+      "BlockType": 1,
+      "Properties": {
+        "PrimitiveType": 4,
+        "Color": "00000000"
+      }
+    },
+    {
+      "Name": "Cube",
+      "ObjectId": 23156,
+      "ParentId": 22880,
+      "Position": {
+        "x": 4.49,
+        "y": 2.86,
+        "z": -0.36
+      },
+      "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "Scale": {
+        "x": 9.535831,
+        "y": 4.0176,
+        "z": 0.3
+      },
+      "BlockType": 1,
+      "Properties": {
+        "PrimitiveType": 3,
+        "Color": "FF1E00A3"
+      }
+    },
+    {
+      "Name": "Cube",
+      "ObjectId": -76344,
+      "ParentId": 22706,
+      "Position": {
+        "x": 0.05,
+        "y": 5.04,
+        "z": 6.98
+      },
+      "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "Scale": {
+        "x": 20.0,
+        "y": 0.2,
+        "z": 6.0
+      },
+      "BlockType": 1,
+      "Properties": {
+        "PrimitiveType": 3,
+        "Color": "00000078"
+      }
+    },
+    {
+      "Name": "Cube (1)",
+      "ObjectId": -81538,
+      "ParentId": 22706,
+      "Position": {
+        "x": 0.05,
+        "y": 7.94,
+        "z": 3.88
+      },
+      "Rotation": {
+        "x": 90.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "Scale": {
+        "x": 20.0,
+        "y": 0.2,
+        "z": 6.0
+      },
+      "BlockType": 1,
+      "Properties": {
+        "PrimitiveType": 3,
+        "Color": "00000078"
+      }
+    },
+    {
+      "Name": "SpawnPoint_spec",
+      "ObjectId": -88430,
+      "ParentId": 22706,
+      "Position": {
+        "x": -0.03,
+        "y": 7.0,
+        "z": 7.2
+      },
+      "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "Scale": {
+        "x": -0.01,
+        "y": -0.01,
+        "z": -0.01
+      },
+      "BlockType": 1,
+      "Properties": {
+        "PrimitiveType": 3,
+        "Color": "FFFFFFFF"
+      }
+    },
+    {
+      "Name": "SpawnPoint",
+      "ObjectId": -89904,
+      "ParentId": 22706,
+      "Position": {
+        "x": -0.03,
+        "y": 7.0,
+        "z": -4.99
+      },
+      "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "Scale": {
+        "x": -0.01,
+        "y": -0.01,
+        "z": -0.01
+      },
+      "BlockType": 1,
+      "Properties": {
+        "PrimitiveType": 3,
+        "Color": "FFFFFFFF"
+      }
+    },
+    {
+      "Name": "DeadZone",
+      "ObjectId": -96160,
+      "ParentId": 22706,
+      "Position": {
+        "x": 0.0,
+        "y": -1.92,
+        "z": 0.0
+      },
+      "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "Scale": {
+        "x": -20.0,
+        "y": -0.01,
+        "z": -20.0
+      },
+      "BlockType": 1,
+      "Properties": {
+        "PrimitiveType": 3,
+        "Color": "000000FF"
+      }
+    }
+  ]
+}
