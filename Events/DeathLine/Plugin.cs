@@ -96,7 +96,7 @@ namespace AutoEvent.Events.DeathLine
 
             while (Player.List.Count(r => r.Role == RoleTypeId.ClassD) >= 1) // Изменить на > 1
             {
-                Extensions.Broadcast(trans.LineBroadcast.Replace("%name%", Name).Replace("%time%", $"<color=blue>{EventTime.Minutes}:{EventTime.Seconds}</color>").Replace("%count%", $"{Player.List.ToList().Count(r => r.IsAlive)}"), 1);
+                Extensions.Broadcast(trans.LineBroadcast.Replace("%name%", Name).Replace("%time%", $"<color=blue>{EventTime.Minutes}:{EventTime.Seconds}</color>").Replace("%count%", $"{Player.List.ToList().Count(r => r.Role == RoleTypeId.ClassD)}"), 1);
 
                 if (EventTime.Seconds == 30)
                 {
