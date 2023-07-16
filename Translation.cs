@@ -109,9 +109,16 @@ namespace AutoEvent
         [Description("Fall Down Game Mode")] 
         public string FallName { get; set; } = "FallDown";
         public string FallDescription { get; set; } = "All platforms are destroyed. It is necessary to survive";
-
         public string FallBroadcast { get; set; } = "%name%\n%time%\n<color=yellow>Remaining: </color>%count%<color=yellow> players</color>";
         public string FallWinner { get; set; } = "<color=red>Winner:</color> %winner%";
         public string FallDied { get; set; } = "<color=red>All players died</color>";
+
+        [Description("Death Line Game Mode")]
+        public string LineName { get; set; } = "DeathLine";
+        public string LineDescription { get; set; } = "xxx";
+        public string LineBroadcast { get; set; } = "%name%\n%time%\n<color=yellow>Remaining: </color>%count%<color=yellow> players</color>";
+        public string LineWinner { get; set; } = "<color=red>Winner:</color> %winner%";
+        public string LineAllDied { get; set; } = "<color=red>All players died</color>";
+        public string LineDied { get; set; } = "You died...";
     }
 }
