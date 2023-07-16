@@ -22,7 +22,7 @@ namespace AutoEvent.Events.DeathLine
         public override string Color { get; set; } = "FF4242";
         public override string CommandName { get; set; } = "deathline";
         public static SchematicObject GameMap { get; set; }
-        public static SchematicObject HardGameMap { get; set; }
+        public static List<SchematicObject> HardGameMap { get; set; }
         public static SchematicObject ShieldMap { get; set; }
         public GameObject DeadZone { get; set; }
         public GameObject DeadWall { get; set; }
@@ -103,7 +103,7 @@ namespace AutoEvent.Events.DeathLine
 
                 if (EventTime.Seconds == 30)
                 {
-                    if (HardCounts < HardCountsLimit) HardGameMap = Extensions.LoadMap("HardLine", new Vector3(76f, 1026.5f, -43.68f), Quaternion.Euler(Vector3.zero), Vector3.one);
+                    if (HardCounts < HardCountsLimit) HardGameMap.Add(Extensions.LoadMap("HardLine", new Vector3(76f, 1026.5f, -43.68f), Quaternion.Euler(Vector3.zero), Vector3.one));
 
                     if (HardCounts == 0 || HardCounts % 3 == 0)
                     {
@@ -137,7 +137,7 @@ namespace AutoEvent.Events.DeathLine
             Extensions.CleanUpAll();
             Extensions.TeleportEnd();
             Extensions.UnLoadMap(GameMap);
-            Extensions.UnLoadMap(HardGameMap);
+            foreach (SchematicObject map in HardGameMap) Extensions.UnLoadMap(map);
             Extensions.StopAudio();
             AutoEvent.ActiveEvent = null;
         }
