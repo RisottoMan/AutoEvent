@@ -1,10 +1,10 @@
 {
-  "RootObjectId": 22706,
+  "RootObjectId": 22750,
   "Blocks": [
     {
       "Name": "Cylinder",
-      "ObjectId": 22996,
-      "ParentId": 22706,
+      "ObjectId": 23100,
+      "ParentId": 22750,
       "Position": {
         "x": 0.0,
         "y": 0.0,
@@ -28,8 +28,8 @@
     },
     {
       "Name": "Cylinder (1)",
-      "ObjectId": 23104,
-      "ParentId": 22706,
+      "ObjectId": 23216,
+      "ParentId": 22750,
       "Position": {
         "x": 0.0,
         "y": 5.32,
@@ -53,8 +53,8 @@
     },
     {
       "Name": "Line",
-      "ObjectId": 22946,
-      "ParentId": 22706,
+      "ObjectId": 23058,
+      "ParentId": 22750,
       "AnimatorName": "Line 1",
       "Position": {
         "x": 0.0,
@@ -79,8 +79,8 @@
     },
     {
       "Name": "Cylinder (2)",
-      "ObjectId": 22694,
-      "ParentId": 22706,
+      "ObjectId": 22724,
+      "ParentId": 22750,
       "Position": {
         "x": 0.0,
         "y": 0.09,
@@ -104,8 +104,8 @@
     },
     {
       "Name": "Cylinder (3)",
-      "ObjectId": 22892,
-      "ParentId": 22706,
+      "ObjectId": 23000,
+      "ParentId": 22750,
       "Position": {
         "x": 0.0,
         "y": 0.497,
@@ -129,8 +129,8 @@
     },
     {
       "Name": "Cylinder (4)",
-      "ObjectId": 22812,
-      "ParentId": 22706,
+      "ObjectId": 22908,
+      "ParentId": 22750,
       "Position": {
         "x": 0.0,
         "y": 0.727,
@@ -154,8 +154,8 @@
     },
     {
       "Name": "Cylinder (5)",
-      "ObjectId": 22672,
-      "ParentId": 22706,
+      "ObjectId": 22700,
+      "ParentId": 22750,
       "Position": {
         "x": 0.0,
         "y": 5.13,
@@ -179,8 +179,8 @@
     },
     {
       "Name": "Plane (1)",
-      "ObjectId": 23034,
-      "ParentId": 22706,
+      "ObjectId": 23150,
+      "ParentId": 22750,
       "Position": {
         "x": 0.0,
         "y": -3.92,
@@ -204,8 +204,8 @@
     },
     {
       "Name": "Plane (2)",
-      "ObjectId": 23046,
-      "ParentId": 22706,
+      "ObjectId": 23162,
+      "ParentId": 22750,
       "Position": {
         "x": 0.0,
         "y": 10.25,
@@ -229,8 +229,8 @@
     },
     {
       "Name": "Plane (3)",
-      "ObjectId": 23042,
-      "ParentId": 22706,
+      "ObjectId": 23158,
+      "ParentId": 22750,
       "Position": {
         "x": 0.07,
         "y": 3.17,
@@ -254,8 +254,8 @@
     },
     {
       "Name": "Plane (4)",
-      "ObjectId": 23058,
-      "ParentId": 22706,
+      "ObjectId": 23174,
+      "ParentId": 22750,
       "Position": {
         "x": 0.07,
         "y": 3.17,
@@ -279,8 +279,8 @@
     },
     {
       "Name": "Plane (5)",
-      "ObjectId": 23074,
-      "ParentId": 22706,
+      "ObjectId": 23190,
+      "ParentId": 22750,
       "Position": {
         "x": 9.95,
         "y": 3.17,
@@ -304,8 +304,8 @@
     },
     {
       "Name": "Plane (6)",
-      "ObjectId": 23062,
-      "ParentId": 22706,
+      "ObjectId": 23178,
+      "ParentId": 22750,
       "Position": {
         "x": -9.95,
         "y": 3.17,
@@ -329,8 +329,8 @@
     },
     {
       "Name": "LightSource",
-      "ObjectId": 22944,
-      "ParentId": 22706,
+      "ObjectId": 23056,
+      "ParentId": 22750,
       "Position": {
         "x": 0.0,
         "y": 5.0,
@@ -346,8 +346,8 @@
     },
     {
       "Name": "LightSource (1)",
-      "ObjectId": -47220,
-      "ParentId": 22706,
+      "ObjectId": 22902,
+      "ParentId": 22750,
       "Position": {
         "x": 0.0,
         "y": 5.0,
@@ -363,8 +363,8 @@
     },
     {
       "Name": "LightSource (2)",
-      "ObjectId": -47236,
-      "ParentId": 22706,
+      "ObjectId": 22932,
+      "ParentId": 22750,
       "Position": {
         "x": 9.33,
         "y": 5.0,
@@ -380,8 +380,8 @@
     },
     {
       "Name": "LightSource (3)",
-      "ObjectId": -47248,
-      "ParentId": 22706,
+      "ObjectId": 22678,
+      "ParentId": 22750,
       "Position": {
         "x": -9.33,
         "y": 5.0,
@@ -397,8 +397,8 @@
     },
     {
       "Name": "GameObject",
-      "ObjectId": 22880,
-      "ParentId": 22706,
+      "ObjectId": 22984,
+      "ParentId": 22750,
       "AnimatorName": "GameObject 1",
       "Position": {
         "x": 0.0,
@@ -414,8 +414,8 @@
     },
     {
       "Name": "Cylinder (5)",
-      "ObjectId": 22860,
-      "ParentId": 22880,
+      "ObjectId": 22966,
+      "ParentId": 22984,
       "Position": {
         "x": 9.54,
         "y": 3.17,
@@ -439,8 +439,8 @@
     },
     {
       "Name": "Cylinder (6)",
-      "ObjectId": 22626,
-      "ParentId": 22880,
+      "ObjectId": 22638,
+      "ParentId": 22984,
       "Position": {
         "x": 9.54,
         "y": 3.17,
@@ -464,8 +464,8 @@
     },
     {
       "Name": "Plane",
-      "ObjectId": 23002,
-      "ParentId": 22880,
+      "ObjectId": 23110,
+      "ParentId": 22984,
       "Position": {
         "x": 0.0,
         "y": -4.54,
@@ -488,9 +488,9 @@
       }
     },
     {
-      "Name": "Cube",
-      "ObjectId": 23156,
-      "ParentId": 22880,
+      "Name": "DeadWall",
+      "ObjectId": 23268,
+      "ParentId": 22984,
       "Position": {
         "x": 4.49,
         "y": 2.86,
@@ -502,9 +502,9 @@
         "z": 0.0
       },
       "Scale": {
-        "x": 9.535831,
-        "y": 4.0176,
-        "z": 0.3
+        "x": -9.535831,
+        "y": -4.0176,
+        "z": -0.3
       },
       "BlockType": 1,
       "Properties": {
@@ -514,8 +514,8 @@
     },
     {
       "Name": "Cube",
-      "ObjectId": -76344,
-      "ParentId": 22706,
+      "ObjectId": 23020,
+      "ParentId": 22750,
       "Position": {
         "x": 0.05,
         "y": 5.04,
@@ -539,8 +539,8 @@
     },
     {
       "Name": "Cube (1)",
-      "ObjectId": -81538,
-      "ParentId": 22706,
+      "ObjectId": 23022,
+      "ParentId": 22750,
       "Position": {
         "x": 0.05,
         "y": 7.94,
@@ -564,8 +564,8 @@
     },
     {
       "Name": "SpawnPoint_spec",
-      "ObjectId": -88430,
-      "ParentId": 22706,
+      "ObjectId": 23142,
+      "ParentId": 22750,
       "Position": {
         "x": -0.03,
         "y": 7.0,
@@ -589,8 +589,8 @@
     },
     {
       "Name": "SpawnPoint",
-      "ObjectId": -89904,
-      "ParentId": 22706,
+      "ObjectId": 22788,
+      "ParentId": 22750,
       "Position": {
         "x": -0.03,
         "y": 7.0,
@@ -614,8 +614,8 @@
     },
     {
       "Name": "DeadZone",
-      "ObjectId": -96160,
-      "ParentId": 22706,
+      "ObjectId": 23204,
+      "ParentId": 22750,
       "Position": {
         "x": 0.0,
         "y": -1.92,

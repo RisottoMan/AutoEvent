@@ -25,6 +25,7 @@ namespace AutoEvent.Events.DeathLine
         public static SchematicObject HardGameMap { get; set; }
         public static SchematicObject ShieldMap { get; set; }
         public GameObject DeadZone { get; set; }
+        public GameObject DeadWall { get; set; }
         public GameObject Line { get; set; }
         public static TimeSpan EventTime { get; set; }
 
@@ -68,8 +69,10 @@ namespace AutoEvent.Events.DeathLine
             ShieldMap = Extensions.LoadMap("ShieldLine", new Vector3(76f, 1026.5f, -43.68f), Quaternion.Euler(Vector3.zero), Vector3.one);
 
             DeadZone = GameMap.AttachedBlocks.First(x => x.name == "DeadZone");
+            DeadWall = GameMap.AttachedBlocks.First(x => x.name == "DeadWall");
             Line = GameMap.AttachedBlocks.First(x => x.name == "Line");
             DeadZone.AddComponent<LineComponent>();
+            DeadWall.AddComponent<LineComponent>();
             Line.AddComponent<LineComponent>();
 
             Extensions.PlayAudio("LineLite.ogg", 10, true, Name);
