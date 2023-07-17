@@ -21,7 +21,7 @@ namespace AutoEvent.Events.DeathLine.Features
                 var pl = Player.Get(other.gameObject);
                 pl.Hurt(500f, $"{AutoEvent.Singleton.Translation.LineDied}");
                 pl.Role.Set(PlayerRoles.RoleTypeId.Tutorial, SpawnReason.None, PlayerRoles.RoleSpawnFlags.None);
-                pl.Position = Plugin.GameMap.AttachedBlocks.First(x => x.name == "SpawnPoint_spec").transform.position;
+                pl.Position = DeathLine.Plugin.GameMap.AttachedBlocks.First(x => x.name == "SpawnPoint_spec").transform.position;
             }
         }
     }

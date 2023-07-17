@@ -1,5 +1,4 @@
 ﻿using AutoEvent.Events.DeathLine.Features;
-using AutoEvent.Events.Speedrun.Features;
 using AutoEvent.Interfaces;
 using Exiled.API.Enums;
 using Exiled.API.Features;
@@ -20,18 +19,15 @@ namespace AutoEvent.Events.DeathLine
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.LineName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.LineDescription;
         public override string Color { get; set; } = "FF4242";
-        public override string CommandName { get; set; } = "deathline";
+        public override string CommandName { get; set; } = "line";
         public static SchematicObject GameMap { get; set; }
-        public static SchematicObject HardGameMap { get; set; }
-        public static SchematicObject ShieldMap { get; set; }
-        public GameObject DeadZone { get; set; }
-        public GameObject Line { get; set; }
-        public static TimeSpan EventTime { get; set; }
+        public Dictionary<int, SchematicObject> HardGameMap = new Dictionary<int, SchematicObject>();
+        public TimeSpan EventTime { get; set; }
 
         EventHandler _eventHandler;
 
         private int HardCounts = 0;
-        private int HardCountsLimit = 8; // Setting
+        private int HardCountsLimit = 8; // Setting 
 
         public override void OnStart()
         {
@@ -59,24 +55,21 @@ namespace AutoEvent.Events.DeathLine
             Exiled.Events.Handlers.Player.DroppingAmmo -= _eventHandler.OnDropAmmo;
 
             _eventHandler = null;
-            EventEnd();
+
+            Timing.CallDelayed(10f, () => EventEnd());
         }
 
         public void OnEventStarted()
         {
-            GameMap = Extensions.LoadMap("DeathLine", new Vector3(76f, 1026.5f, -43.68f), Quaternion.Euler(Vector3.zero), Vector3.one);
-            ShieldMap = Extensions.LoadMap("ShieldLine", new Vector3(76f, 1026.5f, -43.68f), Quaternion.Euler(Vector3.zero), Vector3.one);
+            EventTime = TimeSpan.FromMinutes(5f);
 
-            DeadZone = GameMap.AttachedBlocks.First(x => x.name == "DeadZone");
-            Line = GameMap.AttachedBlocks.First(x => x.name == "Line");
-            DeadZone.AddComponent<LineComponent>();
-            Line.AddComponent<LineComponent>();
+            GameMap = Extensions.LoadMap("DeathLine", new Vector3(76f, 1026.5f, -43.68f), Quaternion.Euler(Vector3.zero), Vector3.one);
 
             Extensions.PlayAudio("LineLite.ogg", 10, true, Name);
 
             Player.List.ToList().ForEach(p =>
             {
-                p.Role.Set(RoleTypeId.ClassD, SpawnReason.None, RoleSpawnFlags.None);
+                p.Role.Set(RoleTypeId.ClassD, SpawnReason.None, RoleSpawnFlags.AssignInventory);
                 p.Position = GameMap.AttachedBlocks.First(x => x.name == "SpawnPoint").transform.position;
             });
             Timing.RunCoroutine(OnEventRunning(), "deathline_run");
@@ -92,40 +85,50 @@ namespace AutoEvent.Events.DeathLine
                 yield return Timing.WaitForSeconds(1f);
             }
 
-            ShieldMap.Destroy();
-
-            while (Player.List.Count(r => r.Role == RoleTypeId.ClassD) >= 1) // Изменить на > 1
+            foreach (var block in GameMap.AttachedBlocks)
             {
-                Extensions.Broadcast(trans.LineBroadcast.Replace("%name%", Name).Replace("%time%", $"<color=blue>{EventTime.Minutes}:{EventTime.Seconds}</color>").Replace("%count%", $"{Player.List.ToList().Count(r => r.IsAlive)}"), 1);
-
-                if (EventTime.Seconds == 30)
+                switch (block.name)
                 {
-                    if (HardCounts < HardCountsLimit) HardGameMap = Extensions.LoadMap("HardLine", new Vector3(76f, 1026.5f, -43.68f), Quaternion.Euler(Vector3.zero), Vector3.one);
+                    case "DeadZone": block.AddComponent<LineComponent>(); break;
+                    case "DeadWall": block.AddComponent<LineComponent>(); break;
+                    case "Line": block.AddComponent<LineComponent>(); break;
+                    case "Shield": GameObject.Destroy(block); break;
+                }
+            }
 
-                    if (HardCounts == 0 || HardCounts % 3 == 0)
+            while (Player.List.Count(r => r.Role == RoleTypeId.ClassD) >= 1 && EventTime.TotalSeconds > 0)
+            {
+                Extensions.Broadcast($"<color=#{Color}>{Name}</color>\n<color=blue>До конца: {EventTime.Minutes}</color><color=#4a4a4a>:</color><color=blue>{EventTime.Seconds}</color>\n<color=yellow>Выживших: {Player.List.Count(r => r.Role == RoleTypeId.ClassD)}</color>", 1);
+
+                if (EventTime.Seconds == 30 && HardCounts < HardCountsLimit)
+                {
+                    if (HardCounts == 0)
                     {
                         Extensions.StopAudio();
                         Extensions.PlayAudio("LineHard.ogg", 10, true, Name);
                     }
+
+                    try
+                    {
+                        var map_hard = Extensions.LoadMap("HardLine", new Vector3(76f, 1026.5f, -43.68f), Quaternion.Euler(Vector3.zero), Vector3.one);
+                        HardGameMap.Add(HardCounts, map_hard);
+                    }
+                    catch(Exception ex)
+                    {
+                        Log.Info($"{ex}");
+                    }
                     HardCounts++;
                 }
 
-                EventTime += TimeSpan.FromSeconds(1f);
+                EventTime -= TimeSpan.FromSeconds(1f);
                 yield return Timing.WaitForSeconds(1f);
             }    
 
-            if (Player.List.Count(r => r.Role == RoleTypeId.ClassD) == 1)
-            {
-                Extensions.Broadcast(AutoEvent.Singleton.Translation.LineWinner.Replace("%winner%", Player.List.First(r => r.IsAlive).Nickname), 10);
-            }
-            else
-            {
-                Extensions.Broadcast(AutoEvent.Singleton.Translation.LineAllDied, 10);
-            }
+            if (Player.List.Count(r => r.Role == RoleTypeId.ClassD) > 1) Extensions.Broadcast($"<color=#{Color}>{Name}</color>\n<color=yellow>Выжило {Player.List.Count(r => r.Role == RoleTypeId.ClassD)} игроков</color>\n<color=red>Поздравляем!</color>", 10);
+            else if (Player.List.Count(r => r.Role == RoleTypeId.ClassD) == 1) Extensions.Broadcast($"<color=#{Color}>{Name}</color>\n<color=yellow>Победитель: {Player.List.First(r => r.Role == RoleTypeId.ClassD).Nickname}</color>\n<color=red>Поздравляем!</color>", 10);
+            else Extensions.Broadcast("<color=red>Все умерли!</color>", 10);
 
-            _eventHandler = null;
-
-            EventEnd();
+            OnStop();
             yield break;
         }
 
@@ -134,9 +137,10 @@ namespace AutoEvent.Events.DeathLine
             Extensions.CleanUpAll();
             Extensions.TeleportEnd();
             Extensions.UnLoadMap(GameMap);
-            Extensions.UnLoadMap(HardGameMap);
+            foreach (var map in HardGameMap.Values) Extensions.UnLoadMap(map); // Расположение строки обязательно в самом конце метода.
             Extensions.StopAudio();
             AutoEvent.ActiveEvent = null;
+            //foreach (var map in HardGameMap.Values) Extensions.UnLoadMap(map); // Расположение строки обязательно в самом конце метода.
         }
     }
 }

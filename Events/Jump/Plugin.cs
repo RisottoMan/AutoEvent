@@ -84,7 +84,7 @@ namespace AutoEvent.Events.Jump
 
             for (int time = 15; time > 0; time--)
             {
-                Extensions.Broadcast($"Быстрее дойдите до конца!!!\nУ вас осталось {time} секунд.", 1);
+                Extensions.Broadcast($"<color=red>Быстрее бегите на синюю платформу!!!</color>\n<color=yellow>У вас осталось {time} секунд</color>", 1);
                 yield return Timing.WaitForSeconds(1f);
             }
 
@@ -103,7 +103,7 @@ namespace AutoEvent.Events.Jump
 
             while (Player.List.Count(r => r.IsAlive) > 1 && EventTime.TotalSeconds > 0)
             {
-                Extensions.Broadcast($"{Name}\nДо конца - {EventTime.Minutes}:{EventTime.Seconds}\nОсталось игроков - {Player.List.Count(r=>r.IsAlive)}", 1);
+                Extensions.Broadcast($"<color=#{Color}>{Name}</color>\n<color=blue>Осталось {EventTime.Minutes}:{EventTime.Seconds}</color>\n<color=yellow>Осталось игроков - {Player.List.Count(r=>r.IsAlive)}</color>", 1);
 
                 if (EventTime.Minutes == 1 && EventTime.Seconds == 0)
                 {
@@ -116,15 +116,15 @@ namespace AutoEvent.Events.Jump
 
             if (Player.List.Count(r => r.IsAlive) > 1)
             {
-                Extensions.Broadcast($"Выжило {Player.List.Count(r=>r.IsAlive)} игроков.\nПобеда", 10);
+                Extensions.Broadcast($"<color=yellow>Выжило {Player.List.Count(r=>r.IsAlive)} игроков</color>\n<color=red>Победа</color>", 10);
             }
             else if (Player.List.Count(r => r.IsAlive) == 1)
             {
-                Extensions.Broadcast($"Победил игрок {Player.List.First(r => r.IsAlive).Nickname}\nПоздравляем тебя!", 10);
+                Extensions.Broadcast($"</color=green>Победил игрок {Player.List.First(r => r.IsAlive).Nickname}</color>\n<color=yellow>Поздравляем тебя!</color>", 10);
             }
             else
             {
-                Extensions.Broadcast($"Никто не выжил.\nКонец мини-игры", 10);
+                Extensions.Broadcast($"<color=red>Никто не выжил.</color>\n<color=yellow>Конец мини-игры</color>", 10);
             }
 
             OnStop();
