@@ -1,4 +1,4 @@
-﻿using AutoEvent.Events.DeathLine.Features;
+﻿using AutoEvent.Events.Line.Features;
 using AutoEvent.Interfaces;
 using Exiled.API.Enums;
 using Exiled.API.Features;
@@ -12,7 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace AutoEvent.Events.DeathLine
+namespace AutoEvent.Events.Line
 {
     public class Plugin : Event
     {
@@ -67,10 +67,10 @@ namespace AutoEvent.Events.DeathLine
 
             Extensions.PlayAudio("LineLite.ogg", 10, true, Name);
 
-            Player.List.ToList().ForEach(p =>
+            Player.List.ToList().ForEach(pl =>
             {
-                p.Role.Set(RoleTypeId.ClassD, SpawnReason.None, RoleSpawnFlags.AssignInventory);
-                p.Position = GameMap.AttachedBlocks.First(x => x.name == "SpawnPoint").transform.position;
+                pl.Role.Set(RoleTypeId.ClassD, SpawnReason.None, RoleSpawnFlags.AssignInventory);
+                pl.Position = GameMap.AttachedBlocks.First(x => x.name == "SpawnPoint").transform.position;
             });
             Timing.RunCoroutine(OnEventRunning(), "deathline_run");
         }
@@ -96,7 +96,7 @@ namespace AutoEvent.Events.DeathLine
                 }
             }
 
-            while (Player.List.Count(r => r.Role == RoleTypeId.ClassD) >= 1 && EventTime.TotalSeconds > 0)
+            while (Player.List.Count(r => r.Role == RoleTypeId.ClassD) > 1 && EventTime.TotalSeconds > 0)
             {
                 Extensions.Broadcast($"<color=#{Color}>{Name}</color>\n<color=blue>До конца: {EventTime.Minutes}</color><color=#4a4a4a>:</color><color=blue>{EventTime.Seconds}</color>\n<color=yellow>Выживших: {Player.List.Count(r => r.Role == RoleTypeId.ClassD)}</color>", 1);
 
