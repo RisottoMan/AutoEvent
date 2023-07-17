@@ -4,7 +4,7 @@
 
 - Plugin [``AutoEvent.dll``](https://github.com/KoT0XleB/AutoEvent-Exiled/releases/latest) move to => ``EXILED/Plugins``
 
-- Plugin [``MapEditorReborn.dll``](https://github.com/Michal78900/MapEditorReborn/releases/latest) (or [update in discord](https://discord.gg/sQcSSPjf8p)) move to => ``EXILED/Plugins``
+- Plugin [``MapEditorReborn.dll``](https://github.com/KoT0XleB/AutoEvent-Exiled/releases/latest) (or here [discord](https://discord.gg/sQcSSPjf8p)) move to => ``EXILED/Plugins``
 
 - Plugin [``SCPSLAudioApi.dll``](https://github.com/CedModV2/SCPSLAudioApi/releases/latest)  move to => ``EXILED/Plugins/dependencies``
 
