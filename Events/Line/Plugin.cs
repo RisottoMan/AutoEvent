@@ -2,6 +2,7 @@
 using AutoEvent.Interfaces;
 using Exiled.API.Enums;
 using Exiled.API.Features;
+using Exiled.API.Features.Spawn;
 using Exiled.Events.Commands.Reload;
 using MapEditorReborn.API.Features.Objects;
 using MapEditorReborn.Configs;
@@ -21,12 +22,12 @@ namespace AutoEvent.Events.Line
         public override string Color { get; set; } = "FF4242";
         public override string CommandName { get; set; } = "line";
         public static SchematicObject GameMap { get; set; }
-        public Dictionary<int, SchematicObject> HardGameMap = new Dictionary<int, SchematicObject>();
+        public Dictionary<int, SchematicObject> HardGameMap { get; set; }
         public TimeSpan EventTime { get; set; }
 
         EventHandler _eventHandler;
 
-        private int HardCounts = 0;
+        private int HardCounts;
         private int HardCountsLimit = 8; // Setting 
 
         public override void OnStart()
@@ -61,9 +62,11 @@ namespace AutoEvent.Events.Line
 
         public void OnEventStarted()
         {
+            HardGameMap = new Dictionary<int, SchematicObject>();
+            HardCounts = 0;
             EventTime = TimeSpan.FromMinutes(5f);
 
-            GameMap = Extensions.LoadMap("DeathLine", new Vector3(76f, 1026.5f, -43.68f), Quaternion.Euler(Vector3.zero), Vector3.one);
+            GameMap = Extensions.LoadMap("Line", new Vector3(76f, 1026.5f, -43.68f), Quaternion.Euler(Vector3.zero), Vector3.one);
 
             Extensions.PlayAudio("LineLite.ogg", 10, true, Name);
 
@@ -72,7 +75,7 @@ namespace AutoEvent.Events.Line
                 pl.Role.Set(RoleTypeId.ClassD, SpawnReason.None, RoleSpawnFlags.AssignInventory);
                 pl.Position = GameMap.AttachedBlocks.First(x => x.name == "SpawnPoint").transform.position;
             });
-            Timing.RunCoroutine(OnEventRunning(), "deathline_run");
+            Timing.RunCoroutine(OnEventRunning(), "line_run");
         }
 
         public IEnumerator<float> OnEventRunning()
@@ -137,7 +140,7 @@ namespace AutoEvent.Events.Line
             Extensions.CleanUpAll();
             Extensions.TeleportEnd();
             Extensions.UnLoadMap(GameMap);
-            foreach (var map in HardGameMap.Values) Extensions.UnLoadMap(map); // Расположение строки обязательно в самом конце метода.
+            foreach (var map in HardGameMap.Values) Extensions.UnLoadMap(map);
             Extensions.StopAudio();
             AutoEvent.ActiveEvent = null;
             //foreach (var map in HardGameMap.Values) Extensions.UnLoadMap(map); // Расположение строки обязательно в самом конце метода.
