@@ -1,4 +1,4 @@
-﻿using AutoEvent.Events.Jump.Features;
+﻿using AutoEvent.Events.TipToe.Features;
 using AutoEvent.Interfaces;
 using Exiled.API.Enums;
 using Exiled.API.Features;
@@ -10,14 +10,14 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace AutoEvent.Events.Jump
+namespace AutoEvent.Events.SkipRope
 {
     public class Plugin : Event
     {
-        public override string Name { get; set; } = "Last Jump";
-        public override string Description { get; set; } = "Нужно прыгать через крутяющую балку и выжить.";
+        public override string Name { get; set; } = "Skipping Rope";
+        public override string Description { get; set; } = "Нужно перерыгивать скакалку.";
         public override string Color { get; set; } = "FF4242";
-        public override string CommandName { get; set; } = "jump";
+        public override string CommandName { get; set; } = "rope";
         public SchematicObject GameMap { get; set; }
         public TimeSpan EventTime { get; set; }
 
@@ -54,65 +54,37 @@ namespace AutoEvent.Events.Jump
 
         public void OnEventStarted()
         {
-            GameMap = Extensions.LoadMap("Jump", new Vector3(20f, 1026.5f, -45f), Quaternion.Euler(Vector3.zero), Vector3.one);
+            GameMap = Extensions.LoadMap("SkipRope", new Vector3(20f, 1026.5f, -45f), Quaternion.Euler(Vector3.zero), Vector3.one);
             //Extensions.PlayAudio("LineLite.ogg", 10, true, Name);
 
-            var count = 0;
             foreach (Player player in Player.List)
             {
-                if (count % 2 == 0)
-                {
-                    player.Role.Set(RoleTypeId.Scientist, SpawnReason.None, RoleSpawnFlags.None);
-                    player.Position = RandomClass.GetSpawnPosition(GameMap, true);
-                }
-                else
-                {
-                    player.Role.Set(RoleTypeId.ClassD, SpawnReason.None, RoleSpawnFlags.None);
-                    player.Position = RandomClass.GetSpawnPosition(GameMap, false);
-                }
-                count++;
+                player.Role.Set(RoleTypeId.ClassD, SpawnReason.None, RoleSpawnFlags.None);
+                player.Position = RandomClass.GetSpawnPosition(GameMap);
             }
 
-            Timing.RunCoroutine(OnEventRunning(), "jump_run");
+            Timing.RunCoroutine(OnEventRunning(), "rope_run");
         }
 
         public IEnumerator<float> OnEventRunning()
         {
             EventTime = new TimeSpan(0, 2, 0);
 
-            GameMap.AttachedBlocks.First(r => r.name == "Lava").AddComponent<LavaComponent>();
-
-            for (int time = 15; time > 0; time--)
+            for (int time = 10; time > 0; time--)
             {
-                Extensions.Broadcast($"<color=red>Быстрее бегите на синюю платформу!!!</color>\n<color=yellow>У вас осталось {time} секунд</color>", 1);
+                Extensions.Broadcast(time.ToString(), 1);
                 yield return Timing.WaitForSeconds(1f);
-            }
-
-            GameObject main = new GameObject();
-            foreach(var platform in GameMap.AttachedBlocks)
-            {
-                switch(platform.name)
-                {
-                    case "Platform": GameObject.Destroy(platform); break;
-                    case "Redline": platform.AddComponent<LavaComponent>(); break;
-                    case "RotateLine": platform.AddComponent<RotateComponent>(); break;
-                    case "RotateRedline": platform.AddComponent<RotateRedComponent>(); break;
-                    case "Main": main = platform; break;
-                }
             }
 
             while (Player.List.Count(r => r.IsAlive) > 1 && EventTime.TotalSeconds > 0)
             {
-                Extensions.Broadcast($"<color=#{Color}>{Name}</color>\n<color=blue>Осталось {EventTime.Minutes}:{EventTime.Seconds}</color>\n<color=yellow>Осталось игроков - {Player.List.Count(r=>r.IsAlive)}</color>", 1);
-
-                if (EventTime.Minutes == 1 && EventTime.Seconds == 0)
-                {
-                    main.AddComponent<PlatformLowering>();
-                }
+                Extensions.Broadcast($"<color=#{Color}>{Name}</color>\n" +
+                    $"<color=blue>Осталось {EventTime.Minutes}:{EventTime.Seconds}</color>\n" +
+                    $"<color=yellow>Осталось игроков - {Player.List.Count(r=>r.IsAlive)}</color>", 1);
 
                 yield return Timing.WaitForSeconds(1f);
                 EventTime -= TimeSpan.FromSeconds(1f);
-            }    
+            }
 
             if (Player.List.Count(r => r.IsAlive) > 1)
             {

@@ -3,7 +3,7 @@ using Exiled.Events.EventArgs.Player;
 using Exiled.Events.EventArgs.Server;
 using Exiled.Events.EventArgs.Map;
 
-namespace AutoEvent.Events.Jump
+namespace AutoEvent.Events.TipToe
 {
     public class EventHandler
     {
