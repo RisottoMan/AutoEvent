@@ -15,7 +15,7 @@ namespace AutoEvent.Events.SkipRope
     public class Plugin : Event
     {
         public override string Name { get; set; } = "Skipping Rope";
-        public override string Description { get; set; } = "Нужно перерыгивать скакалку.";
+        public override string Description { get; set; } = "Нужно перепрыгивать скакалку.";
         public override string Color { get; set; } = "FF4242";
         public override string CommandName { get; set; } = "rope";
         public SchematicObject GameMap { get; set; }
@@ -55,7 +55,8 @@ namespace AutoEvent.Events.SkipRope
         public void OnEventStarted()
         {
             GameMap = Extensions.LoadMap("SkipRope", new Vector3(20f, 1026.5f, -45f), Quaternion.Euler(Vector3.zero), Vector3.one);
-            //Extensions.PlayAudio("LineLite.ogg", 10, true, Name);
+
+            Extensions.PlayAudio("LineLite.ogg", 10, true, Name);
 
             foreach (Player player in Player.List)
             {

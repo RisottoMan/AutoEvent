@@ -16,12 +16,12 @@ using UnityEngine;
 
 namespace AutoEvent.Events.Cube
 {
-    internal class Plugin //: Event
+    internal class Plugin : Event
     {
-        public string Name { get; set; } = AutoEvent.Singleton.Translation.CubeName;
-        public string Description { get; set; } = AutoEvent.Singleton.Translation.CubeDescription;
-        public string Color { get; set; } = "FF4242";
-        public string CommandName { get; set; } = "cube";
+        public override string Name { get; set; } = AutoEvent.Singleton.Translation.CubeName;
+        public override string Description { get; set; } = AutoEvent.Singleton.Translation.CubeDescription;
+        public override string Color { get; set; } = "FF4242";
+        public override string CommandName { get; set; } = "cube";
         public static SchematicObject GameMap { get; set; }
         public TimeSpan EventTime { get; set; }
 
@@ -31,7 +31,7 @@ namespace AutoEvent.Events.Cube
         private GameObject Cube_Default;
         private List<GameObject> Cubes;
 
-        public void OnStart()
+        public override void OnStart()
         {
             _eventHandler = new EventHandler();
 
@@ -46,7 +46,7 @@ namespace AutoEvent.Events.Cube
             OnEventStarted();
         }
 
-        public void OnStop()
+        public override void OnStop()
         {
             Exiled.Events.Handlers.Player.Verified -= _eventHandler.OnJoin;
             Exiled.Events.Handlers.Server.RespawningTeam -= _eventHandler.OnTeamRespawn;
