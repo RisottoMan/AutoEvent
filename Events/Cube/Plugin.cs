@@ -16,7 +16,7 @@ using UnityEngine;
 
 namespace AutoEvent.Events.Cube
 {
-    internal class Plugin //: Event1
+    internal class Plugin //: Event
     {
         public string Name { get; set; } = AutoEvent.Singleton.Translation.CubeName;
         public string Description { get; set; } = AutoEvent.Singleton.Translation.CubeDescription;
