@@ -1,10 +1,10 @@
 {
-  "RootObjectId": 22746,
+  "RootObjectId": 22752,
   "Blocks": [
     {
       "Name": "Cylinder",
-      "ObjectId": 23130,
-      "ParentId": 22746,
+      "ObjectId": 23270,
+      "ParentId": 22752,
       "Position": {
         "x": 0.0,
         "y": 0.0,
@@ -28,8 +28,8 @@
     },
     {
       "Name": "Cylinder (1)",
-      "ObjectId": 23250,
-      "ParentId": 22746,
+      "ObjectId": 23376,
+      "ParentId": 22752,
       "Position": {
         "x": 0.0,
         "y": 5.32,
@@ -53,8 +53,8 @@
     },
     {
       "Name": "Line",
-      "ObjectId": 23080,
-      "ParentId": 22746,
+      "ObjectId": 23224,
+      "ParentId": 22752,
       "AnimatorName": "Line 1",
       "Position": {
         "x": 0.0,
@@ -79,8 +79,8 @@
     },
     {
       "Name": "Cylinder (2)",
-      "ObjectId": 22720,
-      "ParentId": 22746,
+      "ObjectId": 22730,
+      "ParentId": 22752,
       "Position": {
         "x": 0.0,
         "y": 0.09,
@@ -104,8 +104,8 @@
     },
     {
       "Name": "Cylinder (3)",
-      "ObjectId": 23028,
-      "ParentId": 22746,
+      "ObjectId": 23148,
+      "ParentId": 22752,
       "Position": {
         "x": 0.0,
         "y": 0.497,
@@ -129,8 +129,8 @@
     },
     {
       "Name": "Cylinder (4)",
-      "ObjectId": 22908,
-      "ParentId": 22746,
+      "ObjectId": 22966,
+      "ParentId": 22752,
       "Position": {
         "x": 0.0,
         "y": 0.727,
@@ -154,8 +154,8 @@
     },
     {
       "Name": "Cylinder (5)",
-      "ObjectId": 22696,
-      "ParentId": 22746,
+      "ObjectId": 22706,
+      "ParentId": 22752,
       "Position": {
         "x": 0.0,
         "y": 5.13,
@@ -179,8 +179,8 @@
     },
     {
       "Name": "Quad",
-      "ObjectId": 23194,
-      "ParentId": 22746,
+      "ObjectId": 23336,
+      "ParentId": 22752,
       "Position": {
         "x": 0.0,
         "y": -3.54,
@@ -204,8 +204,8 @@
     },
     {
       "Name": "Quad",
-      "ObjectId": 23164,
-      "ParentId": 22746,
+      "ObjectId": 23306,
+      "ParentId": 22752,
       "Position": {
         "x": 0.0,
         "y": 10.25,
@@ -229,8 +229,8 @@
     },
     {
       "Name": "Quad",
-      "ObjectId": 23226,
-      "ParentId": 22746,
+      "ObjectId": 23360,
+      "ParentId": 22752,
       "Position": {
         "x": 0.07,
         "y": 3.37,
@@ -254,8 +254,8 @@
     },
     {
       "Name": "Quad",
-      "ObjectId": 23210,
-      "ParentId": 22746,
+      "ObjectId": 23352,
+      "ParentId": 22752,
       "Position": {
         "x": -11.43,
         "y": 3.37,
@@ -279,8 +279,8 @@
     },
     {
       "Name": "LightSource",
-      "ObjectId": 23078,
-      "ParentId": 22746,
+      "ObjectId": 23222,
+      "ParentId": 22752,
       "Position": {
         "x": 0.0,
         "y": 5.0,
@@ -296,8 +296,8 @@
     },
     {
       "Name": "LightSource (1)",
-      "ObjectId": 22900,
-      "ParentId": 22746,
+      "ObjectId": 22958,
+      "ParentId": 22752,
       "Position": {
         "x": 0.0,
         "y": 5.0,
@@ -313,8 +313,8 @@
     },
     {
       "Name": "LightSource (2)",
-      "ObjectId": 22930,
-      "ParentId": 22746,
+      "ObjectId": 22994,
+      "ParentId": 22752,
       "Position": {
         "x": 9.33,
         "y": 5.0,
@@ -330,8 +330,8 @@
     },
     {
       "Name": "LightSource (3)",
-      "ObjectId": 22674,
-      "ParentId": 22746,
+      "ObjectId": 22688,
+      "ParentId": 22752,
       "Position": {
         "x": -9.33,
         "y": 5.0,
@@ -347,8 +347,8 @@
     },
     {
       "Name": "GameObject",
-      "ObjectId": 23002,
-      "ParentId": 22746,
+      "ObjectId": 23122,
+      "ParentId": 22752,
       "AnimatorName": "GameObject 1",
       "Position": {
         "x": 0.0,
@@ -364,8 +364,8 @@
     },
     {
       "Name": "Cylinder (5)",
-      "ObjectId": 22986,
-      "ParentId": 23002,
+      "ObjectId": 23102,
+      "ParentId": 23122,
       "Position": {
         "x": 10.91,
         "y": 3.17,
@@ -389,8 +389,8 @@
     },
     {
       "Name": "Cylinder (6)",
-      "ObjectId": 22640,
-      "ParentId": 23002,
+      "ObjectId": 22642,
+      "ParentId": 23122,
       "Position": {
         "x": 10.91,
         "y": 3.17,
@@ -414,8 +414,8 @@
     },
     {
       "Name": "Plane",
-      "ObjectId": 23140,
-      "ParentId": 23002,
+      "ObjectId": 23282,
+      "ParentId": 23122,
       "Position": {
         "x": 0.0,
         "y": -4.54,
@@ -439,8 +439,8 @@
     },
     {
       "Name": "DeadWall",
-      "ObjectId": 23302,
-      "ParentId": 23002,
+      "ObjectId": 23428,
+      "ParentId": 23122,
       "Position": {
         "x": 5.47,
         "y": 2.86,
@@ -464,11 +464,11 @@
     },
     {
       "Name": "Cube",
-      "ObjectId": 23042,
-      "ParentId": 22746,
+      "ObjectId": 23178,
+      "ParentId": 22752,
       "Position": {
         "x": 0.05,
-        "y": 5.04,
+        "y": 8.099999,
         "z": 8.5
       },
       "Rotation": {
@@ -489,11 +489,11 @@
     },
     {
       "Name": "Cube (1)",
-      "ObjectId": 23044,
-      "ParentId": 22746,
+      "ObjectId": 23180,
+      "ParentId": 22752,
       "Position": {
         "x": 0.05,
-        "y": 7.94,
+        "y": 9.1416,
         "z": 5.4
       },
       "Rotation": {
@@ -504,7 +504,7 @@
       "Scale": {
         "x": 23.0,
         "y": 0.2,
-        "z": 6.0
+        "z": 2.2833
       },
       "BlockType": 1,
       "Properties": {
@@ -514,11 +514,11 @@
     },
     {
       "Name": "SpawnPoint_spec",
-      "ObjectId": 23182,
-      "ParentId": 22746,
+      "ObjectId": 23324,
+      "ParentId": 22752,
       "Position": {
         "x": -0.03,
-        "y": 7.0,
+        "y": 10.0599995,
         "z": 8.719999
       },
       "Rotation": {
@@ -539,8 +539,8 @@
     },
     {
       "Name": "SpawnPoint",
-      "ObjectId": 22786,
-      "ParentId": 22746,
+      "ObjectId": 22796,
+      "ParentId": 22752,
       "Position": {
         "x": -0.03,
         "y": 7.0,
@@ -564,8 +564,8 @@
     },
     {
       "Name": "DeadZone",
-      "ObjectId": 23206,
-      "ParentId": 22746,
+      "ObjectId": 23348,
+      "ParentId": 22752,
       "Position": {
         "x": 0.0,
         "y": -1.92,
@@ -589,8 +589,8 @@
     },
     {
       "Name": "Shield",
-      "ObjectId": 22872,
-      "ParentId": 22746,
+      "ObjectId": 23190,
+      "ParentId": 22752,
       "Position": {
         "x": 0.0,
         "y": 4.77,
@@ -608,16 +608,16 @@
       },
       "BlockType": 1,
       "Properties": {
-        "PrimitiveType": 2,
-        "Color": "8C862400"
+        "PrimitiveType": 3,
+        "Color": "FFFFFF78"
       }
     },
     {
       "Name": "Quad (1)",
-      "ObjectId": -7474,
-      "ParentId": 22746,
+      "ObjectId": 22946,
+      "ParentId": 22752,
       "Position": {
-        "x": 11.57,
+        "x": 11.43,
         "y": 3.37,
         "z": 0.0
       },
@@ -639,8 +639,8 @@
     },
     {
       "Name": "Quad (2)",
-      "ObjectId": -9410,
-      "ParentId": 22746,
+      "ObjectId": 23084,
+      "ParentId": 22752,
       "Position": {
         "x": 0.07,
         "y": 3.37,

@@ -21,7 +21,7 @@ namespace AutoEvent.Events.Cube
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.CubeName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.CubeDescription;
         public override string Color { get; set; } = "FF4242";
-        public override string CommandName { get; set; } = "cube";
+        public override string CommandName { get; set; } = "cube [ALPHA]";
         public static SchematicObject GameMap { get; set; }
         public TimeSpan EventTime { get; set; }
 
