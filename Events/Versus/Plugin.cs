@@ -12,7 +12,7 @@ using Exiled.API.Enums;
 
 namespace AutoEvent.Events.Versus
 {
-    public class Plugin : Event
+    public class Plugin : Interfaces.Event
     {
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.VersusName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.VersusDescription;

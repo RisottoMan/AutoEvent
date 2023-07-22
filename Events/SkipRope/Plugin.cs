@@ -12,7 +12,7 @@ using UnityEngine;
 
 namespace AutoEvent.Events.SkipRope
 {
-    public class Plugin : Event
+    public class Plugin : Interfaces.Event
     {
         public override string Name { get; set; } = "Skipping Rope";
         public override string Description { get; set; } = "Нужно перепрыгивать скакалку.";
