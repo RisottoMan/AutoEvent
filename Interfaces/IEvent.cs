@@ -2,19 +2,19 @@
 {
     public interface IEvent
     {
-        /// <summary>
-        /// the name of the event (in ev run [CommandName])
-        /// </summary>
-        string CommandName { get; }
-
         /// <summary>Title</summary>
         string Name { get; }
+
+        /// <summary>Description</summary>
+        string Description { get; }
 
         /// <summary>Color</summary>
         string Color { get; }
 
-        /// <summary>Description</summary>
-        string Description { get; }
+        /// <summary>
+        /// the name of the event (in ev run [CommandName])
+        /// </summary>
+        string CommandName { get; }
 
         /// <summary>On starting</summary>
         void OnStart();
