@@ -13,7 +13,7 @@ using Random = UnityEngine.Random;
 
 namespace AutoEvent.Events.Puzzle
 {
-    public class Plugin : Interfaces.Event
+    public class Plugin : Event
     {
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.PuzzleName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.PuzzleDescription;

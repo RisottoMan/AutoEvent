@@ -16,7 +16,7 @@ using UnityEngine;
 
 namespace AutoEvent.Events.Cube
 {
-    internal class Plugin : Interfaces.Event
+    internal class Plugin : Event
     {
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.CubeName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.CubeDescription;

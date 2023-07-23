@@ -12,7 +12,7 @@ using Exiled.Events.Commands.Reload;
 
 namespace AutoEvent.Events.Football
 {
-    public class Plugin : Interfaces.Event
+    public class Plugin : Event
     {
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.FootballName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.FootballDescription;

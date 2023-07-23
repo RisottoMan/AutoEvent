@@ -12,7 +12,7 @@ using UnityEngine;
 
 namespace AutoEvent.Events.TipToe
 {
-    public class Plugin : Interfaces.Event
+    public class Plugin : Event
     {
         public override string Name { get; set; } = "Tip Toe";
         public override string Description { get; set; } = "Не наступайте на ложные плитки и найдите скрытый путь к финишу!";

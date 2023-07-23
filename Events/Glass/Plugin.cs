@@ -15,7 +15,7 @@ using CustomPlayerEffects;
 
 namespace AutoEvent.Events.Glass
 {
-    public class Plugin : Interfaces.Event
+    public class Plugin : Event
     {
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.GlassName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.GlassDescription;

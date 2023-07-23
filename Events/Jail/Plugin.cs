@@ -12,7 +12,7 @@ using Exiled.Permissions.Extensions;
 
 namespace AutoEvent.Events.Jail
 {
-    public class Plugin : Interfaces.Event
+    public class Plugin : Event
     {
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.JailName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.JailDescription;
