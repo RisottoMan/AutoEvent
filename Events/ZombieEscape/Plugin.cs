@@ -94,7 +94,7 @@ namespace AutoEvent.Events.ZombieEscape
 
         public IEnumerator<float> OnEventRunning()
         {
-            //Extensions.PlayAudio("ZMEscape.ogg", 7, false, Name);
+            Extensions.PlayAudio("ZMEscape.ogg", 7, false, Name);
 
             for (float _time = 15; _time > 0; _time--)
             {
