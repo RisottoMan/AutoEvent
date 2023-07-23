@@ -12,7 +12,7 @@ using UnityEngine;
 
 namespace AutoEvent.Events.Survival
 {
-    public class Plugin : Interfaces.Event
+    public class Plugin : Event
     {
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.SurvivalName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.SurvivalDescription;

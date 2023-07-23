@@ -10,7 +10,7 @@ using UnityEngine;
 
 namespace AutoEvent.Events.Escape
 {
-    public class Plugin : Interfaces.Event
+    public class Plugin : Event
     {
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.EscapeName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.EscapeDescription;

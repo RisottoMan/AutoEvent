@@ -10,7 +10,7 @@ using UnityEngine;
 
 namespace AutoEvent.Events.Infection
 {
-    public class Plugin : Interfaces.Event
+    public class Plugin : Event
     {
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.ZombieName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.ZombieDescription;
