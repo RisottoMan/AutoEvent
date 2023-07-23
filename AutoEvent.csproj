@@ -83,7 +83,6 @@
     <Compile Include="Events\Battle\Plugin.cs" />
     <Compile Include="Events\SkipRope\EventHandler.cs" />
     <Compile Include="Events\SkipRope\Features\RandomClass.cs" />
-    <Compile Include="Events\SkipRope\Features\RopeComponent.cs" />
     <Compile Include="Events\SkipRope\Plugin.cs" />
     <Compile Include="Events\TipToe\EventHandler.cs" />
     <Compile Include="Events\TipToe\Features\CreateComponent.cs" />
@@ -147,9 +146,11 @@
     <Compile Include="Events\Lava\Features\LavaComponent.cs" />
     <Compile Include="Events\Lava\Features\RandomClass.cs" />
     <Compile Include="Events\Lava\Plugin.cs" />
-    <Compile Include="Events\Breakout\EventHandler.cs" />
-    <Compile Include="Events\Breakout\Extensions\RandomClass.cs" />
-    <Compile Include="Events\Breakout\Plugin.cs" />
+    <Compile Include="Events\ZombieEscape\EventHandler.cs" />
+    <Compile Include="Events\ZombieEscape\Extensions\WallComponent.cs" />
+    <Compile Include="Events\ZombieEscape\Extensions\LavaComponent.cs" />
+    <Compile Include="Events\ZombieEscape\Extensions\RandomClass.cs" />
+    <Compile Include="Events\ZombieEscape\Plugin.cs" />
     <Compile Include="Events\Puzzle\Features\LavaComponent.cs" />
     <Compile Include="Events\Puzzle\Features\RandomClass.cs" />
     <Compile Include="Events\Survival\EventHandler.cs" />

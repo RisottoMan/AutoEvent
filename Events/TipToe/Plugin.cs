@@ -12,18 +12,18 @@ using UnityEngine;
 
 namespace AutoEvent.Events.TipToe
 {
-    public class Plugin : Event
+    public class Plugin// : Event
     {
-        public override string Name { get; set; } = "Tip Toe";
-        public override string Description { get; set; } = "Не наступайте на ложные плитки и найдите скрытый путь к финишу!";
-        public override string Color { get; set; } = "FF4242";
-        public override string CommandName { get; set; } = "tip";
+        public string Name { get; set; } = "Tip Toe";
+        public string Description { get; set; } = "Не наступайте на ложные плитки и найдите скрытый путь к финишу!";
+        public string Color { get; set; } = "FF4242";
+        public string CommandName { get; set; } = "tip";
         public SchematicObject GameMap { get; set; }
         public TimeSpan EventTime { get; set; }
 
         EventHandler _eventHandler;
 
-        public override void OnStart()
+        public void OnStart()
         {
             _eventHandler = new EventHandler();
 
@@ -38,7 +38,7 @@ namespace AutoEvent.Events.TipToe
             OnEventStarted();
         }
 
-        public override void OnStop()
+        public void OnStop()
         {
             Exiled.Events.Handlers.Player.Verified -= _eventHandler.OnJoin;
             Exiled.Events.Handlers.Server.RespawningTeam -= _eventHandler.OnTeamRespawn;

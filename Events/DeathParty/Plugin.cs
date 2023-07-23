@@ -7,28 +7,32 @@ using MEC;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using AutoEvent.Interfaces;
 using UnityEngine;
 using PlayerRoles;
 using Random = UnityEngine.Random;
+using AutoEvent.Interfaces;
 
 namespace AutoEvent.Events.DeathParty
 {
-    public class Plugin// : Event
+    public class Plugin : Event
     {
-        public string Name { get; set; } = "Death Party [TESTING]";
-        public string Description { get; set; } = "Survive in grenade rain [Alpha]";
-        public string Color { get; set; } = "FFFF00";
-        public string CommandName { get; set; } = "death";
+        public override string Name { get; set; } = "Death Party [TESTING]";
+        public override string Description { get; set; } = "Survive in grenade rain [Alpha]";
+        public override string Color { get; set; } = "FFFF00";
+        public override string CommandName { get; set; } = "death";
         public TimeSpan EventTime { get; set; }
         public SchematicObject GameMap { get; set; }
 
         EventHandler _eventHandler;
+        private bool isFreindlyFireEnabled;
         int Stage { get; set; }
         int MaxStage { get; set; }
 
-        public void OnStart()
+        public override void OnStart()
         {
+            isFreindlyFireEnabled = Server.FriendlyFire;
+            Server.FriendlyFire = true;
+
             _eventHandler = new EventHandler();
 
             Exiled.Events.Handlers.Player.Verified += _eventHandler.OnJoin;
@@ -42,8 +46,10 @@ namespace AutoEvent.Events.DeathParty
             OnEventStarted();
         }
 
-        public void OnStop()
+        public override void OnStop()
         {
+            Server.FriendlyFire = isFreindlyFireEnabled;
+
             Exiled.Events.Handlers.Player.Verified -= _eventHandler.OnJoin;
             Exiled.Events.Handlers.Server.RespawningTeam -= _eventHandler.OnTeamRespawn;
             Exiled.Events.Handlers.Player.SpawningRagdoll -= _eventHandler.OnSpawnRagdoll;
