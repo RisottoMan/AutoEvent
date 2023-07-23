@@ -15,12 +15,12 @@ using UnityEngine;
 
 namespace AutoEvent.Events.Valleyball
 {
-    internal class Plugin : IEvent
+    internal class Plugin : Event
     {
-        public string Name { get; set; } = "Волейбол [ALPHA]";
-        public string Description { get; set; } = "Нужно забить гол противоположной команде";
-        public string Color { get; set; } = "ffda36";
-        public string CommandName { get; set; } = "valleyball";
+        public override string Name { get; set; } = "Волейбол [ALPHA]";
+        public override string Description { get; set; } = "Нужно забить гол противоположной команде";
+        public override string Color { get; set; } = "ffda36";
+        public override string CommandName { get; set; } = "valleyball";
 
         private EventHandler _eventHandler;
         private SchematicObject GameMap;
@@ -31,7 +31,7 @@ namespace AutoEvent.Events.Valleyball
         private int Dcounts;
         private int Scounts;
 
-        public void OnStart()
+        public override void OnStart()
         {
             _eventHandler = new EventHandler();
 
@@ -46,7 +46,7 @@ namespace AutoEvent.Events.Valleyball
             OnEventStarted();
         }
 
-        public void OnStop()
+        public override void OnStop()
         {
             Exiled.Events.Handlers.Player.Verified -= _eventHandler.OnJoin;
             Exiled.Events.Handlers.Server.RespawningTeam -= _eventHandler.OnTeamRespawn;
