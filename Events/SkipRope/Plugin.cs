@@ -12,18 +12,18 @@ using UnityEngine;
 
 namespace AutoEvent.Events.SkipRope
 {
-    public class Plugin : Event
+    public class Plugin// : Event
     {
-        public override string Name { get; set; } = "Skipping Rope";
-        public override string Description { get; set; } = "Нужно перепрыгивать скакалку.";
-        public override string Color { get; set; } = "FF4242";
-        public override string CommandName { get; set; } = "rope";
+        public string Name { get; set; } = "Skipping Rope";
+        public string Description { get; set; } = "Нужно перепрыгивать скакалку.";
+        public string Color { get; set; } = "FF4242";
+        public string CommandName { get; set; } = "rope";
         public SchematicObject GameMap { get; set; }
         public TimeSpan EventTime { get; set; }
 
         EventHandler _eventHandler;
 
-        public override void OnStart()
+        public void OnStart()
         {
             _eventHandler = new EventHandler();
 
@@ -38,7 +38,7 @@ namespace AutoEvent.Events.SkipRope
             OnEventStarted();
         }
 
-        public override void OnStop()
+        public void OnStop()
         {
             Exiled.Events.Handlers.Player.Verified -= _eventHandler.OnJoin;
             Exiled.Events.Handlers.Server.RespawningTeam -= _eventHandler.OnTeamRespawn;

@@ -24,6 +24,8 @@ namespace AutoEvent.Events.Versus
         public TimeSpan EventTime { get; set; }
 
         private bool isFreindlyFireEnabled;
+        CoroutineHandle coroutineClassD;
+        CoroutineHandle coroutineScientist;
 
         EventHandler _eventHandler;
 
@@ -115,29 +117,27 @@ namespace AutoEvent.Events.Versus
                 {
                     if (Scientist == null)
                     {
+                        if (!Timing.IsRunning(coroutineScientist))
+                        {
+                            coroutineScientist = Timing.RunCoroutine(OnEventRunning(), "scientist_time");
+                        }
+
                         if (player.Role.Type == RoleTypeId.Scientist && Vector3.Distance(player.Position, triggerScintist.transform.position) <= 1f)
                         {
-                            Scientist = player;
-                            Scientist.Position = GameMap.Position + new Vector3(-11.351f, -3.424f, -7.284f);
-
-                            if (ClassD != null && AutoEvent.Singleton.Config.VersusConfig.HealApponentWhenSomeoneEnterArea)
-                            {
-                                ClassD.Heal(100);
-                            }
+                            AddPlayerArena(player, RoleTypeId.Scientist);
                         }
                     }
 
                     if (ClassD == null)
                     {
+                        if (!Timing.IsRunning(coroutineClassD))
+                        {
+                            coroutineClassD = Timing.RunCoroutine(OnEventRunning(), "classd_time");
+                        }
+
                         if (player.Role.Type == RoleTypeId.ClassD && Vector3.Distance(player.Position, triggerClassD.transform.position) <= 1f)
                         {
-                            ClassD = player;
-                            ClassD.Position = GameMap.Position + new Vector3(-20.0f, -3.424f, -7.284f);
-
-                            if (Scientist != null && AutoEvent.Singleton.Config.VersusConfig.HealApponentWhenSomeoneEnterArea)
-                            {
-                                Scientist.Heal(100);
-                            }
+                            AddPlayerArena(player, RoleTypeId.ClassD);
                         }
                     }
                 }
@@ -173,6 +173,48 @@ namespace AutoEvent.Events.Versus
 
             OnStop();
             yield break;
+        }
+
+        public IEnumerator<float> OnWaitingPlayer(Player player, RoleTypeId roleType)
+        {
+            for(int time = 20; time > 0 && player == null; time--)
+            {
+                if (player != null)
+                {
+                    yield break;
+                }
+
+                yield return Timing.WaitForSeconds(1f);
+            }
+
+            player = Player.List.First(r => r.Role.Type == roleType);
+            AddPlayerArena(player, roleType);
+
+            yield break;
+        }
+
+        public void AddPlayerArena(Player player, RoleTypeId roleType)
+        {
+            if (roleType == RoleTypeId.ClassD)
+            {
+                ClassD = player;
+                ClassD.Position = GameMap.Position + new Vector3(-20.0f, -3.424f, -7.284f);
+
+                if (Scientist != null && AutoEvent.Singleton.Config.VersusConfig.HealApponentWhenSomeoneEnterArea)
+                {
+                    Scientist.Heal(100);
+                }
+            }
+            else
+            {
+                Scientist = player;
+                Scientist.Position = GameMap.Position + new Vector3(-11.351f, -3.424f, -7.284f);
+
+                if (ClassD != null && AutoEvent.Singleton.Config.VersusConfig.HealApponentWhenSomeoneEnterArea)
+                {
+                    ClassD.Heal(100);
+                }
+            }
         }
 
         public void EventEnd()
