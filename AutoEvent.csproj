@@ -128,6 +128,7 @@
     <Compile Include="Events\Survival\Plugin.cs" />
     <Compile Include="Events\Puzzle\EventHandler.cs" />
     <Compile Include="Events\Puzzle\Plugin.cs" />
+    <Compile Include="Events\Valleyball\EventHandler.cs" />
     <Compile Include="Events\Valleyball\Plugin.cs" />
     <Compile Include="Events\Versus\Config.cs" />
     <Compile Include="Events\Versus\Features\RandomClass.cs" />
