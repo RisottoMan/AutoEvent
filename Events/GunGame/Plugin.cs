@@ -11,7 +11,7 @@ using UnityEngine;
 
 namespace AutoEvent.Events.GunGame
 {
-    public class Plugin : Event
+    public class Plugin : Interfaces.Event
     {
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.GunGameName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.GunGameDescription;

@@ -120,5 +120,13 @@ namespace AutoEvent
         public string LineWinner { get; set; } = "<color=red>Winner:</color> %winner%";
         public string LineAllDied { get; set; } = "<color=red>All players died</color>";
         public string LineDied { get; set; } = "You died...";
+
+        [Description("Down Cubes Game Mode")]
+        public string CubeName { get; set; } = "Down Cubes";
+        public string CubeDescription { get; set; } = "Cubes down....";
+        public string CubeBroadcast { get; set; } = "%name%\n%time%\n<color=yellow>Remaining: </color>%count%<color=yellow> players</color>";
+        public string CubeWinner { get; set; } = "<color=red>Winner:</color> %winner%";
+        public string CubeAllDied { get; set; } = "<color=red>All players died</color>";
+        public string CubeDied { get; set; } = "You died...";
     }
 }

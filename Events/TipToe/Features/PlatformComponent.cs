@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AutoEvent.Events.TipToe.Features
 {
-    internal class RopeComponent
+    internal class PlatformComponent
     {
     }
 }

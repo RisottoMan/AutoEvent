@@ -1,27 +1,35 @@
-﻿using AutoEvent.Events.TipToe.Features;
+﻿using AutoEvent.Events.Line.Features;
 using AutoEvent.Interfaces;
 using Exiled.API.Enums;
 using Exiled.API.Features;
+using Exiled.API.Features.Spawn;
+using Exiled.Events.Commands.Reload;
 using MapEditorReborn.API.Features.Objects;
+using MapEditorReborn.Configs;
 using MEC;
+using Mirror;
 using PlayerRoles;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace AutoEvent.Events.SkipRope
+namespace AutoEvent.Events.Cube
 {
-    public class Plugin : Interfaces.Event
+    internal class Plugin : Interfaces.Event
     {
-        public override string Name { get; set; } = "Skipping Rope";
-        public override string Description { get; set; } = "Нужно перепрыгивать скакалку.";
+        public override string Name { get; set; } = AutoEvent.Singleton.Translation.CubeName;
+        public override string Description { get; set; } = AutoEvent.Singleton.Translation.CubeDescription;
         public override string Color { get; set; } = "FF4242";
-        public override string CommandName { get; set; } = "rope";
-        public SchematicObject GameMap { get; set; }
+        public override string CommandName { get; set; } = "cube [ALPHA]";
+        public static SchematicObject GameMap { get; set; }
         public TimeSpan EventTime { get; set; }
 
         EventHandler _eventHandler;
+
+        private List<Vector3> CubePosition;
+        private GameObject Cube_Default;
+        private List<GameObject> Cubes;
 
         public override void OnStart()
         {
@@ -49,58 +57,47 @@ namespace AutoEvent.Events.SkipRope
             Exiled.Events.Handlers.Player.DroppingAmmo -= _eventHandler.OnDropAmmo;
 
             _eventHandler = null;
+
             Timing.CallDelayed(10f, () => EventEnd());
         }
 
-        public void OnEventStarted()
+        private void OnEventStarted()
         {
-            GameMap = Extensions.LoadMap("SkipRope", new Vector3(20f, 1026.5f, -45f), Quaternion.Euler(Vector3.zero), Vector3.one);
+            EventTime = TimeSpan.FromMinutes(2f);
+            GameMap = Extensions.LoadMap("Cube", new Vector3(76f, 1026.5f, -43.68f), Quaternion.Euler(Vector3.zero), Vector3.one);
+            CubePosition = new List<Vector3>();
 
-            Extensions.PlayAudio("LineLite.ogg", 10, true, Name);
+            Cube_Default = GameMap.AttachedBlocks.First(x => x.name == "Cube_Default");
 
-            foreach (Player player in Player.List)
+            GameMap.AttachedBlocks.Where(x => x.name == "CubePosition").ToList().ForEach(cube => CubePosition.Add(cube.transform.position));
+
+            //Extensions.PlayAudio("Cube.ogg", 10, true, Name);
+
+            Player.List.ToList().ForEach(pl =>
             {
-                player.Role.Set(RoleTypeId.ClassD, SpawnReason.None, RoleSpawnFlags.None);
-                player.Position = RandomClass.GetSpawnPosition(GameMap);
-            }
+                pl.Role.Set(RoleTypeId.ClassD, RoleSpawnFlags.AssignInventory);
+                pl.Position = GameMap.AttachedBlocks.First(x => x.name == "SpawnPoint").transform.position;
+            });
 
-            Timing.RunCoroutine(OnEventRunning(), "rope_run");
+            Timing.RunCoroutine(OnEventRunning(), "cube_run");
         }
 
         public IEnumerator<float> OnEventRunning()
         {
-            EventTime = new TimeSpan(0, 2, 0);
-
             for (int time = 10; time > 0; time--)
             {
-                Extensions.Broadcast(time.ToString(), 1);
+                Extensions.Broadcast($"{time}", 1);
                 yield return Timing.WaitForSeconds(1f);
             }
 
-            while (Player.List.Count(r => r.IsAlive) > 1 && EventTime.TotalSeconds > 0)
+            while (Player.List.Count(r => r.Role == RoleTypeId.ClassD) >= 1 && EventTime.TotalSeconds > 0)
             {
-                Extensions.Broadcast($"<color=#{Color}>{Name}</color>\n" +
-                    $"<color=blue>Осталось {EventTime.Minutes}:{EventTime.Seconds}</color>\n" +
-                    $"<color=yellow>Осталось игроков - {Player.List.Count(r=>r.IsAlive)}</color>", 1);
-
+                var cube = GameObject.Instantiate(Cube_Default, CubePosition.RandomItem() + new Vector3(0f, -5f, 0f), Quaternion.Euler(Vector3.zero));
+                Cubes.Add(cube);
+                NetworkServer.Spawn(cube);
                 yield return Timing.WaitForSeconds(1f);
-                EventTime -= TimeSpan.FromSeconds(1f);
             }
 
-            if (Player.List.Count(r => r.IsAlive) > 1)
-            {
-                Extensions.Broadcast($"<color=yellow>Выжило {Player.List.Count(r=>r.IsAlive)} игроков</color>\n<color=red>Победа</color>", 10);
-            }
-            else if (Player.List.Count(r => r.IsAlive) == 1)
-            {
-                Extensions.Broadcast($"</color=green>Победил игрок {Player.List.First(r => r.IsAlive).Nickname}</color>\n<color=yellow>Поздравляем тебя!</color>", 10);
-            }
-            else
-            {
-                Extensions.Broadcast($"<color=red>Никто не выжил.</color>\n<color=yellow>Конец мини-игры</color>", 10);
-            }
-
-            OnStop();
             yield break;
         }
 
@@ -109,6 +106,7 @@ namespace AutoEvent.Events.SkipRope
             Extensions.CleanUpAll();
             Extensions.TeleportEnd();
             Extensions.UnLoadMap(GameMap);
+            Cubes.ForEach(UnityEngine.Object.Destroy);
             Extensions.StopAudio();
             AutoEvent.ActiveEvent = null;
         }
