@@ -5,6 +5,8 @@ namespace AutoEvent
 {
     public class Translation : ITranslation
     {
+        public string TimerBeforeStart { get; set; } = "<color=yellow>%time%</color>";
+
         [Description("Zombie Infection Game Mode")]
         public string ZombieName { get; set; } = "Zombie Infection";
         public string ZombieDescription { get; set; } = "Zombie mode, the purpose of which is to infect all players.";
@@ -128,5 +130,15 @@ namespace AutoEvent
         public string CubeWinner { get; set; } = "<color=red>Winner:</color> %winner%";
         public string CubeAllDied { get; set; } = "<color=red>All players died</color>";
         public string CubeDied { get; set; } = "You died...";
+
+        [Description("Valleyball Game Mode")]
+        public string ValleyballName { get; set; } = "Воллейбол";
+        public string ValleyballDescription { get; set; } = "2 команды - 1 сетка";
+        public string ValleyballBroadcast { get; set; } = "<color=#%color%>%name%</color>\n<color=yellow>Счёт: %count%</color>\n<color=blue>До следующего раунда: %time%</color>";
+        public string ValleyballEnd { get; set; } = "<color=blue>Ивент шёл: %time%</color>\n";
+        public string ValleyballCounter { get; set; } = "<color=yellow>Счёт: %count%\n";
+        public string ValleyballWinNo { get; set; } = "<color=green>Победила дружба</color>";
+        public string ValleyballWinD { get; set; } = "<color=orange>Победил: D-Class</color>";
+        public string ValleyballWinS { get; set; } = "<color=yellow>Победили: Scientists</color>";
     }
 }
