@@ -1,4 +1,5 @@
-﻿using AutoEvent.Interfaces;
+﻿using AutoEvent.Events.ZombieEscape.Features;
+using AutoEvent.Interfaces;
 using CustomPlayerEffects;
 using Exiled.API.Enums;
 using Exiled.API.Features;
@@ -10,20 +11,22 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace AutoEvent.Events.Survival
+namespace AutoEvent.Events.ZombieEscape
 {
     public class Plugin : Event
     {
-        public override string Name { get; set; } = AutoEvent.Singleton.Translation.SurvivalName;
-        public override string Description { get; set; } = AutoEvent.Singleton.Translation.SurvivalDescription;
+        public override string Name { get; set; } = "Zombie Escape";
+        public override string Description { get; set; } = "Уou need to run away from zombies and escape by helicopter.";
         public override string Color { get; set; } = "FF4242";
-        public override string CommandName { get; set; } = "zombie2";
+        public override string CommandName { get; set; } = "zombie3";
         public SchematicObject GameMap { get; set; }
+        public SchematicObject Boat { get; set; }
+        public SchematicObject Heli { get; set; }
         public TimeSpan EventTime { get; set; }
 
-        private bool isFriendlyFireEnabled;
         EventHandler _eventHandler;
-        public Player firstZombie;
+        private bool isFriendlyFireEnabled;
+
         public override void OnStart()
         {
             isFriendlyFireEnabled = Server.FriendlyFire;
@@ -68,8 +71,7 @@ namespace AutoEvent.Events.Survival
         public void OnEventStarted()
         {
             EventTime = new TimeSpan(0, 5, 0);
-
-            GameMap = Extensions.LoadMap("Survival", new Vector3(15f, 1030f, -43.68f), Quaternion.identity, Vector3.one);
+            GameMap = Extensions.LoadMap("zm_osprey", new Vector3(-15f, 1020f, -80f), Quaternion.identity, Vector3.one);
 
             foreach (Player player in Player.List)
             {
@@ -87,23 +89,18 @@ namespace AutoEvent.Events.Survival
                 });
             }
 
-            Timing.RunCoroutine(OnEventRunning(), "survival_run");
+            Timing.RunCoroutine(OnEventRunning(), "zmescape_run");
         }
 
         public IEnumerator<float> OnEventRunning()
         {
-            Extensions.PlayAudio("Survival.ogg", 10, false, Name);
-            for (float _time = 20; _time > 0; _time--)
+            //Extensions.PlayAudio("ZMEscape.ogg", 7, false, Name);
+
+            for (float _time = 15; _time > 0; _time--)
             {
-                Extensions.Broadcast(AutoEvent.Singleton.Translation.SurvivalBeforeInfection.Replace("%name%", Name).Replace("%time%", $"{_time}"), 1);
+                Extensions.Broadcast($"<color=#D71868><b><i>{Name}</i></b></color>\n<color=#ABF000>До начала ивента осталось <color=red>{_time}</color> секунд.</color>", 1);
                 yield return Timing.WaitForSeconds(1f);
             }
-
-            Extensions.StopAudio();
-            Timing.CallDelayed(0.1f, () =>
-            {
-                Extensions.PlayAudio("Zombie2.ogg", 7, false, Name);
-            });
 
             for (int i = 0; i <= Player.List.Count() / 10; i++)
             {
@@ -111,63 +108,82 @@ namespace AutoEvent.Events.Survival
                 player.Role.Set(RoleTypeId.Scp0492, SpawnReason.None, RoleSpawnFlags.AssignInventory);
                 player.EnableEffect<Disabled>();
                 player.EnableEffect<Scp1853>();
-                player.Health = 10000;
+                player.Health = 3000;
+            }
 
-                if (Player.List.Count(r => r.IsScp) == 1)
+            GameObject button = new GameObject();
+            GameObject button1 = new GameObject();
+            GameObject button2 = new GameObject();
+            GameObject wall = new GameObject();
+
+            foreach (var gameObject in GameMap.AttachedBlocks)
+            {
+                switch(gameObject.name)
                 {
-                    firstZombie = player;
+                    case "Button": { button = gameObject; } break;
+                    case "Button1": { button1 = gameObject; } break;
+                    case "Button2": { button2 = gameObject; } break;
+                    case "Lava": { gameObject.AddComponent<LavaComponent>(); } break;
+                    case "Wall": { wall = gameObject; } break;
                 }
             }
 
-            var teleport = GameMap.AttachedBlocks.First(x => x.name == "Teleport");
-            var teleport1 = GameMap.AttachedBlocks.First(x => x.name == "Teleport1");
-
             while (Player.List.Count(r => r.IsHuman) > 0 && Player.List.Count(r => r.IsScp) > 0 && EventTime.TotalSeconds > 0)
             {
-                var text = AutoEvent.Singleton.Translation.SurvivalAfterInfection;
-                text = text.Replace("%name%", Name);
-                text = text.Replace("%humanCount%", Player.List.Count(r => r.IsHuman).ToString());
-                text = text.Replace("%time%", $"{EventTime.Minutes}:{EventTime.Seconds}");
-
-                foreach (var player in Player.List)
+                foreach(Player player in Player.List)
                 {
-                    player.ClearBroadcasts();
-                    player.Broadcast(1, text);
-
-                    if (Vector3.Distance(player.Position, teleport.transform.position) < 1)
+                    if (Vector3.Distance(player.Position, button.transform.position) < 3)
                     {
-                        player.Position = teleport1.transform.position;
+                        button.transform.position += Vector3.down * 7;
+                        Boat = Extensions.LoadMap("Boat_Zombie", GameMap.Position, Quaternion.identity, Vector3.one);
                     }
+
+                    if (Vector3.Distance(player.Position, button1.transform.position) < 3)
+                    {
+                        button1.transform.position += Vector3.down * 5;
+                        wall.AddComponent<WallComponent>();
+                    }
+
+                    if (Vector3.Distance(player.Position, button2.transform.position) < 3)
+                    {
+                        button2.transform.position += Vector3.down * 5;
+                        EventTime = new TimeSpan(0, 0, 40); // ?
+                        Heli = Extensions.LoadMap("Helicopter_Zombie", GameMap.Position, Quaternion.identity, Vector3.one);
+                    }
+
+                    player.ClearBroadcasts();
+                    player.Broadcast(1, $"{Name}\n" +
+                    $"Необходимо вызвать вертолет и улететь от зомби\n" +
+                    $"<color=yellow>Осталось людей: <color=green>{Player.List.Count(r => r.IsHuman)}</color></color>");
                 }
 
                 yield return Timing.WaitForSeconds(1f);
                 EventTime -= TimeSpan.FromSeconds(1f);
             }
 
+            foreach(Player player in Player.List)
+            {
+                player.EnableEffect<Flashed>(1);
+
+                if (Heli != null)
+                if (Vector3.Distance(player.Position, Heli.Position) > 5)
+                {
+                    player.Hurt(5000f, "Warhead detonated");
+                }
+            }
+
             if (Player.List.Count(r => r.IsHuman) == 0)
             {
-                Extensions.Broadcast(AutoEvent.Singleton.Translation.SurvivalZombieWin, 10);
-
+                Extensions.Broadcast($"<color=red>Escape Failed!</color>\n<color=yellow>ZOMBIES WIN</color>", 10);
                 Extensions.StopAudio();
                 Timing.CallDelayed(0.1f, () =>
                 {
                     Extensions.PlayAudio("ZombieWin.ogg", 7, false, Name);
                 });
             }
-            else if (Player.List.Count(r => r.IsScp) == 0)
-            {
-                Extensions.Broadcast(AutoEvent.Singleton.Translation.SurvivalHumanWin, 10);
-
-                Extensions.StopAudio();
-                Timing.CallDelayed(0.1f, () =>
-                {
-                    Extensions.PlayAudio("HumanWin.ogg", 7, false, Name);
-                });
-            }
             else
             {
-                Extensions.Broadcast(AutoEvent.Singleton.Translation.SurvivalHumanWinTime, 10);
-
+                Extensions.Broadcast($"<color=red>Escape Successful!</color>\n<color=yellow>HUMANS WIN</color>", 10);
                 Extensions.StopAudio();
                 Timing.CallDelayed(0.1f, () =>
                 {
@@ -178,12 +194,13 @@ namespace AutoEvent.Events.Survival
             OnStop();
             yield break;
         }
-
         public void EventEnd()
         {
             Extensions.CleanUpAll();
             Extensions.TeleportEnd();
             Extensions.UnLoadMap(GameMap);
+            Extensions.UnLoadMap(Boat);
+            Extensions.UnLoadMap(Heli);
             Extensions.StopAudio();
             AutoEvent.ActiveEvent = null;
         }

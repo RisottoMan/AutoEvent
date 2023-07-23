@@ -12,7 +12,7 @@ using UnityEngine;
 
 namespace AutoEvent.Events.Battle
 {
-    public class Plugin : Interfaces.Event
+    public class Plugin : Event
     {
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.BattleName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.BattleDescription;

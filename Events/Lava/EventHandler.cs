@@ -1,4 +1,5 @@
-﻿using Exiled.API.Extensions;
+﻿using Exiled.API.Enums;
+using Exiled.API.Extensions;
 using Exiled.API.Features;
 using Exiled.Events.EventArgs.Map;
 using Exiled.Events.EventArgs.Player;
@@ -36,7 +37,16 @@ namespace AutoEvent.Events.Lava
         }
         public void OnHurt(HurtingEventArgs ev)
         {
-            //if (ev.Player.Role.Type != RoleTypeId.Spectator) ev.Player.Hurt(3.5f, "Shooting");
+            if (ev.Player != null && ev.DamageHandler.Type == DamageType.Falldown)
+            {
+                ev.IsAllowed = false;
+            }
+
+            if (ev.Attacker != null && ev.Player != null)
+            {
+                ev.Player.Hurt(3.5f, "Shooting");
+            }
         }
+
     }
 }

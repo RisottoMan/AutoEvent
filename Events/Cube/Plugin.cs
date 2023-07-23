@@ -1,11 +1,7 @@
-﻿using AutoEvent.Events.Line.Features;
-using AutoEvent.Interfaces;
+﻿using AutoEvent.Interfaces;
 using Exiled.API.Enums;
 using Exiled.API.Features;
-using Exiled.API.Features.Spawn;
-using Exiled.Events.Commands.Reload;
 using MapEditorReborn.API.Features.Objects;
-using MapEditorReborn.Configs;
 using MEC;
 using Mirror;
 using PlayerRoles;
@@ -16,19 +12,17 @@ using UnityEngine;
 
 namespace AutoEvent.Events.Cube
 {
-    internal class Plugin : Interfaces.Event
+    internal class Plugin : Event
     {
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.CubeName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.CubeDescription;
         public override string Color { get; set; } = "FF4242";
-        public override string CommandName { get; set; } = "cube [ALPHA]";
-        public static SchematicObject GameMap { get; set; }
+        public override string CommandName { get; set; } = "cube";
+        public SchematicObject GameMap { get; set; }
         public TimeSpan EventTime { get; set; }
 
         EventHandler _eventHandler;
 
-        private List<Vector3> CubePosition;
-        private GameObject Cube_Default;
         private List<GameObject> Cubes;
 
         public override void OnStart()
@@ -57,27 +51,20 @@ namespace AutoEvent.Events.Cube
             Exiled.Events.Handlers.Player.DroppingAmmo -= _eventHandler.OnDropAmmo;
 
             _eventHandler = null;
-
             Timing.CallDelayed(10f, () => EventEnd());
         }
 
         private void OnEventStarted()
         {
-            EventTime = TimeSpan.FromMinutes(2f);
+            EventTime = new TimeSpan(0, 2, 0);
             GameMap = Extensions.LoadMap("Cube", new Vector3(76f, 1026.5f, -43.68f), Quaternion.Euler(Vector3.zero), Vector3.one);
-            CubePosition = new List<Vector3>();
-
-            Cube_Default = GameMap.AttachedBlocks.First(x => x.name == "Cube_Default");
-
-            GameMap.AttachedBlocks.Where(x => x.name == "CubePosition").ToList().ForEach(cube => CubePosition.Add(cube.transform.position));
-
             //Extensions.PlayAudio("Cube.ogg", 10, true, Name);
 
-            Player.List.ToList().ForEach(pl =>
+            foreach(Player player in Player.List)
             {
-                pl.Role.Set(RoleTypeId.ClassD, RoleSpawnFlags.AssignInventory);
-                pl.Position = GameMap.AttachedBlocks.First(x => x.name == "SpawnPoint").transform.position;
-            });
+                player.Role.Set(RoleTypeId.ClassD, SpawnReason.None, RoleSpawnFlags.AssignInventory);
+                player.Position = GameMap.AttachedBlocks.First(x => x.name == "SpawnPoint").transform.position;
+            }
 
             Timing.RunCoroutine(OnEventRunning(), "cube_run");
         }
@@ -90,14 +77,20 @@ namespace AutoEvent.Events.Cube
                 yield return Timing.WaitForSeconds(1f);
             }
 
-            while (Player.List.Count(r => r.Role == RoleTypeId.ClassD) >= 1 && EventTime.TotalSeconds > 0)
+            Cubes = new List<GameObject>();
+            var fallCubes = GameMap.AttachedBlocks.Where(x => x.name == "CubePosition").ToList();
+            var cube = GameMap.AttachedBlocks.First(x => x.name == "Cube_Default");
+
+            while (Player.List.Count(r => r.Role == RoleTypeId.ClassD) > 0 && EventTime.TotalSeconds > 0)
             {
-                var cube = GameObject.Instantiate(Cube_Default, CubePosition.RandomItem() + new Vector3(0f, -5f, 0f), Quaternion.Euler(Vector3.zero));
-                Cubes.Add(cube);
-                NetworkServer.Spawn(cube);
+                var _cube = GameObject.Instantiate(cube, fallCubes.RandomItem().transform.position + new Vector3(0f, -5f, 0f), Quaternion.Euler(Vector3.zero));
+                NetworkServer.Spawn(_cube);
+                Cubes.Add(_cube);
+
                 yield return Timing.WaitForSeconds(1f);
             }
 
+            OnStop();
             yield break;
         }
 
@@ -106,7 +99,7 @@ namespace AutoEvent.Events.Cube
             Extensions.CleanUpAll();
             Extensions.TeleportEnd();
             Extensions.UnLoadMap(GameMap);
-            Cubes.ForEach(UnityEngine.Object.Destroy);
+            Cubes.ForEach(GameObject.Destroy);
             Extensions.StopAudio();
             AutoEvent.ActiveEvent = null;
         }

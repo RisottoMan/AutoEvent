@@ -1,7 +1,7 @@
 ﻿using Exiled.API.Features;
 using UnityEngine;
 
-namespace AutoEvent.Events.Lava.Features
+namespace AutoEvent.Events.ZombieEscape.Features
 {
     public class LavaComponent : MonoBehaviour
     {
@@ -16,7 +16,7 @@ namespace AutoEvent.Events.Lava.Features
             if (Player.Get(other.gameObject) is Player)
             {
                 var pl = Player.Get(other.gameObject);
-                pl.Hurt(0.1f, "<color=red>Сгорел в Лаве!</color>");
+                pl.Hurt(500f, $"Die from lava");
             }
         }
     }
