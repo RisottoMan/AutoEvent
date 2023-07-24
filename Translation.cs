@@ -115,7 +115,7 @@ namespace AutoEvent
 
         [Description("Death Line Game Mode")]
         public string LineName { get; set; } = "DeathLine";
-        public string LineDescription { get; set; } = "xxx";
+        public string LineDescription { get; set; } = "Avoid the spinning platform to survive.";
         public string LineBroadcast { get; set; } = "%name%\n%time%\n<color=yellow>Remaining: </color>%count%<color=yellow> players</color>";
         public string LineWinner { get; set; } = "<color=red>Winner:</color> %winner%";
         public string LineAllDied { get; set; } = "<color=red>All players died</color>";
@@ -148,7 +148,7 @@ namespace AutoEvent
         public string DeathAllDie { get; set; } = "<color=red>Death Party</color>\n<color=yellow>No one survived.(((</color>\n<color=#ffc0cb>%time%</color>";
         [Description("FinishWay Game Mode")]
         public string FinishWayName { get; set; } = "<color=yellow>Finish Way</color>";
-        public string FinishWayDescription { get; set; } = "Go to the end of the finish to win. [Alpha]";
+        public string FinishWayDescription { get; set; } = "Go to the end of the finish to win.";
         public string FinishWayCycle { get; set; } = "%name%\n<color=yellow>Pass the finish!</color>\nTime left: %time%";
         public string FinishWayDied { get; set; } = "You didnt pass the finish";
         public string FinishWaySeveralSurvivors { get; set; } = "<color=red>Human wins!</color>\nSurvived %count%";
@@ -156,11 +156,18 @@ namespace AutoEvent
         public string FinishWayNoSurvivors { get; set; } = "<color=red>No one human survived</color>";
         [Description("Zombie Escape Game Mode")]
         public string ZombieEscapeName { get; set; } = "Zombie Escape";
-        public string ZombieEscapeDescription { get; set; } = "Escape from zombie horde";
+        public string ZombieEscapeDescription { get; set; } = "Óou need to run away from zombies and escape by helicopter.";
         public string ZombieEscapeBeforeStart { get; set; } = "<color=#D71868><b><i>%name%</i></b></color>\nStarts in: %time%";
         public string ZombieEscapeHelicopter { get; set; } = "<color=yellow>%name%</color>\n<color=red>Need to call helicopter.</color>\nHumans left: %count%";
         public string ZombieEscapeDied { get; set; } = "Warhead detonated";
         public string ZombieEscapeZombieWin { get; set; } = "<color=red>Zombies wins!</color>All humans died";
         public string ZombieEscapeHumanWin { get; set; } = "<color=blue>Humans wins!</color>Humans escaped";
+        [Description("Lava Game Mode")]
+        public string LavaName { get; set; } = "The floor is LAVA";
+        public string LavaDescription { get; set; } = "Survival, in which you need to avoid lava and shoot at others.";
+        public string LavaBeforeStart { get; set; } = "<size=100><color=red>%time%</color></size>\nTake weapons and climb up.";
+        public string LavaCycle { get; set; } = "<size=20><color=red><b>Alive: %count% players</b></color></size>";
+        public string LavaWin { get; set; } = "<color=red><b>Winner\nPlayer - %winner%</b></color>";
+        public string LavaAllDead { get; set; } = "<color=red><b>No one survived to the end.</b></color>";
     }
 }

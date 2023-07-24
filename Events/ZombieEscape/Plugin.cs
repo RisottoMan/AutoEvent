@@ -92,11 +92,11 @@ namespace AutoEvent.Events.ZombieEscape
 
         public IEnumerator<float> OnEventRunning()
         {
-            Extensions.PlayAudio("ZMEscape.ogg", 7, false, Name);
+            Extensions.PlayAudio("Survival.ogg", 10, false, Name);
 
             for (float _time = 15; _time > 0; _time--)
             {
-                Extensions.Broadcast($"<color=#D71868><b><i>{Name}</i></b></color>\n<color=#ABF000>До начала ивента осталось <color=red>{_time}</color> секунд.</color>", 1);
+                Extensions.Broadcast(AutoEvent.Singleton.Translation.ZombieEscapeBeforeStart.Replace("%name%", Name).Replace("%time%", $"{_time}"), 1);
                 yield return Timing.WaitForSeconds(1f);
             }
 
@@ -145,13 +145,12 @@ namespace AutoEvent.Events.ZombieEscape
                     if (Vector3.Distance(player.Position, button2.transform.position) < 3)
                     {
                         button2.transform.position += Vector3.down * 5;
-                        EventTime = new TimeSpan(0, 0, 40);
+                        EventTime = new TimeSpan(0, 1, 5);
                         Heli = Extensions.LoadMap("Helicopter_Zombie", GameMap.Position, Quaternion.identity, Vector3.one);
                     }
 
+                    string text = AutoEvent.Singleton.Translation.ZombieEscapeHelicopter.Replace("%name%", Name).Replace("%count%", $"{Player.List.Count(r => r.IsHuman)}");
                     player.ClearBroadcasts();
-                    string text = AutoEvent.Singleton.Translation.ZombieEscapeHelicopter.Replace("%name%", Name);
-                    text.Replace("%count%", Player.List.Count(r => r.IsHuman).ToString());
                     player.Broadcast(1, text);
                 }
 
