@@ -153,10 +153,14 @@ namespace AutoEvent
         public string FinishWayDied { get; set; } = "You didnt pass the finish";
         public string FinishWaySeveralSurvivors { get; set; } = "<color=red>Human wins!</color>\nSurvived %count%";
         public string FinishWayOneSurvived { get; set; } = "<color=red>Human wins!</color>\nWinner: %player%";
-        public string FinishWayNoSurvaivors { get; set; } = "<color=red>No one human survived</color>";
+        public string FinishWayNoSurvivors { get; set; } = "<color=red>No one human survived</color>";
         [Description("Zombie Escape Game Mode")]
         public string ZombieEscapeName { get; set; } = "Zombie Escape";
         public string ZombieEscapeDescription { get; set; } = "Escape from zombie horde";
         public string ZombieEscapeBeforeStart { get; set; } = "<color=#D71868><b><i>%name%</i></b></color>\nStarts in: %time%";
+        public string ZombieEscapeHelicopter { get; set; } = "<color=yellow>%name%</color>\n<color=red>Need to call helicopter.</color>\nHumans left: %count%";
+        public string ZombieEscapeDied { get; set; } = "Warhead detonated";
+        public string ZombieEscapeZombieWin { get; set; } = "<color=red>Zombies wins!</color>All humans died";
+        public string ZombieEscapeHumanWin { get; set; } = "<color=blue>Humans wins!</color>Humans escaped";
     }
 }
