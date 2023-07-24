@@ -128,5 +128,23 @@ namespace AutoEvent
         public string CubeWinner { get; set; } = "<color=red>Winner:</color> %winner%";
         public string CubeAllDied { get; set; } = "<color=red>All players died</color>";
         public string CubeDied { get; set; } = "You died...";
+
+        [Description("Hide And Seek Game Mode")]
+        public string HideName { get; set; } = "Hide And Seek";
+        public string HideDescription { get; set; } = "We need to catch up with all the players on the map.";
+        public string HideBroadcast { get; set; } = "RUN\nSelection of new catching up players.\n%time%";
+        public string HideCycle { get; set; } = "Pass the bat to another player\n<color=yellow><b><i>%time%</i></b> seconds left</color>";
+        public string HideHurt { get; set; } = "You didn't have time to pass the bat.";
+        public string HideMorePlayer { get; set; } = "There are a lot of players left.\nWaiting for a reboot.\n<color=yellow>Event time <color=red>%time%</color></color>";
+        public string HideOnePlayer { get; set; } = "The player won %winner%\n<color=yellow>Event time <color=red>%time%</color></color>";
+        public string HideAllDie { get; set; } = "No one survived.\nEnd of the game\n<color=yellow>Event time <color=red>%time%</color></color>";
+
+        [Description("Death Party Game Mode")]
+        public string DeathName { get; set; } = "Death Party";
+        public string DeathDescription { get; set; } = "Survive in grenade rain.";
+        public string DeathCycle { get; set; } = "<color=yellow>Dodge the grenades!</color>\n<color=green>%time% seconds passed</color>\n<color=red>%count% players left</color>";
+        public string DeathMorePlayer { get; set; } = "<color=red>Death Party</color>\n<color=yellow><color=red>%count%</color> players survived.</color>\n<color=#ffc0cb>%time%</color>";
+        public string DeathOnePlayer { get; set; } = "<color=red>Death Party</color>\n<color=yellow>Winner - <color=red>%winner%</color></color>\n<color=#ffc0cb>%time%</color>";
+        public string DeathAllDie { get; set; } = "<color=red>Death Party</color>\n<color=yellow>No one survived.(((</color>\n<color=#ffc0cb>%time%</color>";
     }
 }

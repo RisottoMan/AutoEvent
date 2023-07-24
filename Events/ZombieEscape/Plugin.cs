@@ -46,7 +46,6 @@ namespace AutoEvent.Events.ZombieEscape
             Exiled.Events.Handlers.Player.DroppingItem += _eventHandler.OnDropItem;
             Exiled.Events.Handlers.Player.DroppingAmmo += _eventHandler.OnDropAmmo;
             Exiled.Events.Handlers.Player.Hurting += _eventHandler.OnDamage;
-            Exiled.Events.Handlers.Player.Died += _eventHandler.OnDead;
         }
         public override void OnStop()
         {
@@ -62,7 +61,6 @@ namespace AutoEvent.Events.ZombieEscape
             Exiled.Events.Handlers.Player.DroppingItem -= _eventHandler.OnDropItem;
             Exiled.Events.Handlers.Player.DroppingAmmo -= _eventHandler.OnDropAmmo;
             Exiled.Events.Handlers.Player.Hurting -= _eventHandler.OnDamage;
-            Exiled.Events.Handlers.Player.Died -= _eventHandler.OnDead;
 
             _eventHandler = null;
             Timing.CallDelayed(10f, () => EventEnd());

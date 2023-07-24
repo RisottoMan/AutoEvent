@@ -11,17 +11,12 @@ namespace AutoEvent.Events.HideAndSeek
     {
         public void OnHurt(HurtingEventArgs ev)
         {
-            if (ev.Player != null && ev.DamageHandler.Type == DamageType.Falldown)
-            {
-                ev.IsAllowed = false;
-            }
+            ev.IsAllowed = false;
 
             if (ev.Attacker == null) return;
 
             if (ev.Attacker.HasItem(ItemType.Jailbird) == true && ev.Player.HasItem(ItemType.Jailbird) == false)
             {
-                ev.IsAllowed = false;
-
                 ev.Attacker.ClearInventory();
                 var item = ev.Player.AddItem(ItemType.Jailbird);
                 Timing.CallDelayed(0.1f, () =>

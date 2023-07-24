@@ -58,18 +58,6 @@ namespace AutoEvent.Events.ZombieEscape
             }
         }
 
-        public void OnDead(DiedEventArgs ev)
-        {
-            Timing.CallDelayed(2f, () =>
-            {
-                ev.Player.Role.Set(RoleTypeId.Scp0492, SpawnReason.None, RoleSpawnFlags.AssignInventory);
-                ev.Player.Position = RandomClass.GetSpawnPosition(_plugin.GameMap);
-                ev.Player.EnableEffect<Disabled>();
-                ev.Player.EnableEffect<Scp1853>();
-                ev.Player.Health = 3000;
-            });
-        }
-
         public void OnJoin(VerifiedEventArgs ev)
         {
 
