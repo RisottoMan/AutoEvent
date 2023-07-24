@@ -102,7 +102,7 @@ namespace AutoEvent.Events.HideAndSeek
                 });
             }
 
-            for (int doptime = 30; doptime > 0; doptime--)
+            for (int doptime = 15; doptime > 0; doptime--)
             {
                 Extensions.Broadcast(AutoEvent.Singleton.Translation.HideCycle.Replace("%time%", $"{doptime}"), 1);
 

@@ -21,7 +21,7 @@ namespace AutoEvent.Events.ZombieEscape
             _plugin = plugin;
         }
 
-        public void OnDamage(HurtingEventArgs ev)
+        public void OnDamage(HurtingEventArgs ev) // урон от лавы - превращение
         {
             if (ev.Player != null && ev.DamageHandler.Type == DamageType.Falldown)
             {
@@ -67,7 +67,7 @@ namespace AutoEvent.Events.ZombieEscape
                 ev.Player.Position = RandomClass.GetSpawnPosition(_plugin.GameMap);
                 ev.Player.EnableEffect<Disabled>();
                 ev.Player.EnableEffect<Scp1853>();
-                ev.Player.Health = 3000;
+                ev.Player.Health = 10000;
             }
             else
             {

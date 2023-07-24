@@ -92,13 +92,16 @@ namespace AutoEvent.Events.ZombieEscape
 
         public IEnumerator<float> OnEventRunning()
         {
-            Extensions.PlayAudio("ZMEscape.ogg", 7, false, Name);
+            Extensions.PlayAudio("Survival.ogg", 10, false, Name);
 
-            for (float _time = 15; _time > 0; _time--)
+            for (float _time = 20; _time > 0; _time--)
             {
                 Extensions.Broadcast($"<color=#D71868><b><i>{Name}</i></b></color>\n<color=#ABF000>До начала ивента осталось <color=red>{_time}</color> секунд.</color>", 1);
                 yield return Timing.WaitForSeconds(1f);
             }
+
+            Extensions.StopAudio();
+            Timing.CallDelayed(0.1f, () => Extensions.PlayAudio("Zombie2.ogg", 7, true, Name));
 
             for (int i = 0; i <= Player.List.Count() / 10; i++)
             {
@@ -106,7 +109,7 @@ namespace AutoEvent.Events.ZombieEscape
                 player.Role.Set(RoleTypeId.Scp0492, SpawnReason.None, RoleSpawnFlags.AssignInventory);
                 player.EnableEffect<Disabled>();
                 player.EnableEffect<Scp1853>();
-                player.Health = 3000;
+                player.Health = 10000;
             }
 
             GameObject button = new GameObject();
@@ -197,8 +200,8 @@ namespace AutoEvent.Events.ZombieEscape
             Extensions.CleanUpAll();
             Extensions.TeleportEnd();
             Extensions.UnLoadMap(GameMap);
-            Extensions.UnLoadMap(Boat);
-            Extensions.UnLoadMap(Heli);
+            if (Boat != null) Extensions.UnLoadMap(Boat);
+            if (Heli != null) Extensions.UnLoadMap(Heli);
             Extensions.StopAudio();
             AutoEvent.ActiveEvent = null;
         }

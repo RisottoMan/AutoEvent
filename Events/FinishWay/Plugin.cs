@@ -11,19 +11,19 @@ using UnityEngine;
 
 namespace AutoEvent.Events.FinishWay
 {
-    public class Plugin// : Event
+    public class Plugin : Event
     {
-        public string Name { get; set; } = "Finish Way";
-        public string Description { get; set; } = "Go to the end of the finish to win. [Alpha]";
-        public string Color { get; set; } = "FF4242";
-        public string CommandName { get; set; } = "finish";
+        public override string Name { get; set; } = "Finish Way";
+        public override string Description { get; set; } = "Go to the end of the finish to win. [Alpha]";
+        public override string Color { get; set; } = "FF4242";
+        public override string CommandName { get; set; } = "finish";
         public static SchematicObject GameMap { get; set; }
         public static TimeSpan EventTime { get; set; }
 
         EventHandler _eventHandler;
         public GameObject Lava { get; set; }
 
-        public void OnStart()
+        public override void OnStart()
         {
             _eventHandler = new EventHandler();
 
@@ -37,7 +37,7 @@ namespace AutoEvent.Events.FinishWay
 
             OnEventStarted();
         }
-        public void OnStop()
+        public override void OnStop()
         {
             Exiled.Events.Handlers.Player.Verified -= _eventHandler.OnJoin;
             Exiled.Events.Handlers.Server.RespawningTeam -= _eventHandler.OnTeamRespawn;
