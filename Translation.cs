@@ -1,4 +1,4 @@
-﻿using Exiled.API.Interfaces;
+using Exiled.API.Interfaces;
 using System.ComponentModel;
 
 namespace AutoEvent
@@ -146,5 +146,17 @@ namespace AutoEvent
         public string DeathMorePlayer { get; set; } = "<color=red>Death Party</color>\n<color=yellow><color=red>%count%</color> players survived.</color>\n<color=#ffc0cb>%time%</color>";
         public string DeathOnePlayer { get; set; } = "<color=red>Death Party</color>\n<color=yellow>Winner - <color=red>%winner%</color></color>\n<color=#ffc0cb>%time%</color>";
         public string DeathAllDie { get; set; } = "<color=red>Death Party</color>\n<color=yellow>No one survived.(((</color>\n<color=#ffc0cb>%time%</color>";
+        [Description("FinishWay Game Mode")]
+        public string FinishWayName { get; set; } = "<color=yellow>Finish Way</color>";
+        public string FinishWayDescription { get; set; } = "Go to the end of the finish to win. [Alpha]";
+        public string FinishWayCycle { get; set; } = "%name%\n<color=yellow>Pass the finish!</color>\nTime left: %time%";
+        public string FinishWayDied { get; set; } = "You didnt pass the finish";
+        public string FinishWaySeveralSurvivors { get; set; } = "<color=red>Human wins!</color>\nSurvived %count%";
+        public string FinishWayOneSurvived { get; set; } = "<color=red>Human wins!</color>\nWinner: %player%";
+        public string FinishWayNoSurvaivors { get; set; } = "<color=red>No one human survived</color>";
+        [Description("Zombie Escape Game Mode")]
+        public string ZombieEscapeName { get; set; } = "Zombie Escape";
+        public string ZombieEscapeDescription { get; set; } = "Escape from zombie horde";
+        public string ZombieEscapeBeforeStart { get; set; } = "<color=#D71868><b><i>%name%</i></b></color>\nStarts in: %time%";
     }
 }
