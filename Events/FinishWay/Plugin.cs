@@ -11,19 +11,19 @@ using UnityEngine;
 
 namespace AutoEvent.Events.FinishWay
 {
-    public class Plugin : Event
+    public class Plugin// : Event
     {
-        public override string Name { get; set; } = "Finish Way";
-        public override string Description { get; set; } = "Go to the end of the finish to win. [Alpha]";
-        public override string Color { get; set; } = "FF4242";
-        public override string CommandName { get; set; } = "finish";
+        public string Name { get; set; } = AutoEvent.Singleton.Translation.FinishWayName;
+        public string Description { get; set; } = AutoEvent.Singleton.Translation.FinishWayDescription;
+        public string Color { get; set; } = "FF4242";
+        public string CommandName { get; set; } = "finish";
         public static SchematicObject GameMap { get; set; }
         public static TimeSpan EventTime { get; set; }
 
         EventHandler _eventHandler;
         public GameObject Lava { get; set; }
 
-        public override void OnStart()
+        public void OnStart()
         {
             _eventHandler = new EventHandler();
 
@@ -37,7 +37,7 @@ namespace AutoEvent.Events.FinishWay
 
             OnEventStarted();
         }
-        public override void OnStop()
+        public void OnStop()
         {
             Exiled.Events.Handlers.Player.Verified -= _eventHandler.OnJoin;
             Exiled.Events.Handlers.Server.RespawningTeam -= _eventHandler.OnTeamRespawn;
@@ -82,7 +82,7 @@ namespace AutoEvent.Events.FinishWay
                 var count = Player.List.Count(r => r.Role == RoleTypeId.ClassD);
                 var time = $"{EventTime.Minutes}:{EventTime.Seconds}";
 
-                Extensions.Broadcast($"{Name}\nВы должны дойти до Финиша\nОсталось {EventTime.Minutes}:{EventTime.Seconds}", 1);
+                Extensions.Broadcast(AutoEvent.Singleton.Translation.FinishWayCycle.Replace("%name%", Name).Replace("time", time), 1);
 
                 yield return Timing.WaitForSeconds(1f);
                 EventTime -= TimeSpan.FromSeconds(1f);
@@ -94,21 +94,21 @@ namespace AutoEvent.Events.FinishWay
             {
                 if (Vector3.Distance(player.Position, point.transform.position) > 10)
                 {
-                    player.Kill("Вы не успели добраться до Финиша.");
+                    player.Kill(AutoEvent.Singleton.Translation.FinishWayDied);
                 }
             }
 
             if (Player.List.Count(r => r.IsAlive) > 1)
             {
-                Extensions.Broadcast($"Победа\nФинишировали {Player.List.Count(r => r.IsAlive)} человек", 10);
+                Extensions.Broadcast(AutoEvent.Singleton.Translation.FinishWaySeveralSurvivors.Replace("%count%", Player.List.Count(r => r.IsAlive).ToString()), 10);
             }
             else if (Player.List.Count(r => r.IsAlive) == 1)
             {
-                Extensions.Broadcast($"Победа\nФинишировал игрок {Player.List.First(r => r.IsAlive).Nickname}", 10);
+                Extensions.Broadcast(AutoEvent.Singleton.Translation.FinishWayOneSurvived.Replace("%player%", Player.List.First(r => r.IsAlive).Nickname), 10);
             }
             else
             {
-                Extensions.Broadcast($"Никто не успел добраться до финиша\nКонец игры", 10);
+                Extensions.Broadcast(AutoEvent.Singleton.Translation.FinishWayNoSurvivors, 10);
             }
 
             OnStop();
