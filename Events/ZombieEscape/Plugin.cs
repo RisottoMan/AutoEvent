@@ -145,7 +145,7 @@ namespace AutoEvent.Events.ZombieEscape
                     if (Vector3.Distance(player.Position, button2.transform.position) < 3)
                     {
                         button2.transform.position += Vector3.down * 5;
-                        EventTime = new TimeSpan(0, 0, 40); // ?
+                        EventTime = new TimeSpan(0, 0, 40);
                         Heli = Extensions.LoadMap("Helicopter_Zombie", GameMap.Position, Quaternion.identity, Vector3.one);
                     }
 

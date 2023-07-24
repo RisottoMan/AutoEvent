@@ -56,7 +56,7 @@ namespace AutoEvent.Events.HideAndSeek
         {
             EventTime = new TimeSpan(0, 0, 0);
             GameMap = Extensions.LoadMap("HideAndSeek", new Vector3(5.5f, 1026.5f, -45f), Quaternion.Euler(Vector3.zero), Vector3.one);
-            Extensions.PlayAudio("ClassicMusic.ogg", 5, true, Name);
+            Extensions.PlayAudio("HideAndSeek.ogg", 5, true, Name);
 
             Server.FriendlyFire = true;
 
@@ -142,7 +142,7 @@ namespace AutoEvent.Events.HideAndSeek
                 text = text.Replace("%winner%", Player.List.First(r => r.IsAlive).Nickname);
                 text = text.Replace("%time%", $"{time}");
 
-                Extensions.Broadcast(AutoEvent.Singleton.Translation.HideOnePlayer.Replace("%winner%", text), 10);
+                Extensions.Broadcast(text, 10);
             }
             else
             {
