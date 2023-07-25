@@ -16,8 +16,8 @@ namespace AutoEvent.Events.DeathParty
 {
     public class Plugin : Event
     {
-        public override string Name { get; set; } = "Death Party [TESTING]";
-        public override string Description { get; set; } = "Survive in grenade rain [Alpha]";
+        public override string Name { get; set; } = AutoEvent.Singleton.Translation.DeathName;
+        public override string Description { get; set; } = AutoEvent.Singleton.Translation.DeathDescription;
         public override string Color { get; set; } = "FFFF00";
         public override string CommandName { get; set; } = "death";
         public TimeSpan EventTime { get; set; }
@@ -25,8 +25,8 @@ namespace AutoEvent.Events.DeathParty
 
         EventHandler _eventHandler;
         private bool isFreindlyFireEnabled;
-        int Stage { get; set; }
-        int MaxStage { get; set; }
+        public static int Stage { get; set; }
+        public int MaxStage { get; set; }
 
         public override void OnStart()
         {
@@ -42,6 +42,7 @@ namespace AutoEvent.Events.DeathParty
             Exiled.Events.Handlers.Map.PlacingBlood += _eventHandler.OnPlaceBlood;
             Exiled.Events.Handlers.Player.DroppingItem += _eventHandler.OnDropItem;
             Exiled.Events.Handlers.Player.DroppingAmmo += _eventHandler.OnDropAmmo;
+            Exiled.Events.Handlers.Player.Hurting += _eventHandler.OnHurt;
 
             OnEventStarted();
         }
@@ -57,6 +58,7 @@ namespace AutoEvent.Events.DeathParty
             Exiled.Events.Handlers.Map.PlacingBlood -= _eventHandler.OnPlaceBlood;
             Exiled.Events.Handlers.Player.DroppingItem -= _eventHandler.OnDropItem;
             Exiled.Events.Handlers.Player.DroppingAmmo -= _eventHandler.OnDropAmmo;
+            Exiled.Events.Handlers.Player.Hurting -= _eventHandler.OnHurt;
 
             _eventHandler = null;
             Timing.CallDelayed(5f, () => EventEnd());
@@ -66,8 +68,8 @@ namespace AutoEvent.Events.DeathParty
         {
             EventTime = new TimeSpan(0, 0, 0);
             MaxStage = 5;
-            GameMap = Extensions.LoadMap("DeathParty", new Vector3(100f, 1012f, -40f), Quaternion.Euler(Vector3.zero), Vector3.one);
-            Extensions.PlayAudio("Escape.ogg", 4, true, Name);
+            GameMap = Extensions.LoadMap("DeathParty", new Vector3(10f, 1012f, -40f), Quaternion.Euler(Vector3.zero), Vector3.one);
+            Extensions.PlayAudio("DeathParty.ogg", 5, true, Name);
 
             foreach (Player player in Player.List)
             {
@@ -80,41 +82,36 @@ namespace AutoEvent.Events.DeathParty
 
         public IEnumerator<float> OnEventRunning()
         {
-            for (int time = 10; time > 0; time--)
+            for (int _time = 10; _time > 0; _time--)
             {
-                Extensions.Broadcast($"<size=100><color=red>{time}</color></size>", 1);
+                Extensions.Broadcast($"<size=100><color=red>{_time}</color></size>", 1);
                 yield return Timing.WaitForSeconds(1f);
             }
 
             while (Player.List.Count(r => r.IsAlive) > 0 && Stage != (MaxStage + 1))
             {
-                Extensions.Broadcast("<color=yellow>Уворачивайтесь от гранат!</color>\n" +
-                    $"<color=green>Прошло {EventTime.Minutes}:{EventTime.Seconds} секунд</color>\n" +
-                    $"<color=red>Осталось {Player.List.Count(r => r.IsAlive)} игроков</color>", 1);
+                var count = Player.List.Count(r => r.IsAlive).ToString();
+                var cycleTime = $"{EventTime.Minutes}:{EventTime.Seconds}";
+                Extensions.Broadcast(AutoEvent.Singleton.Translation.DeathCycle.Replace("%count%", count).Replace("%time%", cycleTime), 1);
 
                 yield return Timing.WaitForSeconds(1f);
                 EventTime += TimeSpan.FromSeconds(1f);
             }
 
+            var time = $"{EventTime.Minutes}:{EventTime.Seconds}";
             if (Player.List.Count(r => r.IsAlive) > 1)
             {
-                Extensions.Broadcast($"<color=red>Смертельная вечеринка</color>\n" +
-                    $"<color=yellow>Выжило <color=red>{Player.List.Count(r => r.IsAlive)}</color> игроков.</color>\n" +
-                    $"<color=#ffc0cb>{EventTime.Minutes}:{EventTime.Seconds}</color>", 10);
+                Extensions.Broadcast(AutoEvent.Singleton.Translation.DeathMorePlayer.Replace("%count%", $"{Player.List.Count(r => r.IsAlive)}").Replace("%time%", time), 10);
             }
             else if (Player.List.Count(r => r.IsAlive) == 1)
             {
                 var player = Player.List.First(r => r.IsAlive);
                 player.Health = 1000;
-                Extensions.Broadcast($"<color=red>Смертельная вечеринка</color>\n" +
-                    $"<color=yellow>ПОБЕДИТЕЛЬ - <color=red>{player.Nickname}</color></color>\n" +
-                    $"<color=#ffc0cb>{EventTime.Minutes}:{EventTime.Seconds}</color>", 10);
+                Extensions.Broadcast(AutoEvent.Singleton.Translation.DeathOnePlayer.Replace("%winner%", player.Nickname).Replace("%time%", time), 10);
             }
             else
             {
-                Extensions.Broadcast($"<color=red>Смертельная вечеринка</color>\n" +
-                    $"<color=yellow>Все погибли(((</color>\n" +
-                    $"<color=#ffc0cb>{EventTime.Minutes}:{EventTime.Seconds}</color>", 10);
+                Extensions.Broadcast(AutoEvent.Singleton.Translation.DeathAllDie.Replace("%time%", time), 10);
             }
 
             OnStop();
@@ -128,7 +125,7 @@ namespace AutoEvent.Events.DeathParty
             float count = 20;
             float timing = 1f;
             float scale = 4;
-            float radius = GameMap.AttachedBlocks.First(x => x.name == "Arena").transform.localScale.x / 2;
+            float radius = GameMap.AttachedBlocks.First(x => x.name == "Arena").transform.localScale.x / 2 - 6f;
 
             while (Player.List.Count(r => r.IsAlive) > 0 && Stage != (MaxStage + 1))
             {
@@ -142,7 +139,7 @@ namespace AutoEvent.Events.DeathParty
                 }
                 else
                 {
-                    GrenadeSpawn(fuse, radius, height, 100);
+                    GrenadeSpawn(10, radius, 20f, 50);
                 }
 
                 yield return Timing.WaitForSeconds(15f);
@@ -151,14 +148,14 @@ namespace AutoEvent.Events.DeathParty
                 height -= 5f;
                 timing -= 0.3f;
                 radius += 7f;
-                count += 20;
+                count += 30;
                 scale -= 1;
                 Stage++;
             }
             yield break;
         }
 
-        public void GrenadeSpawn(float fuseTime, float radius, float height, float scale) // Пожирнее и помедленее
+        public void GrenadeSpawn(float fuseTime, float radius, float height, float scale)
         {
             ExplosiveGrenade grenade = (ExplosiveGrenade)Item.Create(ItemType.GrenadeHE);
             grenade.FuseTime = fuseTime;

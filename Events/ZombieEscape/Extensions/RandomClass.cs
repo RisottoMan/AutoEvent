@@ -10,8 +10,7 @@ namespace AutoEvent.Events.ZombieEscape
         public static List<ItemType> RandomItems { get; set; } = new()
         {
             ItemType.GunAK,
-            ItemType.GunE11SR,
-            ItemType.GunShotgun
+            ItemType.GunE11SR
         };
 
         public static ItemType GetRandomGun()

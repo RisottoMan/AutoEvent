@@ -1,4 +1,4 @@
-﻿using AutoEvent.Events.ZombieEscape.Features;
+using AutoEvent.Events.ZombieEscape.Features;
 using AutoEvent.Interfaces;
 using CustomPlayerEffects;
 using Exiled.API.Enums;
@@ -15,8 +15,8 @@ namespace AutoEvent.Events.ZombieEscape
 {
     public class Plugin : Event
     {
-        public override string Name { get; set; } = "Zombie Escape";
-        public override string Description { get; set; } = "Уou need to run away from zombies and escape by helicopter.";
+        public override string Name { get; set; } = AutoEvent.Singleton.Translation.ZombieEscapeName;
+        public override string Description { get; set; } = AutoEvent.Singleton.Translation.ZombieEscapeDescription;
         public override string Color { get; set; } = "FF4242";
         public override string CommandName { get; set; } = "zombie3";
         public SchematicObject GameMap { get; set; }
@@ -46,7 +46,6 @@ namespace AutoEvent.Events.ZombieEscape
             Exiled.Events.Handlers.Player.DroppingItem += _eventHandler.OnDropItem;
             Exiled.Events.Handlers.Player.DroppingAmmo += _eventHandler.OnDropAmmo;
             Exiled.Events.Handlers.Player.Hurting += _eventHandler.OnDamage;
-            Exiled.Events.Handlers.Player.Died += _eventHandler.OnDead;
         }
         public override void OnStop()
         {
@@ -62,7 +61,6 @@ namespace AutoEvent.Events.ZombieEscape
             Exiled.Events.Handlers.Player.DroppingItem -= _eventHandler.OnDropItem;
             Exiled.Events.Handlers.Player.DroppingAmmo -= _eventHandler.OnDropAmmo;
             Exiled.Events.Handlers.Player.Hurting -= _eventHandler.OnDamage;
-            Exiled.Events.Handlers.Player.Died -= _eventHandler.OnDead;
 
             _eventHandler = null;
             Timing.CallDelayed(10f, () => EventEnd());
@@ -94,11 +92,11 @@ namespace AutoEvent.Events.ZombieEscape
 
         public IEnumerator<float> OnEventRunning()
         {
-            Extensions.PlayAudio("ZMEscape.ogg", 7, false, Name);
+            Extensions.PlayAudio("Survival.ogg", 10, false, Name);
 
             for (float _time = 15; _time > 0; _time--)
             {
-                Extensions.Broadcast($"<color=#D71868><b><i>{Name}</i></b></color>\n<color=#ABF000>До начала ивента осталось <color=red>{_time}</color> секунд.</color>", 1);
+                Extensions.Broadcast(AutoEvent.Singleton.Translation.ZombieEscapeBeforeStart.Replace("%name%", Name).Replace("%time%", $"{_time}"), 1);
                 yield return Timing.WaitForSeconds(1f);
             }
 
@@ -147,14 +145,13 @@ namespace AutoEvent.Events.ZombieEscape
                     if (Vector3.Distance(player.Position, button2.transform.position) < 3)
                     {
                         button2.transform.position += Vector3.down * 5;
-                        EventTime = new TimeSpan(0, 0, 40); // ?
+                        EventTime = new TimeSpan(0, 1, 5);
                         Heli = Extensions.LoadMap("Helicopter_Zombie", GameMap.Position, Quaternion.identity, Vector3.one);
                     }
 
+                    string text = AutoEvent.Singleton.Translation.ZombieEscapeHelicopter.Replace("%name%", Name).Replace("%count%", $"{Player.List.Count(r => r.IsHuman)}");
                     player.ClearBroadcasts();
-                    player.Broadcast(1, $"{Name}\n" +
-                    $"Необходимо вызвать вертолет и улететь от зомби\n" +
-                    $"<color=yellow>Осталось людей: <color=green>{Player.List.Count(r => r.IsHuman)}</color></color>");
+                    player.Broadcast(1, text);
                 }
 
                 yield return Timing.WaitForSeconds(1f);
@@ -168,13 +165,13 @@ namespace AutoEvent.Events.ZombieEscape
                 if (Heli != null)
                 if (Vector3.Distance(player.Position, Heli.Position) > 5)
                 {
-                    player.Hurt(5000f, "Warhead detonated");
+                    player.Hurt(5000f, AutoEvent.Singleton.Translation.ZombieEscapeDied);
                 }
             }
 
             if (Player.List.Count(r => r.IsHuman) == 0)
             {
-                Extensions.Broadcast($"<color=red>Escape Failed!</color>\n<color=yellow>ZOMBIES WIN</color>", 10);
+                Extensions.Broadcast(AutoEvent.Singleton.Translation.ZombieEscapeZombieWin, 10);
                 Extensions.StopAudio();
                 Timing.CallDelayed(0.1f, () =>
                 {
@@ -183,7 +180,7 @@ namespace AutoEvent.Events.ZombieEscape
             }
             else
             {
-                Extensions.Broadcast($"<color=red>Escape Successful!</color>\n<color=yellow>HUMANS WIN</color>", 10);
+                Extensions.Broadcast(AutoEvent.Singleton.Translation.ZombieEscapeHumanWin, 10);
                 Extensions.StopAudio();
                 Timing.CallDelayed(0.1f, () =>
                 {

@@ -16,7 +16,7 @@ namespace AutoEvent.Events.FinishWay.Features
             if (Player.Get(other.gameObject) is Player)
             {
                 var pl = Player.Get(other.gameObject);
-                pl.Hurt(500f, $"Вы сдохли от лавы.");
+                pl.Hurt(500f, $"Dead by lava.");
             }
         }
     }

@@ -14,8 +14,8 @@ namespace AutoEvent.Events.HideAndSeek
 {
     public class Plugin : Event
     {
-        public override string Name { get; set; } = "Hide And Seek";
-        public override string Description { get; set; } = "We need to catch up with all the players on the map.";
+        public override string Name { get; set; } = AutoEvent.Singleton.Translation.HideName;
+        public override string Description { get; set; } = AutoEvent.Singleton.Translation.HideDescription;
         public override string Color { get; set; } = "FF4242";
         public override string CommandName { get; set; } = "hns";
         public SchematicObject GameMap { get; set; }
@@ -56,7 +56,7 @@ namespace AutoEvent.Events.HideAndSeek
         {
             EventTime = new TimeSpan(0, 0, 0);
             GameMap = Extensions.LoadMap("HideAndSeek", new Vector3(5.5f, 1026.5f, -45f), Quaternion.Euler(Vector3.zero), Vector3.one);
-            Extensions.PlayAudio("ClassicMusic.ogg", 5, true, Name);
+            Extensions.PlayAudio("HideAndSeek.ogg", 5, true, Name);
 
             Server.FriendlyFire = true;
 
@@ -75,7 +75,7 @@ namespace AutoEvent.Events.HideAndSeek
         {
             for (float _time = 15; _time > 0; _time--)
             {
-                Extensions.Broadcast($"RUN\nSelection of new catching up players.\n{_time}", 1);
+                Extensions.Broadcast(AutoEvent.Singleton.Translation.HideBroadcast.Replace("%time%", $"{_time}"), 1);
                 yield return Timing.WaitForSeconds(1f);
                 EventTime += TimeSpan.FromSeconds(1f);
             }
@@ -102,10 +102,9 @@ namespace AutoEvent.Events.HideAndSeek
                 });
             }
 
-            for (int doptime = 30; doptime > 0; doptime--)
+            for (int doptime = 15; doptime > 0; doptime--)
             {
-                Extensions.Broadcast($"Pass the bat to another player\n" +
-                $"<color=yellow><b><i>{doptime}</i></b> seconds left</color>", 1);
+                Extensions.Broadcast(AutoEvent.Singleton.Translation.HideCycle.Replace("%time%", $"{doptime}"), 1);
 
                 yield return Timing.WaitForSeconds(1f);
                 EventTime += TimeSpan.FromSeconds(1f);
@@ -116,7 +115,7 @@ namespace AutoEvent.Events.HideAndSeek
                 if (player.HasItem(ItemType.Jailbird))
                 {
                     player.ClearInventory();
-                    player.Hurt(200, "You didn't have time to pass the bat.");
+                    player.Hurt(200, AutoEvent.Singleton.Translation.HideHurt);
                 }
             }
 
@@ -126,11 +125,10 @@ namespace AutoEvent.Events.HideAndSeek
 
         public IEnumerator<float> OnEventEnded()
         {
+            var time = $"{EventTime.Minutes}:{EventTime.Seconds}";
             if (Player.List.Count(r => r.IsAlive) > 1)
             {
-                Extensions.Broadcast($"There are a lot of players left.\n" +
-                $"Waiting for a reboot.\n" +
-                $"<color=yellow>Event time <color=red>{EventTime.Minutes}:{EventTime.Seconds}</color></color>", 10);
+                Extensions.Broadcast(AutoEvent.Singleton.Translation.HideMorePlayer.Replace("%time%", $"{time}"), 10);
 
                 yield return Timing.WaitForSeconds(10f);
                 EventTime += TimeSpan.FromSeconds(10f);
@@ -140,14 +138,15 @@ namespace AutoEvent.Events.HideAndSeek
             }
             else if (Player.List.Count(r => r.IsAlive) == 1)
             {
-                Extensions.Broadcast($"The player won {Player.List.First(r=>r.IsAlive).Nickname}\n" +
-                $"<color=yellow>Event time <color=red>{EventTime.Minutes}:{EventTime.Seconds}</color></color>", 10);
+                var text = AutoEvent.Singleton.Translation.HideOnePlayer;
+                text = text.Replace("%winner%", Player.List.First(r => r.IsAlive).Nickname);
+                text = text.Replace("%time%", $"{time}");
+
+                Extensions.Broadcast(text, 10);
             }
             else
             {
-                Extensions.Broadcast($"No one survived.\n" +
-                $"End of the game\n" +
-                $"<color=yellow>Event time <color=red>{EventTime.Minutes}:{EventTime.Seconds}</color></color>", 10);
+                Extensions.Broadcast(AutoEvent.Singleton.Translation.HideAllDie.Replace("%time%", $"{time}"), 10);
             }
 
             OnStop();

@@ -14,8 +14,8 @@ namespace AutoEvent.Events.Lava
 {
     public class Plugin : Event
     {
-        public override string Name { get; set; } = "The floor is LAVA";
-        public override string Description { get; set; } = "Survival, in which you need to avoid lava and shoot at others.";
+        public override string Name { get; set; } = AutoEvent.Singleton.Translation.LavaName;
+        public override string Description { get; set; } = AutoEvent.Singleton.Translation.LavaDescription;
         public override string Color { get; set; } = "FFFF00";
         public override string CommandName { get; set; } = "lava";
         public TimeSpan EventTime { get; set; }
@@ -83,7 +83,7 @@ namespace AutoEvent.Events.Lava
         {
             for (int time = 10; time > 0; time--)
             {
-                Extensions.Broadcast($"<size=100><color=red>{time}</color></size>\nTake weapons and climb up.", 1);
+                Extensions.Broadcast(AutoEvent.Singleton.Translation.LavaBeforeStart.Replace("%time%", $"time"), 1);
                 yield return Timing.WaitForSeconds(1f);
             }
 
@@ -102,7 +102,7 @@ namespace AutoEvent.Events.Lava
                     text = "<size=90><color=red><b>!</b></color></size>\n";
                 }
 
-                Extensions.Broadcast(text + $"<size=20><color=red><b>Живых: {Player.List.Count(r => r.IsAlive)} Игроков</b></color></size>", 1);
+                Extensions.Broadcast(text + AutoEvent.Singleton.Translation.LavaCycle.Replace("%count%", $"{Player.List.Count(r => r.IsAlive)}"), 1);
                 lava.transform.position += new Vector3(0, 0.08f, 0);
 
                 yield return Timing.WaitForSeconds(1f);
@@ -111,11 +111,11 @@ namespace AutoEvent.Events.Lava
 
             if (Player.List.Count(r => r.IsAlive) == 1)
             {
-                Extensions.Broadcast($"<color=red><b>Победитель\nИгрок - {Player.List.First(r => r.IsAlive).Nickname}</b></color>", 10);
+                Extensions.Broadcast(AutoEvent.Singleton.Translation.LavaWin.Replace("%winner", Player.List.First(r => r.IsAlive).Nickname), 10);
             }
             else
             {
-                Extensions.Broadcast($"<color=red><b>Никто до конца не выжил\nКонец игры.</b></color>", 10);
+                Extensions.Broadcast(AutoEvent.Singleton.Translation.LavaAllDead, 10);
             }
 
             OnStop();
