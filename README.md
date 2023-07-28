@@ -1,4 +1,4 @@
-# AutoEvent (Ported to Exiled)
+# AutoEvent
 ## ENG: Allows you to run auto Mini-Games in the game.
 ## RUS: Позволяет запускать автоматические Мини-Игры в игре.
 ## Discord: [Press me](https://discord.gg/Bu7ZsKsbjP)
