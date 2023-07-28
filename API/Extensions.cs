@@ -25,13 +25,14 @@ namespace AutoEvent
                 player.Position = new Vector3(39.332f, 1014.766f, -31.922f);
             }
         }
+
         public static void PlayAudio(string audioFile, byte volume, bool loop, string eventName)
         {
             try
             {
                 var newPlayer = Object.Instantiate(NetworkManager.singleton.playerPrefab);
-                int id = Dummies.Count;
-                var fakeConnection = new FakeConnection(id++);
+                //int id = Dummies.Count;
+                var fakeConnection = new FakeConnection(255); // id++
                 var hubPlayer = newPlayer.GetComponent<ReferenceHub>();
                 Dummies.Add(hubPlayer);
                 NetworkServer.AddPlayerForConnection(fakeConnection, newPlayer);
@@ -61,6 +62,7 @@ namespace AutoEvent
                 Log.Error($"Error on: {e.Data} -- {e.StackTrace}");
             }
         }
+
         public static void StopAudio()
         {
             foreach (var dummies in Dummies)
@@ -80,19 +82,36 @@ namespace AutoEvent
             }
             Dummies.Clear();
         }
+
+        public static bool IsExistsMap(string schematicName)
+        {
+            var data = MapUtils.GetSchematicDataByName(schematicName);
+            if (data == null)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
         public static SchematicObject LoadMap(string nameSchematic , Vector3 pos, Quaternion rot, Vector3 scale)
         {
             return ObjectSpawner.SpawnSchematic(nameSchematic, pos, rot, scale);
         }
+
         public static void UnLoadMap(SchematicObject scheme)
         {
             scheme.Destroy();
         }
+
         public static void CleanUpAll()
         {
             Map.CleanAllItems();
             Map.CleanAllRagdolls();
         }
+
         public static void Broadcast(string text, ushort time)
         {
             Map.ClearBroadcasts();

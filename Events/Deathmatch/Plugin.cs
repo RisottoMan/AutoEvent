@@ -15,7 +15,7 @@ namespace AutoEvent.Events.Deathmatch
     {
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.DeathmatchName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.DeathmatchDescription;
-        public override string Color { get; set; } = "FFFF00";
+        public override string MapName { get; set; } = "Shipment";
         public override string CommandName { get; set; } = "deathmatch";
         public TimeSpan EventTime { get; set; }
         public SchematicObject GameMap { get; set; }
@@ -69,7 +69,16 @@ namespace AutoEvent.Events.Deathmatch
         public void OnEventStarted()
         {
             EventTime = new TimeSpan(0, 0, 0);
-            GameMap = Extensions.LoadMap("Shipment", new Vector3(5f, 1030f, -45f), Quaternion.Euler(Vector3.zero), Vector3.one); // new Vector3(120f, 1020f, -43.5f)
+
+            float scale = 1;
+            switch (Player.List.Count())
+            {
+                case int n when (n > 20 && n <= 25): scale = 1.1f; break;
+                case int n when (n > 25 && n <= 30): scale = 1.2f; break;
+                case int n when (n > 35): scale = 1.3f; break;
+            }
+
+            GameMap = Extensions.LoadMap(MapName, new Vector3(93f, 1020f, -43f), Quaternion.Euler(Vector3.zero), Vector3.one * scale);
             Extensions.PlayAudio("ClassicMusic.ogg", 3, true, Name);
 
             MtfKills = 0;
@@ -85,25 +94,19 @@ namespace AutoEvent.Events.Deathmatch
             {
                 if (count % 2 == 0)
                 {
-                    player.Role.Set(RoleTypeId.NtfSergeant, SpawnReason.None, RoleSpawnFlags.AssignInventory);
+                    player.Role.Set(RoleTypeId.NtfSergeant, SpawnReason.None, RoleSpawnFlags.None);
                     player.Position = RandomClass.GetRandomPosition(GameMap);
                 }
                 else
                 {
-                    player.Role.Set(RoleTypeId.ChaosRifleman, SpawnReason.None, RoleSpawnFlags.AssignInventory);
+                    player.Role.Set(RoleTypeId.ChaosRifleman, SpawnReason.None, RoleSpawnFlags.None);
                     player.Position = RandomClass.GetRandomPosition(GameMap);
                 }
                 count++;
 
-                player.EnableEffect<CustomPlayerEffects.Scp1853>(150);
-                player.EnableEffect(EffectType.MovementBoost, 150);
+                player.EnableEffect<CustomPlayerEffects.Scp1853>(300);
+                player.EnableEffect(EffectType.MovementBoost, 300);
                 player.ChangeEffectIntensity(EffectType.MovementBoost, 10);
-                player.EnableEffect<CustomPlayerEffects.SpawnProtected>(10);
-
-                Timing.CallDelayed(0.1f, () =>
-                {
-                    player.CurrentItem = player.Items.ElementAt(1);
-                });
             }
 
             Timing.RunCoroutine(OnEventRunning(), "deathmatch_run");
@@ -118,7 +121,18 @@ namespace AutoEvent.Events.Deathmatch
                 yield return Timing.WaitForSeconds(1f);
             }
 
-            while (MtfKills < NeedKills && ChaosKills < NeedKills && Player.List.Count(r => r.IsAlive) > 0)
+            foreach(Player player in Player.List)
+            {
+                player.AddItem(RandomClass.RandomItems.RandomItem());
+                player.AddItem(ItemType.ArmorCombat);
+
+                Timing.CallDelayed(0.2f, () =>
+                {
+                    player.CurrentItem = player.Items.ElementAt(0);
+                });
+            }
+
+            while (MtfKills < NeedKills && ChaosKills < NeedKills && Player.List.Count(r => r.IsNTF) > 0 && Player.List.Count(r => r.IsCHI) > 0)
             {
                 string mtfString = string.Empty;
                 string chaosString = string.Empty;

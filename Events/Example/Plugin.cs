@@ -13,7 +13,7 @@ namespace AutoEvent.Events.Example
     {
         public string Name => "Example Event Name";
         public string Description => "Example Event Description";
-        public string Color => "FFFF00";
+        public string MapName => "SchematicName";
         public string CommandName => "command_name";
         public TimeSpan EventTime { get; set; } // This is a time counter that can be used to show the duration of the mini-game
 

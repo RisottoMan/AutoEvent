@@ -14,7 +14,7 @@ namespace AutoEvent.Events.Escape
     {
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.EscapeName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.EscapeDescription;
-        public override string Color { get; set; } = "FFFF00";
+        public override string MapName { get; set; }
         public override string CommandName { get; set; } = "escape";
         public TimeSpan EventTime { get; set; }
 
@@ -53,7 +53,6 @@ namespace AutoEvent.Events.Escape
             {
                 player.Role.Set(RoleTypeId.Scp173, SpawnReason.None, RoleSpawnFlags.None);
                 player.Position = _startPos.transform.position;
-                //player.Rotation = _startPos.transform.localEulerAngles; // camera to door
                 player.EnableEffect(EffectType.Ensnared, 10);
             });
 

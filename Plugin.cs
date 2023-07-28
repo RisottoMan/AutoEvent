@@ -11,7 +11,7 @@ namespace AutoEvent
     {
         public override string Name => "AutoEvent";
         public override string Author => "Created by KoT0XleB, extended by swd and sky";
-        public override Version Version => new Version(8, 1, 0);
+        public override Version Version => new Version(8, 2, 0);
         public static IEvent ActiveEvent = null;
         public static AutoEvent Singleton;
         public static Harmony HarmonyPatch;
@@ -51,10 +51,9 @@ namespace AutoEvent
 
         private void OnDecontamination(DecontaminatingEventArgs ev)
         {
-            if (ActiveEvent != null)
-            {
-                ev.IsAllowed = false;
-            }
+            if (ActiveEvent == null) return;
+
+            ev.IsAllowed = false;
         }
     }
 }

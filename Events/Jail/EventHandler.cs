@@ -45,10 +45,7 @@ namespace AutoEvent.Events.Jail
 
             if (Vector3.Distance(raycastHit.transform.gameObject.transform.position, _plugin.Button.transform.position) < 3)
             {
-                foreach (var door in _plugin.JailerDoors)
-                {
-                    door.GetComponent<JailerComponent>().ToggleDoor();
-                }
+                _plugin.PrisonerDoors.GetComponent<JailerComponent>().ToggleDoor();
             }
         }
         public void OnTeamRespawn(RespawningTeamEventArgs ev) => ev.IsAllowed = false;

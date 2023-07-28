@@ -16,7 +16,7 @@ namespace AutoEvent.Events.Survival
     {
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.SurvivalName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.SurvivalDescription;
-        public override string Color { get; set; } = "FF4242";
+        public override string MapName { get; set; } = "Survival";
         public override string CommandName { get; set; } = "zombie2";
         public SchematicObject GameMap { get; set; }
         public TimeSpan EventTime { get; set; }
@@ -69,7 +69,7 @@ namespace AutoEvent.Events.Survival
         {
             EventTime = new TimeSpan(0, 5, 0);
 
-            GameMap = Extensions.LoadMap("Survival", new Vector3(15f, 1030f, -43.68f), Quaternion.identity, Vector3.one);
+            GameMap = Extensions.LoadMap(MapName, new Vector3(15f, 1030f, -43.68f), Quaternion.identity, Vector3.one);
 
             foreach (Player player in Player.List)
             {
@@ -111,7 +111,7 @@ namespace AutoEvent.Events.Survival
                 player.Role.Set(RoleTypeId.Scp0492, SpawnReason.None, RoleSpawnFlags.AssignInventory);
                 player.EnableEffect<Disabled>();
                 player.EnableEffect<Scp1853>();
-                player.Health = 10000;
+                player.Health = 5000;
 
                 if (Player.List.Count(r => r.IsScp) == 1)
                 {

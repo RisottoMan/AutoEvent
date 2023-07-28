@@ -31,7 +31,11 @@ namespace AutoEvent.Events.Deathmatch
                 ev.Player.Role.Set(RoleTypeId.NtfSergeant);
             }
 
+            ev.Player.AddItem(RandomClass.RandomItems.RandomItem());
+            ev.Player.AddItem(ItemType.ArmorCombat);
+
             ev.Player.EnableEffect<CustomPlayerEffects.Scp1853>(150);
+            ev.Player.ChangeEffectIntensity<CustomPlayerEffects.Scp1853>(255);
             ev.Player.EnableEffect(EffectType.MovementBoost, 150);
             ev.Player.ChangeEffectIntensity(EffectType.MovementBoost, 10);
 
@@ -39,7 +43,7 @@ namespace AutoEvent.Events.Deathmatch
 
             Timing.CallDelayed(0.1f, () =>
             {
-                ev.Player.CurrentItem = ev.Player.Items.ElementAt(1);
+                ev.Player.CurrentItem = ev.Player.Items.ElementAt(0);
             });
 
         }
@@ -61,9 +65,9 @@ namespace AutoEvent.Events.Deathmatch
             ev.Player.Position = RandomClass.GetRandomPosition(_plugin.GameMap);
             ev.Player.Health = 100;
 
-            Timing.CallDelayed(0.1f, () =>
+            Timing.CallDelayed(0.2f, () =>
             {
-                ev.Player.CurrentItem = ev.Player.Items.ElementAt(1);
+                ev.Player.CurrentItem = ev.Player.Items.ElementAt(0);
             });
         }
 

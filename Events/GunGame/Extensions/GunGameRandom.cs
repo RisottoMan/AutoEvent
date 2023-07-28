@@ -17,9 +17,5 @@ namespace AutoEvent.Events.GunGame
             RoleTypeId.FacilityGuard
         };
         public static RoleTypeId GetRandomRole() => HumanRoles.RandomItem();
-        public static Vector3 GetRandomPosition(SchematicObject GameMap)
-        {
-            return GameMap.AttachedBlocks.Where(x => x.name == "Spawnpoint").ToList().RandomItem().transform.position;
-        }
     }
 }

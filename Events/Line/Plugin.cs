@@ -2,10 +2,7 @@
 using AutoEvent.Interfaces;
 using Exiled.API.Enums;
 using Exiled.API.Features;
-using Exiled.API.Features.Spawn;
-using Exiled.Events.Commands.Reload;
 using MapEditorReborn.API.Features.Objects;
-using MapEditorReborn.Configs;
 using MEC;
 using PlayerRoles;
 using System;
@@ -19,7 +16,7 @@ namespace AutoEvent.Events.Line
     {
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.LineName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.LineDescription;
-        public override string Color { get; set; } = "FF4242";
+        public override string MapName { get; set; } = "Line";
         public override string CommandName { get; set; } = "line";
         public static SchematicObject GameMap { get; set; }
         public Dictionary<int, SchematicObject> HardGameMap { get; set; }
@@ -28,7 +25,7 @@ namespace AutoEvent.Events.Line
         EventHandler _eventHandler;
 
         private int HardCounts;
-        private int HardCountsLimit = 8; // Setting 
+        private int HardCountsLimit = 8;
 
         public override void OnStart()
         {
@@ -66,7 +63,7 @@ namespace AutoEvent.Events.Line
             HardCounts = 0;
             EventTime = TimeSpan.FromMinutes(5f);
 
-            GameMap = Extensions.LoadMap("Line", new Vector3(76f, 1026.5f, -43.68f), Quaternion.Euler(Vector3.zero), Vector3.one);
+            GameMap = Extensions.LoadMap(MapName, new Vector3(76f, 1026.5f, -43.68f), Quaternion.Euler(Vector3.zero), Vector3.one);
 
             Extensions.PlayAudio("LineLite.ogg", 10, true, Name);
 
@@ -101,7 +98,9 @@ namespace AutoEvent.Events.Line
 
             while (Player.List.Count(r => r.Role == RoleTypeId.ClassD) > 1 && EventTime.TotalSeconds > 0)
             {
-                Extensions.Broadcast($"<color=#{Color}>{Name}</color>\n<color=blue>До конца: {EventTime.Minutes}</color><color=#4a4a4a>:</color><color=blue>{EventTime.Seconds}</color>\n<color=yellow>Выживших: {Player.List.Count(r => r.Role == RoleTypeId.ClassD)}</color>", 1);
+                Extensions.Broadcast($"<color=#FF4242>{Name}</color>\n" +
+                    $"<color=blue>До конца: {EventTime.Minutes}</color><color=#4a4a4a>:</color><color=blue>{EventTime.Seconds}</color>\n" +
+                    $"<color=yellow>Выживших: {Player.List.Count(r => r.Role == RoleTypeId.ClassD)}</color>", 1);
 
                 if (EventTime.Seconds == 30 && HardCounts < HardCountsLimit)
                 {
@@ -127,9 +126,22 @@ namespace AutoEvent.Events.Line
                 yield return Timing.WaitForSeconds(1f);
             }    
 
-            if (Player.List.Count(r => r.Role == RoleTypeId.ClassD) > 1) Extensions.Broadcast($"<color=#{Color}>{Name}</color>\n<color=yellow>Выжило {Player.List.Count(r => r.Role == RoleTypeId.ClassD)} игроков</color>\n<color=red>Поздравляем!</color>", 10);
-            else if (Player.List.Count(r => r.Role == RoleTypeId.ClassD) == 1) Extensions.Broadcast($"<color=#{Color}>{Name}</color>\n<color=yellow>Победитель: {Player.List.First(r => r.Role == RoleTypeId.ClassD).Nickname}</color>\n<color=red>Поздравляем!</color>", 10);
-            else Extensions.Broadcast("<color=red>Все умерли!</color>", 10);
+            if (Player.List.Count(r => r.Role == RoleTypeId.ClassD) > 1)
+            {
+                Extensions.Broadcast($"<color=#FF4242>{Name}</color>\n" +
+                    $"<color=yellow>Выжило {Player.List.Count(r => r.Role == RoleTypeId.ClassD)} игроков</color>\n" +
+                    $"<color=red>Поздравляем!</color>", 10);
+            }
+            else if (Player.List.Count(r => r.Role == RoleTypeId.ClassD) == 1)
+            {
+                Extensions.Broadcast($"<color=#FF4242>{Name}</color>\n" +
+                    $"<color=yellow>Победитель: {Player.List.First(r => r.Role == RoleTypeId.ClassD).Nickname}</color>\n" +
+                    $"<color=red>Поздравляем!</color>", 10);
+            }
+            else
+            {
+                Extensions.Broadcast("<color=red>Все умерли!</color>", 10);
+            }
 
             OnStop();
             yield break;
@@ -143,7 +155,6 @@ namespace AutoEvent.Events.Line
             foreach (var map in HardGameMap.Values) Extensions.UnLoadMap(map);
             Extensions.StopAudio();
             AutoEvent.ActiveEvent = null;
-            //foreach (var map in HardGameMap.Values) Extensions.UnLoadMap(map); // Расположение строки обязательно в самом конце метода.
         }
     }
 }

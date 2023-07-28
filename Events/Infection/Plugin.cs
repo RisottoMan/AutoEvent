@@ -14,7 +14,7 @@ namespace AutoEvent.Events.Infection
     {
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.ZombieName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.ZombieDescription;
-        public override string Color { get; set; } = "FF4242";
+        public override string MapName { get; set; } = AutoEvent.Singleton.Config.InfectionConfig.ListOfMap.RandomItem();
         public override string CommandName { get; set; } = "zombie";
         public static SchematicObject GameMap { get; set; }
         public static TimeSpan EventTime { get; set; }
@@ -56,8 +56,19 @@ namespace AutoEvent.Events.Infection
         public void OnEventStarted()
         {
             EventTime = new TimeSpan(0, 0, 0);
-            GameMap = Extensions.LoadMap(AutoEvent.Singleton.Config.InfectionConfig.ListOfMap.RandomItem(), new Vector3(115.5f, 1030f, -43.5f), Quaternion.Euler(Vector3.zero), Vector3.one);
-            Extensions.PlayAudio(AutoEvent.Singleton.Config.InfectionConfig.ListOfMusic.RandomItem(), 15, true, Name);
+
+            float scale = 1;
+            switch(Player.List.Count())
+            {
+                case int n when (n > 15 && n <= 20): scale = 1.1f; break;
+                case int n when (n > 20 && n <= 25): scale = 1.2f; break;
+                case int n when (n > 25 && n <= 30): scale = 1.3f; break;
+                case int n when (n > 30 && n <= 35): scale = 1.4f; break;
+                case int n when (n > 35): scale = 1.5f; break;
+            }
+
+            GameMap = Extensions.LoadMap(MapName, new Vector3(115.5f, 1030f, -43.5f), Quaternion.identity, new Vector3(1, 1, 1) * scale);
+            Extensions.PlayAudio(AutoEvent.Singleton.Config.InfectionConfig.ListOfMusic.RandomItem(), 7, true, Name);
 
             foreach (Player player in Player.List)
             {
@@ -127,6 +138,8 @@ namespace AutoEvent.Events.Infection
             Extensions.TeleportEnd();
             Extensions.UnLoadMap(GameMap);
             Extensions.StopAudio();
+
+            MapName = AutoEvent.Singleton.Config.InfectionConfig.ListOfMap.RandomItem();
             AutoEvent.ActiveEvent = null;
         }
     }

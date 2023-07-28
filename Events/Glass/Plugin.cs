@@ -19,7 +19,7 @@ namespace AutoEvent.Events.Glass
     {
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.GlassName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.GlassDescription;
-        public override string Color { get; set; } = "FF4242";
+        public override string MapName { get; set; } = "Glass";
         public override string CommandName { get; set; } = "glass";
         public SchematicObject GameMap { get; set; }
         public List<GameObject> Platformes { get; set; }
@@ -52,7 +52,7 @@ namespace AutoEvent.Events.Glass
         }
         public void OnEventStarted()
         {
-            GameMap = Extensions.LoadMap("Glass", new Vector3(76f, 1026.5f, -43.68f), Quaternion.Euler(Vector3.zero), Vector3.one);
+            GameMap = Extensions.LoadMap(MapName, new Vector3(76f, 1026.5f, -43.68f), Quaternion.Euler(Vector3.zero), Vector3.one);
             Extensions.PlayAudio("CrabGame.ogg", 15, true, Name);
 
             Lava = GameMap.AttachedBlocks.First(x => x.name == "Lava");

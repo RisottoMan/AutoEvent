@@ -17,15 +17,16 @@ namespace AutoEvent.Commands
         {
             if (!((CommandSender)sender).CheckPermission("ev.run"))
             {
-                response = "You do not have permission to use this command";
+                response = "<color=red>You do not have permission to use this command!</color>";
                 return false;
             }
 
             if (AutoEvent.ActiveEvent != null)
             {
-                response = "The mini-game is already running!";
+                response = $"<color=red>The mini-game {AutoEvent.ActiveEvent.Name} is already running!</color>";
                 return false;
             }
+
             if (arguments.Count != 1)
             {
                 response = "Only 1 argument is needed - the command name of the event!";
@@ -35,7 +36,14 @@ namespace AutoEvent.Commands
             Event ev = Event.GetEvent(arguments.At(0));
             if (ev == null)
             {
-                response = "event not found.";
+                response = $"<color=red>The mini-game {arguments.At(0)} is not found.</color>";
+                return false;
+            }
+
+            if (ev.MapName != null)
+            if (!Extensions.IsExistsMap(ev.MapName))
+            {
+                response = $"<color=red>You need a map {ev.MapName} to run a mini-game.</color>";
                 return false;
             }
 
@@ -44,7 +52,14 @@ namespace AutoEvent.Commands
             if (!Round.IsStarted)
             {
                 Round.Start();
+
                 Timing.CallDelayed(2f, () => {
+
+                    foreach (Player player in Player.List)
+                    {
+                        player.ClearInventory();
+                    }
+
                     ev.OnStart();
                     AutoEvent.ActiveEvent = ev;
                 });
@@ -55,7 +70,7 @@ namespace AutoEvent.Commands
                 AutoEvent.ActiveEvent = ev;
             }
 
-            response = "Event started !";
+            response = $"<color=green>The mini-game {ev.Name} has started!</color>";
             return false;
         }
     }

@@ -16,7 +16,7 @@ namespace AutoEvent.Events.Cube
     {
         public string Name { get; set; } = AutoEvent.Singleton.Translation.CubeName;
         public string Description { get; set; } = AutoEvent.Singleton.Translation.CubeDescription;
-        public string Color { get; set; } = "FF4242";
+        public string MapName { get; set; } = "Cube";
         public string CommandName { get; set; } = "cube";
         public SchematicObject GameMap { get; set; }
         public TimeSpan EventTime { get; set; }
@@ -57,7 +57,7 @@ namespace AutoEvent.Events.Cube
         private void OnEventStarted()
         {
             EventTime = new TimeSpan(0, 2, 0);
-            GameMap = Extensions.LoadMap("Cube", new Vector3(76f, 1026.5f, -43.68f), Quaternion.Euler(Vector3.zero), Vector3.one);
+            GameMap = Extensions.LoadMap(MapName, new Vector3(76f, 1026.5f, -43.68f), Quaternion.Euler(Vector3.zero), Vector3.one);
             //Extensions.PlayAudio("Cube.ogg", 10, true, Name);
 
             foreach(Player player in Player.List)
