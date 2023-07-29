@@ -7,7 +7,7 @@ using Exiled.Events.EventArgs.Map;
 using Exiled.API.Features;
 using System.Linq;
 
-namespace AutoEvent.Events.Cube
+namespace AutoEvent.Events.FallCubes
 {
     public class EventHandler
     {

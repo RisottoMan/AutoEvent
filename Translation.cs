@@ -5,6 +5,8 @@ namespace AutoEvent
 {
     public class Translation : ITranslation
     {
+        public string TimerBeforeStart { get; set; } = "<color=yellow>%time%</color>";
+
         [Description("Zombie Infection Game Mode")]
         public string ZombieName { get; set; } = "Zombie Infection";
         public string ZombieDescription { get; set; } = "Zombie mode, the purpose of which is to infect all players.";
