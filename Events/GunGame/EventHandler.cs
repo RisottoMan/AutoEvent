@@ -14,10 +14,12 @@ namespace AutoEvent.Events.GunGame
 {
     public class EventHandler
     {
+        Plugin _plugin;
         SchematicObject _gameMap;
         Dictionary<Player, Stats> _playerStats;
         public EventHandler(Plugin plugin)
         {
+            _plugin = plugin;
             _gameMap = plugin.GameMap;
             _playerStats = plugin.PlayerStats;
         }
@@ -30,10 +32,10 @@ namespace AutoEvent.Events.GunGame
             });
 
             ev.Player.Role.Set(GunGameRandom.GetRandomRole(), SpawnReason.None , RoleSpawnFlags.None);
-            ev.Player.Position = GunGameRandom.GetRandomPosition(_gameMap);
+            ev.Player.Position = _plugin.SpawnPoints.RandomItem();
 
             var item = ev.Player.AddItem(GunGameGuns.GunForLevel[_playerStats[ev.Player].level]);
-            Timing.CallDelayed(0.1f, () =>
+            Timing.CallDelayed(0.25f, () =>
             {
                 ev.Player.CurrentItem = item;
             });
@@ -55,7 +57,7 @@ namespace AutoEvent.Events.GunGame
 
                     ev.Attacker.ClearInventory();
                     var item = ev.Attacker.AddItem(GunGameGuns.GunForLevel[_playerStats[ev.Attacker].level]);
-                    Timing.CallDelayed(0.2f, () =>
+                    Timing.CallDelayed(0.25f, () =>
                     {
                         ev.Attacker.CurrentItem = item;
                     });
@@ -64,24 +66,27 @@ namespace AutoEvent.Events.GunGame
 
             if (ev.Player != null)
             {
-                ev.Player.Position = GunGameRandom.GetRandomPosition(_gameMap);
+                ev.Player.Position = _plugin.SpawnPoints.RandomItem();
 
                 ev.Player.ClearInventory();
                 var item = ev.Player.AddItem(GunGameGuns.GunForLevel[_playerStats[ev.Player].level]);
-                Timing.CallDelayed(0.2f, () =>
+                Timing.CallDelayed(0.25f, () =>
                 {
                     ev.Player.CurrentItem = item;
                 });
             }
         }
+
         public void OnReloading(ReloadingWeaponEventArgs ev)
         {
             SetMaxAmmo(ev.Player);
         }
+
         public void OnSpawned(SpawnedEventArgs ev)
         {
             SetMaxAmmo(ev.Player);
         }
+
         public void OnDropItem(DroppingItemEventArgs ev) => ev.IsAllowed = false;
         public void OnTeamRespawn(RespawningTeamEventArgs ev) => ev.IsAllowed = false;
         public void OnSpawnRagdoll(SpawningRagdollEventArgs ev) => ev.IsAllowed = false;

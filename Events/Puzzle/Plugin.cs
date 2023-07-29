@@ -17,7 +17,7 @@ namespace AutoEvent.Events.Puzzle
     {
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.PuzzleName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.PuzzleDescription;
-        public override string Color { get; set; } = "FFFF00";
+        public override string MapName { get; set; } = "Puzzle";
         public override string CommandName { get; set; } = "puzzle";
         public SchematicObject GameMap { get; set; }
         public TimeSpan EventTime { get; set; }
@@ -59,7 +59,7 @@ namespace AutoEvent.Events.Puzzle
         {
             EventTime = new TimeSpan(0, 0, 0);
 
-            GameMap = Extensions.LoadMap("Puzzle", new Vector3(76f, 1026.5f, -43.68f), Quaternion.Euler(Vector3.zero), Vector3.one);
+            GameMap = Extensions.LoadMap(MapName, new Vector3(76f, 1026.5f, -43.68f), Quaternion.Euler(Vector3.zero), Vector3.one);
             Extensions.PlayAudio("Puzzle.ogg", 15, true, Name);
 
             Platformes = GameMap.AttachedBlocks.Where(x => x.name == "Platform").ToList();
@@ -142,9 +142,9 @@ namespace AutoEvent.Events.Puzzle
                 Extensions.Broadcast($"<b>{_broadcastName}</b>\n{stageText}", (ushort)(speed + 1));
                 yield return Timing.WaitForSeconds(speed);
 
-                speed -= 0.3f;
+                speed -= 0.4f;
                 stage++;
-                timing -= 0.03f;
+                timing -= 0.04f;
             }
 
             if (Player.List.Count(r => r.IsAlive) < 1)

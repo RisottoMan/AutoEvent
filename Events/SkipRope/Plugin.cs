@@ -1,4 +1,4 @@
-﻿using AutoEvent.Events.TipToe.Features;
+﻿using AutoEvent.Events.SkipRope.Features;
 using AutoEvent.Interfaces;
 using Exiled.API.Enums;
 using Exiled.API.Features;
@@ -15,8 +15,8 @@ namespace AutoEvent.Events.SkipRope
     public class Plugin// : Event
     {
         public string Name { get; set; } = "Skipping Rope";
-        public string Description { get; set; } = "Нужно перепрыгивать скакалку.";
-        public string Color { get; set; } = "FF4242";
+        public string Description { get; set; } = "Need to jump skipping rope";
+        public string MapName { get; set; } = "SkipRope";
         public string CommandName { get; set; } = "rope";
         public SchematicObject GameMap { get; set; }
         public TimeSpan EventTime { get; set; }
@@ -54,9 +54,8 @@ namespace AutoEvent.Events.SkipRope
 
         public void OnEventStarted()
         {
-            GameMap = Extensions.LoadMap("SkipRope", new Vector3(20f, 1026.5f, -45f), Quaternion.Euler(Vector3.zero), Vector3.one);
-
-            Extensions.PlayAudio("LineLite.ogg", 10, true, Name);
+            GameMap = Extensions.LoadMap(MapName, new Vector3(20f, 1026.5f, -45f), Quaternion.Euler(Vector3.zero), Vector3.one);
+            Extensions.PlayAudio("CrabGame.ogg", 15, true, Name);
 
             foreach (Player player in Player.List)
             {
@@ -69,17 +68,17 @@ namespace AutoEvent.Events.SkipRope
 
         public IEnumerator<float> OnEventRunning()
         {
-            EventTime = new TimeSpan(0, 2, 0);
+            EventTime = new TimeSpan(0, 1, 0);
 
             for (int time = 10; time > 0; time--)
             {
-                Extensions.Broadcast(time.ToString(), 1);
+                Extensions.Broadcast($"{time}", 1);
                 yield return Timing.WaitForSeconds(1f);
             }
 
             while (Player.List.Count(r => r.IsAlive) > 1 && EventTime.TotalSeconds > 0)
             {
-                Extensions.Broadcast($"<color=#{Color}>{Name}</color>\n" +
+                Extensions.Broadcast($"<color=#FF4242>{Name}</color>\n" +
                     $"<color=blue>Осталось {EventTime.Minutes}:{EventTime.Seconds}</color>\n" +
                     $"<color=yellow>Осталось игроков - {Player.List.Count(r=>r.IsAlive)}</color>", 1);
 

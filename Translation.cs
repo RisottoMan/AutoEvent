@@ -23,15 +23,15 @@ namespace AutoEvent
         public string JailName { get; set; } = "Simon's Prison";
         public string JailDescription { get; set; } = "Jail mode from CS 1.6, in which you need to hold events [VERY HARD].";
         public string JailBeforeStart { get; set; } = "<color=yellow><color=red><b><i>{name}</i></b></color>\n<i>Open the doors to the players by shooting the button</i>\nBefore the start: <color=red>{time}</color> seconds</color>";
-        public string JailCycle { get; set; } = "<size=20><color=red>{name}</color>\n<color=yellow>Prisoners: {dclasscount}</color> || <color=blue>Jailers: {mtfcount}</color>\n<color=red>{time}</color></size>";
+        public string JailCycle { get; set; } = "<size=20><color=red>{name}</color>\n<color=yellow>Prisoners: {dclasscount}</color> || <color=#14AAF5>Jailers: {mtfcount}</color>\n<color=red>{time}</color></size>";
         public string JailPrisonersWin { get; set; } = "<color=red><b><i>Prisoners Win</i></b></color>\n<color=red>{time}</color>";
-        public string JailJailersWin { get; set; } = "<color=blue><b><i>Jailers Win</i></b></color>\n<color=red>{time}</color>";
+        public string JailJailersWin { get; set; } = "<color=#14AAF5><b><i>Jailers Win</i></b></color>\n<color=red>{time}</color>";
         [Description("Cock Fights Game Mode")]
         public string VersusName { get; set; } = "Cock Fights";
         public string VersusDescription { get; set; } = "Duel of players on the 35hp map from cs 1.6";
-        public string VersusPlayersNull { get; set; } = "<color=#D71868><b><i>{name}</i></b></color>\nGo inside the arena to fight each other!";
-        public string VersusClassDNull { get; set; } = "<color=#D71868><b><i>{name}</i></b></color>\nThe player left alive <color=yellow>{scientist}</color>";
-        public string VersusScientistNull { get; set; } = "<color=#D71868><b><i>{name}</i></b></color>\nThe player left alive <color=orange>{classd}</color>";
+        public string VersusPlayersNull { get; set; } = "<color=#D71868><b><i>{name}</i></b></color>\nGo inside the arena to fight each other!\n<color=red>{remain}</color> seconds left";
+        public string VersusClassDNull { get; set; } = "<color=#D71868><b><i>{name}</i></b></color>\nThe player left alive <color=yellow>{scientist}</color>\nGo inside in <color=orange>{remain}</color> seconds";
+        public string VersusScientistNull { get; set; } = "<color=#D71868><b><i>{name}</i></b></color>\nThe player left alive <color=orange>{classd}</color>\nGo inside in <color=yellow>{remain}</color> seconds";
         public string VersusPlayersDuel { get; set; } = "<color=#D71868><b><i>{name}</i></b></color>\n<color=yellow><color=yellow>{scientist}</color> <color=red>VS</color> <color=orange>{classd}</color></color>";
         public string VersusClassDWin { get; set; } = "<color=#D71868><b><i>{name}</i></b></color>\n<color=yellow>WINNERS: <color=red>CLASS D</color></color>";
         public string VersusScientistWin { get; set; } = "<color=#D71868><b><i>{name}</i></b></color>\n<color=yellow>WINNERS: <color=red>SCIENTISTS</color></color>";
@@ -55,27 +55,21 @@ namespace AutoEvent
 
         [Description("Battle Game Mode")] 
         public string BattleName { get; set; } = "Battle";
-
         public string BattleDescription { get; set; } = "MTF fight against CI";
         public string BattleTimeLeft { get; set; } = "<size=100><color=red>Starts in {time} </color></size>";
-
-        public string BattleCiWin { get; set; } = "<color=green>Winner: Chaos Insurgency </color>\n<color=red>Event time: {time} </color>";
-
-        public string BattleMtfWin { get; set; } = "<color=blue>Winner: Foundation forces</color>\n<color=red>Event time: {time} </color>";
-
-        public string BattleCounter { get; set; } = "<color=blue> MTF: {FoundationForces} </color> vs <color=green> CI: {ChaosForces} </color> \n Elapsed time: {time}";
+        public string BattleCiWin { get; set; } = "<color=#299438>Winner: Chaos Insurgency </color>\n<color=red>Event time: {time} </color>";
+        public string BattleMtfWin { get; set; } = "<color=#14AAF5>Winner: Foundation forces</color>\n<color=red>Event time: {time} </color>";
+        public string BattleCounter { get; set; } = "<color=#14AAF5> MTF: {FoundationForces} </color> vs <color=#299438> CI: {ChaosForces} </color> \n Elapsed time: {time}";
 
         [Description("Football Game Mode")] 
         public string FootballName { get; set; } = "Football";
         public string FootballDescription { get; set; } = "Score 3 goals to win";
         public string FootballRedTeam { get; set; } = "<color=red>You play as Red Team\n</color>";
-        public string FootballBlueTeam { get; set; } = "<color=blue>You play as Blue Team\n</color>";
-
-        public string FootballTimeLeft { get; set; } = "<color=blue>{BluePnt}</color> : <color=red>{RedPnt}</color>\nTime left: {eventTime}";
-
+        public string FootballBlueTeam { get; set; } = "<color=#14AAF5>You play as Blue Team\n</color>";
+        public string FootballTimeLeft { get; set; } = "<color=#14AAF5>{BluePnt}</color> : <color=red>{RedPnt}</color>\nTime left: {eventTime}";
         public string FootballRedWins { get; set; } = "<color=red>Red Team Wins</color>";
-        public string FootballBlueWins { get; set; } = "<color=blue>Blue Team Wins</color>";
-        public string FootballTie { get; set; } = "Tie\n<color=blue>{BluePnt}</color> vs <color=red>{RedPnt}</color>";
+        public string FootballBlueWins { get; set; } = "<color=#14AAF5>Blue Team Wins</color>";
+        public string FootballDraw { get; set; } = "Draw\n<color=#14AAF5>{BluePnt}</color> vs <color=red>{RedPnt}</color>";
 
         [Description("Dead Jump Game Mode (Glass)")]
         public string GlassName { get; set; } = "Dead Jump";
@@ -101,9 +95,9 @@ namespace AutoEvent
         public string SurvivalName { get; set; } = "Zombie Survival";
         public string SurvivalDescription { get; set; } = "Humans surviving from zombies";
         public string SurvivalBeforeInfection { get; set; } = "<b>%name%</b>\n<color=yellow>There are </color> %time% <color=yellow>second before infection begins</color>";
-        public string SurvivalAfterInfection { get; set; } = "<b>%name%</b>\n<color=blue>Humans:</color> %humanCount%\n<color=green>Time to the end:</color> %time%";
+        public string SurvivalAfterInfection { get; set; } = "<b>%name%</b>\n<color=#14AAF5>Humans:</color> %humanCount%\n<color=#299438>Time to the end:</color> %time%";
         public string SurvivalZombieWin { get; set; } = "<color=red>Zombie infected all humans and wins!</color>";
-        public string SurvivalHumanWin { get; set; } = "<color=blue>Humans killed all zombies and stopped infection</color>";
+        public string SurvivalHumanWin { get; set; } = "<color=#14AAF5>Humans killed all zombies and stopped infection</color>";
         public string SurvivalHumanWinTime { get; set; } = "<color=yellow>Humans survived, but infection is not stopped</color>";
 
         [Description("Fall Down Game Mode")] 
@@ -147,7 +141,7 @@ namespace AutoEvent
         public string DeathOnePlayer { get; set; } = "<color=red>Death Party</color>\n<color=yellow>Winner - <color=red>%winner%</color></color>\n<color=#ffc0cb>%time%</color>";
         public string DeathAllDie { get; set; } = "<color=red>Death Party</color>\n<color=yellow>No one survived.(((</color>\n<color=#ffc0cb>%time%</color>";
         [Description("FinishWay Game Mode")]
-        public string FinishWayName { get; set; } = "<color=yellow>Finish Way</color>";
+        public string FinishWayName { get; set; } = "Finish Way";
         public string FinishWayDescription { get; set; } = "Go to the end of the finish to win.";
         public string FinishWayCycle { get; set; } = "%name%\n<color=yellow>Pass the finish!</color>\nTime left: %time%";
         public string FinishWayDied { get; set; } = "You didnt pass the finish";
@@ -157,11 +151,11 @@ namespace AutoEvent
         [Description("Zombie Escape Game Mode")]
         public string ZombieEscapeName { get; set; } = "Zombie Escape";
         public string ZombieEscapeDescription { get; set; } = "Óou need to run away from zombies and escape by helicopter.";
-        public string ZombieEscapeBeforeStart { get; set; } = "<color=#D71868><b><i>%name%</i></b></color>\nStarts in: %time%";
+        public string ZombieEscapeBeforeStart { get; set; } = "<color=#D71868><b><i>Run Forward</i></b></color>\nInfection starts in: %time%";
         public string ZombieEscapeHelicopter { get; set; } = "<color=yellow>%name%</color>\n<color=red>Need to call helicopter.</color>\nHumans left: %count%";
         public string ZombieEscapeDied { get; set; } = "Warhead detonated";
-        public string ZombieEscapeZombieWin { get; set; } = "<color=red>Zombies wins!</color>All humans died";
-        public string ZombieEscapeHumanWin { get; set; } = "<color=blue>Humans wins!</color>Humans escaped";
+        public string ZombieEscapeZombieWin { get; set; } = "<color=red>Zombies wins!</color>\nAll humans died";
+        public string ZombieEscapeHumanWin { get; set; } = "<color=#14AAF5>Humans wins!</color>\nHumans escaped";
         [Description("Lava Game Mode")]
         public string LavaName { get; set; } = "The floor is LAVA";
         public string LavaDescription { get; set; } = "Survival, in which you need to avoid lava and shoot at others.";
@@ -169,5 +163,12 @@ namespace AutoEvent
         public string LavaCycle { get; set; } = "<size=20><color=red><b>Alive: %count% players</b></color></size>";
         public string LavaWin { get; set; } = "<color=red><b>Winner\nPlayer - %winner%</b></color>";
         public string LavaAllDead { get; set; } = "<color=red><b>No one survived to the end.</b></color>";
+        [Description("Boss Battle Game Mode")]
+        public string BossName { get; set; } = "Boss Battle";
+        public string BossDescription { get; set; } = "You need kill the Boss.";
+        public string BossTimeLeft { get; set; } = "<size=100><color=red>Starts in {time} </color></size>";
+        public string BossWin { get; set; } = "<color=red><b>Boss WIN</b></color>\n<color=yellow><color=#14AAF5>Humans</color> has been destroyed</color>\n<b><color=red>%hp%</color> Hp</b> left";
+        public string BossHumansWin { get; set; } = "<color=#14AAF5>Humans WIN</color>\n<color=yellow><color=red>Boss</color> has been destroyed</color>\n<color=#14AAF5>%count%</color> players left";
+        public string BossCounter { get; set; } = "<color=red><b>%hp% HP</b></color>\n<color=#14AAF5>%count%</color> players left\n<color=green>%time%</color> seconds left";
     }
 }

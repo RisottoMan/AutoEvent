@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using Exiled.Permissions.Extensions;
+using AutoEvent.Events.Football.Features;
 
 namespace AutoEvent.Events.Jail
 {
@@ -16,13 +17,15 @@ namespace AutoEvent.Events.Jail
     {
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.JailName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.JailDescription;
-        public override string Color { get; set; } = "FFFF00";
+        public override string MapName { get; set; } = "Jail";
         public override string CommandName { get; set; } = "jail";
         public SchematicObject GameMap { get; set; }
         public TimeSpan EventTime { get; set; }
-        public GameObject Button { get; set; }
         public List<GameObject> Doors { get; set; }
-        public List<GameObject> JailerDoors { get; set; }
+        public GameObject Ball { get; set; }
+        public GameObject Button { get; set; }
+        public GameObject PrisonerDoors { get; set; }
+
         EventHandler _eventHandler;
 
         public override void OnStart()
@@ -45,25 +48,34 @@ namespace AutoEvent.Events.Jail
         }
         public void OnWaitingEvent()
         {
-            GameMap = Extensions.LoadMap("Jail", new Vector3(90f, 1030f, -43.5f), Quaternion.Euler(Vector3.zero), Vector3.one);
+            GameMap = Extensions.LoadMap(MapName, new Vector3(90f, 1030f, -43.5f), Quaternion.Euler(Vector3.zero), Vector3.one);
             Server.FriendlyFire = true;
 
-            Button = GameMap.AttachedBlocks.First(r => r.name == "Button");
             Doors = new List<GameObject>();
-            JailerDoors = new List<GameObject>();
 
             foreach (var obj in GameMap.AttachedBlocks)
             {
-                if (obj.name == "Door")
+                switch(obj.name)
                 {
-                    obj.AddComponent<DoorComponent>();
-                    Doors.Add(obj);
-                }
-
-                if (obj.name == "PrisonerDoor")
-                {
-                    obj.AddComponent<JailerComponent>();
-                    JailerDoors.Add(obj);
+                    case "Button": { Button = obj; } break;
+                    case "Ball":
+                        {
+                            Ball = obj;
+                            Ball.AddComponent<BallComponent>();
+                        }
+                        break;
+                    case "Door":
+                        {
+                            obj.AddComponent<DoorComponent>();
+                            Doors.Add(obj);
+                        }
+                        break;
+                    case "PrisonerDoors":
+                        {
+                            PrisonerDoors = obj;
+                            PrisonerDoors.AddComponent<JailerComponent>();
+                        }
+                        break;
                 }
             }
 
@@ -111,7 +123,18 @@ namespace AutoEvent.Events.Jail
                 string dClassCount = Player.List.Count(r => r.Role == RoleTypeId.ClassD).ToString();
                 string mtfCount = Player.List.Count(r => r.Role.Team == Team.FoundationForces).ToString();
                 string time = $"{EventTime.Minutes}:{EventTime.Seconds}";
-                Extensions.Broadcast(trans.JailCycle.Replace("{name}", Name).Replace("{dclasscount}", dClassCount).Replace("{mtfcount}", mtfCount).Replace("{time}", time), 1);
+
+                foreach(Player player in Player.List)
+                {
+                    if (Vector3.Distance(Ball.transform.position, player.Position) < 2)
+                    {
+                        Ball.gameObject.TryGetComponent<Rigidbody>(out Rigidbody rig);
+                        rig.AddForce(player.Transform.forward + new Vector3(0, 0.1f, 0), ForceMode.Impulse);
+                    }
+
+                    player.ClearBroadcasts();
+                    player.Broadcast(1, trans.JailCycle.Replace("{name}", Name).Replace("{dclasscount}", dClassCount).Replace("{mtfcount}", mtfCount).Replace("{time}", time));
+                }
 
                 foreach (var doorComponent in Doors)
                 {

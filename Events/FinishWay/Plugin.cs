@@ -15,7 +15,7 @@ namespace AutoEvent.Events.FinishWay
     {
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.FinishWayName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.FinishWayDescription;
-        public override string Color { get; set; } = "FF4242";
+        public override string MapName { get; set; } = "FinishWay";
         public override string CommandName { get; set; } = "finish";
         public static SchematicObject GameMap { get; set; }
         public static TimeSpan EventTime { get; set; }
@@ -52,7 +52,7 @@ namespace AutoEvent.Events.FinishWay
 
         public void OnEventStarted()
         {
-            GameMap = Extensions.LoadMap("FinishWay", new Vector3(115.5f, 1030f, -43.5f), Quaternion.Euler(Vector3.zero), Vector3.one);
+            GameMap = Extensions.LoadMap(MapName, new Vector3(115.5f, 1030f, -43.5f), Quaternion.Euler(Vector3.zero), Vector3.one);
 
             foreach (Player player in Player.List)
             {

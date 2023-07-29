@@ -8,7 +8,7 @@ using MapEditorReborn.API.Features.Objects;
 using System.Linq;
 using UnityEngine;
 using AutoEvent.Events.Football.Features;
-using Exiled.Events.Commands.Reload;
+using Exiled.API.Enums;
 
 namespace AutoEvent.Events.Football
 {
@@ -16,8 +16,8 @@ namespace AutoEvent.Events.Football
     {
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.FootballName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.FootballDescription;
-        public override string Color { get; set; } = "FFFF00";
-        public override string CommandName { get; set; } = "football";
+        public override string MapName { get; set; } = "Football";
+        public override string CommandName { get; set; } = "ball";
         public SchematicObject GameMap { get; set; }
         public int BluePoints { get; set; } = 0;
         public int RedPoints { get; set; } = 0;
@@ -46,7 +46,7 @@ namespace AutoEvent.Events.Football
         }
         public void OnEventStarted()
         {
-            GameMap = Extensions.LoadMap("Football", new Vector3(76f, 1026.5f, -43.68f), Quaternion.Euler(Vector3.zero), Vector3.one);
+            GameMap = Extensions.LoadMap(MapName, new Vector3(76f, 1026.5f, -43.68f), Quaternion.Euler(Vector3.zero), Vector3.one);
             Extensions.PlayAudio("Football.ogg", 5, true, Name);
 
             EventTime = new TimeSpan(0, 3, 0);
@@ -58,12 +58,12 @@ namespace AutoEvent.Events.Football
             {
                 if (count % 2 == 0)
                 {
-                    player.Role.Set(RoleTypeId.NtfCaptain, RoleSpawnFlags.None);
+                    player.Role.Set(RoleTypeId.NtfCaptain, SpawnReason.None, RoleSpawnFlags.None);
                     player.Position = RandomClass.GetSpawnPosition(GameMap, true);
                 }
                 else
                 {
-                    player.Role.Set(RoleTypeId.ClassD, RoleSpawnFlags.None);
+                    player.Role.Set(RoleTypeId.ClassD, SpawnReason.None, RoleSpawnFlags.None);
                     player.Position = RandomClass.GetSpawnPosition(GameMap, false);
                 }
 
@@ -79,18 +79,19 @@ namespace AutoEvent.Events.Football
             var triggerBlue = GameMap.AttachedBlocks.First(x => x.name == "TriggerBlue");
             var triggerOrange = GameMap.AttachedBlocks.First(x => x.name == "TriggerOrange");
 
-            while (BluePoints < 2 && RedPoints < 2 && EventTime.TotalSeconds > 0 && Player.List.Count(r => r.IsAlive) > 0)
+            while (BluePoints < 3 && RedPoints < 3 && EventTime.TotalSeconds > 0 && Player.List.Count(r => r.IsNTF) > 0 && Player.List.Count(r => r.Role.Team == Team.ClassD) > 0)
             {
                 var text = string.Empty;
+                var time = $"{EventTime.Minutes}:{EventTime.Seconds}";
                 foreach (Player player in Player.List)
                 {
                     if (Vector3.Distance(ball.transform.position, player.Position) < 2)
                     {
                         ball.gameObject.TryGetComponent<Rigidbody>(out Rigidbody rig);
-                        rig.AddForce(player.Transform.forward + new Vector3(0, 1f, 0), ForceMode.Impulse);
+                        rig.AddForce(player.Transform.forward + new Vector3(0, 0.1f, 0), ForceMode.Impulse);
                     }
 
-                    if (player.Role.Type == RoleTypeId.NtfCaptain)
+                    if (player.Role.Team == Team.FoundationForces)
                     {
                         text += AutoEvent.Singleton.Translation.FootballBlueTeam;
                     }
@@ -100,7 +101,7 @@ namespace AutoEvent.Events.Football
                     }
 
                     player.ClearBroadcasts();
-                    player.Broadcast(1, text + AutoEvent.Singleton.Translation.FootballTimeLeft.Replace("{BluePnt}", $"{BluePoints}").Replace("{RedPnt}", $"{RedPoints}").Replace("{eventTime}", $"{EventTime.Minutes}:{EventTime.Seconds}"));
+                    player.Broadcast(1, text + AutoEvent.Singleton.Translation.FootballTimeLeft.Replace("{BluePnt}", $"{BluePoints}").Replace("{RedPnt}", $"{RedPoints}").Replace("{eventTime}", time));
                 }
 
                 if (Vector3.Distance(ball.transform.position, triggerBlue.transform.position) < 3)
@@ -131,7 +132,7 @@ namespace AutoEvent.Events.Football
             }
             else
             {
-                Extensions.Broadcast($"{AutoEvent.Singleton.Translation.FootballTie.Replace("{BluePnt}", $"{BluePoints}").Replace("{RedPnt}", $"{RedPoints}")}", 3);
+                Extensions.Broadcast($"{AutoEvent.Singleton.Translation.FootballDraw.Replace("{BluePnt}", $"{BluePoints}").Replace("{RedPnt}", $"{RedPoints}")}", 3);
             }
 
             OnStop();

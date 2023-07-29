@@ -16,7 +16,8 @@ namespace AutoEvent.Events.FallDown
     {
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.FallName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.FallDescription;
-        public override string Color { get; set; } = "FF4242";
+
+        public override string MapName { get; set; } = "FallDown";
         public override string CommandName { get; set; } = "fall";
         public static SchematicObject GameMap { get; set; }
         public static TimeSpan EventTime { get; set; }
@@ -55,7 +56,7 @@ namespace AutoEvent.Events.FallDown
         public void OnEventStarted()
         {
             EventTime = new TimeSpan(0, 0, 0);
-            GameMap = Extensions.LoadMap("FallDown", new Vector3(10f, 1020f, -43.68f), Quaternion.Euler(Vector3.zero), Vector3.one);
+            GameMap = Extensions.LoadMap(MapName, new Vector3(10f, 1020f, -43.68f), Quaternion.Euler(Vector3.zero), Vector3.one);
             Extensions.PlayAudio("Puzzle.ogg", 15, true, Name);
 
             foreach (Player player in Player.List)

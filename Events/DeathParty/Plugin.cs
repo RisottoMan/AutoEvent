@@ -9,8 +9,8 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using PlayerRoles;
-using Random = UnityEngine.Random;
 using AutoEvent.Interfaces;
+using Random = UnityEngine.Random;
 
 namespace AutoEvent.Events.DeathParty
 {
@@ -18,12 +18,13 @@ namespace AutoEvent.Events.DeathParty
     {
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.DeathName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.DeathDescription;
-        public override string Color { get; set; } = "FFFF00";
+        public override string MapName { get; set; } = "DeathParty";
         public override string CommandName { get; set; } = "death";
         public TimeSpan EventTime { get; set; }
         public SchematicObject GameMap { get; set; }
 
         EventHandler _eventHandler;
+
         private bool isFreindlyFireEnabled;
         public static int Stage { get; set; }
         public int MaxStage { get; set; }
@@ -68,7 +69,7 @@ namespace AutoEvent.Events.DeathParty
         {
             EventTime = new TimeSpan(0, 0, 0);
             MaxStage = 5;
-            GameMap = Extensions.LoadMap("DeathParty", new Vector3(10f, 1012f, -40f), Quaternion.Euler(Vector3.zero), Vector3.one);
+            GameMap = Extensions.LoadMap(MapName, new Vector3(10f, 1012f, -40f), Quaternion.Euler(Vector3.zero), Vector3.one);
             Extensions.PlayAudio("DeathParty.ogg", 5, true, Name);
 
             foreach (Player player in Player.List)
@@ -76,6 +77,7 @@ namespace AutoEvent.Events.DeathParty
                 player.Role.Set(RoleTypeId.ClassD, SpawnReason.None, RoleSpawnFlags.None);
                 player.Position = RandomClass.GetSpawnPosition(GameMap);
             }
+
             Timing.RunCoroutine(OnEventRunning(), "death_run");
             Timing.RunCoroutine(OnGrenadeEvent(), "death_grenade");
         }
@@ -88,7 +90,7 @@ namespace AutoEvent.Events.DeathParty
                 yield return Timing.WaitForSeconds(1f);
             }
 
-            while (Player.List.Count(r => r.IsAlive) > 0 && Stage != (MaxStage + 1))
+            while (Player.List.Count(r => r.IsAlive) > 0 && Stage <= MaxStage)
             {
                 var count = Player.List.Count(r => r.IsAlive).ToString();
                 var cycleTime = $"{EventTime.Minutes}:{EventTime.Seconds}";
@@ -117,6 +119,7 @@ namespace AutoEvent.Events.DeathParty
             OnStop();
             yield break;
         }
+
         public IEnumerator<float> OnGrenadeEvent()
         {
             Stage = 1;
@@ -127,9 +130,9 @@ namespace AutoEvent.Events.DeathParty
             float scale = 4;
             float radius = GameMap.AttachedBlocks.First(x => x.name == "Arena").transform.localScale.x / 2 - 6f;
 
-            while (Player.List.Count(r => r.IsAlive) > 0 && Stage != (MaxStage + 1))
+            while (Player.List.Count(r => r.IsAlive) > 0 && Stage <= MaxStage)
             {
-                if (Stage < MaxStage)
+                if (Stage != MaxStage)
                 {
                     for (int i = 0; i < count; i++)
                     {
@@ -139,7 +142,7 @@ namespace AutoEvent.Events.DeathParty
                 }
                 else
                 {
-                    GrenadeSpawn(10, radius, 20f, 50);
+                    GrenadeSpawn(10, 10, 20f, 75);
                 }
 
                 yield return Timing.WaitForSeconds(15f);

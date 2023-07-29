@@ -1,6 +1,7 @@
 ﻿using AutoEvent.Interfaces;
 using Exiled.API.Enums;
 using Exiled.API.Features;
+using Exiled.API.Features.Spawn;
 using MapEditorReborn.API.Features.Objects;
 using MEC;
 using PlayerRoles;
@@ -15,13 +16,14 @@ namespace AutoEvent.Events.GunGame
     {
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.GunGameName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.GunGameDescription;
-        public override string Color { get; set; } = "FFFF00";
+        public override string MapName { get; set; } = "Shipment";
         public override string CommandName { get; set; } = "gungame";
         public TimeSpan EventTime { get; set; }
         public SchematicObject GameMap { get; set; }
         public List<Vector3> Spawners { get; set; } = new List<Vector3>();
         public Player Winner { get; set; }
-        public Dictionary<Player, Stats> PlayerStats = new Dictionary<Player, Stats>();
+        public Dictionary<Player, Stats> PlayerStats;
+        public List<Vector3> SpawnPoints;
 
         private bool isFreindlyFireEnabled;
         EventHandler _eventHandler;
@@ -66,8 +68,16 @@ namespace AutoEvent.Events.GunGame
         public void OnEventStarted()
         {
             Winner = null;
-            GameMap = Extensions.LoadMap("Shipment", new Vector3(5f, 1030f, -45f), Quaternion.identity, Vector3.one);
+            GameMap = Extensions.LoadMap(MapName, new Vector3(93f, 1020f, -43f), Quaternion.identity, Vector3.one);
             Extensions.PlayAudio("ClassicMusic.ogg", 3, true, Name);
+
+            PlayerStats = new Dictionary<Player, Stats>();
+            SpawnPoints = new List<Vector3>();
+
+            foreach(var point in GameMap.AttachedBlocks.Where(x => x.name == "Spawnpoint"))
+            {
+                SpawnPoints.Add(point.transform.position);
+            }
 
             var count = 0;
             foreach (Player player in Player.List)
@@ -81,11 +91,11 @@ namespace AutoEvent.Events.GunGame
                 });
 
                 player.Role.Set(GunGameRandom.GetRandomRole(), SpawnReason.None, RoleSpawnFlags.None);
-                player.Position = GunGameRandom.GetRandomPosition(GameMap);
+                player.Position = SpawnPoints.RandomItem();
                 player.EnableEffect<CustomPlayerEffects.SpawnProtected>(10);
 
                 var item = player.AddItem(GunGameGuns.GunForLevel[PlayerStats[player].level]);
-                Timing.CallDelayed(0.1f, () =>
+                Timing.CallDelayed(0.25f, () =>
                 {
                     player.CurrentItem = item;
                 });

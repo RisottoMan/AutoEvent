@@ -16,7 +16,7 @@ namespace AutoEvent.Events.HideAndSeek
     {
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.HideName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.HideDescription;
-        public override string Color { get; set; } = "FF4242";
+        public override string MapName { get; set; } = "HideAndSeek";
         public override string CommandName { get; set; } = "hns";
         public SchematicObject GameMap { get; set; }
         public TimeSpan EventTime { get; set; }
@@ -55,7 +55,7 @@ namespace AutoEvent.Events.HideAndSeek
         public void OnEventStarted()
         {
             EventTime = new TimeSpan(0, 0, 0);
-            GameMap = Extensions.LoadMap("HideAndSeek", new Vector3(5.5f, 1026.5f, -45f), Quaternion.Euler(Vector3.zero), Vector3.one);
+            GameMap = Extensions.LoadMap(MapName, new Vector3(5.5f, 1026.5f, -45f), Quaternion.Euler(Vector3.zero), Vector3.one);
             Extensions.PlayAudio("HideAndSeek.ogg", 5, true, Name);
 
             Server.FriendlyFire = true;

@@ -10,13 +10,17 @@ namespace AutoEvent.Events.Football.Features
         {
             sphere = gameObject.AddComponent<SphereCollider>();
             sphere.isTrigger = true;
-            sphere.radius = 1;
+            sphere.radius = 1.1f; // 1
 
             rigid = gameObject.AddComponent<Rigidbody>();
             rigid.isKinematic = false;
             rigid.useGravity = true;
-            rigid.mass = 1;
-            rigid.drag = 1;
+            rigid.mass = 0.1f; // 1
+            rigid.drag = 0.1f; // 1
+        }
+        private void FixedUpdate() // new
+        {
+            transform.position += rigid.velocity * Time.fixedDeltaTime;
         }
     }
 }

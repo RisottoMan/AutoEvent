@@ -16,7 +16,7 @@ namespace AutoEvent.Events.Lava
     {
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.LavaName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.LavaDescription;
-        public override string Color { get; set; } = "FFFF00";
+        public override string MapName { get; set; } = "Lava";
         public override string CommandName { get; set; } = "lava";
         public TimeSpan EventTime { get; set; }
         public SchematicObject GameMap { get; set; }
@@ -40,7 +40,6 @@ namespace AutoEvent.Events.Lava
             Exiled.Events.Handlers.Map.PlacingBulletHole += _eventHandler.OnPlaceBullet;
             Exiled.Events.Handlers.Map.PlacingBlood += _eventHandler.OnPlaceBlood;
             Exiled.Events.Handlers.Player.ReloadingWeapon += _eventHandler.OnReloading;
-            Exiled.Events.Handlers.Player.DroppingItem += _eventHandler.OnDropItem;
             Exiled.Events.Handlers.Player.DroppingAmmo += _eventHandler.OnDropAmmo;
             Exiled.Events.Handlers.Player.Hurting += _eventHandler.OnHurt;
         }
@@ -55,7 +54,6 @@ namespace AutoEvent.Events.Lava
             Exiled.Events.Handlers.Map.PlacingBulletHole -= _eventHandler.OnPlaceBullet;
             Exiled.Events.Handlers.Map.PlacingBlood -= _eventHandler.OnPlaceBlood;
             Exiled.Events.Handlers.Player.ReloadingWeapon -= _eventHandler.OnReloading;
-            Exiled.Events.Handlers.Player.DroppingItem -= _eventHandler.OnDropItem;
             Exiled.Events.Handlers.Player.DroppingAmmo -= _eventHandler.OnDropAmmo;
             Exiled.Events.Handlers.Player.Hurting -= _eventHandler.OnHurt;
 
@@ -67,7 +65,7 @@ namespace AutoEvent.Events.Lava
         {
             EventTime = new TimeSpan(0, 0, 0);
 
-            GameMap = Extensions.LoadMap("Lava", new Vector3(120f, 1020f, -43.5f), Quaternion.Euler(Vector3.zero), Vector3.one);
+            GameMap = Extensions.LoadMap(MapName, new Vector3(120f, 1020f, -43.5f), Quaternion.Euler(Vector3.zero), Vector3.one);
             Extensions.PlayAudio("Lava.ogg", 7, false, Name);
 
             foreach (var player in Player.List)
@@ -83,7 +81,7 @@ namespace AutoEvent.Events.Lava
         {
             for (int time = 10; time > 0; time--)
             {
-                Extensions.Broadcast(AutoEvent.Singleton.Translation.LavaBeforeStart.Replace("%time%", $"time"), 1);
+                Extensions.Broadcast(AutoEvent.Singleton.Translation.LavaBeforeStart.Replace("%time%", $"{time}"), 1);
                 yield return Timing.WaitForSeconds(1f);
             }
 
@@ -111,7 +109,7 @@ namespace AutoEvent.Events.Lava
 
             if (Player.List.Count(r => r.IsAlive) == 1)
             {
-                Extensions.Broadcast(AutoEvent.Singleton.Translation.LavaWin.Replace("%winner", Player.List.First(r => r.IsAlive).Nickname), 10);
+                Extensions.Broadcast(AutoEvent.Singleton.Translation.LavaWin.Replace("%winner%", Player.List.First(r => r.IsAlive).Nickname), 10);
             }
             else
             {

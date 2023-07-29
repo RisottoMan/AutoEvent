@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Utils.NonAllocLINQ;
 
 namespace AutoEvent.Events.Battle
 {
@@ -16,10 +17,11 @@ namespace AutoEvent.Events.Battle
     {
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.BattleName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.BattleDescription;
-        public override string Color { get; set; } = "FFFF00";
+        public override string MapName { get; set; } = "Battle";
         public override string CommandName { get; set; } = "battle";
         public TimeSpan EventTime { get; set; }
         public SchematicObject GameMap { get; set; }
+        public List<GameObject> Workstations { get; set; }
 
         EventHandler _eventHandler;
 
@@ -54,10 +56,11 @@ namespace AutoEvent.Events.Battle
             _eventHandler = null;
             Timing.CallDelayed(10f, () => EventEnd());
         }
+
         public void OnEventStarted()
         {
             EventTime = new TimeSpan(0, 0, 0);
-            GameMap = Extensions.LoadMap("Battle", new Vector3(6f, 1030f, -43.5f), Quaternion.Euler(Vector3.zero), Vector3.one);
+            GameMap = Extensions.LoadMap(MapName, new Vector3(6f, 1030f, -43.5f), Quaternion.Euler(Vector3.zero), Vector3.one);
             Extensions.PlayAudio("MetalGearSolid.ogg", 10, false, Name);
 
             var count = 0;
@@ -84,6 +87,7 @@ namespace AutoEvent.Events.Battle
 
             Timing.RunCoroutine(OnEventRunning(), "battle_time");
         }
+
         public IEnumerator<float> OnEventRunning()
         {
             for (int time = 20; time > 0; time--)
@@ -92,9 +96,14 @@ namespace AutoEvent.Events.Battle
                 yield return Timing.WaitForSeconds(1f);
             }
 
-            foreach (var wall in GameMap.AttachedBlocks.Where(x => x.name == "Wall"))
+            Workstations = new List<GameObject>();
+            foreach (var gameObject in GameMap.AttachedBlocks)
             {
-                GameObject.Destroy(wall);
+                switch (gameObject.name)
+                {
+                    case "Wall": { GameObject.Destroy(gameObject); } break;
+                    case "Workstation": { Workstations.Add(gameObject); } break;
+                }
             }
 
             while (Player.List.Count(r => r.Role.Team == Team.FoundationForces) > 0 && Player.List.Count(r => r.Role.Team == Team.ChaosInsurgency) > 0)
@@ -122,11 +131,13 @@ namespace AutoEvent.Events.Battle
             OnStop();
             yield break;
         }
+
         public void EventEnd()
         {
             Extensions.CleanUpAll();
             Extensions.TeleportEnd();
             Extensions.UnLoadMap(GameMap);
+            foreach (var bench in Workstations) GameObject.Destroy(bench);
             Extensions.StopAudio();
             AutoEvent.ActiveEvent = null;
         }

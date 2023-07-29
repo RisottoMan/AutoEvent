@@ -16,7 +16,7 @@ namespace AutoEvent.Events.Knives
     {
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.KnivesName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.KnivesDescription;
-        public override string Color { get; set; } = "FFFF00";
+        public override string MapName { get; set; } = "35hp_2";
         public override string CommandName { get; set; } = "knife";
         public SchematicObject GameMap { get; set; }
         public TimeSpan EventTime { get; set; }
@@ -66,7 +66,7 @@ namespace AutoEvent.Events.Knives
         public void OnEventStarted()
         {
             EventTime = new TimeSpan(0, 0, 0);
-            GameMap = Extensions.LoadMap("35hp_2", new Vector3(5f, 1030f, -45f), Quaternion.Euler(Vector3.zero), Vector3.one);
+            GameMap = Extensions.LoadMap(MapName, new Vector3(5f, 1030f, -45f), Quaternion.Euler(Vector3.zero), Vector3.one);
             Extensions.PlayAudio("Knife.ogg", 10, true, Name);
 
             var count = 0;
