@@ -81,10 +81,10 @@ namespace AutoEvent.Events.Football
 
             while (BluePoints < 3 && RedPoints < 3 && EventTime.TotalSeconds > 0 && Player.List.Count(r => r.IsNTF) > 0 && Player.List.Count(r => r.Role.Team == Team.ClassD) > 0)
             {
-                var text = string.Empty;
                 var time = $"{EventTime.Minutes}:{EventTime.Seconds}";
                 foreach (Player player in Player.List)
                 {
+                    var text = string.Empty;
                     if (Vector3.Distance(ball.transform.position, player.Position) < 2)
                     {
                         ball.gameObject.TryGetComponent<Rigidbody>(out Rigidbody rig);
