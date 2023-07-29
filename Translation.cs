@@ -141,7 +141,7 @@ namespace AutoEvent
         public string DeathOnePlayer { get; set; } = "<color=red>Death Party</color>\n<color=yellow>Winner - <color=red>%winner%</color></color>\n<color=#ffc0cb>%time%</color>";
         public string DeathAllDie { get; set; } = "<color=red>Death Party</color>\n<color=yellow>No one survived.(((</color>\n<color=#ffc0cb>%time%</color>";
         [Description("FinishWay Game Mode")]
-        public string FinishWayName { get; set; } = "<color=yellow>Finish Way</color>";
+        public string FinishWayName { get; set; } = "Finish Way";
         public string FinishWayDescription { get; set; } = "Go to the end of the finish to win.";
         public string FinishWayCycle { get; set; } = "%name%\n<color=yellow>Pass the finish!</color>\nTime left: %time%";
         public string FinishWayDied { get; set; } = "You didnt pass the finish";
