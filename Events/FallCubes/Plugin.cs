@@ -13,7 +13,7 @@ using UnityEngine;
 
 namespace AutoEvent.Events.FallCubes
 {
-    internal class Plugin : Event
+    internal class Plugin //: Event
     {
         public override string CommandName { get; set; } = "cube";
         public override string Name { get; set; } = "Fall Cube";

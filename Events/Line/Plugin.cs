@@ -81,7 +81,7 @@ namespace AutoEvent.Events.Line
 
             for (int time = 10; time > 0; time--)
             {
-                Extensions.Broadcast($"{time}", 1);
+                Extensions.Broadcast(trans.TimerBeforeStart.Replace("%time%", $"{time}"), 1);
                 yield return Timing.WaitForSeconds(1f);
             }
 
@@ -98,9 +98,13 @@ namespace AutoEvent.Events.Line
 
             while (Player.List.Count(r => r.Role == RoleTypeId.ClassD) > 1 && EventTime.TotalSeconds > 0)
             {
+                /*
                 Extensions.Broadcast($"<color=#FF4242>{Name}</color>\n" +
                     $"<color=blue>До конца: {EventTime.Minutes}</color><color=#4a4a4a>:</color><color=blue>{EventTime.Seconds}</color>\n" +
                     $"<color=yellow>Выживших: {Player.List.Count(r => r.Role == RoleTypeId.ClassD)}</color>", 1);
+                */
+
+                Extensions.Broadcast(trans.LineBroadcast.Replace("%name%", Name).Replace("%time%", $"{EventTime.Minutes}<color=#4a4a4a>:</color>{EventTime.Seconds}").Replace("%alive%", $"{Player.List.Count(r => r.Role == RoleTypeId.ClassD)}"), 1);
 
                 if (EventTime.Seconds == 30 && HardCounts < HardCountsLimit)
                 {
@@ -128,19 +132,27 @@ namespace AutoEvent.Events.Line
 
             if (Player.List.Count(r => r.Role == RoleTypeId.ClassD) > 1)
             {
+                /*
                 Extensions.Broadcast($"<color=#FF4242>{Name}</color>\n" +
                     $"<color=yellow>Выжило {Player.List.Count(r => r.Role == RoleTypeId.ClassD)} игроков</color>\n" +
                     $"<color=red>Поздравляем!</color>", 10);
+                */
+
+                Extensions.Broadcast(trans.LineWinners.Replace("%name%", Name).Replace("%alive%", $"{Player.List.Count(r => r.Role == RoleTypeId.ClassD)}"), 10);
             }
             else if (Player.List.Count(r => r.Role == RoleTypeId.ClassD) == 1)
             {
+                /*
                 Extensions.Broadcast($"<color=#FF4242>{Name}</color>\n" +
                     $"<color=yellow>Победитель: {Player.List.First(r => r.Role == RoleTypeId.ClassD).Nickname}</color>\n" +
                     $"<color=red>Поздравляем!</color>", 10);
+                */
+
+                Extensions.Broadcast(trans.LineWinner.Replace("%name%", Name).Replace("%nickname%", Player.List.First(r => r.Role == RoleTypeId.ClassD).Nickname), 1);
             }
             else
             {
-                Extensions.Broadcast("<color=red>Все умерли!</color>", 10);
+                Extensions.Broadcast(trans.LineAllDied, 10);
             }
 
             OnStop();
