@@ -1,4 +1,4 @@
-# Example :trollface:
+# Example :bulb:
 ### If you want to learn how to write your own mini-games, then you should study the structure of mini-games.
 ### It's not very difficult:
 ```
