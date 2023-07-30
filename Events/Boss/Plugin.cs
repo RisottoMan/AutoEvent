@@ -114,14 +114,14 @@ namespace AutoEvent.Events.Boss
                 EventTime -= TimeSpan.FromSeconds(1f);
             }
 
+            Boss.Scale = new Vector3(1, 1, 1);
+
             if (Player.List.Count(r => r.Role.Team == Team.FoundationForces) == 0)
             {
-                Boss.Scale = new Vector3(1, 1, 1);
                 Extensions.Broadcast(AutoEvent.Singleton.Translation.BossWin.Replace("%hp%", $"{(int)Boss.Health}"), 10);
             }
             else if (Player.List.Count(r => r.Role.Team == Team.ChaosInsurgency) == 0)
             {
-                Boss.Hurt(15000, "Boss");
                 Extensions.Broadcast(AutoEvent.Singleton.Translation.BossHumansWin.Replace("%count%", $"{Player.List.Count(r => r.IsNTF)}"), 10);
             }
 
