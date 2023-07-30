@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using Exiled.API.Features;
+using Mirror;
+using UnityEngine;
 
 namespace AutoEvent.Events.Football.Features
 {
@@ -10,15 +12,16 @@ namespace AutoEvent.Events.Football.Features
         {
             sphere = gameObject.AddComponent<SphereCollider>();
             sphere.isTrigger = true;
-            sphere.radius = 1.1f; // 1
+            sphere.radius = 1.1f;
 
             rigid = gameObject.AddComponent<Rigidbody>();
             rigid.isKinematic = false;
             rigid.useGravity = true;
-            rigid.mass = 0.1f; // 1
-            rigid.drag = 0.1f; // 1
+            rigid.mass = 0.1f;
+            rigid.drag = 0.1f;
         }
-        private void FixedUpdate() // new
+
+        private void FixedUpdate()
         {
             transform.position += rigid.velocity * Time.fixedDeltaTime;
         }

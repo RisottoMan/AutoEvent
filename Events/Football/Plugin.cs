@@ -19,8 +19,6 @@ namespace AutoEvent.Events.Football
         public override string MapName { get; set; } = "Football";
         public override string CommandName { get; set; } = "ball";
         public SchematicObject GameMap { get; set; }
-        public int BluePoints { get; set; } = 0;
-        public int RedPoints { get; set; } = 0;
         public TimeSpan EventTime { get; set; }
 
         EventHandler _eventHandler;
@@ -46,12 +44,9 @@ namespace AutoEvent.Events.Football
         }
         public void OnEventStarted()
         {
+            EventTime = new TimeSpan(0, 3, 0);
             GameMap = Extensions.LoadMap(MapName, new Vector3(76f, 1026.5f, -43.68f), Quaternion.Euler(Vector3.zero), Vector3.one);
             Extensions.PlayAudio("Football.ogg", 5, true, Name);
-
-            EventTime = new TimeSpan(0, 3, 0);
-            BluePoints = 0;
-            RedPoints = 0;
 
             var count = 0;
             foreach (Player player in Player.List)
@@ -66,22 +61,30 @@ namespace AutoEvent.Events.Football
                     player.Role.Set(RoleTypeId.ClassD, SpawnReason.None, RoleSpawnFlags.None);
                     player.Position = RandomClass.GetSpawnPosition(GameMap, false);
                 }
-
                 count++;
             }
+
             Timing.RunCoroutine(OnEventRunning(), "glass_time");
         }
         public IEnumerator<float> OnEventRunning()
         {
-            var ball = GameMap.AttachedBlocks.First(x => x.name == "Ball");
-            ball.AddComponent<BallComponent>();
+            int bluePoints = 0;
+            int redPoints = 0;
+            GameObject ball = new GameObject();
+            List<GameObject> triggers = new List<GameObject>();
 
-            var triggerBlue = GameMap.AttachedBlocks.First(x => x.name == "TriggerBlue");
-            var triggerOrange = GameMap.AttachedBlocks.First(x => x.name == "TriggerOrange");
-
-            while (BluePoints < 3 && RedPoints < 3 && EventTime.TotalSeconds > 0 && Player.List.Count(r => r.IsNTF) > 0 && Player.List.Count(r => r.Role.Team == Team.ClassD) > 0)
+            foreach (var gameObject in GameMap.AttachedBlocks)
             {
-                var time = $"{EventTime.Minutes}:{EventTime.Seconds}";
+                switch(gameObject.name)
+                {
+                    case "Trigger": { triggers.Add(gameObject); } break;
+                    case "Ball": { ball = gameObject; ball.AddComponent<BallComponent>(); } break;
+                }
+            }
+
+            while (bluePoints < 3 && redPoints < 3 && EventTime.TotalSeconds > 0 && Player.List.Count(r => r.IsNTF) > 0 && Player.List.Count(r => r.Role.Team == Team.ClassD) > 0)
+            {
+                var time = $"{EventTime.Minutes}:{EventTime.Minutes}";
                 foreach (Player player in Player.List)
                 {
                     var text = string.Empty;
@@ -101,38 +104,38 @@ namespace AutoEvent.Events.Football
                     }
 
                     player.ClearBroadcasts();
-                    player.Broadcast(1, text + AutoEvent.Singleton.Translation.FootballTimeLeft.Replace("{BluePnt}", $"{BluePoints}").Replace("{RedPnt}", $"{RedPoints}").Replace("{eventTime}", time));
+                    player.Broadcast(1, text + AutoEvent.Singleton.Translation.FootballTimeLeft.Replace("{BluePnt}", $"{bluePoints}").Replace("{RedPnt}", $"{redPoints}").Replace("{eventTime}", time));
                 }
 
-                if (Vector3.Distance(ball.transform.position, triggerBlue.transform.position) < 3)
+                if (Vector3.Distance(ball.transform.position, triggers.ElementAt(0).transform.position) < 3)
                 {
                     ball.transform.position = GameMap.Position + new Vector3(0, 2.5f, 0);
                     ball.GetComponent<Rigidbody>().velocity = Vector3.zero;
-                    RedPoints++;
+                    redPoints++;
                 }
 
-                if (Vector3.Distance(ball.transform.position, triggerOrange.transform.position) < 3)
+                if (Vector3.Distance(ball.transform.position, triggers.ElementAt(1).transform.position) < 3)
                 {
                     ball.transform.position = GameMap.Position + new Vector3(0, 2.5f, 0);
                     ball.GetComponent<Rigidbody>().velocity = Vector3.zero;
-                    BluePoints++;
+                    bluePoints++;
                 }
 
                 yield return Timing.WaitForSeconds(0.1f);
                 EventTime -= TimeSpan.FromSeconds(0.1f);
             }
 
-            if (BluePoints > RedPoints)
+            if (bluePoints > redPoints)
             {
                 Extensions.Broadcast($"{AutoEvent.Singleton.Translation.FootballBlueWins}", 10);
             }
-            else if (RedPoints > BluePoints)
+            else if (redPoints > bluePoints)
             {
                 Extensions.Broadcast($"{AutoEvent.Singleton.Translation.FootballRedWins}", 10);
             }
             else
             {
-                Extensions.Broadcast($"{AutoEvent.Singleton.Translation.FootballDraw.Replace("{BluePnt}", $"{BluePoints}").Replace("{RedPnt}", $"{RedPoints}")}", 3);
+                Extensions.Broadcast($"{AutoEvent.Singleton.Translation.FootballDraw.Replace("{BluePnt}", $"{bluePoints}").Replace("{RedPnt}", $"{redPoints}")}", 3);
             }
 
             OnStop();
