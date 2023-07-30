@@ -1,7 +1,7 @@
 # AutoEvent
 ## ENG: Allows you to run auto Mini-Games in the game.
 ## RUS: Позволяет запускать автоматические Мини-Игры в игре.
-## Discord: [Click me](https://discord.gg/Bu7ZsKsbjP) - If you have found bugs and want to talk about them.
+## [Discord](https://discord.gg/Bu7ZsKsbjP) - If you have found bugs and want to talk about them.
 ## Guides:
  - [Installation](https://github.com/KoT0XleB/AutoEvent-Exiled/blob/main/Docs/Installation.md) - How to install the plugin correctly?
  - [Commands](https://github.com/KoT0XleB/AutoEvent-Exiled/blob/main/Docs/Commands.md) - How to launch mini games?
