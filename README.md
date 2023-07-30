@@ -10,9 +10,9 @@
  - [Example](https://github.com/KoT0XleB/AutoEvent-Exiled/blob/main/Docs/Example.md) - I want to learn how to write my own mini-games.
 ##
 ## I'll introduce you to 20 mini-games I've made:
+
 ### Zombie Infection [zombie]
-:united_nations: Zombie mode, the purpose of which is to infect all players.
-:flag_ru: Зомби режим, цель которой - заразить всех игроков.
+##### Zombie mode, the purpose of which is to infect all players.
 ![](https://github.com/swdmeow/AutoEvent-Exiled/blob/main/Photos/Zombie.png)
 
 ### Atomic Escape [escape]
