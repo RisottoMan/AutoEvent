@@ -1,4 +1,4 @@
-# Language :trollface:
+# Language :rocket:
 ### We already have several different translations that you can use.
 ### If you have a translation for your country, then we can add it to the repository.
 ----
