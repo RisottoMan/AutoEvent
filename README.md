@@ -1,13 +1,13 @@
 # AutoEvent
 ## ENG: Allows you to run auto Mini-Games in the game.
 ## RUS: Позволяет запускать автоматические Мини-Игры в игре.
-## Discord: [Press me](https://discord.gg/Bu7ZsKsbjP)
+## [Discord](https://discord.gg/Bu7ZsKsbjP) - If you have found bugs and want to talk about them.
 ## Guides:
- - [Installation](https://github.com/KoT0XleB/AutoEvent-Exiled/blob/main/Docs/Installation.md)
- - [Commands](https://github.com/KoT0XleB/AutoEvent-Exiled/blob/main/Docs/Commands.md)
- - [Language](https://github.com/KoT0XleB/AutoEvent-Exiled/blob/main/Docs/Language.md)
- - [Problems](https://github.com/KoT0XleB/AutoEvent-Exiled/blob/main/Docs/Problem.md)
- - [Example](https://github.com/KoT0XleB/AutoEvent-Exiled/blob/main/Docs/Example.md)
+ - [Installation](https://github.com/KoT0XleB/AutoEvent-Exiled/blob/main/Docs/Installation.md) - How to install the plugin correctly?
+ - [Commands](https://github.com/KoT0XleB/AutoEvent-Exiled/blob/main/Docs/Commands.md) - How to launch mini games?
+ - [Language](https://github.com/KoT0XleB/AutoEvent-Exiled/blob/main/Docs/Language.md) - How do I add my own language?
+ - [Problems](https://github.com/KoT0XleB/AutoEvent-Exiled/blob/main/Docs/Problem.md) - I have run into problems and I need help.
+ - [Example](https://github.com/KoT0XleB/AutoEvent-Exiled/blob/main/Docs/Example.md) - I want to learn how to write my own mini-games.
 ##
 ## I will introduce you to the Mini-Games:
 ### Zombie Infection [zombie]
