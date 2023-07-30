@@ -1,4 +1,5 @@
-﻿using Exiled.API.Enums;
+﻿using AutoEvent.Interfaces;
+using Exiled.API.Enums;
 using Exiled.API.Features;
 using MEC;
 using PlayerRoles;
@@ -9,12 +10,12 @@ using System.Linq;
 namespace AutoEvent.Events.Example
 {
     // This is an example that will help you figure out how to start creating mini-games.It's easy!
-    public class Plugin // : Event // <- Uncomment the line so that the mini-game becomes visible in the ev_list command
+    public class Plugin// : Event // Uncomment so that the plugin sees this mini-game and you can run it.
     {
-        public string Name => "Example Event Name";
-        public string Description => "Example Event Description";
-        public string MapName => "SchematicName";
-        public string CommandName => "command_name";
+        public string Name { get; set; } = "Example Event Name";
+        public string Description { get; set; } = "Example Event Description";
+        public string MapName { get; set; } = "SchematicName"; // For example, the Schema folder where the Schema.json file is located. We only specify the name of the folder.
+        public string CommandName { get; set; } = "command_name";
         public TimeSpan EventTime { get; set; } // This is a time counter that can be used to show the duration of the mini-game
 
         EventHandler _eventHandler;
@@ -28,6 +29,7 @@ namespace AutoEvent.Events.Example
             Exiled.Events.Handlers.Server.RespawningTeam += _eventHandler.OnTeamRespawn;
             OnEventStarted();
         }
+
         // the OnStop() code that stops the mini-game from working
         public void OnStop()
         {
@@ -42,16 +44,18 @@ namespace AutoEvent.Events.Example
         public void OnEventStarted()
         {
             EventTime = new TimeSpan(0, 0, 0);
-            Player.List.ToList().ForEach(player =>
+
+            foreach(var player in Player.List)
             {
                 player.Role.Set(RoleTypeId.ClassD, SpawnReason.None, RoleSpawnFlags.All);
-                //player.EnableEffect(EffectType.Ensnared, 10);
-            });
+            }
+
             // Uncomment the line to turn on the music
             //Extensions.PlayAudio("Music_Name.ogg", volume, loop, name_of_bot);
 
             Timing.RunCoroutine(OnEventRunning(), "escape_run");
         }
+
         // In mini games , there are three stages of the game:
         // 1) Before the start;
         // 2) Looping until the end condition is met, for example, until there are no players left;
