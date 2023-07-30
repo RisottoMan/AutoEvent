@@ -7,6 +7,7 @@
  - [Commands](https://github.com/KoT0XleB/AutoEvent-Exiled/blob/main/Docs/Commands.md)
  - [Language](https://github.com/KoT0XleB/AutoEvent-Exiled/blob/main/Docs/Language.md)
  - [Problems](https://github.com/KoT0XleB/AutoEvent-Exiled/blob/main/Docs/Problem.md)
+ - [Example](https://github.com/KoT0XleB/AutoEvent-Exiled/blob/main/Docs/Example.md)
 ##
 ## I will introduce you to the Mini-Games:
 ### Zombie Infection [zombie]
