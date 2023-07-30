@@ -47,30 +47,43 @@
 ![](https://github.com/swdmeow/AutoEvent-Exiled/blob/main/Photos/GunGame.png)
 
 ### Dead Jump [glass]
+![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/Glass1.png)
 
 ### Zombie Survival [zombie2]
+![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/Survival1.png)
 
 ### The floor is LAVA [lava]
+![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/Lava2.png)
 
 ### Football [ball]
+![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/Football1.png)
 
 ### Fall Down [fall]
+![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/FallDown.png)
 
 ### Hide And Seek [hns]
+![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/HideAndSeek.png)
 
 ### Death Line [line]
+![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/Line.png)
 
 ### Zombie Escape [zombie3]
+![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/Zombie%20Escape.png)
 
 ### Battle [battle]
+![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/Battle1.png)
 
 ### Puzzle [puzzle]
+![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/Puzzle.png)
 
 ### Finish Way [finish]
+![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/Puzzle.png)
 
 ### Death Party [death]
+![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/DeathParty.png)
 
 ### Boss Battle [boss]
+![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/Battle1.png)
 
 ### All those who helped.
 ##### Thanks to ART0022VI for a little help in fixing plugins.
