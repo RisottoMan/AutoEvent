@@ -12,7 +12,7 @@
  - You have run the command incorrectly. [(Follow this link to understand)](https://github.com/KoT0XleB/AutoEvent-Exiled/blob/main/Docs/Commands.md)
 ----
  >  You need a map {Name} to run a mini-game.
- - Download the necessary maps in the [(latest release)](https://github.com/KoT0XleB/AutoEvent-Exiled/releases/latest) or [(here)](https://github.com/KoT0XleB/AutoEvent/tree/main/Schematics).
+ - Download the necessary maps in the [latest release](https://github.com/KoT0XleB/AutoEvent-Exiled/releases/latest) or [here](https://github.com/KoT0XleB/AutoEvent/tree/main/Schematics).
 ----
  >  The event was not found, nothing happened.
  - This is the most common cause, but it's easy to fix. There may be several reasons:
