@@ -94,7 +94,7 @@ namespace AutoEvent.Events.Boss
             Boss.Role.Set(RoleTypeId.ChaosConscript, SpawnReason.None, RoleSpawnFlags.None);
             Boss.Position = RandomClass.GetSpawnPosition(GameMap);
 
-            Boss.Health = 15000;
+            Boss.Health = Player.List.Count() * 4000;
             Boss.Scale = new Vector3(5, 5, 5);
 
             Boss.ClearInventory();
