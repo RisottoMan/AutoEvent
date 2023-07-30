@@ -12,7 +12,8 @@
 ## I'll introduce you to 20 mini-games I've made:
 
 ### Zombie Infection [zombie]
-##### Zombie mode, the purpose of which is to infect all players.
+##### Zombie mode, the purpose of which is to infect all players. 
+##### It's a pretty nice map, where it's nice to run away from zombies, but it's easy to get infected if you're careless.
 ![](https://github.com/swdmeow/AutoEvent-Exiled/blob/main/Photos/Zombie.png)
 
 ### Atomic Escape [escape]
@@ -52,6 +53,24 @@
 ### The floor is LAVA [lava]
 
 ### Football [ball]
+
+### Fall Down [fall]
+
+### Hide And Seek [hns]
+
+### Death Line [line]
+
+### Zombie Escape [zombie3]
+
+### Battle [battle]
+
+### Puzzle [puzzle]
+
+### Finish Way [finish]
+
+### Death Party [death]
+
+### Boss Battle [boss]
 
 ### All those who helped.
 ##### Thanks to ART0022VI for a little help in fixing plugins.
