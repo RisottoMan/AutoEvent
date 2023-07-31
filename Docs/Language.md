@@ -6,3 +6,5 @@
 ### This is a default language that can be easily changed.
 ## > Russian [``Press Me``](https://github.com/KoT0XleB/AutoEvent/blob/main/Docs/Translations/Russian.md)
 ### This language must be set manually.
+## > Chinese [``Press Me``](https://github.com/KoT0XleB/AutoEvent/blob/main/Docs/Translations/Chinese.md)
+### This language must be set manually.
