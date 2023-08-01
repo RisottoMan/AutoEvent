@@ -107,12 +107,19 @@ namespace AutoEvent
         public string FallWinner { get; set; } = "<color=red>Winner:</color> %winner%";
         public string FallDied { get; set; } = "<color=red>All players died</color>";
 
-        [Description("Death Line Game Mode")]
-        public string LineName { get; set; } = "DeathLine";
+        [Description("Line Game Mode")]
+        public string LineName { get; set; } = "Line";
         public string LineDescription { get; set; } = "Avoid the spinning platform to survive.";
-        public string LineBroadcast { get; set; } = "%name%\n%time%\n<color=yellow>Remaining: </color>%count%<color=yellow> players</color>";
-        public string LineWinner { get; set; } = "<color=red>Winner:</color> %winner%";
-        public string LineAllDied { get; set; } = "<color=red>All players died</color>";
+        public string LineBroadcast { get; set; } = "<color=#FF4242>%name%</color>\n" +
+                    $"<color=blue>До конца: %time%</color>\n" +
+                    $"<color=yellow>Выживших: %alive%</color>";
+        public string LineWinners { get; set; } = "<color=#FF4242>%name%</color>\n" +
+                    $"<color=yellow>Выжило %alive% игроков</color>\n" +
+                    $"<color=red>Поздравляем!</color>";
+        public string LineWinner { get; set; } = "<color=#FF4242>%name%</color>\n" +
+                    $"<color=yellow>Победитель: %nickname%</color>\n" +
+                    $"<color=red>Поздравляем!</color>";
+        public string LineAllDied { get; set; } = "<color=red>Все умерли</color>";
         public string LineDied { get; set; } = "You died...";
 
         [Description("Down Cubes Game Mode")]
