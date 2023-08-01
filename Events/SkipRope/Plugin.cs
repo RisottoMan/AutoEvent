@@ -16,6 +16,7 @@ namespace AutoEvent.Events.SkipRope
     {
         public string Name { get; set; } = "Skipping Rope";
         public string Description { get; set; } = "Need to jump skipping rope";
+        public string Author { get; set; } = "Nope";
         public string MapName { get; set; } = "SkipRope";
         public string CommandName { get; set; } = "rope";
         public SchematicObject GameMap { get; set; }

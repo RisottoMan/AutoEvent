@@ -14,6 +14,7 @@ namespace AutoEvent.Events.Infection
     {
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.ZombieName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.ZombieDescription;
+        public override string Author { get; set; } = "KoT0XleB";
         public override string MapName { get; set; } = AutoEvent.Singleton.Config.InfectionConfig.ListOfMap.RandomItem();
         public override string CommandName { get; set; } = "zombie";
         public static SchematicObject GameMap { get; set; }

@@ -17,6 +17,7 @@ namespace AutoEvent.Events.Jail
     {
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.JailName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.JailDescription;
+        public override string Author { get; set; } = "KoT0XleB";
         public override string MapName { get; set; } = "Jail";
         public override string CommandName { get; set; } = "jail";
         public SchematicObject GameMap { get; set; }

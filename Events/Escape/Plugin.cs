@@ -14,6 +14,7 @@ namespace AutoEvent.Events.Escape
     {
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.EscapeName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.EscapeDescription;
+        public override string Author { get; set; } = "KoT0XleB";
         public override string MapName { get; set; }
         public override string CommandName { get; set; } = "escape";
         public TimeSpan EventTime { get; set; }

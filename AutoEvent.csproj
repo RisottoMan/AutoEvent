@@ -78,6 +78,8 @@
     <Compile Include="Commands\RunEvent.cs" />
     <Compile Include="Commands\StopEvent.cs" />
     <Compile Include="Config.cs" />
+    <Compile Include="Events\Vote\EventHandler.cs" />
+    <Compile Include="Events\Vote\Plugin.cs" />
     <Compile Include="Events\Boss\EventHandler.cs" />
     <Compile Include="Events\Boss\Features\RandomClass.cs" />
     <Compile Include="Events\Boss\Plugin.cs" />

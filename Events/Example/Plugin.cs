@@ -14,6 +14,7 @@ namespace AutoEvent.Events.Example
     {
         public string Name { get; set; } = "Example Event Name";
         public string Description { get; set; } = "Example Event Description";
+        public string Author { get; set; } = "Your NickName";
         public string MapName { get; set; } = "SchematicName"; // For example, the Schema folder where the Schema.json file is located. We only specify the name of the folder.
         public string CommandName { get; set; } = "command_name";
         public TimeSpan EventTime { get; set; } // This is a time counter that can be used to show the duration of the mini-game

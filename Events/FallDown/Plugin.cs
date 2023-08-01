@@ -16,7 +16,7 @@ namespace AutoEvent.Events.FallDown
     {
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.FallName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.FallDescription;
-
+        public override string Author { get; set; } = "KoT0XleB";
         public override string MapName { get; set; } = "FallDown";
         public override string CommandName { get; set; } = "fall";
         public static SchematicObject GameMap { get; set; }

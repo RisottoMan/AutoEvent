@@ -17,6 +17,7 @@ namespace AutoEvent.Events.Puzzle
     {
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.PuzzleName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.PuzzleDescription;
+        public override string Author { get; set; } = "KoT0XleB";
         public override string MapName { get; set; } = "Puzzle";
         public override string CommandName { get; set; } = "puzzle";
         public SchematicObject GameMap { get; set; }

@@ -15,6 +15,7 @@ namespace AutoEvent.Events.Deathmatch
     {
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.DeathmatchName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.DeathmatchDescription;
+        public override string Author { get; set; } = "KoT0XleB";
         public override string MapName { get; set; } = "Shipment";
         public override string CommandName { get; set; } = "deathmatch";
         public TimeSpan EventTime { get; set; }

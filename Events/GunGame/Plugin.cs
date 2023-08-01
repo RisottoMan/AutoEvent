@@ -1,7 +1,6 @@
 ﻿using AutoEvent.Interfaces;
 using Exiled.API.Enums;
 using Exiled.API.Features;
-using Exiled.API.Features.Spawn;
 using MapEditorReborn.API.Features.Objects;
 using MEC;
 using PlayerRoles;
@@ -16,6 +15,7 @@ namespace AutoEvent.Events.GunGame
     {
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.GunGameName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.GunGameDescription;
+        public override string Author { get; set; } = "KoT0XleB";
         public override string MapName { get; set; } = "Shipment";
         public override string CommandName { get; set; } = "gungame";
         public TimeSpan EventTime { get; set; }
@@ -67,10 +67,11 @@ namespace AutoEvent.Events.GunGame
         }
         public void OnEventStarted()
         {
-            Winner = null;
+            EventTime = new TimeSpan(0, 10, 0);
             GameMap = Extensions.LoadMap(MapName, new Vector3(93f, 1020f, -43f), Quaternion.identity, Vector3.one);
             Extensions.PlayAudio("ClassicMusic.ogg", 3, true, Name);
 
+            Winner = null;
             PlayerStats = new Dictionary<Player, Stats>();
             SpawnPoints = new List<Vector3>();
 
@@ -82,23 +83,16 @@ namespace AutoEvent.Events.GunGame
             var count = 0;
             foreach (Player player in Player.List)
             {
-                count++;
-
-                PlayerStats.Add(player, new Stats()
+                if (!PlayerStats.ContainsKey(player))
                 {
-                    kill = 0,
-                    level = 1
-                });
+                    PlayerStats.Add(player, new Stats() { level = 1, kill = 0 });
+                }
 
+                player.ClearInventory();
                 player.Role.Set(GunGameRandom.GetRandomRole(), SpawnReason.None, RoleSpawnFlags.None);
                 player.Position = SpawnPoints.RandomItem();
-                player.EnableEffect<CustomPlayerEffects.SpawnProtected>(10);
 
-                var item = player.AddItem(GunGameGuns.GunForLevel[PlayerStats[player].level]);
-                Timing.CallDelayed(0.25f, () =>
-                {
-                    player.CurrentItem = item;
-                });
+                count++;
             }
 
             Timing.RunCoroutine(OnEventRunning(), "gungame_run");
@@ -114,7 +108,12 @@ namespace AutoEvent.Events.GunGame
 
             Server.FriendlyFire = true;
 
-            while (Winner == null && Player.List.Count(r => r.IsAlive) > 0)
+            foreach (var player in Player.List)
+            {
+                _eventHandler.GetWeaponForPlayer(player);
+            }
+
+            while (Winner == null && Player.List.Count(r => r.IsAlive) > 1 && EventTime.TotalSeconds > 0)
             {
                 foreach (Player pl in Player.List)
                 {
@@ -124,15 +123,29 @@ namespace AutoEvent.Events.GunGame
                         Winner = pl;
                     }
 
+                    // Leader
                     pl.ClearBroadcasts();
                     pl.Broadcast(1, trans.GunGameCycle.Replace("{name}", Name).Replace("{level}", $"{stats.level}").Replace("{kills}", $"{2 - stats.kill}"));
                 }
                 yield return Timing.WaitForSeconds(1f);
+                EventTime -= TimeSpan.FromSeconds(1f);
             }
 
             if (Winner != null)
             {
                 Extensions.Broadcast(trans.GunGameWinner.Replace("{name}", Name).Replace("{winner}", Winner.Nickname), 10);
+            }
+
+            foreach(var player in Player.List)
+            {
+                player.ClearInventory();
+
+                PlayerStats.TryGetValue(player, out Stats stats);
+                Log.Info($"Stats:\n" +
+                    $"Player.Nickname = {player.Nickname}\n" +
+                    $"Player.Id = {player.Id}\n" +
+                    $"Stats.level = {stats.level}\n" +
+                    $"Player.Item.Count = {player.Items.Count()}\n");
             }
 
             OnStop();

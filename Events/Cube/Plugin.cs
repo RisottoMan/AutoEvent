@@ -16,6 +16,7 @@ namespace AutoEvent.Events.Cube
     {
         public string Name { get; set; } = AutoEvent.Singleton.Translation.CubeName;
         public string Description { get; set; } = AutoEvent.Singleton.Translation.CubeDescription;
+        public string Author { get; set; } = "Logic_Gun";
         public string MapName { get; set; } = "Cube";
         public string CommandName { get; set; } = "cube";
         public SchematicObject GameMap { get; set; }

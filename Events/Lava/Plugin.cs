@@ -16,6 +16,7 @@ namespace AutoEvent.Events.Lava
     {
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.LavaName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.LavaDescription;
+        public override string Author { get; set; } = "KoT0XleB";
         public override string MapName { get; set; } = "Lava";
         public override string CommandName { get; set; } = "lava";
         public TimeSpan EventTime { get; set; }

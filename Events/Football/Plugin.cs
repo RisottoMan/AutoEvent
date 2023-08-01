@@ -16,6 +16,7 @@ namespace AutoEvent.Events.Football
     {
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.FootballName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.FootballDescription;
+        public override string Author { get; set; } = "KoT0XleB";
         public override string MapName { get; set; } = "Football";
         public override string CommandName { get; set; } = "ball";
         public SchematicObject GameMap { get; set; }

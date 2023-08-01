@@ -18,6 +18,7 @@ namespace AutoEvent.Events.DeathParty
     {
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.DeathName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.DeathDescription;
+        public override string Author { get; set; } = "KoT0XleB";
         public override string MapName { get; set; } = "DeathParty";
         public override string CommandName { get; set; } = "death";
         public TimeSpan EventTime { get; set; }

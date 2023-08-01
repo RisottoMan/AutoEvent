@@ -15,6 +15,7 @@ namespace AutoEvent.Events.FinishWay
     {
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.FinishWayName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.FinishWayDescription;
+        public override string Author { get; set; } = "KoT0XleB";
         public override string MapName { get; set; } = "FinishWay";
         public override string CommandName { get; set; } = "finish";
         public static SchematicObject GameMap { get; set; }

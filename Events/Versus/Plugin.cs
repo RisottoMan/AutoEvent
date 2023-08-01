@@ -16,6 +16,7 @@ namespace AutoEvent.Events.Versus
     {
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.VersusName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.VersusDescription;
+        public override string Author { get; set; } = "KoT0XleB";
         public override string MapName { get; set; } = "35Hp";
         public override string CommandName { get; set; } = "versus";
         public SchematicObject GameMap { get; set; }

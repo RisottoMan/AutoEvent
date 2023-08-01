@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Reflection.Emit;
+using Exiled.API.Features;
 using HarmonyLib;
 using InventorySystem.Items.Jailbird;
 using Mirror;
@@ -42,6 +43,8 @@ namespace AutoEvent.Patches
             private static bool HandleJailbird(JailbirdItem instance, JailbirdMessageType messageType)
             {
                 if (AutoEvent.ActiveEvent == null) return true;
+
+                Log.Info(messageType);
 
                 switch (messageType)
                 {

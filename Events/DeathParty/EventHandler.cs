@@ -14,6 +14,7 @@ namespace AutoEvent.Events.DeathParty
             {
                 if (Plugin.Stage != 5)
                 {
+                    ev.IsAllowed = false;
                     ev.Player.Hurt(10);
                 }
                 else

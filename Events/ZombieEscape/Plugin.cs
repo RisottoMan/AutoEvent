@@ -17,6 +17,7 @@ namespace AutoEvent.Events.ZombieEscape
     {
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.ZombieEscapeName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.ZombieEscapeDescription;
+        public override string Author { get; set; } = "KoT0XleB";
         public override string MapName { get; set; } = "zm_osprey";
         public override string CommandName { get; set; } = "zombie3";
         public SchematicObject GameMap { get; set; }
@@ -138,12 +139,13 @@ namespace AutoEvent.Events.ZombieEscape
             {
                 foreach(Player player in Player.List)
                 {
+                    /*
                     if (Vector3.Distance(player.Position, button.transform.position) < 3)
                     {
                         button.transform.position += Vector3.down * 7;
                         Boat = Extensions.LoadMap("Boat_Zombie", GameMap.Position, Quaternion.identity, Vector3.one);
                     }
-
+                    */
                     if (Vector3.Distance(player.Position, button1.transform.position) < 3)
                     {
                         button1.transform.position += Vector3.down * 5;

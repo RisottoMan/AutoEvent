@@ -23,23 +23,23 @@ namespace AutoEvent.Events.GunGame
             _gameMap = plugin.GameMap;
             _playerStats = plugin.PlayerStats;
         }
+        
         public void OnJoin(VerifiedEventArgs ev)
         {
-            _playerStats.Add(ev.Player, new Stats
+            if (!_playerStats.ContainsKey(ev.Player))
             {
-                kill = 0,
-                level = 1
-            });
+                _playerStats.Add(ev.Player, new Stats
+                {
+                    kill = 0,
+                    level = 1
+                });
+            }
 
             ev.Player.Role.Set(GunGameRandom.GetRandomRole(), SpawnReason.None , RoleSpawnFlags.None);
             ev.Player.Position = _plugin.SpawnPoints.RandomItem();
-
-            var item = ev.Player.AddItem(GunGameGuns.GunForLevel[_playerStats[ev.Player].level]);
-            Timing.CallDelayed(0.25f, () =>
-            {
-                ev.Player.CurrentItem = item;
-            });
+            GetWeaponForPlayer(ev.Player);
         }
+
         public void OnPlayerDying(DyingEventArgs ev)
         {
             ev.IsAllowed = false;
@@ -50,31 +50,37 @@ namespace AutoEvent.Events.GunGame
                 _playerStats.TryGetValue(ev.Attacker, out Stats statsAttacker);
 
                 statsAttacker.kill++;
+
                 if (statsAttacker.kill >= 2)
                 {
-                    statsAttacker.level++;
                     statsAttacker.kill = 0;
-
-                    ev.Attacker.ClearInventory();
-                    var item = ev.Attacker.AddItem(GunGameGuns.GunForLevel[_playerStats[ev.Attacker].level]);
-                    Timing.CallDelayed(0.25f, () =>
-                    {
-                        ev.Attacker.CurrentItem = item;
-                    });
+                    statsAttacker.level++;
+                    GetWeaponForPlayer(ev.Attacker);
                 }
             }
 
             if (ev.Player != null)
             {
                 ev.Player.Position = _plugin.SpawnPoints.RandomItem();
-
-                ev.Player.ClearInventory();
-                var item = ev.Player.AddItem(GunGameGuns.GunForLevel[_playerStats[ev.Player].level]);
-                Timing.CallDelayed(0.25f, () =>
-                {
-                    ev.Player.CurrentItem = item;
-                });
+                GetWeaponForPlayer(ev.Player);
             }
+        }
+
+        public void GetWeaponForPlayer(Player player)
+        {
+            if (player.Items.Count > 0)
+            {
+                Log.Info($"Player.NickName = {player.Nickname}\n" +
+                    $"Player.Items.Count = {player.Items.Count}\n" +
+                    $"Player.CurrentItem.Serial = {player.CurrentItem.Serial}\n");
+            }
+
+            player.ClearInventory();
+            var item = player.AddItem(GunGameGuns.GunForLevel[_playerStats[player].level]);
+            Timing.CallDelayed(0.2f, () =>
+            {
+                player.CurrentItem = item;
+            });
         }
 
         public void OnReloading(ReloadingWeaponEventArgs ev)

@@ -19,6 +19,7 @@ namespace AutoEvent.Events.Glass
     {
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.GlassName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.GlassDescription;
+        public override string Author { get; set; } = "KoT0XleB";
         public override string MapName { get; set; } = "Glass";
         public override string CommandName { get; set; } = "glass";
         public SchematicObject GameMap { get; set; }

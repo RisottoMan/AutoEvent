@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using Mirror;
 using UnityEngine;
@@ -16,7 +15,7 @@ namespace AutoEvent
 {
     internal class Extensions
     {
-        public static List<ReferenceHub> Dummies = new List<ReferenceHub>();
+        public static ReferenceHub Dummy;
         public static void TeleportEnd()
         {
             foreach (Player player in Player.List)
@@ -28,14 +27,14 @@ namespace AutoEvent
 
         public static void PlayAudio(string audioFile, byte volume, bool loop, string eventName)
         {
-            try
+            if (Dummy == null)
             {
                 var newPlayer = Object.Instantiate(NetworkManager.singleton.playerPrefab);
-                //int id = Dummies.Count;
-                var fakeConnection = new FakeConnection(255); // id++
+                var fakeConnection = new FakeConnection(0); // ?
                 var hubPlayer = newPlayer.GetComponent<ReferenceHub>();
-                Dummies.Add(hubPlayer);
+                //hubPlayer.Network_playerId = new RecyclablePlayerId(0); // ?
                 NetworkServer.AddPlayerForConnection(fakeConnection, newPlayer);
+                Dummy = hubPlayer;
 
                 hubPlayer.characterClassManager.InstanceMode = ClientInstanceMode.Unverified;
 
@@ -45,42 +44,34 @@ namespace AutoEvent
                 }
                 catch (Exception) { }
 
-                var audioPlayer = AudioPlayerBase.Get(hubPlayer);
-
                 var path = Path.Combine(Path.Combine(Paths.Configs, "Music"), audioFile);
 
+                var audioPlayer = AudioPlayerBase.Get(hubPlayer);
                 audioPlayer.Enqueue(path, -1);
                 audioPlayer.LogDebug = false;
                 audioPlayer.BroadcastChannel = VoiceChatChannel.Intercom;
                 audioPlayer.Volume = volume;
                 audioPlayer.Loop = loop;
                 audioPlayer.Play(0);
-                Log.Debug($"Playing sound {path}");
-            }
-            catch (Exception e)
-            {
-                Log.Error($"Error on: {e.Data} -- {e.StackTrace}");
             }
         }
 
         public static void StopAudio()
         {
-            foreach (var dummies in Dummies)
+            if (Dummy != null)
             {
-                var audioPlayer = AudioPlayerBase.Get(dummies);
+                var audioPlayer = AudioPlayerBase.Get(Dummy);
 
-                if(audioPlayer.CurrentPlay != null)
+                if (audioPlayer.CurrentPlay != null)
                 {
                     audioPlayer.Stoptrack(true);
                     audioPlayer.OnDestroy();
                 }
 
-                NetworkConnectionToClient conn = dummies.connectionToClient;
-                dummies.OnDestroy();
-                CustomNetworkManager.TypedSingleton.OnServerDisconnect(conn);
-                Object.Destroy(dummies.gameObject);
+                Dummy.OnDestroy();
+                CustomNetworkManager.TypedSingleton.OnServerDisconnect(Dummy.connectionToClient);
+                Object.Destroy(Dummy.gameObject);
             }
-            Dummies.Clear();
         }
 
         public static bool IsExistsMap(string schematicName)

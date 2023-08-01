@@ -17,6 +17,7 @@ namespace AutoEvent.Events.Battle
     {
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.BattleName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.BattleDescription;
+        public override string Author { get; set; } = "KoT0XleB";
         public override string MapName { get; set; } = "Battle";
         public override string CommandName { get; set; } = "battle";
         public TimeSpan EventTime { get; set; }

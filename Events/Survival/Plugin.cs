@@ -16,6 +16,7 @@ namespace AutoEvent.Events.Survival
     {
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.SurvivalName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.SurvivalDescription;
+        public override string Author { get; set; } = "KoT0XleB";
         public override string MapName { get; set; } = "Survival";
         public override string CommandName { get; set; } = "zombie2";
         public SchematicObject GameMap { get; set; }

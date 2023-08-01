@@ -16,6 +16,7 @@ namespace AutoEvent.Events.Line
     {
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.LineName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.LineDescription;
+        public override string Author { get; set; } = "Logic_Gun";
         public override string MapName { get; set; } = "Line";
         public override string CommandName { get; set; } = "line";
         public static SchematicObject GameMap { get; set; }

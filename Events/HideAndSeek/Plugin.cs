@@ -16,6 +16,7 @@ namespace AutoEvent.Events.HideAndSeek
     {
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.HideName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.HideDescription;
+        public override string Author { get; set; } = "KoT0XleB";
         public override string MapName { get; set; } = "HideAndSeek";
         public override string CommandName { get; set; } = "hns";
         public SchematicObject GameMap { get; set; }

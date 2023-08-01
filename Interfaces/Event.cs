@@ -1,6 +1,5 @@
 ﻿using AutoEvent.API.Attributes;
 using Exiled.API.Features;
-using MapEditorReborn.API.Features.Objects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +13,7 @@ namespace AutoEvent.Interfaces
         public int Id { get; private set; }
         public abstract string Name { get; set; }
         public abstract string Description { get; set; }
+        public abstract string Author { get; set; }
         public abstract string MapName { get; set; }
         public abstract string CommandName { get; set; }
         public virtual void OnStart() => throw new NotImplementedException("cannot start event because OnStart method has not implemented");

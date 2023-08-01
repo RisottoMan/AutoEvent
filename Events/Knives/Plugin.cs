@@ -16,6 +16,7 @@ namespace AutoEvent.Events.Knives
     {
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.KnivesName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.KnivesDescription;
+        public override string Author { get; set; } = "KoT0XleB";
         public override string MapName { get; set; } = "35hp_2";
         public override string CommandName { get; set; } = "knife";
         public SchematicObject GameMap { get; set; }
