@@ -4,7 +4,7 @@ namespace AutoEvent.Events.GunGame
 {
     internal class GunGameGuns
     {
-        public static Dictionary<int, ItemType> GunForLevel = new Dictionary<int, ItemType>()
+        public static Dictionary<int, ItemType> GunByLevel = new Dictionary<int, ItemType>()
         {
             [1] = ItemType.GunCOM15,
             [2] = ItemType.GunCOM18,

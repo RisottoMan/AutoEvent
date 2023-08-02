@@ -115,17 +115,22 @@ namespace AutoEvent.Events.GunGame
 
             while (Winner == null && Player.List.Count(r => r.IsAlive) > 1 && EventTime.TotalSeconds > 0)
             {
+                var leaderStat = PlayerStats.OrderByDescending(r => r.Value.level).FirstOrDefault();
+
                 foreach (Player pl in Player.List)
                 {
                     PlayerStats.TryGetValue(pl, out Stats stats);
-                    if (stats.level == GunGameGuns.GunForLevel.Last().Key)
+                    if (stats.level == GunGameGuns.GunByLevel.Last().Key)
                     {
                         Winner = pl;
                     }
 
-                    // Leader
                     pl.ClearBroadcasts();
-                    pl.Broadcast(1, trans.GunGameCycle.Replace("{name}", Name).Replace("{level}", $"{stats.level}").Replace("{kills}", $"{2 - stats.kill}"));
+                    pl.Broadcast(1, trans.GunGameCycle.Replace("{name}", Name).
+                        Replace("{level}", $"{stats.level}").
+                        Replace("{kills}", $"{2 - stats.kill}").
+                        Replace("{leadnick}", leaderStat.Key.Nickname).
+                        Replace("{leadlevel}", $"{leaderStat.Value.level}"));
                 }
                 yield return Timing.WaitForSeconds(1f);
                 EventTime -= TimeSpan.FromSeconds(1f);
@@ -139,13 +144,6 @@ namespace AutoEvent.Events.GunGame
             foreach(var player in Player.List)
             {
                 player.ClearInventory();
-
-                PlayerStats.TryGetValue(player, out Stats stats);
-                Log.Info($"Stats:\n" +
-                    $"Player.Nickname = {player.Nickname}\n" +
-                    $"Player.Id = {player.Id}\n" +
-                    $"Stats.level = {stats.level}\n" +
-                    $"Player.Item.Count = {player.Items.Count()}\n");
             }
 
             OnStop();
@@ -153,7 +151,6 @@ namespace AutoEvent.Events.GunGame
         }
         public void EventEnd()
         {
-            Server.FriendlyFire = false;
             Extensions.CleanUpAll();
             Extensions.TeleportEnd();
             Extensions.UnLoadMap(GameMap);

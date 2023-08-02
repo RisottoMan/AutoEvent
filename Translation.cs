@@ -50,7 +50,7 @@ namespace AutoEvent
         [Description("GunGame Game Mode")]
         public string GunGameName { get; set; } = "Quick Hands";
         public string GunGameDescription { get; set; } = "Cool GunGame on the Shipment map from MW19.";
-        public string GunGameCycle { get; set; } = "<color=#D71868><b><i>{name}</i></b></color>\n<b><color=yellow><color=#D71868>{level}</color> LVL <color=#D71868>||</color> Need <color=#D71868>{kills}</color> kills</color></b>";
+        public string GunGameCycle { get; set; } = "<color=#D71868><b><i>{name}</i></b></color>\n<b><color=yellow><color=#D71868>{level}</color> LVL <color=#D71868>||</color> Need <color=#D71868>{kills}</color> kills</color>\n<color=#D71868>Leader: <color=yellow>{leadnick}</color> LVL <color=yellow>{leadlevel}</color></color></b>";
         public string GunGameWinner { get; set; } = "<color=#D71868><b><i>{name}</i></b></color>\n<color=yellow>The Winner of the game: <color=green>{winner}</color></color>";
 
         [Description("Battle Game Mode")] 
@@ -110,10 +110,10 @@ namespace AutoEvent
         [Description("Death Line Game Mode")]
         public string LineName { get; set; } = "DeathLine";
         public string LineDescription { get; set; } = "Avoid the spinning platform to survive.";
-        public string LineBroadcast { get; set; } = "%name%\n%time%\n<color=yellow>Remaining: </color>%count%<color=yellow> players</color>";
-        public string LineWinner { get; set; } = "<color=red>Winner:</color> %winner%";
+        public string LineCycle { get; set; } = "<color=#FF4242>%name%</color>\n<color=#14AAF5>Time to end: %min%</color><color=#4a4a4a>:</color><color=#14AAF5>%sec%</color>\n<color=yellow>Players: %count%</color>";
+        public string LineMorePlayers { get; set; } = "<color=#FF4242>%name%</color>\n<color=yellow>%count% players survived</color>\n<color=red>Congratulate!</color>";
+        public string LineWinner { get; set; } = "<color=#FF4242>%name%</color>\n<color=yellow>Winner: %winner%</color>\n<color=red>Congratulate!</color>";
         public string LineAllDied { get; set; } = "<color=red>All players died</color>";
-        public string LineDied { get; set; } = "You died...";
 
         [Description("Down Cubes Game Mode")]
         public string CubeName { get; set; } = "Down Cubes";

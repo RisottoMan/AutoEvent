@@ -28,11 +28,7 @@ namespace AutoEvent.Events.GunGame
         {
             if (!_playerStats.ContainsKey(ev.Player))
             {
-                _playerStats.Add(ev.Player, new Stats
-                {
-                    kill = 0,
-                    level = 1
-                });
+                _playerStats.Add(ev.Player, new Stats { level = 1, kill = 0 });
             }
 
             ev.Player.Role.Set(GunGameRandom.GetRandomRole(), SpawnReason.None , RoleSpawnFlags.None);
@@ -68,18 +64,14 @@ namespace AutoEvent.Events.GunGame
 
         public void GetWeaponForPlayer(Player player)
         {
-            if (player.Items.Count > 0)
-            {
-                Log.Info($"Player.NickName = {player.Nickname}\n" +
-                    $"Player.Items.Count = {player.Items.Count}\n" +
-                    $"Player.CurrentItem.Serial = {player.CurrentItem.Serial}\n");
-            }
-
+            player.IsGodModeEnabled = true;
             player.ClearInventory();
-            var item = player.AddItem(GunGameGuns.GunForLevel[_playerStats[player].level]);
-            Timing.CallDelayed(0.2f, () =>
+            var item = player.AddItem(GunGameGuns.GunByLevel[_playerStats[player].level]);
+
+            Timing.CallDelayed(0.1f, () =>
             {
                 player.CurrentItem = item;
+                player.IsGodModeEnabled = false;
             });
         }
 

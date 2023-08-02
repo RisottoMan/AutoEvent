@@ -19,7 +19,6 @@ namespace AutoEvent.Events.Line.Features
             if (Player.Get(other.gameObject) is Player)
             {
                 var pl = Player.Get(other.gameObject);
-                pl.Hurt(500f, $"{AutoEvent.Singleton.Translation.LineDied}");
                 pl.Role.Set(PlayerRoles.RoleTypeId.Tutorial, SpawnReason.None, PlayerRoles.RoleSpawnFlags.None);
                 pl.Position = Plugin.GameMap.AttachedBlocks.First(x => x.name == "SpawnPoint_spec").transform.position;
             }

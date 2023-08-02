@@ -122,8 +122,14 @@ namespace AutoEvent.Events.Football
                     bluePoints++;
                 }
 
-                yield return Timing.WaitForSeconds(0.1f);
-                EventTime -= TimeSpan.FromSeconds(0.1f);
+                if (ball.transform.position.y < GameMap.Position.y - 10f)
+                {
+                    ball.transform.position = GameMap.Position + new Vector3(0, 2.5f, 0);
+                    ball.GetComponent<Rigidbody>().velocity = Vector3.zero;
+                }
+
+                yield return Timing.WaitForSeconds(0.3f);
+                EventTime -= TimeSpan.FromSeconds(0.3f);
             }
 
             if (bluePoints > redPoints)
