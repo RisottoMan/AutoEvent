@@ -250,7 +250,7 @@ auto_event:
     <color=red>Осталось %count% игроков</color>'
   death_more_player: '<color=red>Смертельная вечеринка</color>
 
-    <color=yellow>Выжило<color=red>%count%</color>игроков</color>
+    <color=yellow>Выжило <color=red>%count%</color>игроков</color>
 
     <color=#ffc0cb>%time%</color>'
   death_one_player: '<color=red>Смертельная вечеринка</color>
@@ -306,4 +306,23 @@ auto_event:
 
     %winner%</b></color>'
   lava_all_dead: '<color=red><b>Никто не выжил</b></color>'
+  # Boss Battle Game Mode
+  boss_name: 'Босс'
+  boss_description: 'Убейте Босса'
+  boss_time_left: '<size=100><color=red>Начало через {time} </color></size>'
+  boss_win: '<color=red><b>Победа Босса</b></color>
+
+    <color=yellow><color=#14AAF5>Люди</color> уничтожены</color>
+
+    <b><color=red>%hp%</color> ХП</b> left'
+  boss_humans_win: '<color=#14AAF5>Победа Людей</color>
+
+    <color=yellow><color=red>Босс</color> был уничтожен</color>
+
+    <color=#14AAF5>%count%</color> игроков осталось'
+  boss_counter: '<color=red><b>%hp% ХП</b></color>
+
+    <color=#14AAF5>%count%</color> Игроков осталось
+
+    <color=green>%time%</color> секунд осталось'
 ```
