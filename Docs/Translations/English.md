@@ -114,7 +114,9 @@ auto_event:
   gun_game_description: 'Cool GunGame on the Shipment map from MW19.'
   gun_game_cycle: '<color=#D71868><b><i>{name}</i></b></color>
 
-    <b><color=yellow><color=#D71868>{level}</color> LVL <color=#D71868>||</color> Need <color=#D71868>{kills}</color> kills</color></b>'
+    <b><color=yellow><color=#D71868>{level}</color> LVL <color=#D71868>||</color> Need <color=#D71868>{kills}</color> kills</color>
+
+    <color=#D71868>Leader: <color=yellow>{leadnick}</color> LVL <color=yellow>{leadlevel}</color></color></b>'
   gun_game_winner: '<color=#D71868><b><i>{name}</i></b></color>
 
     <color=yellow>The Winner of the game: <color=green>{winner}</color></color>'
@@ -202,14 +204,22 @@ auto_event:
   # Death Line Game Mode
   line_name: 'DeathLine'
   line_description: 'Avoid the spinning platform to survive.'
-  line_broadcast: '%name%
+  line_cycle: '<color=#FF4242>%name%</color>
 
-    %time%
+    <color=#14AAF5>Time to end: %min%</color><color=#4a4a4a>:</color><color=#14AAF5>%sec%</color>
 
-    <color=yellow>Remaining: </color>%count%<color=yellow> players</color>'
-  line_winner: '<color=red>Winner:</color> %winner%'
+    <color=yellow>Players: %count%</color>'
+  line_more_players: '<color=#FF4242>%name%</color>
+
+    <color=yellow>%count% players survived</color>
+
+    <color=red>Congratulate!</color>'
+  line_winner: '<color=#FF4242>%name%</color>
+
+    <color=yellow>Winner: %winner%</color>
+
+    <color=red>Congratulate!</color>'
   line_all_died: '<color=red>All players died</color>'
-  line_died: 'You died...'
   # Down Cubes Game Mode
   cube_name: 'Down Cubes'
   cube_description: 'Cubes down....'
@@ -270,7 +280,7 @@ auto_event:
 
     <color=#ffc0cb>%time%</color>'
   # FinishWay Game Mode
-  finish_way_name: '<color=yellow>Finish Way</color>'
+  finish_way_name: 'Finish Way'
   finish_way_description: 'Go to the end of the finish to win.'
   finish_way_cycle: '%name%
 
