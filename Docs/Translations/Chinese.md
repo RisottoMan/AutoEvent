@@ -114,7 +114,9 @@ auto_event:
   gun_game_description: '在 使命召唤19 的 混战码头地图上进行 快枪手(武器大师).'
   gun_game_cycle: '<color=#D71868><b><i>{name}</i></b></color>
 
-    <b><color=yellow><color=#D71868>{level}</color> 级 <color=#D71868>||</color> 需要击杀 <color=#D71868>{kills}</color> 个玩家升级</color></b>'
+    <b><color=yellow><color=#D71868>{level}</color> 级 <color=#D71868>||</color> 需要击杀 <color=#D71868>{kills}</color>个玩家升级 </color>
+
+    <color=#D71868>第一名: <color=yellow>{leadnick}</color> 等级： <color=yellow>{leadlevel}</color></color></b>'
   gun_game_winner: '<color=#D71868><b><i>{name}</i></b></color>
 
     <color=yellow>胜利者: <color=green>{winner}</color></color>'
@@ -202,14 +204,22 @@ auto_event:
   # Death Line Game Mode
   line_name: '死亡线'
   line_description: '避免碰到红线存活下去.'
-  line_broadcast: '%name%
+  line_cycle: '<color=#FF4242>%name%</color>
 
-    %time%
+    <color=#14AAF5>距离结束还有: %min%</color><color=#4a4a4a>:</color><color=#14AAF5>%sec%</color>
 
-    <color=yellow>剩余: </color>%count%<color=yellow> 个玩家</color>'
-  line_winner: '<color=red>胜利者:</color> %winner%'
-  line_all_died: '<color=red>无人幸存</color>'
-  line_died: '你失败了...'
+    <color=yellow>剩余玩家数: %count%</color>'
+  line_more_players: '<color=#FF4242>%name%</color>
+
+    <color=yellow>%count% 名玩家幸存</color>
+
+    <color=red>恭喜!</color>'
+  line_winner: '<color=#FF4242>%name%</color>
+
+    <color=yellow>胜利者: %winner%</color>
+
+    <color=red>恭喜!</color>'
+  line_all_died: '<color=red>All players died</color>'
   # Down Cubes Game Mode
   cube_name: '下降方块'
   cube_description: '方块下降....'
@@ -270,7 +280,7 @@ auto_event:
 
     <color=#ffc0cb>%time%</color>'
   # FinishWay Game Mode
-  finish_way_name: '<color=yellow>到达终点</color>'
+  finish_way_name: '到达终点'
   finish_way_description: '到达终点获得胜利.'
   finish_way_cycle: '%name%
 
