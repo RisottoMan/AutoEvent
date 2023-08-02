@@ -11,13 +11,15 @@ namespace AutoEvent
     {
         public override string Name => "AutoEvent";
         public override string Author => "Created by KoT0XleB, extended by swd and sky";
-        public override Version Version => new Version(8, 2, 2);
+        public override Version Version => new Version(8, 2, 3);
         public static IEvent ActiveEvent = null;
         public static AutoEvent Singleton;
         public static Harmony HarmonyPatch;
+        public static int CountOfPlayedGames;
         public override void OnEnabled()
         {
             Singleton = this;
+            CountOfPlayedGames = 0;
             HarmonyPatch = new Harmony("autoevent");
             HarmonyPatch.PatchAll();
             Event.RegisterEvents();
@@ -43,7 +45,7 @@ namespace AutoEvent
 
         private void OnRestarting()
         {
-            if (ActiveEvent == null) return;
+            if (ActiveEvent == null || CountOfPlayedGames == 0) return;
 
             Extensions.StopAudio();
             ServerStatic.StopNextRound = ServerStatic.NextRoundAction.Restart;

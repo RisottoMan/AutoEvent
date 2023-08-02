@@ -71,6 +71,10 @@ namespace AutoEvent.Events.GunGame
             Timing.CallDelayed(0.1f, () =>
             {
                 player.CurrentItem = item;
+            });
+
+            Timing.CallDelayed(2f, () =>
+            {
                 player.IsGodModeEnabled = false;
             });
         }
