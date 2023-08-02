@@ -25,13 +25,13 @@ namespace AutoEvent.Events.Lobby
         {
             _eventHandler = new EventHandler();
 
-            Exiled.Events.Handlers.Player.Verified += _eventHandler.OnPlayerVerified;
+            //Exiled.Events.Handlers.Player.Verified += _eventHandler.OnPlayerVerified;
 
             Timing.RunCoroutine(OnEventRunning(), "choice_time");
         }
         public override void OnStop()
         {
-            Exiled.Events.Handlers.Player.Verified -= _eventHandler.OnPlayerVerified;
+            //Exiled.Events.Handlers.Player.Verified -= _eventHandler.OnPlayerVerified;
 
             _eventHandler = null;
             Timing.CallDelayed(10f, () => EventEnd());
