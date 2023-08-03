@@ -103,6 +103,26 @@ namespace AutoEvent
             //Map.CleanAllRagdolls();
         }
 
+        public static void SetPlayerScale(Player pl, Vector3 scale)
+        {
+            GameObject gameObject = pl.GameObject;
+            if (gameObject.transform.localScale == scale) return;
+
+            try
+            {
+                NetworkIdentity identity = pl.ReferenceHub.networkIdentity;
+                gameObject.transform.localScale = scale;
+                foreach (Player player in Player.GetPlayers())
+                {
+                    //NetworkServer.SendSpawnMessage(identity, player.Connection);
+                }
+            }
+            catch (Exception e)
+            {
+                Log.Info($"Set Scale error: {e}");
+            }
+        }
+
         public static void Broadcast(string text, ushort time)
         {
             Map.ClearBroadcasts();
