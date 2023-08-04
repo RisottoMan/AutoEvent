@@ -85,7 +85,7 @@ namespace AutoEvent.Events.Football
 
             while (bluePoints < 3 && redPoints < 3 && EventTime.TotalSeconds > 0 && Player.List.Count(r => r.IsNTF) > 0 && Player.List.Count(r => r.Role.Team == Team.ClassD) > 0)
             {
-                var time = $"{EventTime.Minutes}:{EventTime.Minutes}";
+                var time = $"{EventTime.Minutes}:{EventTime.Seconds}";
                 foreach (Player player in Player.List)
                 {
                     var text = string.Empty;

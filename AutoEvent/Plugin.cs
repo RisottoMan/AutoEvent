@@ -15,11 +15,11 @@ namespace AutoEvent
         public static IEvent ActiveEvent = null;
         public static AutoEvent Singleton;
         public static Harmony HarmonyPatch;
-        public static int CountOfPlayedGames;
+        public static bool IsPlayedGames;
         public override void OnEnabled()
         {
             Singleton = this;
-            CountOfPlayedGames = 0;
+            IsPlayedGames = false;
             HarmonyPatch = new Harmony("autoevent");
             HarmonyPatch.PatchAll();
             Event.RegisterEvents();
@@ -45,9 +45,9 @@ namespace AutoEvent
 
         private void OnRestarting()
         {
-            if (ActiveEvent == null || CountOfPlayedGames == 0) return;
+            if (ActiveEvent == null || IsPlayedGames == false) return;
 
-            Extensions.StopAudio();
+            Extensions.RemoveDummy();
             ServerStatic.StopNextRound = ServerStatic.NextRoundAction.Restart;
         }
 

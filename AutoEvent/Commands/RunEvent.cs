@@ -70,7 +70,7 @@ namespace AutoEvent.Commands
                 AutoEvent.ActiveEvent = ev;
             }
 
-            AutoEvent.CountOfPlayedGames++;
+            AutoEvent.IsPlayedGames = true;
             response = $"<color=green>The mini-game {ev.Name} has started!</color>";
             return false;
         }

@@ -27,51 +27,74 @@ namespace AutoEvent
 
         public static void PlayAudio(string audioFile, byte volume, bool loop, string eventName)
         {
-            if (Dummy == null)
+            // Only one audio bot is used for mini games. If it doesn't exist, then we create it.
+            if (Dummy == null) Dummy = AddDummy();
+
+            // If someone started the music, then we will turn it off.
+            StopAudio();
+
+            // Changing the nickname of the bot.
+            /*
+            try
             {
-                var newPlayer = Object.Instantiate(NetworkManager.singleton.playerPrefab);
-                var fakeConnection = new FakeConnection(0); // ?
-                var hubPlayer = newPlayer.GetComponent<ReferenceHub>();
-                //hubPlayer.Network_playerId = new RecyclablePlayerId(0); // ?
-                NetworkServer.AddPlayerForConnection(fakeConnection, newPlayer);
-                Dummy = hubPlayer;
-
-                hubPlayer.characterClassManager.InstanceMode = ClientInstanceMode.Unverified;
-
-                try
-                {
-                    hubPlayer.nicknameSync.SetNick(eventName);
-                }
-                catch (Exception) { }
-
-                var path = Path.Combine(Path.Combine(Paths.Configs, "Music"), audioFile);
-
-                var audioPlayer = AudioPlayerBase.Get(hubPlayer);
-                audioPlayer.Enqueue(path, -1);
-                audioPlayer.LogDebug = false;
-                audioPlayer.BroadcastChannel = VoiceChatChannel.Intercom;
-                audioPlayer.Volume = volume;
-                audioPlayer.Loop = loop;
-                audioPlayer.Play(0);
+                Dummy.nicknameSync.SetNick(eventName);
             }
+            catch (Exception) { }*/
+
+            // Looking for a way to the music we want to launch
+            var path = Path.Combine(Path.Combine(Paths.Configs, "Music"), audioFile);
+
+            // The bot is already in the game, it remains to start the music.
+            var audioPlayer = AudioPlayerBase.Get(Dummy);
+            audioPlayer.Enqueue(path, -1);
+            audioPlayer.LogDebug = false;
+            audioPlayer.BroadcastChannel = VoiceChatChannel.Intercom;
+            audioPlayer.Volume = volume;
+            audioPlayer.Loop = loop;
+            audioPlayer.Play(0);
         }
 
         public static void StopAudio()
         {
-            if (Dummy != null)
+            var audioPlayer = AudioPlayerBase.Get(Dummy);
+
+            if (audioPlayer.CurrentPlay != null)
             {
-                var audioPlayer = AudioPlayerBase.Get(Dummy);
-
-                if (audioPlayer.CurrentPlay != null)
-                {
-                    audioPlayer.Stoptrack(true);
-                    audioPlayer.OnDestroy();
-                }
-
-                Dummy.OnDestroy();
-                CustomNetworkManager.TypedSingleton.OnServerDisconnect(Dummy.connectionToClient);
-                Object.Destroy(Dummy.gameObject);
+                audioPlayer.Stoptrack(true);
+                audioPlayer.OnDestroy();
             }
+        }
+
+        public static ReferenceHub AddDummy()
+        {
+            var newPlayer = Object.Instantiate(NetworkManager.singleton.playerPrefab);
+            var fakeConnection = new FakeConnection(0);
+            var hubPlayer = newPlayer.GetComponent<ReferenceHub>();
+            NetworkServer.AddPlayerForConnection(fakeConnection, newPlayer);
+            hubPlayer.characterClassManager.InstanceMode = ClientInstanceMode.Unverified;
+
+            try
+            {
+                hubPlayer.nicknameSync.SetNick("AudioBot");
+            }
+            catch (Exception) { }
+
+            return hubPlayer;
+        }
+
+        public static void RemoveDummy()
+        {
+            var audioPlayer = AudioPlayerBase.Get(Dummy);
+
+            if (audioPlayer.CurrentPlay != null)
+            {
+                audioPlayer.Stoptrack(true);
+                audioPlayer.OnDestroy();
+            }
+
+            Dummy.OnDestroy();
+            CustomNetworkManager.TypedSingleton.OnServerDisconnect(Dummy.connectionToClient);
+            Object.Destroy(Dummy.gameObject);
         }
 
         public static bool IsExistsMap(string schematicName)

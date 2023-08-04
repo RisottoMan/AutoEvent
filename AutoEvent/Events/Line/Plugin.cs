@@ -68,11 +68,12 @@ namespace AutoEvent.Events.Line
 
             Extensions.PlayAudio("LineLite.ogg", 10, true, Name);
 
-            Player.List.ToList().ForEach(pl =>
+            foreach(Player player in Player.List)
             {
-                pl.Role.Set(RoleTypeId.ClassD, SpawnReason.None, RoleSpawnFlags.AssignInventory);
-                pl.Position = GameMap.AttachedBlocks.First(x => x.name == "SpawnPoint").transform.position;
-            });
+                player.Role.Set(RoleTypeId.ClassD, SpawnReason.None, RoleSpawnFlags.AssignInventory);
+                player.Position = GameMap.AttachedBlocks.First(x => x.name == "SpawnPoint").transform.position;
+            }
+
             Timing.RunCoroutine(OnEventRunning(), "line_run");
         }
 
@@ -108,7 +109,6 @@ namespace AutoEvent.Events.Line
                 {
                     if (HardCounts == 0)
                     {
-                        Extensions.StopAudio();
                         Extensions.PlayAudio("LineHard.ogg", 10, true, Name);
                     }
 

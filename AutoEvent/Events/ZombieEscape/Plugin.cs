@@ -101,11 +101,7 @@ namespace AutoEvent.Events.ZombieEscape
                 yield return Timing.WaitForSeconds(1f);
             }
 
-            Extensions.StopAudio();
-            Timing.CallDelayed(0.1f, () =>
-            {
-                Extensions.PlayAudio("Zombie2.ogg", 7, false, Name);
-            });
+            Extensions.PlayAudio("Zombie2.ogg", 7, false, Name);
 
             for (int i = 0; i <= Player.List.Count() / 10; i++)
             {
@@ -184,20 +180,12 @@ namespace AutoEvent.Events.ZombieEscape
             if (Player.List.Count(r => r.IsHuman) == 0)
             {
                 Extensions.Broadcast(AutoEvent.Singleton.Translation.ZombieEscapeZombieWin, 10);
-                Extensions.StopAudio();
-                Timing.CallDelayed(0.1f, () =>
-                {
-                    Extensions.PlayAudio("ZombieWin.ogg", 7, false, Name);
-                });
+                Extensions.PlayAudio("ZombieWin.ogg", 7, false, Name);
             }
             else
             {
                 Extensions.Broadcast(AutoEvent.Singleton.Translation.ZombieEscapeHumanWin, 10);
-                Extensions.StopAudio();
-                Timing.CallDelayed(0.1f, () =>
-                {
-                    Extensions.PlayAudio("HumanWin.ogg", 7, false, Name);
-                });
+                Extensions.PlayAudio("HumanWin.ogg", 7, false, Name);
             }
 
             OnStop();
