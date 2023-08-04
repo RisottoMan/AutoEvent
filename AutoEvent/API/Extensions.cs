@@ -33,14 +33,6 @@ namespace AutoEvent
             // If someone started the music, then we will turn it off.
             StopAudio();
 
-            // Changing the nickname of the bot.
-            /*
-            try
-            {
-                Dummy.nicknameSync.SetNick(eventName);
-            }
-            catch (Exception) { }*/
-
             // Looking for a way to the music we want to launch
             var path = Path.Combine(Path.Combine(Paths.Configs, "Music"), audioFile);
 
@@ -73,9 +65,10 @@ namespace AutoEvent
             NetworkServer.AddPlayerForConnection(fakeConnection, newPlayer);
             hubPlayer.characterClassManager.InstanceMode = ClientInstanceMode.Unverified;
 
+            // I can't change the name after creating dummy
             try
             {
-                hubPlayer.nicknameSync.SetNick("AudioBot");
+                hubPlayer.nicknameSync.SetNick("MiniGames");
             }
             catch (Exception) { }
 
