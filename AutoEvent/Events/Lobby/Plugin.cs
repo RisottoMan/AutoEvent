@@ -9,19 +9,19 @@ using System;
 
 namespace AutoEvent.Events.Lobby
 {
-    public class Plugin : Event
+    public class Plugin// : Event
     {
-        public override string Name { get; set; } = "Lobby Choice";
-        public override string Description { get; set; } = "In this lobby, a mini-game is selected and launched.";
-        public override string Author { get; set; } = "KoT0XleB";
-        public override string MapName { get; set; } = "Lobby";
-        public override string CommandName { get; set; } = "lobby";
+        public string Name { get; set; } = "Lobby Choice";
+        public string Description { get; set; } = "In this lobby, a mini-game is selected and launched.";
+        public string Author { get; set; } = "KoT0XleB";
+        public string MapName { get; set; } = "Lobby";
+        public string CommandName { get; set; } = "lobby";
         public TimeSpan EventTime { get; set; }
         public SchematicObject GameMap;
         EventHandler _eventHandler;
         Player Person;
 
-        public override void OnStart()
+        public void OnStart()
         {
             _eventHandler = new EventHandler();
 
@@ -29,7 +29,7 @@ namespace AutoEvent.Events.Lobby
 
             Timing.RunCoroutine(OnEventRunning(), "choice_time");
         }
-        public override void OnStop()
+        public void OnStop()
         {
             //Exiled.Events.Handlers.Player.Verified -= _eventHandler.OnPlayerVerified;
 
