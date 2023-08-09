@@ -181,7 +181,7 @@ auto_event:
 
     <color=green>Время до конца:</color> %time%'
   survival_zombie_win: '<color=red>Зомби заразили всех людей!</color>'
-  survival_human_win: '<color=blue>Зомби убили всех зомби и остановили инфекцию</color>'
+  survival_human_win: '<color=#14AAF5>Люди устранили угрозу и остановили инфекцию</color>'
   survival_human_win_time: '<color=yellow>Люди выжили, но не остановили инфекцию</color>'
   # Fall Down Game Mode
   fall_name: 'Падение'
