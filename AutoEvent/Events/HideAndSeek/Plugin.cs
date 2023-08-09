@@ -120,7 +120,7 @@ namespace AutoEvent.Events.HideAndSeek
                 }
             }
 
-            Timing.RunCoroutine(OnEventEnded(), "hns_run");
+            Timing.RunCoroutine(OnEventEnded(), "hns_end");
             yield break;
         }
 
@@ -134,7 +134,7 @@ namespace AutoEvent.Events.HideAndSeek
                 yield return Timing.WaitForSeconds(10f);
                 EventTime += TimeSpan.FromSeconds(10f);
 
-                Timing.RunCoroutine(OnEventRunning(), "hns_end");
+                Timing.RunCoroutine(OnEventRunning(), "hns_run");
                 yield break;
             }
             else if (Player.List.Count(r => r.IsAlive) == 1)

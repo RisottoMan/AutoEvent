@@ -44,8 +44,6 @@ namespace AutoEvent.Patches
             {
                 if (AutoEvent.ActiveEvent == null) return true;
 
-                Log.Info(messageType);
-
                 switch (messageType)
                 {
                     case JailbirdMessageType.ChargeLoadTriggered:
