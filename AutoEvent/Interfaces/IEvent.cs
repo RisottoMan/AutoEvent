@@ -9,6 +9,7 @@ namespace AutoEvent.Interfaces
 
         /// <summary>Description</summary>
         string Description { get; }
+
         /// <summary>Author of the mini-game</summary>
         string Author { get; }
 

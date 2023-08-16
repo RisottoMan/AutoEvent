@@ -6,12 +6,13 @@ using System.Linq;
 using UnityEngine;
 using MapEditorReborn.API.Features.Objects;
 using System;
+using AutoEvent.Events.Lobby.Features;
 
 namespace AutoEvent.Events.Lobby
 {
     public class Plugin// : Event
     {
-        public string Name { get; set; } = "Lobby Choice";
+        public string Name { get; set; } = "Lobby";
         public string Description { get; set; } = "In this lobby, a mini-game is selected and launched.";
         public string Author { get; set; } = "KoT0XleB";
         public string MapName { get; set; } = "Lobby";
@@ -23,15 +24,26 @@ namespace AutoEvent.Events.Lobby
 
         public void OnStart()
         {
-            _eventHandler = new EventHandler();
+            _eventHandler = new EventHandler(this);
 
-            //Exiled.Events.Handlers.Player.Verified += _eventHandler.OnPlayerVerified;
+            Exiled.Events.Handlers.Player.Verified += _eventHandler.OnJoin;
+            Exiled.Events.Handlers.Server.RespawningTeam += _eventHandler.OnTeamRespawn;
+            Exiled.Events.Handlers.Player.SpawningRagdoll += _eventHandler.OnSpawnRagdoll;
+            Exiled.Events.Handlers.Map.PlacingBulletHole += _eventHandler.OnPlaceBullet;
+            Exiled.Events.Handlers.Map.PlacingBlood += _eventHandler.OnPlaceBlood;
+            Exiled.Events.Handlers.Player.DroppingAmmo += _eventHandler.OnDropAmmo;
 
             Timing.RunCoroutine(OnEventRunning(), "choice_time");
         }
+
         public void OnStop()
         {
-            //Exiled.Events.Handlers.Player.Verified -= _eventHandler.OnPlayerVerified;
+            Exiled.Events.Handlers.Player.Verified -= _eventHandler.OnJoin;
+            Exiled.Events.Handlers.Server.RespawningTeam -= _eventHandler.OnTeamRespawn;
+            Exiled.Events.Handlers.Player.SpawningRagdoll -= _eventHandler.OnSpawnRagdoll;
+            Exiled.Events.Handlers.Map.PlacingBulletHole -= _eventHandler.OnPlaceBullet;
+            Exiled.Events.Handlers.Map.PlacingBlood -= _eventHandler.OnPlaceBlood;
+            Exiled.Events.Handlers.Player.DroppingAmmo -= _eventHandler.OnDropAmmo;
 
             _eventHandler = null;
             Timing.CallDelayed(10f, () => EventEnd());
@@ -42,10 +54,38 @@ namespace AutoEvent.Events.Lobby
             EventTime = new TimeSpan(0, 1, 0);
             GameMap = Extensions.LoadMap(MapName, new Vector3(120f, 1020f, -43.5f), Quaternion.Euler(Vector3.zero), Vector3.one);
 
-            for (int time = 30; time > 0; time--)
+            foreach (Player player in Player.List)
             {
+                player.Position = RandomClass.GetSpawnPosition(GameMap);
+            }
+
+            int time = 15;
+            while (time != 0)
+            {
+                var count = Player.List.Count();
+                var text = string.Empty;
+
+                if (count <= 0) // 1
+                {
+                    Extensions.Broadcast($"Ожидание игроков для запуска Мини-Игр.", 1);
+                    time = 15;
+                    //yield continue;
+                }
+
                 Extensions.Broadcast($"Вы находитесь в лобби\nПриготовьтесь бежать к центру - {time}\nКто успеет - тот выбирает мини-игру.", 1);
-                yield return Timing.WaitForSeconds(1f);
+                time--;
+            }
+
+            List<GameObject> teleports = new List<GameObject>();
+            List<GameObject> platformes = new List<GameObject>();
+            foreach (var block in GameMap.AttachedBlocks)
+            {
+                switch (block.name)
+                {
+                    case "Wall": GameObject.Destroy(block); break;
+                    case "Teleport": teleports.Add(block); break;
+                    case "Platform": platformes.Add(block); break;
+                }
             }
 
             while (EventTime.TotalSeconds > 0 && Player.List.Count(r => r.IsAlive) > 0)
@@ -69,6 +109,11 @@ namespace AutoEvent.Events.Lobby
                         text += "Вы должны добраться до центра.";
                     }
 
+                    if (Vector3.Distance(player.Position, teleports.ElementAt(0).transform.position) < 0.1)
+                    {
+                        Person = player;
+                    }
+
                     player.ClearBroadcasts();
                     player.Broadcast(1, text);
                 }
@@ -83,7 +128,7 @@ namespace AutoEvent.Events.Lobby
 
         public void EventEnd()
         {
-            Extensions.StopAudio();
+            //Extensions.StopAudio();
             GameMap.Destroy();
             AutoEvent.ActiveEvent = null;
         }

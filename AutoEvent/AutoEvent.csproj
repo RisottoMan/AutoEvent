@@ -75,10 +75,12 @@
     <Compile Include="API\FakeConnection.cs" />
     <Compile Include="Commands\ListEvents.cs" />
     <Compile Include="Commands\MainCommand.cs" />
+    <Compile Include="Commands\VoteEvent.cs" />
     <Compile Include="Commands\RunEvent.cs" />
     <Compile Include="Commands\StopEvent.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="Events\Lobby\EventHandler.cs" />
+    <Compile Include="Events\Lobby\Features\RandomClass.cs" />
     <Compile Include="Events\Lobby\Plugin.cs" />
     <Compile Include="Events\Vote\EventHandler.cs" />
     <Compile Include="Events\Vote\Plugin.cs" />

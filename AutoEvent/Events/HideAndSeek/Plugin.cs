@@ -74,84 +74,68 @@ namespace AutoEvent.Events.HideAndSeek
         }
         public IEnumerator<float> OnEventRunning()
         {
-            for (float _time = 15; _time > 0; _time--)
+            while (Player.List.Count(r => r.IsAlive) > 1)
             {
-                Extensions.Broadcast(AutoEvent.Singleton.Translation.HideBroadcast.Replace("%time%", $"{_time}"), 1);
-                yield return Timing.WaitForSeconds(1f);
-                EventTime += TimeSpan.FromSeconds(1f);
-            }
-
-            int catchCount = 0;
-            switch (Player.List.Count(r => r.IsAlive))
-            {
-                case int n when (n > 0 && n <= 3): catchCount = 1; break;
-                case int n when (n > 3  && n <= 5): catchCount = 2; break;
-                case int n when (n > 5 && n <= 10): catchCount = 3; break;
-                case int n when (n > 10 && n <= 15): catchCount = 5; break;
-                case int n when (n > 15 && n <= 20): catchCount = 8; break;
-                case int n when (n > 20 && n <= 25): catchCount = 10; break;
-                case int n when (n > 25): catchCount = n / 2; break;
-            }
-
-            for(int i = 0; i < catchCount; i++)
-            {
-                var player = Player.List.Where(r => r.IsAlive && r.HasItem(ItemType.Jailbird) == false).ToList().RandomItem();
-                var item = player.AddItem(ItemType.Jailbird);
-                Timing.CallDelayed(0.1f, () =>
+                for (float _time = 15; _time > 0; _time--)
                 {
-                    player.CurrentItem = item;
-                });
-            }
+                    Extensions.Broadcast(AutoEvent.Singleton.Translation.HideBroadcast.Replace("%time%", $"{_time}"), 1);
+                    yield return Timing.WaitForSeconds(1f);
+                    EventTime += TimeSpan.FromSeconds(1f);
+                }
 
-            for (int doptime = 15; doptime > 0; doptime--)
-            {
-                Extensions.Broadcast(AutoEvent.Singleton.Translation.HideCycle.Replace("%time%", $"{doptime}"), 1);
-
-                yield return Timing.WaitForSeconds(1f);
-                EventTime += TimeSpan.FromSeconds(1f);
-            }
-
-            foreach(Player player in Player.List)
-            {
-                if (player.HasItem(ItemType.Jailbird))
+                int catchCount = RandomClass.GetCatchByCount(Player.List.Count(r => r.IsAlive));
+                for (int i = 0; i < catchCount; i++)
                 {
-                    player.ClearInventory();
-                    player.Hurt(200, AutoEvent.Singleton.Translation.HideHurt);
+                    var player = Player.List.Where(r => r.IsAlive && r.HasItem(ItemType.Jailbird) == false).ToList().RandomItem();
+                    var item = player.AddItem(ItemType.Jailbird);
+                    Timing.CallDelayed(0.1f, () =>
+                    {
+                        player.CurrentItem = item;
+                    });
+                }
+
+                for (int time = 15; time > 0; time--)
+                {
+                    Extensions.Broadcast(AutoEvent.Singleton.Translation.HideCycle.Replace("%time%", $"{time}"), 1);
+
+                    yield return Timing.WaitForSeconds(1f);
+                    EventTime += TimeSpan.FromSeconds(1f);
+                }
+
+                foreach (Player player in Player.List)
+                {
+                    if (player.HasItem(ItemType.Jailbird))
+                    {
+                        player.ClearInventory();
+                        player.Hurt(200, AutoEvent.Singleton.Translation.HideHurt);
+                    }
                 }
             }
 
-            Timing.RunCoroutine(OnEventEnded(), "hns_end");
+            OnEventEnded();
             yield break;
         }
 
-        public IEnumerator<float> OnEventEnded()
+        public void OnEventEnded()
         {
-            var time = $"{EventTime.Minutes}:{EventTime.Seconds}";
             if (Player.List.Count(r => r.IsAlive) > 1)
             {
-                Extensions.Broadcast(AutoEvent.Singleton.Translation.HideMorePlayer.Replace("%time%", $"{time}"), 10);
-
-                yield return Timing.WaitForSeconds(10f);
-                EventTime += TimeSpan.FromSeconds(10f);
-
-                Timing.RunCoroutine(OnEventRunning(), "hns_run");
-                yield break;
+                Extensions.Broadcast(AutoEvent.Singleton.Translation.HideMorePlayer.Replace("%time%", $"{EventTime.Minutes}:{EventTime.Seconds}"), 10);
             }
             else if (Player.List.Count(r => r.IsAlive) == 1)
             {
                 var text = AutoEvent.Singleton.Translation.HideOnePlayer;
                 text = text.Replace("%winner%", Player.List.First(r => r.IsAlive).Nickname);
-                text = text.Replace("%time%", $"{time}");
+                text = text.Replace("%time%", $"{EventTime.Minutes}:{EventTime.Seconds}");
 
                 Extensions.Broadcast(text, 10);
             }
             else
             {
-                Extensions.Broadcast(AutoEvent.Singleton.Translation.HideAllDie.Replace("%time%", $"{time}"), 10);
+                Extensions.Broadcast(AutoEvent.Singleton.Translation.HideAllDie.Replace("%time%", $"{EventTime.Minutes}:{EventTime.Seconds}"), 10);
             }
 
             OnStop();
-            yield break;
         }
 
         public void EventEnd()
