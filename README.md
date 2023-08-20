@@ -92,4 +92,5 @@
 
 ### Code from other developers.
 ##### Thanks for the MapEditorReborn plugin to the developer Michal78900#8196.
+##### Special thanks to Michal78900 for the opportunity to borrow MapEditorReborn code for NWApi.
 ##### Thanks for the code for the music to work to the developer ced777ric#8321.
