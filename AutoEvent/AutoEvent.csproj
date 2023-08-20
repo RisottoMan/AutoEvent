@@ -75,7 +75,6 @@
     <Compile Include="API\FakeConnection.cs" />
     <Compile Include="Commands\ListEvents.cs" />
     <Compile Include="Commands\MainCommand.cs" />
-    <Compile Include="Commands\VoteEvent.cs" />
     <Compile Include="Commands\RunEvent.cs" />
     <Compile Include="Commands\StopEvent.cs" />
     <Compile Include="Config.cs" />

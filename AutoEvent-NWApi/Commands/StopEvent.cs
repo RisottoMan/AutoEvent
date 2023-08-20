@@ -1,7 +1,6 @@
 ﻿using CommandSystem;
 using System;
 using PlayerRoles;
-using AutoEvent.Interfaces;
 using PluginAPI.Core;
 
 namespace AutoEvent.Commands
@@ -13,32 +12,27 @@ namespace AutoEvent.Commands
         public string[] Aliases => null;
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            /*
-            if (!((CommandSender)sender).CheckPermission("ev.stop"))
+            var config = AutoEvent.Singleton.Config;
+            var player = Player.Get(sender);
+
+            if (!config.PermissionList.Contains(ServerStatic.PermissionsHandler._members[player.UserId]))
             {
-                response = "You do not have permission to use this command";
+                response = "<color=red>You do not have permission to use this command!</color>";
                 return false;
             }
-            */
+
             if (AutoEvent.ActiveEvent == null)
             {
                 response = "The mini-game is not running!";
                 return false;
             }
 
-            /*
-            Event ev = Event.GetEvent(arguments.At(0));
-            if (ev == null)
+            AutoEvent.ActiveEvent.OnStop();
+
+            foreach (Player pl in Player.GetPlayers())
             {
-                response = "event not found.";
-                return false;
+                pl.SetRole(RoleTypeId.Spectator);
             }
-
-            ev.OnStop();
-            AutoEvent.ActiveEvent = null;
-            */
-
-            foreach (Player player in Player.GetPlayers()) player.SetRole(RoleTypeId.Spectator);
 
             response = "Killed all the players and the mini-game itself will end soon.";
             return true;

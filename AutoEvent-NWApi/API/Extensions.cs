@@ -3,77 +3,122 @@ using System.IO;
 using Mirror;
 using UnityEngine;
 using PlayerRoles;
-using MapEditorReborn.API.Features;
-using MapEditorReborn.API.Features.Objects;
 using SCPSLAudioApi.AudioCore;
 using VoiceChat;
-using Object = UnityEngine.Object;
+using AutoEvent.API.Schematic.Objects;
+using AutoEvent.API.Schematic;
 using PluginAPI.Core;
 using PluginAPI.Helpers;
+using InventorySystem.Items.Pickups;
+using Object = UnityEngine.Object;
+using PlayerStatsSystem;
 
 namespace AutoEvent
 {
     internal class Extensions
     {
-        public static ReferenceHub Dummy;
+        public static ReferenceHub Dummy = new ReferenceHub();
+
+        public static void SetRole(Player player, RoleTypeId newRole, RoleSpawnFlags spawnFlags)
+        {
+            player.ReferenceHub.roleManager.ServerSetRole(newRole, RoleChangeReason.RemoteAdmin, spawnFlags);
+        }
+
+        public static void SetRole(Player player, RoleTypeId newRole, RoleChangeReason reason, RoleSpawnFlags spawnFlags)
+        {
+            player.ReferenceHub.roleManager.ServerSetRole(newRole, reason, spawnFlags);
+        }
+
+        public static void SetPlayerScale(Player target, Vector3 scale)
+        {
+            if (target.GameObject.transform.localScale == scale) return;
+
+            NetworkIdentity identity = target.ReferenceHub.networkIdentity;
+            target.GameObject.transform.localScale = scale;
+            foreach (Player pl in Player.GetPlayers())
+            {
+                //NetworkServer.SendSpawnMessage(identity, player.Connection);
+            }
+        }
+
+        public static void SetPlayerAhp(Player player, float amount, float limit = 75, float decay = 1.2f, float efficacy = 0.7f, float sustain = 0, bool persistant = false)
+        {
+            player.ReferenceHub.playerStats.GetModule<AhpStat>().ServerAddProcess(amount, limit, decay, efficacy, sustain, persistant);
+        }
+
         public static void TeleportEnd()
         {
             foreach (Player player in Player.GetPlayers())
             {
                 player.SetRole(RoleTypeId.Tutorial, RoleChangeReason.None);
-                //player.IsWithoutItems = true;
                 player.Position = new Vector3(39.332f, 1014.766f, -31.922f);
             }
         }
 
         public static void PlayAudio(string audioFile, byte volume, bool loop, string eventName)
         {
-            if (Dummy == null)
-            {
-                var newPlayer = Object.Instantiate(NetworkManager.singleton.playerPrefab);
-                var fakeConnection = new FakeConnection(0);
-                var hubPlayer = newPlayer.GetComponent<ReferenceHub>();
-                NetworkServer.AddPlayerForConnection(fakeConnection, newPlayer);
-                Dummy = hubPlayer;
+            /*
+            Dummy = AddDummy();
 
-                hubPlayer.characterClassManager.InstanceMode = ClientInstanceMode.Unverified;
+            StopAudio();
 
-                try
-                {
-                    hubPlayer.nicknameSync.SetNick(eventName);
-                }
-                catch (Exception) { }
+            var path = Path.Combine(Path.Combine(Paths.GlobalPlugins.Plugins, "Music"), audioFile);
 
-                var path = Path.Combine(Path.Combine(Paths.GlobalPlugins.Plugins, "Music"), audioFile);
-
-                var audioPlayer = AudioPlayerBase.Get(hubPlayer);
-                audioPlayer.Enqueue(path, -1);
-                audioPlayer.LogDebug = false;
-                audioPlayer.BroadcastChannel = VoiceChatChannel.Intercom;
-                audioPlayer.Volume = volume;
-                audioPlayer.Loop = loop;
-                audioPlayer.Play(0);
-            }
+            var audioPlayer = AudioPlayerBase.Get(Dummy);
+            audioPlayer.Enqueue(path, -1);
+            audioPlayer.LogDebug = true;
+            audioPlayer.BroadcastChannel = VoiceChatChannel.Intercom;
+            audioPlayer.Volume = volume;
+            audioPlayer.Loop = loop;
+            audioPlayer.Play(0);
+            */
         }
 
         public static void StopAudio()
         {
-            if (Dummy != null)
+            /*
+            var audioPlayer = AudioPlayerBase.Get(Dummy);
+
+            if (audioPlayer.CurrentPlay != null)
             {
-                var audioPlayer = AudioPlayerBase.Get(Dummy);
-
-                if (audioPlayer.CurrentPlay != null)
-                {
-                    audioPlayer.Stoptrack(true);
-                    audioPlayer.OnDestroy();
-                }
-
-                Dummy.OnDestroy();
-                CustomNetworkManager.TypedSingleton.OnServerDisconnect(Dummy.connectionToClient);
-                Object.Destroy(Dummy.gameObject);
+                audioPlayer.Stoptrack(true);
+                audioPlayer.OnDestroy();
             }
+            */
+        }
+        /*
+        public static ReferenceHub AddDummy()
+        {
+            var newPlayer = Object.Instantiate(NetworkManager.singleton.playerPrefab);
+            var fakeConnection = new FakeConnection(0);
+            var hubPlayer = newPlayer.GetComponent<ReferenceHub>();
+            NetworkServer.AddPlayerForConnection(fakeConnection, newPlayer);
+            hubPlayer.characterClassManager.InstanceMode = ClientInstanceMode.Unverified;
+
+            try
+            {
+                hubPlayer.nicknameSync.SetNick("MiniGames");
+            }
+            catch (Exception) { }
+
+            return hubPlayer;
         }
 
+        public static void RemoveDummy()
+        {
+            var audioPlayer = AudioPlayerBase.Get(Dummy);
+
+            if (audioPlayer.CurrentPlay != null)
+            {
+                audioPlayer.Stoptrack(true);
+                audioPlayer.OnDestroy();
+            }
+
+            Dummy.OnDestroy();
+            CustomNetworkManager.TypedSingleton.OnServerDisconnect(Dummy.connectionToClient);
+            Object.Destroy(Dummy.gameObject);
+        }
+        */
         public static bool IsExistsMap(string schematicName)
         {
             var data = MapUtils.GetSchematicDataByName(schematicName);
@@ -87,7 +132,7 @@ namespace AutoEvent
             }
         }
 
-        public static SchematicObject LoadMap(string nameSchematic , Vector3 pos, Quaternion rot, Vector3 scale)
+        public static SchematicObject LoadMap(string nameSchematic, Vector3 pos, Quaternion rot, Vector3 scale)
         {
             return ObjectSpawner.SpawnSchematic(nameSchematic, pos, rot, scale);
         }
@@ -99,27 +144,14 @@ namespace AutoEvent
 
         public static void CleanUpAll()
         {
-            //Map.CleanAllItems();
-            //Map.CleanAllRagdolls();
-        }
-
-        public static void SetPlayerScale(Player pl, Vector3 scale)
-        {
-            GameObject gameObject = pl.GameObject;
-            if (gameObject.transform.localScale == scale) return;
-
-            try
+            foreach (var item in Object.FindObjectsOfType<ItemPickupBase>())
             {
-                NetworkIdentity identity = pl.ReferenceHub.networkIdentity;
-                gameObject.transform.localScale = scale;
-                foreach (Player player in Player.GetPlayers())
-                {
-                    //NetworkServer.SendSpawnMessage(identity, player.Connection);
-                }
+                GameObject.Destroy(item.gameObject);
             }
-            catch (Exception e)
+
+            foreach (var ragdoll in Object.FindObjectsOfType<BasicRagdoll>())
             {
-                Log.Info($"Set Scale error: {e}");
+                GameObject.Destroy(ragdoll.gameObject);
             }
         }
 

@@ -7,17 +7,26 @@ namespace AutoEvent
     {
         [Description("Enable/Disable AutoEvent.")]
         public bool IsEnabled { get; set; } = true;
+
         [Description("Enable/Disable Debug.")]
         public bool Debug { get; set; } = false;
+
         [Description("If you have donaters, then you can disable the admin panel for them during mini-games.")]
         public bool IsDisableDonators { get; set; } = true;
-        [Description("List of donaters. Specify the GroupName from the RemoteAdmin config.")]
+
+        [Description("A list of admins who can run mini-games. Specify the GroupName from the config_remoteadmin")]
+        public List<string> PermissionList { get; set; } = new List<string>()
+        {
+            "owner",
+            "admin",
+            "moderator"
+        };
+
+        [Description("List of donaters. Specify the GroupName from the config_remoteadmin")]
         public List<string> DonatorList { get; set; } = new List<string>()
         {
             "donate1"
         };
-        //[Description("Infection config..")]
-        //public InfectionConfig InfectionConfig { get; set; } = new InfectionConfig();
 
         [Description("Enable/Disable jailbird ability..")]
         public bool IsJailbirdAbilityEnable { get; set; } = false;

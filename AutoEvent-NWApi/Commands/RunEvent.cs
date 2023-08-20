@@ -14,13 +14,15 @@ namespace AutoEvent.Commands
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            /*
-            if (!((CommandSender)sender).CheckPermission("ev.run"))
+            var config = AutoEvent.Singleton.Config;
+            var player = Player.Get(sender);
+
+            if (!config.PermissionList.Contains(ServerStatic.PermissionsHandler._members[player.UserId]))
             {
                 response = "<color=red>You do not have permission to use this command!</color>";
                 return false;
             }
-            */
+
             if (AutoEvent.ActiveEvent != null)
             {
                 response = $"<color=red>The mini-game {AutoEvent.ActiveEvent.Name} is already running!</color>";
@@ -70,7 +72,6 @@ namespace AutoEvent.Commands
                 AutoEvent.ActiveEvent = ev;
             }
 
-            AutoEvent.CountOfPlayedGames++;
             response = $"<color=green>The mini-game {ev.Name} has started!</color>";
             return false;
         }

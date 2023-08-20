@@ -44,8 +44,6 @@ namespace AutoEvent.Events.ZombieEscape
                         ev.Player.ArtificialHealth -= 50;
                     }
 
-                    ev.Player.Role.Set(RoleTypeId.Scp0492, SpawnReason.None, RoleSpawnFlags.AssignInventory);
-                    ev.Player.Health = 5000;
                     ev.Attacker.ShowHitMarker();
                 }
 

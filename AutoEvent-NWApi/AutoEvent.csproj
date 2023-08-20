@@ -19,7 +19,7 @@
     <PlatformTarget>x64</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
+    <Optimize>true</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
@@ -41,12 +41,29 @@
     <Reference Include="Assembly-CSharp-Publicized">
       <HintPath>..\..\..\..\..\OneDrive\Документы\DLLs Library\2\Assembly-CSharp-Publicized.dll</HintPath>
     </Reference>
+    <Reference Include="Mirror, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\Рабочий стол\файлы\Mirror.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="NVorbis">
+      <HintPath>C:\Users\Roman\AppData\Roaming\SCP Secret Laboratory\PluginAPI\plugins\global\dependencies\NVorbis.dll</HintPath>
+    </Reference>
     <Reference Include="PluginAPI, Version=13.1.0.0, Culture=neutral, processorArchitecture=AMD64">
       <HintPath>packages\Northwood.PluginAPI.13.1.0\lib\net48\PluginAPI.dll</HintPath>
+    </Reference>
+    <Reference Include="SCPSLAudioApi, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Users\Roman\AppData\Roaming\SCP Secret Laboratory\PluginAPI\plugins\global\dependencies\SCPSLAudioApi.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="UnityEngine">
       <HintPath>..\..\..\..\..\OneDrive\Документы\DLLs Library\UnityEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.AssetBundleModule">
+      <HintPath>..\..\..\..\Рабочий стол\файлы\UnityEngine.AssetBundleModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -61,10 +78,7 @@
     <Reference Include="NorthwoodLib" HintPath="$(SL_REFERENCES)\NorthwoodLib.dll" />
     <Reference Include="0Harmony" HintPath="$(EXILED_REFERENCES)\0Harmony.dll" />
     <Reference Include="Pooling" HintPath="$(SL_REFERENCES)\Pooling.dll" />
-    <Reference Include="Mirror" HintPath="$(SL_REFERENCES)\Mirror.dll" />
     <Reference Include="Caress" HintPath="$(SL_REFERENCES)\Caress.dll" />
-    <Reference Include="MapEditorReborn" HintPath="$(OTHER_REFERENCES)\MapEditorReborn.dll" />
-    <Reference Include="SCPSLAudioApi" HintPath="$(OTHER_REFERENCES)\SCPSLAudioApi.dll" />
     <Reference Include="YamlDotNet, Version=11.0.0.0, Culture=neutral, PublicKeyToken=ec19458f3c15af5e, processorArchitecture=MSIL">
       <HintPath>packages\YamlDotNet.11.0.1\lib\net45\YamlDotNet.dll</HintPath>
     </Reference>
@@ -73,94 +87,140 @@
     <Compile Include="API\Attributes\DisabledFeaturesAttribute.cs" />
     <Compile Include="API\Extensions.cs" />
     <Compile Include="API\FakeConnection.cs" />
+    <Compile Include="API\Schematic\AnimationController.cs" />
+    <Compile Include="API\Schematic\Enums\BlockType.cs" />
+    <Compile Include="API\Schematic\Enums\CullingType.cs" />
+    <Compile Include="API\Schematic\Enums\LockerType.cs" />
+    <Compile Include="API\Schematic\MapUtils.cs" />
+    <Compile Include="API\Schematic\ObjectSpawner.cs" />
+    <Compile Include="API\Schematic\Objects\LightSourceObject.cs" />
+    <Compile Include="API\Schematic\Objects\LockerObject.cs" />
+    <Compile Include="API\Schematic\Objects\MapEditorObject.cs" />
+    <Compile Include="API\Schematic\Objects\PrimitiveObject.cs" />
+    <Compile Include="API\Schematic\Objects\SchematicObject.cs" />
+    <Compile Include="API\Schematic\Objects\WorkstationObject.cs" />
+    <Compile Include="API\Schematic\Serializable\LightSourceSerializable.cs" />
+    <Compile Include="API\Schematic\Serializable\LockerItemSerializable.cs" />
+    <Compile Include="API\Schematic\Serializable\LockerSerializable.cs" />
+    <Compile Include="API\Schematic\Serializable\PrimitiveSerializable.cs" />
+    <Compile Include="API\Schematic\Serializable\SchematicObjectDataList.cs" />
+    <Compile Include="API\Schematic\Serializable\SchematicSerializable.cs" />
+    <Compile Include="API\Schematic\Serializable\SerializableObject.cs" />
+    <Compile Include="API\Schematic\Serializable\SerializableRigidbody.cs" />
+    <Compile Include="API\Schematic\Serializable\WorkstationSerializable.cs" />
+    <Compile Include="API\Schematic\ObjectHelper.cs" />
     <Compile Include="Commands\ListEvents.cs" />
     <Compile Include="Commands\MainCommand.cs" />
     <Compile Include="Commands\RunEvent.cs" />
     <Compile Include="Commands\StopEvent.cs" />
     <Compile Include="Config.cs" />
-    <Compile Include="Events\Battle\EventHandler.cs" />
-    <Compile Include="Events\Battle\Features\RandomClass.cs" />
-    <Compile Include="Events\Battle\Plugin.cs" />
-    <Compile Include="Events\Boss\EventHandler.cs" />
-    <Compile Include="Events\Boss\Features\RandomClass.cs" />
-    <Compile Include="Events\Boss\Plugin.cs" />
-    <Compile Include="Events\Deathmatch\EventHandler.cs" />
-    <Compile Include="Events\Deathmatch\Extensions\RandomClass.cs" />
-    <Compile Include="Events\Deathmatch\Plugin.cs" />
-    <Compile Include="Events\DeathParty\EventHandler.cs" />
-    <Compile Include="Events\DeathParty\Features\RandomClass.cs" />
-    <Compile Include="Events\DeathParty\Plugin.cs" />
-    <Compile Include="Events\Escape\Plugin.cs" />
-    <Compile Include="Events\Escape\EventHandler.cs" />
-    <Compile Include="Events\Example\EventHandler.cs" />
-    <Compile Include="Events\Example\Plugin.cs" />
-    <Compile Include="Events\FallDown\EventHandler.cs" />
-    <Compile Include="Events\FallDown\Extensions\LavaComponent.cs" />
-    <Compile Include="Events\FallDown\Extensions\RandomClass.cs" />
-    <Compile Include="Events\FallDown\Plugin.cs" />
-    <Compile Include="Events\FinishWay\EventHandler.cs" />
-    <Compile Include="Events\FinishWay\Extensions\LavaComponent.cs" />
-    <Compile Include="Events\FinishWay\Extensions\RandomClass.cs" />
-    <Compile Include="Events\FinishWay\Plugin.cs" />
-    <Compile Include="Events\Football\EventHandler.cs" />
-    <Compile Include="Events\Football\Features\BallComponent.cs" />
-    <Compile Include="Events\Football\Features\RandomClass.cs" />
-    <Compile Include="Events\Football\Plugin.cs" />
-    <Compile Include="Events\Glass\EventHandler.cs" />
-    <Compile Include="Events\Glass\Features\GlassComponent.cs" />
-    <Compile Include="Events\Glass\Features\LavaComponent.cs" />
-    <Compile Include="Events\Glass\Features\RandomClass.cs" />
-    <Compile Include="Events\Glass\Plugin.cs" />
-    <Compile Include="Events\GunGame\EventHandler.cs" />
-    <Compile Include="Events\GunGame\Extensions\GunGameGuns.cs" />
-    <Compile Include="Events\GunGame\Extensions\GunGameRandom.cs" />
-    <Compile Include="Events\GunGame\Extensions\Stats.cs" />
-    <Compile Include="Events\GunGame\Plugin.cs" />
-    <Compile Include="Events\HideAndSeek\EventHandler.cs" />
-    <Compile Include="Events\HideAndSeek\Features\RandomClass.cs" />
-    <Compile Include="Events\HideAndSeek\Plugin.cs" />
-    <Compile Include="Events\Infection\Config.cs" />
-    <Compile Include="Events\Infection\EventHandler.cs" />
-    <Compile Include="Events\Infection\Extensions\RandomClass.cs" />
-    <Compile Include="Events\Infection\Plugin.cs" />
-    <Compile Include="Events\Jail\EventHandler.cs" />
-    <Compile Include="Events\Jail\Extensions\DoorComponent.cs" />
-    <Compile Include="Events\Jail\Extensions\JailerComponent.cs" />
-    <Compile Include="Events\Jail\Extensions\JailRandom.cs" />
-    <Compile Include="Events\Jail\Plugin.cs" />
-    <Compile Include="Events\Knives\EventHandler.cs" />
-    <Compile Include="Events\Knives\Features\RandomClass.cs" />
-    <Compile Include="Events\Knives\Plugin.cs" />
-    <Compile Include="Events\Lava\EventHandler.cs" />
-    <Compile Include="Events\Lava\Features\LavaComponent.cs" />
-    <Compile Include="Events\Lava\Features\RandomClass.cs" />
-    <Compile Include="Events\Lava\Plugin.cs" />
-    <Compile Include="Events\Line\EventHandler.cs" />
-    <Compile Include="Events\Line\Features\LineComponent.cs" />
-    <Compile Include="Events\Line\Plugin.cs" />
-    <Compile Include="Events\Puzzle\EventHandler.cs" />
-    <Compile Include="Events\Puzzle\Features\LavaComponent.cs" />
-    <Compile Include="Events\Puzzle\Features\RandomClass.cs" />
-    <Compile Include="Events\Puzzle\Plugin.cs" />
-    <Compile Include="Events\Survival\EventHandler.cs" />
-    <Compile Include="Events\Survival\Extensions\RandomClass.cs" />
-    <Compile Include="Events\Survival\Plugin.cs" />
-    <Compile Include="Events\Versus\EventHandler.cs" />
-    <Compile Include="Events\Versus\Features\RandomClass.cs" />
-    <Compile Include="Events\Versus\Plugin.cs" />
-    <Compile Include="Events\ZombieEscape\EventHandler.cs" />
-    <Compile Include="Events\ZombieEscape\Extensions\LavaComponent.cs" />
-    <Compile Include="Events\ZombieEscape\Extensions\RandomClass.cs" />
-    <Compile Include="Events\ZombieEscape\Extensions\WallComponent.cs" />
-    <Compile Include="Events\ZombieEscape\Plugin.cs" />
+    <Compile Include="EventHandler.cs" />
+    <Compile Include="Events\EventArgs\DropItemArgs.cs" />
+    <Compile Include="Events\EventArgs\DropAmmoArgs.cs" />
+    <Compile Include="Events\EventArgs\PlayerDyingArgs.cs" />
+    <Compile Include="Events\EventArgs\RemoteAdminArgs.cs" />
+    <Compile Include="Events\EventArgs\PlayerDamageArgs.cs" />
+    <Compile Include="Events\EventArgs\TeamRespawnArgs.cs" />
+    <Compile Include="Events\EventArgs\SpawnRagdollArgs.cs" />
+    <Compile Include="Events\EventArgs\PlaceTantrumArgs.cs" />
+    <Compile Include="Events\EventArgs\PlaceBulletArgs.cs" />
+    <Compile Include="Events\EventArgs\PlaceBloodArgs.cs" />
+    <Compile Include="Events\EventArgs\CreatePickupArgs.cs" />
+    <Compile Include="Events\Handlers\Players.cs" />
+    <Compile Include="Events\Handlers\Servers.cs" />
+    <Compile Include="Games\Battle\EventHandler.cs" />
+    <Compile Include="Games\Battle\Features\RandomClass.cs" />
+    <Compile Include="Games\Battle\Plugin.cs" />
+    <Compile Include="Games\Boss\EventHandler.cs" />
+    <Compile Include="Games\Boss\Features\RandomClass.cs" />
+    <Compile Include="Games\Boss\Plugin.cs" />
+    <Compile Include="Games\Deathmatch\EventHandler.cs" />
+    <Compile Include="Games\Deathmatch\Extensions\RandomClass.cs" />
+    <Compile Include="Games\Deathmatch\Plugin.cs" />
+    <Compile Include="Games\DeathParty\EventHandler.cs" />
+    <Compile Include="Games\DeathParty\Features\RandomClass.cs" />
+    <Compile Include="Games\DeathParty\Plugin.cs" />
+    <Compile Include="Games\Escape\Plugin.cs" />
+    <Compile Include="Games\Escape\EventHandler.cs" />
+    <Compile Include="Games\FallDown\EventHandler.cs" />
+    <Compile Include="Games\FallDown\Extensions\LavaComponent.cs" />
+    <Compile Include="Games\FallDown\Extensions\RandomClass.cs" />
+    <Compile Include="Games\FallDown\Plugin.cs" />
+    <Compile Include="Games\FinishWay\EventHandler.cs" />
+    <Compile Include="Games\FinishWay\Extensions\LavaComponent.cs" />
+    <Compile Include="Games\FinishWay\Extensions\RandomClass.cs" />
+    <Compile Include="Games\FinishWay\Plugin.cs" />
+    <Compile Include="Games\Football\EventHandler.cs" />
+    <Compile Include="Games\Football\Features\BallComponent.cs" />
+    <Compile Include="Games\Football\Features\RandomClass.cs" />
+    <Compile Include="Games\Football\Plugin.cs" />
+    <Compile Include="Games\Glass\EventHandler.cs" />
+    <Compile Include="Games\Glass\Features\GlassComponent.cs" />
+    <Compile Include="Games\Glass\Features\LavaComponent.cs" />
+    <Compile Include="Games\Glass\Features\RandomClass.cs" />
+    <Compile Include="Games\Glass\Plugin.cs" />
+    <Compile Include="Games\GunGame\EventHandler.cs" />
+    <Compile Include="Games\GunGame\Extensions\GunGameGuns.cs" />
+    <Compile Include="Games\GunGame\Extensions\GunGameRandom.cs" />
+    <Compile Include="Games\GunGame\Extensions\Stats.cs" />
+    <Compile Include="Games\GunGame\Plugin.cs" />
+    <Compile Include="Games\HideAndSeek\EventHandler.cs" />
+    <Compile Include="Games\HideAndSeek\Features\RandomClass.cs" />
+    <Compile Include="Games\HideAndSeek\Plugin.cs" />
+    <Compile Include="Games\Infection\Config.cs" />
+    <Compile Include="Games\Infection\EventHandler.cs" />
+    <Compile Include="Games\Infection\Extensions\RandomClass.cs" />
+    <Compile Include="Games\Infection\Plugin.cs" />
+    <Compile Include="Games\Jail\EventHandler.cs" />
+    <Compile Include="Games\Jail\Extensions\DoorComponent.cs" />
+    <Compile Include="Games\Jail\Extensions\JailerComponent.cs" />
+    <Compile Include="Games\Jail\Extensions\JailRandom.cs" />
+    <Compile Include="Games\Jail\Plugin.cs" />
+    <Compile Include="Games\Knives\EventHandler.cs" />
+    <Compile Include="Games\Knives\Features\RandomClass.cs" />
+    <Compile Include="Games\Knives\Plugin.cs" />
+    <Compile Include="Games\Lava\EventHandler.cs" />
+    <Compile Include="Games\Lava\Features\LavaComponent.cs" />
+    <Compile Include="Games\Lava\Features\RandomClass.cs" />
+    <Compile Include="Games\Lava\Plugin.cs" />
+    <Compile Include="Games\Line\EventHandler.cs" />
+    <Compile Include="Games\Line\Features\LineComponent.cs" />
+    <Compile Include="Games\Line\Plugin.cs" />
+    <Compile Include="Games\Puzzle\EventHandler.cs" />
+    <Compile Include="Games\Puzzle\Features\LavaComponent.cs" />
+    <Compile Include="Games\Puzzle\Features\RandomClass.cs" />
+    <Compile Include="Games\Puzzle\Plugin.cs" />
+    <Compile Include="Games\Survival\EventHandler.cs" />
+    <Compile Include="Games\Survival\Extensions\RandomClass.cs" />
+    <Compile Include="Games\Survival\Plugin.cs" />
+    <Compile Include="Games\Versus\EventHandler.cs" />
+    <Compile Include="Games\Versus\Features\RandomClass.cs" />
+    <Compile Include="Games\Versus\Plugin.cs" />
+    <Compile Include="Games\ZombieEscape\EventHandler.cs" />
+    <Compile Include="Games\ZombieEscape\Extensions\LavaComponent.cs" />
+    <Compile Include="Games\ZombieEscape\Extensions\RandomClass.cs" />
+    <Compile Include="Games\ZombieEscape\Extensions\WallComponent.cs" />
+    <Compile Include="Games\ZombieEscape\Plugin.cs" />
     <Compile Include="Interfaces\Event.cs" />
     <Compile Include="Interfaces\IEvent.cs" />
-    <Compile Include="Patch\CreatePickupPatch.cs" />
-    <Compile Include="Patch\JailBirdPatch.cs" />
-    <Compile Include="Patch\RemoteAdminPatch.cs" />
+    <Compile Include="Patches\ClientInstanceMode.cs" />
+    <Compile Include="Patches\CreatePickup.cs" />
+    <Compile Include="Patches\DropAmmo.cs" />
+    <Compile Include="Patches\DropItem.cs" />
+    <Compile Include="Patches\JailBirdCharge.cs" />
+    <Compile Include="Patches\PlaceBlood.cs" />
+    <Compile Include="Patches\PlaceBullet.cs" />
+    <Compile Include="Patches\PlaceTantrum.cs" />
+    <Compile Include="Patches\PlayerDying.cs" />
+    <Compile Include="Patches\RemoteAdmin.cs" />
+    <Compile Include="Patches\SpawnRagdoll.cs" />
+    <Compile Include="Patches\AddItem.cs" />
+    <Compile Include="Patches\PlayerDamage.cs" />
+    <Compile Include="Patches\TeamRespawn.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Translation.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
