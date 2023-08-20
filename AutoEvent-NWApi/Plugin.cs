@@ -24,7 +24,7 @@ namespace AutoEvent
         public Translation Translation;
 
         [PluginPriority(LoadPriority.Highest)]
-        [PluginEntryPoint("AutoEvent-NWApi", "8.2.3", "A plugin that allows you to run mini-games.", "KoT0XleB")]
+        [PluginEntryPoint("AutoEvent-NWApi", "8.2.7", "A plugin that allows you to run mini-games.", "KoT0XleB")]
         void OnEnabled()
         {
             if (!Config.IsEnabled) return;

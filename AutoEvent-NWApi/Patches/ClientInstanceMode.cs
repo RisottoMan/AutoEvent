@@ -6,7 +6,7 @@ using System.Reflection.Emit;
 namespace AutoEvent.Patches
 {
     //[HarmonyPatch(typeof(CharacterClassManager), nameof(CharacterClassManager.InstanceMode), MethodType.Setter)]
-    public class ClientInstanceMode
+    public class ClientInstanceMode // maybe its can help with audiobot???
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
