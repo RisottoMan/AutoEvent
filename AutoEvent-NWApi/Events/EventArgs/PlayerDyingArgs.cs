@@ -8,9 +8,9 @@ namespace AutoEvent.Events.EventArgs
         public PlayerDyingArgs(Player target, DamageHandlerBase damageHandler)
         {
             DamageHandler = damageHandler;
-            
+
             var attackerHandler = damageHandler as AttackerDamageHandler;
-            Attacker = Player.Get(attackerHandler.Attacker.Hub);
+            Attacker = Player.Get(attackerHandler?.Attacker.Hub);
 
             Target = target;
         }
@@ -19,8 +19,8 @@ namespace AutoEvent.Events.EventArgs
 
         public DamageHandlerBase DamageHandler { get; set; }
 
-        public bool IsAllowed { get; set; } = true;
-
         public Player Attacker { get; }
+
+        public bool IsAllowed { get; set; } = true;
     }
 }

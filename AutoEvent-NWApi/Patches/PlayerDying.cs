@@ -6,13 +6,13 @@ using PluginAPI.Core;
 
 namespace AutoEvent.Patches
 {
-    //[HarmonyPatch(typeof(PlayerStats), nameof(PlayerStats.KillPlayer))]
+    [HarmonyPatch(typeof(PlayerStats), nameof(PlayerStats.KillPlayer))]
     internal static class PlayerDying
     {
-        private static bool Prefix(PlayerStats __instance, DamageHandlerBase handler) // bug lava
+        private static bool Prefix(PlayerStats __instance, DamageHandlerBase handler)
         {
-            Log.Info("Player Dying");
-            Player player = Player.Get(__instance._hub);
+            Player player = Player.Get(__instance?._hub);
+
             PlayerDyingArgs ev = new(player, handler);
             Players.OnPlayerDying(ev);
 

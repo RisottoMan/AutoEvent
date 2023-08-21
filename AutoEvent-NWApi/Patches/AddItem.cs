@@ -5,8 +5,6 @@ using InventorySystem.Items.Firearms;
 using InventorySystem.Items.Firearms.Attachments;
 using InventorySystem.Items.Firearms.Attachments.Components;
 using PluginAPI.Core;
-using PluginAPI.Core.Items;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace AutoEvent.Patches
@@ -18,24 +16,8 @@ namespace AutoEvent.Patches
         {
             ItemBase itemBase = __instance.ReferenceHub.inventory.ServerAddItem(item, 0);
             
-            Firearm firearm = (Firearm)itemBase;
-            if (firearm != null)
+            if (itemBase is Firearm firearm)
             {
-                /*
-                AttachmentIdentifier[] value;
-                if (identifiers != null)
-                {
-                    //firearm.AddAttachment(identifiers);
-                    foreach (AttachmentIdentifier identifier in identifiers)
-                    {
-                        AddAttachment(identifier);
-                    }
-                }
-                else if (Preferences != null && Preferences.TryGetValue(itemType.GetFirearmType(), out value))
-                {
-                    firearm.ApplyAttachmentsCode(value.GetAttachmentsCode(), reValidate: true);
-                }
-                */
                 FirearmStatusFlags firearmStatusFlags = FirearmStatusFlags.MagazineInserted;
                 if (firearm.Attachments.Any((Attachment a) => a.Name == AttachmentName.Flashlight))
                 {

@@ -21,6 +21,7 @@ namespace AutoEvent.Games.Lava
             if (ev.Attacker != null && ev.Target != null)
             {
                 ev.Target.Damage(3f, "Shooting");
+                ev.Attacker.ReceiveHitMarker();
             }
         }
 

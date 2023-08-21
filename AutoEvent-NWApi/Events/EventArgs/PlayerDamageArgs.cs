@@ -9,7 +9,7 @@ namespace AutoEvent.Events.EventArgs
         {
             DamageHandler = damageHandler as AttackerDamageHandler;
 
-            Attacker = Player.Get(DamageHandler.Attacker.Hub);
+            Attacker = Player.Get(DamageHandler?.Attacker.Hub);
 
             Target = target;
         }
