@@ -89,8 +89,10 @@ namespace AutoEvent.Games.Boss
 
             Boss = Player.GetPlayers().Where(r => r.IsNTF).ToList().RandomItem();
             Extensions.SetRole(Boss, RoleTypeId.ChaosConscript, RoleSpawnFlags.None);
-            Extensions.SetPlayerScale(Boss, new Vector3(5, 5, 5));
             Boss.Position = RandomClass.GetSpawnPosition(GameMap);
+
+            Boss.Health = Player.GetPlayers().Count() * 4000;
+            Extensions.SetPlayerScale(Boss, new Vector3(5, 5, 5));
 
             Boss.ClearInventory();
             Boss.AddItem(ItemType.GunLogicer);

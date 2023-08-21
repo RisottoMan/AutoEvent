@@ -71,7 +71,7 @@ namespace AutoEvent.Games.Survival
             {
                 Extensions.SetRole(player, RoleTypeId.NtfSergeant, RoleSpawnFlags.None);
                 player.Position = RandomClass.GetSpawnPosition(GameMap);
-                Extensions.SetPlayerAhp(player, 100, 100, 0, 0, 0, true);
+                Extensions.SetPlayerAhp(player, 100, 100, 0, 0, 0, false);
 
                 player.AddItem(RandomClass.GetRandomGun());
                 player.AddItem(ItemType.GunCOM18);
@@ -106,7 +106,7 @@ namespace AutoEvent.Games.Survival
             for (int i = 0; i <= Player.GetPlayers().Count() / 10; i++)
             {
                 var player = Player.GetPlayers().Where(r => r.IsHuman).ToList().RandomItem();
-                player.SetRole(RoleTypeId.Scp0492, RoleChangeReason.None);
+                Extensions.SetRole(player, RoleTypeId.Scp0492, RoleSpawnFlags.AssignInventory);
                 player.EffectsManager.EnableEffect<Disabled>();
                 player.EffectsManager.EnableEffect<Scp1853>();
                 player.Health = 5000;

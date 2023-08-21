@@ -31,6 +31,7 @@ namespace AutoEvent
 
         public static void SetPlayerScale(Player target, Vector3 scale)
         {
+            return;
             if (target.GameObject.transform.localScale == scale) return;
 
             NetworkIdentity identity = target.ReferenceHub.networkIdentity;

@@ -48,6 +48,8 @@ namespace AutoEvent.Games.Jail
 
         public void OnWaitingEvent()
         {
+            var config = AutoEvent.Singleton.Config;
+
             GameMap = Extensions.LoadMap(MapName, new Vector3(90f, 1030f, -43.5f), Quaternion.Euler(Vector3.zero), Vector3.one);
             Server.FriendlyFire = true;
 
@@ -81,18 +83,18 @@ namespace AutoEvent.Games.Jail
 
             foreach(Player player in Player.GetPlayers())
             {
-                /*
-                if (player.Sender.CheckPermission("ev.run"))
+                if (config.PermissionList.Contains(ServerStatic.PermissionsHandler._members[player.UserId]))
                 {
                     Extensions.SetRole(player, RoleTypeId.NtfCaptain, RoleSpawnFlags.None);
                     player.Position = JailRandom.GetRandomPosition(GameMap, true);
-                    player.AddItem(new List<ItemType> { ItemType.GunE11SR, ItemType.GunCOM18 });
-                }*/
+                    player.AddItem(ItemType.GunE11SR);
+                    player.AddItem(ItemType.GunCOM18);
+                }
             }
 
             foreach (Player player in Player.GetPlayers())
             {
-                if (Player.GetPlayers().Count(r => r.IsNTF) < 0)
+                if (Player.GetPlayers().Count(r => r.Team == Team.FoundationForces) < 0)
                 {
                     Extensions.SetRole(player, RoleTypeId.NtfCaptain, RoleSpawnFlags.None);
                     player.Position = JailRandom.GetRandomPosition(GameMap, true);

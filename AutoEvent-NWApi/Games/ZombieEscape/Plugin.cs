@@ -70,7 +70,7 @@ namespace AutoEvent.Games.ZombieEscape
             {
                 Extensions.SetRole(player, RoleTypeId.NtfSergeant, RoleSpawnFlags.None);
                 player.Position = RandomClass.GetSpawnPosition(GameMap);
-                Extensions.SetPlayerAhp(player, 100, 100, 0, 0, 0, true);
+                Extensions.SetPlayerAhp(player, 100, 100, 0, 0, 0, false);
 
                 player.AddItem(RandomClass.GetRandomGun());
                 player.AddItem(ItemType.GunCOM18);
@@ -105,7 +105,7 @@ namespace AutoEvent.Games.ZombieEscape
             for (int i = 0; i <= Player.GetPlayers().Count() / 10; i++)
             {
                 var player = Player.GetPlayers().Where(r => r.IsHuman).ToList().RandomItem();
-                Extensions.SetRole(player, RoleTypeId.Scp0492, RoleSpawnFlags.None);
+                Extensions.SetRole(player, RoleTypeId.Scp0492, RoleSpawnFlags.AssignInventory);
                 player.EffectsManager.EnableEffect<Disabled>();
                 player.EffectsManager.EnableEffect<Scp1853>();
                 player.Health = 10000;

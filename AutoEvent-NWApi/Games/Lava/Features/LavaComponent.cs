@@ -6,17 +6,33 @@ namespace AutoEvent.Games.Lava.Features
     public class LavaComponent : MonoBehaviour
     {
         private BoxCollider collider;
+        private float damageCooldown = 3f;
+        private float elapsedTime = 0f;
+
         private void Start()
         {
             collider = gameObject.AddComponent<BoxCollider>();
             collider.isTrigger = true;
         }
-        void OnTriggerStay(Collider other)
+
+        private void Update()
         {
-            if (Player.Get(other.gameObject) is Player)
+            elapsedTime += Time.deltaTime;
+        }
+
+        private void OnTriggerStay(Collider other)
+        {
+            elapsedTime += Time.deltaTime;
+
+            if (elapsedTime >= damageCooldown)
             {
-                var pl = Player.Get(other.gameObject);
-                pl.Damage(0.1f, "<color=red>Сгорел в Лаве!</color>");
+                elapsedTime = 0f;
+
+                if (Player.Get(other.gameObject) is Player)
+                {
+                    var pl = Player.Get(other.gameObject);
+                    pl.Damage(30, AutoEvent.Singleton.Translation.PuzzleDied);
+                }
             }
         }
     }
