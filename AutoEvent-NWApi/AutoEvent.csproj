@@ -77,8 +77,6 @@
     <Reference Include="CommandSystem.Core" HintPath="$(SL_REFERENCES)\CommandSystem.Core.dll" />
     <Reference Include="NorthwoodLib" HintPath="$(SL_REFERENCES)\NorthwoodLib.dll" />
     <Reference Include="0Harmony" HintPath="$(EXILED_REFERENCES)\0Harmony.dll" />
-    <Reference Include="Pooling" HintPath="$(SL_REFERENCES)\Pooling.dll" />
-    <Reference Include="Caress" HintPath="$(SL_REFERENCES)\Caress.dll" />
     <Reference Include="YamlDotNet, Version=11.0.0.0, Culture=neutral, PublicKeyToken=ec19458f3c15af5e, processorArchitecture=MSIL">
       <HintPath>packages\YamlDotNet.11.0.1\lib\net45\YamlDotNet.dll</HintPath>
     </Reference>
@@ -203,7 +201,7 @@
     <Compile Include="Games\ZombieEscape\Plugin.cs" />
     <Compile Include="Interfaces\Event.cs" />
     <Compile Include="Interfaces\IEvent.cs" />
-    <Compile Include="Patches\ClientInstanceMode.cs" />
+    <Compile Include="Patches\PlayerList.cs" />
     <Compile Include="Patches\CreatePickup.cs" />
     <Compile Include="Patches\DropAmmo.cs" />
     <Compile Include="Patches\DropItem.cs" />

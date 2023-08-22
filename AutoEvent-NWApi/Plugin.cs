@@ -35,6 +35,7 @@ namespace AutoEvent
 
             Event.RegisterEvents();
             EventManager.RegisterEvents(this);
+            SCPSLAudioApi.Startup.SetupDependencies();
 
             eventHandler = new EventHandler();
             Servers.RemoteAdmin += eventHandler.OnRemoteAdmin;

@@ -8,10 +8,10 @@ using VoiceChat;
 using AutoEvent.API.Schematic.Objects;
 using AutoEvent.API.Schematic;
 using PluginAPI.Core;
-using PluginAPI.Helpers;
 using InventorySystem.Items.Pickups;
-using Object = UnityEngine.Object;
 using PlayerStatsSystem;
+using PluginAPI.Helpers;
+using Object = UnityEngine.Object;
 
 namespace AutoEvent
 {
@@ -58,7 +58,6 @@ namespace AutoEvent
 
         public static void PlayAudio(string audioFile, byte volume, bool loop, string eventName)
         {
-            /*
             Dummy = AddDummy();
 
             StopAudio();
@@ -67,17 +66,15 @@ namespace AutoEvent
 
             var audioPlayer = AudioPlayerBase.Get(Dummy);
             audioPlayer.Enqueue(path, -1);
-            audioPlayer.LogDebug = true;
+            audioPlayer.LogDebug = false;
             audioPlayer.BroadcastChannel = VoiceChatChannel.Intercom;
             audioPlayer.Volume = volume;
             audioPlayer.Loop = loop;
             audioPlayer.Play(0);
-            */
         }
 
         public static void StopAudio()
         {
-            /*
             var audioPlayer = AudioPlayerBase.Get(Dummy);
 
             if (audioPlayer.CurrentPlay != null)
@@ -85,9 +82,8 @@ namespace AutoEvent
                 audioPlayer.Stoptrack(true);
                 audioPlayer.OnDestroy();
             }
-            */
         }
-        /*
+
         public static ReferenceHub AddDummy()
         {
             var newPlayer = Object.Instantiate(NetworkManager.singleton.playerPrefab);
@@ -119,7 +115,7 @@ namespace AutoEvent
             CustomNetworkManager.TypedSingleton.OnServerDisconnect(Dummy.connectionToClient);
             Object.Destroy(Dummy.gameObject);
         }
-        */
+
         public static bool IsExistsMap(string schematicName)
         {
             var data = MapUtils.GetSchematicDataByName(schematicName);
@@ -160,6 +156,11 @@ namespace AutoEvent
         {
             Map.ClearBroadcasts();
             Map.Broadcast(time, text);
+        }
+
+        public static bool IsAudioBot(ReferenceHub hub)
+        {
+            return Dummy == hub;
         }
     }
 }
