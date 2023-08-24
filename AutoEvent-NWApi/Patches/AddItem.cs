@@ -27,6 +27,7 @@ namespace AutoEvent.Patches
                 firearm.Status = new FirearmStatus(firearm.AmmoManagerModule.MaxAmmo, firearmStatusFlags, firearm.GetCurrentAttachmentsCode());
             }
 
+            __result = itemBase;
             return false;
         }
     }
