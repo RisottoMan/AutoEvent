@@ -1,6 +1,7 @@
 ﻿using AutoEvent.Events.EventArgs;
 using MEC;
 using PlayerRoles;
+using PlayerStatsSystem;
 using PluginAPI.Core;
 using PluginAPI.Core.Attributes;
 using PluginAPI.Enums;
@@ -13,6 +14,11 @@ namespace AutoEvent.Games.Infection
     {
         public void OnPlayerDamage(PlayerDamageArgs ev)
         {
+            if (ev.DamageType == DeathTranslations.Falldown.Id)
+            {
+                ev.IsAllowed = false;
+            }
+
             if (ev.Attacker != null)
             {
                 if (ev.Attacker.Role == RoleTypeId.Scp0492)
@@ -21,10 +27,6 @@ namespace AutoEvent.Games.Infection
                     ev.Attacker.ReceiveHitMarker();
                 }
             }
-            //else if (!AutoEvent.Singleton.Config.InfectionConfig.FallDamageEnabled && ev.DamageHandler.Type == DamageType.Falldown)
-            //{
-            //    ev.IsAllowed = false;
-            //}
         }
 
         [PluginEvent(ServerEventType.PlayerJoined)]

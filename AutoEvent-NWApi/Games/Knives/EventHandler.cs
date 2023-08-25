@@ -1,5 +1,6 @@
 ﻿using AutoEvent.Events.EventArgs;
 using PlayerRoles;
+using PlayerStatsSystem;
 using PluginAPI.Core.Attributes;
 using PluginAPI.Enums;
 using PluginAPI.Events;
@@ -17,12 +18,10 @@ namespace AutoEvent.Games.Knives
 
         public void OnPlayerDamage(PlayerDamageArgs ev)
         {
-            /*
-            if (ev.DamageHandler.Type == DamageType.Falldown)
+            if (ev.DamageType == DeathTranslations.Falldown.Id)
             {
                 ev.IsAllowed = false;
             }
-            */
         }
 
         [PluginEvent(ServerEventType.PlayerDying)]

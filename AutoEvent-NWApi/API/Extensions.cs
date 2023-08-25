@@ -12,12 +12,17 @@ using InventorySystem.Items.Pickups;
 using PlayerStatsSystem;
 using PluginAPI.Helpers;
 using Object = UnityEngine.Object;
+using System.Reflection;
 
 namespace AutoEvent
 {
-    internal class Extensions
+    public class Extensions
     {
         public static ReferenceHub Dummy = new ReferenceHub();
+
+        private static MethodInfo sendSpawnMessage;
+        public static MethodInfo SendSpawnMessage => sendSpawnMessage ?? (sendSpawnMessage = typeof(NetworkServer).
+            GetMethod("SendSpawnMessage", BindingFlags.Static | BindingFlags.NonPublic));
 
         public static void SetRole(Player player, RoleTypeId newRole, RoleSpawnFlags spawnFlags)
         {
@@ -31,14 +36,20 @@ namespace AutoEvent
 
         public static void SetPlayerScale(Player target, Vector3 scale)
         {
-            return;
             if (target.GameObject.transform.localScale == scale) return;
 
-            NetworkIdentity identity = target.ReferenceHub.networkIdentity;
-            target.GameObject.transform.localScale = scale;
-            foreach (Player pl in Player.GetPlayers())
+            try
             {
-                //NetworkServer.SendSpawnMessage(identity, player.Connection);
+                NetworkIdentity identity = target.ReferenceHub.networkIdentity;
+                target.GameObject.transform.localScale = scale;
+                foreach (Player player in Player.GetPlayers())
+                {
+                    SendSpawnMessage?.Invoke(null, new object[2] { identity, player.Connection });
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Info($"Scale error: {ex}");
             }
         }
 
@@ -58,6 +69,7 @@ namespace AutoEvent
 
         public static void PlayAudio(string audioFile, byte volume, bool loop, string eventName)
         {
+            return;
             Dummy = AddDummy();
 
             StopAudio();
@@ -75,6 +87,7 @@ namespace AutoEvent
 
         public static void StopAudio()
         {
+            return;
             var audioPlayer = AudioPlayerBase.Get(Dummy);
 
             if (audioPlayer.CurrentPlay != null)

@@ -1,12 +1,17 @@
 ﻿using AutoEvent.Events.EventArgs;
+using InventorySystem;
 using InventorySystem.Configs;
 using MEC;
 using PlayerRoles;
+using PlayerStatsSystem;
+using PluginAPI.Core;
 using PluginAPI.Core.Attributes;
 using PluginAPI.Enums;
 using PluginAPI.Events;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 namespace AutoEvent.Games.HideAndSeek
 {
@@ -14,21 +19,30 @@ namespace AutoEvent.Games.HideAndSeek
     {
         public void OnPlayerDamage(PlayerDamageArgs ev)
         {
-            //if (ev.DamageHandler.Type == DamageType.Falldown)
-            //{
-            //    ev.IsAllowed = false;
-            //}
-
+            if (ev.DamageType == DeathTranslations.Falldown.Id)
+            {
+                ev.IsAllowed = false;
+            }
+            
             if (ev.Attacker != null)
             {
-                if (ev.Attacker.Items.First(r => r.ItemTypeId == ItemType.Jailbird) == true && ev.Target.Items.First(r => r.ItemTypeId == ItemType.Jailbird) == false)
+                bool isAttackerJailbird = ev.Attacker.Items.FirstOrDefault(r => r.ItemTypeId == ItemType.Jailbird);
+                bool isTargetJailBird = ev.Target.Items.FirstOrDefault(r => r.ItemTypeId == ItemType.Jailbird);
+                
+                if (isAttackerJailbird == true && isTargetJailBird == false)
                 {
+                    Log.Info("Proverka");
                     ev.IsAllowed = false;
-                    ev.Attacker.ClearInventory();
-                    var item = ev.Target.AddItem(ItemType.Jailbird);
+
+                    foreach(var item in ev.Attacker.Items) // here bug
+                    {
+                        ev.Attacker.RemoveItem(item); // yes im here :D
+                    }
+
+                    var jailbird = ev.Target.AddItem(ItemType.Jailbird);
                     Timing.CallDelayed(0.1f, () =>
                     {
-                        ev.Target.CurrentItem = item;
+                        ev.Target.CurrentItem = jailbird;
                     });
                 }
             }

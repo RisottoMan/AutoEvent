@@ -9,6 +9,7 @@ using PluginAPI.Core.Attributes;
 using PluginAPI.Enums;
 using PluginAPI.Events;
 using PluginAPI.Core;
+using PlayerStatsSystem;
 
 namespace AutoEvent.Games.Survival
 {
@@ -22,11 +23,10 @@ namespace AutoEvent.Games.Survival
         
         public void OnPlayerDamage(PlayerDamageArgs ev)
         {
-            //if (ev.Player != null && ev.DamageHandler.Type == DamageType.Falldown)
-            //{
-            //    ev.IsAllowed = false;
-            //    return;
-            //}
+            if (ev.DamageType == DeathTranslations.Falldown.Id)
+            {
+                ev.IsAllowed = false;
+            }
 
             if (ev.Attacker != null && ev.Target != null)
             {

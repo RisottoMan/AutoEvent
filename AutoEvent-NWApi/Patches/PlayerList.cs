@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace AutoEvent.Patches
 {
-    [HarmonyPatch(typeof(Player), nameof(Player.GetPlayers))]
+    //[HarmonyPatch(typeof(Player), nameof(Player.GetPlayers))]
     public class PlayerList
     {
         public static bool Prefix<Player>(Player __instance , ref List<Player> __result)

@@ -17,11 +17,12 @@ namespace AutoEvent.Games.DeathParty
 
         public void OnPlayerDamage(PlayerDamageArgs ev)
         {
-            if (ev.Target != null && ev.DamageHandler is ExplosionDamageHandler)
+            if (ev.DamageType == DeathTranslations.Explosion.Id)
             {
+                ev.IsAllowed = false;
+
                 if (Plugin.Stage != 5)
                 {
-                    ev.IsAllowed = false;
                     ev.Target.Damage(10, "Grenade");
                 }
                 else

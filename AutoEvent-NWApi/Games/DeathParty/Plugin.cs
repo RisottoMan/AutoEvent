@@ -12,6 +12,10 @@ using AutoEvent.API.Schematic.Objects;
 using InventorySystem.Items;
 using AutoEvent.Events.Handlers;
 using Event = AutoEvent.Interfaces.Event;
+using Mirror;
+using Object = UnityEngine.Object;
+using Random = UnityEngine.Random;
+using InventorySystem.Items.Pickups;
 
 namespace AutoEvent.Games.DeathParty
 {
@@ -163,21 +167,17 @@ namespace AutoEvent.Games.DeathParty
         
         public void GrenadeSpawn(float fuseTime, float radius, float height, float scale)
         {
-            ExplosionGrenade grenade = new ExplosionGrenade();
-            grenade._fuseTime = fuseTime;
-            grenade._maxRadius = radius;
-            grenade.Position = GameMap.Position;
-            grenade.Start();
-            /*
-            ExplosiveGrenade grenade = (ExplosiveGrenade)Item.Create(ItemType.GrenadeHE);
-            grenade.FuseTime = fuseTime;
-            grenade.MaxRadius = radius;
+            var item = CreateThrowable(ItemType.GrenadeHE);
 
-            var projectile = grenade.SpawnActive(GameMap.Position + new Vector3(Random.Range(-radius, radius), height, Random.Range(-radius, radius)));
-            projectile.Weight = 1000f;
-            projectile.Scale = new Vector3(scale, scale, scale);
-            */
+            Vector3 pos = GameMap.Position + new Vector3(Random.Range(-radius, radius), height, Random.Range(-radius, radius));
 
+            TimeGrenade grenadeboom = (TimeGrenade)Object.Instantiate(item.Projectile, pos, Quaternion.identity);
+            grenadeboom._fuseTime = fuseTime;
+            grenadeboom.NetworkInfo = new PickupSyncInfo(item.ItemTypeId, item.Weight, item.ItemSerial);
+            grenadeboom.transform.localScale = new Vector3(scale, scale, scale);
+
+            NetworkServer.Spawn(grenadeboom.gameObject);
+            grenadeboom.ServerActivate();
         }
 
         public static ThrowableItem CreateThrowable(ItemType type, Player player = null) => (player != null ? player.ReferenceHub : ReferenceHub.HostHub)

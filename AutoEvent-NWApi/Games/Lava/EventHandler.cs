@@ -1,6 +1,7 @@
 ﻿using AutoEvent.Events.EventArgs;
 using InventorySystem.Configs;
 using PlayerRoles;
+using PlayerStatsSystem;
 using PluginAPI.Core;
 using PluginAPI.Core.Attributes;
 using PluginAPI.Enums;
@@ -13,10 +14,10 @@ namespace AutoEvent.Games.Lava
     {
         public void OnPlayerDamage(PlayerDamageArgs ev)
         {
-            //if (ev.Player != null && ev.DamageHandler.Type == DamageType.Falldown)
-            //{
-            //    ev.IsAllowed = false;
-            //}
+            if (ev.DamageType == DeathTranslations.Falldown.Id)
+            {
+                ev.IsAllowed = false;
+            }
 
             if (ev.Attacker != null && ev.Target != null)
             {

@@ -81,20 +81,9 @@ namespace AutoEvent.Games.Jail
                 }
             }
 
-            foreach(Player player in Player.GetPlayers())
-            {
-                if (config.PermissionList.Contains(ServerStatic.PermissionsHandler._members[player.UserId]))
-                {
-                    Extensions.SetRole(player, RoleTypeId.NtfCaptain, RoleSpawnFlags.None);
-                    player.Position = JailRandom.GetRandomPosition(GameMap, true);
-                    player.AddItem(ItemType.GunE11SR);
-                    player.AddItem(ItemType.GunCOM18);
-                }
-            }
-
             foreach (Player player in Player.GetPlayers())
             {
-                if (Player.GetPlayers().Count(r => r.Team == Team.FoundationForces) < 0)
+                if (Player.GetPlayers().Count(r => r.Team == Team.FoundationForces) < 2) // 0
                 {
                     Extensions.SetRole(player, RoleTypeId.NtfCaptain, RoleSpawnFlags.None);
                     player.Position = JailRandom.GetRandomPosition(GameMap, true);

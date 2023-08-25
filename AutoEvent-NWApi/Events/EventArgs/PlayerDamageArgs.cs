@@ -7,11 +7,19 @@ namespace AutoEvent.Events.EventArgs
     {
         public PlayerDamageArgs(Player target, DamageHandlerBase damageHandler)
         {
-            DamageHandler = damageHandler as AttackerDamageHandler;
-
-            Attacker = Player.Get(DamageHandler?.Attacker.Hub);
+            DamageHandler = damageHandler;
 
             Target = target;
+
+            AttackerHandler = damageHandler as AttackerDamageHandler;
+
+            Attacker = Player.Get(AttackerHandler?.Attacker.Hub);
+
+            if (DamageHandler is UniversalDamageHandler damage)
+            {
+                DamageType = damage.TranslationId;
+            }
+
         }
 
         public Player Target { get; }
@@ -20,11 +28,15 @@ namespace AutoEvent.Events.EventArgs
 
         public float Amount
         {
-            get => DamageHandler.Damage;
-            set => DamageHandler.Damage = value;
+            get => AttackerHandler.Damage;
+            set => AttackerHandler.Damage = value;
         }
 
-        public AttackerDamageHandler DamageHandler { get; set; }
+        public AttackerDamageHandler AttackerHandler { get; set; }
+        
+        public DamageHandlerBase DamageHandler { get; set; }
+
+        public byte DamageType { get; set; } 
 
         public bool IsAllowed { get; set; } = true;
     }
