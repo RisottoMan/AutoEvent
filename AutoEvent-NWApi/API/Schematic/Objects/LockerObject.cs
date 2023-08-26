@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace AutoEvent.API.Schematic.Objects
+﻿namespace AutoEvent.API.Schematic.Objects
 {
     using System;
     using System.Collections.Generic;
@@ -74,8 +68,6 @@ namespace AutoEvent.API.Schematic.Objects
                 LockerItemSerializable chosenLoot = Choose(Base.ShuffleChambers ? chambersCopy[i] : Base.Chambers[i]);
                 if (chosenLoot == null)
                     continue;
-
-                //Locker.Chambers[i].SpawnItem(chosenLoot.Item, chosenLoot.Count);
             }
 
             Locker.NetworkOpenedChambers = Base.OpenedChambers;
@@ -88,7 +80,6 @@ namespace AutoEvent.API.Schematic.Objects
 
         public StructurePositionSync StructurePositionSync { get; private set; }
 
-        /// <inheritdoc cref="MapEditorObject.UpdateObject()"/>
         public override void UpdateObject()
         {
             StructurePositionSync.Network_position = Position;

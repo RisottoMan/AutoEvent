@@ -8,8 +8,8 @@ namespace AutoEvent.Games.Knives
     {
         public static Vector3 GetSpawnPosition(SchematicObject GameMap, bool isScientist)
         {
-            if (isScientist) return GameMap.AttachedBlocks.Where(x => x.name == "Spawnpoint").FirstOrDefault().transform.position;
-            else return GameMap.AttachedBlocks.Where(x => x.name == "Spawnpoint1").FirstOrDefault().transform.position;
+            string spawnName = isScientist ? "Spawnpoint" : "Spawnpoint1";
+            return GameMap.AttachedBlocks.Where(x => x.name == spawnName).ToList().RandomItem().transform.position;
         }
     }
 }

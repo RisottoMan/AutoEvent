@@ -1,16 +1,13 @@
-﻿
-namespace AutoEvent.API.Schematic.Objects
+﻿namespace AutoEvent.API.Schematic.Objects
 {
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.IO;
     using System.Linq;
-    using System.Net.Sockets;
     using AdminToys;
     using Enums;
     using InventorySystem.Items.Firearms.Attachments;
-    using MapGeneration;
     using MapGeneration.Distributors;
     using MEC;
     using Mirror;
@@ -31,7 +28,6 @@ namespace AutoEvent.API.Schematic.Objects
             Base = schematicSerializable;
             SchematicData = data;
             DirectoryPath = data.Path;
-            ForcedRoomType = schematicSerializable.RoomType != RoomName.Unnamed ? schematicSerializable.RoomType : FindRoom().Name;
 
             ObjectFromId = new Dictionary<int, Transform>(SchematicData.Blocks.Count + 1)
             {

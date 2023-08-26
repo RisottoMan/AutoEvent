@@ -10,6 +10,7 @@ namespace AutoEvent.Games.Lava
         {
             return GameMap.AttachedBlocks.Where(x => x.name == "Spawnpoint").ToList().RandomItem().transform.position;
         }
+
         public static Vector3 GetRandomGun(SchematicObject GameMap)
         {
             return GameMap.AttachedBlocks.Where(x => x.name == "Spawngun").ToList().RandomItem().transform.position;

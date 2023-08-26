@@ -8,10 +8,8 @@ namespace AutoEvent.Games.Versus
     {
         public static Vector3 GetSpawnPosition(SchematicObject GameMap, bool isScientist)
         {
-            var spawnpoints = GameMap.AttachedBlocks.Where(x => x.name == "Spawnpoint");
-
-            if (isScientist) return spawnpoints.ElementAt(0).transform.position;
-            else return spawnpoints.ElementAt(1).transform.position;
+            int value = isScientist ? 0 : 1;
+            return GameMap.AttachedBlocks.Where(x => x.name == "Spawnpoint").ElementAt(value).transform.position;
         }
     }
 }

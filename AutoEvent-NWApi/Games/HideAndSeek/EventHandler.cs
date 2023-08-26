@@ -2,7 +2,6 @@
 using MEC;
 using PlayerRoles;
 using PlayerStatsSystem;
-using PluginAPI.Core;
 using PluginAPI.Core.Attributes;
 using PluginAPI.Enums;
 using PluginAPI.Events;
@@ -26,13 +25,9 @@ namespace AutoEvent.Games.HideAndSeek
                 
                 if (isAttackerJailbird == true && isTargetJailBird == false)
                 {
-                    Log.Info("Proverka");
                     ev.IsAllowed = false;
 
-                    foreach(var item in ev.Attacker.Items) // here bug
-                    {
-                        ev.Attacker.RemoveItem(item); // yes im here :D
-                    }
+                    ev.Attacker.ClearInventory();
 
                     var jailbird = ev.Target.AddItem(ItemType.Jailbird);
                     Timing.CallDelayed(0.1f, () =>

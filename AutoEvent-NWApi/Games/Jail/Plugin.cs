@@ -32,6 +32,7 @@ namespace AutoEvent.Games.Jail
             _eventHandler = new EventHandler(this);
             EventManager.RegisterEvents(_eventHandler);
             Servers.TeamRespawn += _eventHandler.OnTeamRespawn;
+            Players.LockerInteract += _eventHandler.OnLockerInteract;
 
             OnWaitingEvent();
         }
@@ -39,6 +40,7 @@ namespace AutoEvent.Games.Jail
         {
             EventManager.UnregisterEvents(_eventHandler);
             Servers.TeamRespawn -= _eventHandler.OnTeamRespawn;
+            Players.LockerInteract -= _eventHandler.OnLockerInteract;
 
             _eventHandler = null;
             Timing.CallDelayed(10f, () => EventEnd());

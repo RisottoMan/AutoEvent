@@ -8,8 +8,8 @@ namespace AutoEvent.Games.Jail
     {
         public static Vector3 GetRandomPosition(SchematicObject GameMap, bool isMtf)
         {
-            if (isMtf) return GameMap.AttachedBlocks.First(x => x.name == "SpawnpointMtf").transform.position;
-            else return GameMap.AttachedBlocks.Where(x => x.name == "Spawnpoint").ToList().RandomItem().transform.position;
+            string spawnName = isMtf ? "SpawnpointMtf" : "Spawnpoint";
+            return GameMap.AttachedBlocks.Where(x => x.name == spawnName).ToList().RandomItem().transform.position;
         }
     }
 }

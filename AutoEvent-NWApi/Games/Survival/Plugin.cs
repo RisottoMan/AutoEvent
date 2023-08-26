@@ -70,15 +70,15 @@ namespace AutoEvent.Games.Survival
             {
                 Extensions.SetRole(player, RoleTypeId.NtfSergeant, RoleSpawnFlags.None);
                 player.Position = RandomClass.GetSpawnPosition(GameMap);
-                Extensions.SetPlayerAhp(player, 100, 100, 0, 0, 0, false);
+                //Extensions.SetPlayerAhp(player, 100, 100, 0);
 
-                player.AddItem(RandomClass.GetRandomGun());
+                var item = player.AddItem(RandomClass.GetRandomGun());
                 player.AddItem(ItemType.GunCOM18);
                 player.AddItem(ItemType.ArmorCombat);
 
                 Timing.CallDelayed(0.1f, () =>
                 {
-                    player.CurrentItem = player.Items.ElementAt(0);
+                    player.CurrentItem = item;
                 });
             }
 

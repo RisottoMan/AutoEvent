@@ -39,17 +39,16 @@ namespace AutoEvent.Patches
 
                 ListPool<CodeInstruction>.Shared.Return(newInstructions);
             }
+
             private static bool HandleJailbird(JailbirdItem instance, JailbirdMessageType messageType)
             {
-                if (AutoEvent.ActiveEvent == null) return true;
+                if (AutoEvent.ActiveEvent == null)
+                    return true;
 
-                switch (messageType)
-                {
-                    case JailbirdMessageType.ChargeLoadTriggered:
-                        return AutoEvent.Singleton.Config.IsJailbirdAbilityEnable;
-                    default:
-                        return true;
-                }
+                if (messageType == JailbirdMessageType.ChargeLoadTriggered)
+                    return false;
+
+                return true;
             }
         }
     }

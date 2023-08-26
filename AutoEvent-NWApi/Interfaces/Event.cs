@@ -9,50 +9,62 @@ namespace AutoEvent.Interfaces
 {
     public abstract class Event : IEvent
     {
-        public static List<Event> Events = new List<Event>();
-        public int Id { get; private set; }
         public abstract string Name { get; set; }
         public abstract string Description { get; set; }
         public abstract string Author { get; set; }
         public abstract string MapName { get; set; }
         public abstract string CommandName { get; set; }
         public virtual void OnStart() => throw new NotImplementedException("cannot start event because OnStart method has not implemented");
-        public abstract void OnStop();
+        public virtual void OnStop() => throw new NotImplementedException("cannot start event because OnStop method has not implemented");
+        public int Id { get; private set; }
+        public static List<Event> Events { get; set; } = new List<Event>();
 
         public static void RegisterEvents()
         {
             Assembly callingAssembly = Assembly.GetCallingAssembly();
             Type[] types = callingAssembly.GetTypes();
+
             foreach (Type type in types)
             {
                 try
                 {
-                    if (type.IsAbstract || type.IsEnum || type.IsInterface || type.GetCustomAttributes(typeof(DisabledFeaturesAttribute), false).Any())
+                    if (type.IsAbstract ||
+                        type.IsEnum ||
+                        type.IsInterface ||
+                        Activator.CreateInstance(type) is not Event ev ||
+                        type.GetCustomAttributes(typeof(DisabledFeaturesAttribute), false).Any())
                         continue;
-                    if (Activator.CreateInstance(type) is not Event ev)
-                        continue;
+
                     ev.Id = Events.Count;
                     Events.Add(ev);
-                    Log.Info($"[EventLoader] {ev.Name} has been registered !");
+
+                    Log.Info($"[EventLoader] {ev.Name} has been registered!");
                 }
-                catch (Exception ex) when (ex is not MissingMethodException)
+                catch (MissingMethodException) { }
+                catch (Exception ex)
                 {
                     Log.Error($"[EventLoader] cannot register an event: {ex}");
                 }
-                catch { }
             }
         }
+
         public static Event GetEvent(string type)
         {
             Event ev = null;
+
             if (int.TryParse(type, out int id))
                 return GetEvent(id);
-            if (!TryGetEventByCName(type, out ev))
-                return Events.Any(x => x.Name == type) ? Events.First(x => x.Name == type) : null;
+
+            if (!TryGetEventByCName(type, out ev)) 
+                return Events.FirstOrDefault(ev => ev.Name == type);
+
             return ev;
         }
-        public static Event GetEvent(int id) => Events.FirstOrDefault(x => x.Id == id);
 
-        private static bool TryGetEventByCName(string type, out Event ev) => (ev = Events.FirstOrDefault(x => x.CommandName == type)) != null;
+        public static Event GetEvent(int id) => Events.FirstOrDefault(x => x.Id == id);
+        private static bool TryGetEventByCName(string type, out Event ev)
+        {
+            return (ev = Events.FirstOrDefault(x => x.CommandName == type)) != null;
+        }
     }
 }

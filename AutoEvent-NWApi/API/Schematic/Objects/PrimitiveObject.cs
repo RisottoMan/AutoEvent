@@ -1,8 +1,6 @@
-﻿
-namespace AutoEvent.API.Schematic.Objects
+﻿namespace AutoEvent.API.Schematic.Objects
 {
     using AdminToys;
-    using MapGeneration;
     using Serializable;
     using UnityEngine;
 
@@ -21,10 +19,7 @@ namespace AutoEvent.API.Schematic.Objects
         public PrimitiveObject Init(PrimitiveSerializable primitiveSerializable)
         {
             Base = primitiveSerializable;
-            //Primitive.MovementSmoothing = 60;
             _prevScale = transform.localScale;
-
-            ForcedRoomType = primitiveSerializable.RoomType == RoomName.Unnamed ? FindRoom().Name : primitiveSerializable.RoomType;
 
             UpdateObject();
             _primitiveObjectToy.enabled = false;
@@ -60,7 +55,6 @@ namespace AutoEvent.API.Schematic.Objects
             }
         }
 
-        /// <inheritdoc cref="MapEditorObject.UpdateObject()"/>
         public override void UpdateObject()
         {
             UpdateTransformProperties();

@@ -5,14 +5,12 @@ namespace AutoEvent.Events.Handlers
 {
     public static class Servers
     {
-        public static event Action<CreatePickupArgs> CreatePickup;
         public static event Action<PlaceBloodArgs> PlaceBlood;
         public static event Action<PlaceBulletArgs> PlaceBullet;
         public static event Action<SpawnRagdollArgs> SpawnRagdoll;
         public static event Action<TeamRespawnArgs> TeamRespawn;
         public static event Action<RemoteAdminArgs> RemoteAdmin;
         public static event Action<CassieScpArgs> CassieScp;
-        public static void OnCreatePickup(CreatePickupArgs ev) => CreatePickup?.Invoke(ev);
         public static void OnPlaceBlood(PlaceBloodArgs ev) => PlaceBlood?.Invoke(ev);
         public static void OnPlaceBullet(PlaceBulletArgs ev) => PlaceBullet?.Invoke(ev);
         public static void OnSpawnRagdoll(SpawnRagdollArgs ev) => SpawnRagdoll?.Invoke(ev);

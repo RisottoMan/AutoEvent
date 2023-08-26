@@ -20,7 +20,6 @@ namespace AutoEvent.Games.Deathmatch
         public override string Author { get; set; } = "KoT0XleB";
         public override string MapName { get; set; } = "Shipment";
         public override string CommandName { get; set; } = "deathmatch";
-        TimeSpan EventTime { get; set; }
         EventHandler _eventHandler { get; set; }
         public SchematicObject GameMap { get; set; }
         public int MtfKills { get; set; }
@@ -44,6 +43,7 @@ namespace AutoEvent.Games.Deathmatch
             Players.DropItem += _eventHandler.OnDropItem;
             Players.DropAmmo += _eventHandler.OnDropAmmo;
             Players.PlayerDying += _eventHandler.OnPlayerDying;
+            Players.HandCuff += _eventHandler.OnHandCuff;
         }
 
         public override void OnStop()
@@ -58,6 +58,7 @@ namespace AutoEvent.Games.Deathmatch
             Players.DropItem -= _eventHandler.OnDropItem;
             Players.DropAmmo -= _eventHandler.OnDropAmmo;
             Players.PlayerDying -= _eventHandler.OnPlayerDying;
+            Players.HandCuff -= _eventHandler.OnHandCuff;
 
             _eventHandler = null;
             Timing.CallDelayed(10f, () => EventEnd());
@@ -65,8 +66,6 @@ namespace AutoEvent.Games.Deathmatch
 
         public void OnEventStarted()
         {
-            EventTime = new TimeSpan(0, 0, 0);
-
             float scale = 1;
             switch (Player.GetPlayers().Count())
             {
@@ -121,12 +120,12 @@ namespace AutoEvent.Games.Deathmatch
 
             foreach(Player player in Player.GetPlayers())
             {
-                player.AddItem(RandomClass.RandomItems.RandomItem());
+                var item = player.AddItem(RandomClass.RandomItems.RandomItem());
                 player.AddItem(ItemType.ArmorCombat);
 
-                Timing.CallDelayed(0.2f, () =>
+                Timing.CallDelayed(0.1f, () =>
                 {
-                    player.CurrentItem = player.Items.ElementAt(0);
+                    player.CurrentItem = item;
                 });
             }
 
@@ -149,7 +148,6 @@ namespace AutoEvent.Games.Deathmatch
                     Replace("{chaostext}", $"{chaosString} {ChaosKills}"), 1);
 
                 yield return Timing.WaitForSeconds(1f);
-                EventTime += TimeSpan.FromSeconds(1f);
             }
 
             if (MtfKills == NeedKills)

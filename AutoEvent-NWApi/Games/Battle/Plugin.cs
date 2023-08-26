@@ -58,7 +58,7 @@ namespace AutoEvent.Games.Battle
             GameMap = Extensions.LoadMap(MapName, new Vector3(6f, 1030f, -43.5f), Quaternion.Euler(Vector3.zero), Vector3.one);
             Extensions.PlayAudio("MetalGearSolid.ogg", 10, false, Name);
 
-            var count = 0;
+            int count = 0;
             foreach (Player player in Player.GetPlayers())
             {
                 if (count % 2 == 0)

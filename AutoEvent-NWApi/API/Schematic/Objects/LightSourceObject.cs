@@ -23,7 +23,6 @@ namespace AutoEvent.API.Schematic.Objects
             Base = lightSourceSerializable;
             _lightSourceToy.MovementSmoothing = 60;
 
-            ForcedRoomType = lightSourceSerializable.RoomType != RoomName.Unnamed ? lightSourceSerializable.RoomType : FindRoom().Name;
             UpdateObject();
 
             if (spawn)
@@ -54,21 +53,11 @@ namespace AutoEvent.API.Schematic.Objects
 
         public override void UpdateObject()
         {
-            if (!IsSchematicBlock)
-            {
-                _lightSourceToy.Position = _transform.position;
-                _lightSourceToy.LightColor = GetColorFromString(Base.Color);
-                _lightSourceToy.LightIntensity = Base.Intensity;
-                _lightSourceToy.LightRange = Base.Range;
-                _lightSourceToy.LightShadows = Base.Shadows;
-            }
-            else
-            {
-                _lightSourceToy.LightColor = GetColorFromString(Base.Color);
-                _lightSourceToy.LightIntensity = Base.Intensity;
-                _lightSourceToy.LightRange = Base.Range;
-                _lightSourceToy.LightShadows = Base.Shadows;
-            }
+            _lightSourceToy.Position = _transform.position;
+            _lightSourceToy.LightColor = GetColorFromString(Base.Color);
+            _lightSourceToy.LightIntensity = Base.Intensity;
+            _lightSourceToy.LightRange = Base.Range;
+            _lightSourceToy.LightShadows = Base.Shadows;
 
             UpdateTransformProperties();
         }

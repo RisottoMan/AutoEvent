@@ -11,16 +11,16 @@ using PluginAPI.Core;
 using InventorySystem.Items.Pickups;
 using PlayerStatsSystem;
 using PluginAPI.Helpers;
-using Object = UnityEngine.Object;
 using System.Reflection;
 using InventorySystem.Items.ThrowableProjectiles;
 using InventorySystem.Items;
+using Object = UnityEngine.Object;
 
 namespace AutoEvent
 {
     public class Extensions
     {
-        public static ReferenceHub Dummy = new ReferenceHub();
+        public static ReferenceHub AudioBot = new ReferenceHub();
 
         private static MethodInfo sendSpawnMessage;
         public static MethodInfo SendSpawnMessage => sendSpawnMessage ?? (sendSpawnMessage = typeof(NetworkServer).
@@ -57,6 +57,8 @@ namespace AutoEvent
 
         public static void SetPlayerAhp(Player player, float amount, float limit = 75, float decay = 1.2f, float efficacy = 0.7f, float sustain = 0, bool persistant = false)
         {
+            if (amount > 100) amount = 100;
+
             player.ReferenceHub.playerStats.GetModule<AhpStat>().ServerAddProcess(amount, limit, decay, efficacy, sustain, persistant);
         }
 
@@ -71,14 +73,13 @@ namespace AutoEvent
 
         public static void PlayAudio(string audioFile, byte volume, bool loop, string eventName)
         {
-            return;
-            Dummy = AddDummy();
+            if (AudioBot == null) AudioBot = AddDummy();
 
             StopAudio();
 
             var path = Path.Combine(Path.Combine(Paths.GlobalPlugins.Plugins, "Music"), audioFile);
 
-            var audioPlayer = AudioPlayerBase.Get(Dummy);
+            var audioPlayer = AudioPlayerBase.Get(AudioBot);
             audioPlayer.Enqueue(path, -1);
             audioPlayer.LogDebug = false;
             audioPlayer.BroadcastChannel = VoiceChatChannel.Intercom;
@@ -89,8 +90,7 @@ namespace AutoEvent
 
         public static void StopAudio()
         {
-            return;
-            var audioPlayer = AudioPlayerBase.Get(Dummy);
+            var audioPlayer = AudioPlayerBase.Get(AudioBot);
 
             if (audioPlayer.CurrentPlay != null)
             {
@@ -118,7 +118,7 @@ namespace AutoEvent
 
         public static void RemoveDummy()
         {
-            var audioPlayer = AudioPlayerBase.Get(Dummy);
+            var audioPlayer = AudioPlayerBase.Get(AudioBot);
 
             if (audioPlayer.CurrentPlay != null)
             {
@@ -126,9 +126,9 @@ namespace AutoEvent
                 audioPlayer.OnDestroy();
             }
 
-            Dummy.OnDestroy();
-            CustomNetworkManager.TypedSingleton.OnServerDisconnect(Dummy.connectionToClient);
-            Object.Destroy(Dummy.gameObject);
+            AudioBot.OnDestroy();
+            CustomNetworkManager.TypedSingleton.OnServerDisconnect(AudioBot.connectionToClient);
+            Object.Destroy(AudioBot.gameObject);
         }
 
         public static bool IsExistsMap(string schematicName)
@@ -171,11 +171,6 @@ namespace AutoEvent
         {
             Map.ClearBroadcasts();
             Map.Broadcast(time, text);
-        }
-
-        public static bool IsAudioBot(ReferenceHub hub)
-        {
-            return Dummy == hub;
         }
 
         public static void GrenadeSpawn(float fuseTime, Vector3 pos, float scale)

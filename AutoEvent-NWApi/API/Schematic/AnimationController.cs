@@ -1,5 +1,4 @@
-﻿
-namespace AutoEvent.API.Schematic
+﻿namespace AutoEvent.API.Schematic
 {
     using System.Collections.Generic;
     using System.Linq;

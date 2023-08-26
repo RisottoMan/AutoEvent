@@ -15,11 +15,26 @@ namespace AutoEvent.Games.Jail
             _plugin = plugin;
         }
 
-        [PluginEvent(ServerEventType.PlayerInteractLocker)]
-        public void OnInteractLocker(PlayerInteractLockerEvent ev)
+        [PluginEvent(ServerEventType.PlayerShotWeapon)]
+        public void PlayerShoot(PlayerShotWeaponEvent ev)
         {
-            // ev.IsAllowed = false;
-            if (ev.Locker.StructureType == StructureType.StandardLocker)
+            if (!Physics.Raycast(ev.Player.Camera.position, ev.Player.Camera.forward, out RaycastHit raycastHit, 100f))
+            {
+                return;
+            }
+
+            if (Vector3.Distance(raycastHit.transform.gameObject.transform.position, _plugin.Button.transform.position) < 3)
+            {
+                _plugin.PrisonerDoors.GetComponent<JailerComponent>().ToggleDoor();
+            }
+        }
+
+
+        public void OnLockerInteract(LockerInteractArgs ev)
+        {
+            ev.IsAllowed = false;
+
+            if (ev.LockerType == StructureType.StandardLocker)
             {
                 ev.Player.ClearInventory();
                 ev.Player.AddItem(ItemType.GunE11SR);
@@ -37,20 +52,6 @@ namespace AutoEvent.Games.Jail
                 {
                     ev.Player.Health = ev.Player.MaxHealth;
                 }
-            }
-        }
-
-        [PluginEvent(ServerEventType.PlayerShotWeapon)]
-        public void PlayerShoot(PlayerShotWeaponEvent ev)
-        {
-            if (!Physics.Raycast(ev.Player.Camera.position, ev.Player.Camera.forward, out RaycastHit raycastHit, 100f))
-            {
-                return;
-            }
-
-            if (Vector3.Distance(raycastHit.transform.gameObject.transform.position, _plugin.Button.transform.position) < 3)
-            {
-                _plugin.PrisonerDoors.GetComponent<JailerComponent>().ToggleDoor();
             }
         }
 

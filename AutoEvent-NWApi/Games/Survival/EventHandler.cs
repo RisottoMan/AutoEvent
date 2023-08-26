@@ -32,7 +32,7 @@ namespace AutoEvent.Games.Survival
             {
                 if (ev.Attacker.IsSCP)
                 {
-                    if (ev.Target.ArtificialHealth <= 50)
+                    if (ev.Target.Health <= 50)
                     {
                         ev.Target.SetRole(RoleTypeId.Scp0492);
                         ev.Target.Health = 3000;
@@ -40,7 +40,8 @@ namespace AutoEvent.Games.Survival
                     else
                     {
                         ev.Amount = 0;
-                        ev.Target.ArtificialHealth -= 50;
+                        ev.Target.Health -= 50;
+                        ev.Target.ReferenceHub.playerStats.GetModule<AhpStat>().ServerKillProcess(0);
                     }
 
                     ev.Attacker.ReceiveHitMarker();
@@ -82,7 +83,7 @@ namespace AutoEvent.Games.Survival
             {
                 Extensions.SetRole(ev.Player, RoleTypeId.NtfSergeant, RoleSpawnFlags.AssignInventory);
                 ev.Player.Position = RandomClass.GetSpawnPosition(_plugin.GameMap);
-                ev.Player.ArtificialHealth = 100;
+                Extensions.SetPlayerAhp(ev.Player, 100, 100, 0);
 
                 Timing.CallDelayed(0.1f, () =>
                 {

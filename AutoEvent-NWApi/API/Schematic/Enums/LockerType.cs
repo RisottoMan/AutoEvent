@@ -1,5 +1,4 @@
-﻿
-namespace AutoEvent.API.Schematic.Enums
+﻿namespace AutoEvent.API.Schematic.Enums
 {
     public enum LockerType
     {

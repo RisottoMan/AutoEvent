@@ -12,7 +12,7 @@ namespace AutoEvent
 {
     public class AutoEvent
     {
-        public static IEvent ActiveEvent = null;
+        public static IEvent ActiveEvent;
         public static AutoEvent Singleton;
         public static Harmony HarmonyPatch;
         EventHandler eventHandler;

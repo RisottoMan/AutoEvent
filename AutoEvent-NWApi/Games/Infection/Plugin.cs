@@ -56,10 +56,8 @@ namespace AutoEvent.Games.Infection
 
         public void OnEventStarted()
         {
-            //var config = AutoEvent.Singleton.Config.InfectionConfig;
-
             EventTime = new TimeSpan(0, 0, 0);
-            //MapName = config.ListOfMap.RandomItem();
+            MapName = InfectionConfig.ListOfMap.RandomItem();
 
             float scale = 1;
             switch(Player.GetPlayers().Count())
@@ -73,8 +71,8 @@ namespace AutoEvent.Games.Infection
 
             GameMap = Extensions.LoadMap(MapName, new Vector3(115.5f, 1030f, -43.5f), Quaternion.identity, new Vector3(1, 1, 1) * scale);
 
-            //var music = config.ListOfMusic.ToList().RandomItem();
-            //Extensions.PlayAudio(music.Key, music.Value, true, Name);
+            var music = InfectionConfig.ListOfMusic.ToList().RandomItem();
+            Extensions.PlayAudio(music.Key, music.Value, true, Name);
 
             foreach (Player player in Player.GetPlayers())
             {

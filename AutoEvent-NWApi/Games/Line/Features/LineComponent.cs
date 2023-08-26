@@ -18,7 +18,7 @@ namespace AutoEvent.Games.Line
             if (Player.Get(other.gameObject) is Player)
             {
                 var pl = Player.Get(other.gameObject);
-                pl.SetRole(RoleTypeId.Tutorial, PlayerRoles.RoleChangeReason.None);
+                pl.SetRole(RoleTypeId.Tutorial, RoleChangeReason.None);
                 pl.Position = Plugin.GameMap.AttachedBlocks.First(x => x.name == "SpawnPoint_spec").transform.position;
             }
         }

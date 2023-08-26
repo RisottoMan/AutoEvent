@@ -1,5 +1,4 @@
-﻿
-namespace AutoEvent.API.Schematic.Objects
+﻿namespace AutoEvent.API.Schematic.Objects
 {
     using System;
     using System.Linq;
@@ -36,18 +35,6 @@ namespace AutoEvent.API.Schematic.Objects
                 gO.transform.localScale = block.Scale;
 
             return this;
-        }
-
-        //public IndicatorObject AttachedIndicator;
-
-        public RoomName ForcedRoomType
-        {
-            get => _forcedRoom;
-            set
-            {
-                CurrentRoom = null;
-                _forcedRoom = value;
-            }
         }
 
         public Vector3 Position
@@ -103,7 +90,6 @@ namespace AutoEvent.API.Schematic.Objects
                 if (CurrentRoom == null)
                     CurrentRoom = FindRoom();
 
-                //return CurrentRoom.Type == RoomType.Surface ? transform.position : CurrentRoom.transform.InverseTransformPoint(transform.position);
                 return Vector3.zero;
             }
         }
@@ -115,21 +101,6 @@ namespace AutoEvent.API.Schematic.Objects
                 if (CurrentRoom == null)
                     CurrentRoom = FindRoom();
 
-                /*
-                Vector3 rotation = CurrentRoom.Type == RoomType.Surface ? transform.eulerAngles : transform.eulerAngles - CurrentRoom.transform.eulerAngles;
-
-                if (gameObject.TryGetComponent(out ObjectRotationComponent rotationComponent))
-                {
-                    if (rotationComponent.XisRandom)
-                        rotation.x = -1f;
-
-                    if (rotationComponent.YisRandom)
-                        rotation.y = -1f;
-
-                    if (rotationComponent.ZisRandom)
-                        rotation.z = -1f;
-                }
-                */
                 return Vector3.zero;
             }
         }
@@ -148,16 +119,6 @@ namespace AutoEvent.API.Schematic.Objects
         public RoomIdentifier FindRoom()
         {
             return RoomIdentifier.AllRoomIdentifiers.First(r => r.Name == RoomName.Outside);
-            //if (ForcedRoomType != RoomName.Unnamed)
-            //    //return Room.Get(x => x.Type == ForcedRoomType).OrderBy(x => (x.Position - Position).sqrMagnitude).First();
-            //    return RoomIdentifier.AllRoomIdentifiers.First(r => r.Name == RoomName.Outside);
-
-            //RoomIdentifier? room = RoomIdentifier.FindParentRoom(gameObject);
-
-            //if (room != null && room.Name == RoomName.Outside && Position.y <= 500f)
-            //    room = Room.List.OrderBy(x => (x.Position - Position).sqrMagnitude).First();
-
-            //return room != null ? room : Room.Get(RoomName.Outside);
         }
 
         public static Color GetColorFromString(string colorText)
@@ -193,7 +154,5 @@ namespace AutoEvent.API.Schematic.Objects
         public override string ToString() => $"{name} {Position} {Rotation.eulerAngles} {Scale}";
 
         internal Player prevOwner;
-
-        private RoomName _forcedRoom = RoomName.Unnamed;
     }
 }

@@ -113,8 +113,10 @@
     <Compile Include="Commands\StopEvent.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="EventHandler.cs" />
+    <Compile Include="Events\EventArgs\LockerInteractArgs.cs" />
     <Compile Include="Events\EventArgs\DropItemArgs.cs" />
     <Compile Include="Events\EventArgs\DropAmmoArgs.cs" />
+    <Compile Include="Events\EventArgs\HandCuffArgs.cs" />
     <Compile Include="Events\EventArgs\PlayerDyingArgs.cs" />
     <Compile Include="Events\EventArgs\RemoteAdminArgs.cs" />
     <Compile Include="Events\EventArgs\PlayerDamageArgs.cs" />
@@ -124,7 +126,6 @@
     <Compile Include="Events\EventArgs\PlaceTantrumArgs.cs" />
     <Compile Include="Events\EventArgs\PlaceBulletArgs.cs" />
     <Compile Include="Events\EventArgs\PlaceBloodArgs.cs" />
-    <Compile Include="Events\EventArgs\CreatePickupArgs.cs" />
     <Compile Include="Events\Handlers\Players.cs" />
     <Compile Include="Events\Handlers\Servers.cs" />
     <Compile Include="Games\Battle\Config.cs" />
@@ -204,9 +205,10 @@
     <Compile Include="Games\ZombieEscape\Plugin.cs" />
     <Compile Include="Interfaces\Event.cs" />
     <Compile Include="Interfaces\IEvent.cs" />
+    <Compile Include="Patches\LockerInteract.cs" />
+    <Compile Include="Patches\HandCuff.cs" />
     <Compile Include="Patches\CassieScp.cs" />
     <Compile Include="Patches\PlayerList.cs" />
-    <Compile Include="Patches\CreatePickup.cs" />
     <Compile Include="Patches\DropAmmo.cs" />
     <Compile Include="Patches\DropItem.cs" />
     <Compile Include="Patches\JailBirdCharge.cs" />

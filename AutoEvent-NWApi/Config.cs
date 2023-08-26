@@ -27,12 +27,5 @@ namespace AutoEvent
         {
             "donate1"
         };
-
-        [Description("Enable/Disable jailbird ability..")]
-        public bool IsJailbirdAbilityEnable { get; set; } = false;
-
-        [Description("Enable/Disable infinity charges of jailbird..")]
-        public bool IsJailbirdHasInfinityCharges { get; set; } = true;
-
     }
 }

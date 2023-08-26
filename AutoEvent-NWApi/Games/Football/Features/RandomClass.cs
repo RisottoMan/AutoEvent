@@ -8,8 +8,8 @@ namespace AutoEvent.Games.Football.Features
     {
         public static Vector3 GetSpawnPosition(SchematicObject GameMap, bool isMtf)
         {
-            if (isMtf) return GameMap.AttachedBlocks.Where(x => x.name == "Spawnpoint").ElementAt(0).transform.position;
-            else return GameMap.AttachedBlocks.Where(x => x.name == "Spawnpoint").ElementAt(1).transform.position;
+            string spawnName = isMtf ? "Spawnpoint" : "Spawnpoint1";
+            return GameMap.AttachedBlocks.Where(x => x.name == spawnName).FirstOrDefault().transform.position;
         }
     }
 }

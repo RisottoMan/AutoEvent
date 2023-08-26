@@ -32,7 +32,7 @@ namespace AutoEvent.Games.Deathmatch
                 Extensions.SetRole(ev.Player, RoleTypeId.NtfSergeant, RoleSpawnFlags.None);
             }
 
-            ev.Player.AddItem(RandomClass.RandomItems.RandomItem());
+            var item = ev.Player.AddItem(RandomClass.RandomItems.RandomItem());
             ev.Player.AddItem(ItemType.ArmorCombat);
 
             ev.Player.EffectsManager.EnableEffect<Scp1853>(150);
@@ -44,7 +44,7 @@ namespace AutoEvent.Games.Deathmatch
 
             Timing.CallDelayed(0.1f, () =>
             {
-                ev.Player.CurrentItem = ev.Player.Items.ElementAt(0);
+                ev.Player.CurrentItem = item;
             });
         }
 
@@ -85,12 +85,13 @@ namespace AutoEvent.Games.Deathmatch
             ev.Target.Position = RandomClass.GetRandomPosition(_plugin.GameMap);
             ev.Target.Health = 100;
 
-            Timing.CallDelayed(0.2f, () =>
+            Timing.CallDelayed(0.1f, () =>
             {
                 ev.Target.CurrentItem = ev.Target.Items.ElementAt(0);
             });
         }
 
+        public void OnHandCuff(HandCuffArgs ev) => ev.IsAllowed = false;
         public void OnTeamRespawn(TeamRespawnArgs ev) => ev.IsAllowed = false;
         public void OnSpawnRagdoll(SpawnRagdollArgs ev) => ev.IsAllowed = false;
         public void OnPlaceBullet(PlaceBulletArgs ev) => ev.IsAllowed = false;

@@ -23,7 +23,7 @@ namespace AutoEvent.Games.DeathParty
 
         public void OnPlayerDamage(PlayerDamageArgs ev)
         {
-            if (ev.DamageType == DeathTranslations.Explosion.Id)
+            if (ev.AttackerHandler is ExplosionDamageHandler)
             {
                 ev.IsAllowed = false;
 

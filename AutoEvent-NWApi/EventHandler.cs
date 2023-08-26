@@ -29,13 +29,13 @@ namespace AutoEvent
         {
             var config = AutoEvent.Singleton.Config;
 
-            if (AutoEvent.ActiveEvent == null) return;
-            if (!config.IsDisableDonators) return;
+            if (AutoEvent.ActiveEvent == null || !config.IsDisableDonators)
+                return;
 
             Player player = Player.Get(ev.CommandSender);
 
-            if (ev.Command.StartsWith("$") || player == null) return;
-            if (!config.DonatorList.Contains(ServerStatic.PermissionsHandler._members[player.UserId])) return;
+            if (player == null || !config.DonatorList.Contains(ServerStatic.PermissionsHandler._members[player.UserId])) 
+                return;
 
             ev.CommandSender.RaReply($"AutoEvent#A mini-game is currently underway, acess denied!", false, true, string.Empty);
             ev.IsAllowed = false;

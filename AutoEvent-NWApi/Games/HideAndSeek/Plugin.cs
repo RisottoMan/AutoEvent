@@ -92,8 +92,8 @@ namespace AutoEvent.Games.HideAndSeek
                 int catchCount = RandomClass.GetCatchByCount(Player.GetPlayers().Count(r => r.IsAlive));
                 for (int i = 0; i < catchCount; i++)
                 {
-                    var player = Player.GetPlayers().Where(r => r.IsAlive && r.Items.Any(r => r.ItemTypeId == ItemType.Jailbird) == false).
-                        ToList().RandomItem();
+                    var player = Player.GetPlayers().Where(r => r.IsAlive && 
+                    r.Items.Any(r => r.ItemTypeId == ItemType.Jailbird) == false).ToList().RandomItem();
                     var item = player.AddItem(ItemType.Jailbird);
 
                     Timing.CallDelayed(0.1f, () =>

@@ -1,7 +1,6 @@
 ﻿namespace AutoEvent.API.Schematic
 {
     using System.IO;
-    using PluginAPI.Core;
     using PluginAPI.Helpers;
     using Serializable;
     using Utf8Json;

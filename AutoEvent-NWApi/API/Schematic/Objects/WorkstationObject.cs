@@ -1,8 +1,6 @@
-﻿
-namespace AutoEvent.API.Schematic.Objects
+﻿namespace AutoEvent.API.Schematic.Objects
 {
     using InventorySystem.Items.Firearms.Attachments;
-    using MapGeneration;
     using MapGeneration.Distributors;
     using Serializable;
     using UnityEngine;
@@ -18,7 +16,6 @@ namespace AutoEvent.API.Schematic.Objects
         public WorkstationObject Init(WorkstationSerializable workStationSerializable)
         {
             Base = workStationSerializable;
-            ForcedRoomType = workStationSerializable.RoomType != RoomName.Unnamed ? workStationSerializable.RoomType : FindRoom().Name;
             UpdateObject();
 
             return this;
@@ -40,7 +37,6 @@ namespace AutoEvent.API.Schematic.Objects
 
         public StructurePositionSync StructurePositionSync { get; private set; }
 
-        /// <inheritdoc cref="UpdateObject()"/>
         public override void UpdateObject()
         {
             StructurePositionSync.Network_position = transform.position;
