@@ -2,7 +2,7 @@
 using System.Linq;
 using UnityEngine;
 
-namespace AutoEvent.Games.Versus.Features
+namespace AutoEvent.Games.Versus
 {
     internal class RandomClass
     {

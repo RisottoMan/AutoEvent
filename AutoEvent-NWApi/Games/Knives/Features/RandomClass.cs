@@ -2,7 +2,7 @@
 using System.Linq;
 using UnityEngine;
 
-namespace AutoEvent.Games.Knives.Features
+namespace AutoEvent.Games.Knives
 {
     internal class RandomClass
     {

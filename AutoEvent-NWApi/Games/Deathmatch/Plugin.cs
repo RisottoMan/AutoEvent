@@ -20,15 +20,13 @@ namespace AutoEvent.Games.Deathmatch
         public override string Author { get; set; } = "KoT0XleB";
         public override string MapName { get; set; } = "Shipment";
         public override string CommandName { get; set; } = "deathmatch";
-        public TimeSpan EventTime { get; set; }
+        TimeSpan EventTime { get; set; }
+        EventHandler _eventHandler { get; set; }
         public SchematicObject GameMap { get; set; }
-        public List<Vector3> Spawners { get; set; } = new List<Vector3>();
-
-        public int MtfKills;
-        public int ChaosKills;
-        public int NeedKills;
-        private bool isFreindlyFireEnabled;
-        EventHandler _eventHandler;
+        public int MtfKills { get; set; }
+        public int ChaosKills { get; set; }
+        public int NeedKills { get; set; }
+        private bool isFreindlyFireEnabled { get; set; }
 
         public override void OnStart()
         {
@@ -149,7 +147,9 @@ namespace AutoEvent.Games.Deathmatch
                     Replace("{name}", Name).
                     Replace("{mtftext}", $"{MtfKills} {mtfString}").
                     Replace("{chaostext}", $"{chaosString} {ChaosKills}"), 1);
+
                 yield return Timing.WaitForSeconds(1f);
+                EventTime += TimeSpan.FromSeconds(1f);
             }
 
             if (MtfKills == NeedKills)

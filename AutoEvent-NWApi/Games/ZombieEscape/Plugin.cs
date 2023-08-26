@@ -1,6 +1,5 @@
 using AutoEvent.API.Schematic.Objects;
 using AutoEvent.Events.Handlers;
-using AutoEvent.Games.ZombieEscape.Features;
 using CustomPlayerEffects;
 using MEC;
 using PlayerRoles;
@@ -22,12 +21,12 @@ namespace AutoEvent.Games.ZombieEscape
         public override string MapName { get; set; } = "zm_osprey";
         public override string CommandName { get; set; } = "zombie3";
         public SchematicObject GameMap { get; set; }
-        public SchematicObject Boat { get; set; }
-        public SchematicObject Heli { get; set; }
-        public TimeSpan EventTime { get; set; }
+        private bool isFriendlyFireEnabled { get; set; }
+        SchematicObject Boat { get; set; }
+        SchematicObject Heli { get; set; }
+        TimeSpan EventTime { get; set; }
+        EventHandler _eventHandler { get; set; }
 
-        EventHandler _eventHandler;
-        private bool isFriendlyFireEnabled;
         public override void OnStart()
         {
             isFriendlyFireEnabled = Server.FriendlyFire;
@@ -96,11 +95,7 @@ namespace AutoEvent.Games.ZombieEscape
                 yield return Timing.WaitForSeconds(1f);
             }
 
-            Extensions.StopAudio();
-            Timing.CallDelayed(0.1f, () =>
-            {
-                Extensions.PlayAudio("Zombie2.ogg", 7, false, Name);
-            });
+            Extensions.PlayAudio("Zombie2.ogg", 7, false, Name);
 
             for (int i = 0; i <= Player.GetPlayers().Count() / 10; i++)
             {
@@ -174,32 +169,29 @@ namespace AutoEvent.Games.ZombieEscape
             if (Player.GetPlayers().Count(r => r.IsHuman) == 0)
             {
                 Extensions.Broadcast(translation.ZombieEscapeZombieWin, 10);
-                Extensions.StopAudio();
-                Timing.CallDelayed(0.1f, () =>
-                {
-                    Extensions.PlayAudio("ZombieWin.ogg", 7, false, Name);
-                });
+                Extensions.PlayAudio("ZombieWin.ogg", 7, false, Name);
             }
             else
             {
                 Extensions.Broadcast(translation.ZombieEscapeHumanWin, 10);
-                Extensions.StopAudio();
-                Timing.CallDelayed(0.1f, () =>
-                {
-                    Extensions.PlayAudio("HumanWin.ogg", 7, false, Name);
-                });
+                Extensions.PlayAudio("HumanWin.ogg", 7, false, Name);
             }
 
             OnStop();
             yield break;
         }
+
         public void EventEnd()
         {
+            if (Boat != null)
+                Extensions.UnLoadMap(Boat);
+
+            if (Heli != null)
+                Extensions.UnLoadMap(Heli);
+
             Extensions.CleanUpAll();
             Extensions.TeleportEnd();
             Extensions.UnLoadMap(GameMap);
-            if (Boat != null) Extensions.UnLoadMap(Boat);
-            if (Heli != null) Extensions.UnLoadMap(Heli);
             Extensions.StopAudio();
             AutoEvent.ActiveEvent = null;
         }

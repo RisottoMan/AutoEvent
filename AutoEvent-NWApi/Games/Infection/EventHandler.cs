@@ -12,6 +12,12 @@ namespace AutoEvent.Games.Infection
 {
     public class EventHandler
     {
+        Plugin _plugin;
+        public EventHandler(Plugin plugin)
+        {
+            _plugin = plugin;
+        }
+
         public void OnPlayerDamage(PlayerDamageArgs ev)
         {
             if (ev.DamageType == DeathTranslations.Falldown.Id)
@@ -35,12 +41,12 @@ namespace AutoEvent.Games.Infection
             if (Player.GetPlayers().Count(r => r.Role == RoleTypeId.Scp0492) > 0)
             {
                 Extensions.SetRole(ev.Player, RoleTypeId.Scp0492, RoleSpawnFlags.AssignInventory);
-                ev.Player.Position = RandomPosition.GetSpawnPosition(Plugin.GameMap);
+                ev.Player.Position = RandomPosition.GetSpawnPosition(_plugin.GameMap);
             }
             else
             {
                 Extensions.SetRole(ev.Player, RoleTypeId.ClassD, RoleSpawnFlags.None);
-                ev.Player.Position = RandomPosition.GetSpawnPosition(Plugin.GameMap);
+                ev.Player.Position = RandomPosition.GetSpawnPosition(_plugin.GameMap);
             }
         }
 
@@ -50,7 +56,7 @@ namespace AutoEvent.Games.Infection
             Timing.CallDelayed(2f, () =>
             {
                 Extensions.SetRole(ev.Player, RoleTypeId.Scp0492, RoleSpawnFlags.AssignInventory);
-                ev.Player.Position = RandomPosition.GetSpawnPosition(Plugin.GameMap);
+                ev.Player.Position = RandomPosition.GetSpawnPosition(_plugin.GameMap);
             });
         }
 

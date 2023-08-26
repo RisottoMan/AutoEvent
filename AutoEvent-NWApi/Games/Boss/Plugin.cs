@@ -1,5 +1,4 @@
-﻿using AutoEvent.Games.Boss.Features;
-using AutoEvent.API.Schematic.Objects;
+﻿using AutoEvent.API.Schematic.Objects;
 using MEC;
 using PlayerRoles;
 using PluginAPI.Core;
@@ -20,13 +19,10 @@ namespace AutoEvent.Games.Boss
         public override string Author { get; set; } = "KoT0XleB";
         public override string MapName { get; set; } = "DeathParty";
         public override string CommandName { get; set; } = "boss";
-        public TimeSpan EventTime { get; set; }
-        public SchematicObject GameMap { get; set; }
-        public List<GameObject> Workstations { get; set; }
-
-        EventHandler _eventHandler;
-
-        Player Boss;
+        TimeSpan EventTime { get; set; }
+        SchematicObject GameMap { get; set; }
+        EventHandler _eventHandler { get; set; }
+        Player Boss { get; set; }
         public override void OnStart()
         {
             _eventHandler = new EventHandler();
@@ -81,7 +77,7 @@ namespace AutoEvent.Games.Boss
             var translation = AutoEvent.Singleton.Translation;
             for (int time = 15; time > 0; time--)
             {
-                Extensions.Broadcast($"{translation.BossTimeLeft.Replace("{time}", $"{time}")}", 5);
+                Extensions.Broadcast(translation.BossTimeLeft.Replace("{time}", $"{time}"), 5);
                 yield return Timing.WaitForSeconds(1f);
             }
 
@@ -96,7 +92,10 @@ namespace AutoEvent.Games.Boss
 
             Boss.ClearInventory();
             Boss.AddItem(ItemType.GunLogicer);
-            Timing.CallDelayed(0.1f, () => { Boss.CurrentItem = Boss.Items.First(); });
+            Timing.CallDelayed(0.1f, () =>
+            {
+                Boss.CurrentItem = Boss.Items.First();
+            });
 
             while (EventTime.TotalSeconds > 0 && Player.GetPlayers().Count(r => r.Team == Team.FoundationForces) > 0 && Player.GetPlayers().Count(r => r.Team == Team.ChaosInsurgency) > 0)
             {

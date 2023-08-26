@@ -4,7 +4,7 @@ using System.Linq;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-namespace AutoEvent.Games.Battle.Features
+namespace AutoEvent.Games.Battle
 {
     internal class RandomClass
     {

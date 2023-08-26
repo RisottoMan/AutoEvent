@@ -3,7 +3,7 @@ using PluginAPI.Core;
 using System.Linq;
 using UnityEngine;
 
-namespace AutoEvent.Games.Line.Features
+namespace AutoEvent.Games.Line
 {
     public class LineComponent : MonoBehaviour
     {

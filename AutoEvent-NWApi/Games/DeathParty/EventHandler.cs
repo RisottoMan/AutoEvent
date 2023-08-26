@@ -9,6 +9,12 @@ namespace AutoEvent.Games.DeathParty
 {
     public class EventHandler
     {
+        Plugin _plugin;
+        public EventHandler(Plugin plugin)
+        {
+            _plugin = plugin;
+        }
+
         [PluginEvent(ServerEventType.PlayerJoined)]
         public void OnJoin(PlayerJoinedEvent ev)
         {
@@ -21,7 +27,7 @@ namespace AutoEvent.Games.DeathParty
             {
                 ev.IsAllowed = false;
 
-                if (Plugin.Stage != 5)
+                if (_plugin.Stage != 5)
                 {
                     ev.Target.Damage(10, "Grenade");
                 }

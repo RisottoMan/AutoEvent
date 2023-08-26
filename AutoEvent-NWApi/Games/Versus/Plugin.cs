@@ -1,5 +1,4 @@
-﻿using AutoEvent.Games.Versus.Features;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using MEC;
@@ -20,13 +19,11 @@ namespace AutoEvent.Games.Versus
         public override string Author { get; set; } = "KoT0XleB";
         public override string MapName { get; set; } = "35Hp";
         public override string CommandName { get; set; } = "versus";
-        public SchematicObject GameMap { get; set; }
         public Player Scientist { get; set; }
         public Player ClassD { get; set; }
-
-        private bool isFreindlyFireEnabled;
-
-        EventHandler _eventHandler;
+        private bool isFreindlyFireEnabled { get; set; }
+        SchematicObject GameMap { get; set; }
+        EventHandler _eventHandler { get; set; }
 
         public override void OnStart()
         {
@@ -96,7 +93,6 @@ namespace AutoEvent.Games.Versus
         public IEnumerator<float> OnEventRunning()
         {
             var translation = AutoEvent.Singleton.Translation;
-
             for (int time = 10; time > 0; time--)
             {
                 Extensions.Broadcast($"<size=100><color=red>{time}</color></size>", 1);
@@ -113,11 +109,13 @@ namespace AutoEvent.Games.Versus
                 {
                     if (Scientist == null)
                     {
-                        if (player.Role == RoleTypeId.Scientist && (Vector3.Distance(player.Position, triggers.ElementAt(0).transform.position) <= 1f || remain.TotalSeconds == 0))
+                        if (player.Role == RoleTypeId.Scientist &&
+                            (Vector3.Distance(player.Position, triggers.ElementAt(0).transform.position) <= 1f || remain.TotalSeconds == 0))
                         {
                             Scientist = player;
                             Scientist.Position = teleports.ElementAt(0).transform.position;
-                            if (ClassD != null) ClassD.Heal(100);
+                            if (ClassD != null) 
+                                ClassD.Heal(100);
 
                             remain = new TimeSpan(0, 0, 15);
                         }
@@ -125,11 +123,13 @@ namespace AutoEvent.Games.Versus
 
                     if (ClassD == null)
                     {
-                        if (player.Role == RoleTypeId.ClassD && (Vector3.Distance(player.Position, triggers.ElementAt(1).transform.position) <= 1f || remain.TotalSeconds == 0))
+                        if (player.Role == RoleTypeId.ClassD &&
+                            (Vector3.Distance(player.Position, triggers.ElementAt(1).transform.position) <= 1f || remain.TotalSeconds == 0))
                         {
                             ClassD = player;
                             ClassD.Position = teleports.ElementAt(1).transform.position;
-                            if (Scientist != null) Scientist.Heal(100);
+                            if (Scientist != null) 
+                                Scientist.Heal(100);
 
                             remain = new TimeSpan(0, 0, 15);
                         }

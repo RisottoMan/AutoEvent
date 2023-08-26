@@ -9,17 +9,27 @@ namespace AutoEvent.Events.EventArgs
         {
             DamageHandler = damageHandler;
 
-            var attackerHandler = damageHandler as AttackerDamageHandler;
-            Attacker = Player.Get(attackerHandler?.Attacker.Hub);
-
             Target = target;
+
+            AttackerHandler = damageHandler as AttackerDamageHandler;
+
+            Attacker = Player.Get(AttackerHandler?.Attacker.Hub);
+
+            if (DamageHandler is UniversalDamageHandler damage)
+            {
+                DamageType = damage.TranslationId;
+            }
         }
 
         public Player Target { get; }
 
+        public Player Attacker { get; }
+
+        public AttackerDamageHandler AttackerHandler { get; set; }
+
         public DamageHandlerBase DamageHandler { get; set; }
 
-        public Player Attacker { get; }
+        public byte DamageType { get; set; }
 
         public bool IsAllowed { get; set; } = true;
     }

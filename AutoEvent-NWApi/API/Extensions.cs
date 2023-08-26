@@ -13,6 +13,8 @@ using PlayerStatsSystem;
 using PluginAPI.Helpers;
 using Object = UnityEngine.Object;
 using System.Reflection;
+using InventorySystem.Items.ThrowableProjectiles;
+using InventorySystem.Items;
 
 namespace AutoEvent
 {
@@ -174,6 +176,20 @@ namespace AutoEvent
         public static bool IsAudioBot(ReferenceHub hub)
         {
             return Dummy == hub;
+        }
+
+        public static void GrenadeSpawn(float fuseTime, Vector3 pos, float scale)
+        {
+            var identifier = new ItemIdentifier(ItemType.GrenadeHE, ItemSerialGenerator.GenerateNext());
+            var item = ReferenceHub.HostHub.inventory.CreateItemInstance(identifier, false) as ThrowableItem;
+
+            TimeGrenade grenade = (TimeGrenade)Object.Instantiate(item.Projectile, pos, Quaternion.identity);
+            grenade._fuseTime = fuseTime;
+            grenade.NetworkInfo = new PickupSyncInfo(item.ItemTypeId, item.Weight, item.ItemSerial);
+            grenade.transform.localScale = new Vector3(scale, scale, scale);
+
+            NetworkServer.Spawn(grenade.gameObject);
+            grenade.ServerActivate();
         }
     }
 }

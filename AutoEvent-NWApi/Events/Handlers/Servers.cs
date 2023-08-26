@@ -11,11 +11,13 @@ namespace AutoEvent.Events.Handlers
         public static event Action<SpawnRagdollArgs> SpawnRagdoll;
         public static event Action<TeamRespawnArgs> TeamRespawn;
         public static event Action<RemoteAdminArgs> RemoteAdmin;
+        public static event Action<CassieScpArgs> CassieScp;
         public static void OnCreatePickup(CreatePickupArgs ev) => CreatePickup?.Invoke(ev);
         public static void OnPlaceBlood(PlaceBloodArgs ev) => PlaceBlood?.Invoke(ev);
         public static void OnPlaceBullet(PlaceBulletArgs ev) => PlaceBullet?.Invoke(ev);
         public static void OnSpawnRagdoll(SpawnRagdollArgs ev) => SpawnRagdoll?.Invoke(ev);
         public static void OnTeamRespawn(TeamRespawnArgs ev) => TeamRespawn?.Invoke(ev);
         public static void OnRemoteAdmin(RemoteAdminArgs ev) => RemoteAdmin?.Invoke(ev);
+        public static void OnCassieScp(CassieScpArgs ev) => CassieScp?.Invoke(ev);
     }
 }

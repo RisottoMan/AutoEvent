@@ -1,7 +1,7 @@
 ﻿using PluginAPI.Core;
 using UnityEngine;
 
-namespace AutoEvent.Games.Speedrun.Features
+namespace AutoEvent.Games.FallDown
 {
     public class LavaComponent : MonoBehaviour
     {
@@ -16,7 +16,7 @@ namespace AutoEvent.Games.Speedrun.Features
             if (Player.Get(other.gameObject) is Player)
             {
                 var pl = Player.Get(other.gameObject);
-                pl.Damage(500f, $"{AutoEvent.Singleton.Translation.PuzzleDied}");
+                pl.Damage(500f, AutoEvent.Singleton.Translation.PuzzleDied);
             }
         }
     }

@@ -23,13 +23,12 @@ namespace AutoEvent.Games.Glass
         public override string Author { get; set; } = "KoT0XleB";
         public override string MapName { get; set; } = "Glass";
         public override string CommandName { get; set; } = "glass";
-        public SchematicObject GameMap { get; set; }
-        public List<GameObject> Platformes { get; set; }
-        public GameObject Lava { get; set; }
-        public GameObject Finish { get; set; }
-        public TimeSpan EventTime { get; set; }
-
-        EventHandler _eventHandler;
+        SchematicObject GameMap { get; set; }
+        TimeSpan EventTime { get; set; }
+        List<GameObject> Platformes { get; set; }
+        GameObject Lava { get; set; }
+        GameObject Finish { get; set; }
+        EventHandler _eventHandler { get; set; }
 
         public override void OnStart()
         {
@@ -122,8 +121,10 @@ namespace AutoEvent.Games.Glass
                 player.Position = RandomClass.GetSpawnPosition(GameMap);
                 player.EffectsManager.EnableEffect<Disabled>();
             }
+
             Timing.RunCoroutine(OnEventRunning(), "glass_time");
         }
+
         public IEnumerator<float> OnEventRunning()
         {
             var translation = AutoEvent.Singleton.Translation;

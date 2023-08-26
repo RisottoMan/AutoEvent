@@ -1,6 +1,5 @@
 ﻿using AutoEvent.API.Schematic.Objects;
 using AutoEvent.Events.Handlers;
-using AutoEvent.Games.Line.Features;
 using MEC;
 using PlayerRoles;
 using PluginAPI.Core;
@@ -24,11 +23,9 @@ namespace AutoEvent.Games.Line
         public static SchematicObject GameMap { get; set; }
         public Dictionary<int, SchematicObject> HardGameMap { get; set; }
         public TimeSpan EventTime { get; set; }
-
-        EventHandler _eventHandler;
-
-        private int HardCounts;
-        private int HardCountsLimit = 8;
+        EventHandler _eventHandler { get; set; }
+        int HardCounts { get; set; }
+        int HardCountsLimit { get; set; } = 8;
 
         public override void OnStart()
         {
@@ -121,6 +118,7 @@ namespace AutoEvent.Games.Line
                     {
                         Log.Info($"{ex}");
                     }
+
                     HardCounts++;
                 }
 
@@ -151,10 +149,12 @@ namespace AutoEvent.Games.Line
 
         public void EventEnd()
         {
+            foreach (var map in HardGameMap.Values) 
+                Extensions.UnLoadMap(map);
+
             Extensions.CleanUpAll();
             Extensions.TeleportEnd();
             Extensions.UnLoadMap(GameMap);
-            foreach (var map in HardGameMap.Values) Extensions.UnLoadMap(map);
             Extensions.StopAudio();
             AutoEvent.ActiveEvent = null;
         }

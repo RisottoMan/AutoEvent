@@ -1,5 +1,4 @@
-﻿using AutoEvent.Games.DeathParty.Features;
-using MEC;
+﻿using MEC;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,15 +6,10 @@ using UnityEngine;
 using PlayerRoles;
 using PluginAPI.Core;
 using PluginAPI.Events;
-using InventorySystem.Items.ThrowableProjectiles;
 using AutoEvent.API.Schematic.Objects;
-using InventorySystem.Items;
 using AutoEvent.Events.Handlers;
 using Event = AutoEvent.Interfaces.Event;
-using Mirror;
-using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
-using InventorySystem.Items.Pickups;
 
 namespace AutoEvent.Games.DeathParty
 {
@@ -26,13 +20,11 @@ namespace AutoEvent.Games.DeathParty
         public override string Author { get; set; } = "KoT0XleB";
         public override string MapName { get; set; } = "DeathParty";
         public override string CommandName { get; set; } = "death";
-        public TimeSpan EventTime { get; set; }
-        public SchematicObject GameMap { get; set; }
-
-        EventHandler _eventHandler;
-
-        private bool isFreindlyFireEnabled;
-        public static int Stage { get; set; }
+        TimeSpan EventTime { get; set; }
+        SchematicObject GameMap { get; set; }
+        EventHandler _eventHandler { get; set; }
+        private bool isFreindlyFireEnabled { get; set; }
+        public int Stage { get; set; }
         public int MaxStage { get; set; }
 
         public override void OnStart()
@@ -40,7 +32,7 @@ namespace AutoEvent.Games.DeathParty
             isFreindlyFireEnabled = Server.FriendlyFire;
             Server.FriendlyFire = true;
 
-            _eventHandler = new EventHandler();
+            _eventHandler = new EventHandler(this);
 
             EventManager.RegisterEvents(_eventHandler);
             Servers.TeamRespawn += _eventHandler.OnTeamRespawn;
@@ -143,13 +135,15 @@ namespace AutoEvent.Games.DeathParty
                 {
                     for (int i = 0; i < count; i++)
                     {
-                        GrenadeSpawn(fuse, radius, height, scale);
+                        Vector3 pos = GameMap.Position + new Vector3(Random.Range(-radius, radius), height, Random.Range(-radius, radius));
+                        Extensions.GrenadeSpawn(fuse, pos, scale);
                         yield return Timing.WaitForSeconds(timing);
                     }
                 }
                 else
                 {
-                    GrenadeSpawn(10, 10, 20f, 75);
+                    Vector3 pos = GameMap.Position + new Vector3(Random.Range(-10, 10), 20, Random.Range(-10, 10));
+                    Extensions.GrenadeSpawn(10, pos, 75);
                 }
 
                 yield return Timing.WaitForSeconds(15f);
@@ -162,26 +156,9 @@ namespace AutoEvent.Games.DeathParty
                 scale -= 1;
                 Stage++;
             }
+
             yield break;
         }
-        
-        public void GrenadeSpawn(float fuseTime, float radius, float height, float scale)
-        {
-            var item = CreateThrowable(ItemType.GrenadeHE);
-
-            Vector3 pos = GameMap.Position + new Vector3(Random.Range(-radius, radius), height, Random.Range(-radius, radius));
-
-            TimeGrenade grenadeboom = (TimeGrenade)Object.Instantiate(item.Projectile, pos, Quaternion.identity);
-            grenadeboom._fuseTime = fuseTime;
-            grenadeboom.NetworkInfo = new PickupSyncInfo(item.ItemTypeId, item.Weight, item.ItemSerial);
-            grenadeboom.transform.localScale = new Vector3(scale, scale, scale);
-
-            NetworkServer.Spawn(grenadeboom.gameObject);
-            grenadeboom.ServerActivate();
-        }
-
-        public static ThrowableItem CreateThrowable(ItemType type, Player player = null) => (player != null ? player.ReferenceHub : ReferenceHub.HostHub)
-        .inventory.CreateItemInstance(new ItemIdentifier(type, ItemSerialGenerator.GenerateNext()), false) as ThrowableItem;
 
         public void EventEnd()
         {

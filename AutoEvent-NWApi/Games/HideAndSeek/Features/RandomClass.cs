@@ -2,7 +2,7 @@
 using System.Linq;
 using UnityEngine;
 
-namespace AutoEvent.Games.HideAndSeek.Features
+namespace AutoEvent.Games.HideAndSeek
 {
     internal class RandomClass
     {

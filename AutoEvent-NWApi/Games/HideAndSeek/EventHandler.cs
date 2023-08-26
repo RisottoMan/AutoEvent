@@ -1,6 +1,4 @@
 ﻿using AutoEvent.Events.EventArgs;
-using InventorySystem;
-using InventorySystem.Configs;
 using MEC;
 using PlayerRoles;
 using PlayerStatsSystem;
@@ -8,10 +6,7 @@ using PluginAPI.Core;
 using PluginAPI.Core.Attributes;
 using PluginAPI.Enums;
 using PluginAPI.Events;
-using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
 
 namespace AutoEvent.Games.HideAndSeek
 {

@@ -17,16 +17,17 @@ namespace AutoEvent.Games.Infection
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.ZombieName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.ZombieDescription;
         public override string Author { get; set; } = "KoT0XleB";
-        public override string MapName { get; set; } = InfectionConfig.ListOfMap.RandomItem();
+        public override string MapName { get; set; } = "Zombie"; // AutoEvent.Singleton.Config.InfectionConfig.ListOfMap.RandomItem()
         public override string CommandName { get; set; } = "zombie";
-        public static SchematicObject GameMap { get; set; }
-        public static TimeSpan EventTime { get; set; }
+        public SchematicObject GameMap { get; set; }
+        TimeSpan EventTime { get; set; }
+        EventHandler _eventHandler { get; set; }
 
-        EventHandler _eventHandler;
         public override void OnStart()
         {
-            _eventHandler = new EventHandler();
+            _eventHandler = new EventHandler(this);
             EventManager.RegisterEvents(_eventHandler);
+
             Servers.TeamRespawn += _eventHandler.OnTeamRespawn;
             Servers.SpawnRagdoll += _eventHandler.OnSpawnRagdoll;
             Servers.PlaceBullet += _eventHandler.OnPlaceBullet;
@@ -40,6 +41,7 @@ namespace AutoEvent.Games.Infection
         public override void OnStop()
         {
             EventManager.UnregisterEvents(_eventHandler);
+
             Servers.TeamRespawn -= _eventHandler.OnTeamRespawn;
             Servers.SpawnRagdoll -= _eventHandler.OnSpawnRagdoll;
             Servers.PlaceBullet -= _eventHandler.OnPlaceBullet;
@@ -54,7 +56,10 @@ namespace AutoEvent.Games.Infection
 
         public void OnEventStarted()
         {
+            //var config = AutoEvent.Singleton.Config.InfectionConfig;
+
             EventTime = new TimeSpan(0, 0, 0);
+            //MapName = config.ListOfMap.RandomItem();
 
             float scale = 1;
             switch(Player.GetPlayers().Count())
@@ -67,7 +72,9 @@ namespace AutoEvent.Games.Infection
             }
 
             GameMap = Extensions.LoadMap(MapName, new Vector3(115.5f, 1030f, -43.5f), Quaternion.identity, new Vector3(1, 1, 1) * scale);
-            Extensions.PlayAudio(InfectionConfig.ListOfMusic.RandomItem(), 7, true, Name);
+
+            //var music = config.ListOfMusic.ToList().RandomItem();
+            //Extensions.PlayAudio(music.Key, music.Value, true, Name);
 
             foreach (Player player in Player.GetPlayers())
             {
@@ -112,8 +119,11 @@ namespace AutoEvent.Games.Infection
 
             for (int extratime = 30; extratime > 0; extratime--)
             {
-                if (Player.GetPlayers().Count(r => r.Role == RoleTypeId.ClassD) == 0) break;
+                if (Player.GetPlayers().Count(r => r.Role == RoleTypeId.ClassD) == 0) 
+                    break;
+
                 Extensions.Broadcast(translation.ZombieExtraTime.Replace("{extratime}", extratime.ToString()).Replace("{time}", time), 1);
+
                 yield return Timing.WaitForSeconds(1f);
                 EventTime += TimeSpan.FromSeconds(1f);
             }
@@ -137,7 +147,6 @@ namespace AutoEvent.Games.Infection
             Extensions.TeleportEnd();
             Extensions.UnLoadMap(GameMap);
             Extensions.StopAudio();
-            MapName = InfectionConfig.ListOfMap.RandomItem();
             AutoEvent.ActiveEvent = null;
         }
     }

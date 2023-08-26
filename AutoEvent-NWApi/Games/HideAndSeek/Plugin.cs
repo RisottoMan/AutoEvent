@@ -1,5 +1,4 @@
-﻿using AutoEvent.Games.HideAndSeek.Features;
-using CustomPlayerEffects;
+﻿using CustomPlayerEffects;
 using AutoEvent.API.Schematic.Objects;
 using MEC;
 using PlayerRoles;
@@ -21,10 +20,10 @@ namespace AutoEvent.Games.HideAndSeek
         public override string Author { get; set; } = "KoT0XleB";
         public override string MapName { get; set; } = "HideAndSeek";
         public override string CommandName { get; set; } = "hns";
-        public SchematicObject GameMap { get; set; }
-        public TimeSpan EventTime { get; set; }
+        SchematicObject GameMap { get; set; }
+        TimeSpan EventTime { get; set; }
+        EventHandler _eventHandler { get; set; }
 
-        EventHandler _eventHandler;
         public override void OnStart()
         {
             _eventHandler = new EventHandler();
@@ -40,6 +39,7 @@ namespace AutoEvent.Games.HideAndSeek
 
             OnEventStarted();
         }
+
         public override void OnStop()
         {
             EventManager.UnregisterEvents(_eventHandler);
@@ -74,6 +74,7 @@ namespace AutoEvent.Games.HideAndSeek
 
             Timing.RunCoroutine(OnEventRunning(), "hns_run");
         }
+
         public IEnumerator<float> OnEventRunning()
         {
             var translation = AutoEvent.Singleton.Translation;
@@ -83,6 +84,7 @@ namespace AutoEvent.Games.HideAndSeek
                 for (float _time = 15; _time > 0; _time--)
                 {
                     Extensions.Broadcast(translation.HideBroadcast.Replace("%time%", $"{_time}"), 1);
+
                     yield return Timing.WaitForSeconds(1f);
                     EventTime += TimeSpan.FromSeconds(1f);
                 }
@@ -90,8 +92,10 @@ namespace AutoEvent.Games.HideAndSeek
                 int catchCount = RandomClass.GetCatchByCount(Player.GetPlayers().Count(r => r.IsAlive));
                 for (int i = 0; i < catchCount; i++)
                 {
-                    var player = Player.GetPlayers().Where(r => r.IsAlive && r.Items.Any(r => r.ItemTypeId == ItemType.Jailbird) == false).ToList().RandomItem();
+                    var player = Player.GetPlayers().Where(r => r.IsAlive && r.Items.Any(r => r.ItemTypeId == ItemType.Jailbird) == false).
+                        ToList().RandomItem();
                     var item = player.AddItem(ItemType.Jailbird);
+
                     Timing.CallDelayed(0.1f, () =>
                     {
                         player.CurrentItem = item;

@@ -1,6 +1,5 @@
 ﻿using AutoEvent.API.Schematic.Objects;
 using AutoEvent.Events.Handlers;
-using AutoEvent.Games.Battle.Features;
 using MEC;
 using PlayerRoles;
 using PluginAPI.Core;
@@ -20,11 +19,10 @@ namespace AutoEvent.Games.Battle
         public override string Author { get; set; } = "KoT0XleB";
         public override string MapName { get; set; } = "Battle";
         public override string CommandName { get; set; } = "battle";
-        public TimeSpan EventTime { get; set; }
-        public SchematicObject GameMap { get; set; }
-        public List<GameObject> Workstations { get; set; }
-
-        EventHandler _eventHandler;
+        SchematicObject GameMap { get; set; }
+        List<GameObject> Workstations { get; set; }
+        TimeSpan EventTime { get; set; }
+        EventHandler _eventHandler { get; set; }
 
         public override void OnStart()
         {
@@ -90,7 +88,7 @@ namespace AutoEvent.Games.Battle
             var translation = AutoEvent.Singleton.Translation;
             for (int time = 20; time > 0; time--)
             {
-                Extensions.Broadcast($"{translation.BattleTimeLeft.Replace("{time}", $"{time}")}", 5);
+                Extensions.Broadcast(translation.BattleTimeLeft.Replace("{time}", $"{time}"), 5);
                 yield return Timing.WaitForSeconds(1f);
             }
 
@@ -119,7 +117,7 @@ namespace AutoEvent.Games.Battle
 
             if (Player.GetPlayers().Count(r => r.Team == Team.FoundationForces) == 0)
             {
-                Extensions.Broadcast($"{translation.BattleCiWin.Replace("{time}", $"{EventTime.Minutes}:{EventTime.Seconds}")}", 3);
+                Extensions.Broadcast(translation.BattleCiWin.Replace("{time}", $"{EventTime.Minutes}:{EventTime.Seconds}"), 3);
             }
             else if (Player.GetPlayers().Count(r => r.Team == Team.ChaosInsurgency) == 0)
             {
@@ -132,10 +130,12 @@ namespace AutoEvent.Games.Battle
 
         public void EventEnd()
         {
+            foreach (var bench in Workstations)
+                GameObject.Destroy(bench);
+
             Extensions.CleanUpAll();
             Extensions.TeleportEnd();
             Extensions.UnLoadMap(GameMap);
-            foreach (var bench in Workstations) GameObject.Destroy(bench);
             Extensions.StopAudio();
             AutoEvent.ActiveEvent = null;
         }

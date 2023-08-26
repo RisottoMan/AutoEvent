@@ -21,11 +21,10 @@ namespace AutoEvent.Games.Survival
         public override string MapName { get; set; } = "Survival";
         public override string CommandName { get; set; } = "zombie2";
         public SchematicObject GameMap { get; set; }
-        public TimeSpan EventTime { get; set; }
-
-        private bool isFriendlyFireEnabled;
-        EventHandler _eventHandler;
-        public Player firstZombie;
+        private bool isFriendlyFireEnabled { get; set; }
+        public Player firstZombie { get; set; }
+        TimeSpan EventTime { get; set; }
+        EventHandler _eventHandler { get; set; }
 
         public override void OnStart()
         {
@@ -145,32 +144,17 @@ namespace AutoEvent.Games.Survival
             if (Player.GetPlayers().Count(r => r.IsHuman) == 0)
             {
                 Extensions.Broadcast(translation.SurvivalZombieWin, 10);
-
-                Extensions.StopAudio();
-                Timing.CallDelayed(0.1f, () =>
-                {
-                    Extensions.PlayAudio("ZombieWin.ogg", 7, false, Name);
-                });
+                Extensions.PlayAudio("ZombieWin.ogg", 7, false, Name);
             }
             else if (Player.GetPlayers().Count(r => r.IsSCP) == 0)
             {
                 Extensions.Broadcast(translation.SurvivalHumanWin, 10);
-
-                Extensions.StopAudio();
-                Timing.CallDelayed(0.1f, () =>
-                {
-                    Extensions.PlayAudio("HumanWin.ogg", 7, false, Name);
-                });
+                Extensions.PlayAudio("HumanWin.ogg", 7, false, Name);
             }
             else
             {
                 Extensions.Broadcast(translation.SurvivalHumanWinTime, 10);
-
-                Extensions.StopAudio();
-                Timing.CallDelayed(0.1f, () =>
-                {
-                    Extensions.PlayAudio("HumanWin.ogg", 7, false, Name);
-                });
+                Extensions.PlayAudio("HumanWin.ogg", 7, false, Name);
             }
 
             OnStop();

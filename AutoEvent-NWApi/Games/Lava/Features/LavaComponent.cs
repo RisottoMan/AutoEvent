@@ -1,7 +1,7 @@
 ﻿using PluginAPI.Core;
 using UnityEngine;
 
-namespace AutoEvent.Games.Lava.Features
+namespace AutoEvent.Games.Lava
 {
     public class LavaComponent : MonoBehaviour
     {

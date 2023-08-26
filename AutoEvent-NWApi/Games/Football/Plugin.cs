@@ -20,10 +20,9 @@ namespace AutoEvent.Games.Football
         public override string Author { get; set; } = "KoT0XleB";
         public override string MapName { get; set; } = "Football";
         public override string CommandName { get; set; } = "ball";
-        public SchematicObject GameMap { get; set; }
-        public TimeSpan EventTime { get; set; }
-
-        EventHandler _eventHandler;
+        SchematicObject GameMap { get; set; }
+        TimeSpan EventTime { get; set; }
+        EventHandler _eventHandler { get; set; }
 
         public override void OnStart()
         {
@@ -34,6 +33,7 @@ namespace AutoEvent.Games.Football
 
             OnEventStarted();
         }
+
         public override void OnStop()
         {
             EventManager.UnregisterEvents(_eventHandler);
@@ -68,10 +68,10 @@ namespace AutoEvent.Games.Football
 
             Timing.RunCoroutine(OnEventRunning(), "glass_time");
         }
+
         public IEnumerator<float> OnEventRunning()
         {
             var translation = AutoEvent.Singleton.Translation;
-
             int bluePoints = 0;
             int redPoints = 0;
             GameObject ball = new GameObject();
@@ -86,7 +86,8 @@ namespace AutoEvent.Games.Football
                 }
             }
 
-            while (bluePoints < 3 && redPoints < 3 && EventTime.TotalSeconds > 0 && Player.GetPlayers().Count(r => r.IsNTF) > 0 && Player.GetPlayers().Count(r => r.Team == Team.ClassD) > 0)
+            while (bluePoints < 3 && redPoints < 3 && EventTime.TotalSeconds > 0 && 
+                Player.GetPlayers().Count(r => r.IsNTF) > 0 && Player.GetPlayers().Count(r => r.Team == Team.ClassD) > 0)
             {
                 var time = $"{EventTime.Minutes}:{EventTime.Minutes}";
                 foreach (Player player in Player.GetPlayers())
@@ -94,7 +95,7 @@ namespace AutoEvent.Games.Football
                     var text = string.Empty;
                     if (Vector3.Distance(ball.transform.position, player.Position) < 2)
                     {
-                        ball.gameObject.TryGetComponent<Rigidbody>(out Rigidbody rig);
+                        ball.gameObject.TryGetComponent(out Rigidbody rig);
                         rig.AddForce(player.ReferenceHub.transform.forward + new Vector3(0, 0.1f, 0), ForceMode.Impulse);
                     }
 

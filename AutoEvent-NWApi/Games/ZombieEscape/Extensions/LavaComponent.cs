@@ -1,7 +1,7 @@
 ﻿using PluginAPI.Core;
 using UnityEngine;
 
-namespace AutoEvent.Games.ZombieEscape.Features
+namespace AutoEvent.Games.ZombieEscape
 {
     public class LavaComponent : MonoBehaviour
     {
@@ -16,7 +16,7 @@ namespace AutoEvent.Games.ZombieEscape.Features
             if (Player.Get(other.gameObject) is Player)
             {
                 var pl = Player.Get(other.gameObject);
-                pl.Damage(500f, $"Die from lava");
+                pl.Damage(500f, "Die from lava");
             }
         }
     }

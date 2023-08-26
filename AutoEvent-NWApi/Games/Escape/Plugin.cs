@@ -20,15 +20,15 @@ namespace AutoEvent.Games.Escape
         public override string Author { get; set; } = "KoT0XleB";
         public override string MapName { get; set; }
         public override string CommandName { get; set; } = "escape";
-        public TimeSpan EventTime { get; set; }
-
-        EventHandler _eventHandler;
+        TimeSpan EventTime { get; set; }
+        EventHandler _eventHandler { get; set; }
 
         public override void OnStart()
         {
             _eventHandler = new EventHandler();
             EventManager.RegisterEvents(_eventHandler);
             Servers.TeamRespawn += _eventHandler.OnTeamRespawn;
+            Servers.CassieScp += _eventHandler.OnSendCassie;
             Players.PlaceTantrum += _eventHandler.OnPlaceTantrum;
 
             OnEventStarted();
@@ -37,6 +37,7 @@ namespace AutoEvent.Games.Escape
         {
             EventManager.UnregisterEvents(_eventHandler);
             Servers.TeamRespawn -= _eventHandler.OnTeamRespawn;
+            Servers.CassieScp -= _eventHandler.OnSendCassie;
             Players.PlaceTantrum -= _eventHandler.OnPlaceTantrum;
 
             _eventHandler = null;
@@ -66,21 +67,23 @@ namespace AutoEvent.Games.Escape
 
             Timing.RunCoroutine(OnEventRunning(), "escape_run");
         }
+
         public IEnumerator<float> OnEventRunning()
         {
             var translation = AutoEvent.Singleton.Translation;
-
             for (int time = 10; time > 0; time--)
             {
                 Extensions.Broadcast(translation.EscapeBeforeStart.Replace("{name}", Name).Replace("{time}", ((int)time).ToString()), 1);
+
                 yield return Timing.WaitForSeconds(1f);
                 EventTime += TimeSpan.FromSeconds(1f);
             }
-            var explosionTime = 80;
 
+            var explosionTime = 80;
             while (EventTime.TotalSeconds != explosionTime && Player.GetPlayers().Count(r => r.IsAlive) > 0)
             {
                 Extensions.Broadcast(translation.EscapeCycle.Replace("{name}", Name).Replace("{time}", (explosionTime - EventTime.TotalSeconds).ToString()), 1);
+
                 yield return Timing.WaitForSeconds(1f);
                 EventTime += TimeSpan.FromSeconds(1f);
             }
@@ -102,6 +105,7 @@ namespace AutoEvent.Games.Escape
             OnStop();
             yield break;
         }
+
         public void EventEnd()
         {
             Extensions.CleanUpAll();

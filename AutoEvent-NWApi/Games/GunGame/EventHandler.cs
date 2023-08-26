@@ -31,8 +31,20 @@ namespace AutoEvent.Games.GunGame
             Extensions.SetRole(ev.Player, GunGameRandom.GetRandomRole(), RoleSpawnFlags.None);
             ev.Player.Position = _plugin.SpawnPoints.RandomItem();
             GetWeaponForPlayer(ev.Player);
-        } 
-        
+        }
+
+        [PluginEvent(ServerEventType.PlayerReloadWeapon)]
+        public void OnReloading(PlayerReloadWeaponEvent ev)
+        {
+            SetMaxAmmo(ev.Player);
+        }
+
+        [PluginEvent(ServerEventType.PlayerSpawn)]
+        public void OnSpawning(PlayerSpawnEvent ev)
+        {
+            SetMaxAmmo(ev.Player);
+        }
+
         public void OnPlayerDying(PlayerDyingArgs ev)
         {
             ev.IsAllowed = false;
@@ -75,18 +87,6 @@ namespace AutoEvent.Games.GunGame
             {
                 player.IsGodModeEnabled = false;
             });
-        }
-
-        [PluginEvent(ServerEventType.PlayerReloadWeapon)]
-        public void OnReloading(PlayerReloadWeaponEvent ev)
-        {
-            SetMaxAmmo(ev.Player);
-        }
-
-        [PluginEvent(ServerEventType.PlayerSpawn)]
-        public void OnSpawning(PlayerSpawnEvent ev)
-        {
-            SetMaxAmmo(ev.Player);
         }
 
         private void SetMaxAmmo(Player pl)

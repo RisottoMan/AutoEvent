@@ -1,6 +1,5 @@
 ﻿using AutoEvent.API.Schematic.Objects;
 using AutoEvent.Events.Handlers;
-using AutoEvent.Games.Lava.Features;
 using MEC;
 using PlayerRoles;
 using PluginAPI.Core;
@@ -20,11 +19,10 @@ namespace AutoEvent.Games.Lava
         public override string Author { get; set; } = "KoT0XleB";
         public override string MapName { get; set; } = "Lava";
         public override string CommandName { get; set; } = "lava";
-        public TimeSpan EventTime { get; set; }
-        public SchematicObject GameMap { get; set; }
-
-        EventHandler _eventHandler;
-        private bool isFreindlyFireEnabled;
+        private bool isFreindlyFireEnabled { get; set; }
+        TimeSpan EventTime { get; set; }
+        SchematicObject GameMap { get; set; }
+        EventHandler _eventHandler { get; set; }
 
         public override void OnStart()
         {
@@ -43,6 +41,7 @@ namespace AutoEvent.Games.Lava
             Players.DropAmmo += _eventHandler.OnDropAmmo;
             Players.PlayerDamage += _eventHandler.OnPlayerDamage;
         }
+
         public override void OnStop()
         {
             Server.FriendlyFire = isFreindlyFireEnabled;

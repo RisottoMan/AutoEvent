@@ -1,5 +1,4 @@
-﻿using AutoEvent.Games.Speedrun.Features;
-using AutoEvent.API.Schematic.Objects;
+﻿using AutoEvent.API.Schematic.Objects;
 using MEC;
 using PlayerRoles;
 using PluginAPI.Core;
@@ -21,10 +20,9 @@ namespace AutoEvent.Games.FallDown
         public override string MapName { get; set; } = "FallDown";
         public override string CommandName { get; set; } = "fall";
         public static SchematicObject GameMap { get; set; }
-        public static TimeSpan EventTime { get; set; }
-
-        EventHandler _eventHandler;
-        public GameObject Lava { get; set; }
+        TimeSpan EventTime { get; set; }
+        EventHandler _eventHandler { get; set; }
+        GameObject Lava { get; set; }
 
         public override void OnStart()
         {
@@ -62,7 +60,7 @@ namespace AutoEvent.Games.FallDown
             foreach (Player player in Player.GetPlayers())
             {
                 Extensions.SetRole(player, RoleTypeId.ClassD, RoleSpawnFlags.None);
-                player.Position = RandomPosition.GetSpawnPosition(Plugin.GameMap);
+                player.Position = RandomPosition.GetSpawnPosition(GameMap);
             }
 
             Lava = GameMap.AttachedBlocks.First(x => x.name == "Lava");

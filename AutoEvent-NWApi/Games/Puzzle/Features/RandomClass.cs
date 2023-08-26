@@ -2,7 +2,7 @@
 using System.Linq;
 using UnityEngine;
 
-namespace AutoEvent.Games.Puzzle.Features
+namespace AutoEvent.Games.Puzzle
 {
     internal class RandomClass
     {

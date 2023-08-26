@@ -19,15 +19,13 @@ namespace AutoEvent.Games.GunGame
         public override string Author { get; set; } = "KoT0XleB";
         public override string MapName { get; set; } = "Shipment";
         public override string CommandName { get; set; } = "gungame";
-        public TimeSpan EventTime { get; set; }
-        public SchematicObject GameMap { get; set; }
-        public List<Vector3> Spawners { get; set; } = new List<Vector3>();
-        public Player Winner { get; set; }
-        public Dictionary<Player, Stats> PlayerStats;
-        public List<Vector3> SpawnPoints;
-
-        private bool isFreindlyFireEnabled;
-        EventHandler _eventHandler;
+        public List<Vector3> SpawnPoints { get; set; }
+        public Dictionary<Player, Stats> PlayerStats { get; set; }
+        private bool isFreindlyFireEnabled { get; set; }
+        TimeSpan EventTime { get; set; }
+        SchematicObject GameMap { get; set; }
+        Player Winner { get; set; }
+        EventHandler _eventHandler { get; set; }
 
         public override void OnStart()
         {
@@ -46,6 +44,7 @@ namespace AutoEvent.Games.GunGame
             Players.DropAmmo += _eventHandler.OnDropAmmo;
             Players.PlayerDying += _eventHandler.OnPlayerDying;
         }
+
         public override void OnStop()
         {
             Server.FriendlyFire = isFreindlyFireEnabled;
@@ -95,6 +94,7 @@ namespace AutoEvent.Games.GunGame
 
             Timing.RunCoroutine(OnEventRunning(), "gungame_run");
         }
+
         public IEnumerator<float> OnEventRunning()
         {
             var translation = AutoEvent.Singleton.Translation;
@@ -131,6 +131,7 @@ namespace AutoEvent.Games.GunGame
                         Replace("{leadnick}", leaderStat.Key.Nickname).
                         Replace("{leadlevel}", $"{leaderStat.Value.level}"), 1);
                 }
+
                 yield return Timing.WaitForSeconds(1f);
                 EventTime -= TimeSpan.FromSeconds(1f);
             }
@@ -148,6 +149,7 @@ namespace AutoEvent.Games.GunGame
             OnStop();
             yield break;
         }
+
         public void EventEnd()
         {
             Extensions.CleanUpAll();

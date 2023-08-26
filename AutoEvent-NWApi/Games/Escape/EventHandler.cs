@@ -14,10 +14,9 @@ namespace AutoEvent.Games.Escape
             ev.Player.SetRole(RoleTypeId.Scp173);
         }
 
-        [PluginEvent(ServerEventType.CassieAnnouncesScpTermination)]
-        public void OnSendCassie(CassieAnnouncesScpTerminationEvent ev)
+        public void OnSendCassie(CassieScpArgs ev)
         {
-            //ev.IsAllowed = false;
+            ev.IsAllowed = false;
         }
 
         public void OnTeamRespawn(TeamRespawnArgs ev)

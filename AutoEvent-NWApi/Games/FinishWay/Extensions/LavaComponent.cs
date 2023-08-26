@@ -1,7 +1,7 @@
 ﻿using PluginAPI.Core;
 using UnityEngine;
 
-namespace AutoEvent.Games.FinishWay.Features
+namespace AutoEvent.Games.FinishWay
 {
     public class LavaComponent : MonoBehaviour
     {
@@ -16,7 +16,7 @@ namespace AutoEvent.Games.FinishWay.Features
             if (Player.Get(other.gameObject) is Player)
             {
                 var pl = Player.Get(other.gameObject);
-                pl.Damage(500f, $"Dead by lava.");
+                pl.Damage(500f, "Dead by lava.");
             }
         }
     }

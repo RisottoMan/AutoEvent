@@ -1,6 +1,5 @@
 ﻿using AutoEvent.API.Schematic.Objects;
 using AutoEvent.Events.Handlers;
-using AutoEvent.Games.FinishWay.Features;
 using MEC;
 using PlayerRoles;
 using PluginAPI.Core;
@@ -20,10 +19,9 @@ namespace AutoEvent.Games.FinishWay
         public override string Author { get; set; } = "KoT0XleB";
         public override string MapName { get; set; } = "FinishWay";
         public override string CommandName { get; set; } = "finish";
-        public static SchematicObject GameMap { get; set; }
-        public static TimeSpan EventTime { get; set; }
-
-        EventHandler _eventHandler;
+        SchematicObject GameMap { get; set; }
+        TimeSpan EventTime { get; set; }
+        EventHandler _eventHandler { get; set; }
 
         public override void OnStart()
         {
@@ -38,6 +36,7 @@ namespace AutoEvent.Games.FinishWay
 
             OnEventStarted();
         }
+
         public override void OnStop()
         {
             EventManager.UnregisterEvents(_eventHandler);

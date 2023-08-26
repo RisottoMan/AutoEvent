@@ -2,7 +2,7 @@
 using System.Linq;
 using UnityEngine;
 
-namespace AutoEvent.Games.DeathParty.Features
+namespace AutoEvent.Games.DeathParty
 {
     public class RandomClass
     {

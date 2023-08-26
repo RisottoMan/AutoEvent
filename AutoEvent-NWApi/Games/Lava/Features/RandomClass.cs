@@ -2,7 +2,7 @@
 using System.Linq;
 using UnityEngine;
 
-namespace AutoEvent.Games.Lava.Features
+namespace AutoEvent.Games.Lava
 {
     internal class RandomClass
     {

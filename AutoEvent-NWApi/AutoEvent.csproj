@@ -118,6 +118,7 @@
     <Compile Include="Events\EventArgs\PlayerDyingArgs.cs" />
     <Compile Include="Events\EventArgs\RemoteAdminArgs.cs" />
     <Compile Include="Events\EventArgs\PlayerDamageArgs.cs" />
+    <Compile Include="Events\EventArgs\CassieScpArgs.cs" />
     <Compile Include="Events\EventArgs\TeamRespawnArgs.cs" />
     <Compile Include="Events\EventArgs\SpawnRagdollArgs.cs" />
     <Compile Include="Events\EventArgs\PlaceTantrumArgs.cs" />
@@ -126,9 +127,11 @@
     <Compile Include="Events\EventArgs\CreatePickupArgs.cs" />
     <Compile Include="Events\Handlers\Players.cs" />
     <Compile Include="Events\Handlers\Servers.cs" />
+    <Compile Include="Games\Battle\Config.cs" />
     <Compile Include="Games\Battle\EventHandler.cs" />
     <Compile Include="Games\Battle\Features\RandomClass.cs" />
     <Compile Include="Games\Battle\Plugin.cs" />
+    <Compile Include="Games\Boss\Config.cs" />
     <Compile Include="Games\Boss\EventHandler.cs" />
     <Compile Include="Games\Boss\Features\RandomClass.cs" />
     <Compile Include="Games\Boss\Plugin.cs" />
@@ -201,6 +204,7 @@
     <Compile Include="Games\ZombieEscape\Plugin.cs" />
     <Compile Include="Interfaces\Event.cs" />
     <Compile Include="Interfaces\IEvent.cs" />
+    <Compile Include="Patches\CassieScp.cs" />
     <Compile Include="Patches\PlayerList.cs" />
     <Compile Include="Patches\CreatePickup.cs" />
     <Compile Include="Patches\DropAmmo.cs" />

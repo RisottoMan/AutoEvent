@@ -5,7 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using AutoEvent.Games.Football.Features;
 using PluginAPI.Core;
 using PluginAPI.Events;
 using AutoEvent.Events.Handlers;
@@ -21,13 +20,12 @@ namespace AutoEvent.Games.Jail
         public override string MapName { get; set; } = "Jail";
         public override string CommandName { get; set; } = "jail";
         public SchematicObject GameMap { get; set; }
-        public TimeSpan EventTime { get; set; }
-        public List<GameObject> Doors { get; set; }
-        public GameObject Ball { get; set; }
         public GameObject Button { get; set; }
         public GameObject PrisonerDoors { get; set; }
-
-        EventHandler _eventHandler;
+        TimeSpan EventTime { get; set; }
+        List<GameObject> Doors { get; set; }
+        GameObject Ball { get; set; }
+        EventHandler _eventHandler { get; set; }
 
         public override void OnStart()
         {
@@ -80,6 +78,8 @@ namespace AutoEvent.Games.Jail
                         break;
                 }
             }
+
+            // Need add check permission
 
             foreach (Player player in Player.GetPlayers())
             {

@@ -1,5 +1,4 @@
-﻿using AutoEvent.Games.Knives.Features;
-using AutoEvent.API.Schematic.Objects;
+﻿using AutoEvent.API.Schematic.Objects;
 using MEC;
 using PlayerRoles;
 using PluginAPI.Core;
@@ -20,12 +19,10 @@ namespace AutoEvent.Games.Knives
         public override string Author { get; set; } = "KoT0XleB";
         public override string MapName { get; set; } = "35hp_2";
         public override string CommandName { get; set; } = "knife";
-        public SchematicObject GameMap { get; set; }
-        public TimeSpan EventTime { get; set; }
-
-        private bool isFreindlyFireEnabled;
-
-        EventHandler _eventHandler;
+        SchematicObject GameMap { get; set; }
+        TimeSpan EventTime { get; set; }
+        private bool isFreindlyFireEnabled { get; set; }
+        EventHandler _eventHandler { get; set; }
 
         public override void OnStart()
         {
@@ -44,6 +41,7 @@ namespace AutoEvent.Games.Knives
 
             OnEventStarted();
         }
+
         public override void OnStop()
         {
             Server.FriendlyFire = isFreindlyFireEnabled;

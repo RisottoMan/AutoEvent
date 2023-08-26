@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using MEC;
 using PlayerRoles;
 using AutoEvent.API.Schematic.Objects;
 using UnityEngine;
-using AutoEvent.Games.Puzzle.Features;
 using PluginAPI.Core;
 using PluginAPI.Events;
 using AdminToys;
@@ -23,13 +21,11 @@ namespace AutoEvent.Games.Puzzle
         public override string MapName { get; set; } = "Puzzle";
         public override string CommandName { get; set; } = "puzzle";
         public SchematicObject GameMap { get; set; }
-        public TimeSpan EventTime { get; set; }
-        public List<GameObject> Platformes { get; set; }
-        public GameObject Lava { get; set; }
+        List<GameObject> Platformes { get; set; }
+        GameObject Lava { get; set; }
+        EventHandler _eventHandler { get; set; }
 
         private readonly string _broadcastName = "<color=#F59F00>P</color><color=#F68523>u</color><color=#F76B46>z</color><color=#F85169>z</color><color=#F9378C>l</color><color=#FA1DAF>e</color>";
-
-        EventHandler _eventHandler;
 
         public override void OnStart()
         {
@@ -60,8 +56,6 @@ namespace AutoEvent.Games.Puzzle
 
         public void OnEventStarted()
         {
-            EventTime = new TimeSpan(0, 0, 0);
-
             GameMap = Extensions.LoadMap(MapName, new Vector3(76f, 1026.5f, -43.68f), Quaternion.Euler(Vector3.zero), Vector3.one);
             Extensions.PlayAudio("Puzzle.ogg", 15, true, Name);
 
@@ -77,6 +71,7 @@ namespace AutoEvent.Games.Puzzle
 
             Timing.RunCoroutine(OnEventRunning(), "puzzle_run");
         }
+
         public IEnumerator<float> OnEventRunning()
         {
             var translation = AutoEvent.Singleton.Translation;
@@ -168,6 +163,7 @@ namespace AutoEvent.Games.Puzzle
             OnStop();
             yield break;
         }
+
         public void EventEnd()
         {
             Extensions.CleanUpAll();
