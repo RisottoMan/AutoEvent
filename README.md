@@ -14,7 +14,7 @@
 ### Zombie Infection [zombie]
 ##### Zombie mode, the purpose of which is to infect all players. 
 ##### It's a pretty nice map, where it's nice to run away from zombies, but it's easy to get infected if you're careless.
-![](https://github.com/swdmeow/AutoEvent-Exiled/blob/main/Photos/Zombie.png)
+![https://google.com](https://github.com/swdmeow/AutoEvent-Exiled/blob/main/Photos/Zombie.png)
 
 ### Atomic Escape [escape]
 ##### Escape from the facility behind SCP-173 at supersonic speed!
