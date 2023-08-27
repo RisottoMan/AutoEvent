@@ -16,7 +16,7 @@ namespace AutoEvent.Games.Glass.Features
             if (Player.Get(other.gameObject) is Player)
             {
                 var pl = Player.Get(other.gameObject);
-                pl.Damage(500f, "<color=red>Сгорел в Лаве!</color>");
+                pl.Damage(500f, "<color=red>Die in lava</color>");
             }
         }
     }

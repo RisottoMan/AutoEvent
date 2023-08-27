@@ -8,7 +8,7 @@ namespace AutoEvent
     // Sorry :(
     public class Translation
     {
-        [Description("Zombie Infection Game Mode Proverka")]
+        [Description("Zombie Infection Game Mode")]
         public InfectTranslate InfectTranslate { get; set; } = new InfectTranslate();
 
         [Description("Atomic Escape Game Mode")]
