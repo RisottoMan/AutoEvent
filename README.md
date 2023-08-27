@@ -1,4 +1,4 @@
-# AutoEvent MiniGames
+# AutoEvent (MiniGames)
 ## ENG: Allows you to run auto Mini-Games in the game.
 ## RUS: Позволяет запускать автоматические Мини-Игры в игре.
 ![Logo](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/MiniGames(mini).png)
