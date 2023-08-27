@@ -16,6 +16,6 @@
 - Thanks to **ART0022VI** for a little help in fixing plugins.
 - Thanks to **Alexander666** for the help at the initial stage of creating the plugin.
 - Thanks to **art15** for writing the command code to run the mini-game.
-- Parts of the code for NWApi, which was difficult to recreate yourself, were borrowed from [Exiled](https://github.com/Exiled-Team/EXILED), for which many thanks.
+- Parts of the code for NWApi were borrowed from [Exiled](https://github.com/Exiled-Team/EXILED), for which many thanks.
 - Special thanks to **Michal78900** for the opportunity to borrow [MapEditorReborn](https://github.com/Michal78900/MapEditorReborn) code for NWApi.
 - Special thanks to **ced777ric** for the plugin [SCPSLAudioApi](https://github.com/CedModV2/SCPSLAudioApi) for launching music.
