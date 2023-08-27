@@ -60,7 +60,7 @@
 ![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/Zombie%20Escape.png)
 
 ### Battle [battle]
-![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/Battle1.png)
+![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/Battle2.png)
 
 ### Puzzle [puzzle]
 ![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/Puzzle1.png)
@@ -69,7 +69,7 @@
 ![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/FinishWay.png)
 
 ### Death Party [death]
-![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/DeathParty.png)
+![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/DeathParty1.png)
 
 ### Boss Battle [boss]
 ![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/Boss.png)
