@@ -1,7 +1,7 @@
 # AutoEvent
 ## ENG: Allows you to run auto Mini-Games in the game.
 ## RUS: Позволяет запускать автоматические Мини-Игры в игре.
-![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/MiniGames.png)
+![Logo](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/MiniGames.png?raw=true)
 ## Guides:
 [![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/Message.png)](https://github.com/KoT0XleB/AutoEvent-Exiled/blob/main/Docs/Installation.md)
 [![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/Message1.png)](https://github.com/KoT0XleB/AutoEvent-Exiled/blob/main/Docs/Installation.md)
