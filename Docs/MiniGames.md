@@ -36,40 +36,66 @@
 ![](https://github.com/swdmeow/AutoEvent-Exiled/blob/main/Photos/GunGame.png)
 
 ### Dead Jump [glass]
+##### You need to reach the end of the map through obstacles. Don't forget that you don't have much time.
+##### The more players - the more difficult.
 ![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/Glass1.png)
 
 ### Zombie Survival [zombie2]
+##### You have come to an object where a dangerous T-Virus has leaked. Stop the threat or become a zombie.
+##### There are a lot of secret positions on the map where you need to survive against zombies.
 ![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/Survival1.png)
 
 ### The floor is LAVA [lava]
+##### The lava begins to rise. You have to climb one of the tops of the towers to survive against the rest of the players.
+##### A small map for survival.
 ![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/Lava2.png)
 
 ### Football [ball]
+##### Players are divided into teams to score each other a goal.
+##### A small map in which you need to score 3 goals for one team to win.
 ![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/Football1.png)
 
 ### Fall Down [fall]
+##### The map starts to break. You have to survive from the lava.
+##### The last player becomes the winner.
 ![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/FallDown.png)
 
 ### Hide And Seek [hns]
+##### Run away and hide from the players, otherwise you will become a catch-up yourself.
+##### It is necessary to pass the bat to the player in order to survive.
 ![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/HideAndSeek.png)
 
 ### Death Line [line]
+##### You get to the map on which the mechanism is spinning.
+##### Avoid it to survive.
 ![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/Line1.png)
 
 ### Zombie Escape [zombie3]
+##### The T-Virus has taken over an entire island. You have to fly away from this place to survive from the zombies.
+##### A very large map to complete from start to finish.
 ![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/Zombie%20Escape.png)
 
 ### Battle [battle]
+##### Players are divided into two teams and must kill each other.
+##### The map is symmetrical, the speed and reaction of the players wins.
 ![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/Battle2.png)
 
 ### Puzzle [puzzle]
+##### Players appear on the map with different platforms that change their color.
+##### Find the right platform by the right color to survive.
 ![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/Puzzle1.png)
 
 ### Finish Way [finish]
+##### You have to pass the test and reach the finish line to win.
+##### An easy mini-game that just makes players relax.
 ![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/FinishWay.png)
 
 ### Death Party [death]
+##### Grenades begin to appear on the map. 
+##### You have to dodge them to win.
 ![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/DeathParty1.png)
 
 ### Boss Battle [boss]
+##### The boss appeared on the map. He wants to kill everyone.
+##### Kill him faster before he does it for you.
 ![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/Boss.png)
