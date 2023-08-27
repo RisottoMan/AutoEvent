@@ -3,12 +3,13 @@
 ## RUS: Позволяет запускать автоматические Мини-Игры в игре.
 ## [Discord](https://discord.gg/Bu7ZsKsbjP) - If you have found bugs and want to talk about them.
 ## Guides:
- - [![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/Message.png)](https://github.com/KoT0XleB/AutoEvent-Exiled/blob/main/Docs/Installation.md)
- - [Commands](https://github.com/KoT0XleB/AutoEvent-Exiled/blob/main/Docs/Commands.md) - How to launch mini games?
- - [Language](https://github.com/KoT0XleB/AutoEvent-Exiled/blob/main/Docs/Language.md) - How do I add my own language?
- - [Problems](https://github.com/KoT0XleB/AutoEvent-Exiled/blob/main/Docs/Problem.md) - I have run into problems and I need help.
- - [Example](https://github.com/KoT0XleB/AutoEvent-Exiled/blob/main/Docs/Example.md) - I want to learn how to write my own mini-games.
-[![](https://github.com/swdmeow/AutoEvent-Exiled/blob/main/Photos/Zombie.png)](https://www.google.com/)
+[![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/Message.png)](https://github.com/KoT0XleB/AutoEvent-Exiled/blob/main/Docs/Installation.md)
+[![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/Message.png)](https://github.com/KoT0XleB/AutoEvent-Exiled/blob/main/Docs/Installation.md)
+[![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/Message.png)](https://github.com/KoT0XleB/AutoEvent-Exiled/blob/main/Docs/Commands.md)
+[![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/Message.png)](https://github.com/KoT0XleB/AutoEvent-Exiled/blob/main/Docs/Language.md)
+[![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/Message.png)](https://github.com/KoT0XleB/AutoEvent-Exiled/blob/main/Docs/Problem.md)
+[![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/Message.png)](https://github.com/KoT0XleB/AutoEvent-Exiled/blob/main/Docs/Example.md)
+
 ### All those who helped.
 ##### Thanks to ART0022VI for a little help in fixing plugins.
 ##### Thanks to Alexander666 for the help at the initial stage of creating the plugin.
