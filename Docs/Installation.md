@@ -30,8 +30,6 @@ owner:
 
 - Plugin [``SCPSLAudioApi.dll``](https://github.com/CedModV2/SCPSLAudioApi/releases/latest)  move to => ``PluginAPI/plugins/global/dependencies``
 
-- Plugin [``NVorbis.dll``](https://github.com/KoT0XleB/AutoEvent-Exiled/releases/latest)  move to => ``PluginAPI/plugins/global/dependencies``
-
 - [Music](https://github.com/KoT0XleB/AutoEvent-Exiled/tree/main/Music) files move to => ``PluginAPI/plugins/global/Music``
 
 - [Maps](https://github.com/KoT0XleB/AutoEvent-Exiled/tree/main/Schematics) folders with a files move to => ``PluginAPI/plugins/global/Schematics``
