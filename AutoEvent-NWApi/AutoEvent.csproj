@@ -169,7 +169,8 @@
     <Compile Include="Games\HideAndSeek\EventHandler.cs" />
     <Compile Include="Games\HideAndSeek\Features\RandomClass.cs" />
     <Compile Include="Games\HideAndSeek\Plugin.cs" />
-    <Compile Include="Games\Infection\Config.cs" />
+    <Compile Include="Games\Infection\Configs\Translation.cs" />
+    <Compile Include="Games\Infection\Configs\Config.cs" />
     <Compile Include="Games\Infection\EventHandler.cs" />
     <Compile Include="Games\Infection\Extensions\RandomClass.cs" />
     <Compile Include="Games\Infection\Plugin.cs" />

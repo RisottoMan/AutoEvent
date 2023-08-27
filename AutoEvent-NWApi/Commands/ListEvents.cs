@@ -24,8 +24,10 @@ namespace AutoEvent.Commands
 
             StringBuilder builder = new StringBuilder();
             builder.AppendLine("\"<color=yellow><b>List of events (when running an event, you are responsible for it)</color></b>:");
+
             foreach (Event ev in Event.Events)
                 builder.AppendLine($"<color=yellow>[{ev.CommandName}]</color>: {ev.Description}");
+
             response = builder.ToString();
             return true;
         }

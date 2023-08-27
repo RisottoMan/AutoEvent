@@ -9,13 +9,6 @@ namespace AutoEvent.Games.Knives
 {
     public class EventHandler
     {
-        /*
-        public void OnChargeJailbird(ChargingJailbirdEventArgs ev)
-        {
-            var item = (Jailbird)ev.Item;
-            item.Base._chargeDuration = 0;
-        }*/
-
         public void OnPlayerDamage(PlayerDamageArgs ev)
         {
             if (ev.DamageType == DeathTranslations.Falldown.Id)
