@@ -15,8 +15,8 @@ namespace AutoEvent.Games.Escape
 {
     public class Plugin : Event
     {
-        public override string Name { get; set; } = AutoEvent.Singleton.Translation.EscapeName;
-        public override string Description { get; set; } = AutoEvent.Singleton.Translation.EscapeDescription;
+        public override string Name { get; set; } = AutoEvent.Singleton.Translation.EscapeTranslate.EscapeName;
+        public override string Description { get; set; } = AutoEvent.Singleton.Translation.EscapeTranslate.EscapeDescription;
         public override string Author { get; set; } = "KoT0XleB";
         public override string MapName { get; set; }
         public override string CommandName { get; set; } = "escape";
@@ -70,7 +70,7 @@ namespace AutoEvent.Games.Escape
 
         public IEnumerator<float> OnEventRunning()
         {
-            var translation = AutoEvent.Singleton.Translation;
+            var translation = AutoEvent.Singleton.Translation.EscapeTranslate;
             for (int time = 10; time > 0; time--)
             {
                 Extensions.Broadcast(translation.EscapeBeforeStart.Replace("{name}", Name).Replace("{time}", ((int)time).ToString()), 1);

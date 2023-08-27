@@ -15,8 +15,8 @@ namespace AutoEvent.Games.ZombieEscape
 {
     public class Plugin : Event
     {
-        public override string Name { get; set; } = AutoEvent.Singleton.Translation.ZombieEscapeName;
-        public override string Description { get; set; } = AutoEvent.Singleton.Translation.ZombieEscapeDescription;
+        public override string Name { get; set; } = AutoEvent.Singleton.Translation.ZombieEscapeTranslate.ZombieEscapeName;
+        public override string Description { get; set; } = AutoEvent.Singleton.Translation.ZombieEscapeTranslate.ZombieEscapeDescription;
         public override string Author { get; set; } = "KoT0XleB";
         public override string MapName { get; set; } = "zm_osprey";
         public override string CommandName { get; set; } = "zombie3";
@@ -86,7 +86,7 @@ namespace AutoEvent.Games.ZombieEscape
 
         public IEnumerator<float> OnEventRunning()
         {
-            var translation = AutoEvent.Singleton.Translation;
+            var translation = AutoEvent.Singleton.Translation.ZombieEscapeTranslate;
             Extensions.PlayAudio("Survival.ogg", 10, false, Name);
 
             for (float _time = 20; _time > 0; _time--)

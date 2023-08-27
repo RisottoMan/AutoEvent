@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using AutoEvent.Games.Infection;
+using System.Collections.Generic;
 using System.ComponentModel;
 
 namespace AutoEvent
@@ -27,5 +28,7 @@ namespace AutoEvent
         {
             "donate1"
         };
+
+        public InfectConfig InfectConfig { get; set; } = new InfectConfig();
     }
 }

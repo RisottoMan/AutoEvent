@@ -14,10 +14,10 @@ namespace AutoEvent.Games.Infection
 {
     public class Plugin : Event
     {
-        public override string Name { get; set; } = InfectionTranslation.ZombieName;
-        public override string Description { get; set; } = InfectionTranslation.ZombieDescription;
+        public override string Name { get; set; } = AutoEvent.Singleton.Translation.InfectTranslate.ZombieName;
+        public override string Description { get; set; } = AutoEvent.Singleton.Translation.InfectTranslate.ZombieDescription;
         public override string Author { get; set; } = "KoT0XleB";
-        public override string MapName { get; set; } = "Zombie"; //AutoEvent. .ListOfMap.RandomItem()
+        public override string MapName { get; set; } = AutoEvent.Singleton.Config.InfectConfig.ListOfMap.RandomItem();
         public override string CommandName { get; set; } = "zombie";
         public SchematicObject GameMap { get; set; }
         TimeSpan EventTime { get; set; }
@@ -57,7 +57,7 @@ namespace AutoEvent.Games.Infection
         public void OnEventStarted()
         {
             EventTime = new TimeSpan(0, 0, 0);
-            MapName = InfectionConfig.ListOfMap.RandomItem();
+            MapName = AutoEvent.Singleton.Config.InfectConfig.ListOfMap.RandomItem();
 
             float scale = 1;
             switch(Player.GetPlayers().Count())
@@ -71,7 +71,7 @@ namespace AutoEvent.Games.Infection
 
             GameMap = Extensions.LoadMap(MapName, new Vector3(115.5f, 1030f, -43.5f), Quaternion.identity, new Vector3(1, 1, 1) * scale);
 
-            var music = InfectionConfig.ListOfMusic.ToList().RandomItem();
+            var music = AutoEvent.Singleton.Config.InfectConfig.ListOfMusic.ToList().RandomItem();
             Extensions.PlayAudio(music.Key, music.Value, true, Name);
 
             foreach (Player player in Player.GetPlayers())
@@ -85,9 +85,10 @@ namespace AutoEvent.Games.Infection
 
         public IEnumerator<float> OnEventRunning()
         {
+            var translate = AutoEvent.Singleton.Translation.InfectTranslate;
             for (float time = 15; time > 0; time--)
             {
-                Extensions.Broadcast(InfectionTranslation.ZombieBeforeStart.Replace("{name}", Name).Replace("{time}", time.ToString()), 1);
+                Extensions.Broadcast(translate.ZombieBeforeStart.Replace("{name}", Name).Replace("{time}", time.ToString()), 1);
                 yield return Timing.WaitForSeconds(1f);
             }
 
@@ -98,7 +99,7 @@ namespace AutoEvent.Games.Infection
                 var count = Player.GetPlayers().Count(r => r.Role == RoleTypeId.ClassD);
                 var time = $"{EventTime.Minutes}:{EventTime.Seconds}";
 
-                Extensions.Broadcast(InfectionTranslation.ZombieCycle.Replace("{name}", Name).Replace("{count}", count.ToString()).Replace("{time}", time), 1);
+                Extensions.Broadcast(translate.ZombieCycle.Replace("{name}", Name).Replace("{count}", count.ToString()).Replace("{time}", time), 1);
 
                 yield return Timing.WaitForSeconds(1f);
                 EventTime += TimeSpan.FromSeconds(1f);
@@ -110,6 +111,7 @@ namespace AutoEvent.Games.Infection
 
         public IEnumerator<float> DopTime()
         {
+            var translate = AutoEvent.Singleton.Translation.InfectTranslate;
             var time = $"{EventTime.Minutes}:{EventTime.Seconds}";
 
             for (int extratime = 30; extratime > 0; extratime--)
@@ -117,7 +119,7 @@ namespace AutoEvent.Games.Infection
                 if (Player.GetPlayers().Count(r => r.Role == RoleTypeId.ClassD) == 0) 
                     break;
 
-                Extensions.Broadcast(InfectionTranslation.ZombieExtraTime.Replace("{extratime}", extratime.ToString()).Replace("{time}", time), 1);
+                Extensions.Broadcast(translate.ZombieExtraTime.Replace("{extratime}", extratime.ToString()).Replace("{time}", time), 1);
 
                 yield return Timing.WaitForSeconds(1f);
                 EventTime += TimeSpan.FromSeconds(1f);
@@ -125,11 +127,11 @@ namespace AutoEvent.Games.Infection
 
             if (Player.GetPlayers().Count(r => r.Role == RoleTypeId.ClassD) == 0)
             {
-                Extensions.Broadcast(InfectionTranslation.ZombieWin.Replace("{time}", time), 10);
+                Extensions.Broadcast(translate.ZombieWin.Replace("{time}", time), 10);
             }
             else
             {
-                Extensions.Broadcast(InfectionTranslation.ZombieLose.Replace("{time}", time), 10);
+                Extensions.Broadcast(translate.ZombieLose.Replace("{time}", time), 10);
             }
 
             OnStop();

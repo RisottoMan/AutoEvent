@@ -18,8 +18,8 @@ namespace AutoEvent.Games.Glass
 {
     public class Plugin : Event
     {
-        public override string Name { get; set; } = AutoEvent.Singleton.Translation.GlassName;
-        public override string Description { get; set; } = AutoEvent.Singleton.Translation.GlassDescription;
+        public override string Name { get; set; } = AutoEvent.Singleton.Translation.GlassTranslate.GlassName;
+        public override string Description { get; set; } = AutoEvent.Singleton.Translation.GlassTranslate.GlassDescription;
         public override string Author { get; set; } = "KoT0XleB";
         public override string MapName { get; set; } = "Glass";
         public override string CommandName { get; set; } = "glass";
@@ -127,7 +127,7 @@ namespace AutoEvent.Games.Glass
 
         public IEnumerator<float> OnEventRunning()
         {
-            var translation = AutoEvent.Singleton.Translation;
+            var translation = AutoEvent.Singleton.Translation.GlassTranslate;
 
             for (int time = 15; time > 0; time--)
             {

@@ -15,8 +15,8 @@ namespace AutoEvent.Games.Survival
 {
     public class Plugin : Event
     {
-        public override string Name { get; set; } = AutoEvent.Singleton.Translation.SurvivalName;
-        public override string Description { get; set; } = AutoEvent.Singleton.Translation.SurvivalDescription;
+        public override string Name { get; set; } = AutoEvent.Singleton.Translation.SurvivalTranslate.SurvivalName;
+        public override string Description { get; set; } = AutoEvent.Singleton.Translation.SurvivalTranslate.SurvivalDescription;
         public override string Author { get; set; } = "KoT0XleB";
         public override string MapName { get; set; } = "Survival";
         public override string CommandName { get; set; } = "zombie2";
@@ -87,7 +87,7 @@ namespace AutoEvent.Games.Survival
 
         public IEnumerator<float> OnEventRunning()
         {
-            var translation = AutoEvent.Singleton.Translation;
+            var translation = AutoEvent.Singleton.Translation.SurvivalTranslate;
             Extensions.PlayAudio("Survival.ogg", 10, false, Name);
 
             for (float _time = 20; _time > 0; _time--)

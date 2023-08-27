@@ -14,8 +14,8 @@ namespace AutoEvent.Games.Knives
 {
     public class Plugin : Event
     {
-        public override string Name { get; set; } = AutoEvent.Singleton.Translation.KnivesName;
-        public override string Description { get; set; } = AutoEvent.Singleton.Translation.KnivesDescription;
+        public override string Name { get; set; } = AutoEvent.Singleton.Translation.KnivesTranslate.KnivesName;
+        public override string Description { get; set; } = AutoEvent.Singleton.Translation.KnivesTranslate.KnivesDescription;
         public override string Author { get; set; } = "KoT0XleB";
         public override string MapName { get; set; } = "35hp_2";
         public override string CommandName { get; set; } = "knife";
@@ -92,7 +92,7 @@ namespace AutoEvent.Games.Knives
 
         public IEnumerator<float> OnEventRunning()
         {
-            var translation = AutoEvent.Singleton.Translation;
+            var translation = AutoEvent.Singleton.Translation.KnivesTranslate;
 
             for (int time = 10; time > 0; time--)
             {

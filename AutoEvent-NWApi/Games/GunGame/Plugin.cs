@@ -14,8 +14,8 @@ namespace AutoEvent.Games.GunGame
 {
     public class Plugin : Event
     {
-        public override string Name { get; set; } = AutoEvent.Singleton.Translation.GunGameName;
-        public override string Description { get; set; } = AutoEvent.Singleton.Translation.GunGameDescription;
+        public override string Name { get; set; } = AutoEvent.Singleton.Translation.GunGameTranslate.GunGameName;
+        public override string Description { get; set; } = AutoEvent.Singleton.Translation.GunGameTranslate.GunGameDescription;
         public override string Author { get; set; } = "KoT0XleB";
         public override string MapName { get; set; } = "Shipment";
         public override string CommandName { get; set; } = "gungame";
@@ -97,7 +97,7 @@ namespace AutoEvent.Games.GunGame
 
         public IEnumerator<float> OnEventRunning()
         {
-            var translation = AutoEvent.Singleton.Translation;
+            var translation = AutoEvent.Singleton.Translation.GunGameTranslate;
 
             for (int time = 10; time > 0; time--)
             {

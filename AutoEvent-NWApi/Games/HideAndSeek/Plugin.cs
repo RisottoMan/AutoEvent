@@ -15,8 +15,8 @@ namespace AutoEvent.Games.HideAndSeek
 {
     public class Plugin : Event
     {
-        public override string Name { get; set; } = AutoEvent.Singleton.Translation.HideName;
-        public override string Description { get; set; } = AutoEvent.Singleton.Translation.HideDescription;
+        public override string Name { get; set; } = AutoEvent.Singleton.Translation.HideTranslate.HideName;
+        public override string Description { get; set; } = AutoEvent.Singleton.Translation.HideTranslate.HideDescription;
         public override string Author { get; set; } = "KoT0XleB";
         public override string MapName { get; set; } = "HideAndSeek";
         public override string CommandName { get; set; } = "hns";
@@ -77,7 +77,7 @@ namespace AutoEvent.Games.HideAndSeek
 
         public IEnumerator<float> OnEventRunning()
         {
-            var translation = AutoEvent.Singleton.Translation;
+            var translation = AutoEvent.Singleton.Translation.HideTranslate;
 
             while (Player.GetPlayers().Count(r => r.IsAlive) > 1)
             {
@@ -126,7 +126,7 @@ namespace AutoEvent.Games.HideAndSeek
 
         public void OnEventEnded()
         {
-            var translation = AutoEvent.Singleton.Translation;
+            var translation = AutoEvent.Singleton.Translation.HideTranslate;
 
             if (Player.GetPlayers().Count(r => r.IsAlive) > 1)
             {

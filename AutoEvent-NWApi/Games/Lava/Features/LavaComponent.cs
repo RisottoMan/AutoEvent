@@ -31,7 +31,7 @@ namespace AutoEvent.Games.Lava
                 if (Player.Get(other.gameObject) is Player)
                 {
                     var pl = Player.Get(other.gameObject);
-                    pl.Damage(30, AutoEvent.Singleton.Translation.PuzzleDied);
+                    pl.Damage(30, AutoEvent.Singleton.Translation.PuzzleTranslate.PuzzleDied);
                 }
             }
         }

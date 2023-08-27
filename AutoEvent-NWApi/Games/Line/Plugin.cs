@@ -15,8 +15,8 @@ namespace AutoEvent.Games.Line
 {
     public class Plugin : Event
     {
-        public override string Name { get; set; } = AutoEvent.Singleton.Translation.LineName;
-        public override string Description { get; set; } = AutoEvent.Singleton.Translation.LineDescription;
+        public override string Name { get; set; } = AutoEvent.Singleton.Translation.LineTranslate.LineName;
+        public override string Description { get; set; } = AutoEvent.Singleton.Translation.LineTranslate.LineDescription;
         public override string Author { get; set; } = "Logic_Gun";
         public override string MapName { get; set; } = "Line";
         public override string CommandName { get; set; } = "line";
@@ -75,7 +75,7 @@ namespace AutoEvent.Games.Line
 
         public IEnumerator<float> OnEventRunning()
         {
-            var translation = AutoEvent.Singleton.Translation;
+            var translation = AutoEvent.Singleton.Translation.LineTranslate;
 
             for (int time = 10; time > 0; time--)
             {

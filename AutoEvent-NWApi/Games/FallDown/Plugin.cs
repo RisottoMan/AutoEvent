@@ -14,8 +14,8 @@ namespace AutoEvent.Games.FallDown
 {
     public class Plugin : Event
     {
-        public override string Name { get; set; } = AutoEvent.Singleton.Translation.FallName;
-        public override string Description { get; set; } = AutoEvent.Singleton.Translation.FallDescription;
+        public override string Name { get; set; } = AutoEvent.Singleton.Translation.FallTranslate.FallName;
+        public override string Description { get; set; } = AutoEvent.Singleton.Translation.FallTranslate.FallDescription;
         public override string Author { get; set; } = "KoT0XleB";
         public override string MapName { get; set; } = "FallDown";
         public override string CommandName { get; set; } = "fall";
@@ -71,7 +71,7 @@ namespace AutoEvent.Games.FallDown
 
         public IEnumerator<float> OnEventRunning()
         {
-            var translation = AutoEvent.Singleton.Translation;
+            var translation = AutoEvent.Singleton.Translation.FallTranslate;
 
             for (float time = 15; time > 0; time--)
             {

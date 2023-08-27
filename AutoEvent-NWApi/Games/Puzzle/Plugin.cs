@@ -15,8 +15,8 @@ namespace AutoEvent.Games.Puzzle
 {
     public class Plugin : Event
     {
-        public override string Name { get; set; } = AutoEvent.Singleton.Translation.PuzzleName;
-        public override string Description { get; set; } = AutoEvent.Singleton.Translation.PuzzleDescription;
+        public override string Name { get; set; } = AutoEvent.Singleton.Translation.PuzzleTranslate.PuzzleName;
+        public override string Description { get; set; } = AutoEvent.Singleton.Translation.PuzzleTranslate.PuzzleDescription;
         public override string Author { get; set; } = "KoT0XleB";
         public override string MapName { get; set; } = "Puzzle";
         public override string CommandName { get; set; } = "puzzle";
@@ -74,7 +74,7 @@ namespace AutoEvent.Games.Puzzle
 
         public IEnumerator<float> OnEventRunning()
         {
-            var translation = AutoEvent.Singleton.Translation;
+            var translation = AutoEvent.Singleton.Translation.PuzzleTranslate;
 
             for (int time = 15; time > 0; time--)
             {

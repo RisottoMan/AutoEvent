@@ -15,8 +15,8 @@ namespace AutoEvent.Games.Football
 {
     public class Plugin : Event
     {
-        public override string Name { get; set; } = AutoEvent.Singleton.Translation.FootballName;
-        public override string Description { get; set; } = AutoEvent.Singleton.Translation.FootballDescription;
+        public override string Name { get; set; } = AutoEvent.Singleton.Translation.FootballTranslate.FootballName;
+        public override string Description { get; set; } = AutoEvent.Singleton.Translation.FootballTranslate.FootballDescription;
         public override string Author { get; set; } = "KoT0XleB";
         public override string MapName { get; set; } = "Football";
         public override string CommandName { get; set; } = "ball";
@@ -71,7 +71,7 @@ namespace AutoEvent.Games.Football
 
         public IEnumerator<float> OnEventRunning()
         {
-            var translation = AutoEvent.Singleton.Translation;
+            var translation = AutoEvent.Singleton.Translation.FootballTranslate;
             int bluePoints = 0;
             int redPoints = 0;
             GameObject ball = new GameObject();

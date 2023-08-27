@@ -14,8 +14,8 @@ namespace AutoEvent.Games.Versus
 {
     public class Plugin : Event
     {
-        public override string Name { get; set; } = AutoEvent.Singleton.Translation.VersusName;
-        public override string Description { get; set; } = AutoEvent.Singleton.Translation.VersusDescription;
+        public override string Name { get; set; } = AutoEvent.Singleton.Translation.VersusTranslate.VersusName;
+        public override string Description { get; set; } = AutoEvent.Singleton.Translation.VersusTranslate.VersusDescription;
         public override string Author { get; set; } = "KoT0XleB";
         public override string MapName { get; set; } = "35Hp";
         public override string CommandName { get; set; } = "versus";
@@ -92,7 +92,7 @@ namespace AutoEvent.Games.Versus
 
         public IEnumerator<float> OnEventRunning()
         {
-            var translation = AutoEvent.Singleton.Translation;
+            var translation = AutoEvent.Singleton.Translation.VersusTranslate;
             for (int time = 10; time > 0; time--)
             {
                 Extensions.Broadcast($"<size=100><color=red>{time}</color></size>", 1);

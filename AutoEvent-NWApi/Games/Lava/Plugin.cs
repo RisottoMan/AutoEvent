@@ -14,8 +14,8 @@ namespace AutoEvent.Games.Lava
 {
     public class Plugin : Event
     {
-        public override string Name { get; set; } = AutoEvent.Singleton.Translation.LavaName;
-        public override string Description { get; set; } = AutoEvent.Singleton.Translation.LavaDescription;
+        public override string Name { get; set; } = AutoEvent.Singleton.Translation.LavaTranslate.LavaName;
+        public override string Description { get; set; } = AutoEvent.Singleton.Translation.LavaTranslate.LavaDescription;
         public override string Author { get; set; } = "KoT0XleB";
         public override string MapName { get; set; } = "Lava";
         public override string CommandName { get; set; } = "lava";
@@ -77,7 +77,7 @@ namespace AutoEvent.Games.Lava
 
         public IEnumerator<float> OnEventRunning()
         {
-            var translation = AutoEvent.Singleton.Translation;
+            var translation = AutoEvent.Singleton.Translation.LavaTranslate;
 
             for (int time = 10; time > 0; time--)
             {

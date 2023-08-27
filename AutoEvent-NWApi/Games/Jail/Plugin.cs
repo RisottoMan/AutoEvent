@@ -14,8 +14,8 @@ namespace AutoEvent.Games.Jail
 {
     public class Plugin : Event
     {
-        public override string Name { get; set; } = AutoEvent.Singleton.Translation.JailName;
-        public override string Description { get; set; } = AutoEvent.Singleton.Translation.JailDescription;
+        public override string Name { get; set; } = AutoEvent.Singleton.Translation.JailTranslate.JailName;
+        public override string Description { get; set; } = AutoEvent.Singleton.Translation.JailTranslate.JailDescription;
         public override string Author { get; set; } = "KoT0XleB";
         public override string MapName { get; set; } = "Jail";
         public override string CommandName { get; set; } = "jail";
@@ -105,7 +105,7 @@ namespace AutoEvent.Games.Jail
         public IEnumerator<float> OnEventRunning()
         {
             EventTime = new TimeSpan(0, 0, 0);
-            var translation = AutoEvent.Singleton.Translation;
+            var translation = AutoEvent.Singleton.Translation.JailTranslate;
 
             for (int time = 15; time > 0; time--)
             {

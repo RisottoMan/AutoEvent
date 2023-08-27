@@ -14,8 +14,8 @@ namespace AutoEvent.Games.FinishWay
 {
     public class Plugin : Event
     {
-        public override string Name { get; set; } = AutoEvent.Singleton.Translation.FinishWayName;
-        public override string Description { get; set; } = AutoEvent.Singleton.Translation.FinishWayDescription;
+        public override string Name { get; set; } = AutoEvent.Singleton.Translation.FinishWayTranslate.FinishWayName;
+        public override string Description { get; set; } = AutoEvent.Singleton.Translation.FinishWayTranslate.FinishWayDescription;
         public override string Author { get; set; } = "KoT0XleB";
         public override string MapName { get; set; } = "FinishWay";
         public override string CommandName { get; set; } = "finish";
@@ -66,7 +66,7 @@ namespace AutoEvent.Games.FinishWay
 
         public IEnumerator<float> OnEventRunning()
         {
-            var translation = AutoEvent.Singleton.Translation;
+            var translation = AutoEvent.Singleton.Translation.FinishWayTranslate;
 
             for (float time = 10; time > 0; time--)
             {

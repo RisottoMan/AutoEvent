@@ -14,8 +14,8 @@ namespace AutoEvent.Games.Boss
 {
     public class Plugin : Event
     {
-        public override string Name { get; set; } = AutoEvent.Singleton.Translation.BossName;
-        public override string Description { get; set; } = AutoEvent.Singleton.Translation.BossDescription;
+        public override string Name { get; set; } = AutoEvent.Singleton.Translation.BossTranslate.BossName;
+        public override string Description { get; set; } = AutoEvent.Singleton.Translation.BossTranslate.BossDescription;
         public override string Author { get; set; } = "KoT0XleB";
         public override string MapName { get; set; } = "DeathParty";
         public override string CommandName { get; set; } = "boss";
@@ -74,7 +74,7 @@ namespace AutoEvent.Games.Boss
 
         public IEnumerator<float> OnEventRunning()
         {
-            var translation = AutoEvent.Singleton.Translation;
+            var translation = AutoEvent.Singleton.Translation.BossTranslate;
             for (int time = 15; time > 0; time--)
             {
                 Extensions.Broadcast(translation.BossTimeLeft.Replace("{time}", $"{time}"), 5);

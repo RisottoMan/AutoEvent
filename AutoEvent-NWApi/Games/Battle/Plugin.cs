@@ -14,8 +14,8 @@ namespace AutoEvent.Games.Battle
 {
     public class Plugin : Event
     {
-        public override string Name { get; set; } = AutoEvent.Singleton.Translation.BattleName;
-        public override string Description { get; set; } = AutoEvent.Singleton.Translation.BattleDescription;
+        public override string Name { get; set; } = AutoEvent.Singleton.Translation.BattleTranslate.BattleName;
+        public override string Description { get; set; } = AutoEvent.Singleton.Translation.BattleTranslate.BattleDescription;
         public override string Author { get; set; } = "KoT0XleB";
         public override string MapName { get; set; } = "Battle";
         public override string CommandName { get; set; } = "battle";
@@ -85,7 +85,7 @@ namespace AutoEvent.Games.Battle
 
         public IEnumerator<float> OnEventRunning()
         {
-            var translation = AutoEvent.Singleton.Translation;
+            var translation = AutoEvent.Singleton.Translation.BattleTranslate;
             for (int time = 20; time > 0; time--)
             {
                 Extensions.Broadcast(translation.BattleTimeLeft.Replace("{time}", $"{time}"), 5);

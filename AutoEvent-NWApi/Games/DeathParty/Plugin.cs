@@ -15,8 +15,8 @@ namespace AutoEvent.Games.DeathParty
 {
     public class Plugin : Event
     {
-        public override string Name { get; set; } = AutoEvent.Singleton.Translation.DeathName;
-        public override string Description { get; set; } = AutoEvent.Singleton.Translation.DeathDescription;
+        public override string Name { get; set; } = AutoEvent.Singleton.Translation.DeathTranslate.DeathName;
+        public override string Description { get; set; } = AutoEvent.Singleton.Translation.DeathTranslate.DeathDescription;
         public override string Author { get; set; } = "KoT0XleB";
         public override string MapName { get; set; } = "DeathParty";
         public override string CommandName { get; set; } = "death";
@@ -81,7 +81,7 @@ namespace AutoEvent.Games.DeathParty
 
         public IEnumerator<float> OnEventRunning()
         {
-            var translation = AutoEvent.Singleton.Translation;
+            var translation = AutoEvent.Singleton.Translation.DeathTranslate;
 
             for (int _time = 10; _time > 0; _time--)
             {
