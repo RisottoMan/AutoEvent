@@ -10,7 +10,7 @@
 [![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/Message3.jpg)](https://github.com/KoT0XleB/AutoEvent-Exiled/blob/main/Docs/Language.md)
 [![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/Message4.jpg)](https://github.com/KoT0XleB/AutoEvent-Exiled/blob/main/Docs/Problem.md)
 [![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/Message5.jpg)](https://github.com/KoT0XleB/AutoEvent-Exiled/blob/main/Docs/Example.md)
-[![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/Message5.jpg)](https://discord.gg/Bu7ZsKsbjP)
+[![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/Message6.jpg)](https://discord.gg/Bu7ZsKsbjP)
 
 # Credits
 - Thanks to **ART0022VI** for a little help in fixing plugins.
