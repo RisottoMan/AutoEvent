@@ -9,4 +9,5 @@
 ## > Chinese [``Press Me``](https://github.com/KoT0XleB/AutoEvent/blob/main/Docs/Translations/Chinese.md)
 ### This language must be set manually.
 
-## !!! Warning: for NWApi, in general, the same translations, but the structure of configs may be different !!!
+## Warning: 
+for NWApi, in general, the same translations, but the structure of configs may be different.
