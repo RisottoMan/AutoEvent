@@ -4,13 +4,13 @@
 ![Logo](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/MiniGames(mini).png)
 
 # Guides:
-[![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/Message.jpg)](https://github.com/KoT0XleB/AutoEvent-Exiled/blob/main/Docs/MiniGames.md)
-[![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/Message1.jpg)](https://github.com/KoT0XleB/AutoEvent-Exiled/blob/main/Docs/Installation.md)
-[![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/Message2.jpg)](https://github.com/KoT0XleB/AutoEvent-Exiled/blob/main/Docs/Commands.md)
-[![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/Message3.jpg)](https://github.com/KoT0XleB/AutoEvent-Exiled/blob/main/Docs/Language.md)
-[![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/Message4.jpg)](https://github.com/KoT0XleB/AutoEvent-Exiled/blob/main/Docs/Problem.md)
-[![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/Message5.jpg)](https://github.com/KoT0XleB/AutoEvent-Exiled/blob/main/Docs/Example.md)
-[![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/Message6.jpg)](https://discord.gg/Bu7ZsKsbjP)
+[![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/Message.png)](https://github.com/KoT0XleB/AutoEvent-Exiled/blob/main/Docs/MiniGames.md)
+[![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/Message1.png)](https://github.com/KoT0XleB/AutoEvent-Exiled/blob/main/Docs/Installation.md)
+[![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/Message2.png)](https://github.com/KoT0XleB/AutoEvent-Exiled/blob/main/Docs/Commands.md)
+[![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/Message3.png)](https://github.com/KoT0XleB/AutoEvent-Exiled/blob/main/Docs/Language.md)
+[![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/Message4.png)](https://github.com/KoT0XleB/AutoEvent-Exiled/blob/main/Docs/Problem.md)
+[![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/Message5.png)](https://github.com/KoT0XleB/AutoEvent-Exiled/blob/main/Docs/Example.md)
+[![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/Message6.png)](https://discord.gg/Bu7ZsKsbjP)
 
 # Credits
 - Thanks to **ART0022VI** for a little help in fixing plugins.
