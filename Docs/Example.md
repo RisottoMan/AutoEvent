@@ -106,6 +106,4 @@ namespace AutoEvent.Events.Example
     }
 }
 ```
-### In Exiled and NWApi there is a difference in creating mini-games. 
-### If the entire toolkit has already been created in Exiled, and the plugin just makes it convenient to create mini-games, 
-### but NWApi had to create its own toolkit. You can use the implemented cancellable events in the code for yourself.
+### In Exiled and NWApi there is a difference in creating mini-games. If the entire toolkit has already been created in Exiled, and the plugin just makes it convenient to create mini-games, but NWApi had to create its own toolkit. You can use the implemented cancellable events in the code for yourself.
