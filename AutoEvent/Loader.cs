@@ -66,12 +66,32 @@ public class Loader
         Dictionary<Assembly, string> locations = new Dictionary<Assembly, string>();
         foreach (string assemblyPath in Directory.GetFiles(Path.Combine(Paths.Configs, "Events"), "*.dll"))
         {
-            Assembly assembly = LoadAssembly(assemblyPath);
+            try
+            {
 
-            if (assembly is null)
-                continue;
+                Assembly assembly = LoadAssembly(assemblyPath);
 
-            locations[assembly] = assemblyPath;
+                if (assembly is null)
+                    continue;
+
+                locations[assembly] = assemblyPath;
+            }
+            catch (TargetInvocationException e)
+            {
+                Log.Warn("[ExternalEventLoader] Could not load a plugin. Check to make sure it does not require exiled or that you have exiled installed.");
+                if (Debug)
+                {  
+                    Log.Debug(e.ToString());
+                }
+            }
+            catch (Exception e)
+            {
+                if (Debug)
+                {  
+                    Log.Debug(e.ToString());
+                }
+                Log.Warn($"[ExternalEventLoader] Could not load a plugin due to an error.");
+            }
         }
 
         foreach (Assembly assembly in locations.Keys)
@@ -87,25 +107,33 @@ public class Loader
                 foreach (Event eventPlugin in eventList)
                 {
 
-                    if (eventPlugin is null)
-                        continue;
-                    if (eventPlugin.UsesExiled && !isExiledPresent())
+                    try
                     {
-                        Log.Warn(
-                            $"[ExternalEventLoader] Cannot register plugin {eventPlugin.Name} because it requires exiled to work. Exiled has not loaded yet, or is not present at all.");
-                        continue;
+
+                        if (eventPlugin is null)
+                            continue;
+                        if (eventPlugin.UsesExiled && !isExiledPresent())
+                        {
+                            Log.Warn(
+                                $"[ExternalEventLoader] Cannot register plugin {eventPlugin.Name} because it requires exiled to work. Exiled has not loaded yet, or is not present at all.");
+                            continue;
+                        }
+
+                        AssemblyInformationalVersionAttribute attribute =
+                            assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>();
+
+                        if (LogAllPluginsOnRegister || Debug)
+                        {
+                            Log.Info(
+                                $"[ExternalEventLoader] Loaded Event {eventPlugin.Name} by {(eventPlugin.Author is not null ? $"{eventPlugin.Author}" : attribute is not null ? attribute.InformationalVersion : string.Empty)}");
+                        }
+
+                        Events.Add(eventPlugin);
                     }
-
-                    AssemblyInformationalVersionAttribute attribute =
-                        assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>();
-
-                    if (LogAllPluginsOnRegister || Debug)
+                    catch (Exception e)
                     {
-                        Log.Info(
-                            $"[ExternalEventLoader] Loaded Event {eventPlugin.Name} by {(eventPlugin.Author is not null ? $"{eventPlugin.Author}" : attribute is not null ? attribute.InformationalVersion : string.Empty)}");
+                        //unused
                     }
-
-                    Events.Add(eventPlugin);
                 }
             }
             catch (Exception)
@@ -150,88 +178,134 @@ public class Loader
         {
             foreach (Type type in assembly.GetTypes())
             {
-                if (type.IsAbstract || type.IsInterface)
+                try
                 {
-                    if (Debug)
+
+                    if (type.IsAbstract || type.IsInterface)
                     {
-                       Log.Debug($"[ExternalEventLoader] \"{type.FullName}\" is an interface or abstract class, skipping.");
-                    }
-                    
-                    
-                    continue;
-                }
+                        if (Debug)
+                        {
+                            Log.Debug(
+                                $"[ExternalEventLoader] \"{type.FullName}\" is an interface or abstract class, skipping.");
+                        }
 
-                if (!IsDerivedFromPlugin(type))
-                {
-                    if (Debug)
-                    {
-                        Log.Debug($"[ExternalEventLoader] \"{type.FullName}\" does not inherit from Event, skipping.");
-                    }
-                    continue;
-                }
 
-                if (Debug)
-                {
-                    Log.Debug($"[ExternalEventLoader] Loading type {type.FullName}");
-                }
-
-                Event plugin = null;
-
-                ConstructorInfo constructor = type.GetConstructor(Type.EmptyTypes);
-                if (constructor is not null)
-                {
-                    if (Debug)
-                    {
-                        Log.Debug("[ExternalEventLoader] Public default constructor found, creating instance...");
+                        continue;
                     }
 
-                    plugin = constructor.Invoke(null) as Event;
-                }
-                else
-                {
-                    if (Debug)
+                    if (!IsDerivedFromPlugin(type))
                     {
-                        Log.Debug($"[ExternalEventLoader] Constructor wasn't found, searching for a property with the {type.FullName} type...");
+                        if (Debug)
+                        {
+                            Log.Debug(
+                                $"[ExternalEventLoader] \"{type.FullName}\" does not inherit from Event, skipping.");
+                        }
+
+                        continue;
                     }
 
-                    object value = Array
-                        .Find(type.GetProperties(BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public),
-                            property => property.PropertyType == type)?.GetValue(null);
+                    if (Debug)
+                    {
+                        Log.Debug($"[ExternalEventLoader] Loading type {type.FullName}");
+                    }
 
-                    if (value is not null)
-                        plugin = value as Event;
+                    Event plugin = null;
+
+                    ConstructorInfo constructor = type.GetConstructor(Type.EmptyTypes);
+                    if (constructor is not null)
+                    {
+                        if (Debug)
+                        {
+                            Log.Debug("[ExternalEventLoader] Public default constructor found, creating instance...");
+                        }
+
+                        plugin = constructor.Invoke(null) as Event;
+                    }
+                    else
+                    {
+                        if (Debug)
+                        {
+                            Log.Debug(
+                                $"[ExternalEventLoader] Constructor wasn't found, searching for a property with the {type.FullName} type...");
+                        }
+
+                        object value = Array
+                            .Find(
+                                type.GetProperties(BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public),
+                                property => property.PropertyType == type)?.GetValue(null);
+
+                        if (value is not null)
+                            plugin = value as Event;
+                    }
+
+                    if (plugin is null)
+                    {
+                        Log.Error(
+                            $"[ExternalEventLoader] {type.FullName} is a valid event, but it cannot be instantiated! It either doesn't have a public default constructor without any arguments or a static property of the {type.FullName} type!");
+
+                        continue;
+                    }
+
+                    if (Debug)
+                    {
+                        Log.Debug($"[ExternalEventLoader] Instantiated type {type.FullName}");
+                    }
+
+                    eventsFound.Add(plugin);
                 }
-
-                if (plugin is null)
+                catch (ReflectionTypeLoadException reflectionTypeLoadException)
                 {
-                    Log.Error($"[ExternalEventLoader] {type.FullName} is a valid event, but it cannot be instantiated! It either doesn't have a public default constructor without any arguments or a static property of the {type.FullName} type!");
+                    Log.Warn("[ExternalEventLoader] An external event has failed to load! Ensure that you have Exiled installed, or that all of the plugins don't require Exiled.");
 
-                    continue;
+                    if (Debug)
+                    {
+
+                        Log.Error(
+                            $"[ExternalEventLoader] Error while initializing event {assembly.GetName().Name} (at {assembly.Location})! {reflectionTypeLoadException}");
+
+                        foreach (Exception loaderException in reflectionTypeLoadException.LoaderExceptions)
+                        {
+                            Log.Error($"[ExternalEventLoader] {loaderException}");
+                        }
+                    }
                 }
-
-                if (Debug)
+                catch (Exception exception)
                 {
-                    Log.Debug($"[ExternalEventLoader] Instantiated type {type.FullName}");
+                    Log.Warn("[ExternalEventLoader] An external event has failed to load! Ensure that you have Exiled installed, or that all of the plugins don't require Exiled.");
+                    if (Debug)
+                    {
+                        Log.Error(
+                            $"[ExternalEventLoader] Error while initializing plugin {assembly.GetName().Name} (at {assembly.Location})! {exception}");
+                    }
                 }
-
-                eventsFound.Add(plugin);
             }
             return eventsFound;
         }
+        
         catch (ReflectionTypeLoadException reflectionTypeLoadException)
         {
-            Log.Error(
-                $"[ExternalEventLoader] Error while initializing event {assembly.GetName().Name} (at {assembly.Location})! {reflectionTypeLoadException}");
+            Log.Warn("[ExternalEventLoader] An external event has failed to load! Ensure that you have Exiled installed, or that all of the plugins don't require Exiled.");
 
-            foreach (Exception loaderException in reflectionTypeLoadException.LoaderExceptions)
+            if (Debug)
             {
-                Log.Error(loaderException);
+
+                Log.Error(
+                    $"[ExternalEventLoader] Error while initializing event {assembly.GetName().Name} (at {assembly.Location})! {reflectionTypeLoadException}");
+
+                foreach (Exception loaderException in reflectionTypeLoadException.LoaderExceptions)
+                {
+                    Log.Error($"[ExternalEventLoader] {loaderException}");
+                }
             }
         }
         catch (Exception exception)
         {
-            Log.Error(
-                $"[ExternalEventLoader] Error while initializing plugin {assembly.GetName().Name} (at {assembly.Location})! {exception}");
+            Log.Warn("[ExternalEventLoader] An external event has failed to load! Ensure that you have Exiled installed, or that all of the plugins don't require Exiled.");
+            if (Debug)
+            {
+                Log.Error(
+                    $"[ExternalEventLoader] Error while initializing plugin {assembly.GetName().Name} (at {assembly.Location})! {exception}");
+            }
         }
 
         return eventsFound;
