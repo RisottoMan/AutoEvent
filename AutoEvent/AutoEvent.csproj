@@ -38,17 +38,10 @@
     <LangVersion>default</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Assembly-CSharp-Publicized">
-      <HintPath>..\..\..\..\..\OneDrive\Документы\DLLs Library\2\Assembly-CSharp-Publicized.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
-    <Reference Include="UnityEngine">
-      <HintPath>..\..\..\..\..\OneDrive\Документы\DLLs Library\UnityEngine.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\OneDrive\Документы\DLLs Library\UnityEngine.CoreModule.dll</HintPath>
-    </Reference>
+    <Reference Include="UnityEngine" HintPath="$(SL_REFERENCES)\UnityEngine.dll" />
+    <Reference Include="UnityEngine.CoreModule" HintPath="$(SL_REFERENCES)\UnityEngine.CoreModule.dll" />
+    <Reference Include="Assembly-CSharp-Publicized" HintPath="$(SL_REFERENCES)\Assembly-CSharp-Publicized.dll" />
     <Reference Include="UnityEngine.UnityWebRequestModule" HintPath="$(UNITY_REFERENCES)\UnityEngine.UnityWebRequestModule.dll" />
     <Reference Include="UnityEngine.AnimationModule" HintPath="$(UNITY_REFERENCES)\UnityEngine.AnimationModule.dll" />
     <Reference Include="UnityEngine.PhysicsModule" HintPath="$(UNITY_REFERENCES)\UnityEngine.PhysicsModule.dll" />
