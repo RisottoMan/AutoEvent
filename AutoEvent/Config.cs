@@ -20,6 +20,10 @@ namespace AutoEvent
         {
             "donate1"
         };
+        
+        [Description("The global volume of plugins (0 - 200, 100 is normal)")]
+        public float Volume = 100;
+        
         [Description("Infection config..")]
         public InfectionConfig InfectionConfig { get; set; } = new InfectionConfig();
 
