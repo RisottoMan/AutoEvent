@@ -6,6 +6,7 @@ using PluginAPI.Enums;
 using PluginAPI.Helpers;
 using PluginAPI.Events;
 using AutoEvent.Events.Handlers;
+using GameCore;
 using Event = AutoEvent.Interfaces.Event;
 
 namespace AutoEvent
@@ -33,13 +34,23 @@ namespace AutoEvent
             HarmonyPatch = new Harmony("autoevent-nwapi");
             HarmonyPatch.PatchAll();
 
-            Event.RegisterEvents();
             EventManager.RegisterEvents(this);
             SCPSLAudioApi.Startup.SetupDependencies();
 
             eventHandler = new EventHandler();
             Servers.RemoteAdmin += eventHandler.OnRemoteAdmin;
 
+            Event.RegisterEvents();
+            
+            // Load External Events.
+            if (!Directory.Exists(Path.Combine(Paths.GlobalPlugins.Plugins, "Events")))
+            {
+                Directory.CreateDirectory(Path.Combine(Paths.GlobalPlugins.Plugins, "Events"));
+            }
+            Loader.LoadEvents();
+            Event.Events.AddRange(Loader.Events);
+            
+            PluginAPI.Core.Log.Info(Loader.Events.Count > 0 ? $"[ExternalEventLoader] Loaded {Loader.Events.Count} external event{(Loader.Events.Count > 1 ? "s" : "")}." : "No external events were found.");
             if (!Directory.Exists(Path.Combine(Paths.GlobalPlugins.Plugins, "Music")))
             {
                 Directory.CreateDirectory(Path.Combine(Paths.GlobalPlugins.Plugins, "Music"));
