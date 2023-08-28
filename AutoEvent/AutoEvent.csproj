@@ -70,6 +70,7 @@
     <Compile Include="Commands\MainCommand.cs" />
     <Compile Include="Commands\RunEvent.cs" />
     <Compile Include="Commands\StopEvent.cs" />
+    <Compile Include="Commands\Volume.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="Events\Lobby\EventHandler.cs" />
     <Compile Include="Events\Lobby\Features\RandomClass.cs" />

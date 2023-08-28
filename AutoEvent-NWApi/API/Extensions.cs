@@ -12,6 +12,7 @@ using InventorySystem.Items.Pickups;
 using PlayerStatsSystem;
 using PluginAPI.Helpers;
 using System.Reflection;
+using AutoEvent.Games.Line;
 using InventorySystem.Items.ThrowableProjectiles;
 using InventorySystem.Items;
 using Object = UnityEngine.Object;
@@ -83,7 +84,7 @@ namespace AutoEvent
             audioPlayer.Enqueue(path, -1);
             audioPlayer.LogDebug = false;
             audioPlayer.BroadcastChannel = VoiceChatChannel.Intercom;
-            audioPlayer.Volume = volume;
+            audioPlayer.Volume = volume * (AutoEvent.Singleton.Config.Volume/100f);
             audioPlayer.Loop = loop;
             audioPlayer.Play(0);
         }
