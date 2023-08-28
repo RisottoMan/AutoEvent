@@ -114,6 +114,10 @@ public class Loader
                             continue;
                         }
 
+                        if (!eventPlugin.AutoLoad)
+                        {
+                            continue;
+                        }
                         AssemblyInformationalVersionAttribute attribute =
                             assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>();
 
@@ -123,6 +127,14 @@ public class Loader
                                 $"[ExternalEventLoader] Loaded Event {eventPlugin.Name} by {(eventPlugin.Author is not null ? $"{eventPlugin.Author}" : attribute is not null ? attribute.InformationalVersion : string.Empty)}");
                         }
 
+                        try
+                        {
+                            eventPlugin.RegisterEvent();
+                        }
+                        catch (Exception)
+                        {
+                            Log.Warning($"[EventLoader] {eventPlugin.Name} encountered an error while registering.");
+                        }
                         Events.Add(eventPlugin);
                     }
                     catch (Exception)

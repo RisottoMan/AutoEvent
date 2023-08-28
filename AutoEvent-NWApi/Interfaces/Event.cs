@@ -20,11 +20,13 @@ namespace AutoEvent.Interfaces
         /// This prevents double-loading your plugin assembly.
         /// </summary>
         public virtual bool AutoLoad => true;
+
+        public virtual void RegisterEvent() { }
         public virtual void OnStart() => throw new NotImplementedException("cannot start event because OnStart method has not implemented");
         public virtual void OnStop() => throw new NotImplementedException("cannot start event because OnStop method has not implemented");
         public int Id { get; private set; }
         public static List<Event> Events { get; set; } = new List<Event>();
-
+        
         public static void RegisterEvents()
         {
             Assembly callingAssembly = Assembly.GetCallingAssembly();
@@ -42,6 +44,14 @@ namespace AutoEvent.Interfaces
                         continue;
 
                     ev.Id = Events.Count;
+                    try
+                    {
+                        ev.RegisterEvent();
+                    }
+                    catch (Exception)
+                    {
+                        Log.Warning($"[EventLoader] {ev.Name} encountered an error while registering.");
+                    }
                     Events.Add(ev);
 
                     Log.Info($"[EventLoader] {ev.Name} has been registered!");
