@@ -16,6 +16,12 @@ namespace AutoEvent.Interfaces
         public abstract string Author { get; set; }
         public abstract string MapName { get; set; }
         public abstract string CommandName { get; set; }
+        public virtual bool UsesExiled => false;
+        /// <summary>
+        /// If using NwApi or Exiled as the base plugin, set this to false, and manually add your plugin to Event.Events (List[Events]).
+        /// This prevents double-loading your plugin assembly.
+        /// </summary>
+        public virtual bool AutoLoad => true;
         public virtual void OnStart() => throw new NotImplementedException("cannot start event because OnStart method has not implemented");
         public abstract void OnStop();
 

@@ -23,11 +23,17 @@ namespace AutoEvent
             HarmonyPatch = new Harmony("autoevent");
             HarmonyPatch.PatchAll();
             Event.RegisterEvents();
+            
+            // Load External Events.
+            if (!Directory.Exists(Path.Combine(Paths.Configs, "Events"))) Directory.CreateDirectory(Path.Combine(Paths.Configs, "Events"));
+            Loader.LoadEvents();
+            Event.Events.AddRange(Loader.Events);
+            Log.Info(Loader.Events.Count > 0 ? $"[ExternalEventLoader] Loaded {Loader.Events.Count} external event{(Loader.Events.Count > 1 ? "s" : "")}." : "No external events were found.");
 
             if (!Config.IsEnabled) return;
 
             if (!Directory.Exists(Path.Combine(Paths.Configs, "Music"))) Directory.CreateDirectory(Path.Combine(Paths.Configs, "Music"));
-
+            
             Exiled.Events.Handlers.Server.RestartingRound += OnRestarting;
             Exiled.Events.Handlers.Map.Decontaminating += OnDecontamination;
             base.OnEnabled();
