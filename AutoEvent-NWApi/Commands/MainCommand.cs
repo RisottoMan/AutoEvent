@@ -14,6 +14,7 @@ namespace AutoEvent.Commands
             RegisterCommand(new ListEvents());
             RegisterCommand(new RunEvent());
             RegisterCommand(new StopEvent());
+            RegisterCommand(new Volume());
         }
         public MainCommand() => LoadGeneratedCommands();
         protected override bool ExecuteParent(ArraySegment<string> arguments, ICommandSender sender, out string response)

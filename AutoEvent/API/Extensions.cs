@@ -41,7 +41,7 @@ namespace AutoEvent
             audioPlayer.Enqueue(path, -1);
             audioPlayer.LogDebug = false;
             audioPlayer.BroadcastChannel = VoiceChatChannel.Intercom;
-            audioPlayer.Volume = volume;
+            audioPlayer.Volume = volume * (AutoEvent.Singleton.Config.Volume/100f);
             audioPlayer.Loop = loop;
             audioPlayer.Play(0);
         }

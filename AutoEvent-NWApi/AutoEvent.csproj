@@ -59,8 +59,8 @@
     <Reference Include="CommandSystem.Core" HintPath="$(SL_REFERENCES)\CommandSystem.Core.dll" />
     <Reference Include="NorthwoodLib" HintPath="$(SL_REFERENCES)\NorthwoodLib.dll" />
     <Reference Include="0Harmony" HintPath="$(EXILED_REFERENCES)\0Harmony.dll" />
-    <Reference Include="YamlDotNet, Version=11.0.0.0, Culture=neutral, PublicKeyToken=ec19458f3c15af5e, processorArchitecture=MSIL">
-      <HintPath>packages\YamlDotNet.11.0.1\lib\net45\YamlDotNet.dll</HintPath>
+    <Reference Include="YamlDotNet, Version=13.0.0.0, Culture=neutral, PublicKeyToken=ec19458f3c15af5e, processorArchitecture=MSIL">
+      <HintPath>packages\YamlDotNet.13.2.0\lib\net47\YamlDotNet.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -93,6 +93,7 @@
     <Compile Include="Commands\MainCommand.cs" />
     <Compile Include="Commands\RunEvent.cs" />
     <Compile Include="Commands\StopEvent.cs" />
+    <Compile Include="Commands\Volume.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="EventHandler.cs" />
     <Compile Include="Events\EventArgs\LockerInteractArgs.cs" />
