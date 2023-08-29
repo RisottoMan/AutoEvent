@@ -207,6 +207,7 @@
     <Compile Include="Games\ZombieEscape\Plugin.cs" />
     <Compile Include="Interfaces\Event.cs" />
     <Compile Include="Interfaces\IEvent.cs" />
+    <Compile Include="Loader.cs" />
     <Compile Include="Patches\LockerInteract.cs" />
     <Compile Include="Patches\HandCuff.cs" />
     <Compile Include="Patches\CassieScp.cs" />
