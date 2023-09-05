@@ -23,7 +23,7 @@ namespace AutoEvent.Events.Lobby
 
         public void OnTeamRespawn(RespawningTeamEventArgs ev) => ev.IsAllowed = false;
         public void OnSpawnRagdoll(SpawningRagdollEventArgs ev) => ev.IsAllowed = false;
-        public void OnPlaceBullet(PlacingBulletHole ev) => ev.IsAllowed = false;
+        public void OnPlaceBullet(PlacingBulletHoleEventArgs ev) => ev.IsAllowed = false;
         public void OnPlaceBlood(PlacingBloodEventArgs ev) => ev.IsAllowed = false;
         public void OnDropAmmo(DroppingAmmoEventArgs ev) => ev.IsAllowed = false;
     }
