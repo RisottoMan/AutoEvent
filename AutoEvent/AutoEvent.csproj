@@ -110,6 +110,7 @@
     <Compile Include="API\FakeConnection.cs" />
     <Compile Include="Commands\ListEvents.cs" />
     <Compile Include="Commands\MainCommand.cs" />
+    <Compile Include="Commands\ReloadEventsCommand.cs" />
     <Compile Include="Commands\RunEvent.cs" />
     <Compile Include="Commands\StopEvent.cs" />
     <Compile Include="Commands\Volume.cs" />
