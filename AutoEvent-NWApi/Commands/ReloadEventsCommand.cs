@@ -26,11 +26,16 @@ public class Reload : ICommand
         var config = AutoEvent.Singleton.Config;
         var player = Player.Get(sender);
 
+        if (sender is ServerConsoleSender || sender is CommandSender cmdSender && cmdSender.FullPermissions)
+        {
+            goto skipPermissionCheck;
+        }
         if (!config.PermissionList.Contains(ServerStatic.PermissionsHandler._members[player.UserId]))
         {
             response = "<color=red>You do not have permission to use this command!</color>";
             return false;
         }
+        skipPermissionCheck:
 
         if (AutoEvent.ActiveEvent != null)
         {
