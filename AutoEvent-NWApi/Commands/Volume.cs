@@ -28,13 +28,18 @@ public class Volume : ICommand
         {
             try
             {
+                if (sender is ServerConsoleSender || sender is CommandSender cmdSender && cmdSender.FullPermissions)
+                {
+                    goto skipPermissionCheck;
+                }
                 if (!AutoEvent.Singleton.Config.PermissionList.Contains(
                         ServerStatic.PermissionsHandler._members[Player.Get(sender).UserId]))
                 {
                     response = "<color=red>You do not have permission to use this command!</color>";
                     return false;
                 }
-
+                skipPermissionCheck:
+                
                 if (arguments.Count != 1)
                 {
                     response =
