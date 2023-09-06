@@ -89,6 +89,7 @@
     <Compile Include="API\Schematic\Serializable\SerializableRigidbody.cs" />
     <Compile Include="API\Schematic\Serializable\WorkstationSerializable.cs" />
     <Compile Include="API\Schematic\ObjectHelper.cs" />
+    <Compile Include="Commands\DebugCommand.cs" />
     <Compile Include="Commands\ListEvents.cs" />
     <Compile Include="Commands\MainCommand.cs" />
     <Compile Include="Commands\ReloadEventsCommand.cs" />
@@ -96,6 +97,7 @@
     <Compile Include="Commands\StopEvent.cs" />
     <Compile Include="Commands\Volume.cs" />
     <Compile Include="Config.cs" />
+    <Compile Include="DebugLogger.cs" />
     <Compile Include="EventHandler.cs" />
     <Compile Include="Events\EventArgs\LockerInteractArgs.cs" />
     <Compile Include="Events\EventArgs\DropItemArgs.cs" />

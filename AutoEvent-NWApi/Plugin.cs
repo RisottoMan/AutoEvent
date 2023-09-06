@@ -16,6 +16,7 @@ namespace AutoEvent
         public static IEvent ActiveEvent;
         public static AutoEvent Singleton;
         public static Harmony HarmonyPatch;
+        public static bool Debug => DebugLogger.Debug;
         EventHandler eventHandler;
 
         [PluginConfig("configs/autoevent.yml")]
@@ -29,8 +30,9 @@ namespace AutoEvent
         void OnEnabled()
         {
             if (!Config.IsEnabled) return;
-
+            
             Singleton = this;
+            var debugLogger = new DebugLogger();
             HarmonyPatch = new Harmony("autoevent-nwapi");
             HarmonyPatch.PatchAll();
 
