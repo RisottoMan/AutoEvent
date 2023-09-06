@@ -47,7 +47,7 @@ namespace AutoEvent.Commands
                 return false;
             }
 
-            if (ev.MapName != null)
+            if (string.IsNullOrEmpty(ev.MapName))
             {
                 Log.Warning($"No map will be loaded!");
             }
