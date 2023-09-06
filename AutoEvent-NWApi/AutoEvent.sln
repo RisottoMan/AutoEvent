@@ -7,14 +7,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoEvent", "AutoEvent.cspr
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|Any CPU = Debug|Any CPU
-		Release|Any CPU = Release|Any CPU
+		Release NWApi|Any CPU = Release NWApi|Any CPU
+		Release Exiled|Any CPU = Release Exiled|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{3C3FC008-22E1-4B28-BA50-A241B30CC216}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3C3FC008-22E1-4B28-BA50-A241B30CC216}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3C3FC008-22E1-4B28-BA50-A241B30CC216}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3C3FC008-22E1-4B28-BA50-A241B30CC216}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3C3FC008-22E1-4B28-BA50-A241B30CC216}.Release NWApi|Any CPU.ActiveCfg = Release NWApi|Any CPU
+		{3C3FC008-22E1-4B28-BA50-A241B30CC216}.Release NWApi|Any CPU.Build.0 = Release NWApi|Any CPU
+		{3C3FC008-22E1-4B28-BA50-A241B30CC216}.Release Exiled|Any CPU.ActiveCfg = Release EXILED|Any CPU
+		{3C3FC008-22E1-4B28-BA50-A241B30CC216}.Release Exiled|Any CPU.Build.0 = Release EXILED|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

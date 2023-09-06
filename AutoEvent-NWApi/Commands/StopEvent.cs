@@ -2,7 +2,9 @@
 using System;
 using PlayerRoles;
 using PluginAPI.Core;
-
+#if EXILED
+using Exiled.Permissions.Extensions;
+#endif
 namespace AutoEvent.Commands
 {
     internal class StopEvent : ICommand
@@ -12,9 +14,15 @@ namespace AutoEvent.Commands
         public string[] Aliases => null;
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
+#if EXILED
+            if (!((CommandSender)sender).CheckPermission("ev.stop"))
+            {
+                response = "You do not have permission to use this command";
+                return false;
+            }
+#else
             var config = AutoEvent.Singleton.Config;
             var player = Player.Get(sender);
-
             if (sender is ServerConsoleSender || sender is CommandSender cmdSender && cmdSender.FullPermissions)
             {
                 goto skipPermissionCheck;
@@ -24,6 +32,7 @@ namespace AutoEvent.Commands
                 response = "<color=red>You do not have permission to use this command!</color>";
                 return false;
             }
+#endif     
 
             skipPermissionCheck:
 
