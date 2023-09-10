@@ -3,32 +3,50 @@ using AutoEvent.Interfaces;
 using HarmonyLib;
 using PluginAPI.Core.Attributes;
 using PluginAPI.Enums;
-using PluginAPI.Helpers;
 using PluginAPI.Events;
 using AutoEvent.Events.Handlers;
 using GameCore;
 using PluginAPI.Core;
 using Event = AutoEvent.Interfaces.Event;
+using Paths = PluginAPI.Helpers.Paths;
+#if EXILED
+using Exiled.API.Features;
 
+#endif
 namespace AutoEvent
 {
+#if EXILED
+    public class AutoEvent : Plugin<Config, Translation>
+    {
+        public override string Name => "AutoEvent";
+        public override string Author => "Created by KoT0XleB, extended by swd and sky";
+        public static bool IsPlayedGames;
+
+#else
     public class AutoEvent
     {
+#endif
         public static IEvent ActiveEvent;
         public static AutoEvent Singleton;
         public static Harmony HarmonyPatch;
         public static bool Debug => DebugLogger.Debug;
         public static bool IsFriendlyFireEnabledByDefault { get; set; }
         EventHandler eventHandler;
-
+        
+#if !EXILED
         [PluginConfig("configs/autoevent.yml")]
+#endif
         public Config Config;
 
+#if !EXILED
         [PluginConfig("configs/translation.yml")]
+#endif
         public Translation Translation;
 
+#if !EXILED
         [PluginPriority(LoadPriority.Low)]
         [PluginEntryPoint("AutoEvent-NWApi", "8.2.7", "A plugin that allows you to run mini-games.", "KoT0XleB")]
+#endif
         void OnEnabled()
         {
             if (!Config.IsEnabled) return;
@@ -66,8 +84,9 @@ namespace AutoEvent
                 Directory.CreateDirectory(Path.Combine(Paths.GlobalPlugins.Plugins, "Schematics"));
             }
         }
-
+#if !EXILED
         [PluginUnload]
+#endif
         void OnDisabled()
         {
             Servers.RemoteAdmin -= eventHandler.OnRemoteAdmin;

@@ -4,7 +4,11 @@ using System.ComponentModel;
 
 namespace AutoEvent
 {
+#if EXILED
+    public class Config : Exiled.API.Interfaces.IConfig
+#else
     public class Config
+#endif
     {
         [Description("Enable/Disable AutoEvent.")]
         public bool IsEnabled { get; set; } = true;

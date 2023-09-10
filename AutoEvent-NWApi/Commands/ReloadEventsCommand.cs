@@ -16,6 +16,9 @@ using System.Diagnostics.CodeAnalysis;
 using AutoEvent.Interfaces;
 using CommandSystem;
 using PluginAPI.Core;
+#if EXILED
+using Exiled.Permissions.Extensions;
+#endif
 
 namespace AutoEvent.Commands;
 
@@ -23,18 +26,27 @@ public class Reload : ICommand
 {
     public bool Execute(ArraySegment<string> arguments, ICommandSender sender, [UnscopedRef] out string response)
     {
-        var config = AutoEvent.Singleton.Config;
-        var player = Player.Get(sender);
 
-        if (sender is ServerConsoleSender || sender is CommandSender cmdSender && cmdSender.FullPermissions)
+#if EXILED
+        if (!((CommandSender)sender).CheckPermission("ev.reload"))
         {
-            goto skipPermissionCheck;
-        }
-        if (!config.PermissionList.Contains(ServerStatic.PermissionsHandler._members[player.UserId]))
-        {
-            response = "<color=red>You do not have permission to use this command!</color>";
+            response = "You do not have permission to use this command";
             return false;
         }
+#else
+        var config = AutoEvent.Singleton.Config;
+        var player = Player.Get(sender);
+            if (sender is ServerConsoleSender || sender is CommandSender cmdSender && cmdSender.FullPermissions)
+            {
+                goto skipPermissionCheck;
+            }
+            if (!config.PermissionList.Contains(ServerStatic.PermissionsHandler._members[player.UserId]))
+            {
+                response = "<color=red>You do not have permission to use this command!</color>";
+                return false;
+            }
+#endif     
+
         skipPermissionCheck:
 
         if (AutoEvent.ActiveEvent != null)

@@ -1,12 +1,18 @@
 using AutoEvent.Games.Infection;
 using System.ComponentModel;
-
+#if EXILED
+using Exiled.API.Interfaces;
+#endif 
 namespace AutoEvent
 {
     // Yes, it looks terrible. I just have very little time to create a large plugin.
     // Later I will create a system of configs and translations.
     // Sorry :(
+#if EXILED
+    public class Translation : ITranslation
+#else
     public class Translation
+#endif
     {
         [Description("Zombie Infection Game Mode")]
         public InfectTranslate InfectTranslate { get; set; } = new InfectTranslate();

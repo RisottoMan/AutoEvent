@@ -3,6 +3,9 @@ using CommandSystem;
 using System;
 using MEC;
 using PluginAPI.Core;
+#if EXILED
+using Exiled.Permissions.Extensions;
+#endif
 
 namespace AutoEvent.Commands
 {
@@ -10,13 +13,21 @@ namespace AutoEvent.Commands
     {
         public string Command => "run";
         public string Description => "Run the event, takes on 1 argument - the command name of the event.";
-        public string[] Aliases => null;
+        public string[] Aliases => new []{ "start", "play", "begin" };
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
+            
+
+#if EXILED
+            if (!((CommandSender)sender).CheckPermission("ev.run"))
+            {
+                response = "You do not have permission to use this command";
+                return false;
+            }
+#else
             var config = AutoEvent.Singleton.Config;
             var player = Player.Get(sender);
-
             if (sender is ServerConsoleSender || sender is CommandSender cmdSender && cmdSender.FullPermissions)
             {
                 goto skipPermissionCheck;
@@ -27,7 +38,7 @@ namespace AutoEvent.Commands
                 return false;
             }
             skipPermissionCheck:
-            
+#endif      
             if (AutoEvent.ActiveEvent != null)
             {
                 response = $"<color=red>The mini-game {AutoEvent.ActiveEvent.Name} is already running!</color>";
