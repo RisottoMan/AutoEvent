@@ -17,6 +17,7 @@ namespace AutoEvent
         public static IEvent ActiveEvent;
         public static AutoEvent Singleton;
         public static Harmony HarmonyPatch;
+        public static bool Debug => DebugLogger.Debug;
         public static bool IsFriendlyFireEnabledByDefault { get; set; }
         EventHandler eventHandler;
 
@@ -34,6 +35,7 @@ namespace AutoEvent
 
             IsFriendlyFireEnabledByDefault = Server.FriendlyFire;
             Singleton = this;
+            var debugLogger = new DebugLogger();
             HarmonyPatch = new Harmony("autoevent-nwapi");
             HarmonyPatch.PatchAll();
 

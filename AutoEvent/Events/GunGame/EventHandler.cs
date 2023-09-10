@@ -92,7 +92,7 @@ namespace AutoEvent.Events.GunGame
         public void OnDropItem(DroppingItemEventArgs ev) => ev.IsAllowed = false;
         public void OnTeamRespawn(RespawningTeamEventArgs ev) => ev.IsAllowed = false;
         public void OnSpawnRagdoll(SpawningRagdollEventArgs ev) => ev.IsAllowed = false;
-        public void OnPlaceBullet(PlacingBulletHole ev) => ev.IsAllowed = false;
+        public void OnPlaceBullet(PlacingBulletHoleEventArgs ev) => ev.IsAllowed = false;
         public void OnPlaceBlood(PlacingBloodEventArgs ev) => ev.IsAllowed = false;
         public void OnDropAmmo(DroppingAmmoEventArgs ev) => ev.IsAllowed = false;
         private void SetMaxAmmo(Player pl)

@@ -60,7 +60,7 @@
     <Reference Include="NorthwoodLib" HintPath="$(SL_REFERENCES)\NorthwoodLib.dll" />
     <Reference Include="0Harmony" HintPath="$(EXILED_REFERENCES)\0Harmony.dll" />
     <Reference Include="YamlDotNet, Version=13.0.0.0, Culture=neutral, PublicKeyToken=ec19458f3c15af5e, processorArchitecture=MSIL">
-      <HintPath>packages\YamlDotNet.13.2.0\lib\net47\YamlDotNet.dll</HintPath>
+      <HintPath>packages\YamlDotNet.13.3.1\lib\net47\YamlDotNet.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -89,12 +89,15 @@
     <Compile Include="API\Schematic\Serializable\SerializableRigidbody.cs" />
     <Compile Include="API\Schematic\Serializable\WorkstationSerializable.cs" />
     <Compile Include="API\Schematic\ObjectHelper.cs" />
+    <Compile Include="Commands\DebugCommand.cs" />
     <Compile Include="Commands\ListEvents.cs" />
     <Compile Include="Commands\MainCommand.cs" />
+    <Compile Include="Commands\ReloadEventsCommand.cs" />
     <Compile Include="Commands\RunEvent.cs" />
     <Compile Include="Commands\StopEvent.cs" />
     <Compile Include="Commands\Volume.cs" />
     <Compile Include="Config.cs" />
+    <Compile Include="DebugLogger.cs" />
     <Compile Include="EventHandler.cs" />
     <Compile Include="Events\EventArgs\LockerInteractArgs.cs" />
     <Compile Include="Events\EventArgs\DropItemArgs.cs" />

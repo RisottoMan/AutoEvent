@@ -11,11 +11,12 @@ namespace AutoEvent
     {
         public override string Name => "AutoEvent";
         public override string Author => "Created by KoT0XleB, extended by swd and sky";
-        public override Version Version => new Version(8, 2, 7);
+        public override Version Version => new Version(8, 2, 8);
         public static IEvent ActiveEvent = null;
         public static AutoEvent Singleton;
         public static Harmony HarmonyPatch;
         public static bool IsPlayedGames;
+        public static bool Debug => DebugLogger.Debug;
         public override void OnEnabled()
         {
             Singleton = this;

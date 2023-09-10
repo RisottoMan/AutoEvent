@@ -15,11 +15,13 @@ namespace AutoEvent.Commands
             RegisterCommand(new RunEvent());
             RegisterCommand(new StopEvent());
             RegisterCommand(new Volume());
+            RegisterCommand(new Reload());
+            RegisterCommand(new Debug());
         }
         public MainCommand() => LoadGeneratedCommands();
         protected override bool ExecuteParent(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            response = "please enter a valid subcommand: \nlist -> gets the list of the events\nrun -> run an event\nstop -> stop the current event";
+            response = "please enter a valid subcommand: \nlist -> gets the list of the events\nrun -> run an event\nstop -> stop the current event\nvolume -> change the volume of the sounds\nreload -> reloads events";
             return false;
         }
     }
