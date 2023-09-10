@@ -60,7 +60,8 @@ public class Volume : ICommand
             catch (Exception e)
             {
                 response = $"Could not set the volume due to an error. This could be a bug. Ensure audio is playing while using this command.";
-                Log.Debug($"An error has occured while trying to set the volume. \n{e}");
+                DebugLogger.LogDebug($"An error has occured while trying to set the volume.", LogLevel.Warn, true);
+                DebugLogger.LogDebug($"{e}", LogLevel.Debug);
                 return false;
             }
         }

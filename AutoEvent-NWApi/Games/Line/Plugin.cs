@@ -113,7 +113,9 @@ namespace AutoEvent.Games.Line
                 }
                 catch(Exception ex)
                 {
-                    Log.Info($"{ex}");
+                    DebugLogger.LogDebug($"An error has occured while processing frame.", LogLevel.Warn, true);
+                    DebugLogger.LogDebug($"{ex}", LogLevel.Debug);
+
                 }
 
                 _hardCounts++;

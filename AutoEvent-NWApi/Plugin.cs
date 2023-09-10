@@ -55,7 +55,7 @@ namespace AutoEvent
             Loader.LoadEvents();
             Event.Events.AddRange(Loader.Events);
             
-            PluginAPI.Core.Log.Info(Loader.Events.Count > 0 ? $"[ExternalEventLoader] Loaded {Loader.Events.Count} external event{(Loader.Events.Count > 1 ? "s" : "")}." : "No external events were found.");
+            DebugLogger.LogDebug(Loader.Events.Count > 0 ? $"[ExternalEventLoader] Loaded {Loader.Events.Count} external event{(Loader.Events.Count > 1 ? "s" : "")}." : "No external events were found.", LogLevel.Info, true);
             if (!Directory.Exists(Path.Combine(Paths.GlobalPlugins.Plugins, "Music")))
             {
                 Directory.CreateDirectory(Path.Combine(Paths.GlobalPlugins.Plugins, "Music"));

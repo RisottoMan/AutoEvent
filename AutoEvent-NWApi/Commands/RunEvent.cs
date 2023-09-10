@@ -49,7 +49,7 @@ namespace AutoEvent.Commands
 
             if (!(ev is IEventMap map && !string.IsNullOrEmpty(map.MapInfo.MapName)))
             {
-                Log.Warning("No map has been specified for this event!");
+                DebugLogger.LogDebug("No map has been specified for this event!", LogLevel.Warn, true);
             }
             else if (!Extensions.IsExistsMap(map.MapInfo.MapName))
             {

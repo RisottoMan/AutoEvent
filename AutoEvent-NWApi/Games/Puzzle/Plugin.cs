@@ -104,7 +104,7 @@ namespace AutoEvent.Games.Puzzle
         }
         protected override IEnumerator<float> RunGameCoroutine()
         {
-            while (!IsRoundDone())
+            while (!IsRoundDone() || DebugLogger.AntiEnd)
             {
                 if (KillLoop)
                 {
@@ -119,8 +119,8 @@ namespace AutoEvent.Games.Puzzle
                 }
                 catch (Exception e)
                 {
-                    Log.Warning($"Caught an exception at Event.ProcessFrame().");
-                    Log.Debug($"{e}");
+                    DebugLogger.LogDebug($"Caught an exception at Event.ProcessFrame().", LogLevel.Warn, true);
+                    DebugLogger.LogDebug($"{e}", LogLevel.Debug);
                 }
 
                 EventTime = EventTime.Add(new TimeSpan(0, 0,1));

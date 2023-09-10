@@ -44,16 +44,18 @@ namespace AutoEvent.Interfaces
                     }
                     catch (Exception)
                     {
-                        Log.Warning($"[EventLoader] {ev.Name} encountered an error while registering.");
+                        DebugLogger.LogDebug($"[EventLoader] {ev.Name} encountered an error while registering.", LogLevel.Warn, true);
                     }
                     Events.Add(ev);
 
-                    Log.Info($"[EventLoader] {ev.Name} has been registered!");
+                    DebugLogger.LogDebug($"[EventLoader] {ev.Name} has been registered!", LogLevel.Info, true);
                 }
                 catch (MissingMethodException) { }
                 catch (Exception ex)
                 {
-                    Log.Error($"[EventLoader] cannot register an event: {ex}");
+                    DebugLogger.LogDebug($"[EventLoader] cannot register an event.", LogLevel.Error, true);
+                    DebugLogger.LogDebug($"{ex}", LogLevel.Debug);
+
                 }
             }
         }
@@ -316,8 +318,9 @@ namespace AutoEvent.Interfaces
             }
             catch (Exception e)
             {
-                Log.Warning($"Caught an exception at Event.OnStop().");
-                Log.Debug($"{e}");
+
+                DebugLogger.LogDebug($"Caught an exception at Event.OnStop().", LogLevel.Warn, true);
+                DebugLogger.LogDebug($"{e}", LogLevel.Debug);
             }
             EventStopped?.Invoke(Name);
             OnInternalCleanup();
@@ -338,8 +341,10 @@ namespace AutoEvent.Interfaces
             }
             catch (Exception e)
             {
-                Log.Warning($"Caught an exception at Event.OnRegisterEvents().");
-                Log.Debug($"{e}");
+            
+                DebugLogger.LogDebug($"Caught an exception at Event.OnRegisterEvents().", LogLevel.Warn, true);
+                DebugLogger.LogDebug($"{e}", LogLevel.Debug);
+
             }
 
             try
@@ -348,8 +353,9 @@ namespace AutoEvent.Interfaces
             }
             catch (Exception e)
             {
-                Log.Warning($"Caught an exception at Event.OnStart().");
-                Log.Debug($"{e}");
+                
+                DebugLogger.LogDebug($"Caught an exception at Event.OnStart().", LogLevel.Warn, true);
+                DebugLogger.LogDebug($"{e}", LogLevel.Debug);
             }
             EventStarted?.Invoke(Name);
             StartAudio(true);
@@ -370,8 +376,9 @@ namespace AutoEvent.Interfaces
             }
             catch (Exception e)
             {
-                Log.Warning($"Caught an exception at Event.BroadcastStartText().");
-                Log.Debug($"{e}");
+                
+                DebugLogger.LogDebug($"Caught an exception at Event.BroadcastStartText().", LogLevel.Warn, true);
+                DebugLogger.LogDebug($"{e}", LogLevel.Debug);
             }
             GameCoroutine = Timing.RunCoroutine(RunGameCoroutine(), "Event Coroutine");
             yield return Timing.WaitUntilDone(GameCoroutine);
@@ -381,8 +388,8 @@ namespace AutoEvent.Interfaces
             }
             catch (Exception e)
             {
-                Log.Warning($"Caught an exception at Event.OnFinished().");
-                Log.Debug($"{e}");
+                DebugLogger.LogDebug($"Caught an exception at Event.OnFinished().", LogLevel.Warn, true);
+                DebugLogger.LogDebug($"{e}", LogLevel.Debug);
             }
 
             var handle = Timing.CallDelayed(PostRoundDelay, () => OnInternalCleanup());
@@ -395,7 +402,7 @@ namespace AutoEvent.Interfaces
         /// <returns></returns>
         protected virtual IEnumerator<float> RunGameCoroutine()
         {            
-            while (!IsRoundDone())
+            while (!IsRoundDone() || DebugLogger.AntiEnd)
             {
                 if (KillLoop)
                 {
@@ -407,8 +414,8 @@ namespace AutoEvent.Interfaces
                 }
                 catch (Exception e)
                 {
-                    Log.Warning($"Caught an exception at Event.ProcessFrame().");
-                    Log.Debug($"{e}");
+                    DebugLogger.LogDebug($"Caught an exception at Event.ProcessFrame().", LogLevel.Warn, true);
+                    DebugLogger.LogDebug($"{e}", LogLevel.Debug);
                 }
 
                 EventTime += TimeSpan.FromSeconds(FrameDelayInSeconds);
@@ -429,8 +436,8 @@ namespace AutoEvent.Interfaces
             }
             catch (Exception e)
             {
-                Log.Warning($"Caught an exception at Event.OnUnregisterEvents().");
-                Log.Debug($"{e}");
+                DebugLogger.LogDebug($"Caught an exception at Event.OnUnregisterEvents().", LogLevel.Warn, true);
+                DebugLogger.LogDebug($"{e}", LogLevel.Debug);
             }
             DeSpawnMap();
 
@@ -443,8 +450,9 @@ namespace AutoEvent.Interfaces
             }
             catch (Exception e)
             {
-                Log.Warning($"Caught an exception at Event.OnCleanup().");
-                Log.Debug($"{e}");
+                DebugLogger.LogDebug($"Caught an exception at Event.OnCleanup().", LogLevel.Warn, true);
+                DebugLogger.LogDebug($"{e}", LogLevel.Debug);
+                
             }
 
             // StartTime = null;

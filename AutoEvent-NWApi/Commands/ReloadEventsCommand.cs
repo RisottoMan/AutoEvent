@@ -44,7 +44,7 @@ public class Reload : ICommand
         }
 
         Event.Events = new List<Event>();
-        Event.RegisterEvents();
+        Event.RegisterInternalEvents();
         Loader.LoadEvents();
         Event.Events.AddRange(Loader.Events);
         

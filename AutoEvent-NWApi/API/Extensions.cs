@@ -52,7 +52,9 @@ namespace AutoEvent
             }
             catch (Exception ex)
             {
-                Log.Info($"Scale error: {ex}");
+                DebugLogger.LogDebug($"Scale error has occured.", LogLevel.Warn, true);
+                DebugLogger.LogDebug($"{ex}", LogLevel.Debug);
+
             }
         }
 

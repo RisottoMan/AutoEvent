@@ -42,7 +42,8 @@ namespace AutoEvent.Patches
             }
             catch (Exception e)
             {
-                Log.Error($"Patch Error - <Server> [RemoteAdmin]:{e}\n{e.StackTrace}");
+                DebugLogger.LogDebug("Patching Error has occured at remote admin patch.", LogLevel.Error, true);
+                DebugLogger.LogDebug($"Patch Error - <Server> [RemoteAdmin]:{e}\n{e.StackTrace}", LogLevel.Error);
                 return true;
             }
         }
