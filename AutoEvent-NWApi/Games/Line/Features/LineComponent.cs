@@ -1,6 +1,7 @@
 ﻿using PlayerRoles;
 using PluginAPI.Core;
 using System.Linq;
+using AutoEvent.Interfaces;
 using UnityEngine;
 
 namespace AutoEvent.Games.Line
@@ -15,11 +16,16 @@ namespace AutoEvent.Games.Line
         }
         void OnTriggerStay(Collider other)
         {
-            if (Player.Get(other.gameObject) is Player)
+            if (AutoEvent.ActiveEvent is IEventMap map && map.MapInfo.Map is not null)
             {
-                var pl = Player.Get(other.gameObject);
-                pl.SetRole(RoleTypeId.Tutorial, RoleChangeReason.None);
-                pl.Position = Plugin.GameMap.AttachedBlocks.First(x => x.name == "SpawnPoint_spec").transform.position;
+
+                if (Player.Get(other.gameObject) != null)
+                {
+                    var pl = Player.Get(other.gameObject);
+                    pl.SetRole(RoleTypeId.Tutorial, RoleChangeReason.None);
+                    pl.Position = map.MapInfo.Map.AttachedBlocks.First(x => x.name == "SpawnPoint_spec").transform
+                        .position;
+                }
             }
         }
     }

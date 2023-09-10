@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using MEC;
 using PlayerRoles;
@@ -8,169 +10,202 @@ using PluginAPI.Core;
 using PluginAPI.Events;
 using AdminToys;
 using AutoEvent.Events.Handlers;
+using AutoEvent.Games.Infection;
+using AutoEvent.Interfaces;
 using Random = UnityEngine.Random;
 using Event = AutoEvent.Interfaces.Event;
 
 namespace AutoEvent.Games.Puzzle
 {
-    public class Plugin : Event
+    public class Plugin : Event, IEventSound, IEventMap, IInternalEvent
     {
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.PuzzleTranslate.PuzzleName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.PuzzleTranslate.PuzzleDescription;
         public override string Author { get; set; } = "KoT0XleB";
-        public override string MapName { get; set; } = "Puzzle";
+        
         public override string CommandName { get; set; } = "puzzle";
-        public SchematicObject GameMap { get; set; }
-        List<GameObject> Platformes { get; set; }
-        GameObject Lava { get; set; }
-        EventHandler _eventHandler { get; set; }
-
+        public MapInfo MapInfo { get; set; } = new MapInfo()
+            {MapName = "Puzzle", Position = new Vector3(76f, 1026.5f, -43.68f), };
+        public SoundInfo SoundInfo { get; set; } = new SoundInfo()
+            { SoundName = "Puzzle.ogg", Volume = 15, Loop = true };
+        protected override float PostRoundDelay { get; set; } = 10f;
+        private EventHandler EventHandler { get; set; }
+        private PuzzleTranslate Translation { get; set; }
         private readonly string _broadcastName = "<color=#F59F00>P</color><color=#F68523>u</color><color=#F76B46>z</color><color=#F85169>z</color><color=#F9378C>l</color><color=#FA1DAF>e</color>";
+        private List<GameObject> _platforms;
+        private GameObject _lava;
+        private int _stage;
+        private readonly int _finaleStage = 10;
+        private float _speed = 5;
+        private float _timeDelay = 0.5f;
+        private string _stageText;
 
-        public override void OnStart()
+        protected override void RegisterEvents()
         {
-            _eventHandler = new EventHandler();
-            EventManager.RegisterEvents(_eventHandler);
-            Servers.TeamRespawn += _eventHandler.OnTeamRespawn;
-            Servers.SpawnRagdoll += _eventHandler.OnSpawnRagdoll;
-            Servers.PlaceBullet += _eventHandler.OnPlaceBullet;
-            Servers.PlaceBlood += _eventHandler.OnPlaceBlood;
-            Players.DropItem += _eventHandler.OnDropItem;
-            Players.DropAmmo += _eventHandler.OnDropAmmo;
-
-            OnEventStarted();
-        }
-        public override void OnStop()
-        {
-            EventManager.UnregisterEvents(_eventHandler);
-            Servers.TeamRespawn -= _eventHandler.OnTeamRespawn;
-            Servers.SpawnRagdoll -= _eventHandler.OnSpawnRagdoll;
-            Servers.PlaceBullet -= _eventHandler.OnPlaceBullet;
-            Servers.PlaceBlood -= _eventHandler.OnPlaceBlood;
-            Players.DropItem -= _eventHandler.OnDropItem;
-            Players.DropAmmo -= _eventHandler.OnDropAmmo;
-
-            _eventHandler = null;
-            Timing.CallDelayed(10f, () => EventEnd());
+            Translation = new PuzzleTranslate();
+            EventHandler = new EventHandler();
+            EventManager.RegisterEvents(EventHandler);
+            Servers.TeamRespawn += EventHandler.OnTeamRespawn;
+            Servers.SpawnRagdoll += EventHandler.OnSpawnRagdoll;
+            Servers.PlaceBullet += EventHandler.OnPlaceBullet;
+            Servers.PlaceBlood += EventHandler.OnPlaceBlood;
+            Players.DropItem += EventHandler.OnDropItem;
+            Players.DropAmmo += EventHandler.OnDropAmmo;
         }
 
-        public void OnEventStarted()
+        protected override void UnregisterEvents()
         {
-            GameMap = Extensions.LoadMap(MapName, new Vector3(76f, 1026.5f, -43.68f), Quaternion.Euler(Vector3.zero), Vector3.one);
-            Extensions.PlayAudio("Puzzle.ogg", 15, true, Name);
+            EventManager.UnregisterEvents(EventHandler);
+            Servers.TeamRespawn -= EventHandler.OnTeamRespawn;
+            Servers.SpawnRagdoll -= EventHandler.OnSpawnRagdoll;
+            Servers.PlaceBullet -= EventHandler.OnPlaceBullet;
+            Servers.PlaceBlood -= EventHandler.OnPlaceBlood;
+            Players.DropItem -= EventHandler.OnDropItem;
+            Players.DropAmmo -= EventHandler.OnDropAmmo;
 
-            Platformes = GameMap.AttachedBlocks.Where(x => x.name == "Platform").ToList();
-            Lava = GameMap.AttachedBlocks.First(x => x.name == "Lava");
-            Lava.AddComponent<LavaComponent>();
+            EventHandler = null;
+        }
+
+        protected override void OnStart()
+        {
+            _platforms = MapInfo.Map.AttachedBlocks.Where(x => x.name == "Platform").ToList();
+            _lava = MapInfo.Map.AttachedBlocks.First(x => x.name == "Lava");
+            _lava.AddComponent<LavaComponent>();
 
             foreach (Player player in Player.GetPlayers())
             {
                 Extensions.SetRole(player, RoleTypeId.ClassD, RoleSpawnFlags.None);
-                player.Position = RandomClass.GetSpawnPosition(GameMap);
+                player.Position = RandomClass.GetSpawnPosition(MapInfo.Map);
             }
-
-            Timing.RunCoroutine(OnEventRunning(), "puzzle_run");
         }
 
-        public IEnumerator<float> OnEventRunning()
+        protected override IEnumerator<float> BroadcastStartCountdown()
         {
-            var translation = AutoEvent.Singleton.Translation.PuzzleTranslate;
-
             for (int time = 15; time > 0; time--)
             {
-                Extensions.Broadcast($"{_broadcastName}\n{translation.PuzzleStart.Replace("%time%", $"{time}")}", 1);
+                Extensions.Broadcast($"{_broadcastName}\n{Translation.PuzzleStart.Replace("%time%", $"{time}")}", 1);
                 yield return Timing.WaitForSeconds(1f);
             }
+        }
 
-            int stage = 1;
-            int finaleStage = 10;
-            float speed = 5;
-            float timing = 0.5f;
-            List<GameObject> ListPlatformes = Platformes;
+        protected override void CountdownFinished()
+        {
+            _stage = 1;
+            _speed = 5;
+            _timeDelay = 0.5f;
 
-            while (stage <= finaleStage && Player.GetPlayers().Count(r => r.IsAlive) > 0)
+        }
+
+        protected override bool IsRoundDone()
+        {
+            // Stage is smaller than the final stage &&
+            // at least one player is alive.
+            return !(_stage <= _finaleStage && Player.GetPlayers().Count(r => r.IsAlive) > 0);
+        }
+        protected override IEnumerator<float> RunGameCoroutine()
+        {
+            while (!IsRoundDone())
             {
-                var stageText = translation.PuzzleStage;
-                stageText = stageText.Replace("%stageNum%", $"{stage}");
-                stageText = stageText.Replace("%stageFinal%", $"{finaleStage}");
-                stageText = stageText.Replace("%plyCount%", $"{Player.GetPlayers().Count(r => r.IsAlive)}");
-
-                for (float time = speed * 2; time > 0; time--)
+                if (KillLoop)
                 {
-                    foreach (var platform in Platformes)
-                    {
-                        platform.GetComponent<PrimitiveObjectToy>().NetworkMaterialColor = new Color(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f), 1f);
-                    }
-                    
-                    Extensions.Broadcast($"<b>{Name}</b>\n{stageText}", 1);
-                    yield return Timing.WaitForSeconds(timing);
+                    yield break;
+                }
+                var puzzleCoroutine = Timing.RunCoroutine(PuzzleCoroutine(), "Puzzle Coroutine");
+                yield return Timing.WaitUntilDone(puzzleCoroutine);
+                
+                try
+                {
+                    // ProcessFrame();
+                }
+                catch (Exception e)
+                {
+                    Log.Warning($"Caught an exception at Event.ProcessFrame().");
+                    Log.Debug($"{e}");
                 }
 
-                var randPlatform = ListPlatformes.RandomItem();
-                ListPlatformes = new List<GameObject>();
+                EventTime = EventTime.Add(new TimeSpan(0, 0,1));
+                yield return Timing.WaitForSeconds(1f);
+            }
+            yield break;
+        }
+
+        public IEnumerator<float> PuzzleCoroutine()
+        {
+            _stageText = Translation.PuzzleStage
+                    .Replace("%stageNum%", $"{_stage}")
+                    .Replace("%stageFinal%", $"{_finaleStage}")
+                    .Replace("%plyCount%", $"{Player.GetPlayers().Count(r => r.IsAlive)}");
+
+                for (float time = _speed * 2; time > 0; time--)
+                {
+                    foreach (var platform in _platforms)
+                    {
+                        platform.GetComponent<PrimitiveObjectToy>().NetworkMaterialColor =
+                            new Color(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f), 1f);
+                    }
+
+                    Extensions.Broadcast($"<b>{Name}</b>\n{_stageText}", 1);
+                    yield return Timing.WaitForSeconds(_timeDelay);
+                }
+
+
+                var randPlatform = _platforms.RandomItem();
+                _platforms = new List<GameObject>();
                 randPlatform.GetComponent<PrimitiveObjectToy>().NetworkMaterialColor = Color.green;
 
-                foreach (var platform in Platformes)
+                foreach (var platform in _platforms)
                 {
                     if (platform != randPlatform)
                     {
                         platform.GetComponent<PrimitiveObjectToy>().NetworkMaterialColor = Color.magenta;
-                        ListPlatformes.Add(platform);
+                        _platforms.Add(platform);
                     }
                 }
-                Extensions.Broadcast($"<b>{_broadcastName}</b>\n{stageText}", (ushort)(speed + 1));
-                yield return Timing.WaitForSeconds(speed);
+                
+                Extensions.Broadcast($"<b>{_broadcastName}</b>\n{_stageText}", (ushort)(_speed + 1));
+                yield return Timing.WaitForSeconds(_speed);
 
-                foreach (var platform in Platformes)
+                foreach (var platform in _platforms)
                 {
                     if (platform != randPlatform)
                     {
                         platform.transform.position += Vector3.down * 5;
                     }
                 }
-                Extensions.Broadcast($"<b>{_broadcastName}</b>\n{stageText}", (ushort)(speed + 1));
-                yield return Timing.WaitForSeconds(speed);
+                Extensions.Broadcast($"<b>{_broadcastName}</b>\n{_stageText}", (ushort)(_speed + 1));
+                yield return Timing.WaitForSeconds(_speed);
 
-                foreach (var platform in Platformes)
+                foreach (var platform in _platforms)
                 {
                     if (platform != randPlatform)
                     {
                         platform.transform.position += Vector3.up * 5;
                     }
                 }
-                Extensions.Broadcast($"<b>{_broadcastName}</b>\n{stageText}", (ushort)(speed + 1));
-                yield return Timing.WaitForSeconds(speed);
+                Extensions.Broadcast($"<b>{_broadcastName}</b>\n{_stageText}", (ushort)(_speed + 1));
+                yield return Timing.WaitForSeconds(_speed);
 
-                speed -= 0.4f;
-                stage++;
-                timing -= 0.04f;
-            }
+                _speed -= 0.4f;
+                _stage++;
+                _timeDelay -= 0.04f;
+        }
 
+
+        protected override void OnFinished()
+        {
             if (Player.GetPlayers().Count(r => r.IsAlive) < 1)
             {
-                Extensions.Broadcast($"<b>{_broadcastName}</b>\n{translation.PuzzleAllDied}", 10);
+                Extensions.Broadcast($"<b>{_broadcastName}</b>\n{Translation.PuzzleAllDied}", 10);
             }
             else if (Player.GetPlayers().Count(r => r.IsAlive) == 1)
             {
                 var player = Player.GetPlayers().First(r => r.IsAlive).DisplayNickname;
-                Extensions.Broadcast($"<b>{_broadcastName}</b>\n{translation.PuzzleWinner.Replace("%plyWinner%", $"{player}")}", 10);
+                Extensions.Broadcast($"<b>{_broadcastName}</b>\n{Translation.PuzzleWinner.Replace("%plyWinner%", $"{player}")}", 10);
             }
             else
             {
-                Extensions.Broadcast($"<b>{_broadcastName}</b>\n{translation.PuzzleSeveralSurvivors}", 10);
+                Extensions.Broadcast($"<b>{_broadcastName}</b>\n{Translation.PuzzleSeveralSurvivors}", 10);
             }
-
-            OnStop();
-            yield break;
-        }
-
-        public void EventEnd()
-        {
-            Extensions.CleanUpAll();
-            Extensions.TeleportEnd();
-            Extensions.UnLoadMap(GameMap);
-            Extensions.StopAudio();
-            AutoEvent.ActiveEvent = null;
         }
     }
 }

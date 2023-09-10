@@ -8,46 +8,56 @@ using PluginAPI.Events;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using AutoEvent.Games.Infection;
+using AutoEvent.Interfaces;
 using UnityEngine;
 using Event = AutoEvent.Interfaces.Event;
 
 namespace AutoEvent.Games.Escape
 {
-    public class Plugin : Event
+    public class Plugin : Event, IEventSound, IInternalEvent
     {
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.EscapeTranslate.EscapeName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.EscapeTranslate.EscapeDescription;
         public override string Author { get; set; } = "KoT0XleB";
-        public override string MapName { get; set; }
         public override string CommandName { get; set; } = "escape";
-        TimeSpan EventTime { get; set; }
-        EventHandler _eventHandler { get; set; }
+        public SoundInfo SoundInfo { get; set; } =
+            new SoundInfo() { SoundName = "Escape.ogg", Volume = 25, Loop = true };
+        protected override float PostRoundDelay { get; set; } = 5f;
+        private EventHandler EventHandler { get; set; }
+        private EscapeTranslate _translation;
+        private readonly int _explosionTime = 80;
 
-        public override void OnStart()
+        protected override void RegisterEvents()
         {
-            _eventHandler = new EventHandler();
-            EventManager.RegisterEvents(_eventHandler);
-            Servers.TeamRespawn += _eventHandler.OnTeamRespawn;
-            Servers.CassieScp += _eventHandler.OnSendCassie;
-            Players.PlaceTantrum += _eventHandler.OnPlaceTantrum;
+            _translation = new EscapeTranslate();
+            EventHandler = new EventHandler();
+            EventManager.RegisterEvents(EventHandler);
+            Servers.TeamRespawn += EventHandler.OnTeamRespawn;
+            Servers.CassieScp += EventHandler.OnSendCassie;
+            Players.PlaceTantrum += EventHandler.OnPlaceTantrum;
 
-            OnEventStarted();
-        }
-        public override void OnStop()
-        {
-            EventManager.UnregisterEvents(_eventHandler);
-            Servers.TeamRespawn -= _eventHandler.OnTeamRespawn;
-            Servers.CassieScp -= _eventHandler.OnSendCassie;
-            Players.PlaceTantrum -= _eventHandler.OnPlaceTantrum;
-
-            _eventHandler = null;
-            Timing.CallDelayed(5f, () => EventEnd());
         }
 
-        public void OnEventStarted()
+        protected override void UnregisterEvents()
         {
-            EventTime = new TimeSpan(0, 0, 0);
+            EventManager.UnregisterEvents(EventHandler);
+            Servers.TeamRespawn -= EventHandler.OnTeamRespawn;
+            Servers.CassieScp -= EventHandler.OnSendCassie;
+            Players.PlaceTantrum -= EventHandler.OnPlaceTantrum;
 
+            EventHandler = null;
+        }
+
+        protected override bool IsRoundDone()
+        {
+            // Elapsed Time is smaller than the explosion time &&
+            // At least one player is alive.
+            return !(EventTime.TotalSeconds <= _explosionTime && Player.GetPlayers().Count(r => r.IsAlive) > 0);
+        }
+
+        protected override void OnStart()
+        {
             GameObject _startPos = new GameObject();
             _startPos.transform.parent = Facility.Rooms.First(r => r.Identifier.Name == RoomName.Lcz173).Transform;
             _startPos.transform.localPosition = new Vector3(16.5f, 13f, 8f);
@@ -59,35 +69,31 @@ namespace AutoEvent.Games.Escape
                 player.EffectsManager.EnableEffect<Ensnared>(10);
             }
 
-            Extensions.PlayAudio("Escape.ogg", 25, true, Name);
 
             Warhead.DetonationTime = 120f;
             Warhead.Start();
             Warhead.IsLocked = true;
-
-            Timing.RunCoroutine(OnEventRunning(), "escape_run");
         }
 
-        public IEnumerator<float> OnEventRunning()
+        protected override void ProcessFrame()
         {
-            var translation = AutoEvent.Singleton.Translation.EscapeTranslate;
+            Extensions.Broadcast(_translation.EscapeCycle.Replace("{name}", Name).Replace("{time}", (_explosionTime - EventTime.TotalSeconds).ToString("00")), 1);
+        }
+
+        protected override IEnumerator<float> BroadcastStartCountdown()
+        {
             for (int time = 10; time > 0; time--)
             {
-                Extensions.Broadcast(translation.EscapeBeforeStart.Replace("{name}", Name).Replace("{time}", ((int)time).ToString()), 1);
-
+                Extensions.Broadcast(
+                    _translation.EscapeBeforeStart.Replace("{name}", Name).Replace("{time}", ((int)time).ToString()), 1);
                 yield return Timing.WaitForSeconds(1f);
-                EventTime += TimeSpan.FromSeconds(1f);
             }
 
-            var explosionTime = 80;
-            while (EventTime.TotalSeconds != explosionTime && Player.GetPlayers().Count(r => r.IsAlive) > 0)
-            {
-                Extensions.Broadcast(translation.EscapeCycle.Replace("{name}", Name).Replace("{time}", (explosionTime - EventTime.TotalSeconds).ToString()), 1);
+            yield break;
+        }
 
-                yield return Timing.WaitForSeconds(1f);
-                EventTime += TimeSpan.FromSeconds(1f);
-            }
-
+        protected override void OnFinished()
+        {
             Warhead.IsLocked = false;
             Warhead.Stop();
 
@@ -100,18 +106,8 @@ namespace AutoEvent.Games.Escape
                 }
             }
 
-            Extensions.Broadcast(translation.EscapeEnd.Replace("{name}", Name), 10);
-
-            OnStop();
-            yield break;
+            Extensions.Broadcast(_translation.EscapeEnd.Replace("{name}", Name).Replace("{players}", Player.GetPlayers().Count(x => x.IsAlive).ToString()), 10);
         }
 
-        public void EventEnd()
-        {
-            Extensions.CleanUpAll();
-            Extensions.TeleportEnd();
-            Extensions.StopAudio();
-            AutoEvent.ActiveEvent = null;
-        }
     }
 }

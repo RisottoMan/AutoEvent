@@ -1,0 +1,71 @@
+﻿@startuml
+'https://plantuml.com/class-diagram
+
+Event <- IEvent
+Event <- IEventMap
+Event <-IEventSound
+IEventSound <- SoundInfo
+IEventMap <- MapInfo
+abstract class "Event"{
+    abstract string Name
+    abstract string Description
+    abstract string Author
+    abstract string CommandName 
+    virtual bool UsesExiled
+    virtual bool AutoLoad
+    int Id
+    
+    virtual DateTime StartTime
+    virtual TimeSpan EventTime
+    virtual CoroutineHandle GameCoroutine
+    virtual EventHandler EventHandler
+    
+    virtual void RegisterEvent()
+    virtual void BroadcastStartText()
+    virtual IEnumerator<Float> BroadcastStartTextCoroutine()
+    virtual bool IsRoundDone()
+    virtual void ProcessFrame()
+    virtual void OnStart()
+    virtual void OnStop()
+    virtual void OnFinished()
+    virtual void OnCleanup()
+    
+    internal void OnInternalStart()
+    internal void OnInternalStop()
+    internal void OnInternalCleanup()
+}
+interface IEvent{
+string Name
+string Description
+string Author
+string CommandName
+void OnStart()
+void OnStop()
+void OnFinished()
+void OnCleanup()
+bool IsRoundDone()
+}
+
+class MapInfo{
+string MapName
+Vector3 Position
+Quaternion Rotation
+Vector3 Scale
+Schematic Map
+}
+
+class SoundInfo{
+string SoundName
+int Volume
+bool loop
+}
+
+interface IEventMap{
+MapInfo MapInfo
+}
+interface IEventSound{
+SoundInfo SoundInfo
+}
+
+
+@enduml

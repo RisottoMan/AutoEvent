@@ -7,72 +7,72 @@ using PluginAPI.Events;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using AutoEvent.Games.Infection;
+using AutoEvent.Interfaces;
 using UnityEngine;
 using Event = AutoEvent.Interfaces.Event;
 
 namespace AutoEvent.Games.GunGame
 {
-    public class Plugin : Event
+    public class Plugin : Event, IEventSound, IEventMap, IInternalEvent
     {
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.GunGameTranslate.GunGameName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.GunGameTranslate.GunGameDescription;
         public override string Author { get; set; } = "KoT0XleB";
-        public override string MapName { get; set; } = "Shipment";
+
         public override string CommandName { get; set; } = "gungame";
-        public List<Vector3> SpawnPoints { get; set; }
-        public Dictionary<Player, Stats> PlayerStats { get; set; }
-        private bool isFreindlyFireEnabled { get; set; }
-        TimeSpan EventTime { get; set; }
-        SchematicObject GameMap { get; set; }
-        Player Winner { get; set; }
-        EventHandler _eventHandler { get; set; }
+        public MapInfo MapInfo { get; set; } = new MapInfo()
+            {MapName = "Shipment", Position = new Vector3(93f, 1020f, -43f), };
+        public SoundInfo SoundInfo { get; set; } = new SoundInfo()
+            { SoundName = "ClassicMusic.ogg", Volume = 3, Loop = true };
+        protected override float PostRoundDelay { get; set; } = 10f;
+        private EventHandler EventHandler { get; set; }
+        private GunGameTranslate Translation { get; set; }
+        internal List<Vector3> SpawnPoints { get; private set; }
+        internal Dictionary<Player, Stats> PlayerStats { get; private set; }
+        private Player _winner;
 
-        public override void OnStart()
+        protected override void RegisterEvents()
         {
-            isFreindlyFireEnabled = Server.FriendlyFire;
+            Translation = new GunGameTranslate();
+
+            EventHandler = new EventHandler(this);
+
+            EventManager.RegisterEvents(EventHandler);
+            Servers.TeamRespawn += EventHandler.OnTeamRespawn;
+            Servers.SpawnRagdoll += EventHandler.OnSpawnRagdoll;
+            Servers.PlaceBullet += EventHandler.OnPlaceBullet;
+            Servers.PlaceBlood += EventHandler.OnPlaceBlood;
+            Players.DropItem += EventHandler.OnDropItem;
+            Players.DropAmmo += EventHandler.OnDropAmmo;
+            Players.PlayerDying += EventHandler.OnPlayerDying;
+        }
+
+        protected override void UnregisterEvents()
+        {
             Server.FriendlyFire = false;
-            OnEventStarted();
 
-            _eventHandler = new EventHandler(this);
+            EventManager.UnregisterEvents(EventHandler);
+            Servers.TeamRespawn -= EventHandler.OnTeamRespawn;
+            Servers.SpawnRagdoll -= EventHandler.OnSpawnRagdoll;
+            Servers.PlaceBullet -= EventHandler.OnPlaceBullet;
+            Servers.PlaceBlood -= EventHandler.OnPlaceBlood;
+            Players.DropItem -= EventHandler.OnDropItem;
+            Players.DropAmmo -= EventHandler.OnDropAmmo;
+            Players.PlayerDying -= EventHandler.OnPlayerDying;
 
-            EventManager.RegisterEvents(_eventHandler);
-            Servers.TeamRespawn += _eventHandler.OnTeamRespawn;
-            Servers.SpawnRagdoll += _eventHandler.OnSpawnRagdoll;
-            Servers.PlaceBullet += _eventHandler.OnPlaceBullet;
-            Servers.PlaceBlood += _eventHandler.OnPlaceBlood;
-            Players.DropItem += _eventHandler.OnDropItem;
-            Players.DropAmmo += _eventHandler.OnDropAmmo;
-            Players.PlayerDying += _eventHandler.OnPlayerDying;
+            EventHandler = null;
         }
 
-        public override void OnStop()
+        protected override void OnStart()
         {
-            Server.FriendlyFire = isFreindlyFireEnabled;
+            Server.FriendlyFire = false;
 
-            EventManager.UnregisterEvents(_eventHandler);
-            Servers.TeamRespawn -= _eventHandler.OnTeamRespawn;
-            Servers.SpawnRagdoll -= _eventHandler.OnSpawnRagdoll;
-            Servers.PlaceBullet -= _eventHandler.OnPlaceBullet;
-            Servers.PlaceBlood -= _eventHandler.OnPlaceBlood;
-            Players.DropItem -= _eventHandler.OnDropItem;
-            Players.DropAmmo -= _eventHandler.OnDropAmmo;
-            Players.PlayerDying -= _eventHandler.OnPlayerDying;
-
-            _eventHandler = null;
-            Timing.CallDelayed(10f, () => EventEnd());
-        }
-
-        public void OnEventStarted()
-        {
-            EventTime = new TimeSpan(0, 10, 0);
-            GameMap = Extensions.LoadMap(MapName, new Vector3(93f, 1020f, -43f), Quaternion.identity, Vector3.one);
-            Extensions.PlayAudio("ClassicMusic.ogg", 3, true, Name);
-
-            Winner = null;
+            _winner = null;
             PlayerStats = new Dictionary<Player, Stats>();
             SpawnPoints = new List<Vector3>();
 
-            foreach(var point in GameMap.AttachedBlocks.Where(x => x.name == "Spawnpoint"))
+            foreach(var point in MapInfo.Map.AttachedBlocks.Where(x => x.name == "Spawnpoint"))
             {
                 SpawnPoints.Add(point.transform.position);
             }
@@ -91,72 +91,72 @@ namespace AutoEvent.Games.GunGame
 
                 count++;
             }
-
-            Timing.RunCoroutine(OnEventRunning(), "gungame_run");
         }
 
-        public IEnumerator<float> OnEventRunning()
+        protected override IEnumerator<float> BroadcastStartCountdown()
         {
-            var translation = AutoEvent.Singleton.Translation.GunGameTranslate;
-
             for (int time = 10; time > 0; time--)
             {
                 Extensions.Broadcast($"<size=100><color=red>{time}</color></size>", 1);
                 yield return Timing.WaitForSeconds(1f);
             }
+        }
 
+        protected override void CountdownFinished()
+        {
             Server.FriendlyFire = true;
 
             foreach (var player in Player.GetPlayers())
             {
-                _eventHandler.GetWeaponForPlayer(player);
+                EventHandler.GetWeaponForPlayer(player);
             }
+        }
 
-            while (Winner == null && Player.GetPlayers().Count(r => r.IsAlive) > 1 && EventTime.TotalSeconds > 0)
+        protected override bool IsRoundDone()
+        {
+            // Winner is not null &&
+            // Over one player is alive && 
+            // Elapsed time is smaller than 10 minutes (+ countdown)
+            return !(_winner == null && Player.GetPlayers().Count(r => r.IsAlive) > 1 && EventTime.TotalSeconds < 600 + 10);
+        }
+
+        protected override void ProcessFrame()
+        {
+            var leaderStat = PlayerStats.OrderByDescending(r => r.Value.level).FirstOrDefault();
+
+            foreach (Player pl in Player.GetPlayers())
             {
-                var leaderStat = PlayerStats.OrderByDescending(r => r.Value.level).FirstOrDefault();
-
-                foreach (Player pl in Player.GetPlayers())
+                PlayerStats.TryGetValue(pl, out Stats stats);
+                if (stats.level == GunGameGuns.GunByLevel.Last().Key)
                 {
-                    PlayerStats.TryGetValue(pl, out Stats stats);
-                    if (stats.level == GunGameGuns.GunByLevel.Last().Key)
-                    {
-                        Winner = pl;
-                    }
-
-                    pl.ClearBroadcasts();
-                    pl.SendBroadcast(translation.GunGameCycle.Replace("{name}", Name).
-                        Replace("{level}", $"{stats.level}").
-                        Replace("{kills}", $"{2 - stats.kill}").
-                        Replace("{leadnick}", leaderStat.Key.Nickname).
-                        Replace("{leadlevel}", $"{leaderStat.Value.level}"), 1);
+                    _winner = pl;
                 }
 
-                yield return Timing.WaitForSeconds(1f);
-                EventTime -= TimeSpan.FromSeconds(1f);
+                pl.ClearBroadcasts();
+                pl.SendBroadcast(
+                    Translation.GunGameCycle.Replace("{name}", Name).Replace("{level}", $"{stats.level}")
+                        .Replace("{kills}", $"{2 - stats.kill}").Replace("{leadnick}", leaderStat.Key.Nickname)
+                        .Replace("{leadlevel}", $"{leaderStat.Value.level}"), 1);
             }
+        }
 
-            if (Winner != null)
+        protected override void OnFinished()
+        {
+            if (_winner != null)
             {
-                Extensions.Broadcast(translation.GunGameWinner.Replace("{name}", Name).Replace("{winner}", Winner.Nickname), 10);
+                Extensions.Broadcast(
+                    Translation.GunGameWinner.Replace("{name}", Name).Replace("{winner}", _winner.Nickname), 10);
             }
 
-            foreach(var player in Player.GetPlayers())
+            foreach (var player in Player.GetPlayers())
             {
                 player.ClearInventory();
             }
-
-            OnStop();
-            yield break;
         }
 
-        public void EventEnd()
+        protected override void OnCleanup()
         {
-            Extensions.CleanUpAll();
-            Extensions.TeleportEnd();
-            Extensions.UnLoadMap(GameMap);
-            Extensions.StopAudio();
-            AutoEvent.ActiveEvent = null;
+            Server.FriendlyFire = AutoEvent.IsFriendlyFireEnabledByDefault;
         }
     }
 }

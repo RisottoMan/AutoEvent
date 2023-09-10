@@ -8,118 +8,106 @@ using PluginAPI.Core;
 using PluginAPI.Events;
 using AutoEvent.API.Schematic.Objects;
 using AutoEvent.Events.Handlers;
+using AutoEvent.Games.Infection;
+using AutoEvent.Interfaces;
 using Event = AutoEvent.Interfaces.Event;
 using Random = UnityEngine.Random;
 
 namespace AutoEvent.Games.DeathParty
 {
-    public class Plugin : Event
+    public class Plugin : Event, IEventMap, IEventSound, IInternalEvent
     {
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.DeathTranslate.DeathName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.DeathTranslate.DeathDescription;
         public override string Author { get; set; } = "KoT0XleB";
-        public override string MapName { get; set; } = "DeathParty";
-        public override string CommandName { get; set; } = "death";
-        TimeSpan EventTime { get; set; }
-        SchematicObject GameMap { get; set; }
-        EventHandler _eventHandler { get; set; }
-        private bool isFreindlyFireEnabled { get; set; }
-        public int Stage { get; set; }
-        public int MaxStage { get; set; }
+        public MapInfo MapInfo { get; set; } = new MapInfo()
+            {MapName = "deathParty", Position = new Vector3(10f, 1012f, -40f), };
+        public SoundInfo SoundInfo { get; set; } = new SoundInfo()
+            { SoundName = "DeathParty.ogg", Volume = 5, Loop = true };
+        public override string CommandName { get; set; } = "airstrike";
+        protected override float PostRoundDelay { get; set; } = 5f;
+        private EventHandler EventHandler { get; set; }
+        private DeathTranslate Translation { get; set; }
+        public int Stage { get; private set; }
+        private int _maxStage;
+        private CoroutineHandle _grenadeCoroutineHandle;
 
-        public override void OnStart()
+        protected override void RegisterEvents()
         {
-            isFreindlyFireEnabled = Server.FriendlyFire;
+            Translation = new DeathTranslate();
+            EventHandler = new EventHandler(this);
+
+            EventManager.RegisterEvents(EventHandler);
+            Servers.TeamRespawn += EventHandler.OnTeamRespawn;
+            Servers.SpawnRagdoll += EventHandler.OnSpawnRagdoll;
+            Servers.PlaceBullet += EventHandler.OnPlaceBullet;
+            Servers.PlaceBlood += EventHandler.OnPlaceBlood;
+            Players.DropItem += EventHandler.OnDropItem;
+            Players.DropAmmo += EventHandler.OnDropAmmo;
+            Players.PlayerDamage += EventHandler.OnPlayerDamage;
+        }
+        
+        protected override void UnregisterEvents()
+        {
+            EventManager.UnregisterEvents(EventHandler);
+            Servers.TeamRespawn -= EventHandler.OnTeamRespawn;
+            Servers.SpawnRagdoll -= EventHandler.OnSpawnRagdoll;
+            Servers.PlaceBullet -= EventHandler.OnPlaceBullet;
+            Servers.PlaceBlood -= EventHandler.OnPlaceBlood;
+            Players.DropItem -= EventHandler.OnDropItem;
+            Players.DropAmmo -= EventHandler.OnDropAmmo;
+
+            EventHandler = null;
+        }
+
+        protected override void OnStart()
+        {
             Server.FriendlyFire = true;
 
-            _eventHandler = new EventHandler(this);
-
-            EventManager.RegisterEvents(_eventHandler);
-            Servers.TeamRespawn += _eventHandler.OnTeamRespawn;
-            Servers.SpawnRagdoll += _eventHandler.OnSpawnRagdoll;
-            Servers.PlaceBullet += _eventHandler.OnPlaceBullet;
-            Servers.PlaceBlood += _eventHandler.OnPlaceBlood;
-            Players.DropItem += _eventHandler.OnDropItem;
-            Players.DropAmmo += _eventHandler.OnDropAmmo;
-            Players.PlayerDamage += _eventHandler.OnPlayerDamage;
-
-            OnEventStarted();
-        }
-
-        public override void OnStop()
-        {
-            Server.FriendlyFire = isFreindlyFireEnabled;
-
-            EventManager.UnregisterEvents(_eventHandler);
-            Servers.TeamRespawn -= _eventHandler.OnTeamRespawn;
-            Servers.SpawnRagdoll -= _eventHandler.OnSpawnRagdoll;
-            Servers.PlaceBullet -= _eventHandler.OnPlaceBullet;
-            Servers.PlaceBlood -= _eventHandler.OnPlaceBlood;
-            Players.DropItem -= _eventHandler.OnDropItem;
-            Players.DropAmmo -= _eventHandler.OnDropAmmo;
-
-            _eventHandler = null;
-            Timing.CallDelayed(5f, () => EventEnd());
-        }
-
-        public void OnEventStarted()
-        {
-            EventTime = new TimeSpan(0, 0, 0);
-            MaxStage = 5;
-            GameMap = Extensions.LoadMap(MapName, new Vector3(10f, 1012f, -40f), Quaternion.Euler(Vector3.zero), Vector3.one);
-            Extensions.PlayAudio("DeathParty.ogg", 5, true, Name);
+            _maxStage = 5;
 
             foreach (Player player in Player.GetPlayers())
             {
                 player.SetRole(RoleTypeId.ClassD, RoleChangeReason.None);
-                player.Position = RandomClass.GetSpawnPosition(GameMap);
+                player.Position = RandomClass.GetSpawnPosition(MapInfo.Map);
             }
 
-            Timing.RunCoroutine(OnEventRunning(), "death_run");
-            Timing.RunCoroutine(OnGrenadeEvent(), "death_grenade");
+            _grenadeCoroutineHandle = Timing.RunCoroutine(GrenadeCoroutine(), "death_grenade");
         }
 
-        public IEnumerator<float> OnEventRunning()
+        protected override void OnStop()
         {
-            var translation = AutoEvent.Singleton.Translation.DeathTranslate;
+            Timing.CallDelayed(1.2f, () => {
+                if (_grenadeCoroutineHandle.IsRunning)
+                {
+                    Timing.KillCoroutines(new CoroutineHandle[] { _grenadeCoroutineHandle });
+                }
+            });
+        }
 
+        protected override IEnumerator<float> BroadcastStartCountdown()
+        {
             for (int _time = 10; _time > 0; _time--)
             {
                 Extensions.Broadcast($"<size=100><color=red>{_time}</color></size>", 1);
                 yield return Timing.WaitForSeconds(1f);
             }
-
-            while (Player.GetPlayers().Count(r => r.IsAlive) > 0 && Stage <= MaxStage)
-            {
-                var count = Player.GetPlayers().Count(r => r.IsAlive).ToString();
-                var cycleTime = $"{EventTime.Minutes}:{EventTime.Seconds}";
-                Extensions.Broadcast(translation.DeathCycle.Replace("%count%", count).Replace("%time%", cycleTime), 1);
-
-                yield return Timing.WaitForSeconds(1f);
-                EventTime += TimeSpan.FromSeconds(1f);
-            }
-
-            var time = $"{EventTime.Minutes}:{EventTime.Seconds}";
-            if (Player.GetPlayers().Count(r => r.IsAlive) > 1)
-            {
-                Extensions.Broadcast(translation.DeathMorePlayer.Replace("%count%", $"{Player.GetPlayers().Count(r => r.IsAlive)}").Replace("%time%", time), 10);
-            }
-            else if (Player.GetPlayers().Count(r => r.IsAlive) == 1)
-            {
-                var player = Player.GetPlayers().First(r => r.IsAlive);
-                player.Health = 1000;
-                Extensions.Broadcast(translation.DeathOnePlayer.Replace("%winner%", player.Nickname).Replace("%time%", time), 10);
-            }
-            else
-            {
-                Extensions.Broadcast(translation.DeathAllDie.Replace("%time%", time), 10);
-            }
-
-            OnStop();
-            yield break;
         }
 
-        public IEnumerator<float> OnGrenadeEvent()
+        protected override void ProcessFrame()
+        {
+            var count = Player.GetPlayers().Count(r => r.IsAlive).ToString();
+            var cycleTime = $"{EventTime.Minutes:00}:{EventTime.Seconds:00}";
+            Extensions.Broadcast(Translation.DeathCycle.Replace("%count%", count).Replace("%time%", cycleTime), 1);
+        }
+
+        protected override bool IsRoundDone()
+        {
+            // At least one player is alive &&
+            // Stage hasn't yet hit the max stage.
+            return !(Player.GetPlayers().Count(r => r.IsAlive) > 0 && Stage <= _maxStage);
+        }
+        public IEnumerator<float> GrenadeCoroutine()
         {
             Stage = 1;
             float fuse = 10f;
@@ -127,22 +115,26 @@ namespace AutoEvent.Games.DeathParty
             float count = 20;
             float timing = 1f;
             float scale = 4;
-            float radius = GameMap.AttachedBlocks.First(x => x.name == "Arena").transform.localScale.x / 2 - 6f;
+            float radius = MapInfo.Map.AttachedBlocks.First(x => x.name == "Arena").transform.localScale.x / 2 - 6f;
 
-            while (Player.GetPlayers().Count(r => r.IsAlive) > 0 && Stage <= MaxStage)
+            while (Player.GetPlayers().Count(r => r.IsAlive) > 0 && Stage <= _maxStage)
             {
-                if (Stage != MaxStage)
+                if (KillLoop)
+                {
+                    yield break;
+                }
+                if (Stage != _maxStage)
                 {
                     for (int i = 0; i < count; i++)
                     {
-                        Vector3 pos = GameMap.Position + new Vector3(Random.Range(-radius, radius), height, Random.Range(-radius, radius));
+                        Vector3 pos = MapInfo.Map.Position + new Vector3(Random.Range(-radius, radius), height, Random.Range(-radius, radius));
                         Extensions.GrenadeSpawn(fuse, pos, scale);
                         yield return Timing.WaitForSeconds(timing);
                     }
                 }
                 else
                 {
-                    Vector3 pos = GameMap.Position + new Vector3(Random.Range(-10, 10), 20, Random.Range(-10, 10));
+                    Vector3 pos = MapInfo.Map.Position + new Vector3(Random.Range(-10, 10), 20, Random.Range(-10, 10));
                     Extensions.GrenadeSpawn(10, pos, 75);
                 }
 
@@ -160,13 +152,39 @@ namespace AutoEvent.Games.DeathParty
             yield break;
         }
 
-        public void EventEnd()
+        protected override void OnFinished()
         {
-            Extensions.CleanUpAll();
-            Extensions.TeleportEnd();
-            Extensions.StopAudio();
-            Extensions.UnLoadMap(GameMap);
-            AutoEvent.ActiveEvent = null;
+            if (_grenadeCoroutineHandle.IsRunning)
+            {
+                KillLoop = true;
+                Timing.CallDelayed(1.2f, () => {
+                    if (_grenadeCoroutineHandle.IsRunning)
+                    {
+                        Timing.KillCoroutines(new CoroutineHandle[] { _grenadeCoroutineHandle });
+                    }
+                });
+            }
+            var time = $"{EventTime.Minutes:00}:{EventTime.Seconds:00}";
+            if (Player.GetPlayers().Count(r => r.IsAlive) > 1)
+            {
+                Extensions.Broadcast(Translation.DeathMorePlayer.Replace("%count%", $"{Player.GetPlayers().Count(r => r.IsAlive)}").Replace("%time%", time), 10);
+            }
+            else if (Player.GetPlayers().Count(r => r.IsAlive) == 1)
+            {
+                var player = Player.GetPlayers().First(r => r.IsAlive);
+                player.Health = 1000;
+                Extensions.Broadcast(Translation.DeathOnePlayer.Replace("%winner%", player.Nickname).Replace("%time%", time), 10);
+            }
+            else
+            {
+                Extensions.Broadcast(Translation.DeathAllDie.Replace("%time%", time), 10);
+            }
         }
-    }
+
+        protected override void OnCleanup()
+        {
+            Server.FriendlyFire = AutoEvent.IsFriendlyFireEnabledByDefault;
+        }
+        
+}
 }

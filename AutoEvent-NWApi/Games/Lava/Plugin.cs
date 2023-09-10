@@ -7,126 +7,118 @@ using PluginAPI.Events;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using AutoEvent.Games.Infection;
+using AutoEvent.Interfaces;
 using UnityEngine;
 using Event = AutoEvent.Interfaces.Event;
 
 namespace AutoEvent.Games.Lava
 {
-    public class Plugin : Event
+    public class Plugin : Event, IEventSound, IEventMap, IInternalEvent
     {
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.LavaTranslate.LavaName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.LavaTranslate.LavaDescription;
         public override string Author { get; set; } = "KoT0XleB";
-        public override string MapName { get; set; } = "Lava";
         public override string CommandName { get; set; } = "lava";
-        private bool isFreindlyFireEnabled { get; set; }
-        TimeSpan EventTime { get; set; }
-        SchematicObject GameMap { get; set; }
-        EventHandler _eventHandler { get; set; }
+        public MapInfo MapInfo { get; set; } = new MapInfo()
+            {MapName = "Lava", Position = new Vector3(120f, 1020f, -43.5f), };
+        public SoundInfo SoundInfo { get; set; } = new SoundInfo()
+            { SoundName = "Lava.ogg", Volume = 7, Loop = false };
+        private EventHandler EventHandler { get; set; }
+        private LavaTranslate Translation { get; set; }
+        private GameObject _lava;
 
-        public override void OnStart()
+        protected override void RegisterEvents()
         {
-            isFreindlyFireEnabled = Server.FriendlyFire;
-            Server.FriendlyFire = false;
-
-            OnEventStarted();
-
-            _eventHandler = new EventHandler();
-            EventManager.RegisterEvents(_eventHandler);
-            Servers.TeamRespawn += _eventHandler.OnTeamRespawn;
-            Servers.SpawnRagdoll += _eventHandler.OnSpawnRagdoll;
-            Servers.PlaceBullet += _eventHandler.OnPlaceBullet;
-            Servers.PlaceBlood += _eventHandler.OnPlaceBlood;
-            Players.DropItem += _eventHandler.OnDropItem;
-            Players.DropAmmo += _eventHandler.OnDropAmmo;
-            Players.PlayerDamage += _eventHandler.OnPlayerDamage;
+            Translation = new LavaTranslate();
+            
+            EventHandler = new EventHandler();
+            EventManager.RegisterEvents(EventHandler);
+            Servers.TeamRespawn += EventHandler.OnTeamRespawn;
+            Servers.SpawnRagdoll += EventHandler.OnSpawnRagdoll;
+            Servers.PlaceBullet += EventHandler.OnPlaceBullet;
+            Servers.PlaceBlood += EventHandler.OnPlaceBlood;
+            Players.DropItem += EventHandler.OnDropItem;
+            Players.DropAmmo += EventHandler.OnDropAmmo;
+            Players.PlayerDamage += EventHandler.OnPlayerDamage;
         }
 
-        public override void OnStop()
+        protected override void UnregisterEvents()
         {
-            Server.FriendlyFire = isFreindlyFireEnabled;
+            EventManager.UnregisterEvents(EventHandler);
+            Servers.TeamRespawn -= EventHandler.OnTeamRespawn;
+            Servers.SpawnRagdoll -= EventHandler.OnSpawnRagdoll;
+            Servers.PlaceBullet -= EventHandler.OnPlaceBullet;
+            Servers.PlaceBlood -= EventHandler.OnPlaceBlood;
+            Players.DropItem -= EventHandler.OnDropItem;
+            Players.DropAmmo -= EventHandler.OnDropAmmo;
+            Players.PlayerDamage -= EventHandler.OnPlayerDamage;
 
-            EventManager.UnregisterEvents(_eventHandler);
-            Servers.TeamRespawn -= _eventHandler.OnTeamRespawn;
-            Servers.SpawnRagdoll -= _eventHandler.OnSpawnRagdoll;
-            Servers.PlaceBullet -= _eventHandler.OnPlaceBullet;
-            Servers.PlaceBlood -= _eventHandler.OnPlaceBlood;
-            Players.DropItem -= _eventHandler.OnDropItem;
-            Players.DropAmmo -= _eventHandler.OnDropAmmo;
-            Players.PlayerDamage -= _eventHandler.OnPlayerDamage;
-
-            _eventHandler = null;
-            Timing.CallDelayed(10f, () => EventEnd());
+            EventHandler = null;
         }
 
-        public void OnEventStarted()
+
+        protected override void OnStart()
         {
-            EventTime = new TimeSpan(0, 0, 0);
-
-            GameMap = Extensions.LoadMap(MapName, new Vector3(120f, 1020f, -43.5f), Quaternion.Euler(Vector3.zero), Vector3.one);
-            Extensions.PlayAudio("Lava.ogg", 7, false, Name);
-
             foreach (var player in Player.GetPlayers())
             {
                 Extensions.SetRole(player, RoleTypeId.ClassD, RoleSpawnFlags.None);
-                player.Position = RandomClass.GetSpawnPosition(GameMap);
+                player.Position = RandomClass.GetSpawnPosition(MapInfo.Map);
             }
-
-            Timing.RunCoroutine(OnEventRunning(), "lava_time");
         }
 
-        public IEnumerator<float> OnEventRunning()
+        protected override IEnumerator<float> BroadcastStartCountdown()
         {
-            var translation = AutoEvent.Singleton.Translation.LavaTranslate;
-
             for (int time = 10; time > 0; time--)
             {
-                Extensions.Broadcast(translation.LavaBeforeStart.Replace("%time%", $"{time}"), 1);
+                Extensions.Broadcast(Translation.LavaBeforeStart.Replace("%time%", $"{time}"), 1);
                 yield return Timing.WaitForSeconds(1f);
-            }
+            }   
+        }
 
-            GameObject lava = GameMap.AttachedBlocks.First(x => x.name == "LavaObject");
-            lava.AddComponent<LavaComponent>();
+        protected override void CountdownFinished()
+        {
+            _lava = MapInfo.Map.AttachedBlocks.First(x => x.name == "LavaObject");
+            _lava.AddComponent<LavaComponent>();
+        }
 
-            while (Player.GetPlayers().Count(r => r.IsAlive) > 1)
+        protected override bool IsRoundDone()
+        {
+            // If over one player is alive.
+            return !(Player.GetPlayers().Count(r => r.IsAlive) > 1);
+        }
+
+        protected override void ProcessFrame()
+        {
+            string text = string.Empty;
+            if (EventTime.TotalSeconds % 2 == 0)
             {
-                string text = string.Empty;
-                if (EventTime.TotalSeconds % 2 == 0)
-                {
-                    text = "<size=90><color=red><b>《 ! 》</b></color></size>\n";
-                }
-                else
-                {
-                    text = "<size=90><color=red><b>!</b></color></size>\n";
-                }
-
-                Extensions.Broadcast(text + translation.LavaCycle.Replace("%count%", $"{Player.GetPlayers().Count(r => r.IsAlive)}"), 1);
-                lava.transform.position += new Vector3(0, 0.08f, 0);
-
-                yield return Timing.WaitForSeconds(1f);
-                EventTime += TimeSpan.FromSeconds(1f);
-            }
-
-            if (Player.GetPlayers().Count(r => r.IsAlive) == 1)
-            {
-                Extensions.Broadcast(translation.LavaWin.Replace("%winner%", Player.GetPlayers().First(r => r.IsAlive).Nickname), 10);
+                text = "<size=90><color=red><b>《 ! 》</b></color></size>\n";
             }
             else
             {
-                Extensions.Broadcast(translation.LavaAllDead, 10);
+                text = "<size=90><color=red><b>!</b></color></size>\n";
             }
 
-            OnStop();
-            yield break;
+            Extensions.Broadcast(text + Translation.LavaCycle.Replace("%count%", $"{Player.GetPlayers().Count(r => r.IsAlive)}"), 1);
+            _lava.transform.position += new Vector3(0, 0.08f, 0);
         }
 
-        public void EventEnd()
+        protected override void OnFinished()
         {
-            Extensions.CleanUpAll();
-            Extensions.TeleportEnd();
-            Extensions.UnLoadMap(GameMap);
-            Extensions.StopAudio();
-            AutoEvent.ActiveEvent = null;
+            if (Player.GetPlayers().Count(r => r.IsAlive) == 1)
+            {
+                Extensions.Broadcast(Translation.LavaWin.Replace("%winner%", Player.GetPlayers().First(r => r.IsAlive).Nickname), 10);
+            }
+            else
+            {
+                Extensions.Broadcast(Translation.LavaAllDead, 10);
+            }
         }
+        protected override void OnCleanup()
+        {
+            Server.FriendlyFire = AutoEvent.IsFriendlyFireEnabledByDefault;
+        }
+
     }
 }

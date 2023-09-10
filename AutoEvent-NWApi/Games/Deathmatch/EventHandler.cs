@@ -40,7 +40,7 @@ namespace AutoEvent.Games.Deathmatch
             ev.Player.EffectsManager.EnableEffect<MovementBoost>(150);
             ev.Player.EffectsManager.ChangeState<MovementBoost>(10);
 
-            ev.Player.Position = RandomClass.GetRandomPosition(_plugin.GameMap);
+            ev.Player.Position = RandomClass.GetRandomPosition(_plugin.MapInfo.Map);
 
             Timing.CallDelayed(0.1f, () =>
             {
@@ -82,7 +82,7 @@ namespace AutoEvent.Games.Deathmatch
             }
 
             ev.Target.EffectsManager.EnableEffect<Flashed>(0.1f);
-            ev.Target.Position = RandomClass.GetRandomPosition(_plugin.GameMap);
+            ev.Target.Position = RandomClass.GetRandomPosition(_plugin.MapInfo.Map);
             ev.Target.Health = 100;
 
             Timing.CallDelayed(0.1f, () =>

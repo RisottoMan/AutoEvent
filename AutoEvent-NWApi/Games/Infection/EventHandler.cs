@@ -41,12 +41,12 @@ namespace AutoEvent.Games.Infection
             if (Player.GetPlayers().Count(r => r.Role == RoleTypeId.Scp0492) > 0)
             {
                 Extensions.SetRole(ev.Player, RoleTypeId.Scp0492, RoleSpawnFlags.AssignInventory);
-                ev.Player.Position = RandomPosition.GetSpawnPosition(_plugin.GameMap);
+                ev.Player.Position = RandomPosition.GetSpawnPosition(_plugin.MapInfo.Map);
             }
             else
             {
                 Extensions.SetRole(ev.Player, RoleTypeId.ClassD, RoleSpawnFlags.None);
-                ev.Player.Position = RandomPosition.GetSpawnPosition(_plugin.GameMap);
+                ev.Player.Position = RandomPosition.GetSpawnPosition(_plugin.MapInfo.Map);
             }
         }
 
@@ -56,7 +56,7 @@ namespace AutoEvent.Games.Infection
             Timing.CallDelayed(2f, () =>
             {
                 Extensions.SetRole(ev.Player, RoleTypeId.Scp0492, RoleSpawnFlags.AssignInventory);
-                ev.Player.Position = RandomPosition.GetSpawnPosition(_plugin.GameMap);
+                ev.Player.Position = RandomPosition.GetSpawnPosition(_plugin.MapInfo.Map);
             });
         }
 

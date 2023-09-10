@@ -42,10 +42,13 @@ namespace AutoEvent.Commands
                 return false;
             }
 
-            if (ev.MapName != null)
-            if (!Extensions.IsExistsMap(ev.MapName))
+            if (!(ev is IEventMap map && !string.IsNullOrEmpty(map.MapInfo.MapName)))
             {
-                response = $"<color=red>You need a map {ev.MapName} to run a mini-game.</color>";
+                Log.Warning("No map has been specified for this event!");
+            }
+            else if (!Extensions.IsExistsMap(map.MapInfo.MapName))
+            {
+                response = $"<color=red>You need a map {map.MapInfo.MapName} to run a mini-game.</color>";
                 return false;
             }
 
@@ -62,13 +65,13 @@ namespace AutoEvent.Commands
                         player.ClearInventory();
                     }
 
-                    ev.OnStart();
+                    ev.StartEvent();
                     AutoEvent.ActiveEvent = ev;
                 });
             }
             else
             {
-                ev.OnStart();
+                ev.StartEvent();
                 AutoEvent.ActiveEvent = ev;
             }
 

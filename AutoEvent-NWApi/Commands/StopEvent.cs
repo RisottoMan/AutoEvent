@@ -27,7 +27,7 @@ namespace AutoEvent.Commands
                 return false;
             }
 
-            AutoEvent.ActiveEvent.OnStop();
+            AutoEvent.ActiveEvent.StopEvent();
 
             foreach (Player pl in Player.GetPlayers())
             {

@@ -1,0 +1,14 @@
+﻿@startuml
+'https://plantuml.com/activity-diagram-beta
+
+start
+:Events Registered;
+if(Config.EnableEventServer)
+:Create Map;
+
+else
+stop
+endif
+stop
+
+@enduml

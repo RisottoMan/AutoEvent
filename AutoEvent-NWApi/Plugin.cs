@@ -7,6 +7,7 @@ using PluginAPI.Helpers;
 using PluginAPI.Events;
 using AutoEvent.Events.Handlers;
 using GameCore;
+using PluginAPI.Core;
 using Event = AutoEvent.Interfaces.Event;
 
 namespace AutoEvent
@@ -16,6 +17,7 @@ namespace AutoEvent
         public static IEvent ActiveEvent;
         public static AutoEvent Singleton;
         public static Harmony HarmonyPatch;
+        public static bool IsFriendlyFireEnabledByDefault { get; set; }
         EventHandler eventHandler;
 
         [PluginConfig("configs/autoevent.yml")]
@@ -30,6 +32,7 @@ namespace AutoEvent
         {
             if (!Config.IsEnabled) return;
 
+            IsFriendlyFireEnabledByDefault = Server.FriendlyFire;
             Singleton = this;
             HarmonyPatch = new Harmony("autoevent-nwapi");
             HarmonyPatch.PatchAll();
@@ -40,7 +43,7 @@ namespace AutoEvent
             eventHandler = new EventHandler();
             Servers.RemoteAdmin += eventHandler.OnRemoteAdmin;
 
-            Event.RegisterEvents();
+            Event.RegisterInternalEvents();
             
             // Load External Events.
             if (!Directory.Exists(Path.Combine(Paths.GlobalPlugins.Plugins, "Events")))

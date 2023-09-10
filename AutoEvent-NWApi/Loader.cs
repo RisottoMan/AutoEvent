@@ -129,7 +129,7 @@ public class Loader
 
                         try
                         {
-                            eventPlugin.RegisterEvent();
+                            eventPlugin.InstantiateEvent();
                         }
                         catch (Exception)
                         {
