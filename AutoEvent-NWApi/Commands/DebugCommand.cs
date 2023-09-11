@@ -37,16 +37,15 @@ public class Debug : ICommand
                return false;
           }
           skipPermissionCheck:
-
+          if (arguments.Count < 1)
+          {
+               goto list;
+          }
+          
           switch (arguments.At(0).ToLower())
           {
                case "list":
-                    response = $"Valid Debug Subcommands:\n" +
-                               $"Enable -> Enables Debug Mode\n" +
-                               $"Disable -> Disables Debug Mode\n" +
-                               $"List -> Lists all debug options.\n" +
-                               $"Write -> Writes all debug output to a log. (including past logs)\n";
-                    return true;
+                    goto list;
                case "enable":
                     DebugLogger.Debug = true;
                     response = "Debug mode has been enabled.";
@@ -56,17 +55,36 @@ public class Debug : ICommand
                     response = "Debug mode has been disabled.";
                     return true;
                case "write":
-                    DebugLogger.WriteOutput(Path.Combine(Paths.Configs, "AutoEvent", "debug-output.log"));
-                    response = "Output written to debug file.";
-                    return true;
+                    try
+                    {
+                         DebugLogger.WriteOutput("debug-output.log");
+                         response = "Output written to debug file.";
+                         return true;
+                    }
+                    catch (Exception e)
+                    {
+                         Log.Debug($"Could not write debug log to path. Exception: \n {e}");
+                    }
+
+                    response = "An error has occured while trying to write file to path. Check logs for details.";
+                    return false;
                // ReSharper disable once StringLiteralTypo
                case "antiend":
-                    DebugLogger.AntiEnd = true;
-                    response = "Anti-End enabled.";
+                    DebugLogger.AntiEnd = !DebugLogger.AntiEnd;
+                    response = $"Anti-End has been {(DebugLogger.AntiEnd ? "Enabled" : "Disabled")}.";
                     return true;
           }
           response = $"Debug mode is currently {( AutoEvent.Debug ? "enabled" : "disabled")}";
           return true;
+          list:
+          response = $"Valid Debug Subcommands:\n" +
+                     $"<color=yellow>Enable<color=white> -> Enables Debug Mode\n" +
+                     $"<color=yellow>Disable<color=white> -> Disables Debug Mode\n" +
+                     $"<color=yellow>List<color=white> -> Lists all debug options.\n" +
+                     $"<color=yellow>Write<color=white> -> Writes all debug output to a log. (including past logs)\n" +
+                     $"<color=yellow>AntiEnd<color=white> -> Prevents events from ending.\n";
+          return true;
+
      }
 
      public string Command { get; } = "Debug";

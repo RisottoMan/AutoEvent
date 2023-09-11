@@ -11,6 +11,7 @@ using UnityEngine;
 using AutoEvent.Events.Handlers;
 using AutoEvent.Games.Infection;
 using AutoEvent.Interfaces;
+using InventorySystem.Items.ThrowableProjectiles;
 using Event = AutoEvent.Interfaces.Event;
 
 namespace AutoEvent.Games.HideAndSeek
@@ -105,7 +106,7 @@ namespace AutoEvent.Games.HideAndSeek
                                                             r.Items.Any(r => r.ItemTypeId == ItemType.Jailbird) ==
                                                             false).ToList().RandomItem();
                 var item = player.AddItem(ItemType.Jailbird);
-
+                //var scp018 = player.AddItem(ItemType.SCP018);
                 Timing.CallDelayed(0.1f, () => { player.CurrentItem = item; });
             }
 

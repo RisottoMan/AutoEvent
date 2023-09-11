@@ -22,5 +22,5 @@ public class MapInfo
     public Quaternion Rotation { get; set; } = Quaternion.Euler(Vector3.zero);
     public Vector3 Scale { get; set; } = Vector3.one;
     public SchematicObject Map { get; set; }
-    public bool SpawnAutomatically { get; set; } = false;
+    public bool SpawnAutomatically { get; set; } = true;
 }

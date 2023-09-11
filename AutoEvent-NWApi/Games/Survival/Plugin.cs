@@ -20,26 +20,22 @@ namespace AutoEvent.Games.Survival
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.SurvivalTranslate.SurvivalName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.SurvivalTranslate.SurvivalDescription;
         public override string Author { get; set; } = "KoT0XleB";
-        
+        public override string CommandName { get; set; } = "zombie2";
         public MapInfo MapInfo { get; set; } = new MapInfo()
             {MapName = "Survival", Position = new Vector3(15f, 1030f, -43.68f), Rotation = Quaternion.identity};
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
             { SoundName = "DeathParty.ogg", Volume = 5, Loop = true };
-        public override string CommandName { get; set; } = "zombie2";
-        private bool isFriendlyFireEnabled { get; set; }
-        public Player firstZombie { get; set; }
-        EventHandler EventHandler { get; set; }
         protected override float PostRoundDelay { get; set; } = 10f;
+        private EventHandler EventHandler { get; set; }
         private SurvivalTranslate Translation { get; set; }
-        private GameObject Teleport { get; set; }
-        private GameObject Teleport1 { get; set; }
+        internal Player FirstZombie { get; private set; }
+        private GameObject _teleport;
+        private GameObject _teleport1;
+        private TimeSpan _remainingTime;
 
-        protected override void OnStart()
+        protected override void RegisterEvents()
         {
             Translation = new SurvivalTranslate();
-            isFriendlyFireEnabled = Server.FriendlyFire;
-            Server.FriendlyFire = false;
-            PrepareEvent();
 
             EventHandler = new EventHandler(this);
             EventManager.RegisterEvents(EventHandler);
@@ -53,10 +49,8 @@ namespace AutoEvent.Games.Survival
 
         }
 
-        protected override void OnStop()
+        protected override void UnregisterEvents()
         {
-            Server.FriendlyFire = isFriendlyFireEnabled;
-
             EventManager.UnregisterEvents(EventHandler);
             Servers.TeamRespawn -= EventHandler.OnTeamRespawn;
             Servers.SpawnRagdoll -= EventHandler.OnSpawnRagdoll;
@@ -69,8 +63,10 @@ namespace AutoEvent.Games.Survival
             EventHandler = null;
         }
 
-        public void PrepareEvent()
+        protected override void OnStart()
         {
+            _remainingTime = new TimeSpan(0, 5, 0);
+            Server.FriendlyFire = false;
             foreach (Player player in Player.GetPlayers())
             {
                 Extensions.SetRole(player, RoleTypeId.NtfSergeant, RoleSpawnFlags.None);
@@ -86,27 +82,6 @@ namespace AutoEvent.Games.Survival
                     player.CurrentItem = item;
                 });
             }
-            Extensions.StopAudio();
-            Timing.CallDelayed(0.1f, () =>
-            {
-                Extensions.PlayAudio("Zombie2.ogg", 7, false, Name);
-            });
-            for (int i = 0; i <= Player.GetPlayers().Count() / 10; i++)
-            {
-                var player = Player.GetPlayers().Where(r => r.IsHuman).ToList().RandomItem();
-                Extensions.SetRole(player, RoleTypeId.Scp0492, RoleSpawnFlags.AssignInventory);
-                player.EffectsManager.EnableEffect<Disabled>();
-                player.EffectsManager.EnableEffect<Scp1853>();
-                player.Health = 5000;
-
-                if (Player.GetPlayers().Count(r => r.IsSCP) == 1)
-                {
-                    firstZombie = player;
-                }
-            }
-
-            Teleport = MapInfo.Map.AttachedBlocks.First(x => x.name == "Teleport");
-            Teleport1 = MapInfo.Map.AttachedBlocks.First(x => x.name == "Teleport1");
         }
 
         protected override IEnumerator<float> BroadcastStartCountdown()
@@ -118,29 +93,60 @@ namespace AutoEvent.Games.Survival
             }
         }
 
+        protected override void CountdownFinished()
+        {
+            Extensions.StopAudio();
+            Timing.CallDelayed(0.1f, () =>
+            {
+                Extensions.PlayAudio("Zombie2.ogg", 7, true, Name);
+            });
+            for (int i = 0; i <= Player.GetPlayers().Count() / 10; i++)
+            {
+                var player = Player.GetPlayers().Where(r => r.IsHuman).ToList().RandomItem();
+                Extensions.SetRole(player, RoleTypeId.Scp0492, RoleSpawnFlags.AssignInventory);
+                player.EffectsManager.EnableEffect<Disabled>();
+                player.EffectsManager.EnableEffect<Scp1853>();
+                player.Health = 5000;
+
+                if (Player.GetPlayers().Count(r => r.IsSCP) == 1)
+                {
+                    FirstZombie = player;
+                }
+            }
+
+            _teleport = MapInfo.Map.AttachedBlocks.First(x => x.name == "Teleport");
+            _teleport1 = MapInfo.Map.AttachedBlocks.First(x => x.name == "Teleport1");
+        }
+
         protected override bool IsRoundDone()
         {
+            // At least 1 human player &&
+            // At least 1 scp player &&
+            // round time under 5 minutes (+ countdown)
             return Player.GetPlayers().Count(r => r.IsHuman) > 0 && Player.GetPlayers().Count(r => r.IsSCP) > 0 &&
-                EventTime.TotalSeconds > 0;
+                EventTime.TotalSeconds < 300 + 20;
         }
 
         protected override void ProcessFrame()
         {
             var text = Translation.SurvivalAfterInfection;
+            
             text = text.Replace("%name%", Name);
             text = text.Replace("%humanCount%", Player.GetPlayers().Count(r => r.IsHuman).ToString());
-            text = text.Replace("%time%", $"{EventTime.Minutes:00}:{EventTime.Seconds:00}");
+            text = text.Replace("%time%", $"{_remainingTime.Minutes:00}:{_remainingTime.Seconds:00}");
 
             foreach (var player in Player.GetPlayers())
             {
                 player.ClearBroadcasts();
                 player.SendBroadcast(text, 1);
 
-                if (Vector3.Distance(player.Position, Teleport.transform.position) < 1)
+                if (Vector3.Distance(player.Position, _teleport.transform.position) < 1)
                 {
-                    player.Position = Teleport1.transform.position;
+                    player.Position = _teleport1.transform.position;
                 }
             }
+
+            _remainingTime -= TimeSpan.FromSeconds(FrameDelayInSeconds);
         }
 
         protected override void OnFinished()
@@ -160,6 +166,11 @@ namespace AutoEvent.Games.Survival
                 Extensions.Broadcast(Translation.SurvivalHumanWinTime, 10);
                 Extensions.PlayAudio("HumanWin.ogg", 7, false, Name);
             }
+        }
+
+        protected override void OnCleanup()
+        {
+            Server.FriendlyFire = AutoEvent.IsFriendlyFireEnabledByDefault;
         }
     }
 }

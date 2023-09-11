@@ -29,11 +29,12 @@ namespace AutoEvent.Games.GunGame
         private EventHandler EventHandler { get; set; }
         private GunGameTranslate Translation { get; set; }
         internal List<Vector3> SpawnPoints { get; private set; }
-        internal Dictionary<Player, Stats> PlayerStats { get; private set; }
+        internal Dictionary<Player, Stats> PlayerStats { get; set; }
         private Player _winner;
 
         protected override void RegisterEvents()
         {
+            PlayerStats = new Dictionary<Player, Stats>();
             Translation = new GunGameTranslate();
 
             EventHandler = new EventHandler(this);
@@ -69,7 +70,6 @@ namespace AutoEvent.Games.GunGame
             Server.FriendlyFire = false;
 
             _winner = null;
-            PlayerStats = new Dictionary<Player, Stats>();
             SpawnPoints = new List<Vector3>();
 
             foreach(var point in MapInfo.Map.AttachedBlocks.Where(x => x.name == "Spawnpoint"))
@@ -108,7 +108,10 @@ namespace AutoEvent.Games.GunGame
 
             foreach (var player in Player.GetPlayers())
             {
-                EventHandler.GetWeaponForPlayer(player);
+                if (player is not null)
+                {
+                    EventHandler.GetWeaponForPlayer(player);
+                }
             }
         }
 

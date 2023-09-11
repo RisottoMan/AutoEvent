@@ -80,14 +80,6 @@ namespace AutoEvent.Games.Infection
                 case var n when (n > 30 && n <= 35): scale = 1.4f; break;
                 case var n when (n > 35): scale = 1.5f; break;
             }
-
-            foreach (Player player in Player.GetPlayers())
-            {
-                Extensions.SetRole(player, RoleTypeId.ClassD, RoleSpawnFlags.None);
-                player.Position = RandomPosition.GetSpawnPosition(MapInfo.Map);
-            }
-            Extensions.SetRole(Player.GetPlayers().RandomItem(), RoleTypeId.Scp0492, RoleSpawnFlags.None);
-            _stage = InfectionStage.Stage1;
         }
 
         protected override IEnumerator<float> BroadcastStartCountdown()
@@ -98,6 +90,18 @@ namespace AutoEvent.Games.Infection
                 yield return Timing.WaitForSeconds(1f);
             }
         }
+
+        protected override void CountdownFinished()
+        {
+            foreach (Player player in Player.GetPlayers())
+            {
+                Extensions.SetRole(player, RoleTypeId.ClassD, RoleSpawnFlags.None);
+                player.Position = RandomPosition.GetSpawnPosition(MapInfo.Map);
+            }
+            Extensions.SetRole(Player.GetPlayers().RandomItem(), RoleTypeId.Scp0492, RoleSpawnFlags.None);
+            _stage = InfectionStage.Stage1;
+        }
+
         protected override bool IsRoundDone()
         {
             // Finished

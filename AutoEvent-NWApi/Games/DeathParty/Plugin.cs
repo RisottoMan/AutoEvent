@@ -21,13 +21,14 @@ namespace AutoEvent.Games.DeathParty
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.DeathTranslate.DeathDescription;
         public override string Author { get; set; } = "KoT0XleB";
         public MapInfo MapInfo { get; set; } = new MapInfo()
-            {MapName = "deathParty", Position = new Vector3(10f, 1012f, -40f), };
+            {MapName = "DeathParty", Position = new Vector3(10f, 1012f, -40f), };
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
             { SoundName = "DeathParty.ogg", Volume = 5, Loop = true };
         public override string CommandName { get; set; } = "airstrike";
         protected override float PostRoundDelay { get; set; } = 5f;
         private EventHandler EventHandler { get; set; }
         private DeathTranslate Translation { get; set; }
+        public bool RespawnWithGrenades { get; set; } = true;
         public int Stage { get; private set; }
         private int _maxStage;
         private CoroutineHandle _grenadeCoroutineHandle;
@@ -45,6 +46,7 @@ namespace AutoEvent.Games.DeathParty
             Players.DropItem += EventHandler.OnDropItem;
             Players.DropAmmo += EventHandler.OnDropAmmo;
             Players.PlayerDamage += EventHandler.OnPlayerDamage;
+            Players.PlayerDying += EventHandler.OnPlayerDying;
         }
         
         protected override void UnregisterEvents()
@@ -56,6 +58,7 @@ namespace AutoEvent.Games.DeathParty
             Servers.PlaceBlood -= EventHandler.OnPlaceBlood;
             Players.DropItem -= EventHandler.OnDropItem;
             Players.DropAmmo -= EventHandler.OnDropAmmo;
+            Players.PlayerDying -= EventHandler.OnPlayerDying;
 
             EventHandler = null;
         }
@@ -71,8 +74,6 @@ namespace AutoEvent.Games.DeathParty
                 player.SetRole(RoleTypeId.ClassD, RoleChangeReason.None);
                 player.Position = RandomClass.GetSpawnPosition(MapInfo.Map);
             }
-
-            _grenadeCoroutineHandle = Timing.RunCoroutine(GrenadeCoroutine(), "death_grenade");
         }
 
         protected override void OnStop()
@@ -94,6 +95,11 @@ namespace AutoEvent.Games.DeathParty
             }
         }
 
+        protected override void CountdownFinished()
+        { 
+            _grenadeCoroutineHandle = Timing.RunCoroutine(GrenadeCoroutine(), "death_grenade");
+        }
+
         protected override void ProcessFrame()
         {
             var count = Player.GetPlayers().Count(r => r.IsAlive).ToString();
@@ -105,7 +111,7 @@ namespace AutoEvent.Games.DeathParty
         {
             // At least one player is alive &&
             // Stage hasn't yet hit the max stage.
-            return !(Player.GetPlayers().Count(r => r.IsAlive) > 0 && Stage <= _maxStage);
+            return !(Player.GetPlayers().Count(r => r.IsAlive && (!RespawnWithGrenades||r.Role != RoleTypeId.ChaosConscript)) > 0 && Stage <= _maxStage);
         }
         public IEnumerator<float> GrenadeCoroutine()
         {

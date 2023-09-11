@@ -9,6 +9,7 @@ using GameCore;
 using PluginAPI.Core;
 using Event = AutoEvent.Interfaces.Event;
 using Paths = PluginAPI.Helpers.Paths;
+using Server = PluginAPI.Core.Server;
 #if EXILED
 using Exiled.API.Features;
 
@@ -18,6 +19,7 @@ namespace AutoEvent
 #if EXILED
     public class AutoEvent : Plugin<Config, Translation>
     {
+        public override System.Version Version => new System.Version(9, 0, 2);
         public override string Name => "AutoEvent";
         public override string Author => "Created by KoT0XleB, extended by swd and sky";
         public static bool IsPlayedGames;
@@ -45,7 +47,7 @@ namespace AutoEvent
 
 #if !EXILED
         [PluginPriority(LoadPriority.Low)]
-        [PluginEntryPoint("AutoEvent-NWApi", "8.2.7", "A plugin that allows you to run mini-games.", "KoT0XleB")]
+        [PluginEntryPoint("AutoEvent-NWApi", "9.0.2", "A plugin that allows you to run mini-games.", "KoT0XleB")]
 #endif
         void OnEnabled()
         {

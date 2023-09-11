@@ -152,6 +152,11 @@ namespace AutoEvent.Interfaces
         /// </summary>
         protected virtual CoroutineHandle GameCoroutine { get; set; }
         
+        /// <summary>
+        /// The coroutine handle for the start countdown broadcast. 
+        /// </summary>
+        protected virtual CoroutineHandle BroadcastCoroutine { get; set; }
+        
         // ReSharper disable once UnusedAutoPropertyAccessor.Global
         /// <summary>
         /// The DateTime (UTC) that the plugin started at. 
@@ -171,6 +176,12 @@ namespace AutoEvent.Interfaces
     /// <param name="checkIfAutomatic">Should the audio abide by <see cref="SoundInfo.StartAutomatically"/></param>
     protected void StartAudio(bool checkIfAutomatic = false)
     {
+        DebugLogger.LogDebug($"Starting Audio: " +
+                             $"{(this is IEventSound s ? "true, " + 
+                                 $"{(!string.IsNullOrEmpty(s.SoundInfo.SoundName)? "true" : "false")}, " +
+                                 $"{(!checkIfAutomatic ? "true" : "false")}, " +
+                                 $"{(s.SoundInfo.StartAutomatically ? "true" : "false")}" : "false")}",
+            LogLevel.Debug);
         if (this is IEventSound sound && !string.IsNullOrEmpty(sound.SoundInfo.SoundName) &&
             (!checkIfAutomatic || sound.SoundInfo.StartAutomatically))
         {
@@ -188,6 +199,7 @@ namespace AutoEvent.Interfaces
     /// </summary>
     protected void StopAudio()
     {
+        DebugLogger.LogDebug("Stopping Audio", LogLevel.Debug);
         Extensions.StopAudio();
     }
 
@@ -198,6 +210,12 @@ namespace AutoEvent.Interfaces
 
     protected void SpawnMap(bool checkIfAutomatic = false)
     {
+        DebugLogger.LogDebug($"Spawning Map: " +
+                             $"{(this is IEventMap m ? "true, " + 
+                                                         $"{(!string.IsNullOrEmpty(m.MapInfo.MapName)? "true" : "false")}, " +
+                                                         $"{(!checkIfAutomatic ? "true" : "false")}, " +
+                                                         $"{(m.MapInfo.SpawnAutomatically ? "true" : "false")}" : "false")}",
+            LogLevel.Debug);
         if (this is IEventMap map && !string.IsNullOrEmpty(map.MapInfo.MapName) &&
             (!checkIfAutomatic || map.MapInfo.SpawnAutomatically))
         {
@@ -215,6 +233,7 @@ namespace AutoEvent.Interfaces
     /// </summary>
     protected void DeSpawnMap()
     {
+        DebugLogger.LogDebug($"DeSpawning Map. {this is IEventMap}", LogLevel.Debug);
         if (this is IEventMap eventMap)
         {
             Extensions.UnLoadMap(eventMap.MapInfo.Map);
@@ -226,6 +245,7 @@ namespace AutoEvent.Interfaces
     /// </summary>
     public void StartEvent()
     {
+        DebugLogger.LogDebug($"Starting Event {Name}", LogLevel.Debug);
         OnInternalStart();
     }
     
@@ -234,6 +254,7 @@ namespace AutoEvent.Interfaces
     /// </summary>
     public void StopEvent()
     {
+        DebugLogger.LogDebug($"Stopping Event {Name}", LogLevel.Debug);
         OnInternalStop();
     }
 
@@ -304,12 +325,15 @@ namespace AutoEvent.Interfaces
         /// </summary>
         private void OnInternalStop()
         {
+            KillLoop = true;
+            Timing.KillCoroutines(new CoroutineHandle[] { BroadcastCoroutine });
             Timing.CallDelayed(FrameDelayInSeconds + .1f, () =>
             {
                 if (GameCoroutine.IsRunning)
                 {
                     Timing.KillCoroutines(new CoroutineHandle[] { GameCoroutine });
                 }
+                OnInternalCleanup();
             });
             
             try
@@ -323,13 +347,15 @@ namespace AutoEvent.Interfaces
                 DebugLogger.LogDebug($"{e}", LogLevel.Debug);
             }
             EventStopped?.Invoke(Name);
-            OnInternalCleanup();
+            
         }
         /// <summary>
         /// Used to trigger plugin events in the right order.
         /// </summary>
         private void OnInternalStart()
         {
+            KillLoop = false;
+            _cleanupRun = false;
             AutoEvent.ActiveEvent = this;
             EventTime = new TimeSpan();
             StartTime = DateTime.UtcNow;
@@ -342,7 +368,7 @@ namespace AutoEvent.Interfaces
             catch (Exception e)
             {
             
-                DebugLogger.LogDebug($"Caught an exception at Event.OnRegisterEvents().", LogLevel.Warn, true);
+                DebugLogger.LogDebug($"Caught an exception at Event.RegisterEvents().", LogLevel.Warn, true);
                 DebugLogger.LogDebug($"{e}", LogLevel.Debug);
 
             }
@@ -368,20 +394,27 @@ namespace AutoEvent.Interfaces
         /// <returns></returns>
         private IEnumerator<float> RunTimingCoroutine()
         {
-            var broadcastCoroutine = Timing.RunCoroutine(BroadcastStartCountdown(), "Broadcast Coroutine");
-            yield return Timing.WaitUntilDone(broadcastCoroutine);
+            BroadcastCoroutine = Timing.RunCoroutine(BroadcastStartCountdown(), "Broadcast Coroutine");
+            yield return Timing.WaitUntilDone(BroadcastCoroutine);
+            if (KillLoop)
+            {
+                yield break;
+            }
             try
             {
                 CountdownFinished();
             }
             catch (Exception e)
             {
-                
-                DebugLogger.LogDebug($"Caught an exception at Event.BroadcastStartText().", LogLevel.Warn, true);
+                DebugLogger.LogDebug($"Caught an exception at Event.CountdownFinished().", LogLevel.Warn, true);
                 DebugLogger.LogDebug($"{e}", LogLevel.Debug);
             }
             GameCoroutine = Timing.RunCoroutine(RunGameCoroutine(), "Event Coroutine");
             yield return Timing.WaitUntilDone(GameCoroutine);
+            if (KillLoop)
+            {
+                yield break;
+            }
             try
             {
                 OnFinished();
@@ -391,8 +424,13 @@ namespace AutoEvent.Interfaces
                 DebugLogger.LogDebug($"Caught an exception at Event.OnFinished().", LogLevel.Warn, true);
                 DebugLogger.LogDebug($"{e}", LogLevel.Debug);
             }
-
-            var handle = Timing.CallDelayed(PostRoundDelay, () => OnInternalCleanup());
+            var handle = Timing.CallDelayed(PostRoundDelay, () =>
+            {
+                if (!_cleanupRun)
+                {
+                    OnInternalCleanup();
+                }
+            });
             yield return Timing.WaitUntilDone(handle);
         }
         
@@ -423,13 +461,18 @@ namespace AutoEvent.Interfaces
             }
             yield break;
         }
-        
 
+        /// <summary>
+        /// Used to prevent double cleanups.
+        /// </summary>
+        private bool _cleanupRun = false;
+        
         /// <summary>
         /// The internal method used to trigger cleanup for maps, ragdolls, items, sounds, and teleporting players to the spawn room.
         /// </summary>
         private void OnInternalCleanup()
         {
+            _cleanupRun = true;
             try
             {
                 UnregisterEvents();
