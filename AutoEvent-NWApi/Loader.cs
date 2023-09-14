@@ -65,7 +65,7 @@ public class Loader
     public static void LoadEvents()
     {
         Dictionary<Assembly, string> locations = new Dictionary<Assembly, string>();
-        foreach (string assemblyPath in Directory.GetFiles(Path.Combine(Paths.GlobalPlugins.Plugins, "Events"), "*.dll"))
+        foreach (string assemblyPath in Directory.GetFiles(Path.Combine(AutoEvent.BaseConfigPath, "Events"), "*.dll"))
         {
             try
             {
@@ -126,6 +126,8 @@ public class Loader
                         try
                         {
                             eventPlugin.InstantiateEvent();
+                            eventPlugin.LoadConfigs();
+                            eventPlugin.LoadTranslation();
                         }
                         catch (Exception e)
                         {

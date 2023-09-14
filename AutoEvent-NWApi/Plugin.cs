@@ -26,6 +26,11 @@ namespace AutoEvent
     public class AutoEvent
     {
 #endif
+        /// <summary>
+        /// The location of the AutoEvent folder for schematics, music, external events and event config / translations.
+        /// </summary>
+        /// <example>/home/container/.config/SCP Secret Laboratory/PluginAPI/plugins/global/AutoEvent/</example>
+        public static string BaseConfigPath { get; set;}
         public static IEvent ActiveEvent;
         public static AutoEvent Singleton;
         public static Harmony HarmonyPatch;
@@ -45,7 +50,7 @@ namespace AutoEvent
 
 #if !EXILED
         [PluginPriority(LoadPriority.Low)]
-        [PluginEntryPoint("AutoEvent-NWApi", "8.2.7", "A plugin that allows you to run mini-games.", "KoT0XleB")]
+        [PluginEntryPoint("AutoEvent", "8.2.7", "A plugin that allows you to run mini-games.", "KoT0XleB")]
 #endif
         void OnEnabled()
         {
@@ -54,6 +59,11 @@ namespace AutoEvent
             IsFriendlyFireEnabledByDefault = Server.FriendlyFire;
             Singleton = this;
             var debugLogger = new DebugLogger();
+            DebugLogger.Debug = Config.Debug;
+            if (DebugLogger.Debug)
+            {
+                DebugLogger.LogDebug($"Debug Mode Enabled", LogLevel.Info, true);
+            }
             HarmonyPatch = new Harmony("autoevent-nwapi");
             HarmonyPatch.PatchAll();
 
@@ -63,25 +73,30 @@ namespace AutoEvent
             eventHandler = new EventHandler();
             Servers.RemoteAdmin += eventHandler.OnRemoteAdmin;
 
+
+#if !EXILED
+            // Root plugin path
+            AutoEvent.BaseConfigPath = Path.Combine(Paths.GlobalPlugins.Plugins, "AutoEvent");
+#endif
+            CreateDirectoryIfNotExists(BaseConfigPath);
+            CreateDirectoryIfNotExists(BaseConfigPath, "Events");
+            CreateDirectoryIfNotExists(BaseConfigPath, "Music");
+            CreateDirectoryIfNotExists(BaseConfigPath, "Schematics");
+            CreateDirectoryIfNotExists(BaseConfigPath, "Configs");
+
             Event.RegisterInternalEvents();
-            
-            // Load External Events.
-            if (!Directory.Exists(Path.Combine(Paths.GlobalPlugins.Plugins, "Events")))
-            {
-                Directory.CreateDirectory(Path.Combine(Paths.GlobalPlugins.Plugins, "Events"));
-            }
             Loader.LoadEvents();
             Event.Events.AddRange(Loader.Events);
             
             DebugLogger.LogDebug(Loader.Events.Count > 0 ? $"[ExternalEventLoader] Loaded {Loader.Events.Count} external event{(Loader.Events.Count > 1 ? "s" : "")}." : "No external events were found.", LogLevel.Info, true);
-            if (!Directory.Exists(Path.Combine(Paths.GlobalPlugins.Plugins, "Music")))
-            {
-                Directory.CreateDirectory(Path.Combine(Paths.GlobalPlugins.Plugins, "Music"));
-            }
+        }
 
-            if (!Directory.Exists(Path.Combine(Paths.GlobalPlugins.Plugins, "Schematics")))
+        public static void CreateDirectoryIfNotExists(string directory, string subPath = "")
+        {
+            string path = subPath == "" ? directory : Path.Combine(directory, subPath);  
+            if (!Directory.Exists(path))
             {
-                Directory.CreateDirectory(Path.Combine(Paths.GlobalPlugins.Plugins, "Schematics"));
+                Directory.CreateDirectory(path);
             }
         }
 #if !EXILED

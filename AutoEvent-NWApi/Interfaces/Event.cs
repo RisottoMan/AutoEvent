@@ -2,8 +2,10 @@
 using PluginAPI.Core;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
+using HarmonyLib;
 using MEC;
 using UnityEngine;
 
@@ -37,14 +39,19 @@ namespace AutoEvent.Interfaces
                         type.GetCustomAttributes(typeof(DisabledFeaturesAttribute), false).Any())
                         continue;
 
+                    if (!ev.AutoLoad)
+                        return;
                     ev.Id = Events.Count;
                     try
                     {
                         ev.InstantiateEvent();
+                        ev.LoadConfigs();
+                        ev.LoadTranslation();
                     }
-                    catch (Exception)
+                    catch (Exception e)
                     {
                         DebugLogger.LogDebug($"[EventLoader] {ev.Name} encountered an error while registering.", LogLevel.Warn, true);
+                        DebugLogger.LogDebug($"[EventLoader] {e}", LogLevel.Debug);
                     }
                     Events.Add(ev);
 
@@ -84,6 +91,7 @@ namespace AutoEvent.Interfaces
         /// <param name="id">The ID of the event to search for.</param>
         /// <returns>The first event found with the same ID.</returns>
         public static Event GetEvent(int id) => Events.FirstOrDefault(x => x.Id == id);
+        
         private static bool TryGetEventByCName(string type, out Event ev)
         {
             return (ev = Events.FirstOrDefault(x => x.CommandName == type)) != null;
@@ -99,7 +107,7 @@ namespace AutoEvent.Interfaces
         /// <summary>
         /// The Id of the event. It is set by AutoEvent.
         /// </summary>
-        public int Id { get; private set; }
+        public int Id { get; internal set; }
         
         /// <summary>
         /// A description of the event.
@@ -299,6 +307,132 @@ namespace AutoEvent.Interfaces
         protected virtual void OnCleanup() { }
     #endregion
     #region Internal Event Methods // Methods that are for the internal use by the event system to call or modify other abstracted properties or methods.
+
+    private string CreateConfigFolder()
+    {
+        string path = Path.Combine(AutoEvent.BaseConfigPath, "Configs", this.Name);
+        AutoEvent.CreateDirectoryIfNotExists(path);
+        AutoEvent.CreateDirectoryIfNotExists(Path.Combine(path, "Presets"));
+        return path;
+    }
+
+    /// <summary>
+    /// A list of available config presets. WIP
+    /// </summary>
+    public List<EventConfig> ConfigPresets { get; set; } = new List<EventConfig>();
+    
+    /// <summary>
+    /// Validates and loads any configs and presets for the given event.
+    /// </summary>
+    internal void LoadConfigs()
+    {
+        int loadedConfigs = 0;
+        var path = CreateConfigFolder();
+        try
+        {
+            loadedConfigs =  _loadValidConfigs(path);
+        }
+        catch (Exception e)
+        {
+            DebugLogger.LogDebug($"[EventLoader] LoadConfigs()->_loadValidConfigs(path) has caught an exception while loading configs for the plugin {Name}", LogLevel.Warn, true);
+            DebugLogger.LogDebug($"{e}", LogLevel.Debug);
+        }
+
+        try
+        {
+            _createPresets(Path.Combine(path, "Presets"));
+        }
+        catch (Exception e)
+        {
+            DebugLogger.LogDebug($"[EventLoader] LoadConfigs()->_createPresets(path) has caught an exception while loading configs for the plugin {Name}", LogLevel.Warn, true);
+            DebugLogger.LogDebug($"{e}", LogLevel.Debug);
+        }
+
+        try
+        {
+            _loadPresets(Path.Combine(path, "Presets"));
+        }
+        catch (Exception e)
+        {
+            DebugLogger.LogDebug($"[EventLoader] LoadConfigs()->_loadPresets(path) has caught an exception while loading configs for the plugin {Name}", LogLevel.Warn, true);
+            DebugLogger.LogDebug($"{e}", LogLevel.Debug);
+        }
+        DebugLogger.LogDebug($"[EventLoader] Loaded {loadedConfigs} Configs, and {ConfigPresets.Count} Config Presets, for plugin {Name}", LogLevel.Info);
+    }
+    
+    /// <summary>
+    /// Loads any configs.
+    /// </summary>
+    /// <param name="path">The base event path.</param>
+    private int _loadValidConfigs(string path)
+    {
+        int i = 0;
+        foreach (var property in this.GetType().GetProperties())
+        {
+            var conf = property.GetCustomAttribute<EventConfigAttribute>();
+            if (conf is EventConfigPresetAttribute)
+            {
+                continue;
+            }
+            if (conf is null)
+            {
+                continue;
+            }
+            
+            DebugLogger.LogDebug($"Config \"{property.Name}\" found for {Name}", LogLevel.Debug);
+            object config = conf.Load(path, property.Name, property.PropertyType);
+            property.SetValue(this, config);
+            i++;
+        }
+
+        return i;
+    }
+
+    /// <summary>
+    /// Creates a preset.yml file for each preset found.
+    /// </summary>
+    /// <param name="path">The base event path.</param>
+    private void _createPresets(string path)
+    {
+        foreach (var property in this.GetType().GetProperties())
+        {
+            var conf = property.GetCustomAttribute<EventConfigPresetAttribute>();
+            if (conf is null || conf.IsLoaded)
+            {
+                continue;
+            }
+            DebugLogger.LogDebug($"Embedded Config Preset \"{property.Name}\" found for {Name}", LogLevel.Debug);
+
+            conf.Load(path, property, property.GetValue(this));
+        }
+    }
+
+    /// <summary>
+    /// Loads all config presets to the preset List.
+    /// </summary>
+    /// <param name="path">The base event path.</param>
+    private void _loadPresets(string path)
+    {
+        foreach (string file in Directory.GetFiles(path, "*.yml"))
+        {
+            string fileName = Path.GetFileNameWithoutExtension(file);
+            EventConfig conf = Configs.Serialization.Deserializer.Deserialize<EventConfig>(File.ReadAllText(file));
+            DebugLogger.LogDebug($"Config Preset \"{file}\" loaded for {Name}", LogLevel.Debug);
+            conf.PresetName = fileName;
+            ConfigPresets.Add(conf);
+        }
+    }
+    
+    /// <summary>
+    /// Loads any translations present
+    /// </summary>
+    internal void LoadTranslation()
+    {
+        if (this is ITranslation)
+        {
+            
+        }
+    }
         /// <summary>
         /// Triggers internal actions to stop an event.
         /// </summary>

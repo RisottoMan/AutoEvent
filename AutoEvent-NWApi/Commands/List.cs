@@ -9,11 +9,12 @@ using Exiled.Permissions.Extensions;
 
 namespace AutoEvent.Commands
 {
-    internal class ListEvents : ICommand
+    internal class List : ICommand, IUsageProvider
     {
-        public string Command => "list";
+        public string Command => nameof(List);
         public string Description => "Shows a list of all the events that can be started.";
         public string[] Aliases => null;
+        public string[] Usage => Array.Empty<string>();
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
             var config = AutoEvent.Singleton.Config;
@@ -45,5 +46,6 @@ namespace AutoEvent.Commands
             response = builder.ToString();
             return true;
         }
+
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace AutoEvent.Games.Infection
+﻿namespace AutoEvent.Games.Boss
 {
     public class BossTranslate
     {

@@ -7,11 +7,13 @@ using Exiled.Permissions.Extensions;
 #endif
 namespace AutoEvent.Commands
 {
-    internal class StopEvent : ICommand
+    internal class Stop : ICommand, IUsageProvider
     {
-        public string Command => "stop";
+        public string Command => nameof(Stop);
         public string Description => "Kills the running mini-game (just kills all the players)";
         public string[] Aliases => null;
+        public string[] Usage => new string[] { };
+
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
 #if EXILED

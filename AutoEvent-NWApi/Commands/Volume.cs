@@ -21,11 +21,12 @@ using Exiled.Permissions.Extensions;
 
 namespace AutoEvent.Commands;
 
-public class Volume : ICommand
+public class Volume : ICommand, IUsageProvider
 {
-    public string Command => "volume";
+    public string Command => nameof(Volume);
         public string Description => "Set the global music volume, takes on 1 argument - the volume from 0% - 200%.";
         public string[] Aliases => null;
+        public string[] Usage => new string[] { "Volume %" };
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
@@ -77,4 +78,5 @@ public class Volume : ICommand
                 return false;
             }
         }
+
 }

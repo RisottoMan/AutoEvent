@@ -9,11 +9,12 @@ using Exiled.Permissions.Extensions;
 
 namespace AutoEvent.Commands
 {
-    internal class RunEvent : ICommand
+    internal class Run : ICommand, IUsageProvider
     {
-        public string Command => "run";
+        public string Command => nameof(Run);
         public string Description => "Run the event, takes on 1 argument - the command name of the event.";
         public string[] Aliases => new []{ "start", "play", "begin" };
+        public string[] Usage => new string[] { "Event Name" };
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
