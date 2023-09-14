@@ -23,7 +23,7 @@
     {
         public SchematicObject Init(SchematicSerializable schematicSerializable, SchematicObjectDataList data)
         {
-            Log.Info($"Initializing schematic \"{schematicSerializable.SchematicName}\"");
+            DebugLogger.LogDebug($"Initializing schematic \"{schematicSerializable.SchematicName}\"", LogLevel.Info, true);
 
             Base = schematicSerializable;
             SchematicData = data;
@@ -296,7 +296,7 @@
 
                 if (!File.Exists(path))
                 {
-                    Log.Warning($"{gameObject.name} block of {name} should have a {animatorName} animator attached, but the file does not exist!");
+                    DebugLogger.LogDebug($"{gameObject.name} block of {name} should have a {animatorName} animator attached, but the file does not exist!", LogLevel.Warn, true);
                     return false;
                 }
 

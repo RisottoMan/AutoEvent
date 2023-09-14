@@ -40,7 +40,10 @@ namespace AutoEvent.Commands
                 return false;
             }
 
-            if (ev.MapName != null)
+            if (string.IsNullOrEmpty(ev.MapName))
+            {
+                Log.Warn($"No map will be loaded!");
+            }
             if (!Extensions.IsExistsMap(ev.MapName))
             {
                 response = $"<color=red>You need a map {ev.MapName} to run a mini-game.</color>";

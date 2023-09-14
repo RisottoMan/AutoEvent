@@ -16,6 +16,7 @@ namespace AutoEvent
         public static AutoEvent Singleton;
         public static Harmony HarmonyPatch;
         public static bool IsPlayedGames;
+        public static bool Debug => DebugLogger.Debug;
         public override void OnEnabled()
         {
             Singleton = this;

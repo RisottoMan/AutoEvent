@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using MEC;
 using PlayerRoles;
@@ -9,159 +10,153 @@ using PluginAPI.Events;
 using PluginAPI.Core;
 using AutoEvent.API.Schematic.Objects;
 using AutoEvent.Events.Handlers;
+using AutoEvent.Games.Infection;
+using AutoEvent.Interfaces;
 using Event = AutoEvent.Interfaces.Event;
 
 namespace AutoEvent.Games.Football
 {
-    public class Plugin : Event
+    public class Plugin : Event, IEventSound, IEventMap, IInternalEvent
     {
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.FootballTranslate.FootballName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.FootballTranslate.FootballDescription;
         public override string Author { get; set; } = "KoT0XleB";
-        public override string MapName { get; set; } = "Football";
         public override string CommandName { get; set; } = "ball";
-        SchematicObject GameMap { get; set; }
-        TimeSpan EventTime { get; set; }
-        EventHandler _eventHandler { get; set; }
-
-        public override void OnStart()
+        public MapInfo MapInfo { get; set; } = new MapInfo()
+            {MapName = "Football", Position = new Vector3(76f, 1026.5f, -43.68f), };
+        public SoundInfo SoundInfo { get; set; } = new SoundInfo()
+            { SoundName = "Football.ogg", Volume = 5, Loop = true };
+        protected override float PostRoundDelay { get; set; } = 10f;
+        protected override float FrameDelayInSeconds { get; set; } = 0.3f;
+        private EventHandler EventHandler { get; set; }
+        private FootballTranslate Translation { get; set; }
+        private int _bluePoints;
+        private int _redPoints;
+        private GameObject _ball;
+        private List<GameObject> _triggers;
+        protected override void RegisterEvents()
         {
-            _eventHandler = new EventHandler();
-            EventManager.RegisterEvents(_eventHandler);
-            Servers.TeamRespawn += _eventHandler.OnTeamRespawn;
-            Players.DropItem += _eventHandler.OnDropItem;
-
-            OnEventStarted();
+            Translation = new FootballTranslate();
+            EventHandler = new EventHandler();
+            EventManager.RegisterEvents(EventHandler);
+            Servers.TeamRespawn += EventHandler.OnTeamRespawn;
+            Players.DropItem += EventHandler.OnDropItem;
         }
 
-        public override void OnStop()
+        protected override void UnregisterEvents()
         {
-            EventManager.UnregisterEvents(_eventHandler);
-            Servers.TeamRespawn -= _eventHandler.OnTeamRespawn;
-            Players.DropItem -= _eventHandler.OnDropItem;
+            EventManager.UnregisterEvents(EventHandler);
+            Servers.TeamRespawn -= EventHandler.OnTeamRespawn;
+            Players.DropItem -= EventHandler.OnDropItem;
 
-            _eventHandler = null;
-            Timing.CallDelayed(10f, () => EventEnd());
+            EventHandler = null;
         }
 
-        public void OnEventStarted()
+        protected override void OnStart()
         {
-            EventTime = new TimeSpan(0, 3, 0);
-            GameMap = Extensions.LoadMap(MapName, new Vector3(76f, 1026.5f, -43.68f), Quaternion.Euler(Vector3.zero), Vector3.one);
-            Extensions.PlayAudio("Football.ogg", 5, true, Name);
-
             var count = 0;
             foreach (Player player in Player.GetPlayers())
             {
                 if (count % 2 == 0)
                 {
                     Extensions.SetRole(player, RoleTypeId.NtfCaptain, RoleSpawnFlags.None);
-                    player.Position = RandomClass.GetSpawnPosition(GameMap, true);
+                    player.Position = RandomClass.GetSpawnPosition(MapInfo.Map, true);
                 }
                 else
                 {
                     Extensions.SetRole(player, RoleTypeId.ClassD, RoleSpawnFlags.None);
-                    player.Position = RandomClass.GetSpawnPosition(GameMap, false);
+                    player.Position = RandomClass.GetSpawnPosition(MapInfo.Map, false);
                 }
                 count++;
             }
+            _bluePoints = 0;
+            _redPoints = 0;
+            _ball = new GameObject();
+            _triggers = new List<GameObject>();
 
-            Timing.RunCoroutine(OnEventRunning(), "glass_time");
-        }
-
-        public IEnumerator<float> OnEventRunning()
-        {
-            var translation = AutoEvent.Singleton.Translation.FootballTranslate;
-            int bluePoints = 0;
-            int redPoints = 0;
-            GameObject ball = new GameObject();
-            List<GameObject> triggers = new List<GameObject>();
-
-            foreach (var gameObject in GameMap.AttachedBlocks)
+            foreach (var gameObject in MapInfo.Map.AttachedBlocks)
             {
                 switch(gameObject.name)
                 {
-                    case "Trigger": { triggers.Add(gameObject); } break;
-                    case "Ball": { ball = gameObject; ball.AddComponent<BallComponent>(); } break;
+                    case "Trigger": { _triggers.Add(gameObject); } break;
+                    case "Ball": { _ball = gameObject; _ball.AddComponent<BallComponent>(); } break;
                 }
             }
+        }
 
-            while (bluePoints < 3 && redPoints < 3 && EventTime.TotalSeconds > 0 && 
-                Player.GetPlayers().Count(r => r.IsNTF) > 0 && Player.GetPlayers().Count(r => r.Team == Team.ClassD) > 0)
-            {
-                var time = $"{EventTime.Minutes}:{EventTime.Minutes}";
+        protected override bool IsRoundDone()
+        {
+            // Both teams have less than 3 points &&
+            // The elapsed time is under 3 minutes &&
+            // Both Teams have at least 1 player 
+            return !(_bluePoints < 3 && _redPoints < 3 && EventTime.TotalSeconds < 180 &&
+                     Player.GetPlayers().Count(r => r.IsNTF) > 0 &&
+                     Player.GetPlayers().Count(r => r.Team == Team.ClassD) > 0);
+        }
+
+        protected override void ProcessFrame()
+        {
+            var time = $"{EventTime.Minutes:00}:{EventTime.Seconds:00}";
                 foreach (Player player in Player.GetPlayers())
                 {
                     var text = string.Empty;
-                    if (Vector3.Distance(ball.transform.position, player.Position) < 2)
+                    if (Vector3.Distance(_ball.transform.position, player.Position) < 2)
                     {
-                        ball.gameObject.TryGetComponent(out Rigidbody rig);
+                        _ball.gameObject.TryGetComponent(out Rigidbody rig);
                         rig.AddForce(player.ReferenceHub.transform.forward + new Vector3(0, 0.1f, 0), ForceMode.Impulse);
                     }
 
                     if (player.Team == Team.FoundationForces)
                     {
-                        text += translation.FootballBlueTeam;
+                        text += Translation.FootballBlueTeam;
                     }
                     else
                     {
-                        text += translation.FootballRedTeam;
+                        text += Translation.FootballRedTeam;
                     }
 
                     player.ClearBroadcasts();
-                    player.SendBroadcast(text + translation.FootballTimeLeft.
-                        Replace("{BluePnt}", $"{bluePoints}").
-                        Replace("{RedPnt}", $"{redPoints}").
+                    player.SendBroadcast(text + Translation.FootballTimeLeft.
+                        Replace("{BluePnt}", $"{_bluePoints}").
+                        Replace("{RedPnt}", $"{_redPoints}").
                         Replace("{eventTime}", time), 1);
                 }
 
-                if (Vector3.Distance(ball.transform.position, triggers.ElementAt(0).transform.position) < 3)
+                if (Vector3.Distance(_ball.transform.position, _triggers.ElementAt(0).transform.position) < 3)
                 {
-                    ball.transform.position = GameMap.Position + new Vector3(0, 2.5f, 0);
-                    ball.GetComponent<Rigidbody>().velocity = Vector3.zero;
-                    redPoints++;
+                    _ball.transform.position = MapInfo.Map.Position + new Vector3(0, 2.5f, 0);
+                    _ball.GetComponent<Rigidbody>().velocity = Vector3.zero;
+                    _redPoints++;
                 }
 
-                if (Vector3.Distance(ball.transform.position, triggers.ElementAt(1).transform.position) < 3)
+                if (Vector3.Distance(_ball.transform.position, _triggers.ElementAt(1).transform.position) < 3)
                 {
-                    ball.transform.position = GameMap.Position + new Vector3(0, 2.5f, 0);
-                    ball.GetComponent<Rigidbody>().velocity = Vector3.zero;
-                    bluePoints++;
+                    _ball.transform.position = MapInfo.Map.Position + new Vector3(0, 2.5f, 0);
+                    _ball.GetComponent<Rigidbody>().velocity = Vector3.zero;
+                    _bluePoints++;
                 }
 
-                if (ball.transform.position.y < GameMap.Position.y - 10f)
+                if (_ball.transform.position.y < MapInfo.Map.Position.y - 10f)
                 {
-                    ball.transform.position = GameMap.Position + new Vector3(0, 2.5f, 0);
-                    ball.GetComponent<Rigidbody>().velocity = Vector3.zero;
+                    _ball.transform.position = MapInfo.Map.Position + new Vector3(0, 2.5f, 0);
+                    _ball.GetComponent<Rigidbody>().velocity = Vector3.zero;
                 }
+        }
 
-                yield return Timing.WaitForSeconds(0.3f);
-                EventTime -= TimeSpan.FromSeconds(0.3f);
-            }
-
-            if (bluePoints > redPoints)
+        protected override void OnFinished()
+        {
+            if (_bluePoints > _redPoints)
             {
-                Extensions.Broadcast($"{translation.FootballBlueWins}", 10);
+                Extensions.Broadcast($"{Translation.FootballBlueWins}", 10);
             }
-            else if (redPoints > bluePoints)
+            else if (_redPoints > _bluePoints)
             {
-                Extensions.Broadcast($"{translation.FootballRedWins}", 10);
+                Extensions.Broadcast($"{Translation.FootballRedWins}", 10);
             }
             else
             {
-                Extensions.Broadcast($"{translation.FootballDraw.Replace("{BluePnt}", $"{bluePoints}").Replace("{RedPnt}", $"{redPoints}")}", 3);
+                Extensions.Broadcast($"{Translation.FootballDraw.Replace("{BluePnt}", $"{_bluePoints}").Replace("{RedPnt}", $"{_redPoints}")}", 3);
             }
-
-            OnStop();
-            yield break;
-        }
-        public void EventEnd()
-        {
-            Extensions.CleanUpAll();
-            Extensions.TeleportEnd();
-            Extensions.UnLoadMap(GameMap);
-            Extensions.StopAudio();
-            AutoEvent.ActiveEvent = null;
         }
     }
 }

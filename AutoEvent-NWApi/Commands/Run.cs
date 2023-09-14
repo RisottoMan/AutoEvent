@@ -3,26 +3,43 @@ using CommandSystem;
 using System;
 using MEC;
 using PluginAPI.Core;
+#if EXILED
+using Exiled.Permissions.Extensions;
+#endif
 
 namespace AutoEvent.Commands
 {
-    internal class RunEvent : ICommand
+    internal class Run : ICommand, IUsageProvider
     {
-        public string Command => "run";
+        public string Command => nameof(Run);
         public string Description => "Run the event, takes on 1 argument - the command name of the event.";
-        public string[] Aliases => null;
+        public string[] Aliases => new []{ "start", "play", "begin" };
+        public string[] Usage => new string[] { "Event Name" };
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
+            
+
+#if EXILED
+            if (!((CommandSender)sender).CheckPermission("ev.run"))
+            {
+                response = "You do not have permission to use this command";
+                return false;
+            }
+#else
             var config = AutoEvent.Singleton.Config;
             var player = Player.Get(sender);
-
+            if (sender is ServerConsoleSender || sender is CommandSender cmdSender && cmdSender.FullPermissions)
+            {
+                goto skipPermissionCheck;
+            }
             if (!config.PermissionList.Contains(ServerStatic.PermissionsHandler._members[player.UserId]))
             {
                 response = "<color=red>You do not have permission to use this command!</color>";
                 return false;
             }
-
+            skipPermissionCheck:
+#endif      
             if (AutoEvent.ActiveEvent != null)
             {
                 response = $"<color=red>The mini-game {AutoEvent.ActiveEvent.Name} is already running!</color>";
@@ -42,10 +59,13 @@ namespace AutoEvent.Commands
                 return false;
             }
 
-            if (ev.MapName != null)
-            if (!Extensions.IsExistsMap(ev.MapName))
+            if (!(ev is IEventMap map && !string.IsNullOrEmpty(map.MapInfo.MapName)))
             {
-                response = $"<color=red>You need a map {ev.MapName} to run a mini-game.</color>";
+                DebugLogger.LogDebug("No map has been specified for this event!", LogLevel.Warn, true);
+            }
+            else if (!Extensions.IsExistsMap(map.MapInfo.MapName))
+            {
+                response = $"<color=red>You need a map {map.MapInfo.MapName} to run a mini-game.</color>";
                 return false;
             }
 
@@ -62,13 +82,13 @@ namespace AutoEvent.Commands
                         player.ClearInventory();
                     }
 
-                    ev.OnStart();
+                    ev.StartEvent();
                     AutoEvent.ActiveEvent = ev;
                 });
             }
             else
             {
-                ev.OnStart();
+                ev.StartEvent();
                 AutoEvent.ActiveEvent = ev;
             }
 

@@ -4,8 +4,8 @@
     {
         public string EscapeName { get; set; } = "Atomic Escape";
         public string EscapeDescription { get; set; } = "Escape from the facility behind SCP-173 at supersonic speed!";
-        public string EscapeBeforeStart { get; set; } = "{name}\nHave time to escape from the facility before it explodes!\n<color=red>Before the escape: {time} seconds</color>";
-        public string EscapeCycle { get; set; } = "{name}\nBefore the explosion: <color=red>{time}</color> seconds";
-        public string EscapeEnd { get; set; } = "{name}\n<color=red> SCP Win </color>";
+        public string EscapeBeforeStart { get; set; } = "{name}\nPrepare to escape from the facility before it explodes!\n<color=red>Time until round starts: {time} seconds</color>";
+        public string EscapeCycle { get; set; } = "{name}\n<color=red>{time}</color> seconds until explosion!";
+        public string EscapeEnd { get; set; } = "{name}\n<color=red>{players} Players Escaped </color>";
     }
 }

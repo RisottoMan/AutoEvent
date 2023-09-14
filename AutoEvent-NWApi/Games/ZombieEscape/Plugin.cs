@@ -7,94 +7,101 @@ using PluginAPI.Core;
 using PluginAPI.Events;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using AutoEvent.Games.Infection;
+using AutoEvent.Interfaces;
 using UnityEngine;
 using Event = AutoEvent.Interfaces.Event;
 
 namespace AutoEvent.Games.ZombieEscape
 {
-    public class Plugin : Event
+    public class Plugin : Event, IEventSound, IEventMap, IInternalEvent
     {
-        public override string Name { get; set; } = AutoEvent.Singleton.Translation.ZombieEscapeTranslate.ZombieEscapeName;
-        public override string Description { get; set; } = AutoEvent.Singleton.Translation.ZombieEscapeTranslate.ZombieEscapeDescription;
+        public override string Name { get; set; } =
+            AutoEvent.Singleton.Translation.ZombieEscapeTranslate.ZombieEscapeName;
+        public override string Description { get; set; } =
+            AutoEvent.Singleton.Translation.ZombieEscapeTranslate.ZombieEscapeDescription;
         public override string Author { get; set; } = "KoT0XleB";
-        public override string MapName { get; set; } = "zm_osprey";
         public override string CommandName { get; set; } = "zombie3";
-        public SchematicObject GameMap { get; set; }
-        private bool isFriendlyFireEnabled { get; set; }
-        SchematicObject Boat { get; set; }
-        SchematicObject Heli { get; set; }
-        TimeSpan EventTime { get; set; }
-        EventHandler _eventHandler { get; set; }
+        public MapInfo MapInfo { get; set; } = new MapInfo()
+            { MapName = "zm_osprey", Position = new Vector3(-15f, 1020f, -80f), Rotation = Quaternion.identity };
+        public SoundInfo SoundInfo { get; set; } = new SoundInfo()
+            { SoundName = "Survival.ogg", Volume = 10, Loop = false };
+        protected override float PostRoundDelay { get; set; } = 10f;
+        private EventHandler EventHandler { get; set; }
+        private ZombieEscapeTranslate Translation { get; set; }
+        private SchematicObject _boat;
+        private SchematicObject _heli;
+        private GameObject _button;
+        private GameObject _button1;
+        private GameObject _button2;
+        private GameObject _wall;
+        private Vector3 _finishPosition;
+        
 
-        public override void OnStart()
+        protected override void RegisterEvents()
         {
-            isFriendlyFireEnabled = Server.FriendlyFire;
+            Translation = new ZombieEscapeTranslate();
+
+            EventHandler = new EventHandler(this);
+            EventManager.RegisterEvents(EventHandler);
+            Servers.TeamRespawn += EventHandler.OnTeamRespawn;
+            Servers.SpawnRagdoll += EventHandler.OnSpawnRagdoll;
+            Servers.PlaceBullet += EventHandler.OnPlaceBullet;
+            Servers.PlaceBlood += EventHandler.OnPlaceBlood;
+            Players.DropItem += EventHandler.OnDropItem;
+            Players.DropAmmo += EventHandler.OnDropAmmo;
+            Players.PlayerDamage += EventHandler.OnPlayerDamage;
+        }
+
+        protected override void UnregisterEvents()
+        {
+            EventManager.UnregisterEvents(EventHandler);
+            Servers.TeamRespawn -= EventHandler.OnTeamRespawn;
+            Servers.SpawnRagdoll -= EventHandler.OnSpawnRagdoll;
+            Servers.PlaceBullet -= EventHandler.OnPlaceBullet;
+            Servers.PlaceBlood -= EventHandler.OnPlaceBlood;
+            Players.DropItem -= EventHandler.OnDropItem;
+            Players.DropAmmo -= EventHandler.OnDropAmmo;
+            Players.PlayerDamage -= EventHandler.OnPlayerDamage;
+
+            EventHandler = null;
+        }
+        /*public Plugin(SchematicObject boat)
+        {
+            _boat = boat;
+        }*/
+
+        protected override void OnStart()
+        {
             Server.FriendlyFire = false;
-            OnEventStarted();
-
-            _eventHandler = new EventHandler(this);
-            EventManager.RegisterEvents(_eventHandler);
-            Servers.TeamRespawn += _eventHandler.OnTeamRespawn;
-            Servers.SpawnRagdoll += _eventHandler.OnSpawnRagdoll;
-            Servers.PlaceBullet += _eventHandler.OnPlaceBullet;
-            Servers.PlaceBlood += _eventHandler.OnPlaceBlood;
-            Players.DropItem += _eventHandler.OnDropItem;
-            Players.DropAmmo += _eventHandler.OnDropAmmo;
-            Players.PlayerDamage += _eventHandler.OnPlayerDamage;
-        }
-        public override void OnStop()
-        {
-            Server.FriendlyFire = isFriendlyFireEnabled;
-
-            EventManager.UnregisterEvents(_eventHandler);
-            Servers.TeamRespawn -= _eventHandler.OnTeamRespawn;
-            Servers.SpawnRagdoll -= _eventHandler.OnSpawnRagdoll;
-            Servers.PlaceBullet -= _eventHandler.OnPlaceBullet;
-            Servers.PlaceBlood -= _eventHandler.OnPlaceBlood;
-            Players.DropItem -= _eventHandler.OnDropItem;
-            Players.DropAmmo -= _eventHandler.OnDropAmmo;
-            Players.PlayerDamage -= _eventHandler.OnPlayerDamage;
-
-            _eventHandler = null;
-            Timing.CallDelayed(10f, () => EventEnd());
-        }
-
-        public void OnEventStarted()
-        {
-            EventTime = new TimeSpan(0, 5, 0);
-            GameMap = Extensions.LoadMap(MapName, new Vector3(-15f, 1020f, -80f), Quaternion.identity, Vector3.one);
-
             foreach (Player player in Player.GetPlayers())
             {
                 Extensions.SetRole(player, RoleTypeId.NtfSergeant, RoleSpawnFlags.None);
-                player.Position = RandomClass.GetSpawnPosition(GameMap);
+                player.Position = RandomClass.GetSpawnPosition(MapInfo.Map);
                 //Extensions.SetPlayerAhp(player, 100, 100, 0);
 
                 var item = player.AddItem(RandomClass.GetRandomGun());
                 player.AddItem(ItemType.GunCOM18);
                 player.AddItem(ItemType.ArmorCombat);
 
-                Timing.CallDelayed(0.1f, () =>
-                {
-                    player.CurrentItem = item;
-                });
+                Timing.CallDelayed(0.1f, () => { player.CurrentItem = item; });
             }
-
-            Timing.RunCoroutine(OnEventRunning(), "zmescape_run");
         }
 
-        public IEnumerator<float> OnEventRunning()
+        protected override IEnumerator<float> BroadcastStartCountdown()
         {
-            var translation = AutoEvent.Singleton.Translation.ZombieEscapeTranslate;
-            Extensions.PlayAudio("Survival.ogg", 10, false, Name);
-
             for (float _time = 20; _time > 0; _time--)
             {
-                Extensions.Broadcast(translation.ZombieEscapeBeforeStart.Replace("%name%", Name).Replace("%time%", $"{_time}"), 1);
+                Extensions.Broadcast(
+                    Translation.ZombieEscapeBeforeStart.Replace("%name%", Name).Replace("%time%", $"{_time}"), 1);
                 yield return Timing.WaitForSeconds(1f);
             }
+        }
 
+        protected override void CountdownFinished()
+        {
             Extensions.PlayAudio("Zombie2.ogg", 7, false, Name);
 
             for (int i = 0; i <= Player.GetPlayers().Count() / 10; i++)
@@ -106,94 +113,120 @@ namespace AutoEvent.Games.ZombieEscape
                 player.Health = 10000;
             }
 
-            GameObject button = new GameObject();
-            GameObject button1 = new GameObject();
-            GameObject button2 = new GameObject();
-            GameObject wall = new GameObject();
-            Vector3 finish = new Vector3();
+            _button = new GameObject();
+            _button1 = new GameObject();
+            _button2 = new GameObject();
+            _wall = new GameObject();
+            _finishPosition = new Vector3();
 
-            foreach (var gameObject in GameMap.AttachedBlocks)
+            foreach (var gameObject in MapInfo.Map.AttachedBlocks)
             {
-                switch(gameObject.name)
+                switch (gameObject.name)
                 {
-                    case "Button": { button = gameObject; } break;
-                    case "Button1": { button1 = gameObject; } break;
-                    case "Button2": { button2 = gameObject; } break;
-                    case "Lava": { gameObject.AddComponent<LavaComponent>(); } break;
-                    case "Wall": { wall = gameObject; } break;
-                    case "Finish": { finish = gameObject.transform.position; } break;
+                    case "Button":
+                    {
+                        _button = gameObject;
+                    }
+                        break;
+                    case "Button1":
+                    {
+                        _button1 = gameObject;
+                    }
+                        break;
+                    case "Button2":
+                    {
+                        _button2 = gameObject;
+                    }
+                        break;
+                    case "Lava":
+                    {
+                        gameObject.AddComponent<LavaComponent>();
+                    }
+                        break;
+                    case "Wall":
+                    {
+                        _wall = gameObject;
+                    }
+                        break;
+                    case "Finish":
+                    {
+                        _finishPosition = gameObject.transform.position;
+                    }
+                        break;
                 }
             }
+        }
 
-            while (Player.GetPlayers().Count(r => r.IsHuman) > 0 && Player.GetPlayers().Count(r => r.IsSCP) > 0 && EventTime.TotalSeconds > 0)
+        protected override void ProcessFrame()
+        {
+            foreach (Player player in Player.GetPlayers())
             {
-                foreach(Player player in Player.GetPlayers())
+                if (Vector3.Distance(player.Position, _button1.transform.position) < 3)
                 {
-                    if (Vector3.Distance(player.Position, button1.transform.position) < 3)
-                    {
-                        button1.transform.position += Vector3.down * 5;
-                        wall.AddComponent<WallComponent>();
-                    }
-
-                    if (Vector3.Distance(player.Position, button2.transform.position) < 3)
-                    {
-                        button2.transform.position += Vector3.down * 5;
-                        EventTime = new TimeSpan(0, 1, 5);
-                        Heli = Extensions.LoadMap("Helicopter_Zombie", GameMap.Position, Quaternion.identity, Vector3.one);
-                    }
-
-                    string text = translation.ZombieEscapeHelicopter.
-                        Replace("%name%", Name).
-                        Replace("%count%", $"{Player.GetPlayers().Count(r => r.IsHuman)}");
-                    player.ClearBroadcasts();
-                    player.SendBroadcast(text, 1);
+                    _button1.transform.position += Vector3.down * 5;
+                    _wall.AddComponent<WallComponent>();
                 }
 
-                yield return Timing.WaitForSeconds(1f);
-                EventTime -= TimeSpan.FromSeconds(1f);
+                if (Vector3.Distance(player.Position, _button2.transform.position) < 3)
+                {
+                    _button2.transform.position += Vector3.down * 5;
+                    EventTime = new TimeSpan(0, 1, 5);
+                    _heli = Extensions.LoadMap("Helicopter_Zombie", MapInfo.Map.Position, Quaternion.identity,
+                        Vector3.one);
+                }
+
+                string text = Translation.ZombieEscapeHelicopter.Replace("%name%", Name)
+                    .Replace("%count%", $"{Player.GetPlayers().Count(r => r.IsHuman)}");
+                player.ClearBroadcasts();
+                player.SendBroadcast(text, 1);
             }
 
-            foreach(Player player in Player.GetPlayers())
+        }
+
+        protected override bool IsRoundDone()
+        {
+            // At least 1 human player alive &&
+            // At least 1 scp player alive && 
+            // Elapsed time is shorter than 5 minutes (+ countdown)
+            return !(Player.GetPlayers().Count(r => r.IsHuman) > 0 && Player.GetPlayers().Count(r => r.IsSCP) > 0 &&
+                   EventTime.TotalSeconds < 150 + 20);
+        }
+
+        protected override void OnFinished()
+        {
+            foreach (Player player in Player.GetPlayers())
             {
                 player.EffectsManager.EnableEffect<Flashed>(1);
 
-                if (Heli != null)
+                if (_heli != null)
                 {
-                    if (Vector3.Distance(player.Position, finish) > 5)
+                    if (Vector3.Distance(player.Position, _finishPosition) > 5)
                     {
-                        player.Damage(15000f, translation.ZombieEscapeDied);
+                        player.Damage(15000f, Translation.ZombieEscapeDied);
                     }
                 }
             }
 
             if (Player.GetPlayers().Count(r => r.IsHuman) == 0)
             {
-                Extensions.Broadcast(translation.ZombieEscapeZombieWin, 10);
+                Extensions.Broadcast(Translation.ZombieEscapeZombieWin, 10);
                 Extensions.PlayAudio("ZombieWin.ogg", 7, false, Name);
             }
             else
             {
-                Extensions.Broadcast(translation.ZombieEscapeHumanWin, 10);
+                Extensions.Broadcast(Translation.ZombieEscapeHumanWin, 10);
                 Extensions.PlayAudio("HumanWin.ogg", 7, false, Name);
             }
-
-            OnStop();
-            yield break;
         }
-
-        public void EventEnd()
+        protected override void OnCleanup()
         {
-            if (Boat != null)
-                Extensions.UnLoadMap(Boat);
+            Server.FriendlyFire = AutoEvent.IsFriendlyFireEnabledByDefault;
+            if (_boat != null)
+                Extensions.UnLoadMap(_boat);
 
-            if (Heli != null)
-                Extensions.UnLoadMap(Heli);
-
-            Extensions.CleanUpAll();
-            Extensions.TeleportEnd();
-            Extensions.UnLoadMap(GameMap);
-            Extensions.StopAudio();
-            AutoEvent.ActiveEvent = null;
+            if (_heli != null)
+                Extensions.UnLoadMap(_heli); 
         }
+
     }
 }

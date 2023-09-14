@@ -43,7 +43,7 @@ namespace AutoEvent.Games.Jail
 
             if (ev.Locker.StructureType == StructureType.SmallWallCabinet)
             {
-                if (Vector3.Distance(ev.Player.Position, _plugin.GameMap.gameObject.transform.position + new Vector3(17.855f, -12.43052f, -23.632f)) < 2)
+                if (Vector3.Distance(ev.Player.Position, _plugin.MapInfo.Map.gameObject.transform.position + new Vector3(17.855f, -12.43052f, -23.632f)) < 2)
                 {
                     Extensions.SetPlayerAhp(ev.Player, 100, 100, 0);
                     ev.Player.ArtificialHealth = 100;

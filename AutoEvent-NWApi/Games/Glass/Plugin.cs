@@ -11,96 +11,99 @@ using PluginAPI.Core;
 using PluginAPI.Events;
 using AutoEvent.API.Schematic.Objects;
 using AutoEvent.Events.Handlers;
+using AutoEvent.Games.Infection;
+using AutoEvent.Interfaces;
 using Object = UnityEngine.Object;
 using Event = AutoEvent.Interfaces.Event;
 
 namespace AutoEvent.Games.Glass
 {
-    public class Plugin : Event
+    public class Plugin : Event, IEventSound, IEventMap, IInternalEvent
     {
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.GlassTranslate.GlassName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.GlassTranslate.GlassDescription;
         public override string Author { get; set; } = "KoT0XleB";
-        public override string MapName { get; set; } = "Glass";
+
         public override string CommandName { get; set; } = "glass";
-        SchematicObject GameMap { get; set; }
-        TimeSpan EventTime { get; set; }
-        List<GameObject> Platformes { get; set; }
-        GameObject Lava { get; set; }
-        GameObject Finish { get; set; }
-        EventHandler _eventHandler { get; set; }
+        public MapInfo MapInfo { get; set; } = new MapInfo()
+            {MapName = "Glass", Position = new Vector3(76f, 1026.5f, -43.68f) };
+        public SoundInfo SoundInfo { get; set; } = new SoundInfo()
+            { SoundName = "CrabGame.ogg", Volume = 15, Loop = true };
+        protected override float PostRoundDelay { get; set; } = 10f;
+        private EventHandler EventHandler { get; set; }
+        private GlassTranslate Translation { get; set; }
+        private List<GameObject> _platforms;
+        private GameObject _lava;
+        private GameObject _finish;
+        private int _matchTimeInSeconds;
 
-        public override void OnStart()
+        protected override void RegisterEvents()
         {
-            _eventHandler = new EventHandler();
-            EventManager.RegisterEvents(_eventHandler);
-            Servers.TeamRespawn += _eventHandler.OnTeamRespawn;
-            Servers.SpawnRagdoll += _eventHandler.OnSpawnRagdoll;
-            Players.DropItem += _eventHandler.OnDropItem;
-
-            OnEventStarted();
-        }
-        public override void OnStop()
-        {
-            EventManager.UnregisterEvents(_eventHandler);
-            Servers.TeamRespawn -= _eventHandler.OnTeamRespawn;
-            Servers.SpawnRagdoll -= _eventHandler.OnSpawnRagdoll;
-            Players.DropItem -= _eventHandler.OnDropItem;
-
-            _eventHandler = null;
-            Timing.CallDelayed(10f, () => EventEnd());
+            Translation = new GlassTranslate();
+            EventHandler = new EventHandler();
+            EventManager.RegisterEvents(EventHandler);
+            Servers.TeamRespawn += EventHandler.OnTeamRespawn;
+            Servers.SpawnRagdoll += EventHandler.OnSpawnRagdoll;
+            Players.DropItem += EventHandler.OnDropItem;
         }
 
-        public void OnEventStarted()
+        protected override void UnregisterEvents()
         {
-            GameMap = Extensions.LoadMap(MapName, new Vector3(76f, 1026.5f, -43.68f), Quaternion.Euler(Vector3.zero), Vector3.one);
-            Extensions.PlayAudio("CrabGame.ogg", 15, true, Name);
+            EventManager.UnregisterEvents(EventHandler);
+            Servers.TeamRespawn -= EventHandler.OnTeamRespawn;
+            Servers.SpawnRagdoll -= EventHandler.OnSpawnRagdoll;
+            Players.DropItem -= EventHandler.OnDropItem;
 
-            Lava = GameMap.AttachedBlocks.First(x => x.name == "Lava");
-            Lava.AddComponent<LavaComponent>();
+            EventHandler = null;
+        }
+
+        protected override void OnStart()
+        {
+            _lava = MapInfo.Map.AttachedBlocks.First(x => x.name == "Lava");
+            _lava.AddComponent<LavaComponent>();
  
             int platformCount;
             int playerCount = Player.GetPlayers().Count(r => r.IsAlive);
             if (playerCount <= 5)
             {
                 platformCount = 3;
-                EventTime = new TimeSpan(0, 0, 30);
+                _matchTimeInSeconds = 30;
             }
             else if (playerCount > 5 && playerCount <= 15)
             {
                 platformCount = 6;
-                EventTime = new TimeSpan(0, 1, 0);
+                _matchTimeInSeconds = 60;
             }
             else if (playerCount > 15 && playerCount <= 25)
             {
                 platformCount = 9;
-                EventTime = new TimeSpan(0, 1, 30);
+                _matchTimeInSeconds = 90;
             }
             else if (playerCount > 25 && playerCount <= 30)
             {
                 platformCount = 12;
-                EventTime = new TimeSpan(0, 2, 0);
+                _matchTimeInSeconds = 120;
             }
             else
             {
                 platformCount = 15;
-                EventTime = new TimeSpan(0, 2, 30);
+                _matchTimeInSeconds = 150;
             }
 
-            var platform = GameMap.AttachedBlocks.First(x => x.name == "Platform");
-            var platform1 = GameMap.AttachedBlocks.First(x => x.name == "Platform1");
+            var platform = MapInfo.Map.AttachedBlocks.First(x => x.name == "Platform");
+            var platform1 = MapInfo.Map.AttachedBlocks.First(x => x.name == "Platform1");
 
-            Platformes = new List<GameObject>();
+            _platforms = new List<GameObject>();
             var delta = new Vector3(3.69f, 0, 0);
             for (int i = 0; i < platformCount; i++)
             {
                 var newPlatform = Object.Instantiate(platform, platform.transform.position + delta * (i + 1), Quaternion.identity);
                 NetworkServer.Spawn(newPlatform);
-                Platformes.Add(newPlatform);
+                _platforms.Add(newPlatform);
 
                 var newPlatform1 = Object.Instantiate(platform1, platform1.transform.position + delta * (i + 1), Quaternion.identity);
                 NetworkServer.Spawn(newPlatform1);
-                Platformes.Add(newPlatform1);
+                _platforms.Add(newPlatform1);
 
                 if (UnityEngine.Random.Range(0, 2) == 0)
                 {
@@ -112,75 +115,74 @@ namespace AutoEvent.Games.Glass
                 }
             }
 
-            Finish = GameMap.AttachedBlocks.First(x => x.name == "Finish");
-            Finish.transform.position = (platform.transform.position + platform1.transform.position) / 2f + delta * (platformCount + 2);
+            _finish = MapInfo.Map.AttachedBlocks.First(x => x.name == "Finish");
+            _finish.transform.position = (platform.transform.position + platform1.transform.position) / 2f + delta * (platformCount + 2);
 
             foreach (Player player in Player.GetPlayers())
             {
                 Extensions.SetRole(player, RoleTypeId.ClassD, RoleSpawnFlags.None);
-                player.Position = RandomClass.GetSpawnPosition(GameMap);
+                player.Position = RandomClass.GetSpawnPosition(MapInfo.Map);
                 player.EffectsManager.EnableEffect<Disabled>();
             }
-
-            Timing.RunCoroutine(OnEventRunning(), "glass_time");
         }
 
-        public IEnumerator<float> OnEventRunning()
+        protected override IEnumerator<float> BroadcastStartCountdown()
         {
-            var translation = AutoEvent.Singleton.Translation.GlassTranslate;
-
             for (int time = 15; time > 0; time--)
             {
                 Extensions.Broadcast($"<size=100><color=red>{time}</color></size>", 1);
                 yield return Timing.WaitForSeconds(1f);
             }
+        }
 
-            GameObject.Destroy(GameMap.AttachedBlocks.First(x => x.name == "Wall"));
+        protected override void CountdownFinished()
+        {
+            GameObject.Destroy(MapInfo.Map.AttachedBlocks.First(x => x.name == "Wall"));
+        }
 
-            while (EventTime.TotalSeconds > 0 && Player.GetPlayers().Count(r => r.IsAlive) > 0)
-            {
-                var text = translation.GlassStart;
-                text = text.Replace("{plyAlive}", Player.GetPlayers().Count(r => r.IsAlive).ToString());
-                text = text.Replace("{eventTime}", $"{EventTime.Minutes}:{EventTime.Seconds}");
+        protected override bool IsRoundDone()
+        {
+            // Elapsed time is smaller then the match time (+ countdown) &&
+            // At least one player is alive.
+            return !(EventTime.TotalSeconds < _matchTimeInSeconds + 15 && Player.GetPlayers().Count(r => r.IsAlive) > 0);
+        }
 
-                Extensions.Broadcast(text, 1);
+        protected override void ProcessFrame()
+        {
+            var text = Translation.GlassStart;
+            text = text.Replace("{plyAlive}", Player.GetPlayers().Count(r => r.IsAlive).ToString());
+            text = text.Replace("{eventTime}", $"{EventTime.Minutes:00}:{EventTime.Seconds:00}");
 
-                yield return Timing.WaitForSeconds(1f);
-                EventTime -= TimeSpan.FromSeconds(1f);
-            }
+            Extensions.Broadcast(text, 1);
+        }
 
+        protected override void OnFinished()
+        {
             foreach (Player player in Player.GetPlayers())
             {
-                if (Vector3.Distance(player.Position, Finish.transform.position) >= 10)
+                if (Vector3.Distance(player.Position, _finish.transform.position) >= 10)
                 {
-                    player.Damage(500, translation.GlassDied);
+                    player.Damage(500, Translation.GlassDied);
                 }
             }
             
             if (Player.GetPlayers().Count(r => r.IsAlive) > 1)
             {
-                Extensions.Broadcast(translation.GlassWinSurvived.Replace("{countAlive}", Player.GetPlayers().Count(r => r.IsAlive).ToString()), 3);
+                Extensions.Broadcast(Translation.GlassWinSurvived.Replace("{countAlive}", Player.GetPlayers().Count(r => r.IsAlive).ToString()), 3);
             }
             else if (Player.GetPlayers().Count(r => r.IsAlive) == 1)
             {
-                Extensions.Broadcast(translation.GlassWinner.Replace("{winner}", Player.GetPlayers().First(r =>r.IsAlive).Nickname), 10);
+                Extensions.Broadcast(Translation.GlassWinner.Replace("{winner}", Player.GetPlayers().First(r =>r.IsAlive).Nickname), 10);
             }
             else if (Player.GetPlayers().Count(r => r.IsAlive) < 1)
             {
-                Extensions.Broadcast(translation.GlassFail, 10);
+                Extensions.Broadcast(Translation.GlassFail, 10);
             }
-
-            OnStop();
-            yield break;
         }
-        public void EventEnd()
+
+        protected override void OnCleanup()
         {
-            Platformes.ForEach(Object.Destroy);
-            Extensions.CleanUpAll();
-            Extensions.TeleportEnd();
-            Extensions.UnLoadMap(GameMap);
-            Extensions.StopAudio();
-            AutoEvent.ActiveEvent = null;
+            _platforms.ForEach(Object.Destroy);
         }
     }
 }

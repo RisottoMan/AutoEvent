@@ -6,145 +6,165 @@ using PluginAPI.Events;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using AutoEvent.Interfaces;
 using UnityEngine;
 using Event = AutoEvent.Interfaces.Event;
 using Player = PluginAPI.Core.Player;
 
 namespace AutoEvent.Games.Infection
 {
-    public class Plugin : Event
+    public class Plugin : Event, IEventSound, IEventMap, IInternalEvent
     {
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.InfectTranslate.ZombieName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.InfectTranslate.ZombieDescription;
         public override string Author { get; set; } = "KoT0XleB";
-        public override string MapName { get; set; } = AutoEvent.Singleton.Config.InfectConfig.ListOfMap.RandomItem();
         public override string CommandName { get; set; } = "zombie";
-        public SchematicObject GameMap { get; set; }
-        TimeSpan EventTime { get; set; }
-        EventHandler _eventHandler { get; set; }
+        public MapInfo MapInfo { get; set; } = new MapInfo()
+            {MapName = AutoEvent.Singleton.Config.InfectConfig.ListOfMap.RandomItem(), Position = new Vector3(115.5f, 1030f, -43.5f), Rotation = Quaternion.identity };
+        public SoundInfo SoundInfo { get; set; }
+        protected override float PostRoundDelay { get; set; } = 10f;
+        private EventHandler EventHandler { get; set; }
+        private InfectTranslate Translation { get; set; }
+        private InfectionStage _stage;
+        private int _overtime = 30;
 
-        public override void OnStart()
+        public override void InstantiateEvent()
         {
-            _eventHandler = new EventHandler(this);
-            EventManager.RegisterEvents(_eventHandler);
-
-            Servers.TeamRespawn += _eventHandler.OnTeamRespawn;
-            Servers.SpawnRagdoll += _eventHandler.OnSpawnRagdoll;
-            Servers.PlaceBullet += _eventHandler.OnPlaceBullet;
-            Servers.PlaceBlood += _eventHandler.OnPlaceBlood;
-            Players.DropItem += _eventHandler.OnDropItem;
-            Players.DropAmmo += _eventHandler.OnDropAmmo;
-            Players.PlayerDamage += _eventHandler.OnPlayerDamage;
-
-            OnEventStarted();
-        }
-        public override void OnStop()
-        {
-            EventManager.UnregisterEvents(_eventHandler);
-
-            Servers.TeamRespawn -= _eventHandler.OnTeamRespawn;
-            Servers.SpawnRagdoll -= _eventHandler.OnSpawnRagdoll;
-            Servers.PlaceBullet -= _eventHandler.OnPlaceBullet;
-            Servers.PlaceBlood -= _eventHandler.OnPlaceBlood;
-            Players.DropItem -= _eventHandler.OnDropItem;
-            Players.DropAmmo -= _eventHandler.OnDropAmmo;
-            Players.PlayerDamage -= _eventHandler.OnPlayerDamage;
-
-            _eventHandler = null;
-            Timing.CallDelayed(10f, () => EventEnd());
+            var music = AutoEvent.Singleton.Config.InfectConfig.ListOfMusic.ToList().RandomItem();
+            SoundInfo = new SoundInfo()
+            {
+                SoundName = music.Key,
+                Volume = music.Value,
+                Loop = true
+            };
         }
 
-        public void OnEventStarted()
+        protected override void RegisterEvents()
         {
-            EventTime = new TimeSpan(0, 0, 0);
-            MapName = AutoEvent.Singleton.Config.InfectConfig.ListOfMap.RandomItem();
+            Translation = new InfectTranslate();
+            EventHandler = new EventHandler(this);
+            EventManager.RegisterEvents(EventHandler);
 
+            Servers.TeamRespawn += EventHandler.OnTeamRespawn;
+            Servers.SpawnRagdoll += EventHandler.OnSpawnRagdoll;
+            Servers.PlaceBullet += EventHandler.OnPlaceBullet;
+            Servers.PlaceBlood += EventHandler.OnPlaceBlood;
+            Players.DropItem += EventHandler.OnDropItem;
+            Players.DropAmmo += EventHandler.OnDropAmmo;
+            Players.PlayerDamage += EventHandler.OnPlayerDamage;
+        }
+
+        protected override void UnregisterEvents()
+        {
+            EventManager.UnregisterEvents(EventHandler);
+
+            Servers.TeamRespawn -= EventHandler.OnTeamRespawn;
+            Servers.SpawnRagdoll -= EventHandler.OnSpawnRagdoll;
+            Servers.PlaceBullet -= EventHandler.OnPlaceBullet;
+            Servers.PlaceBlood -= EventHandler.OnPlaceBlood;
+            Players.DropItem -= EventHandler.OnDropItem;
+            Players.DropAmmo -= EventHandler.OnDropAmmo;
+            Players.PlayerDamage -= EventHandler.OnPlayerDamage;
+            EventHandler = null;
+        }
+
+        protected override void OnStart()
+        {
+            _stage = InfectionStage.Starting;
             float scale = 1;
             switch(Player.GetPlayers().Count())
             {
-                case int n when (n > 15 && n <= 20): scale = 1.1f; break;
-                case int n when (n > 20 && n <= 25): scale = 1.2f; break;
-                case int n when (n > 25 && n <= 30): scale = 1.3f; break;
-                case int n when (n > 30 && n <= 35): scale = 1.4f; break;
-                case int n when (n > 35): scale = 1.5f; break;
+                case var n when (n > 15 && n <= 20): scale = 1.1f; break;
+                case var n when (n > 20 && n <= 25): scale = 1.2f; break;
+                case var n when (n > 25 && n <= 30): scale = 1.3f; break;
+                case var n when (n > 30 && n <= 35): scale = 1.4f; break;
+                case var n when (n > 35): scale = 1.5f; break;
             }
-
-            GameMap = Extensions.LoadMap(MapName, new Vector3(115.5f, 1030f, -43.5f), Quaternion.identity, new Vector3(1, 1, 1) * scale);
-
-            var music = AutoEvent.Singleton.Config.InfectConfig.ListOfMusic.ToList().RandomItem();
-            Extensions.PlayAudio(music.Key, music.Value, true, Name);
 
             foreach (Player player in Player.GetPlayers())
             {
                 Extensions.SetRole(player, RoleTypeId.ClassD, RoleSpawnFlags.None);
-                player.Position = RandomPosition.GetSpawnPosition(GameMap);
+                player.Position = RandomPosition.GetSpawnPosition(MapInfo.Map);
             }
-
-            Timing.RunCoroutine(OnEventRunning(), "zombie_run");
+            Extensions.SetRole(Player.GetPlayers().RandomItem(), RoleTypeId.Scp0492, RoleSpawnFlags.None);
+            _stage = InfectionStage.Stage1;
         }
 
-        public IEnumerator<float> OnEventRunning()
+        protected override IEnumerator<float> BroadcastStartCountdown()
         {
-            var translate = AutoEvent.Singleton.Translation.InfectTranslate;
             for (float time = 15; time > 0; time--)
             {
-                Extensions.Broadcast(translate.ZombieBeforeStart.Replace("{name}", Name).Replace("{time}", time.ToString()), 1);
+                Extensions.Broadcast(Translation.ZombieBeforeStart.Replace("{name}", Name).Replace("{time}", time.ToString()), 1);
                 yield return Timing.WaitForSeconds(1f);
             }
-
-            Extensions.SetRole(Player.GetPlayers().RandomItem(), RoleTypeId.Scp0492, RoleSpawnFlags.None);
-
-            while (Player.GetPlayers().Count(r => r.Role == RoleTypeId.ClassD) > 1)
+        }
+        protected override bool IsRoundDone()
+        {
+            // Finished
+            if (_stage == InfectionStage.Finished)
+                return true;
+            // Last Player Dead.
+            if (Player.GetPlayers().Count(r => r.Role == RoleTypeId.ClassD) == 0)
+                return true;
+            // Last Player Alive.
+            if (_stage == InfectionStage.LastPlayer)
+                return false;
+            // Many Players Alive.
+            if (_stage == InfectionStage.Stage1 && Player.GetPlayers().Count(r => r.Role == RoleTypeId.ClassD) > 1)
+                return false;
+            // Last Player Alive
+            _stage = InfectionStage.LastPlayer;
+            return false;
+        }
+        
+        protected override void ProcessFrame()
+        {
+            if (_stage == InfectionStage.Stage1)
             {
                 var count = Player.GetPlayers().Count(r => r.Role == RoleTypeId.ClassD);
-                var time = $"{EventTime.Minutes}:{EventTime.Seconds}";
+                var time = $"{EventTime.Minutes:00}:{EventTime.Seconds:00}";
 
-                Extensions.Broadcast(translate.ZombieCycle.Replace("{name}", Name).Replace("{count}", count.ToString()).Replace("{time}", time), 1);
-
-                yield return Timing.WaitForSeconds(1f);
-                EventTime += TimeSpan.FromSeconds(1f);
+                Extensions.Broadcast(Translation.ZombieCycle.Replace("{name}", Name).Replace("{count}", count.ToString()).Replace("{time}", time), 1);
             }
 
-            Timing.RunCoroutine(DopTime(), "EventBeginning");
-            yield break;
+            if (_stage == InfectionStage.Starting)
+            {
+                if (_overtime <= 0)
+                {
+                    _stage = InfectionStage.Finished;
+                    return;
+                }
+
+                _overtime--;
+                Extensions.Broadcast(
+                    Translation.ZombieExtraTime
+                        .Replace("{extratime}", _overtime.ToString("00"))
+                        .Replace("{time}", $"{EventTime.Minutes:00}:{EventTime.Seconds:00}"), 1);
+
+            }
         }
 
-        public IEnumerator<float> DopTime()
+
+        protected override void OnFinished()
         {
-            var translate = AutoEvent.Singleton.Translation.InfectTranslate;
-            var time = $"{EventTime.Minutes}:{EventTime.Seconds}";
-
-            for (int extratime = 30; extratime > 0; extratime--)
-            {
-                if (Player.GetPlayers().Count(r => r.Role == RoleTypeId.ClassD) == 0) 
-                    break;
-
-                Extensions.Broadcast(translate.ZombieExtraTime.Replace("{extratime}", extratime.ToString()).Replace("{time}", time), 1);
-
-                yield return Timing.WaitForSeconds(1f);
-                EventTime += TimeSpan.FromSeconds(1f);
-            }
-
             if (Player.GetPlayers().Count(r => r.Role == RoleTypeId.ClassD) == 0)
             {
-                Extensions.Broadcast(translate.ZombieWin.Replace("{time}", time), 10);
+                Extensions.Broadcast(Translation.ZombieWin
+                    .Replace("{time}", $"{EventTime.Minutes:00}:{EventTime.Seconds:00}"), 10);
             }
             else
             {
-                Extensions.Broadcast(translate.ZombieLose.Replace("{time}", time), 10);
+                Extensions.Broadcast(Translation.ZombieLose
+                    .Replace("{time}", $"{EventTime.Minutes:00}:{EventTime.Seconds:00}"), 10);
             }
-
-            OnStop();
-            yield break;
-        }
-
-        public void EventEnd()
-        {
-            Extensions.CleanUpAll();
-            Extensions.TeleportEnd();
-            Extensions.UnLoadMap(GameMap);
-            Extensions.StopAudio();
-            AutoEvent.ActiveEvent = null;
         }
     }
+}
+
+enum InfectionStage
+{
+    Starting = 0,
+    Stage1 = 1,
+    LastPlayer = 2,
+    Finished,
 }

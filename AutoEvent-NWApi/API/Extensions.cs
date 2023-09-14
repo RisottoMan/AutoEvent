@@ -19,7 +19,7 @@ using Object = UnityEngine.Object;
 
 namespace AutoEvent
 {
-    public class Extensions
+    public static class Extensions
     {
         public static ReferenceHub AudioBot = new ReferenceHub();
 
@@ -27,17 +27,17 @@ namespace AutoEvent
         public static MethodInfo SendSpawnMessage => sendSpawnMessage ?? (sendSpawnMessage = typeof(NetworkServer).
             GetMethod("SendSpawnMessage", BindingFlags.Static | BindingFlags.NonPublic));
 
-        public static void SetRole(Player player, RoleTypeId newRole, RoleSpawnFlags spawnFlags)
+        public static void SetRole(this Player player, RoleTypeId newRole, RoleSpawnFlags spawnFlags)
         {
             player.ReferenceHub.roleManager.ServerSetRole(newRole, RoleChangeReason.RemoteAdmin, spawnFlags);
         }
 
-        public static void SetRole(Player player, RoleTypeId newRole, RoleChangeReason reason, RoleSpawnFlags spawnFlags)
+        public static void SetRole(this Player player, RoleTypeId newRole, RoleChangeReason reason, RoleSpawnFlags spawnFlags)
         {
             player.ReferenceHub.roleManager.ServerSetRole(newRole, reason, spawnFlags);
         }
 
-        public static void SetPlayerScale(Player target, Vector3 scale)
+        public static void SetPlayerScale(this Player target, Vector3 scale)
         {
             if (target.GameObject.transform.localScale == scale) return;
 
@@ -52,11 +52,13 @@ namespace AutoEvent
             }
             catch (Exception ex)
             {
-                Log.Info($"Scale error: {ex}");
+                DebugLogger.LogDebug($"Scale error has occured.", LogLevel.Warn, true);
+                DebugLogger.LogDebug($"{ex}", LogLevel.Debug);
+
             }
         }
 
-        public static void SetPlayerAhp(Player player, float amount, float limit = 75, float decay = 1.2f, float efficacy = 0.7f, float sustain = 0, bool persistant = false)
+        public static void SetPlayerAhp(this Player player, float amount, float limit = 75, float decay = 1.2f, float efficacy = 0.7f, float sustain = 0, bool persistant = false)
         {
             if (amount > 100) amount = 100;
 
