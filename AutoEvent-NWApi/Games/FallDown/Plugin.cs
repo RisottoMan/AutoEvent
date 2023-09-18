@@ -19,7 +19,7 @@ namespace AutoEvent.Games.FallDown
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.FallTranslate.FallName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.FallTranslate.FallDescription;
         public override string Author { get; set; } = "KoT0XleB";
-        
+        [EventConfig] public FallDownConfig Config { get; set; }
         public MapInfo MapInfo { get; set; } = new MapInfo()
             {MapName = "FallDown", Position = new Vector3(10f, 1020f, -43.68f) };
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
@@ -95,7 +95,7 @@ namespace AutoEvent.Games.FallDown
         {
             var count = Player.GetPlayers().Count(r => r.IsAlive);
             var time = $"{EventTime.Minutes:00}:{EventTime.Seconds:00}";
-            Extensions.Broadcast(Translation.FallBroadcast.Replace("%name%", Name).Replace("%time%", time).Replace("%count%", $"{count}"), 1);
+            Extensions.Broadcast(Translation.FallBroadcast.Replace("%name%", Name).Replace("%time%", time).Replace("%count%", $"{count}"), FrameDelayInSeconds);
 
             var platform = _platforms.RandomItem();
             _platforms.Remove(platform);

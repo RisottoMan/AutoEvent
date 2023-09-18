@@ -220,6 +220,7 @@
     <Compile Include="Games\DeathParty\EventHandler.cs" />
     <Compile Include="Games\DeathParty\Features\RandomClass.cs" />
     <Compile Include="Games\DeathParty\Plugin.cs" />
+    <Compile Include="Games\Escape\Configs\EscapeConfig.cs" />
     <Compile Include="Games\Escape\Configs\Translation.cs" />
     <Compile Include="Games\Escape\Plugin.cs" />
     <Compile Include="Games\Escape\EventHandler.cs" />
@@ -230,6 +231,7 @@
     <Compile Include="Games\Example\EventHandler.cs" />
     <Compile Include="Games\Example\ExampleEvent.cs" />
     <Compile Include="Games\Example\Features\RandomClass.cs" />
+    <Compile Include="Games\FallDown\Configs\FallDownConfig.cs" />
     <Compile Include="Games\FallDown\Configs\Translation.cs" />
     <Compile Include="Games\FallDown\EventHandler.cs" />
     <Compile Include="Games\FallDown\Extensions\LavaComponent.cs" />

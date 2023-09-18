@@ -21,12 +21,13 @@ namespace AutoEvent.Games.Escape
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.EscapeTranslate.EscapeDescription;
         public override string Author { get; set; } = "KoT0XleB";
         public override string CommandName { get; set; } = "escape";
+        [EventConfig]
+        public EscapeConfig Config { get; set; }
         public SoundInfo SoundInfo { get; set; } =
             new SoundInfo() { SoundName = "Escape.ogg", Volume = 25, Loop = true };
         protected override float PostRoundDelay { get; set; } = 5f;
         private EventHandler EventHandler { get; set; }
         private EscapeTranslate _translation;
-        private readonly int _explosionTime = 80;
 
         protected override void RegisterEvents()
         {
@@ -53,7 +54,7 @@ namespace AutoEvent.Games.Escape
         {
             // Elapsed Time is smaller than the explosion time &&
             // At least one player is alive.
-            return !(EventTime.TotalSeconds <= _explosionTime && Player.GetPlayers().Count(r => r.IsAlive) > 0);
+            return !(EventTime.TotalSeconds <= Config.EscapeDurationInSeconds && Player.GetPlayers().Count(r => r.IsAlive) > 0);
         }
 
         protected override void OnStart()
@@ -69,15 +70,15 @@ namespace AutoEvent.Games.Escape
                 player.EffectsManager.EnableEffect<Ensnared>(10);
             }
 
-
-            Warhead.DetonationTime = 120f;
+            Warhead.DetonationTime = Config.EscapeDurationInSeconds + 10f;
+            // Warhead.DetonationTime = 120f;
             Warhead.Start();
             Warhead.IsLocked = true;
         }
 
         protected override void ProcessFrame()
         {
-            Extensions.Broadcast(_translation.EscapeCycle.Replace("{name}", Name).Replace("{time}", (_explosionTime - EventTime.TotalSeconds).ToString("00")), 1);
+            Extensions.Broadcast(_translation.EscapeCycle.Replace("{name}", Name).Replace("{time}", (Config.EscapeDurationInSeconds - EventTime.TotalSeconds).ToString("00")), 1);
         }
 
         protected override IEnumerator<float> BroadcastStartCountdown()

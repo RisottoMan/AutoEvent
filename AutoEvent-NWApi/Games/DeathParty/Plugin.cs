@@ -10,6 +10,7 @@ using AutoEvent.API.Schematic.Objects;
 using AutoEvent.Events.Handlers;
 using AutoEvent.Games.Infection;
 using AutoEvent.Interfaces;
+using Mirror;
 using Event = AutoEvent.Interfaces.Event;
 using Random = UnityEngine.Random;
 
@@ -32,7 +33,7 @@ namespace AutoEvent.Games.DeathParty
         private EventHandler EventHandler { get; set; }
         private DeathTranslate Translation { get; set; }
         public int Stage { get; private set; }
-        private int _maxStage;
+        //private int _maxStage;
         private CoroutineHandle _grenadeCoroutineHandle;
 
         protected override void RegisterEvents()
@@ -66,8 +67,8 @@ namespace AutoEvent.Games.DeathParty
         protected override void OnStart()
         {
             Server.FriendlyFire = true;
-
-            _maxStage = 5;
+            //_maxStage = Config.Rounds;
+            //_maxStage = 5;
 
             foreach (Player player in Player.GetPlayers())
             {
@@ -108,10 +109,10 @@ namespace AutoEvent.Games.DeathParty
         {
             // At least one player is alive &&
             // Stage hasn't yet hit the max stage.
-            return !(Player.GetPlayers().Count(r => r.IsAlive) > 0 && Stage <= _maxStage);
+            return !(Player.GetPlayers().Count(r => r.IsAlive) > 0 && Stage <= Config.Rounds);
         }
         public IEnumerator<float> GrenadeCoroutine()
-        {
+        { 
             Stage = 1;
             float fuse = 10f;
             float height = 20f;
@@ -120,35 +121,54 @@ namespace AutoEvent.Games.DeathParty
             float scale = 4;
             float radius = MapInfo.Map.AttachedBlocks.First(x => x.name == "Arena").transform.localScale.x / 2 - 6f;
 
-            while (Player.GetPlayers().Count(r => r.IsAlive) > 0 && Stage <= _maxStage)
+            while (Player.GetPlayers().Count(r => r.IsAlive) > 0 && Stage <= Config.Rounds)
             {
                 if (KillLoop)
                 {
                     yield break;
                 }
-                if (Stage != _maxStage)
+                // Defaults: 
+                // count += 30;     20,  50,  80,  110, [ignored last round] 1
+                // timing -= 0.3f;  1.0, 0.7, 0.4, 0.1, [ignored last round] 10
+                // height -= 5f;    20,  15,  10,  5,   [ignored last round] 20
+                // fuse -= 2f;      10,  8,   6,   4,   [ignored last round] 10
+                // scale -= 1;      4,   3,   2,   1,   [ignored last round] 75
+                // radius += 7f;    4,   11,  18,  25   [ignored last round] 10
+                radius = Config.GrenadeSpawnRadius.GetValue(Stage, Config.Rounds -1, 0.1f, 75);
+                scale = Config.GrenadeScale.GetValue(Stage, Config.Rounds -1, 0.1f, 75);
+                count = (int) Config.GrenadeCount.GetValue(Stage, Config.Rounds -1, 1, 300);
+                timing = Config.GrenadeSpeed.GetValue(Stage, Config.Rounds -1, 0, 5);
+                height = Config.GrenadeHeight.GetValue(Stage, Config.Rounds -1, 0,  30);
+                fuse = Config.GrenadeFuseTime.GetValue(Stage, Config.Rounds -1, 2, 10);
+
+                
+                // Not the last round.
+                if (Stage != Config.Rounds)
                 {
+                    int playerIndex = 0;
                     for (int i = 0; i < count; i++)
                     {
+
                         Vector3 pos = MapInfo.Map.Position + new Vector3(Random.Range(-radius, radius), height, Random.Range(-radius, radius));
+                        // has to be re-iterated every run because a player could have been killed from the last one.
+                        if (Config.TargetPlayers)
+                        {
+                            Player randomPlayer = Player.GetPlayers().Where(x => x.Role == RoleTypeId.ClassD).ToList().RandomItem();
+                            pos = randomPlayer.Position;
+                            pos.y = height;
+                        }
                         Extensions.GrenadeSpawn(fuse, pos, scale);
                         yield return Timing.WaitForSeconds(timing);
+                        playerIndex++;
                     }
                 }
-                else
+                else // last round.
                 {
                     Vector3 pos = MapInfo.Map.Position + new Vector3(Random.Range(-10, 10), 20, Random.Range(-10, 10));
                     Extensions.GrenadeSpawn(10, pos, 75);
                 }
 
                 yield return Timing.WaitForSeconds(15f);
-
-                fuse -= 2f;
-                height -= 5f;
-                timing -= 0.3f;
-                radius += 7f;
-                count += 30;
-                scale -= 1;
                 Stage++;
             }
 
