@@ -27,6 +27,7 @@ namespace AutoEvent.Games.FinishWay
         protected override float PostRoundDelay { get; set; } = 10f;
         private EventHandler EventHandler { get; set; }
         private FinishWayTranslate Translation { get; set; }
+        private TimeSpan _remainingTime;
         private GameObject _point;
 
         protected override void RegisterEvents()
@@ -57,6 +58,7 @@ namespace AutoEvent.Games.FinishWay
 
         protected override void OnStart()
         {
+            _remainingTime = new TimeSpan(0, 0, 70);
             foreach (Player player in Player.GetPlayers())
             {
                 Extensions.SetRole(player, RoleTypeId.ClassD, RoleSpawnFlags.None);
@@ -99,9 +101,10 @@ namespace AutoEvent.Games.FinishWay
         protected override void ProcessFrame()
         {
             var count = Player.GetPlayers().Count(r => r.Role == RoleTypeId.ClassD);
-            var time = $"{EventTime.Minutes:00}:{EventTime.Seconds:00}";
+            var time = $"{_remainingTime.Minutes:00}:{_remainingTime.Seconds:00}";
 
             Extensions.Broadcast(Translation.FinishWayCycle.Replace("%name%", Name).Replace("%time%", time), 1);
+            _remainingTime -= TimeSpan.FromSeconds(FrameDelayInSeconds);
         }
 
         protected override void OnFinished()

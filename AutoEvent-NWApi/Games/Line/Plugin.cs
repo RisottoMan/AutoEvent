@@ -30,6 +30,7 @@ namespace AutoEvent.Games.Line
         private LineTranslate Translation { get; set; }
         private readonly int _hardCountsLimit = 8;
         private Dictionary<int, SchematicObject> _hardGameMap;
+        private TimeSpan _timeRemaining;
         private int _hardCounts;
 
         protected override void RegisterEvents()
@@ -60,6 +61,7 @@ namespace AutoEvent.Games.Line
 
         protected override void OnStart()
         {
+            _timeRemaining = new TimeSpan(0, 2, 0);
             _hardGameMap = new Dictionary<int, SchematicObject>();
             _hardCounts = 0;
             
@@ -67,17 +69,6 @@ namespace AutoEvent.Games.Line
             {
                 Extensions.SetRole(player, RoleTypeId.ClassD, RoleSpawnFlags.None);
                 player.Position = MapInfo.Map.AttachedBlocks.First(x => x.name == "SpawnPoint").transform.position;
-            }
-            
-            foreach (var block in MapInfo.Map.AttachedBlocks)
-            {
-                switch (block.name)
-                {
-                    case "DeadZone": block.AddComponent<LineComponent>(); break;
-                    case "DeadWall": block.AddComponent<LineComponent>(); break;
-                    case "Line": block.AddComponent<LineComponent>(); break;
-                    case "Shield": GameObject.Destroy(block); break;
-                }
             }
 
         }
@@ -91,11 +82,25 @@ namespace AutoEvent.Games.Line
             }
         }
 
+        protected override void CountdownFinished()
+        {
+            foreach (var block in MapInfo.Map.AttachedBlocks)
+            {
+                switch (block.name)
+                {
+                    case "DeadZone": block.AddComponent<LineComponent>(); break;
+                    case "DeadWall": block.AddComponent<LineComponent>(); break;
+                    case "Line": block.AddComponent<LineComponent>(); break;
+                    case "Shield": GameObject.Destroy(block); break;
+                }
+            }
+        }
+
         protected override void ProcessFrame()
         {
             Extensions.Broadcast(Translation.LineCycle.Replace("%name%", Name).
-                Replace("%min%", $"{EventTime.Minutes:00}").
-                Replace("%sec%", $"{EventTime.Seconds:00}").
+                Replace("%min%", $"{_timeRemaining.Minutes:00}").
+                Replace("%sec%", $"{_timeRemaining.Seconds:00}").
                 Replace("%count%", $"{Player.GetPlayers().Count(r => r.Role == RoleTypeId.ClassD)}"), 10);
 
             if (EventTime.Seconds == 30 && _hardCounts < _hardCountsLimit)
@@ -120,6 +125,7 @@ namespace AutoEvent.Games.Line
 
                 _hardCounts++;
             }
+            _timeRemaining -= TimeSpan.FromSeconds(FrameDelayInSeconds);
         }
 
         protected override bool IsRoundDone()

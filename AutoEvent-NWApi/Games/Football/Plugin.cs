@@ -30,6 +30,7 @@ namespace AutoEvent.Games.Football
         protected override float FrameDelayInSeconds { get; set; } = 0.3f;
         private EventHandler EventHandler { get; set; }
         private FootballTranslate Translation { get; set; }
+        private TimeSpan _remainingTime;
         private int _bluePoints;
         private int _redPoints;
         private GameObject _ball;
@@ -54,6 +55,7 @@ namespace AutoEvent.Games.Football
 
         protected override void OnStart()
         {
+            _remainingTime = new TimeSpan(0,3,0);
             var count = 0;
             foreach (Player player in Player.GetPlayers())
             {
@@ -96,7 +98,7 @@ namespace AutoEvent.Games.Football
 
         protected override void ProcessFrame()
         {
-            var time = $"{EventTime.Minutes:00}:{EventTime.Seconds:00}";
+            var time = $"{_remainingTime.Minutes:00}:{_remainingTime.Seconds:00}";
                 foreach (Player player in Player.GetPlayers())
                 {
                     var text = string.Empty;
@@ -141,6 +143,8 @@ namespace AutoEvent.Games.Football
                     _ball.transform.position = MapInfo.Map.Position + new Vector3(0, 2.5f, 0);
                     _ball.GetComponent<Rigidbody>().velocity = Vector3.zero;
                 }
+
+                _remainingTime -= TimeSpan.FromSeconds(FrameDelayInSeconds);
         }
 
         protected override void OnFinished()

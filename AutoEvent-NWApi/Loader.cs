@@ -65,7 +65,12 @@ public class Loader
     public static void LoadEvents()
     {
         Dictionary<Assembly, string> locations = new Dictionary<Assembly, string>();
-        foreach (string assemblyPath in Directory.GetFiles(Path.Combine(AutoEvent.BaseConfigPath, "Events"), "*.dll"))
+#if !EXILED
+        string filepath = Path.Combine(Paths.GlobalPlugins.Plugins, "Events");
+#else
+        string filepath = Path.Combine(Exiled.API.Features.Paths.Configs, "Events");
+#endif
+        foreach (string assemblyPath in Directory.GetFiles(filepath, "*.dll"))
         {
             try
             {

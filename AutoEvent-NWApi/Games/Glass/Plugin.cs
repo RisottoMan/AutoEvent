@@ -143,8 +143,19 @@ namespace AutoEvent.Games.Glass
         protected override bool IsRoundDone()
         {
             // Elapsed time is smaller then the match time (+ countdown) &&
-            // At least one player is alive.
-            return !(EventTime.TotalSeconds < _matchTimeInSeconds + 15 && Player.GetPlayers().Count(r => r.IsAlive) > 0);
+            // At least one player is alive && 
+            // At least one player is not on the platform.
+            
+            bool playerNotOnPlatform = false;
+            foreach (Player ply in Player.GetPlayers().Where(ply => ply.IsAlive))
+            {
+                if (Vector3.Distance(_finish.transform.position, ply.Position) >= 10)
+                {
+                    playerNotOnPlatform = true;
+                    break;
+                }
+            }
+            return !(EventTime.TotalSeconds < _matchTimeInSeconds + 15 && Player.GetPlayers().Count(r => r.IsAlive) > 0 && playerNotOnPlatform);
         }
 
         protected override void ProcessFrame()

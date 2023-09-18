@@ -84,8 +84,9 @@ namespace AutoEvent.Games.Lava
 
         protected override bool IsRoundDone()
         {
-            // If over one player is alive.
-            return !(Player.GetPlayers().Count(r => r.IsAlive) > 1);
+            // If over one player is alive &&
+            // Time is under 10 minutes (+ countdown)
+            return !(Player.GetPlayers().Count(r => r.IsAlive) > 1 && EventTime.TotalSeconds < 600 + 10);
         }
 
         protected override void ProcessFrame()

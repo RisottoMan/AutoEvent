@@ -7,13 +7,20 @@ using PluginAPI.Core.Attributes;
 using PluginAPI.Enums;
 using PluginAPI.Events;
 using System.Collections.Generic;
+using CustomPlayerEffects;
+using InventorySystem.Items.Firearms;
 
 namespace AutoEvent.Games.GunGame
 {
     public class EventHandler
     {
         Plugin _plugin;
-        Dictionary<Player, Stats> _playerStats;
+
+        private Dictionary<Player, Stats> _playerStats
+        {
+            get => _plugin.PlayerStats;
+            set => _plugin.PlayerStats = value;
+        }
         public EventHandler(Plugin plugin)
         {
             _plugin = plugin;
@@ -74,23 +81,60 @@ namespace AutoEvent.Games.GunGame
 
         public void GetWeaponForPlayer(Player player)
         {
-            player.IsGodModeEnabled = true;
+            if (player is null)
+            {
+                DebugLogger.LogDebug("GetWeapon - Player is null");
+                return;
+            }
+            
+            if (GunGameGuns.GunByLevel is null)
+            {
+                DebugLogger.LogDebug("GetWeapon - Gun By Level is null");
+                return;
+            }
+
+            if (_playerStats is null)
+            {
+                DebugLogger.LogDebug("GetWeapon - Player stats is null");
+                return;
+            }
+            
+            if (!_playerStats.ContainsKey(player))
+            {
+                DebugLogger.LogDebug("GetWeapon - Player stats doesnt contain player");
+                return;
+            }
+
+            if (_playerStats[player] is null)
+            {
+                DebugLogger.LogDebug("GetWeapon - Player level is null");
+                return;
+            }
+
+            if (!GunGameGuns.GunByLevel.ContainsKey(_playerStats[player].level))
+            {
+                DebugLogger.LogDebug("GetWeapon - Gun by level is null");
+                return;
+            }
+            
+            DebugLogger.LogDebug($"Getting player {player.Nickname} weapon.");
+            player.EffectsManager.EnableEffect<SpawnProtected>(2f);
             player.ClearInventory();
             var item = player.AddItem(GunGameGuns.GunByLevel[_playerStats[player].level]);
-
-            Timing.CallDelayed(0.1f, () =>
+            if (item is Firearm firearm)
             {
-                player.CurrentItem = item;
-            });
-
-            Timing.CallDelayed(2f, () =>
-            {
-                player.IsGodModeEnabled = false;
-            });
+                var status = firearm.Status;
+                byte ammo = firearm.AmmoManagerModule.MaxAmmo;
+                var stats = new FirearmStatus(ammo, status.Flags, status.Attachments);
+                firearm.Status = stats;
+            }
+            player.CurrentItem = item;
         }
 
         private void SetMaxAmmo(Player pl)
         {
+            DebugLogger.LogDebug($"Setting max ammo for {pl.Nickname}.");
+
             foreach (KeyValuePair<ItemType, ushort> AmmoLimit in InventoryLimits.StandardAmmoLimits)
             {
                 pl.SetAmmo(AmmoLimit.Key, AmmoLimit.Value);

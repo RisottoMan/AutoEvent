@@ -13,6 +13,7 @@
 using System.Collections.Generic;
 using System.IO;
 using PluginAPI.Core;
+using PluginAPI.Helpers;
 using UnityEngine;
 
 namespace AutoEvent;
@@ -29,9 +30,9 @@ public class DebugLogger
     public static bool Debug = false;
     public static bool AntiEnd = false;
     private List<string> _debugLogs;
-    public static void LogDebug(string input, LogLevel level, bool outputIfNotDebug = false)
+    public static void LogDebug(string input, LogLevel level = LogLevel.Debug, bool outputIfNotDebug = false)
     {
-        Singleton._debugLogs.Add($"[{level.ToString()}] {(!outputIfNotDebug ? "[Hidden]": " ")}" + input);
+        Singleton._debugLogs.Add($"[{level.ToString()}] {(!outputIfNotDebug ? "[Hidden] ": "")}" + input);
         if (outputIfNotDebug || AutoEvent.Debug)
         {
             switch (level)
@@ -54,7 +55,25 @@ public class DebugLogger
 
     public static void WriteOutput(string fileName)
     {
-        File.WriteAllLines(fileName, Singleton._debugLogs);
+#if !EXILED
+        string folderLoc = Paths.GlobalPlugins.Plugins;
+        string folderName = "AutoEvent-NWApi";
+#else
+        string folderLoc = Exiled.API.Features.Paths.Configs;
+        string folderName = "AutoEvent";
+#endif
+        string folder = Path.Combine(folderLoc, folderName);
+        if (!Directory.Exists(folder))
+        {
+            Directory.CreateDirectory(folder);
+        }
+
+        string filePath = Path.Combine(folder, fileName);
+        if (File.Exists(filePath))
+        {
+            File.Delete(filePath);
+        }
+        File.WriteAllLines(filePath, Singleton._debugLogs);
     }
 }
 

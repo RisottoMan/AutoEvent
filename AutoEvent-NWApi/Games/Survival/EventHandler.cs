@@ -47,7 +47,7 @@ namespace AutoEvent.Games.Survival
                     ev.Attacker.ReceiveHitMarker();
                 }
 
-                if (ev.Attacker.IsHuman && ev.Target.IsSCP && ev.Target != _plugin.firstZombie)
+                if (ev.Attacker.IsHuman && ev.Target.IsSCP && ev.Target != _plugin.FirstZombie)
                 {
                     ev.Target.EffectsManager.EnableEffect<Stained>(1);
                     ev.Target.EffectsManager.EnableEffect<Sinkhole>(1);

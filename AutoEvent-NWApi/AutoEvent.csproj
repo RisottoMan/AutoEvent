@@ -102,6 +102,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="API\Attributes\DisabledFeaturesAttribute.cs" />
+    <Compile Include="API\ExplodeOnImpactComponent.cs" />
     <Compile Include="API\Effect.cs" />
     <Compile Include="API\EndConditions.cs" />
     <Compile Include="API\Enums\Effects.cs" />
