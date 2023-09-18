@@ -15,8 +15,11 @@ using System.Collections.Generic;
 using System.Linq;
 using AutoEvent.Interfaces;
 using CommandSystem;
+using PluginAPI.Core;
+#if EXILED
 using Exiled.API.Features;
-
+using Exiled.Permissions.Extensions;
+#endif
 namespace AutoEvent.Commands.Debug;
 
 

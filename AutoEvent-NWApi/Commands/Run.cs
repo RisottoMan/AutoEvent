@@ -46,7 +46,7 @@ namespace AutoEvent.Commands
                 return false;
             }
 
-            if (arguments.Count != 1)
+            if (arguments.Count < 1)
             {
                 response = "Only 1 argument is needed - the command name of the event!";
                 return false;

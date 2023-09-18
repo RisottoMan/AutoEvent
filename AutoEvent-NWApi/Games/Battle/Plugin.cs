@@ -7,7 +7,7 @@ using PluginAPI.Events;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using AutoEvent.Games.Infection;
+using AutoEvent.API;
 using AutoEvent.Interfaces;
 using UnityEngine;
 using Event = AutoEvent.Interfaces.Event;
@@ -35,6 +35,9 @@ namespace AutoEvent.Games.Battle
         // Define the properties that may be used by this event, or by its handler class.
         private EventHandler EventHandler { get; set; }
         private BattleTranslate Translation { get; set; }
+        
+        [EventConfig]
+        public BattleConfig Config { get; set; }
         
         // Define the fields that will only be used inside this event class.
         private List<GameObject> _workstations;
@@ -86,7 +89,7 @@ namespace AutoEvent.Games.Battle
 
                 count++;
 
-                RandomClass.CreateSoldier(player);
+                player.GiveLoadout(Config.Loadouts);
                 Timing.CallDelayed(0.1f, () => { player.CurrentItem = player.Items.First(); });
             }
 

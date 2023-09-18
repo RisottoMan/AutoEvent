@@ -34,7 +34,7 @@ namespace AutoEvent.Interfaces
                 {
                     if (type.IsAbstract ||
                         type.IsEnum ||
-                        type.IsInterface ||
+                        type.IsInterface || type.GetInterfaces().All(x => x != typeof(IEvent)) || 
                         Activator.CreateInstance(type) is not Event ev ||
                         type.GetCustomAttributes(typeof(DisabledFeaturesAttribute), false).Any())
                         continue;
@@ -381,7 +381,22 @@ namespace AutoEvent.Interfaces
             
             DebugLogger.LogDebug($"Config \"{property.Name}\" found for {Name}", LogLevel.Debug);
             object config = conf.Load(path, property.Name, property.PropertyType);
+            if (config is not EventConfig)
+            {
+                DebugLogger.LogDebug($"Config was found that does not inherit Event Config. It will be skipped.", LogLevel.Warn, true);
+                DebugLogger.LogDebug($"(Event {this.Name}) Config: {property.Name}.", LogLevel.Debug);
+                continue;
+            }
+
+            if (ConfigPresets.Count > 0)
+                ((EventConfig)config).PresetName = $"Default-{ConfigPresets.Count - 1}";
+            else
+                ((EventConfig)config).PresetName = "Default";
+            
             property.SetValue(this, config);
+            
+            ConfigPresets.Add((EventConfig)config);
+
             i++;
         }
 

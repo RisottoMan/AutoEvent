@@ -6,6 +6,7 @@ using PluginAPI.Events;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using AutoEvent.API;
 using UnityEngine;
 using AutoEvent.Events.Handlers;
 using AutoEvent.Games.Infection;
@@ -25,7 +26,9 @@ namespace AutoEvent.Games.Boss
 
         public SoundInfo SoundInfo { get; set; } = new SoundInfo() 
             { SoundName = "Boss.ogg", Loop = false, Volume = 7, StartAutomatically = false };
-        
+
+        [EventConfig]
+        public BossConfig Config { get; set; }
         private EventHandler EventHandler { get; set; }
         private BossTranslate Translation { get; set; }
         private Player _boss;
@@ -72,7 +75,7 @@ namespace AutoEvent.Games.Boss
         protected override bool IsRoundDone()
         {
             // Round Time is shorter than 2 minutes (+ 15 seconds for countdown)
-            return !(EventTime.TotalSeconds < 120 + 15 
+            return !(EventTime.TotalSeconds < Config.DurationInSeconds + 15 
                    && EndConditions.TeamHasMoreThanXPlayers(Team.FoundationForces,0) 
                    && EndConditions.TeamHasMoreThanXPlayers(Team.ChaosInsurgency,0));
         }
@@ -80,15 +83,17 @@ namespace AutoEvent.Games.Boss
         protected override void CountdownFinished()
         {
             StartAudio();
+            // Lots of this is handled by the GiveLoadout() system now.
             _boss = Player.GetPlayers().Where(r => r.IsNTF).ToList().RandomItem();
-            Extensions.SetRole(_boss, RoleTypeId.ChaosConscript, RoleSpawnFlags.None);
+            _boss.GiveLoadout(Config.BossLoadouts);
+            //Extensions.SetRole(_boss, RoleTypeId.ChaosConscript, RoleSpawnFlags.None);
             _boss.Position = RandomClass.GetSpawnPosition(MapInfo.Map);
 
             _boss.Health = Player.GetPlayers().Count() * 4000;
-            Extensions.SetPlayerScale(_boss, new Vector3(5, 5, 5));
+            // Extensions.SetPlayerScale(_boss, new Vector3(5, 5, 5));
 
-            _boss.ClearInventory();
-            _boss.AddItem(ItemType.GunLogicer);
+            //_boss.ClearInventory();
+            //_boss.AddItem(ItemType.GunLogicer);
             Timing.CallDelayed(0.1f, () =>
             {
                 _boss.CurrentItem = _boss.Items.First();
@@ -99,9 +104,10 @@ namespace AutoEvent.Games.Boss
         {
             foreach (Player player in Player.GetPlayers())
             {
-                Extensions.SetRole(player, RoleTypeId.NtfSergeant, RoleSpawnFlags.None);
-                player.Position = RandomClass.GetSpawnPosition(MapInfo.Map);
-                player.Health = 200;
+                player.GiveLoadout(Config.Loadouts);
+                // Extensions.SetRole(player, RoleTypeId.NtfSergeant, RoleSpawnFlags.None);
+                //player.Position = RandomClass.GetSpawnPosition(MapInfo.Map);
+                // player.Health = 200;
 
                 RandomClass.CreateSoldier(player);
                 Timing.CallDelayed(0.1f, () => { player.CurrentItem = player.Items.First(); });

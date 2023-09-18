@@ -9,6 +9,7 @@ using GameCore;
 using PluginAPI.Core;
 using Event = AutoEvent.Interfaces.Event;
 using Paths = PluginAPI.Helpers.Paths;
+using Server = PluginAPI.Core.Server;
 #if EXILED
 using Exiled.API.Features;
 

@@ -7,6 +7,7 @@ using PluginAPI.Events;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using AutoEvent.API.Enums;
 using UnityEngine;
 using AutoEvent.Events.Handlers;
 using AutoEvent.Games.Infection;
@@ -21,6 +22,8 @@ namespace AutoEvent.Games.Deathmatch
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.DeathmatchTranslate.DeathmatchDescription;
         public override string Author { get; set; } = "KoT0XleB";
         public override string CommandName { get; set; } = "deathmatch";
+        [EventConfig]
+        public DeathmatchConfig Config { get; set; }
         public MapInfo MapInfo { get; set; } = new MapInfo()
             {MapName = "Shipment", Position = new Vector3(93f, 1020f, -43f), };
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
@@ -63,29 +66,23 @@ namespace AutoEvent.Games.Deathmatch
             MtfKills = 0;
             ChaosKills = 0;
 
-            for (int i = 0; i < Player.GetPlayers().Count(); i += 5)
-            {
-                _needKills += 15;
-            }
+
+            _needKills = Config.KillsPerPerson * Player.Count;
 
             var count = 0;
             foreach (Player player in Player.GetPlayers())
             {
                 if (count % 2 == 0)
                 {
-                    Extensions.SetRole(player, RoleTypeId.NtfSergeant, RoleSpawnFlags.None);
+                    player.GiveLoadout(Config.NTFLoadouts, LoadoutFlags.ForceInfiniteAmmo | LoadoutFlags.IgnoreGodMode | LoadoutFlags.IgnoreWeapons);
                     player.Position = RandomClass.GetRandomPosition(MapInfo.Map);
                 }
                 else
                 {
-                    Extensions.SetRole(player, RoleTypeId.ChaosRifleman, RoleSpawnFlags.None);
+                    player.GiveLoadout(Config.ChaosLoadouts, LoadoutFlags.ForceInfiniteAmmo | LoadoutFlags.IgnoreGodMode | LoadoutFlags.IgnoreWeapons);
                     player.Position = RandomClass.GetRandomPosition(MapInfo.Map);
                 }
                 count++;
-
-                player.EffectsManager.EnableEffect<Scp1853>(300);
-                player.EffectsManager.EnableEffect<MovementBoost>(300);
-                player.EffectsManager.ChangeState<MovementBoost>(10);
             }
         }
 
@@ -117,7 +114,7 @@ namespace AutoEvent.Games.Deathmatch
         {
             foreach(Player player in Player.GetPlayers())
             {
-                var item = player.AddItem(RandomClass.RandomItems.RandomItem());
+                var item = player.AddItem(Config.AvailableWeapons.RandomItem());
                 player.AddItem(ItemType.ArmorCombat);
 
                 Timing.CallDelayed(0.1f, () =>

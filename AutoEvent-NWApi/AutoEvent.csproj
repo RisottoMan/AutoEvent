@@ -79,11 +79,8 @@
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="PluginAPI">
-      <HintPath>packages\Northwood.PluginAPI.13.1.0\lib\net48\PluginAPI.dll</HintPath>
-    </Reference>
-    <Reference Include="PluginAPI, Version=13.1.0.0, Culture=neutral, processorArchitecture=Amd64">
-      <HintPath>packages\Northwood.PluginAPI.13.1.0\lib\net48\PluginAPI.dll</HintPath>
+    <Reference Include="PluginAPI, Version=13.1.1.0, Culture=neutral, processorArchitecture=Amd64">
+      <HintPath>packages\Northwood.PluginAPI.13.1.1\lib\net48\PluginAPI.dll</HintPath>
     </Reference>
     <Reference Include="SCPSLAudioApi" HintPath="$(OTHER_REFERENCES)\SCPSLAudioApi.dll" />
     <Reference Include="System" />
@@ -105,8 +102,33 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="API\Attributes\DisabledFeaturesAttribute.cs" />
+    <Compile Include="API\Effect.cs" />
+    <Compile Include="API\EndConditions.cs" />
+    <Compile Include="API\Enums\Effects.cs" />
+    <Compile Include="API\Enums\LoadoutFlags.cs" />
     <Compile Include="API\Extensions.cs" />
     <Compile Include="API\FakeConnection.cs" />
+    <Compile Include="API\Loadout.cs" />
+    <Compile Include="API\NavigatorActions\AddAction.cs" />
+    <Compile Include="API\NavigatorActions\CollectionSelect.cs" />
+    <Compile Include="API\NavigatorActions\KeyValuePair.cs" />
+    <Compile Include="API\NavigatorActions\ModifyAction.cs" />
+    <Compile Include="API\NavigatorActions\ModifyEntryAction.cs" />
+    <Compile Include="API\NavigatorActions\MoveAction.cs" />
+    <Compile Include="API\NavigatorActions\NavigatorAction.cs" />
+    <Compile Include="API\NavigatorActions\Object.cs" />
+    <Compile Include="API\NavigatorActions\Option.cs" />
+    <Compile Include="API\NavigatorActions\RemoveAction.cs" />
+    <Compile Include="API\NavigatorActions\Yaml.cs" />
+    <Compile Include="API\OptionModificationEngine\OptionModificationEngine.cs" />
+    <Compile Include="API\OptionModificationEngine\OptionModifiers\BasicModifier.cs" />
+    <Compile Include="API\OptionModificationEngine\OptionModifiers\ComplexOptionModifier.cs" />
+    <Compile Include="API\OptionModificationEngine\OptionModifiers\DictionaryModifier.cs" />
+    <Compile Include="API\OptionModificationEngine\OptionModifiers\EnumModifier.cs" />
+    <Compile Include="API\OptionModificationEngine\OptionModifiers\ListModifier.cs" />
+    <Compile Include="API\OptionModificationEngine\OptionModifiers\OptionModifier.cs" />
+    <Compile Include="API\OptionModificationEngine\OptionModifiers\ValueType.cs" />
+    <Compile Include="API\RoleCount.cs" />
     <Compile Include="API\Schematic\AnimationController.cs" />
     <Compile Include="API\Schematic\Enums\BlockType.cs" />
     <Compile Include="API\Schematic\Enums\CullingType.cs" />
@@ -178,6 +200,7 @@
     <Compile Include="Events\Handlers\Players.cs" />
     <Compile Include="Events\Handlers\Servers.cs" />
     <Compile Include="Games\Battle\Configs\Config.cs" />
+    <Compile Include="Games\Battle\Configs\Loadout.cs" />
     <Compile Include="Games\Battle\Configs\Translation.cs" />
     <Compile Include="Games\Battle\EventHandler.cs" />
     <Compile Include="Games\Battle\Features\RandomClass.cs" />
@@ -187,10 +210,12 @@
     <Compile Include="Games\Boss\EventHandler.cs" />
     <Compile Include="Games\Boss\Features\RandomClass.cs" />
     <Compile Include="Games\Boss\Plugin.cs" />
+    <Compile Include="Games\Deathmatch\Configs\DeathmatchConfig.cs" />
     <Compile Include="Games\Deathmatch\Configs\Translation.cs" />
     <Compile Include="Games\Deathmatch\EventHandler.cs" />
     <Compile Include="Games\Deathmatch\Extensions\RandomClass.cs" />
     <Compile Include="Games\Deathmatch\Plugin.cs" />
+    <Compile Include="Games\DeathParty\Configs\DeathPartyConfig.cs" />
     <Compile Include="Games\DeathParty\Configs\Translation.cs" />
     <Compile Include="Games\DeathParty\EventHandler.cs" />
     <Compile Include="Games\DeathParty\Features\RandomClass.cs" />
@@ -290,7 +315,6 @@
     <Compile Include="Interfaces\IInternalEvent.cs" />
     <Compile Include="Interfaces\ITranslation.cs" />
     <Compile Include="Interfaces\MapInfo.cs" />
-    <Compile Include="Interfaces\EndConditions.cs" />
     <Compile Include="Interfaces\SoundInfo.cs" />
     <Compile Include="Loader.cs" />
     <Compile Include="Patches\LockerInteract.cs" />
@@ -351,6 +375,7 @@
     <Content Include="..\README.md">
       <Link>README.md</Link>
     </Content>
+    <Content Include="PlantUMLDocuments\ConfigModifyCommand.puml" />
     <Content Include="PlantUMLDocuments\Event Manager.puml" />
     <Content Include="PlantUMLDocuments\IEvent Interface.puml" />
     <Content Include="PlantUMLDocuments\RunEvent.puml" />

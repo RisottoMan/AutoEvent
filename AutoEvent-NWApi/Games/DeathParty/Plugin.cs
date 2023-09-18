@@ -24,6 +24,9 @@ namespace AutoEvent.Games.DeathParty
             {MapName = "deathParty", Position = new Vector3(10f, 1012f, -40f), };
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
             { SoundName = "DeathParty.ogg", Volume = 5, Loop = true };
+
+        [EventConfig]
+        public DeathPartyConfig Config { get; set; }
         public override string CommandName { get; set; } = "airstrike";
         protected override float PostRoundDelay { get; set; } = 5f;
         private EventHandler EventHandler { get; set; }

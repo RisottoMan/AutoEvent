@@ -14,8 +14,11 @@ using System;
 using System.Collections.Generic;
 using AutoEvent.Interfaces;
 using CommandSystem;
+using PluginAPI.Core;
+#if EXILED
 using Exiled.API.Features;
-
+using Exiled.Permissions.Extensions;
+#endif
 namespace AutoEvent.Commands.Config;
 
 
@@ -24,7 +27,7 @@ public class Select : ICommand, IUsageProvider
     public string Command => nameof(Select);
     public string[] Aliases => Array.Empty<string>();
     public string Description => "Selects a preset to use for an event.";
-    public string[] Usage => new string[] {  };
+    public string[] Usage => Array.Empty<string>();
 
     public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
     {
