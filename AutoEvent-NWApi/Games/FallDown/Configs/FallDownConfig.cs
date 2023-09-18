@@ -10,11 +10,17 @@
 //    Created Date:     09/18/2023 2:45 PM
 // -----------------------------------------
 
+using System.ComponentModel;
 using AutoEvent.Interfaces;
 
 namespace AutoEvent.Games.Infection;
 
 public class FallDownConfig : EventConfig
 {
-    public float DelayInSeconds { get; set; }
+    [Description("The delay between the selection of platforms that fall.")]
+    public float DelayInSeconds { get; set; } = 1.0f;
+
+    [Description("Should platforms have a color warning for when they are about to fall.")]
+    public bool PlatformsHaveColorWarning = false;
+
 }

@@ -28,7 +28,6 @@ namespace AutoEvent.Games.FallDown
         public override string CommandName { get; set; } = "fall";
         protected override float FrameDelayInSeconds { get; set; } = 0.9f;
         protected override float PostRoundDelay { get; set; } = 10f;
-        public bool PlatformsHaveColorWarning { get; set; } = true;
         private EventHandler EventHandler { get; set; }
         private FallTranslate Translation { get; set; }
         private int _platformId { get; set; }
@@ -89,7 +88,7 @@ namespace AutoEvent.Games.FallDown
             _platformId = 0;
             _platforms = MapInfo.Map.AttachedBlocks.Where(x => x.name == "Platform").ToList();
             GameObject.Destroy(MapInfo.Map.AttachedBlocks.First(x => x.name == "Wall"));
-            if (PlatformsHaveColorWarning)
+            if (Config.PlatformsHaveColorWarning)
             {
                 foreach (var platform in _platforms)
                 {
@@ -109,8 +108,8 @@ namespace AutoEvent.Games.FallDown
             _platformId++;
             var count = Player.GetPlayers().Count(r => r.IsAlive);
             var time = $"{EventTime.Minutes:00}:{EventTime.Seconds:00}";
-            Extensions.Broadcast(Translation.FallBroadcast.Replace("%name%", Name).Replace("%time%", time).Replace("%count%", $"{count}"), FrameDelayInSeconds);
-
+            Extensions.Broadcast(Translation.FallBroadcast.Replace("%name%", Name).Replace("%time%", time).Replace("%count%", $"{count}"), (ushort)FrameDelayInSeconds);
+            
             if (_platforms.Count < 1)
             {
                 if (_noPlatformsRemainingWarning)
@@ -123,7 +122,7 @@ namespace AutoEvent.Games.FallDown
                 
             var platform = _platforms.RandomItem();
             platform.GetComponent<PrimitiveObjectToy>().NetworkMaterialColor = Color.red;
-            if (PlatformsHaveColorWarning)
+            if (Config.PlatformsHaveColorWarning)
             {
                 Timing.CallDelayed(1f - (_platformId * 0.7f / 169f), () =>
                 {
