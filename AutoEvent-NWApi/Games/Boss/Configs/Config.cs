@@ -75,7 +75,7 @@ namespace AutoEvent.Games.Infection
             
         };
 
-        [Description("How many players should be on the boss team.")]
+        [Description("How many players should be on the boss team. [Default: 1 Player]")]
         public RoleCount BossCount { get; set; } = new RoleCount()
         {
             MinimumPlayers = 1, // at least one player
@@ -83,7 +83,7 @@ namespace AutoEvent.Games.Infection
             PlayerPercentage = -1 // ignore percentage of players ingame.
         };
 
-        [Description("How long the event should last.")]
+        [Description("How long the event should last in seconds. [Default: 120]")]
         public int DurationInSeconds { get; set; } = 120;
     }
 }

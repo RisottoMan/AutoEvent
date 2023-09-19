@@ -54,7 +54,7 @@ namespace AutoEvent.Games.Example
         public MapInfo MapInfo { get; set; } = new MapInfo()
             { MapName = "Battle", 
                 Position = new Vector3(6f, 1030f, -43.5f), 
-                Rotation = new Quaternion(), 
+                MapRotation = new Quaternion(), 
                 Scale = new Vector3(1,1,1), 
                 // If this is set to false, you can manually spawn the map via base.SpawnMap();
                 SpawnAutomatically = true};

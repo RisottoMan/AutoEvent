@@ -4,17 +4,17 @@
 // -----------------------------------------
 //    Solution:         AutoEvent
 //    Project:          AutoEvent
-//    FileName:         Loadout.cs
+//    FileName:         GlassConfig.cs
 //    Author:           Redforce04#4091
-//    Revision Date:    09/17/2023 1:57 PM
-//    Created Date:     09/17/2023 1:57 PM
+//    Revision Date:    09/18/2023 4:33 PM
+//    Created Date:     09/18/2023 4:33 PM
 // -----------------------------------------
 
-using System.Collections.Generic;
-using System.ComponentModel;
-using AutoEvent.API.Enums;
-using CustomPlayerEffects;
-using UnityEngine;
+using AutoEvent.Interfaces;
 
-namespace AutoEvent.Games.Battle;
+namespace AutoEvent.Games.Infection;
 
+public class GlassConfig : EventConfig
+{
+    
+}

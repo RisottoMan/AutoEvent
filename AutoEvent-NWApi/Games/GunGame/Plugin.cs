@@ -20,6 +20,8 @@ namespace AutoEvent.Games.GunGame
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.GunGameTranslate.GunGameDescription;
         public override string Author { get; set; } = "KoT0XleB";
 
+        [EventConfig]
+        public GunGameConfig Config { get; set; }
         public override string CommandName { get; set; } = "gungame";
         public MapInfo MapInfo { get; set; } = new MapInfo()
             {MapName = "Shipment", Position = new Vector3(93f, 1020f, -43f), };
@@ -82,7 +84,7 @@ namespace AutoEvent.Games.GunGame
             {
                 if (!PlayerStats.ContainsKey(player))
                 {
-                    PlayerStats.Add(player, new Stats() { level = 1, kill = 0 });
+                    PlayerStats.Add(player, new Stats() { level = 0, kill = 0 });
                 }
 
                 player.ClearInventory();

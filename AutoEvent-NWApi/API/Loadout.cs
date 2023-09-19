@@ -38,7 +38,7 @@ public class Loadout
     [Description("How much artificial health the class has. 0 is default artificial health.")]
     public int ArtificialHealth { get; set; } = 0;
 
-    [Description("The chance of a user getting this class.")]
+    [Description("The chance of a user getting this class. Chance cannot be <= 0, it will be set to 1.")]
     public int Chance { get; set; } = 1;
 
     [Description("The size of this class.")]

@@ -19,7 +19,8 @@ namespace AutoEvent.Games.FinishWay
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.FinishWayTranslate.FinishWayName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.FinishWayTranslate.FinishWayDescription;
         public override string Author { get; set; } = "KoT0XleB";
-        public override string CommandName { get; set; } = "finish";
+        public override string CommandName { get; set; } = "race";
+        public FinishWayConfig Config { get; set; }
         public MapInfo MapInfo { get; set; } = new MapInfo()
             {MapName = "FinishWay", Position = new Vector3(115.5f, 1030f, -43.5f), };
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
@@ -95,7 +96,7 @@ namespace AutoEvent.Games.FinishWay
         {
             // At least one player is alive &&
             // Elapsed time is shorter than a minute (+ broadcast duration)
-            return !(Player.GetPlayers().Count(r => r.IsAlive) > 0 && EventTime.TotalSeconds < 70);
+            return !(Player.GetPlayers().Count(r => r.IsAlive) > 0 && EventTime.TotalSeconds < Config.EventDurationInSeconds + 10);
         }
 
         protected override void ProcessFrame()

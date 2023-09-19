@@ -26,7 +26,7 @@ namespace AutoEvent.Games.ZombieEscape
         public override string Author { get; set; } = "KoT0XleB";
         public override string CommandName { get; set; } = "zombie3";
         public MapInfo MapInfo { get; set; } = new MapInfo()
-            { MapName = "zm_osprey", Position = new Vector3(-15f, 1020f, -80f), Rotation = Quaternion.identity };
+            { MapName = "zm_osprey", Position = new Vector3(-15f, 1020f, -80f), MapRotation = Quaternion.identity };
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
             { SoundName = "Survival.ogg", Volume = 10, Loop = false };
         protected override float PostRoundDelay { get; set; } = 10f;

@@ -48,6 +48,10 @@ namespace AutoEvent
                 loadout = loadouts[0];
                 goto assignLoadout;
             }
+
+            foreach (var loadout1 in loadouts.Where(x => x.Chance <= 0))
+                loadout1.Chance = 1;
+            
             int totalChance = loadouts.Sum(x => x.Chance);
             
             for (int i = 0; i < loadouts.Count - 1; i++)

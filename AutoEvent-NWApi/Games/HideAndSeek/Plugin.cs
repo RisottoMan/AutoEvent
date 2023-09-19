@@ -22,6 +22,9 @@ namespace AutoEvent.Games.HideAndSeek
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.HideTranslate.HideDescription;
         public override string Author { get; set; } = "KoT0XleB";
         public override string CommandName { get; set; } = "hns";
+
+        [EventConfig]
+        public HideAndSeekConfig Config { get; set; }
         public MapInfo MapInfo { get; set; } = new MapInfo()
             {MapName = "HideAndSeek", Position = new Vector3(5.5f, 1026.5f, -45f), };
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
@@ -33,7 +36,7 @@ namespace AutoEvent.Games.HideAndSeek
         protected override void RegisterEvents()
         {
             Translation = new HideTranslate();
-            EventHandler = new EventHandler();
+            EventHandler = new EventHandler(this);
 
             EventManager.RegisterEvents(EventHandler);
             Servers.TeamRespawn += EventHandler.OnTeamRespawn;
@@ -65,11 +68,12 @@ namespace AutoEvent.Games.HideAndSeek
 
             foreach (Player player in Player.GetPlayers())
             {
-                Extensions.SetRole(player, RoleTypeId.ClassD, RoleSpawnFlags.None);
+                //Extensions.SetRole(player, RoleTypeId.ClassD, RoleSpawnFlags.None);
+                player.GiveLoadout(Config.PlayerLoadouts);
                 player.Position = RandomClass.GetSpawnPosition(MapInfo.Map);
 
-                player.EffectsManager.EnableEffect<MovementBoost>();
-                player.EffectsManager.ChangeState<MovementBoost>(50);
+                // player.EffectsManager.EnableEffect<MovementBoost>();
+                // player.EffectsManager.ChangeState<MovementBoost>(50);
             }
         }
 
@@ -103,9 +107,10 @@ namespace AutoEvent.Games.HideAndSeek
             for (int i = 0; i < catchCount; i++)
             {
                 var player = Player.GetPlayers().Where(r => r.IsAlive &&
-                                                            r.Items.Any(r => r.ItemTypeId == ItemType.Jailbird) ==
+                                                            r.Items.Any(r => r.ItemTypeId == Config.TaggerWeapon) ==
                                                             false).ToList().RandomItem();
-                var item = player.AddItem(ItemType.Jailbird);
+               player.GiveLoadout(Config.TaggerLoadouts);
+                var item = player.AddItem(Config.TaggerWeapon);
                 //var scp018 = player.AddItem(ItemType.SCP018);
                 Timing.CallDelayed(0.1f, () => { player.CurrentItem = item; });
             }
@@ -120,7 +125,7 @@ namespace AutoEvent.Games.HideAndSeek
 
             foreach (Player player in Player.GetPlayers())
             {
-                if (player.Items.Any(r => r.ItemTypeId == ItemType.Jailbird))
+                if (player.Items.Any(r => r.ItemTypeId == Config.TaggerWeapon))
                 {
                     player.ClearInventory();
                     player.Damage(200, Translation.HideHurt);

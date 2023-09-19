@@ -10,6 +10,7 @@
 //    Created Date:     09/13/2023 3:32 PM
 // -----------------------------------------
 
+using System.Collections.Generic;
 using System.ComponentModel;
 using YamlDotNet.Serialization;
 
@@ -22,7 +23,44 @@ public class EventConfig
         
     }
     [YamlIgnore]
-    public string PresetName { get; set; }
+    internal string PresetName { get; set; }
+
+    [Description("A list of maps that can be used for this event.")]
+    public List<MapChance> AvailableMaps { get; set; } = new List<MapChance>();
+
+    public List<SoundChance> AvailableSounds { get; set; } = new List<SoundChance>();
+    
     [Description("Should this plugin output debug logs.")]
     public bool Debug { get; set; }
+}
+public class MapChance
+{
+    public MapChance() { }
+
+    public MapChance(float chance, MapInfo map)
+    {
+        Chance = chance;
+        Map = map;
+    }
+    [Description("The chance of getting this map.")]
+    public float Chance { get; set; } = 1f;
+    
+    [Description("The map and information.")]
+    public MapInfo Map { get; set; }
+}
+
+public class SoundChance
+{
+    public SoundChance() { }
+
+    public SoundChance(float chance, SoundInfo sound)
+    {
+        Chance = chance;
+        Sound = sound;
+    }
+    [Description("The chance of getting this sound.")]
+    public float Chance { get; set; } = 1f;
+    
+    [Description("The sound and sound information.")]
+    public SoundInfo Sound { get; set; }
 }

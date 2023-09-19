@@ -22,7 +22,7 @@ namespace AutoEvent.Games.Survival
         public override string Author { get; set; } = "KoT0XleB";
         public override string CommandName { get; set; } = "zombie2";
         public MapInfo MapInfo { get; set; } = new MapInfo()
-            {MapName = "Survival", Position = new Vector3(15f, 1030f, -43.68f), Rotation = Quaternion.identity};
+            {MapName = "Survival", Position = new Vector3(15f, 1030f, -43.68f), MapRotation = Quaternion.identity};
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
             { SoundName = "DeathParty.ogg", Volume = 5, Loop = true };
         protected override float PostRoundDelay { get; set; } = 10f;

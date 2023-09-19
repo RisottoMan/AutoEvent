@@ -21,7 +21,7 @@ namespace AutoEvent.Games.Infection;
 
 public class DeathmatchConfig : EventConfig
 {
-    [Description("How many total kills a team needs to win. Determined per-person at the start of the round.")]
+    [Description("How many total kills a team needs to win. Determined per-person at the start of the round. [Default: 3]")]
     public int KillsPerPerson { get; set; } = 3;
 
     [Description("A list of loadouts for team Chaos Insurgency")]

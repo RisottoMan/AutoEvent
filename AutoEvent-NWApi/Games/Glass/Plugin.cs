@@ -23,8 +23,8 @@ namespace AutoEvent.Games.Glass
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.GlassTranslate.GlassName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.GlassTranslate.GlassDescription;
         public override string Author { get; set; } = "KoT0XleB";
-
         public override string CommandName { get; set; } = "glass";
+        [EventConfig] public GlassConfig Config { get; set; }
         public MapInfo MapInfo { get; set; } = new MapInfo()
             {MapName = "Glass", Position = new Vector3(76f, 1026.5f, -43.68f) };
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()

@@ -106,6 +106,7 @@ namespace AutoEvent.Games.FallDown
         protected override void ProcessFrame()
         {
             _platformId++;
+            FrameDelayInSeconds = Config.DelayInSeconds.GetValue(_platformId, 169, 1, 0.3f);
             var count = Player.GetPlayers().Count(r => r.IsAlive);
             var time = $"{EventTime.Minutes:00}:{EventTime.Seconds:00}";
             Extensions.Broadcast(Translation.FallBroadcast.Replace("%name%", Name).Replace("%time%", time).Replace("%count%", $"{count}"), (ushort)FrameDelayInSeconds);
@@ -124,7 +125,7 @@ namespace AutoEvent.Games.FallDown
             platform.GetComponent<PrimitiveObjectToy>().NetworkMaterialColor = Color.red;
             if (Config.PlatformsHaveColorWarning)
             {
-                Timing.CallDelayed(1f - (_platformId * 0.7f / 169f), () =>
+                Timing.CallDelayed(Config.WarningDelayInSeconds.GetValue(_platformId, 169, 0, 3), () =>
                 {
                     _platforms.Remove(platform);
                     GameObject.Destroy(platform);

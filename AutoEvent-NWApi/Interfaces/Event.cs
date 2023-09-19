@@ -231,7 +231,7 @@ namespace AutoEvent.Interfaces
             map.MapInfo.Map = Extensions.LoadMap(
                 map.MapInfo.MapName, 
                 map.MapInfo.Position, 
-                map.MapInfo.Rotation, 
+                map.MapInfo.MapRotation, 
                 map.MapInfo.Scale);
         }
     }
@@ -402,7 +402,7 @@ namespace AutoEvent.Interfaces
             
             DebugLogger.LogDebug($"Config \"{property.Name}\" found for {Name}", LogLevel.Debug);
             object config = conf.Load(path, property.Name, property.PropertyType);
-            if (config is not EventConfig)
+            if (config is not EventConfig evConfig)
             {
                 DebugLogger.LogDebug($"Config was found that does not inherit Event Config. It will be skipped.", LogLevel.Warn, true);
                 DebugLogger.LogDebug($"(Event {this.Name}) Config: {property.Name}.", LogLevel.Debug);
@@ -410,9 +410,11 @@ namespace AutoEvent.Interfaces
             }
 
             if (ConfigPresets.Count > 0)
-                ((EventConfig)config).PresetName = $"Default-{ConfigPresets.Count - 1}";
+                evConfig.PresetName = $"Default-{ConfigPresets.Count - 1}";
             else
-                ((EventConfig)config).PresetName = "Default";
+                evConfig.PresetName = "Default";
+            _setRandomMap(evConfig);
+            _setRandomSound(evConfig);
             
             property.SetValue(this, config);
             
@@ -424,6 +426,75 @@ namespace AutoEvent.Interfaces
         return i;
     }
 
+    /// <summary>
+    /// Assigns a random map.
+    /// </summary>
+    /// <param name="conf"></param>
+    private void _setRandomMap(EventConfig conf)
+    {
+        if (this is IEventMap map && conf.AvailableMaps is not null && conf.AvailableMaps.Count > 0)
+        {
+            bool spawnAutomatically = map.MapInfo.SpawnAutomatically;
+            if (conf.AvailableMaps.Count == 1)
+            {
+                map.MapInfo = conf.AvailableMaps[0].Map;
+                map.MapInfo.SpawnAutomatically = spawnAutomatically;
+                return;
+            }
+
+            foreach (var mapItem in conf.AvailableMaps.Where(x => x.Chance <= 0))
+                mapItem.Chance = 1;
+            
+            float totalChance = conf.AvailableMaps.Sum(x => x.Chance);
+            
+            for (int i = 0; i < conf.AvailableMaps.Count - 1; i++)
+            {
+                if (UnityEngine.Random.Range(0, totalChance) <= conf.AvailableMaps[i].Chance)
+                {
+                    map.MapInfo = conf.AvailableMaps[i].Map;
+                    map.MapInfo.SpawnAutomatically = spawnAutomatically;
+                    return;
+                }
+            }
+            map.MapInfo = conf.AvailableMaps[conf.AvailableMaps.Count - 1].Map;
+            map.MapInfo.SpawnAutomatically = spawnAutomatically;
+        }
+        
+    }
+    /// <summary>
+    /// Assigns a random sound.
+    /// </summary>
+    /// <param name="conf"></param>
+    private void _setRandomSound(EventConfig conf)
+    {
+        if (this is IEventSound sound && conf.AvailableMaps is not null && conf.AvailableSounds.Count > 0)
+        {
+            bool startAutomatically = sound.SoundInfo.StartAutomatically;
+            if (conf.AvailableSounds.Count == 1)
+            {
+                sound.SoundInfo = conf.AvailableSounds[0].Sound;
+                sound.SoundInfo.StartAutomatically = startAutomatically;
+                return;
+            }
+
+            foreach (var soundItem in conf.AvailableSounds.Where(x => x.Chance <= 0))
+                soundItem.Chance = 1;
+            
+            float totalChance = conf.AvailableSounds.Sum(x => x.Chance);
+            
+            for (int i = 0; i < conf.AvailableSounds.Count - 1; i++)
+            {
+                if (UnityEngine.Random.Range(0, totalChance) <= conf.AvailableMaps[i].Chance)
+                {
+                    sound.SoundInfo = conf.AvailableSounds[i].Sound;
+                    sound.SoundInfo.StartAutomatically = startAutomatically;
+                    return;
+                }
+            }
+            sound.SoundInfo = conf.AvailableSounds[conf.AvailableSounds.Count - 1].Sound;
+            sound.SoundInfo.StartAutomatically = startAutomatically;
+        }
+    }
     /// <summary>
     /// Creates a preset.yml file for each preset found.
     /// </summary>
@@ -464,10 +535,10 @@ namespace AutoEvent.Interfaces
     /// </summary>
     internal void LoadTranslation()
     {
-        if (this is ITranslation)
+        /*if (this is ITranslation)
         {
             
-        }
+        }*/
     }
         /// <summary>
         /// Triggers internal actions to stop an event.
@@ -631,11 +702,22 @@ namespace AutoEvent.Interfaces
                 DebugLogger.LogDebug($"Caught an exception at Event.OnUnregisterEvents().", LogLevel.Warn, true);
                 DebugLogger.LogDebug($"{e}", LogLevel.Debug);
             }
-            DeSpawnMap();
 
-            StopAudio();
-            Extensions.CleanUpAll();
-            Extensions.TeleportEnd();
+            try
+            {
+
+                DeSpawnMap();
+
+                StopAudio();
+                Extensions.CleanUpAll();
+                Extensions.TeleportEnd();
+            }
+            catch (Exception e)
+            {
+                DebugLogger.LogDebug("Caught an exception at Event.OnInternalCleanup().GeneralCleanup().", LogLevel.Warn, true);
+                DebugLogger.LogDebug($"{e}", LogLevel.Debug);
+            }
+
             try
             {
                 OnCleanup();
@@ -644,13 +726,30 @@ namespace AutoEvent.Interfaces
             {
                 DebugLogger.LogDebug($"Caught an exception at Event.OnCleanup().", LogLevel.Warn, true);
                 DebugLogger.LogDebug($"{e}", LogLevel.Debug);
-                
             }
 
             // StartTime = null;
             // EventTime = null;
-            CleanupFinished?.Invoke(Name);
+            try
+            {
+                CleanupFinished?.Invoke(Name);
+            }
+            catch (Exception e)
+            {
+                DebugLogger.LogDebug($"Caught an exception at Event.CleanupFinished.Invoke().", LogLevel.Warn, true);
+                DebugLogger.LogDebug($"{e}", LogLevel.Debug);
+            }
             AutoEvent.ActiveEvent = null;
+            try
+            {
+                // this._setRandomMap();
+                // this._setRandomSound();
+            }
+            catch (Exception e)
+            {
+                DebugLogger.LogDebug($"Caught an exception at Event._setMap.", LogLevel.Warn, true);
+                DebugLogger.LogDebug($"{e}", LogLevel.Debug);
+            }
 
         }
     #endregion

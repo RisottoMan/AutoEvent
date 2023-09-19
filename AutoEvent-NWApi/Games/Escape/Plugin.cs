@@ -54,7 +54,7 @@ namespace AutoEvent.Games.Escape
         {
             // Elapsed Time is smaller than the explosion time &&
             // At least one player is alive.
-            return !(EventTime.TotalSeconds <= Config.EscapeDurationInSeconds && Player.GetPlayers().Count(r => r.IsAlive) > 0);
+            return !(EventTime.TotalSeconds <= Config.EscapeDurationInSeconds + 10 && Player.GetPlayers().Count(r => r.IsAlive) > 0);
         }
 
         protected override void OnStart()
@@ -70,7 +70,7 @@ namespace AutoEvent.Games.Escape
                 player.EffectsManager.EnableEffect<Ensnared>(10);
             }
 
-            Warhead.DetonationTime = Config.EscapeDurationInSeconds + 10f;
+            Warhead.DetonationTime = Config.EscapeDurationInSeconds + 20f;
             // Warhead.DetonationTime = 120f;
             Warhead.Start();
             Warhead.IsLocked = true;

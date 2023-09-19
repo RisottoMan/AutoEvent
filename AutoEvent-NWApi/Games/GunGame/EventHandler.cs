@@ -7,6 +7,8 @@ using PluginAPI.Core.Attributes;
 using PluginAPI.Enums;
 using PluginAPI.Events;
 using System.Collections.Generic;
+using System.Linq;
+using AutoEvent.API.Enums;
 using CustomPlayerEffects;
 using InventorySystem.Items.Firearms;
 
@@ -32,10 +34,11 @@ namespace AutoEvent.Games.GunGame
         {
             if (!_playerStats.ContainsKey(ev.Player))
             {
-                _playerStats.Add(ev.Player, new Stats { level = 1, kill = 0 });
+                _playerStats.Add(ev.Player, new Stats { level = 0, kill = 0 });
             }
 
-            Extensions.SetRole(ev.Player, GunGameRandom.GetRandomRole(), RoleSpawnFlags.None);
+            ev.Player.GiveLoadout(_plugin.Config.Loadouts, LoadoutFlags.IgnoreGodMode | LoadoutFlags.IgnoreWeapons);
+            // Extensions.SetRole(ev.Player, GunGameRandom.GetRandomRole(), RoleSpawnFlags.None);
             ev.Player.Position = _plugin.SpawnPoints.RandomItem();
             GetWeaponForPlayer(ev.Player);
         }
@@ -120,7 +123,7 @@ namespace AutoEvent.Games.GunGame
             DebugLogger.LogDebug($"Getting player {player.Nickname} weapon.");
             player.EffectsManager.EnableEffect<SpawnProtected>(2f);
             player.ClearInventory();
-            var item = player.AddItem(GunGameGuns.GunByLevel[_playerStats[player].level]);
+            var item = player.AddItem(_plugin.Config.Guns.OrderByDescending(y => y.KillsRequired).FirstOrDefault(x => _playerStats[player].kill >= x.KillsRequired )!.Item);
             if (item is Firearm firearm)
             {
                 var status = firearm.Status;
@@ -128,7 +131,7 @@ namespace AutoEvent.Games.GunGame
                 var stats = new FirearmStatus(ammo, status.Flags, status.Attachments);
                 firearm.Status = stats;
             }
-            player.CurrentItem = item;
+            Timing.CallDelayed(.1f, () => player.CurrentItem = item);
         }
 
         private void SetMaxAmmo(Player pl)

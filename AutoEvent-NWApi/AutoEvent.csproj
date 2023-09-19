@@ -102,6 +102,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="API\Attributes\DisabledFeaturesAttribute.cs" />
+    <Compile Include="API\DifficultyItem.cs" />
     <Compile Include="API\ExplodeOnImpactComponent.cs" />
     <Compile Include="API\Effect.cs" />
     <Compile Include="API\EndConditions.cs" />
@@ -201,12 +202,11 @@
     <Compile Include="Events\Handlers\Players.cs" />
     <Compile Include="Events\Handlers\Servers.cs" />
     <Compile Include="Games\Battle\Configs\Config.cs" />
-    <Compile Include="Games\Battle\Configs\Loadout.cs" />
     <Compile Include="Games\Battle\Configs\Translation.cs" />
     <Compile Include="Games\Battle\EventHandler.cs" />
     <Compile Include="Games\Battle\Features\RandomClass.cs" />
     <Compile Include="Games\Battle\Plugin.cs" />
-    <Compile Include="Games\Boss\Config.cs" />
+    <Compile Include="Games\Boss\Configs\Config.cs" />
     <Compile Include="Games\Boss\Configs\Translation.cs" />
     <Compile Include="Games\Boss\EventHandler.cs" />
     <Compile Include="Games\Boss\Features\RandomClass.cs" />
@@ -238,28 +238,33 @@
     <Compile Include="Games\FallDown\Extensions\LavaComponent.cs" />
     <Compile Include="Games\FallDown\Extensions\RandomClass.cs" />
     <Compile Include="Games\FallDown\Plugin.cs" />
+    <Compile Include="Games\FinishWay\Configs\FinishWayConfig.cs" />
     <Compile Include="Games\FinishWay\Configs\Translation.cs" />
     <Compile Include="Games\FinishWay\EventHandler.cs" />
     <Compile Include="Games\FinishWay\Extensions\LavaComponent.cs" />
     <Compile Include="Games\FinishWay\Extensions\RandomClass.cs" />
     <Compile Include="Games\FinishWay\Plugin.cs" />
+    <Compile Include="Games\Football\Configs\FootballConfig.cs" />
     <Compile Include="Games\Football\Configs\Translation.cs" />
     <Compile Include="Games\Football\EventHandler.cs" />
     <Compile Include="Games\Football\Features\BallComponent.cs" />
     <Compile Include="Games\Football\Features\RandomClass.cs" />
     <Compile Include="Games\Football\Plugin.cs" />
+    <Compile Include="Games\Glass\Configs\GlassConfig.cs" />
     <Compile Include="Games\Glass\Configs\Translation.cs" />
     <Compile Include="Games\Glass\EventHandler.cs" />
     <Compile Include="Games\Glass\Features\GlassComponent.cs" />
     <Compile Include="Games\Glass\Features\LavaComponent.cs" />
     <Compile Include="Games\Glass\Features\RandomClass.cs" />
     <Compile Include="Games\Glass\Plugin.cs" />
+    <Compile Include="Games\GunGame\Configs\GunGameConfig.cs" />
     <Compile Include="Games\GunGame\Configs\Translation.cs" />
     <Compile Include="Games\GunGame\EventHandler.cs" />
     <Compile Include="Games\GunGame\Extensions\GunGameGuns.cs" />
     <Compile Include="Games\GunGame\Extensions\GunGameRandom.cs" />
     <Compile Include="Games\GunGame\Extensions\Stats.cs" />
     <Compile Include="Games\GunGame\Plugin.cs" />
+    <Compile Include="Games\HideAndSeek\Configs\HideAndSeekConfig.cs" />
     <Compile Include="Games\HideAndSeek\Configs\Translation.cs" />
     <Compile Include="Games\HideAndSeek\EventHandler.cs" />
     <Compile Include="Games\HideAndSeek\Features\RandomClass.cs" />

@@ -12,7 +12,7 @@
 
 namespace AutoEvent.Interfaces;
 
-public class EventTranslation
+/*public class EventTranslation
 {
     
-}
+}*/
