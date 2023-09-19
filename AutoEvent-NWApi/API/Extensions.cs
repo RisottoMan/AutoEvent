@@ -240,7 +240,7 @@ namespace AutoEvent
 
             StopAudio();
 
-            var path = Path.Combine(Path.Combine(Paths.GlobalPlugins.Plugins, "Music"), audioFile);
+            var path = Path.Combine(Path.Combine(AutoEvent.BaseConfigPath, "Music"), audioFile);
 
             var audioPlayer = AudioPlayerBase.Get(AudioBot);
             audioPlayer.Enqueue(path, -1);
