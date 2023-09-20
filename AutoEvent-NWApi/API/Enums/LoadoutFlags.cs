@@ -80,4 +80,14 @@ public enum LoadoutFlags
     /// Players will not recieve weapons.
     /// </summary>
     IgnoreWeapons = 1028,
+    
+    /// <summary>
+    /// Stamina will not be added.
+    /// </summary>
+    IgnoreStamina = 2056,
+    
+    /// <summary>
+    /// The player will have an endless amount of ammo.
+    /// </summary>
+    ForceEndlessClip = 4098,
 }

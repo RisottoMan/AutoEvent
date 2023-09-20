@@ -100,13 +100,9 @@ namespace AutoEvent
                 }
             }
 
-            if ((loadout.InfiniteAmmo && !flags.HasFlag(LoadoutFlags.IgnoreInfiniteAmmo)) || flags.HasFlag(LoadoutFlags.ForceInfiniteAmmo))
+            if ((loadout.InfiniteAmmo != AmmoMode.None && !flags.HasFlag(LoadoutFlags.IgnoreInfiniteAmmo)) || flags.HasFlag(LoadoutFlags.ForceInfiniteAmmo) || flags.HasFlag(LoadoutFlags.ForceEndlessClip))
             {
-                player.AmmoBag[ItemType.Ammo9x19] = ushort.MaxValue;
-                player.AmmoBag[ItemType.Ammo12gauge] = ushort.MaxValue;
-                player.AmmoBag[ItemType.Ammo44cal] = ushort.MaxValue;
-                player.AmmoBag[ItemType.Ammo556x45] = ushort.MaxValue;
-                player.AmmoBag[ItemType.Ammo762x39] = ushort.MaxValue;
+                player.GameObject.AddComponent<InfiniteAmmoComponent>().EndlessClip = loadout.InfiniteAmmo == AmmoMode.EndlessClip || flags.HasFlag(LoadoutFlags.ForceEndlessClip);
             }
             if(loadout.Health != 0 && !flags.HasFlag(LoadoutFlags.IgnoreHealth))
                 player.Health = loadout.Health;
@@ -117,7 +113,10 @@ namespace AutoEvent
             
             if(loadout.ArtificialHealth != -1 && !flags.HasFlag(LoadoutFlags.IgnoreAHP))
                 player.ArtificialHealth = loadout.ArtificialHealth;
-            
+            if (!flags.HasFlag(LoadoutFlags.IgnoreStamina) && loadout.Stamina != 0)
+            {
+                player.StaminaRemaining = loadout.Stamina;
+            }
             if(!flags.HasFlag(LoadoutFlags.IgnoreSize))
                 player.SetPlayerScale(loadout.Size);
             if (loadout.Effects is not null && loadout.Effects.Count > 0 && !flags.HasFlag(LoadoutFlags.IgnoreEffects))

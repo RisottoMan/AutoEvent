@@ -24,7 +24,7 @@ namespace AutoEvent.Games.Escape
         [EventConfig]
         public EscapeConfig Config { get; set; }
         public SoundInfo SoundInfo { get; set; } =
-            new SoundInfo() { SoundName = "Escape.ogg", Volume = 25, Loop = true };
+            new SoundInfo() { SoundName = "Escape.ogg", Volume = 25, Loop = true};
         protected override float PostRoundDelay { get; set; } = 5f;
         private EventHandler EventHandler { get; set; }
         private EscapeTranslate _translation;

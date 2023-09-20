@@ -31,7 +31,7 @@ public class DeathmatchConfig : EventConfig
         {
             Roles = new Dictionary<RoleTypeId, int>(){ { RoleTypeId.ChaosRifleman, 100 } },
             Items = new List<ItemType>() { ItemType.ArmorCombat, ItemType.Medkit, ItemType.Painkillers },
-            InfiniteAmmo = true,
+            InfiniteAmmo = AmmoMode.InfiniteAmmo,
             Effects = new List<Effect>()
             {
                 new Effect()
@@ -57,7 +57,7 @@ public class DeathmatchConfig : EventConfig
         {
             Roles = new Dictionary<RoleTypeId, int>(){ { RoleTypeId.NtfSpecialist, 100 } },
             Items = new List<ItemType>() { ItemType.ArmorCombat, ItemType.Medkit, ItemType.Painkillers },
-            InfiniteAmmo = true,
+            InfiniteAmmo = AmmoMode.InfiniteAmmo,
             Effects = new List<Effect>()
             {
                 new Effect()

@@ -4,6 +4,8 @@ using PluginAPI.Core.Attributes;
 using PluginAPI.Enums;
 using PluginAPI.Events;
 using UnityEngine;
+using AutoEvent;
+using AutoEvent.API.Enums;
 
 namespace AutoEvent.Games.Jail
 {
@@ -33,24 +35,31 @@ namespace AutoEvent.Games.Jail
         public void OnLockerInteract(LockerInteractArgs ev)
         {
             ev.IsAllowed = false;
-
+            
             if (ev.LockerType == StructureType.StandardLocker)
             {
-                ev.Player.ClearInventory();
-                ev.Player.AddItem(ItemType.GunE11SR);
-                ev.Player.AddItem(ItemType.GunCOM18);
+                foreach (var userInventoryItem in ev.Player.ReferenceHub.inventory.UserInventory.Items)
+                {
+                    if (userInventoryItem.Value.ItemTypeId.IsWeapon())
+                    {
+                        ev.Player.RemoveItem(userInventoryItem.Value);
+                    }
+                }
+                ev.Player.GiveLoadout(_plugin.Config.WeaponLockerLoadouts, LoadoutFlags.IgnoreRole | LoadoutFlags.IgnoreGodMode);
             }
 
             if (ev.Locker.StructureType == StructureType.SmallWallCabinet)
             {
                 if (Vector3.Distance(ev.Player.Position, _plugin.MapInfo.Map.gameObject.transform.position + new Vector3(17.855f, -12.43052f, -23.632f)) < 2)
                 {
-                    Extensions.SetPlayerAhp(ev.Player, 100, 100, 0);
-                    ev.Player.ArtificialHealth = 100;
+                    ev.Player.GiveLoadout(_plugin.Config.MedicalLoadouts, LoadoutFlags.IgnoreRole | LoadoutFlags.IgnoreGodMode | LoadoutFlags.IgnoreWeapons);
+                    //Extensions.SetPlayerAhp(ev.Player, 100, 100, 0);
+                    //ev.Player.ArtificialHealth = 100;
                 }
                 else
                 {
-                    ev.Player.Health = ev.Player.MaxHealth;
+                    ev.Player.GiveLoadout(_plugin.Config.AdrenalineLoadouts, LoadoutFlags.IgnoreRole | LoadoutFlags.IgnoreGodMode | LoadoutFlags.IgnoreWeapons);
+                    // ev.Player.Health = ev.Player.MaxHealth;
                 }
             }
         }

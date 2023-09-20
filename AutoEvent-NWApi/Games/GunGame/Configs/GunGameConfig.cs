@@ -48,7 +48,7 @@ public class GunGameConfig : EventConfig
         new Loadout()
         {
             Health = 100,
-            InfiniteAmmo = true,
+            InfiniteAmmo = AmmoMode.InfiniteAmmo,
             Roles = new Dictionary<RoleTypeId, int>()
             {
                 { RoleTypeId.ClassD, 20 },

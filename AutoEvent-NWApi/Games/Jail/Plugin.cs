@@ -4,12 +4,14 @@ using PlayerRoles;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using AutoEvent.API.Enums;
 using UnityEngine;
 using PluginAPI.Core;
 using PluginAPI.Events;
 using AutoEvent.Events.Handlers;
 using AutoEvent.Games.Infection;
 using AutoEvent.Interfaces;
+using MapGeneration.Distributors;
 using Event = AutoEvent.Interfaces.Event;
 
 namespace AutoEvent.Games.Jail
@@ -20,6 +22,8 @@ namespace AutoEvent.Games.Jail
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.JailTranslate.JailDescription;
         public override string Author { get; set; } = "KoT0XleB";
         public override string CommandName { get; set; } = "jail";
+        [EventConfig]
+        public JailConfig Config { get; set; }
         public MapInfo MapInfo { get; set; } = new MapInfo()
             {MapName = "Jail", Position = new Vector3(90f, 1030f, -43.5f), };
         protected override float FrameDelayInSeconds { get; set; } = 0.5f;
@@ -28,6 +32,9 @@ namespace AutoEvent.Games.Jail
         private JailTranslate Translation { get; set; }
         internal GameObject Button { get; private set; }
         internal GameObject PrisonerDoors { get; private set; }
+        internal Locker WeaponLocker { get; private set; }
+        internal Locker Medical { get; private set; }
+        internal Locker Adrenaline { get; private set; }
         private List<GameObject> _doors;
         private GameObject _ball;
 
@@ -57,28 +64,70 @@ namespace AutoEvent.Games.Jail
 
             foreach (var obj in MapInfo.Map.AttachedBlocks)
             {
-                switch(obj.name)
+                try
                 {
-                    case "Button": { Button = obj; } break;
-                    case "Ball":
+
+                    switch (obj.name)
+                    {
+                        case "Button":
+                        {
+                            Button = obj;
+                        }
+                            break;
+                        case "Ball":
                         {
                             _ball = obj;
                             _ball.AddComponent<BallComponent>();
                         }
-                        break;
-                    case "Door":
+                            break;
+                        case "Door":
                         {
                             obj.AddComponent<DoorComponent>();
                             _doors.Add(obj);
                         }
-                        break;
-                    case "PrisonerDoors":
+                            break;
+                        case "PrisonerDoors":
                         {
                             PrisonerDoors = obj;
                             PrisonerDoors.AddComponent<JailerComponent>();
                         }
-                        break;
+                            break;
+                        case "RifleRack":
+                        {
+                            var locker = obj.GetComponent<Locker>();
+                            if (locker is not null)
+                            {
+                                WeaponLocker = locker;
+                            }
+
+                            break;
+                        }
+                        case "CabinetMedkit":
+                        {
+                            Locker medical = obj.GetComponent<Locker>();
+                            if (medical is not null)
+                            {
+                                Medical = medical;
+                            }
+                        }
+                            break;
+                        case "CabinetAdrenaline":
+                        {
+                            Locker adrenaline = obj.GetComponent<Locker>();
+                            if (adrenaline is not null)
+                            {
+                                Adrenaline = adrenaline;
+                            }
+                        }
+                            break;
+                    }
                 }
+                catch (Exception e)
+                {
+                    DebugLogger.LogDebug($"An error has occured at JailPlugin.OnStart()", LogLevel.Warn, true);
+                    DebugLogger.LogDebug($"{e}", LogLevel.Debug);
+                }
+
             }
 
             // todo Need add check permission
@@ -87,14 +136,16 @@ namespace AutoEvent.Games.Jail
             {
                 if (Player.GetPlayers().Count(r => r.Team == Team.FoundationForces) < 2) // 0
                 {
-                    Extensions.SetRole(player, RoleTypeId.NtfCaptain, RoleSpawnFlags.None);
+                    player.GiveLoadout(Config.JailorLoadouts, LoadoutFlags.IgnoreWeapons );
+                    // Extensions.SetRole(player, RoleTypeId.NtfCaptain, RoleSpawnFlags.None);
                     player.Position = JailRandom.GetRandomPosition(MapInfo.Map, true);
-                    player.AddItem(ItemType.GunE11SR);
-                    player.AddItem(ItemType.GunCOM18);
+                    // player.AddItem(ItemType.GunE11SR);
+                    // player.AddItem(ItemType.GunCOM18);
                 }
                 else if (player.Role != RoleTypeId.NtfCaptain)
                 {
-                    Extensions.SetRole(player, RoleTypeId.ClassD, RoleSpawnFlags.None);
+                    player.GiveLoadout(Config.PrisonerLoadouts);
+                    // Extensions.SetRole(player, RoleTypeId.ClassD, RoleSpawnFlags.None);
                     player.Position = JailRandom.GetRandomPosition(MapInfo.Map, false);
                 }
             }

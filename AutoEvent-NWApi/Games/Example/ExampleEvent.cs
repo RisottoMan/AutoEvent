@@ -14,6 +14,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using AutoEvent.API;
+using AutoEvent.API.Enums;
 using AutoEvent.Events.Handlers;
 using AutoEvent.Interfaces;
 using MEC;
@@ -122,8 +123,11 @@ namespace AutoEvent.Games.Example
                 }
 
                 count++;
-
-                RandomClass.CreateSoldier(Config.Loadouts, player);
+                
+                // You can use either a single loadout or a list of loadouts. 
+                // The list is good because it allows users to add a chance to each loadout.
+                // Only one loadout will be assigned.
+                player.GiveLoadout(Config.Loadouts, LoadoutFlags.IgnoreGodMode);
                 Timing.CallDelayed(0.1f, () => { player.CurrentItem = player.Items.First(); });
             }
 

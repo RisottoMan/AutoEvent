@@ -102,6 +102,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="API\Attributes\DisabledFeaturesAttribute.cs" />
+    <Compile Include="API\BitwiseExtensions.cs" />
     <Compile Include="API\DifficultyItem.cs" />
     <Compile Include="API\ExplodeOnImpactComponent.cs" />
     <Compile Include="API\Effect.cs" />
@@ -110,6 +111,7 @@
     <Compile Include="API\Enums\LoadoutFlags.cs" />
     <Compile Include="API\Extensions.cs" />
     <Compile Include="API\FakeConnection.cs" />
+    <Compile Include="API\InfiniteAmmoComponent.cs" />
     <Compile Include="API\Loadout.cs" />
     <Compile Include="API\NavigatorActions\AddAction.cs" />
     <Compile Include="API\NavigatorActions\CollectionSelect.cs" />
@@ -226,7 +228,6 @@
     <Compile Include="Games\Escape\Plugin.cs" />
     <Compile Include="Games\Escape\EventHandler.cs" />
     <Compile Include="Games\Example\Configs\Config.cs" />
-    <Compile Include="Games\Example\Configs\Loadout.cs" />
     <Compile Include="Games\Example\Configs\Presets.cs" />
     <Compile Include="Games\Example\Configs\Translation.cs" />
     <Compile Include="Games\Example\EventHandler.cs" />
@@ -274,25 +275,30 @@
     <Compile Include="Games\Infection\EventHandler.cs" />
     <Compile Include="Games\Infection\Extensions\RandomClass.cs" />
     <Compile Include="Games\Infection\Plugin.cs" />
+    <Compile Include="Games\Jail\Configs\JailConfig.cs" />
     <Compile Include="Games\Jail\Configs\Translation.cs" />
     <Compile Include="Games\Jail\EventHandler.cs" />
     <Compile Include="Games\Jail\Extensions\DoorComponent.cs" />
     <Compile Include="Games\Jail\Extensions\JailerComponent.cs" />
     <Compile Include="Games\Jail\Extensions\JailRandom.cs" />
     <Compile Include="Games\Jail\Plugin.cs" />
+    <Compile Include="Games\Knives\Configs\KnivesConfig.cs" />
     <Compile Include="Games\Knives\Configs\Translation.cs" />
     <Compile Include="Games\Knives\EventHandler.cs" />
     <Compile Include="Games\Knives\Features\RandomClass.cs" />
     <Compile Include="Games\Knives\Plugin.cs" />
+    <Compile Include="Games\Lava\Configs\LavaConfig.cs" />
     <Compile Include="Games\Lava\Configs\Translation.cs" />
     <Compile Include="Games\Lava\EventHandler.cs" />
     <Compile Include="Games\Lava\Features\LavaComponent.cs" />
     <Compile Include="Games\Lava\Features\RandomClass.cs" />
     <Compile Include="Games\Lava\Plugin.cs" />
+    <Compile Include="Games\Line\Configs\LineConfig.cs" />
     <Compile Include="Games\Line\Configs\Translation.cs" />
     <Compile Include="Games\Line\EventHandler.cs" />
     <Compile Include="Games\Line\Features\LineComponent.cs" />
     <Compile Include="Games\Line\Plugin.cs" />
+    <Compile Include="Games\Puzzle\Configs\PuzzleConfig.cs" />
     <Compile Include="Games\Puzzle\Configs\Translation.cs" />
     <Compile Include="Games\Puzzle\EventHandler.cs" />
     <Compile Include="Games\Puzzle\Features\LavaComponent.cs" />
@@ -325,6 +331,10 @@
     <Compile Include="Interfaces\MapInfo.cs" />
     <Compile Include="Interfaces\SoundInfo.cs" />
     <Compile Include="Loader.cs" />
+    <Compile Include="Patches\EndlessClip\AutomaticAction.cs" />
+    <Compile Include="Patches\EndlessClip\DisruptorAction.cs" />
+    <Compile Include="Patches\EndlessClip\DoubleAction.cs" />
+    <Compile Include="Patches\EndlessClip\PumpAction.cs" />
     <Compile Include="Patches\LockerInteract.cs" />
     <Compile Include="Patches\HandCuff.cs" />
     <Compile Include="Patches\CassieScp.cs" />
@@ -336,6 +346,8 @@
     <Compile Include="Patches\PlaceBullet.cs" />
     <Compile Include="Patches\PlaceTantrum.cs" />
     <Compile Include="Patches\PlayerDying.cs" />
+    <Compile Include="Patches\Reload.cs" />
+    <Compile Include="Patches\ReloadClip\GetPlayerAmmo.cs" />
     <Compile Include="Patches\RemoteAdmin.cs" />
     <Compile Include="Patches\SpawnRagdoll.cs" />
     <Compile Include="Patches\AddItem.cs" />

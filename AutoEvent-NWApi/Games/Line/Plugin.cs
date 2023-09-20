@@ -21,6 +21,8 @@ namespace AutoEvent.Games.Line
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.LineTranslate.LineDescription;
         public override string Author { get; set; } = "Logic_Gun";
         public override string CommandName { get; set; } = "line";
+        [EventConfig]
+        public LineConfig Config { get; set; }
         public MapInfo MapInfo { get; set; } = new MapInfo()
             {MapName = "Line", Position = new Vector3(76f, 1026.5f, -43.68f), };
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
@@ -67,7 +69,7 @@ namespace AutoEvent.Games.Line
             
             foreach (Player player in Player.GetPlayers())
             {
-                Extensions.SetRole(player, RoleTypeId.ClassD, RoleSpawnFlags.None);
+                player.GiveLoadout(Config.Loadouts);
                 player.Position = MapInfo.Map.AttachedBlocks.First(x => x.name == "SpawnPoint").transform.position;
             }
 

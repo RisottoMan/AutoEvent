@@ -11,6 +11,7 @@
 // -----------------------------------------
 
 using System.Collections.Generic;
+using AutoEvent.API;
 using AutoEvent.Games.Example;
 using AutoEvent.Interfaces;
 using UnityEngine;

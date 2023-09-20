@@ -13,6 +13,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using AutoEvent.API.Enums;
+using Exiled.API.Features.Items;
 using PlayerRoles;
 using PluginAPI.Enums;
 using UnityEngine;
@@ -41,9 +42,22 @@ public class Loadout
     [Description("The chance of a user getting this class. Chance cannot be <= 0, it will be set to 1.")]
     public int Chance { get; set; } = 1;
 
-    [Description("The size of this class.")]
+    [Description("The size of this class. One is normal.")]
     public Vector3 Size { get; set; } = Vector3.one;
 
+    [Description("The stamina the player should get. 0 will ignore.")]
+    public float Stamina { get; set; } = 0f;
+
     [Description("Should the player have infinite ammo.")]
-    public bool InfiniteAmmo { get; set; } = false;
+    public AmmoMode InfiniteAmmo { get; set; } = AmmoMode.None;
+}
+
+public enum AmmoMode
+{
+    [Description("Ammo will be normal.")]
+    None = 0 ,
+    [Description("Player will be able to reload regardless of if there is ammo in their inventory.")]
+    InfiniteAmmo = 2,
+    [Description("The player will be able to fire indefinitely.")]
+    EndlessClip = 3,
 }
