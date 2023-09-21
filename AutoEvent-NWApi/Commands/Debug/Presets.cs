@@ -15,22 +15,24 @@ using System.Collections.Generic;
 using System.Linq;
 using AutoEvent.Interfaces;
 using CommandSystem;
+using PluginAPI.Core;
+#if EXILED
 using Exiled.API.Features;
-
+using Exiled.Permissions.Extensions;
+#endif
 namespace AutoEvent.Commands.Debug;
 
 
-public class Presets : ICommand, IUsageProvider
+public class Presets : ICommand
 {
     public string Command => nameof(Presets);
     public string[] Aliases => Array.Empty<string>();
     public string Description => "Logs the available presets for an event.";
-    public string[] Usage => new string[] { };
     public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
     {
 
 #if EXILED
-        if (!((CommandSender)sender).CheckPermission("ev.debug"))
+        if (!sender.CheckPermission("ev.debug"))
         {
             response = "You do not have permission to use this command";
             return false;

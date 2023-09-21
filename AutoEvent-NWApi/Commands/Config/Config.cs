@@ -22,30 +22,47 @@ using Exiled.Permissions.Extensions;
 
 namespace AutoEvent.Commands.Config;
 
-public class Config : ParentCommand, IUsageProvider
+public class Config : ParentCommand
 {
+    public Config() => LoadGeneratedCommands();
     public override void LoadGeneratedCommands()
     {
         RegisterCommand(new List());
         RegisterCommand(new Select());
-        RegisterCommand(new Modify());
-        RegisterCommand(new Save());
+        if (DebugLogger.Debug)
+        {
+            DebugLogger.LogDebug("Registering 'ev config modify' and 'ev config save' commands. They may be broken or lack functionality.", LogLevel.Warn, true);
+            RegisterCommand(new Modify());
+            RegisterCommand(new Save());
+        }
     }
 
     protected override bool ExecuteParent(ArraySegment<string> arguments, ICommandSender sender, [UnscopedRef] out string response)
     {
-        response = "Please enter a valid subcommand: \n" +
-                   "<color=yellow>  List <color=white>-> List the presets available for an event.\n" +
+        response = "Please enter a valid subcommand: \n";
+        foreach (var x in this.Commands)
+        {
+            string args = "";
+            if (x.Value is IUsageProvider usage)
+            {
+                foreach (string arg in usage.Usage)
+                {
+                    args += $"[{arg}] ";
+                }
+            }
+            response += $"<color=yellow> {x.Key} {args}<color=white>-> {x.Value.Description}. \n";
+        }
+        /*"<color=yellow>  List <color=white>-> List the presets available for an event.\n" +
                    "<color=yellow>  Select <color=white>-> Select a preset to use for an event round.\n" +
                    "<color=yellow>  Modify <color=white>-> Modify a preset or config for an event.\n" +
                    "<color=yellow>  Save <color=white>-> Save an modified preset or config for future use.\n";
+                   */
         return false;
     }
 
-    public override string Command => nameof(Reload);
+    public override string Command => nameof(Config);
     public override string[] Aliases => Array.Empty<string>();
     public override string Description => "Allows modifying configs before and during events..";
-    public string[] Usage => new string[] { "[option]" };
 }
 
 /*

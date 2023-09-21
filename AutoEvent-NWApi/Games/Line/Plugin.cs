@@ -21,6 +21,8 @@ namespace AutoEvent.Games.Line
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.LineTranslate.LineDescription;
         public override string Author { get; set; } = "Logic_Gun";
         public override string CommandName { get; set; } = "line";
+        [EventConfig]
+        public LineConfig Config { get; set; }
         public MapInfo MapInfo { get; set; } = new MapInfo()
             {MapName = "Line", Position = new Vector3(76f, 1026.5f, -43.68f), };
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
@@ -30,6 +32,7 @@ namespace AutoEvent.Games.Line
         private LineTranslate Translation { get; set; }
         private readonly int _hardCountsLimit = 8;
         private Dictionary<int, SchematicObject> _hardGameMap;
+        private TimeSpan _timeRemaining;
         private int _hardCounts;
 
         protected override void RegisterEvents()
@@ -60,24 +63,14 @@ namespace AutoEvent.Games.Line
 
         protected override void OnStart()
         {
+            _timeRemaining = new TimeSpan(0, 2, 0);
             _hardGameMap = new Dictionary<int, SchematicObject>();
             _hardCounts = 0;
             
             foreach (Player player in Player.GetPlayers())
             {
-                Extensions.SetRole(player, RoleTypeId.ClassD, RoleSpawnFlags.None);
+                player.GiveLoadout(Config.Loadouts);
                 player.Position = MapInfo.Map.AttachedBlocks.First(x => x.name == "SpawnPoint").transform.position;
-            }
-            
-            foreach (var block in MapInfo.Map.AttachedBlocks)
-            {
-                switch (block.name)
-                {
-                    case "DeadZone": block.AddComponent<LineComponent>(); break;
-                    case "DeadWall": block.AddComponent<LineComponent>(); break;
-                    case "Line": block.AddComponent<LineComponent>(); break;
-                    case "Shield": GameObject.Destroy(block); break;
-                }
             }
 
         }
@@ -91,11 +84,25 @@ namespace AutoEvent.Games.Line
             }
         }
 
+        protected override void CountdownFinished()
+        {
+            foreach (var block in MapInfo.Map.AttachedBlocks)
+            {
+                switch (block.name)
+                {
+                    case "DeadZone": block.AddComponent<LineComponent>(); break;
+                    case "DeadWall": block.AddComponent<LineComponent>(); break;
+                    case "Line": block.AddComponent<LineComponent>(); break;
+                    case "Shield": GameObject.Destroy(block); break;
+                }
+            }
+        }
+
         protected override void ProcessFrame()
         {
             Extensions.Broadcast(Translation.LineCycle.Replace("%name%", Name).
-                Replace("%min%", $"{EventTime.Minutes:00}").
-                Replace("%sec%", $"{EventTime.Seconds:00}").
+                Replace("%min%", $"{_timeRemaining.Minutes:00}").
+                Replace("%sec%", $"{_timeRemaining.Seconds:00}").
                 Replace("%count%", $"{Player.GetPlayers().Count(r => r.Role == RoleTypeId.ClassD)}"), 10);
 
             if (EventTime.Seconds == 30 && _hardCounts < _hardCountsLimit)
@@ -120,6 +127,7 @@ namespace AutoEvent.Games.Line
 
                 _hardCounts++;
             }
+            _timeRemaining -= TimeSpan.FromSeconds(FrameDelayInSeconds);
         }
 
         protected override bool IsRoundDone()

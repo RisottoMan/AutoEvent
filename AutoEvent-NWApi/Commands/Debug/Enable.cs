@@ -14,23 +14,25 @@ using System;
 using System.Collections.Generic;
 using AutoEvent.Interfaces;
 using CommandSystem;
+using PluginAPI.Core;
+#if EXILED
 using Exiled.API.Features;
-
+using Exiled.Permissions.Extensions;
+#endif
 namespace AutoEvent.Commands.Debug;
 
 
-public class Enable : ICommand, IUsageProvider
+public class Enable : ICommand
 {
     public string Command => nameof(Enable);
     public string[] Aliases => Array.Empty<string>();
     public string Description => "Enables Debug Mode";
-    public string[] Usage => new string[] {  };
 
     public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
     {
 
 #if EXILED
-        if (!((CommandSender)sender).CheckPermission("ev.debug"))
+        if (!sender.CheckPermission("ev.debug"))
         {
             response = "You do not have permission to use this command";
             return false;

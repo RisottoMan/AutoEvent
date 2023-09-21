@@ -16,7 +16,10 @@ using System.Diagnostics.CodeAnalysis;
 using AutoEvent.Interfaces;
 using CommandSystem;
 using PluginAPI.Core;
-
+#if EXILED
+using Exiled.API.Features;
+using Exiled.Permissions.Extensions;
+#endif
 namespace AutoEvent.Commands.Reload;
 
 public class Events : ICommand

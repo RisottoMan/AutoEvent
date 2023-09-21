@@ -18,12 +18,13 @@ using Event = AutoEvent.Interfaces.Event;
 namespace AutoEvent.Games.Puzzle
 {
     public class Plugin : Event, IEventSound, IEventMap, IInternalEvent
-    {
+    { //todo: add some configs for a platform choose speed, and platform fall delay. Maybe make this a scale from 1 - 10 or something.
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.PuzzleTranslate.PuzzleName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.PuzzleTranslate.PuzzleDescription;
         public override string Author { get; set; } = "KoT0XleB";
-        
         public override string CommandName { get; set; } = "puzzle";
+        [EventConfig]
+        public PuzzleConfig Config { get; set; }
         public MapInfo MapInfo { get; set; } = new MapInfo()
             {MapName = "Puzzle", Position = new Vector3(76f, 1026.5f, -43.68f), };
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
@@ -32,6 +33,13 @@ namespace AutoEvent.Games.Puzzle
         private EventHandler EventHandler { get; set; }
         private PuzzleTranslate Translation { get; set; }
         private readonly string _broadcastName = "<color=#F59F00>P</color><color=#F68523>u</color><color=#F76B46>z</color><color=#F85169>z</color><color=#F9378C>l</color><color=#FA1DAF>e</color>";
+        /// <summary>
+        /// A local list of platforms that changes round to round.
+        /// </summary>
+        private List<GameObject> _listPlatforms;
+        /// <summary>
+        /// All platforms in the map.
+        /// </summary>
         private List<GameObject> _platforms;
         private GameObject _lava;
         private int _stage;
@@ -93,6 +101,7 @@ namespace AutoEvent.Games.Puzzle
             _stage = 1;
             _speed = 5;
             _timeDelay = 0.5f;
+            _listPlatforms = _platforms;
 
         }
 
@@ -112,16 +121,6 @@ namespace AutoEvent.Games.Puzzle
                 }
                 var puzzleCoroutine = Timing.RunCoroutine(PuzzleCoroutine(), "Puzzle Coroutine");
                 yield return Timing.WaitUntilDone(puzzleCoroutine);
-                
-                try
-                {
-                    // ProcessFrame();
-                }
-                catch (Exception e)
-                {
-                    DebugLogger.LogDebug($"Caught an exception at Event.ProcessFrame().", LogLevel.Warn, true);
-                    DebugLogger.LogDebug($"{e}", LogLevel.Debug);
-                }
 
                 EventTime = EventTime.Add(new TimeSpan(0, 0,1));
                 yield return Timing.WaitForSeconds(1f);
@@ -135,7 +134,16 @@ namespace AutoEvent.Games.Puzzle
                     .Replace("%stageNum%", $"{_stage}")
                     .Replace("%stageFinal%", $"{_finaleStage}")
                     .Replace("%plyCount%", $"{Player.GetPlayers().Count(r => r.IsAlive)}");
-
+                /*for (float time = speed * 2; time > 0; time--)
+                {
+                    foreach (var platform in Platformes)
+                    {
+                        platform.GetComponent<PrimitiveObjectToy>().NetworkMaterialColor = new Color(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f), 1f);
+                    }
+                    
+                    Extensions.Broadcast($"<b>{Name}</b>\n{stageText}", 1);
+                    yield return Timing.WaitForSeconds(timing);
+                }*/
                 for (float time = _speed * 2; time > 0; time--)
                 {
                     foreach (var platform in _platforms)
@@ -149,22 +157,44 @@ namespace AutoEvent.Games.Puzzle
                 }
 
 
-                var randPlatform = _platforms.RandomItem();
-                _platforms = new List<GameObject>();
+                /*var randPlatform = ListPlatformes.RandomItem();
+                ListPlatformes = new List<GameObject>();
+                randPlatform.GetComponent<PrimitiveObjectToy>().NetworkMaterialColor = Color.green;*/
+                
+                var randPlatform = _listPlatforms.RandomItem();
+                _listPlatforms = new List<GameObject>();
                 randPlatform.GetComponent<PrimitiveObjectToy>().NetworkMaterialColor = Color.green;
 
+                /*foreach (var platform in Platformes)
+                {
+                    if (platform != randPlatform)
+                    {
+                        platform.GetComponent<PrimitiveObjectToy>().NetworkMaterialColor = Color.magenta;
+                        ListPlatformes.Add(platform);
+                    }
+                }*/
                 foreach (var platform in _platforms)
                 {
                     if (platform != randPlatform)
                     {
                         platform.GetComponent<PrimitiveObjectToy>().NetworkMaterialColor = Color.magenta;
-                        _platforms.Add(platform);
+                        _listPlatforms.Add(platform);
                     }
                 }
+                /*Extensions.Broadcast($"<b>{_broadcastName}</b>\n{stageText}", (ushort)(speed + 1));
+                yield return Timing.WaitForSeconds(speed);*/
                 
                 Extensions.Broadcast($"<b>{_broadcastName}</b>\n{_stageText}", (ushort)(_speed + 1));
                 yield return Timing.WaitForSeconds(_speed);
 
+                /*foreach (var platform in Platformes)
+                {
+                    if (platform != randPlatform)
+                    {
+                        platform.transform.position += Vector3.down * 5;
+                    }
+                }*/
+                
                 foreach (var platform in _platforms)
                 {
                     if (platform != randPlatform)
@@ -172,9 +202,19 @@ namespace AutoEvent.Games.Puzzle
                         platform.transform.position += Vector3.down * 5;
                     }
                 }
+                /*Extensions.Broadcast($"<b>{_broadcastName}</b>\n{stageText}", (ushort)(speed + 1));
+                yield return Timing.WaitForSeconds(speed); */
+                
                 Extensions.Broadcast($"<b>{_broadcastName}</b>\n{_stageText}", (ushort)(_speed + 1));
                 yield return Timing.WaitForSeconds(_speed);
-
+                
+                /*foreach (var platform in )
+                {
+                    if (platform != randPlatform)
+                    {
+                        platform.transform.position += Vector3.up * 5;
+                    }
+                }*/
                 foreach (var platform in _platforms)
                 {
                     if (platform != randPlatform)

@@ -12,7 +12,7 @@
 
 namespace AutoEvent.Interfaces;
 
-public interface ITranslation
+/*public interface ITranslation
 {
     public EventTranslation Translation { get; set; }
-}
+}*/

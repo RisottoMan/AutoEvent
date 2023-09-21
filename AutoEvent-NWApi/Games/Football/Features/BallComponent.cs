@@ -1,9 +1,11 @@
-﻿using UnityEngine;
+﻿using AutoEvent.Interfaces;
+using UnityEngine;
 
 public class BallComponent : MonoBehaviour
 {
     private SphereCollider sphere;
     private Rigidbody rigid;
+    internal static float BallSpeedBoost = 1f;
     private void Start()
     {
         sphere = gameObject.AddComponent<SphereCollider>();
@@ -19,6 +21,6 @@ public class BallComponent : MonoBehaviour
 
     private void FixedUpdate()
     {
-        transform.position += rigid.velocity * Time.fixedDeltaTime;
+        transform.position += rigid.velocity * (Time.fixedDeltaTime * BallSpeedBoost);
     }
 }

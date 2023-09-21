@@ -1,4 +1,4 @@
-﻿namespace AutoEvent.Games.Infection
+﻿namespace AutoEvent.Games.Battle
 {
     public class BattleTranslate
     {

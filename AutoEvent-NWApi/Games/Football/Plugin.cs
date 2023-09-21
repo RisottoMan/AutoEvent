@@ -22,6 +22,7 @@ namespace AutoEvent.Games.Football
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.FootballTranslate.FootballDescription;
         public override string Author { get; set; } = "KoT0XleB";
         public override string CommandName { get; set; } = "ball";
+        [EventConfig] public FootballConfig Config { get; set; }
         public MapInfo MapInfo { get; set; } = new MapInfo()
             {MapName = "Football", Position = new Vector3(76f, 1026.5f, -43.68f), };
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
@@ -30,6 +31,7 @@ namespace AutoEvent.Games.Football
         protected override float FrameDelayInSeconds { get; set; } = 0.3f;
         private EventHandler EventHandler { get; set; }
         private FootballTranslate Translation { get; set; }
+        private TimeSpan _remainingTime;
         private int _bluePoints;
         private int _redPoints;
         private GameObject _ball;
@@ -54,6 +56,7 @@ namespace AutoEvent.Games.Football
 
         protected override void OnStart()
         {
+            _remainingTime = new TimeSpan(0,0,Config.MatchDurationInSeconds);
             var count = 0;
             foreach (Player player in Player.GetPlayers())
             {
@@ -89,14 +92,14 @@ namespace AutoEvent.Games.Football
             // Both teams have less than 3 points &&
             // The elapsed time is under 3 minutes &&
             // Both Teams have at least 1 player 
-            return !(_bluePoints < 3 && _redPoints < 3 && EventTime.TotalSeconds < 180 &&
+            return !(_bluePoints < Config.PointsToWin && _redPoints < Config.PointsToWin && EventTime.TotalSeconds < Config.MatchDurationInSeconds &&
                      Player.GetPlayers().Count(r => r.IsNTF) > 0 &&
                      Player.GetPlayers().Count(r => r.Team == Team.ClassD) > 0);
         }
 
         protected override void ProcessFrame()
         {
-            var time = $"{EventTime.Minutes:00}:{EventTime.Seconds:00}";
+            var time = $"{_remainingTime.Minutes:00}:{_remainingTime.Seconds:00}";
                 foreach (Player player in Player.GetPlayers())
                 {
                     var text = string.Empty;
@@ -141,6 +144,8 @@ namespace AutoEvent.Games.Football
                     _ball.transform.position = MapInfo.Map.Position + new Vector3(0, 2.5f, 0);
                     _ball.GetComponent<Rigidbody>().velocity = Vector3.zero;
                 }
+
+                _remainingTime -= TimeSpan.FromSeconds(FrameDelayInSeconds);
         }
 
         protected override void OnFinished()

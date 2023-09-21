@@ -13,8 +13,11 @@
 using System;
 using System.Collections.Generic;
 using CommandSystem;
+using PluginAPI.Core;
+#if EXILED
 using Exiled.API.Features;
-
+using Exiled.Permissions.Extensions;
+#endif
 namespace AutoEvent.Commands.Reload;
 
 
@@ -47,10 +50,11 @@ public class Translations : ICommand
             return false;
         }
 #endif
-
+        
         skipPermissionCheck:
 
         response = $"Reloaded translations for all events.";
+        response = "This feature hasn't been implemented yet.";
         return true;
     }
 }

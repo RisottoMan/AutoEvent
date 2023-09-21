@@ -1,4 +1,5 @@
 ﻿using AutoEvent.Events.EventArgs;
+using Exiled.Permissions.Extensions;
 using LightContainmentZoneDecontamination;
 using PluginAPI.Core;
 using PluginAPI.Core.Attributes;
@@ -32,12 +33,15 @@ namespace AutoEvent
             if (AutoEvent.ActiveEvent == null || !config.IsDisableDonators)
                 return;
 
+#if !EXILED
             Player player = Player.Get(ev.CommandSender);
-
             if (player == null || !config.DonatorList.Contains(ServerStatic.PermissionsHandler._members[player.UserId])) 
                 return;
-
-            ev.CommandSender.RaReply($"AutoEvent#A mini-game is currently underway, acess denied!", false, true, string.Empty);
+#else
+            if (!Exiled.API.Features.Player.Get(ev.CommandSender).CheckPermission("ev.donator"))
+                return;
+#endif
+            ev.CommandSender.RaReply($"AutoEvent#A mini-game is currently underway, access denied!", false, true, string.Empty);
             ev.IsAllowed = false;
             ev.IsSuccess = false;
         }

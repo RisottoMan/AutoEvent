@@ -15,23 +15,25 @@ using System.Collections.Generic;
 using System.IO;
 using AutoEvent.Interfaces;
 using CommandSystem;
+using PluginAPI.Core;
+#if EXILED
 using Exiled.API.Features;
-
+using Exiled.Permissions.Extensions;
+#endif
 namespace AutoEvent.Commands.Debug;
 
 
-public class Write : ICommand, IUsageProvider
+public class Write : ICommand
 {
     public string Command => nameof(Write);
     public string[] Aliases => Array.Empty<string>();
     public string Description => "Writes all debug output to a log. (including past logs)";
-    public string[] Usage => new string[] { };
 
     public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
     {
 
 #if EXILED
-        if (!((CommandSender)sender).CheckPermission("ev.debug"))
+        if (!sender.CheckPermission("ev.debug"))
         {
             response = "You do not have permission to use this command";
             return false;

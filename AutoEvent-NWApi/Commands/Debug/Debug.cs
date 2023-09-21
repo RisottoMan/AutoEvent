@@ -22,8 +22,9 @@ using Exiled.Permissions.Extensions;
 
 namespace AutoEvent.Commands.Debug;
 
-public class Debug : ParentCommand, IUsageProvider
+public class Debug : ParentCommand
 {
+    public Debug() => LoadGeneratedCommands();
     public override void LoadGeneratedCommands()
     {
         this.RegisterCommand(new Enable());
@@ -36,19 +37,32 @@ public class Debug : ParentCommand, IUsageProvider
 
     protected override bool ExecuteParent(ArraySegment<string> arguments, ICommandSender sender, [UnscopedRef] out string response)
     {
-        response = $"Debug mode is currently {(DebugLogger.Debug ? "On" :  "Off")}. \n" +
-                   "Please enter a valid subcommand: \n" +
+        response = $"Debug mode is currently {(DebugLogger.Debug ? "On" : "Off")}. \n" +
+                   "Please enter a valid subcommand: \n";
+        foreach (var x in this.Commands)
+        {
+            string args = "";
+            if (x.Value is IUsageProvider usage)
+            {
+                foreach (string arg in usage.Usage)
+                {
+                    args += $"[{arg}] ";
+                }
+            }
+            response += $"<color=yellow> {x.Key} {args}<color=white>-> {x.Value.Description}. \n";
+        }
+        /*
                    "<color=yellow>  Enable <color=white>-> Enables Debug Mode. \n" +
                    "<color=yellow>  Disable <color=white>-> Disables Debug Mode.\n" +
                    "<color=yellow>  List <color=white>-> Lists all debug options.\n" +
                    "<color=yellow>  Write <color=white>-> Writes all debug output to a log. (including past logs).\n" +
                    "<color=yellow>  AntiEnd <color=white>-> Prevents an event from ending.\n" +
                    "<color=yellow>  Presets <color=white>-> Logs the available presets for an event.\n";
+        */
         return false;
     }
 
     public override string Command => nameof(Debug);
     public override string[] Aliases => Array.Empty<string>();
     public override string Description => "Runs various debug functions.";
-    public string[] Usage => new string[] { "[option]" };
 }

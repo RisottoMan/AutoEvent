@@ -13,6 +13,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using AutoEvent.API;
+using AutoEvent.API.Enums;
 using AutoEvent.Events.Handlers;
 using AutoEvent.Interfaces;
 using MEC;
@@ -20,10 +22,13 @@ using PlayerRoles;
 using PluginAPI.Core;
 using PluginAPI.Events;
 using UnityEngine;
+using Event = AutoEvent.Interfaces.Event;
 
 namespace AutoEvent.Games.Example
 {
-    public class ExampleEvent : Interfaces.Event, IEventMap, IEventSound, IInternalEvent
+    // Do not use IInternalEvent on your events.
+    // It is only for the main events that are included with AutoEvent.
+    public class ExampleEvent : Event, IEventMap, IEventSound, IInternalEvent
     {
 
         // Set the info for the event.
@@ -53,7 +58,7 @@ namespace AutoEvent.Games.Example
         public MapInfo MapInfo { get; set; } = new MapInfo()
             { MapName = "Battle", 
                 Position = new Vector3(6f, 1030f, -43.5f), 
-                Rotation = new Quaternion(), 
+                MapRotation = new Quaternion(), 
                 Scale = new Vector3(1,1,1), 
                 // If this is set to false, you can manually spawn the map via base.SpawnMap();
                 SpawnAutomatically = true};
@@ -121,8 +126,11 @@ namespace AutoEvent.Games.Example
                 }
 
                 count++;
-
-                RandomClass.CreateSoldier(Config.Loadouts, player);
+                
+                // You can use either a single loadout or a list of loadouts. 
+                // The list is good because it allows users to add a chance to each loadout.
+                // Only one loadout will be assigned.
+                player.GiveLoadout(Config.Loadouts, LoadoutFlags.IgnoreGodMode);
                 Timing.CallDelayed(0.1f, () => { player.CurrentItem = player.Items.First(); });
             }
 

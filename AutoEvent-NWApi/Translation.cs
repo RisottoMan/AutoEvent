@@ -1,5 +1,6 @@
 using AutoEvent.Games.Infection;
 using System.ComponentModel;
+using AutoEvent.Games.Battle;
 using AutoEvent.Games.Boss;
 #if EXILED
 using Exiled.API.Interfaces;

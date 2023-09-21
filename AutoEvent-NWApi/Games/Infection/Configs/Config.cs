@@ -1,22 +1,53 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
+using AutoEvent.API;
+using AutoEvent.Interfaces;
+using PlayerRoles;
+using UnityEngine;
 
 namespace AutoEvent.Games.Infection
 {
-    public class InfectConfig
+    public class InfectConfig : EventConfig
     {
-        [Description("A list that contains maps. You also need to add maps to the Schematic folder. Specify the folder name of map.")]
-        public List<string> ListOfMap { get; set; } = new List<string>()
+        public InfectConfig()
         {
-            "Zombie",
-            "ZombieRework",
+            if (AvailableMaps is null)
+            {
+                AvailableMaps = new List<MapChance>();
+            }
+
+            if (AvailableSounds is null)
+            {
+                AvailableSounds = new List<SoundChance>();
+            }
+
+            if (AvailableMaps.Count < 1)
+            {
+                AvailableMaps.Add(new MapChance(50, new MapInfo("Zombie", new Vector3(115.5f, 1030f, -43.5f) )));
+                AvailableMaps.Add(new MapChance(50, new MapInfo("ZombieRework", new Vector3(115.5f, 1030f, -43.5f))));
+            }
+
+            if (AvailableSounds.Count < 1)
+            {
+                AvailableSounds.Add(new SoundChance(50, new SoundInfo("Zombie.ogg", 7)));
+                AvailableSounds.Add(new SoundChance(50, new SoundInfo("Zombie2.ogg", 7)));
+            }
+            
+        }
+        public List<Loadout> PlayerLoadouts { get; set; } = new List<Loadout>()
+        {
+            new Loadout()
+            {
+                Roles = new Dictionary<RoleTypeId, int>() { { RoleTypeId.ClassD, 100 } }
+            }
         };
-        
-        [Description("A dictionary containing the name of the music and volume. They need to be manually added to the Music folder.")]
-        public Dictionary<string, byte> ListOfMusic { get; set; } = new Dictionary<string, byte>()
+
+        public List<Loadout> ZombieLoadouts { get; set; } = new List<Loadout>()
         {
-            ["Zombie.ogg"] = 7,
-            ["Zombie2.ogg"] = 7,
+            new Loadout()
+            {
+                Roles = new Dictionary<RoleTypeId, int>() { { RoleTypeId.Scp0492, 100 } }
+            }
         };
     }
 }

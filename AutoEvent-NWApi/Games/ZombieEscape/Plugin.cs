@@ -12,6 +12,7 @@ using System.Linq;
 using AutoEvent.Games.Infection;
 using AutoEvent.Interfaces;
 using UnityEngine;
+using Debug = UnityEngine.Debug;
 using Event = AutoEvent.Interfaces.Event;
 
 namespace AutoEvent.Games.ZombieEscape
@@ -25,7 +26,7 @@ namespace AutoEvent.Games.ZombieEscape
         public override string Author { get; set; } = "KoT0XleB";
         public override string CommandName { get; set; } = "zombie3";
         public MapInfo MapInfo { get; set; } = new MapInfo()
-            { MapName = "zm_osprey", Position = new Vector3(-15f, 1020f, -80f), Rotation = Quaternion.identity };
+            { MapName = "zm_osprey", Position = new Vector3(-15f, 1020f, -80f), MapRotation = Quaternion.identity };
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
             { SoundName = "Survival.ogg", Volume = 10, Loop = false };
         protected override float PostRoundDelay { get; set; } = 10f;
@@ -57,6 +58,10 @@ namespace AutoEvent.Games.ZombieEscape
 
         protected override void UnregisterEvents()
         {
+            if (EventHandler is null)
+            {
+                DebugLogger.LogDebug("Handler is null");
+            }
             EventManager.UnregisterEvents(EventHandler);
             Servers.TeamRespawn -= EventHandler.OnTeamRespawn;
             Servers.SpawnRagdoll -= EventHandler.OnSpawnRagdoll;
@@ -106,11 +111,20 @@ namespace AutoEvent.Games.ZombieEscape
 
             for (int i = 0; i <= Player.GetPlayers().Count() / 10; i++)
             {
-                var player = Player.GetPlayers().Where(r => r.IsHuman).ToList().RandomItem();
-                Extensions.SetRole(player, RoleTypeId.Scp0492, RoleSpawnFlags.AssignInventory);
-                player.EffectsManager.EnableEffect<Disabled>();
-                player.EffectsManager.EnableEffect<Scp1853>();
-                player.Health = 10000;
+                var playerList = Player.GetPlayers().Where(r => r.IsHuman);
+                if (playerList.Count() > 0)
+                {
+                    var player = playerList.ToList().RandomItem();
+                    DebugLogger.LogDebug($"{player.Nickname} chosen as the zombie.", LogLevel.Debug);
+                    Extensions.SetRole(player, RoleTypeId.Scp0492, RoleSpawnFlags.AssignInventory);
+                    player.EffectsManager.EnableEffect<Disabled>();
+                    player.EffectsManager.EnableEffect<Scp1853>();
+                    player.Health = 10000;
+                }
+                else
+                {
+                    DebugLogger.LogDebug($"Not enough players to choose a random player. Skipping spawn.", LogLevel.Debug);
+                }
             }
 
             _button = new GameObject();
@@ -118,7 +132,7 @@ namespace AutoEvent.Games.ZombieEscape
             _button2 = new GameObject();
             _wall = new GameObject();
             _finishPosition = new Vector3();
-
+            
             foreach (var gameObject in MapInfo.Map.AttachedBlocks)
             {
                 switch (gameObject.name)
@@ -155,6 +169,7 @@ namespace AutoEvent.Games.ZombieEscape
                         break;
                 }
             }
+            DebugLogger.LogDebug("Serialized GameObjects.", LogLevel.Debug);
         }
 
         protected override void ProcessFrame()

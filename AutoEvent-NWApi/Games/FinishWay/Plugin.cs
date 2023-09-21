@@ -19,7 +19,8 @@ namespace AutoEvent.Games.FinishWay
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.FinishWayTranslate.FinishWayName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.FinishWayTranslate.FinishWayDescription;
         public override string Author { get; set; } = "KoT0XleB";
-        public override string CommandName { get; set; } = "finish";
+        public override string CommandName { get; set; } = "race";
+        public FinishWayConfig Config { get; set; }
         public MapInfo MapInfo { get; set; } = new MapInfo()
             {MapName = "FinishWay", Position = new Vector3(115.5f, 1030f, -43.5f), };
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
@@ -27,6 +28,7 @@ namespace AutoEvent.Games.FinishWay
         protected override float PostRoundDelay { get; set; } = 10f;
         private EventHandler EventHandler { get; set; }
         private FinishWayTranslate Translation { get; set; }
+        private TimeSpan _remainingTime;
         private GameObject _point;
 
         protected override void RegisterEvents()
@@ -57,6 +59,7 @@ namespace AutoEvent.Games.FinishWay
 
         protected override void OnStart()
         {
+            _remainingTime = new TimeSpan(0, 0, 70);
             foreach (Player player in Player.GetPlayers())
             {
                 Extensions.SetRole(player, RoleTypeId.ClassD, RoleSpawnFlags.None);
@@ -93,15 +96,16 @@ namespace AutoEvent.Games.FinishWay
         {
             // At least one player is alive &&
             // Elapsed time is shorter than a minute (+ broadcast duration)
-            return !(Player.GetPlayers().Count(r => r.IsAlive) > 0 && EventTime.TotalSeconds < 70);
+            return !(Player.GetPlayers().Count(r => r.IsAlive) > 0 && EventTime.TotalSeconds < Config.EventDurationInSeconds + 10);
         }
 
         protected override void ProcessFrame()
         {
             var count = Player.GetPlayers().Count(r => r.Role == RoleTypeId.ClassD);
-            var time = $"{EventTime.Minutes:00}:{EventTime.Seconds:00}";
+            var time = $"{_remainingTime.Minutes:00}:{_remainingTime.Seconds:00}";
 
             Extensions.Broadcast(Translation.FinishWayCycle.Replace("%name%", Name).Replace("%time%", time), 1);
+            _remainingTime -= TimeSpan.FromSeconds(FrameDelayInSeconds);
         }
 
         protected override void OnFinished()

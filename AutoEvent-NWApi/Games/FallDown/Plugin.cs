@@ -6,6 +6,7 @@ using PluginAPI.Events;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using AdminToys;
 using UnityEngine;
 using AutoEvent.Events.Handlers;
 using AutoEvent.Games.Infection;
@@ -19,7 +20,7 @@ namespace AutoEvent.Games.FallDown
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.FallTranslate.FallName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.FallTranslate.FallDescription;
         public override string Author { get; set; } = "KoT0XleB";
-        
+        [EventConfig] public FallDownConfig Config { get; set; } = null;
         public MapInfo MapInfo { get; set; } = new MapInfo()
             {MapName = "FallDown", Position = new Vector3(10f, 1020f, -43.68f) };
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
@@ -29,8 +30,10 @@ namespace AutoEvent.Games.FallDown
         protected override float PostRoundDelay { get; set; } = 10f;
         private EventHandler EventHandler { get; set; }
         private FallTranslate Translation { get; set; }
+        private int _platformId { get; set; }
         private List<GameObject> _platforms;
         private GameObject _lava;
+        private bool _noPlatformsRemainingWarning;
 
         protected override void RegisterEvents()
         {
@@ -60,6 +63,7 @@ namespace AutoEvent.Games.FallDown
 
         protected override void OnStart()
         {
+            _noPlatformsRemainingWarning = true;
             foreach (Player player in Player.GetPlayers())
             {
                 Extensions.SetRole(player, RoleTypeId.ClassD, RoleSpawnFlags.None);
@@ -81,8 +85,16 @@ namespace AutoEvent.Games.FallDown
 
         protected override void CountdownFinished()
         {
+            _platformId = 0;
             _platforms = MapInfo.Map.AttachedBlocks.Where(x => x.name == "Platform").ToList();
             GameObject.Destroy(MapInfo.Map.AttachedBlocks.First(x => x.name == "Wall"));
+            if (Config.PlatformsHaveColorWarning)
+            {
+                foreach (var platform in _platforms)
+                {
+                    platform.GetComponent<PrimitiveObjectToy>().NetworkMaterialColor = Color.white;
+                }
+            }
         }
 
         protected override bool IsRoundDone()
@@ -93,13 +105,37 @@ namespace AutoEvent.Games.FallDown
         }
         protected override void ProcessFrame()
         {
+            _platformId++;
+            FrameDelayInSeconds = Config.DelayInSeconds.GetValue(_platformId, 169, 1, 0.3f);
             var count = Player.GetPlayers().Count(r => r.IsAlive);
             var time = $"{EventTime.Minutes:00}:{EventTime.Seconds:00}";
-            Extensions.Broadcast(Translation.FallBroadcast.Replace("%name%", Name).Replace("%time%", time).Replace("%count%", $"{count}"), 1);
-
+            Extensions.Broadcast(Translation.FallBroadcast.Replace("%name%", Name).Replace("%time%", time).Replace("%count%", $"{count}"), (ushort)FrameDelayInSeconds);
+            
+            if (_platforms.Count < 1)
+            {
+                if (_noPlatformsRemainingWarning)
+                {
+                    DebugLogger.LogDebug("No platforms remaining.", LogLevel.Debug);
+                    _noPlatformsRemainingWarning = false;
+                }
+                return;
+            }
+                
             var platform = _platforms.RandomItem();
-            _platforms.Remove(platform);
-            GameObject.Destroy(platform);
+            platform.GetComponent<PrimitiveObjectToy>().NetworkMaterialColor = Color.red;
+            if (Config.PlatformsHaveColorWarning)
+            {
+                Timing.CallDelayed(Config.WarningDelayInSeconds.GetValue(_platformId, 169, 0, 3), () =>
+                {
+                    _platforms.Remove(platform);
+                    GameObject.Destroy(platform);
+                });
+            }
+            else
+            {
+                _platforms.Remove(platform);
+                GameObject.Destroy(platform);
+            }
 
         }
 

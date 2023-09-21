@@ -7,6 +7,7 @@ using PluginAPI.Events;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using AutoEvent.API.Enums;
 using AutoEvent.Games.Infection;
 using AutoEvent.Interfaces;
 using UnityEngine;
@@ -20,6 +21,8 @@ namespace AutoEvent.Games.Lava
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.LavaTranslate.LavaDescription;
         public override string Author { get; set; } = "KoT0XleB";
         public override string CommandName { get; set; } = "lava";
+        [EventConfig]
+        public LavaConfig Config { get; set; }
         public MapInfo MapInfo { get; set; } = new MapInfo()
             {MapName = "Lava", Position = new Vector3(120f, 1020f, -43.5f), };
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
@@ -62,7 +65,9 @@ namespace AutoEvent.Games.Lava
         {
             foreach (var player in Player.GetPlayers())
             {
-                Extensions.SetRole(player, RoleTypeId.ClassD, RoleSpawnFlags.None);
+                
+                player.GiveLoadout(Config.Loadouts, LoadoutFlags.IgnoreGodMode);
+                // Extensions.SetRole(player, RoleTypeId.ClassD, RoleSpawnFlags.None);
                 player.Position = RandomClass.GetSpawnPosition(MapInfo.Map);
             }
         }
@@ -84,8 +89,9 @@ namespace AutoEvent.Games.Lava
 
         protected override bool IsRoundDone()
         {
-            // If over one player is alive.
-            return !(Player.GetPlayers().Count(r => r.IsAlive) > 1);
+            // If over one player is alive &&
+            // Time is under 10 minutes (+ countdown)
+            return !(Player.GetPlayers().Count(r => r.IsAlive) > 1 && EventTime.TotalSeconds < 600 + 10);
         }
 
         protected override void ProcessFrame()

@@ -14,14 +14,14 @@ namespace AutoEvent.Commands
         public string Command => nameof(Run);
         public string Description => "Run the event, takes on 1 argument - the command name of the event.";
         public string[] Aliases => new []{ "start", "play", "begin" };
-        public string[] Usage => new string[] { "Event Name" };
+        public string[] Usage => new string[] { "[Event Name]" };
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
             
 
 #if EXILED
-            if (!((CommandSender)sender).CheckPermission("ev.run"))
+            if (!sender.CheckPermission("ev.run"))
             {
                 response = "You do not have permission to use this command";
                 return false;
@@ -46,7 +46,7 @@ namespace AutoEvent.Commands
                 return false;
             }
 
-            if (arguments.Count != 1)
+            if (arguments.Count < 1)
             {
                 response = "Only 1 argument is needed - the command name of the event!";
                 return false;

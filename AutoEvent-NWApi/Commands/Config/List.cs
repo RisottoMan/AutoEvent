@@ -14,7 +14,11 @@ using System;
 using System.Collections.Generic;
 using AutoEvent.Interfaces;
 using CommandSystem;
+using PluginAPI.Core;
+#if EXILED
 using Exiled.API.Features;
+using Exiled.Permissions.Extensions;
+#endif
 
 namespace AutoEvent.Commands.Config;
 
@@ -30,7 +34,7 @@ public class List : ICommand, IUsageProvider
     {
 
 #if EXILED
-        if (!((CommandSender)sender).CheckPermission("ev.config.list"))
+        if (!sender.CheckPermission("ev.config.list"))
         {
             response = "You do not have permission to use this command";
             return false;
@@ -59,7 +63,29 @@ public class List : ICommand, IUsageProvider
             return false;
         }
 
-        response = "Not implemented yet.";
+        Event ev = Event.GetEvent(arguments.At(0));
+        if (ev is null)
+        {
+            DebugLogger.LogDebug($"Event is null.", LogLevel.Debug);
+            response = "An error has occured.";
+            return false;
+        }
+
+        if (ev.ConfigPresets is null)
+        {
+            DebugLogger.LogDebug($"Config Presets List is null.", LogLevel.Debug);
+            response = "An error has occured.";
+            return false;
+        }
+
+        string presets = $"Available Config Presets for Event \"{ev.Name}\": \n";
+        foreach (var x in ev.ConfigPresets)
+        {
+            presets += $"  {x.PresetName}, \n";
+        }
+
+        response = presets;
         return true;
+        
     }
 }

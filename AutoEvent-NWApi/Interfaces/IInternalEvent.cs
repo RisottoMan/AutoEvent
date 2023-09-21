@@ -12,7 +12,7 @@
 
 namespace AutoEvent.Interfaces;
 
-public interface IInternalEvent
+internal interface IInternalEvent
 {
     
 }

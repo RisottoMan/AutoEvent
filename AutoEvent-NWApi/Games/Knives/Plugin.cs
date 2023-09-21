@@ -6,8 +6,10 @@ using PluginAPI.Events;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using AutoEvent.API.Enums;
 using UnityEngine;
 using AutoEvent.Events.Handlers;
+using AutoEvent.Games.Example;
 using AutoEvent.Games.Infection;
 using AutoEvent.Interfaces;
 using Event = AutoEvent.Interfaces.Event;
@@ -20,6 +22,8 @@ namespace AutoEvent.Games.Knives
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.KnivesTranslate.KnivesDescription;
         public override string Author { get; set; } = "KoT0XleB";
         public override string CommandName { get; set; } = "knife";
+        [EventConfig]
+        public KnivesConfig Config { get; set; }
         public MapInfo MapInfo { get; set; } = new MapInfo()
             {MapName = "35hp_2", Position = new Vector3(5f, 1030f, -45f), };
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
@@ -66,12 +70,14 @@ namespace AutoEvent.Games.Knives
             {
                 if (count % 2 == 0)
                 {
-                    Extensions.SetRole(player, RoleTypeId.NtfCaptain, RoleSpawnFlags.None);
+                    player.GiveLoadout(Config.Team1Loadouts, LoadoutFlags.IgnoreWeapons | LoadoutFlags.IgnoreGodMode);
+                    // Extensions.SetRole(player, RoleTypeId.NtfCaptain, RoleSpawnFlags.None);
                     player.Position = RandomClass.GetSpawnPosition(MapInfo.Map, true);
                 }
                 else
                 {
-                    Extensions.SetRole(player, RoleTypeId.ChaosRepressor, RoleSpawnFlags.None);
+                    player.GiveLoadout(Config.Team2Loadouts, LoadoutFlags.IgnoreWeapons | LoadoutFlags.IgnoreGodMode);
+                    // Extensions.SetRole(player, RoleTypeId.ChaosRepressor, RoleSpawnFlags.None);
                     player.Position = RandomClass.GetSpawnPosition(MapInfo.Map, false);
                 }
                 count++;

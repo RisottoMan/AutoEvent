@@ -1,0 +1,20 @@
+﻿@startuml
+'https://plantuml.com/class-diagram
+
+start
+switch (Value)
+    case (Simple)
+        :CheckArgs;
+        :ProcessValue;
+    case (List/Dict)
+        :CheckArgs;
+        :Check if Null;
+        :ProcessList;
+    case (Complex)
+        :CheckArgs;
+        :ProcessComplex;
+endswitch
+label ProcessList
+:;
+:x;
+@enduml

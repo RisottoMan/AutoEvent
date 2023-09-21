@@ -34,13 +34,16 @@ namespace AutoEvent.Interfaces
                 {
                     if (type.IsAbstract ||
                         type.IsEnum ||
-                        type.IsInterface ||
-                        Activator.CreateInstance(type) is not Event ev ||
-                        type.GetCustomAttributes(typeof(DisabledFeaturesAttribute), false).Any())
+                        type.IsInterface || type.GetInterfaces().All(x => x != typeof(IEvent)))
+                        continue;
+                    
+                    object evBase = Activator.CreateInstance(type);
+                        if(evBase is null || evBase is not Event ev ||
+                        type.GetCustomAttributes(typeof(DisabledFeaturesAttribute), false).Any(x => x is not null))
                         continue;
 
                     if (!ev.AutoLoad)
-                        return;
+                        continue;
                     ev.Id = Events.Count;
                     try
                     {
@@ -131,9 +134,9 @@ namespace AutoEvent.Interfaces
         protected virtual float PostRoundDelay { get; set; } = 10f;
 
         /// <summary>
-        /// Does the plugin utilize Exiled in any way. This is used to prevent type load exceptions, if exiled isn't present.
+        /// Obsolete. Use <see cref="IExiledEvent"/> instead.
         /// </summary>
-        /// 
+        [Obsolete("This is no longer supported. Inherit IExiledEvent instead.")]
         public virtual bool UsesExiled { get; protected set; } = false;
         
         /// <summary>
@@ -160,6 +163,11 @@ namespace AutoEvent.Interfaces
         /// </summary>
         protected virtual CoroutineHandle GameCoroutine { get; set; }
         
+        /// <summary>
+        /// The coroutine handle for the start countdown broadcast. 
+        /// </summary>
+        protected virtual CoroutineHandle BroadcastCoroutine { get; set; }
+        
         // ReSharper disable once UnusedAutoPropertyAccessor.Global
         /// <summary>
         /// The DateTime (UTC) that the plugin started at. 
@@ -179,6 +187,12 @@ namespace AutoEvent.Interfaces
     /// <param name="checkIfAutomatic">Should the audio abide by <see cref="SoundInfo.StartAutomatically"/></param>
     protected void StartAudio(bool checkIfAutomatic = false)
     {
+        DebugLogger.LogDebug($"Starting Audio: " +
+                             $"{(this is IEventSound s ? "true, " + 
+                                 $"{(!string.IsNullOrEmpty(s.SoundInfo.SoundName)? "true" : "false")}, " +
+                                 $"{(!checkIfAutomatic ? "true" : "false")}, " +
+                                 $"{(s.SoundInfo.StartAutomatically ? "true" : "false")}" : "false")}",
+            LogLevel.Debug);
         if (this is IEventSound sound && !string.IsNullOrEmpty(sound.SoundInfo.SoundName) &&
             (!checkIfAutomatic || sound.SoundInfo.StartAutomatically))
         {
@@ -196,6 +210,7 @@ namespace AutoEvent.Interfaces
     /// </summary>
     protected void StopAudio()
     {
+        DebugLogger.LogDebug("Stopping Audio", LogLevel.Debug);
         Extensions.StopAudio();
     }
 
@@ -206,6 +221,12 @@ namespace AutoEvent.Interfaces
 
     protected void SpawnMap(bool checkIfAutomatic = false)
     {
+        DebugLogger.LogDebug($"Spawning Map: " +
+                             $"{(this is IEventMap m ? "true, " + 
+                                                         $"{(!string.IsNullOrEmpty(m.MapInfo.MapName)? "true" : "false")}, " +
+                                                         $"{(!checkIfAutomatic ? "true" : "false")}, " +
+                                                         $"{(m.MapInfo.SpawnAutomatically ? "true" : "false")}" : "false")}",
+            LogLevel.Debug);
         if (this is IEventMap map && !string.IsNullOrEmpty(map.MapInfo.MapName) &&
             (!checkIfAutomatic || map.MapInfo.SpawnAutomatically))
         {
@@ -213,7 +234,7 @@ namespace AutoEvent.Interfaces
             map.MapInfo.Map = Extensions.LoadMap(
                 map.MapInfo.MapName, 
                 map.MapInfo.Position, 
-                map.MapInfo.Rotation, 
+                map.MapInfo.MapRotation, 
                 map.MapInfo.Scale);
         }
     }
@@ -223,6 +244,7 @@ namespace AutoEvent.Interfaces
     /// </summary>
     protected void DeSpawnMap()
     {
+        DebugLogger.LogDebug($"DeSpawning Map. {this is IEventMap}", LogLevel.Debug);
         if (this is IEventMap eventMap)
         {
             Extensions.UnLoadMap(eventMap.MapInfo.Map);
@@ -234,6 +256,7 @@ namespace AutoEvent.Interfaces
     /// </summary>
     public void StartEvent()
     {
+        DebugLogger.LogDebug($"Starting Event {Name}", LogLevel.Debug);
         OnInternalStart();
     }
     
@@ -242,12 +265,18 @@ namespace AutoEvent.Interfaces
     /// </summary>
     public void StopEvent()
     {
+        DebugLogger.LogDebug($"Stopping Event {Name}", LogLevel.Debug);
         OnInternalStop();
     }
 
     #endregion
     #region Event Methods // Methods that event authors can / must utilize that are abstracted into the event system.
-    /// <summary>
+        /// <summary>
+        /// Base constructor for an event.
+        /// </summary>
+        public Event(){ }
+        
+        /// <summary>
         /// The method that is called when the event is registered. Should be used instead of a constructor to prevent type load exceptions.
         /// </summary>
         public virtual void InstantiateEvent() { }
@@ -310,7 +339,7 @@ namespace AutoEvent.Interfaces
 
     private string CreateConfigFolder()
     {
-        string path = Path.Combine(AutoEvent.BaseConfigPath, "Configs", this.Name);
+        string path = Path.Combine(AutoEvent.Singleton.Config.EventConfigsDirectoryPath, this.Name);
         AutoEvent.CreateDirectoryIfNotExists(path);
         AutoEvent.CreateDirectoryIfNotExists(Path.Combine(path, "Presets"));
         return path;
@@ -381,13 +410,103 @@ namespace AutoEvent.Interfaces
             
             DebugLogger.LogDebug($"Config \"{property.Name}\" found for {Name}", LogLevel.Debug);
             object config = conf.Load(path, property.Name, property.PropertyType);
+            if (config is not EventConfig evConfig)
+            {
+                DebugLogger.LogDebug($"Config was found that does not inherit Event Config. It will be skipped.", LogLevel.Warn, true);
+                DebugLogger.LogDebug($"(Event {this.Name}) Config: {property.Name}.", LogLevel.Debug);
+                continue;
+            }
+
+            if (ConfigPresets.Count > 0)
+                evConfig.PresetName = $"Default-{ConfigPresets.Count - 1}";
+            else
+                evConfig.PresetName = "Default";
+            _setRandomMap(evConfig);
+            _setRandomSound(evConfig);
+            
             property.SetValue(this, config);
+            
+            ConfigPresets.Add((EventConfig)config);
+
             i++;
         }
 
         return i;
     }
 
+    /// <summary>
+    /// Assigns a random map.
+    /// </summary>
+    /// <param name="conf"></param>
+    private void _setRandomMap(EventConfig conf)
+    {
+        if (this is IEventMap map && conf.AvailableMaps is not null && conf.AvailableMaps.Count > 0)
+        {
+            bool spawnAutomatically = map.MapInfo.SpawnAutomatically;
+            if (conf.AvailableMaps.Count == 1)
+            {
+                map.MapInfo = conf.AvailableMaps[0].Map;
+                map.MapInfo.SpawnAutomatically = spawnAutomatically;
+                goto Message;
+            }
+
+            foreach (var mapItem in conf.AvailableMaps.Where(x => x.Chance <= 0))
+                mapItem.Chance = 1;
+            
+            float totalChance = conf.AvailableMaps.Sum(x => x.Chance);
+            
+            for (int i = 0; i < conf.AvailableMaps.Count - 1; i++)
+            {
+                if (UnityEngine.Random.Range(0, totalChance) <= conf.AvailableMaps[i].Chance)
+                {
+                    map.MapInfo = conf.AvailableMaps[i].Map;
+                    map.MapInfo.SpawnAutomatically = spawnAutomatically;
+                    goto Message;
+                }
+            }
+            map.MapInfo = conf.AvailableMaps[conf.AvailableMaps.Count - 1].Map;
+            map.MapInfo.SpawnAutomatically = spawnAutomatically;
+            Message:
+            DebugLogger.LogDebug($"[{this.Name}] Map {map.MapInfo.MapName} selected.", LogLevel.Debug);
+        }
+        
+    }
+    /// <summary>
+    /// Assigns a random sound.
+    /// </summary>
+    /// <param name="conf"></param>
+    private void _setRandomSound(EventConfig conf)
+    {
+        if (this is IEventSound sound && conf.AvailableSounds is not null && conf.AvailableSounds.Count > 0)
+        {
+            bool startAutomatically = sound.SoundInfo.StartAutomatically;
+            if (conf.AvailableSounds.Count == 1)
+            {
+                sound.SoundInfo = conf.AvailableSounds[0].Sound;
+                sound.SoundInfo.StartAutomatically = startAutomatically;
+                goto Message;
+            }
+
+            foreach (var soundItem in conf.AvailableSounds.Where(x => x.Chance <= 0))
+                soundItem.Chance = 1;
+            
+            float totalChance = conf.AvailableSounds.Sum(x => x.Chance);
+            
+            for (int i = 0; i < conf.AvailableSounds.Count - 1; i++)
+            {
+                if (UnityEngine.Random.Range(0, totalChance) <= conf.AvailableSounds[i].Chance)
+                {
+                    sound.SoundInfo = conf.AvailableSounds[i].Sound;
+                    sound.SoundInfo.StartAutomatically = startAutomatically;
+                    goto Message;
+                }
+            }
+            sound.SoundInfo = conf.AvailableSounds[conf.AvailableSounds.Count - 1].Sound;
+            sound.SoundInfo.StartAutomatically = startAutomatically;
+            Message:
+            DebugLogger.LogDebug($"[{this.Name}] Sound {sound.SoundInfo.SoundName} selected.", LogLevel.Debug);
+        }
+    }
     /// <summary>
     /// Creates a preset.yml file for each preset found.
     /// </summary>
@@ -428,22 +547,25 @@ namespace AutoEvent.Interfaces
     /// </summary>
     internal void LoadTranslation()
     {
-        if (this is ITranslation)
+        /*if (this is ITranslation)
         {
             
-        }
+        }*/
     }
         /// <summary>
         /// Triggers internal actions to stop an event.
         /// </summary>
         private void OnInternalStop()
         {
+            KillLoop = true;
+            Timing.KillCoroutines(new CoroutineHandle[] { BroadcastCoroutine });
             Timing.CallDelayed(FrameDelayInSeconds + .1f, () =>
             {
                 if (GameCoroutine.IsRunning)
                 {
                     Timing.KillCoroutines(new CoroutineHandle[] { GameCoroutine });
                 }
+                OnInternalCleanup();
             });
             
             try
@@ -457,13 +579,15 @@ namespace AutoEvent.Interfaces
                 DebugLogger.LogDebug($"{e}", LogLevel.Debug);
             }
             EventStopped?.Invoke(Name);
-            OnInternalCleanup();
+            
         }
         /// <summary>
         /// Used to trigger plugin events in the right order.
         /// </summary>
         private void OnInternalStart()
         {
+            KillLoop = false;
+            _cleanupRun = false;
             AutoEvent.ActiveEvent = this;
             EventTime = new TimeSpan();
             StartTime = DateTime.UtcNow;
@@ -476,7 +600,7 @@ namespace AutoEvent.Interfaces
             catch (Exception e)
             {
             
-                DebugLogger.LogDebug($"Caught an exception at Event.OnRegisterEvents().", LogLevel.Warn, true);
+                DebugLogger.LogDebug($"Caught an exception at Event.RegisterEvents().", LogLevel.Warn, true);
                 DebugLogger.LogDebug($"{e}", LogLevel.Debug);
 
             }
@@ -502,20 +626,27 @@ namespace AutoEvent.Interfaces
         /// <returns></returns>
         private IEnumerator<float> RunTimingCoroutine()
         {
-            var broadcastCoroutine = Timing.RunCoroutine(BroadcastStartCountdown(), "Broadcast Coroutine");
-            yield return Timing.WaitUntilDone(broadcastCoroutine);
+            BroadcastCoroutine = Timing.RunCoroutine(BroadcastStartCountdown(), "Broadcast Coroutine");
+            yield return Timing.WaitUntilDone(BroadcastCoroutine);
+            if (KillLoop)
+            {
+                yield break;
+            }
             try
             {
                 CountdownFinished();
             }
             catch (Exception e)
             {
-                
-                DebugLogger.LogDebug($"Caught an exception at Event.BroadcastStartText().", LogLevel.Warn, true);
+                DebugLogger.LogDebug($"Caught an exception at Event.CountdownFinished().", LogLevel.Warn, true);
                 DebugLogger.LogDebug($"{e}", LogLevel.Debug);
             }
             GameCoroutine = Timing.RunCoroutine(RunGameCoroutine(), "Event Coroutine");
             yield return Timing.WaitUntilDone(GameCoroutine);
+            if (KillLoop)
+            {
+                yield break;
+            }
             try
             {
                 OnFinished();
@@ -525,8 +656,13 @@ namespace AutoEvent.Interfaces
                 DebugLogger.LogDebug($"Caught an exception at Event.OnFinished().", LogLevel.Warn, true);
                 DebugLogger.LogDebug($"{e}", LogLevel.Debug);
             }
-
-            var handle = Timing.CallDelayed(PostRoundDelay, () => OnInternalCleanup());
+            var handle = Timing.CallDelayed(PostRoundDelay, () =>
+            {
+                if (!_cleanupRun)
+                {
+                    OnInternalCleanup();
+                }
+            });
             yield return Timing.WaitUntilDone(handle);
         }
         
@@ -557,13 +693,18 @@ namespace AutoEvent.Interfaces
             }
             yield break;
         }
-        
 
+        /// <summary>
+        /// Used to prevent double cleanups.
+        /// </summary>
+        private bool _cleanupRun = false;
+        
         /// <summary>
         /// The internal method used to trigger cleanup for maps, ragdolls, items, sounds, and teleporting players to the spawn room.
         /// </summary>
         private void OnInternalCleanup()
         {
+            _cleanupRun = true;
             try
             {
                 UnregisterEvents();
@@ -573,11 +714,22 @@ namespace AutoEvent.Interfaces
                 DebugLogger.LogDebug($"Caught an exception at Event.OnUnregisterEvents().", LogLevel.Warn, true);
                 DebugLogger.LogDebug($"{e}", LogLevel.Debug);
             }
-            DeSpawnMap();
 
-            StopAudio();
-            Extensions.CleanUpAll();
-            Extensions.TeleportEnd();
+            try
+            {
+
+                DeSpawnMap();
+
+                StopAudio();
+                Extensions.CleanUpAll();
+                Extensions.TeleportEnd();
+            }
+            catch (Exception e)
+            {
+                DebugLogger.LogDebug("Caught an exception at Event.OnInternalCleanup().GeneralCleanup().", LogLevel.Warn, true);
+                DebugLogger.LogDebug($"{e}", LogLevel.Debug);
+            }
+
             try
             {
                 OnCleanup();
@@ -586,13 +738,30 @@ namespace AutoEvent.Interfaces
             {
                 DebugLogger.LogDebug($"Caught an exception at Event.OnCleanup().", LogLevel.Warn, true);
                 DebugLogger.LogDebug($"{e}", LogLevel.Debug);
-                
             }
 
             // StartTime = null;
             // EventTime = null;
-            CleanupFinished?.Invoke(Name);
+            try
+            {
+                CleanupFinished?.Invoke(Name);
+            }
+            catch (Exception e)
+            {
+                DebugLogger.LogDebug($"Caught an exception at Event.CleanupFinished.Invoke().", LogLevel.Warn, true);
+                DebugLogger.LogDebug($"{e}", LogLevel.Debug);
+            }
             AutoEvent.ActiveEvent = null;
+            try
+            {
+                // this._setRandomMap();
+                // this._setRandomSound();
+            }
+            catch (Exception e)
+            {
+                DebugLogger.LogDebug($"Caught an exception at Event._setMap.", LogLevel.Warn, true);
+                DebugLogger.LogDebug($"{e}", LogLevel.Debug);
+            }
 
         }
     #endregion

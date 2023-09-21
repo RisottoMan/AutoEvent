@@ -19,9 +19,12 @@ namespace AutoEvent.Games.Infection
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.InfectTranslate.ZombieDescription;
         public override string Author { get; set; } = "KoT0XleB";
         public override string CommandName { get; set; } = "zombie";
+        [EventConfig] public InfectConfig Config { get; set; }
         public MapInfo MapInfo { get; set; } = new MapInfo()
-            {MapName = AutoEvent.Singleton.Config.InfectConfig.ListOfMap.RandomItem(), Position = new Vector3(115.5f, 1030f, -43.5f), Rotation = Quaternion.identity };
-        public SoundInfo SoundInfo { get; set; }
+            { MapName = "Zombie", Position = new Vector3(115.5f, 1030f, -43.5f), MapRotation = Quaternion.identity };
+
+        public SoundInfo SoundInfo { get; set; } = new SoundInfo()
+            { SoundName = "Zombie.ogg", Volume = 7, Loop = true };
         protected override float PostRoundDelay { get; set; } = 10f;
         private EventHandler EventHandler { get; set; }
         private InfectTranslate Translation { get; set; }
@@ -30,13 +33,7 @@ namespace AutoEvent.Games.Infection
 
         public override void InstantiateEvent()
         {
-            var music = AutoEvent.Singleton.Config.InfectConfig.ListOfMusic.ToList().RandomItem();
-            SoundInfo = new SoundInfo()
-            {
-                SoundName = music.Key,
-                Volume = music.Value,
-                Loop = true
-            };
+           
         }
 
         protected override void RegisterEvents()
@@ -80,14 +77,6 @@ namespace AutoEvent.Games.Infection
                 case var n when (n > 30 && n <= 35): scale = 1.4f; break;
                 case var n when (n > 35): scale = 1.5f; break;
             }
-
-            foreach (Player player in Player.GetPlayers())
-            {
-                Extensions.SetRole(player, RoleTypeId.ClassD, RoleSpawnFlags.None);
-                player.Position = RandomPosition.GetSpawnPosition(MapInfo.Map);
-            }
-            Extensions.SetRole(Player.GetPlayers().RandomItem(), RoleTypeId.Scp0492, RoleSpawnFlags.None);
-            _stage = InfectionStage.Stage1;
         }
 
         protected override IEnumerator<float> BroadcastStartCountdown()
@@ -98,19 +87,35 @@ namespace AutoEvent.Games.Infection
                 yield return Timing.WaitForSeconds(1f);
             }
         }
+
+        protected override void CountdownFinished()
+        {
+            foreach (Player player in Player.GetPlayers())
+            {
+                player.GiveLoadout(Config.PlayerLoadouts);
+                //Extensions.SetRole(player, RoleTypeId.ClassD, RoleSpawnFlags.None);
+                player.Position = RandomPosition.GetSpawnPosition(MapInfo.Map);
+            }
+                //Extensions.SetRole(Player.GetPlayers().RandomItem(), RoleTypeId.Scp0492, RoleSpawnFlags.None);
+                Player.GetPlayers().RandomItem().GiveLoadout(Config.PlayerLoadouts);
+            _stage = InfectionStage.Stage1;
+        }
+
+        
         protected override bool IsRoundDone()
         {
+            var list = Config.PlayerLoadouts.Select(x => x.Roles.Keys).ToList();
             // Finished
             if (_stage == InfectionStage.Finished)
                 return true;
             // Last Player Dead.
-            if (Player.GetPlayers().Count(r => r.Role == RoleTypeId.ClassD) == 0)
+            if (Player.GetPlayers().Count(r => list.Any(x => x.Contains(r.Role)) ) == 0)
                 return true;
             // Last Player Alive.
             if (_stage == InfectionStage.LastPlayer)
                 return false;
             // Many Players Alive.
-            if (_stage == InfectionStage.Stage1 && Player.GetPlayers().Count(r => r.Role == RoleTypeId.ClassD) > 1)
+            if (_stage == InfectionStage.Stage1 && Player.GetPlayers().Count(r => list.Any(x => x.Contains(r.Role)) ) > 1)
                 return false;
             // Last Player Alive
             _stage = InfectionStage.LastPlayer;

@@ -12,10 +12,11 @@
 
 using System;
 using System.Linq;
+using AutoEvent.Interfaces;
 using PlayerRoles;
 using PluginAPI.Core;
 
-namespace AutoEvent.Interfaces;
+namespace AutoEvent.API;
 
 public static class EndConditions
 {

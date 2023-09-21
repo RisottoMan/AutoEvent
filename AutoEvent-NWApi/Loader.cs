@@ -65,7 +65,12 @@ public class Loader
     public static void LoadEvents()
     {
         Dictionary<Assembly, string> locations = new Dictionary<Assembly, string>();
-        foreach (string assemblyPath in Directory.GetFiles(Path.Combine(AutoEvent.BaseConfigPath, "Events"), "*.dll"))
+#if !EXILED
+        string filepath = AutoEvent.Singleton.Config.ExternalEventsDirectoryPath;
+#else
+        string filepath = Path.Combine(AutoEvent.BaseConfigPath, "Events");
+#endif
+        foreach (string assemblyPath in Directory.GetFiles(filepath, "*.dll"))
         {
             try
             {
@@ -106,13 +111,6 @@ public class Loader
 
                         if (eventPlugin is null)
                             continue;
-
-                        if (eventPlugin.UsesExiled && !isExiledPresent())
-                        {
-                            DebugLogger.LogDebug($"[ExternalEventLoader] Cannot register plugin {eventPlugin.Name} because it requires exiled to work. Exiled has not loaded yet, or is not present at all.",LogLevel.Warn, true);
-;
-                            continue;
-                        }
 
                         if (!eventPlugin.AutoLoad)
                         {
@@ -194,13 +192,19 @@ public class Loader
 
                         continue;
                     }
-
+                    
                     if (!IsDerivedFromPlugin(type))
                     {
                         DebugLogger.LogDebug(
                             $"[ExternalEventLoader] \"{type.FullName}\" does not inherit from Event, skipping.",
                             LogLevel.Debug);
 
+                        continue;
+                    }
+                    
+                    if(type.GetInterface(nameof(IExiledEvent)) is not null && !isExiledPresent())
+                    {
+                        DebugLogger.LogDebug($"[ExternalEventLoader] Cannot register plugin {type.Name} because it requires exiled to work. Exiled has not loaded yet, or is not present at all.",LogLevel.Warn, true);
                         continue;
                     }
 
