@@ -90,9 +90,16 @@ public sealed class CommentsObjectGraphVisitor : ChainedObjectGraphVisitor
         }
         SkipDefaultsCheck:
 
-        if (value is CommentsObjectDescriptor commentsDescriptor && commentsDescriptor.Comment is not null)
+        try
         {
-            context.Emit(new Comment(commentsDescriptor.Comment, false));
+            if (value is CommentsObjectDescriptor commentsDescriptor && commentsDescriptor.Comment is not null)
+            {
+                context.Emit(new Comment(commentsDescriptor.Comment, false));
+            }
+        }
+        catch (Exception e)
+        {
+            DebugLogger.LogDebug($"Cannot emit comment. \n {e}");
         }
 
         return base.EnterMapping(key, value, context);

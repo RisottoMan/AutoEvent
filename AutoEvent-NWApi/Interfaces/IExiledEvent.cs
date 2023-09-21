@@ -4,15 +4,18 @@
 // -----------------------------------------
 //    Solution:         AutoEvent
 //    Project:          AutoEvent
-//    FileName:         IInternalEvent.cs
+//    FileName:         IExiledEvent.cs
 //    Author:           Redforce04#4091
-//    Revision Date:    09/09/2023 1:48 PM
-//    Created Date:     09/09/2023 1:48 PM
+//    Revision Date:    09/21/2023 10:44 AM
+//    Created Date:     09/21/2023 10:44 AM
 // -----------------------------------------
 
 namespace AutoEvent.Interfaces;
 
-internal interface IInternalEvent
+/// <summary>
+/// Used to mark events as requiring exiled. It also provides important information to the event loader.
+/// </summary>
+public interface IExiledEvent
 {
     
 }

@@ -188,6 +188,7 @@
     <Compile Include="Configs\Tools\CommentGatheringTypeInspector.cs" />
     <Compile Include="Configs\Tools\CommentObjectGraphVisitor.cs" />
     <Compile Include="Configs\Tools\CommentPropertyDescriptor.cs" />
+    <Compile Include="Configs\Tools\CommentsObjectDescriptor.cs" />
     <Compile Include="Configs\Tools\TypeAssigningEventEmitter.cs" />
     <Compile Include="Configs\Tools\UnderscoredNamingConvention.cs" />
     <Compile Include="Configs\Tools\ValidatingNodeDeserializer.cs" />
@@ -331,6 +332,7 @@
     <Compile Include="Interfaces\IEvent.cs" />
     <Compile Include="Interfaces\IEventMap.cs" />
     <Compile Include="Interfaces\IEventSound.cs" />
+    <Compile Include="Interfaces\IExiledEvent.cs" />
     <Compile Include="Interfaces\IInternalEvent.cs" />
     <Compile Include="Interfaces\ITranslation.cs" />
     <Compile Include="Interfaces\MapInfo.cs" />

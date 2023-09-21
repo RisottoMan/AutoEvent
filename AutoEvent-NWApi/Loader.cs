@@ -66,9 +66,9 @@ public class Loader
     {
         Dictionary<Assembly, string> locations = new Dictionary<Assembly, string>();
 #if !EXILED
-        string filepath = Path.Combine(Paths.GlobalPlugins.Plugins, "Events");
+        string filepath = AutoEvent.Singleton.Config.ExternalEventsDirectoryPath;
 #else
-        string filepath = Path.Combine(Exiled.API.Features.Paths.Configs, "Events");
+        string filepath = Path.Combine(AutoEvent.BaseConfigPath, "Events");
 #endif
         foreach (string assemblyPath in Directory.GetFiles(filepath, "*.dll"))
         {
@@ -111,13 +111,6 @@ public class Loader
 
                         if (eventPlugin is null)
                             continue;
-
-                        if (eventPlugin.UsesExiled && !isExiledPresent())
-                        {
-                            DebugLogger.LogDebug($"[ExternalEventLoader] Cannot register plugin {eventPlugin.Name} because it requires exiled to work. Exiled has not loaded yet, or is not present at all.",LogLevel.Warn, true);
-;
-                            continue;
-                        }
 
                         if (!eventPlugin.AutoLoad)
                         {
@@ -199,13 +192,19 @@ public class Loader
 
                         continue;
                     }
-
+                    
                     if (!IsDerivedFromPlugin(type))
                     {
                         DebugLogger.LogDebug(
                             $"[ExternalEventLoader] \"{type.FullName}\" does not inherit from Event, skipping.",
                             LogLevel.Debug);
 
+                        continue;
+                    }
+                    
+                    if(type.GetInterface(nameof(IExiledEvent)) is not null && !isExiledPresent())
+                    {
+                        DebugLogger.LogDebug($"[ExternalEventLoader] Cannot register plugin {type.Name} because it requires exiled to work. Exiled has not loaded yet, or is not present at all.",LogLevel.Warn, true);
                         continue;
                     }
 

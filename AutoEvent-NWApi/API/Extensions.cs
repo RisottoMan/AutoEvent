@@ -239,7 +239,7 @@ namespace AutoEvent
 
             StopAudio();
 
-            var path = Path.Combine(Path.Combine(AutoEvent.BaseConfigPath, "Music"), audioFile);
+            var path = Path.Combine(AutoEvent.Singleton.Config.MusicDirectoryPath, audioFile);
 
             var audioPlayer = AudioPlayerBase.Get(AudioBot);
             audioPlayer.Enqueue(path, -1);

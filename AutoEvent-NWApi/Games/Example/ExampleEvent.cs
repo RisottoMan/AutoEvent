@@ -26,6 +26,8 @@ using Event = AutoEvent.Interfaces.Event;
 
 namespace AutoEvent.Games.Example
 {
+    // Do not use IInternalEvent on your events.
+    // It is only for the main events that are included with AutoEvent.
     public class ExampleEvent : Event, IEventMap, IEventSound, IInternalEvent
     {
 

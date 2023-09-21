@@ -41,10 +41,27 @@ namespace AutoEvent.Commands
             skipPermissionCheck:
 #endif
             StringBuilder builder = new StringBuilder();
-            builder.AppendLine("\"<color=yellow><b>List of events (when running an event, you are responsible for it)</color></b>:");
+            builder.AppendLine("\"<color=yellow><b>List of events</b></color>:");
 
             foreach (Event ev in Event.Events)
-                builder.AppendLine($"<color=yellow>[{ev.CommandName}]</color>: {ev.Description}");
+            {
+                string color = "white";
+                switch (ev)
+                {
+                    case IInternalEvent:
+                        color = "yellow";
+                        break;
+                    case IExiledEvent:
+                        color = "blue";
+                        break;
+                    default:
+                        color = "orange";
+                        break;
+                }
+                builder.AppendLine($"<color={color}>{ev.Name} [<color=white>{ev.CommandName}<color={color}>]</color>: {ev.Description}");
+            }
+            builder.AppendLine("\n<color=yellow>To run an event, use the [<i><color=white>Command Name<color=yellow></i>] like following:</color>");
+            builder.AppendLine("<color=yellow>Ev Run <i>CommandName</i></color>");
 
             response = builder.ToString();
             return true;

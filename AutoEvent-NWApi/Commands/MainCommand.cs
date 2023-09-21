@@ -4,7 +4,7 @@ using PluginAPI.Core;
 
 namespace AutoEvent.Commands
 {
-    /*[CommandHandler(typeof(RemoteAdminCommandHandler))]
+    [CommandHandler(typeof(RemoteAdminCommandHandler))]
     [CommandHandler(typeof(GameConsoleCommandHandler))]
     public class MainCommand : ParentCommand
     {
@@ -56,5 +56,5 @@ namespace AutoEvent.Commands
             return false;
         }
     }
-*/
+
 }

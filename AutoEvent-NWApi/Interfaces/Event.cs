@@ -134,9 +134,9 @@ namespace AutoEvent.Interfaces
         protected virtual float PostRoundDelay { get; set; } = 10f;
 
         /// <summary>
-        /// Does the plugin utilize Exiled in any way. This is used to prevent type load exceptions, if exiled isn't present.
+        /// Obsolete. Use <see cref="IExiledEvent"/> instead.
         /// </summary>
-        /// 
+        [Obsolete("This is no longer supported. Inherit IExiledEvent instead.")]
         public virtual bool UsesExiled { get; protected set; } = false;
         
         /// <summary>
@@ -339,7 +339,7 @@ namespace AutoEvent.Interfaces
 
     private string CreateConfigFolder()
     {
-        string path = Path.Combine(AutoEvent.BaseConfigPath, "Configs", this.Name);
+        string path = Path.Combine(AutoEvent.Singleton.Config.EventConfigsDirectoryPath, this.Name);
         AutoEvent.CreateDirectoryIfNotExists(path);
         AutoEvent.CreateDirectoryIfNotExists(Path.Combine(path, "Presets"));
         return path;

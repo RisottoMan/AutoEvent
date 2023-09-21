@@ -9,7 +9,7 @@
     {
         public static SchematicObjectDataList GetSchematicDataByName(string schematicName)
         {
-            string dirPath = Path.Combine(Path.Combine(AutoEvent.BaseConfigPath, "Schematics"), schematicName);
+            string dirPath = Path.Combine(AutoEvent.Singleton.Config.SchematicsDirectoryPath, schematicName);
             if (!Directory.Exists(dirPath))
                 return null;
 

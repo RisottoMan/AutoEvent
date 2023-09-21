@@ -50,10 +50,11 @@ public class Translations : ICommand
             return false;
         }
 #endif
-
+        
         skipPermissionCheck:
 
         response = $"Reloaded translations for all events.";
+        response = "This feature hasn't been implemented yet.";
         return true;
     }
 }
