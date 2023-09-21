@@ -9,18 +9,19 @@ using Exiled.Permissions.Extensions;
 
 namespace AutoEvent.Commands
 {
-    internal class RunEvent : ICommand
+    internal class Run : ICommand, IUsageProvider
     {
-        public string Command => "run";
+        public string Command => nameof(Run);
         public string Description => "Run the event, takes on 1 argument - the command name of the event.";
         public string[] Aliases => new []{ "start", "play", "begin" };
+        public string[] Usage => new string[] { "[Event Name]" };
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
             
 
 #if EXILED
-            if (!((CommandSender)sender).CheckPermission("ev.run"))
+            if (!sender.CheckPermission("ev.run"))
             {
                 response = "You do not have permission to use this command";
                 return false;
@@ -45,7 +46,7 @@ namespace AutoEvent.Commands
                 return false;
             }
 
-            if (arguments.Count != 1)
+            if (arguments.Count < 1)
             {
                 response = "Only 1 argument is needed - the command name of the event!";
                 return false;
@@ -58,13 +59,13 @@ namespace AutoEvent.Commands
                 return false;
             }
 
-            if (string.IsNullOrEmpty(ev.MapName))
+            if (!(ev is IEventMap map && !string.IsNullOrEmpty(map.MapInfo.MapName)))
             {
-                Log.Warning($"No map will be loaded!");
+                DebugLogger.LogDebug("No map has been specified for this event!", LogLevel.Warn, true);
             }
-            if (ev.MapName != "" && !Extensions.IsExistsMap(ev.MapName))
+            else if (!Extensions.IsExistsMap(map.MapInfo.MapName))
             {
-                response = $"<color=red>You need a map {ev.MapName} to run a mini-game.</color>";
+                response = $"<color=red>You need a map {map.MapInfo.MapName} to run a mini-game.</color>";
                 return false;
             }
 
@@ -81,13 +82,13 @@ namespace AutoEvent.Commands
                         player.ClearInventory();
                     }
 
-                    ev.OnStart();
+                    ev.StartEvent();
                     AutoEvent.ActiveEvent = ev;
                 });
             }
             else
             {
-                ev.OnStart();
+                ev.StartEvent();
                 AutoEvent.ActiveEvent = ev;
             }
 

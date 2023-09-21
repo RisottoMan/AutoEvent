@@ -1,8 +1,10 @@
-﻿using AutoEvent.Events.EventArgs;
+﻿using AutoEvent.API;
+using AutoEvent.Events.EventArgs;
 using AutoEvent.Events.Handlers;
 using HarmonyLib;
 using PlayerStatsSystem;
 using PluginAPI.Core;
+using UnityEngine;
 
 namespace AutoEvent.Patches
 {
@@ -16,6 +18,14 @@ namespace AutoEvent.Patches
             PlayerDyingArgs ev = new(player, handler);
             Players.OnPlayerDying(ev);
 
+            if (ev.IsAllowed)
+            {
+                var infAmmo = player.GameObject.GetComponent<InfiniteAmmoComponent>();
+                if (infAmmo is not null)
+                {
+                    Component.Destroy(infAmmo);
+                }
+            }
             return ev.IsAllowed;
         }
     }

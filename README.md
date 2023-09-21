@@ -13,6 +13,7 @@
 [![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/Message6.png)](https://discord.gg/Bu7ZsKsbjP)
 
 # Credits
+- **Redforce04** was here.
 - Thanks to **ART0022VI** for a little help in fixing plugins.
 - Thanks to **Alexander666** for the help at the initial stage of creating the plugin.
 - Thanks to **art15** for writing the command code to run the mini-game.

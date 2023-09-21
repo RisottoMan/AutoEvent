@@ -4,174 +4,222 @@ using PlayerRoles;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using AutoEvent.API.Enums;
 using UnityEngine;
 using PluginAPI.Core;
 using PluginAPI.Events;
 using AutoEvent.Events.Handlers;
+using AutoEvent.Games.Infection;
+using AutoEvent.Interfaces;
+using MapGeneration.Distributors;
 using Event = AutoEvent.Interfaces.Event;
 
 namespace AutoEvent.Games.Jail
 {
-    public class Plugin : Event
+    public class Plugin : Event, IEventMap, IInternalEvent
     {
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.JailTranslate.JailName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.JailTranslate.JailDescription;
         public override string Author { get; set; } = "KoT0XleB";
-        public override string MapName { get; set; } = "Jail";
         public override string CommandName { get; set; } = "jail";
-        public SchematicObject GameMap { get; set; }
-        public GameObject Button { get; set; }
-        public GameObject PrisonerDoors { get; set; }
-        TimeSpan EventTime { get; set; }
-        List<GameObject> Doors { get; set; }
-        GameObject Ball { get; set; }
-        EventHandler _eventHandler { get; set; }
+        [EventConfig]
+        public JailConfig Config { get; set; }
+        public MapInfo MapInfo { get; set; } = new MapInfo()
+            {MapName = "Jail", Position = new Vector3(90f, 1030f, -43.5f), };
+        protected override float FrameDelayInSeconds { get; set; } = 0.5f;
+        protected override float PostRoundDelay { get; set; } = 10f;
+        private EventHandler EventHandler { get; set; }
+        private JailTranslate Translation { get; set; }
+        internal GameObject Button { get; private set; }
+        internal GameObject PrisonerDoors { get; private set; }
+        internal Locker WeaponLocker { get; private set; }
+        internal Locker Medical { get; private set; }
+        internal Locker Adrenaline { get; private set; }
+        private List<GameObject> _doors;
+        private GameObject _ball;
 
-        public override void OnStart()
+        protected override void RegisterEvents()
         {
-            _eventHandler = new EventHandler(this);
-            EventManager.RegisterEvents(_eventHandler);
-            Servers.TeamRespawn += _eventHandler.OnTeamRespawn;
-            Players.LockerInteract += _eventHandler.OnLockerInteract;
-
-            OnWaitingEvent();
-        }
-        public override void OnStop()
-        {
-            EventManager.UnregisterEvents(_eventHandler);
-            Servers.TeamRespawn -= _eventHandler.OnTeamRespawn;
-            Players.LockerInteract -= _eventHandler.OnLockerInteract;
-
-            _eventHandler = null;
-            Timing.CallDelayed(10f, () => EventEnd());
+            Translation = new JailTranslate();
+            EventHandler = new EventHandler(this);
+            EventManager.RegisterEvents(EventHandler);
+            Servers.TeamRespawn += EventHandler.OnTeamRespawn;
+            Players.LockerInteract += EventHandler.OnLockerInteract;
         }
 
-        public void OnWaitingEvent()
+        protected override void UnregisterEvents()
         {
-            var config = AutoEvent.Singleton.Config;
+            EventManager.UnregisterEvents(EventHandler);
+            Servers.TeamRespawn -= EventHandler.OnTeamRespawn;
+            Players.LockerInteract -= EventHandler.OnLockerInteract;
 
-            GameMap = Extensions.LoadMap(MapName, new Vector3(90f, 1030f, -43.5f), Quaternion.Euler(Vector3.zero), Vector3.one);
+            EventHandler = null;
+        }
+
+        protected override void OnStart()
+        {
             Server.FriendlyFire = true;
 
-            Doors = new List<GameObject>();
+            _doors = new List<GameObject>();
 
-            foreach (var obj in GameMap.AttachedBlocks)
+            foreach (var obj in MapInfo.Map.AttachedBlocks)
             {
-                switch(obj.name)
+                try
                 {
-                    case "Button": { Button = obj; } break;
-                    case "Ball":
+
+                    switch (obj.name)
+                    {
+                        case "Button":
                         {
-                            Ball = obj;
-                            Ball.AddComponent<BallComponent>();
+                            Button = obj;
                         }
-                        break;
-                    case "Door":
+                            break;
+                        case "Ball":
+                        {
+                            _ball = obj;
+                            _ball.AddComponent<BallComponent>();
+                        }
+                            break;
+                        case "Door":
                         {
                             obj.AddComponent<DoorComponent>();
-                            Doors.Add(obj);
+                            _doors.Add(obj);
                         }
-                        break;
-                    case "PrisonerDoors":
+                            break;
+                        case "PrisonerDoors":
                         {
                             PrisonerDoors = obj;
                             PrisonerDoors.AddComponent<JailerComponent>();
                         }
-                        break;
+                            break;
+                        case "RifleRack":
+                        {
+                            var locker = obj.GetComponent<Locker>();
+                            if (locker is not null)
+                            {
+                                WeaponLocker = locker;
+                            }
+
+                            break;
+                        }
+                        case "CabinetMedkit":
+                        {
+                            Locker medical = obj.GetComponent<Locker>();
+                            if (medical is not null)
+                            {
+                                Medical = medical;
+                            }
+                        }
+                            break;
+                        case "CabinetAdrenaline":
+                        {
+                            Locker adrenaline = obj.GetComponent<Locker>();
+                            if (adrenaline is not null)
+                            {
+                                Adrenaline = adrenaline;
+                            }
+                        }
+                            break;
+                    }
                 }
+                catch (Exception e)
+                {
+                    DebugLogger.LogDebug($"An error has occured at JailPlugin.OnStart()", LogLevel.Warn, true);
+                    DebugLogger.LogDebug($"{e}", LogLevel.Debug);
+                }
+
             }
 
-            // Need add check permission
+            // todo Need add check permission
 
             foreach (Player player in Player.GetPlayers())
             {
                 if (Player.GetPlayers().Count(r => r.Team == Team.FoundationForces) < 2) // 0
                 {
-                    Extensions.SetRole(player, RoleTypeId.NtfCaptain, RoleSpawnFlags.None);
-                    player.Position = JailRandom.GetRandomPosition(GameMap, true);
-                    player.AddItem(ItemType.GunE11SR);
-                    player.AddItem(ItemType.GunCOM18);
+                    player.GiveLoadout(Config.JailorLoadouts, LoadoutFlags.IgnoreWeapons );
+                    // Extensions.SetRole(player, RoleTypeId.NtfCaptain, RoleSpawnFlags.None);
+                    player.Position = JailRandom.GetRandomPosition(MapInfo.Map, true);
+                    // player.AddItem(ItemType.GunE11SR);
+                    // player.AddItem(ItemType.GunCOM18);
                 }
                 else if (player.Role != RoleTypeId.NtfCaptain)
                 {
-                    Extensions.SetRole(player, RoleTypeId.ClassD, RoleSpawnFlags.None);
-                    player.Position = JailRandom.GetRandomPosition(GameMap, false);
+                    player.GiveLoadout(Config.PrisonerLoadouts);
+                    // Extensions.SetRole(player, RoleTypeId.ClassD, RoleSpawnFlags.None);
+                    player.Position = JailRandom.GetRandomPosition(MapInfo.Map, false);
                 }
             }
             
-            Timing.RunCoroutine(OnEventRunning(), "jail_run");
         }
 
-        public IEnumerator<float> OnEventRunning()
+        protected override IEnumerator<float> BroadcastStartCountdown()
         {
-            EventTime = new TimeSpan(0, 0, 0);
-            var translation = AutoEvent.Singleton.Translation.JailTranslate;
-
             for (int time = 15; time > 0; time--)
             {
-                Extensions.Broadcast(translation.JailBeforeStart.Replace("{name}", Name).Replace("{time}", time.ToString()), 1);
+                Extensions.Broadcast(Translation.JailBeforeStart.Replace("{name}", Name).Replace("{time}", time.ToString()), 1);
                 yield return Timing.WaitForSeconds(1f);
             }
+        }
 
-            while (Player.GetPlayers().Count(r => r.Role == RoleTypeId.ClassD) > 0 && Player.GetPlayers().Count(r => r.Team == Team.FoundationForces) > 0)
+        protected override bool IsRoundDone()
+        {
+            // At least one NTF is alive &&
+            // At least one Class D is alive
+            return !(Player.GetPlayers().Count(r => r.Role == RoleTypeId.ClassD) > 0 &&
+                   Player.GetPlayers().Count(r => r.Team == Team.FoundationForces) > 0);
+        }
+
+        protected override void ProcessFrame()
+        {
+            string dClassCount = Player.GetPlayers().Count(r => r.Role == RoleTypeId.ClassD).ToString();
+            string mtfCount = Player.GetPlayers().Count(r => r.Team == Team.FoundationForces).ToString();
+            string time = $"{EventTime.Minutes:00}:{EventTime.Seconds:00}";
+
+            foreach (Player player in Player.GetPlayers())
             {
-                string dClassCount = Player.GetPlayers().Count(r => r.Role == RoleTypeId.ClassD).ToString();
-                string mtfCount = Player.GetPlayers().Count(r => r.Team == Team.FoundationForces).ToString();
-                string time = $"{EventTime.Minutes}:{EventTime.Seconds}";
-
-                foreach(Player player in Player.GetPlayers())
+                if (Vector3.Distance(_ball.transform.position, player.Position) < 2)
                 {
-                    if (Vector3.Distance(Ball.transform.position, player.Position) < 2)
-                    {
-                        Ball.gameObject.TryGetComponent<Rigidbody>(out Rigidbody rig);
-                        rig.AddForce(player.GameObject.transform.forward + new Vector3(0, 0.1f, 0), ForceMode.Impulse);
-                    }
-
-                    player.ClearBroadcasts();
-                    player.SendBroadcast(translation.JailCycle.Replace("{name}", Name).
-                        Replace("{dclasscount}", dClassCount).
-                        Replace("{mtfcount}", mtfCount).
-                        Replace("{time}", time), 1);
+                    _ball.gameObject.TryGetComponent<Rigidbody>(out Rigidbody rig);
+                    rig.AddForce(player.GameObject.transform.forward + new Vector3(0, 0.1f, 0), ForceMode.Impulse);
                 }
 
-                foreach (var doorComponent in Doors)
-                {
-                    var doorTransform = doorComponent.transform;
-
-                    foreach (Player player in Player.GetPlayers())
-                    {
-                        if (Vector3.Distance(doorTransform.position, player.Position) < 3)
-                        {
-                            doorComponent.GetComponent<DoorComponent>().Open();
-                        }
-                    }
-                }
-
-                yield return Timing.WaitForSeconds(0.5f);
-                EventTime += TimeSpan.FromSeconds(0.5f);
+                player.ClearBroadcasts();
+                player.SendBroadcast(
+                    Translation.JailCycle.Replace("{name}", Name).Replace("{dclasscount}", dClassCount)
+                        .Replace("{mtfcount}", mtfCount).Replace("{time}", time), 1);
             }
 
+            foreach (var doorComponent in _doors)
+            {
+                var doorTransform = doorComponent.transform;
+
+                foreach (Player player in Player.GetPlayers())
+                {
+                    if (Vector3.Distance(doorTransform.position, player.Position) < 3)
+                    {
+                        doorComponent.GetComponent<DoorComponent>().Open();
+                    }
+                }
+            }
+        }
+
+        protected override void OnFinished()
+        {
             if (Player.GetPlayers().Count(r => r.Team == Team.FoundationForces) == 0)
             {
-                Extensions.Broadcast(translation.JailPrisonersWin.Replace("{time}", $"{EventTime.Minutes}:{EventTime.Seconds}"), 10);
+                Extensions.Broadcast(Translation.JailPrisonersWin.Replace("{time}", $"{EventTime.Minutes:00}:{EventTime.Seconds:00}"), 10);
             }
 
             if (Player.GetPlayers().Count(r => r.Role == RoleTypeId.ClassD) == 0)
             {
-                Extensions.Broadcast(translation.JailJailersWin.Replace("{time}", $"{EventTime.Minutes}:{EventTime.Seconds}"), 10);
-            }
+                Extensions.Broadcast(Translation.JailJailersWin.Replace("{time}", $"{EventTime.Minutes:00}:{EventTime.Seconds:00}"), 10);
+            }   
+        }
 
-            OnStop();
-            yield break;
-        }
-        public void EventEnd()
+        protected override void OnCleanup()
         {
-            Server.FriendlyFire = false;
-            Extensions.CleanUpAll();
-            Extensions.TeleportEnd();
-            Extensions.UnLoadMap(GameMap);
-            Extensions.StopAudio();
-            AutoEvent.ActiveEvent = null;
+            Server.FriendlyFire = AutoEvent.IsFriendlyFireEnabledByDefault;
         }
+
     }
 }

@@ -4,10 +4,10 @@
 // -----------------------------------------
 //    Solution:         AutoEvent
 //    Project:          AutoEvent
-//    FileName:         ReloadEventsCommand.cs
+//    FileName:         ReloadEvents.cs
 //    Author:           Redforce04#4091
-//    Revision Date:    09/03/2023 7:44 PM
-//    Created Date:     09/03/2023 7:44 PM
+//    Revision Date:    09/13/2023 4:29 PM
+//    Created Date:     09/13/2023 4:29 PM
 // -----------------------------------------
 
 using System;
@@ -17,14 +17,18 @@ using AutoEvent.Interfaces;
 using CommandSystem;
 using PluginAPI.Core;
 #if EXILED
+using Exiled.API.Features;
 using Exiled.Permissions.Extensions;
 #endif
+namespace AutoEvent.Commands.Reload;
 
-namespace AutoEvent.Commands;
-
-public class Reload : ICommand
+public class Events : ICommand
 {
-    public bool Execute(ArraySegment<string> arguments, ICommandSender sender, [UnscopedRef] out string response)
+    public string Command => nameof(Events);
+    public string[] Aliases => Array.Empty<string>();
+    public string Description => "Reloads all events";
+
+    public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
     {
 
 #if EXILED
@@ -36,35 +40,32 @@ public class Reload : ICommand
 #else
         var config = AutoEvent.Singleton.Config;
         var player = Player.Get(sender);
-            if (sender is ServerConsoleSender || sender is CommandSender cmdSender && cmdSender.FullPermissions)
-            {
-                goto skipPermissionCheck;
-            }
-            if (!config.PermissionList.Contains(ServerStatic.PermissionsHandler._members[player.UserId]))
-            {
-                response = "<color=red>You do not have permission to use this command!</color>";
-                return false;
-            }
-#endif     
+        if (sender is ServerConsoleSender || sender is CommandSender cmdSender && cmdSender.FullPermissions)
+        {
+            goto skipPermissionCheck;
+        }
+
+        if (!config.PermissionList.Contains(ServerStatic.PermissionsHandler._members[player.UserId]))
+        {
+            response = "<color=red>You do not have permission to use this command!</color>";
+            return false;
+        }
+#endif
 
         skipPermissionCheck:
 
         if (AutoEvent.ActiveEvent != null)
         {
-            response = $"<color=red>The mini-game {AutoEvent.ActiveEvent.Name} is currently running!</color>";
+            response = $"<color=red>The mini-game {AutoEvent.ActiveEvent.Name} is currently running! Cannot reload during an event!</color>";
             return false;
         }
 
         Event.Events = new List<Event>();
-        Event.RegisterEvents();
+        Event.RegisterInternalEvents();
         Loader.LoadEvents();
         Event.Events.AddRange(Loader.Events);
-        
+
         response = $"Reloaded Events. {Event.Events.Count} events have been found.";
         return true;
     }
-
-    public string Command { get; } = "Reload";
-    public string[] Aliases { get; } = Array.Empty<string>();
-    public string Description { get; } = "Reloads events.";
 }

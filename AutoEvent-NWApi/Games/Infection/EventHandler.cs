@@ -29,7 +29,8 @@ namespace AutoEvent.Games.Infection
             {
                 if (ev.Attacker.Role == RoleTypeId.Scp0492)
                 {
-                    ev.Target.SetRole(RoleTypeId.Scp0492);
+                    // ev.Target.SetRole(RoleTypeId.Scp0492);
+                    ev.Target.GiveLoadout(_plugin.Config.ZombieLoadouts);
                     ev.Attacker.ReceiveHitMarker();
                 }
             }
@@ -40,13 +41,15 @@ namespace AutoEvent.Games.Infection
         {
             if (Player.GetPlayers().Count(r => r.Role == RoleTypeId.Scp0492) > 0)
             {
-                Extensions.SetRole(ev.Player, RoleTypeId.Scp0492, RoleSpawnFlags.AssignInventory);
-                ev.Player.Position = RandomPosition.GetSpawnPosition(_plugin.GameMap);
+                //Extensions.SetRole(ev.Player, RoleTypeId.Scp0492, RoleSpawnFlags.AssignInventory);
+                ev.Player.GiveLoadout(_plugin.Config.ZombieLoadouts);
+                ev.Player.Position = RandomPosition.GetSpawnPosition(_plugin.MapInfo.Map);
             }
             else
             {
-                Extensions.SetRole(ev.Player, RoleTypeId.ClassD, RoleSpawnFlags.None);
-                ev.Player.Position = RandomPosition.GetSpawnPosition(_plugin.GameMap);
+                ev.Player.GiveLoadout(_plugin.Config.PlayerLoadouts);
+                // Extensions.SetRole(ev.Player, RoleTypeId.ClassD, RoleSpawnFlags.None);
+                ev.Player.Position = RandomPosition.GetSpawnPosition(_plugin.MapInfo.Map);
             }
         }
 
@@ -55,8 +58,9 @@ namespace AutoEvent.Games.Infection
         {
             Timing.CallDelayed(2f, () =>
             {
-                Extensions.SetRole(ev.Player, RoleTypeId.Scp0492, RoleSpawnFlags.AssignInventory);
-                ev.Player.Position = RandomPosition.GetSpawnPosition(_plugin.GameMap);
+                ev.Player.GiveLoadout(_plugin.Config.ZombieLoadouts);
+                //Extensions.SetRole(ev.Player, RoleTypeId.Scp0492, RoleSpawnFlags.AssignInventory);
+                ev.Player.Position = RandomPosition.GetSpawnPosition(_plugin.MapInfo.Map);
             });
         }
 

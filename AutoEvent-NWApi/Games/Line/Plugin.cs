@@ -7,83 +7,86 @@ using PluginAPI.Events;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using AutoEvent.Games.Infection;
+using AutoEvent.Interfaces;
 using UnityEngine;
 using Event = AutoEvent.Interfaces.Event;
 using Player = PluginAPI.Core.Player;
 
 namespace AutoEvent.Games.Line
 {
-    public class Plugin : Event
+    public class Plugin : Event, IEventSound, IEventMap, IInternalEvent
     {
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.LineTranslate.LineName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.LineTranslate.LineDescription;
         public override string Author { get; set; } = "Logic_Gun";
-        public override string MapName { get; set; } = "Line";
         public override string CommandName { get; set; } = "line";
-        public static SchematicObject GameMap { get; set; }
-        public Dictionary<int, SchematicObject> HardGameMap { get; set; }
-        public TimeSpan EventTime { get; set; }
-        EventHandler _eventHandler { get; set; }
-        int HardCounts { get; set; }
-        int HardCountsLimit { get; set; } = 8;
+        [EventConfig]
+        public LineConfig Config { get; set; }
+        public MapInfo MapInfo { get; set; } = new MapInfo()
+            {MapName = "Line", Position = new Vector3(76f, 1026.5f, -43.68f), };
+        public SoundInfo SoundInfo { get; set; } = new SoundInfo()
+            { SoundName = "LineLite.ogg", Volume = 10, Loop = true };
+        protected override float PostRoundDelay { get; set; } = 10f;
+        private EventHandler EventHandler { get; set; }
+        private LineTranslate Translation { get; set; }
+        private readonly int _hardCountsLimit = 8;
+        private Dictionary<int, SchematicObject> _hardGameMap;
+        private TimeSpan _timeRemaining;
+        private int _hardCounts;
 
-        public override void OnStart()
+        protected override void RegisterEvents()
         {
-            _eventHandler = new EventHandler();
-            EventManager.RegisterEvents(_eventHandler);
-            Servers.TeamRespawn += _eventHandler.OnTeamRespawn;
-            Servers.SpawnRagdoll += _eventHandler.OnSpawnRagdoll;
-            Servers.PlaceBullet += _eventHandler.OnPlaceBullet;
-            Servers.PlaceBlood += _eventHandler.OnPlaceBlood;
-            Players.DropItem += _eventHandler.OnDropItem;
-            Players.DropAmmo += _eventHandler.OnDropAmmo;
-
-            OnEventStarted();
-        }
-        public override void OnStop()
-        {
-            EventManager.UnregisterEvents(_eventHandler);
-            Servers.TeamRespawn -= _eventHandler.OnTeamRespawn;
-            Servers.SpawnRagdoll -= _eventHandler.OnSpawnRagdoll;
-            Servers.PlaceBullet -= _eventHandler.OnPlaceBullet;
-            Servers.PlaceBlood -= _eventHandler.OnPlaceBlood;
-            Players.DropItem -= _eventHandler.OnDropItem;
-            Players.DropAmmo -= _eventHandler.OnDropAmmo;
-
-            _eventHandler = null;
-            Timing.CallDelayed(10f, () => EventEnd());
+            Translation = new LineTranslate();
+            EventHandler = new EventHandler();
+            EventManager.RegisterEvents(EventHandler);
+            Servers.TeamRespawn += EventHandler.OnTeamRespawn;
+            Servers.SpawnRagdoll += EventHandler.OnSpawnRagdoll;
+            Servers.PlaceBullet += EventHandler.OnPlaceBullet;
+            Servers.PlaceBlood += EventHandler.OnPlaceBlood;
+            Players.DropItem += EventHandler.OnDropItem;
+            Players.DropAmmo += EventHandler.OnDropAmmo; 
         }
 
-        public void OnEventStarted()
+        protected override void UnregisterEvents()
         {
-            HardGameMap = new Dictionary<int, SchematicObject>();
-            HardCounts = 0;
-            EventTime = TimeSpan.FromMinutes(2f);
+            EventManager.UnregisterEvents(EventHandler);
+            Servers.TeamRespawn -= EventHandler.OnTeamRespawn;
+            Servers.SpawnRagdoll -= EventHandler.OnSpawnRagdoll;
+            Servers.PlaceBullet -= EventHandler.OnPlaceBullet;
+            Servers.PlaceBlood -= EventHandler.OnPlaceBlood;
+            Players.DropItem -= EventHandler.OnDropItem;
+            Players.DropAmmo -= EventHandler.OnDropAmmo;
 
-            GameMap = Extensions.LoadMap(MapName, new Vector3(76f, 1026.5f, -43.68f), Quaternion.Euler(Vector3.zero), Vector3.one);
+            EventHandler = null;
+        }
 
-            Extensions.PlayAudio("LineLite.ogg", 10, true, Name);
-
+        protected override void OnStart()
+        {
+            _timeRemaining = new TimeSpan(0, 2, 0);
+            _hardGameMap = new Dictionary<int, SchematicObject>();
+            _hardCounts = 0;
+            
             foreach (Player player in Player.GetPlayers())
             {
-                Extensions.SetRole(player, RoleTypeId.ClassD, RoleSpawnFlags.None);
-                player.Position = GameMap.AttachedBlocks.First(x => x.name == "SpawnPoint").transform.position;
+                player.GiveLoadout(Config.Loadouts);
+                player.Position = MapInfo.Map.AttachedBlocks.First(x => x.name == "SpawnPoint").transform.position;
             }
 
-            Timing.RunCoroutine(OnEventRunning(), "line_run");
         }
 
-        public IEnumerator<float> OnEventRunning()
+        protected override IEnumerator<float> BroadcastStartCountdown()
         {
-            var translation = AutoEvent.Singleton.Translation.LineTranslate;
-
             for (int time = 10; time > 0; time--)
             {
                 Extensions.Broadcast($"{time}", 1);
                 yield return Timing.WaitForSeconds(1f);
             }
+        }
 
-            foreach (var block in GameMap.AttachedBlocks)
+        protected override void CountdownFinished()
+        {
+            foreach (var block in MapInfo.Map.AttachedBlocks)
             {
                 switch (block.name)
                 {
@@ -93,70 +96,72 @@ namespace AutoEvent.Games.Line
                     case "Shield": GameObject.Destroy(block); break;
                 }
             }
+        }
 
-            while (Player.GetPlayers().Count(r => r.Role == RoleTypeId.ClassD) > 1 && EventTime.TotalSeconds > 0)
+        protected override void ProcessFrame()
+        {
+            Extensions.Broadcast(Translation.LineCycle.Replace("%name%", Name).
+                Replace("%min%", $"{_timeRemaining.Minutes:00}").
+                Replace("%sec%", $"{_timeRemaining.Seconds:00}").
+                Replace("%count%", $"{Player.GetPlayers().Count(r => r.Role == RoleTypeId.ClassD)}"), 10);
+
+            if (EventTime.Seconds == 30 && _hardCounts < _hardCountsLimit)
             {
-                Extensions.Broadcast(translation.LineCycle.Replace("%name%", Name).
-                    Replace("%min%", $"{EventTime.Minutes}").
-                    Replace("%sec%", $"{EventTime.Seconds}").
-                    Replace("%count%", $"{Player.GetPlayers().Count(r => r.Role == RoleTypeId.ClassD)}"), 10);
-
-                if (EventTime.Seconds == 30 && HardCounts < HardCountsLimit)
+                if (_hardCounts == 0)
                 {
-                    if (HardCounts == 0)
-                    {
-                        Extensions.StopAudio();
-                        Extensions.PlayAudio("LineHard.ogg", 10, true, Name);
-                    }
-
-                    try
-                    {
-                        var map_hard = Extensions.LoadMap("HardLine", new Vector3(76f, 1026.5f, -43.68f), Quaternion.Euler(Vector3.zero), Vector3.one);
-                        HardGameMap.Add(HardCounts, map_hard);
-                    }
-                    catch(Exception ex)
-                    {
-                        Log.Info($"{ex}");
-                    }
-
-                    HardCounts++;
+                    Extensions.StopAudio();
+                    Extensions.PlayAudio("LineHard.ogg", 10, true, Name);
                 }
 
-                EventTime -= TimeSpan.FromSeconds(1f);
-                yield return Timing.WaitForSeconds(1f);
-            }    
+                try
+                {
+                    var map_hard = Extensions.LoadMap("HardLine", new Vector3(76f, 1026.5f, -43.68f), Quaternion.Euler(Vector3.zero), Vector3.one);
+                    _hardGameMap.Add(_hardCounts, map_hard);
+                }
+                catch(Exception ex)
+                {
+                    DebugLogger.LogDebug($"An error has occured while processing frame.", LogLevel.Warn, true);
+                    DebugLogger.LogDebug($"{ex}", LogLevel.Debug);
 
+                }
+
+                _hardCounts++;
+            }
+            _timeRemaining -= TimeSpan.FromSeconds(FrameDelayInSeconds);
+        }
+
+        protected override bool IsRoundDone()
+        {
+            // At least 2 players &&
+            // Time is smaller than 2 minutes (+countdown)
+            return !(Player.GetPlayers().Count(r => r.Role == RoleTypeId.ClassD) > 1 && EventTime.TotalSeconds < 120+10);
+        }
+
+        protected override void OnFinished()
+        {
             if (Player.GetPlayers().Count(r => r.Role == RoleTypeId.ClassD) > 1)
             {
-                Extensions.Broadcast(translation.LineMorePlayers.
+                Extensions.Broadcast(Translation.LineMorePlayers.
                     Replace("%name%", Name).
                     Replace("%count%", $"{Player.GetPlayers().Count(r => r.Role == RoleTypeId.ClassD)}"), 10);
             }
             else if (Player.GetPlayers().Count(r => r.Role == RoleTypeId.ClassD) == 1)
             {
-                Extensions.Broadcast(translation.LineWinner.
+                Extensions.Broadcast(Translation.LineWinner.
                     Replace("%name%", Name).
                     Replace("%winner%", Player.GetPlayers().First(r => r.Role == RoleTypeId.ClassD).Nickname), 10);
             }
             else
             {
-                Extensions.Broadcast(translation.LineAllDied, 10);
+                Extensions.Broadcast(Translation.LineAllDied, 10);
             }
-
-            OnStop();
-            yield break;
         }
 
-        public void EventEnd()
+        protected override void OnCleanup()
         {
-            foreach (var map in HardGameMap.Values) 
+            foreach (var map in _hardGameMap.Values)
                 Extensions.UnLoadMap(map);
-
-            Extensions.CleanUpAll();
-            Extensions.TeleportEnd();
-            Extensions.UnLoadMap(GameMap);
-            Extensions.StopAudio();
-            AutoEvent.ActiveEvent = null;
         }
+        
     }
 }

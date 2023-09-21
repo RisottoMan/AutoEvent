@@ -6,116 +6,149 @@ using PluginAPI.Events;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using AdminToys;
 using UnityEngine;
 using AutoEvent.Events.Handlers;
+using AutoEvent.Games.Infection;
+using AutoEvent.Interfaces;
 using Event = AutoEvent.Interfaces.Event;
 
 namespace AutoEvent.Games.FallDown
 {
-    public class Plugin : Event
+    public class Plugin : Event, IEventSound, IEventMap, IInternalEvent
     {
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.FallTranslate.FallName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.FallTranslate.FallDescription;
         public override string Author { get; set; } = "KoT0XleB";
-        public override string MapName { get; set; } = "FallDown";
+        [EventConfig] public FallDownConfig Config { get; set; } = null;
+        public MapInfo MapInfo { get; set; } = new MapInfo()
+            {MapName = "FallDown", Position = new Vector3(10f, 1020f, -43.68f) };
+        public SoundInfo SoundInfo { get; set; } = new SoundInfo()
+            { SoundName = "Puzzle.ogg", Volume = 15, Loop = true };
         public override string CommandName { get; set; } = "fall";
-        public static SchematicObject GameMap { get; set; }
-        TimeSpan EventTime { get; set; }
-        EventHandler _eventHandler { get; set; }
-        GameObject Lava { get; set; }
+        protected override float FrameDelayInSeconds { get; set; } = 0.9f;
+        protected override float PostRoundDelay { get; set; } = 10f;
+        private EventHandler EventHandler { get; set; }
+        private FallTranslate Translation { get; set; }
+        private int _platformId { get; set; }
+        private List<GameObject> _platforms;
+        private GameObject _lava;
+        private bool _noPlatformsRemainingWarning;
 
-        public override void OnStart()
+        protected override void RegisterEvents()
         {
-            _eventHandler = new EventHandler();
-            EventManager.RegisterEvents(_eventHandler);
-            Servers.TeamRespawn += _eventHandler.OnTeamRespawn;
-            Servers.SpawnRagdoll += _eventHandler.OnSpawnRagdoll;
-            Servers.PlaceBullet += _eventHandler.OnPlaceBullet;
-            Servers.PlaceBlood += _eventHandler.OnPlaceBlood;
-            Players.DropItem += _eventHandler.OnDropItem;
-            Players.DropAmmo += _eventHandler.OnDropAmmo;
-
-            OnEventStarted();
-        }
-        public override void OnStop()
-        {
-            EventManager.UnregisterEvents(_eventHandler);
-            Servers.TeamRespawn -= _eventHandler.OnTeamRespawn;
-            Servers.SpawnRagdoll -= _eventHandler.OnSpawnRagdoll;
-            Servers.PlaceBullet -= _eventHandler.OnPlaceBullet;
-            Servers.PlaceBlood -= _eventHandler.OnPlaceBlood;
-            Players.DropItem -= _eventHandler.OnDropItem;
-            Players.DropAmmo -= _eventHandler.OnDropAmmo;
-
-            _eventHandler = null;
-            Timing.CallDelayed(10f, () => EventEnd());
+            Translation = new FallTranslate();
+            EventHandler = new EventHandler();
+            EventManager.RegisterEvents(EventHandler);
+            Servers.TeamRespawn += EventHandler.OnTeamRespawn;
+            Servers.SpawnRagdoll += EventHandler.OnSpawnRagdoll;
+            Servers.PlaceBullet += EventHandler.OnPlaceBullet;
+            Servers.PlaceBlood += EventHandler.OnPlaceBlood;
+            Players.DropItem += EventHandler.OnDropItem;
+            Players.DropAmmo += EventHandler.OnDropAmmo;
         }
 
-        public void OnEventStarted()
+        protected override void UnregisterEvents()
         {
-            EventTime = new TimeSpan(0, 0, 0);
-            GameMap = Extensions.LoadMap(MapName, new Vector3(10f, 1020f, -43.68f), Quaternion.Euler(Vector3.zero), Vector3.one);
-            Extensions.PlayAudio("Puzzle.ogg", 15, true, Name);
+            EventManager.UnregisterEvents(EventHandler);
+            Servers.TeamRespawn -= EventHandler.OnTeamRespawn;
+            Servers.SpawnRagdoll -= EventHandler.OnSpawnRagdoll;
+            Servers.PlaceBullet -= EventHandler.OnPlaceBullet;
+            Servers.PlaceBlood -= EventHandler.OnPlaceBlood;
+            Players.DropItem -= EventHandler.OnDropItem;
+            Players.DropAmmo -= EventHandler.OnDropAmmo;
 
+            EventHandler = null;
+        }
+
+        protected override void OnStart()
+        {
+            _noPlatformsRemainingWarning = true;
             foreach (Player player in Player.GetPlayers())
             {
                 Extensions.SetRole(player, RoleTypeId.ClassD, RoleSpawnFlags.None);
-                player.Position = RandomPosition.GetSpawnPosition(GameMap);
+                player.Position = RandomPosition.GetSpawnPosition(MapInfo.Map);
             }
 
-            Lava = GameMap.AttachedBlocks.First(x => x.name == "Lava");
-            Lava.AddComponent<LavaComponent>();
-
-            Timing.RunCoroutine(OnEventRunning(), "fall_run");
+            _lava = MapInfo.Map.AttachedBlocks.First(x => x.name == "Lava");
+            _lava.AddComponent<LavaComponent>();
         }
 
-        public IEnumerator<float> OnEventRunning()
+        protected override IEnumerator<float> BroadcastStartCountdown()
         {
-            var translation = AutoEvent.Singleton.Translation.FallTranslate;
-
             for (float time = 15; time > 0; time--)
             {
                 Extensions.Broadcast($"{time}", 1);
                 yield return Timing.WaitForSeconds(1f);
             }
+        }
 
-            List<GameObject> platformes = GameMap.AttachedBlocks.Where(x => x.name == "Platform").ToList();
-            GameObject.Destroy(GameMap.AttachedBlocks.First(x => x.name == "Wall"));
-
-            while (Player.GetPlayers().Count(r => r.IsAlive) > 1 && platformes.Count > 1)
+        protected override void CountdownFinished()
+        {
+            _platformId = 0;
+            _platforms = MapInfo.Map.AttachedBlocks.Where(x => x.name == "Platform").ToList();
+            GameObject.Destroy(MapInfo.Map.AttachedBlocks.First(x => x.name == "Wall"));
+            if (Config.PlatformsHaveColorWarning)
             {
-                var count = Player.GetPlayers().Count(r => r.IsAlive);
-                var time = $"{EventTime.Minutes}:{EventTime.Seconds}";
-                Extensions.Broadcast(translation.FallBroadcast.Replace("%name%", Name).Replace("%time%", time).Replace("%count%", $"{count}"), 1);
-
-                var platform = platformes.RandomItem();
-                platformes.Remove(platform);
-                GameObject.Destroy(platform);
-
-                yield return Timing.WaitForSeconds(0.9f);
-                EventTime += TimeSpan.FromSeconds(0.9f);
+                foreach (var platform in _platforms)
+                {
+                    platform.GetComponent<PrimitiveObjectToy>().NetworkMaterialColor = Color.white;
+                }
             }
+        }
 
-            if (Player.GetPlayers().Count(r => r.IsAlive) == 1)
+        protected override bool IsRoundDone()
+        {
+            // Over 1 player is alive &&
+            // over 1 platform is present. 
+            return !(Player.GetPlayers().Count(r => r.IsAlive) > 1 && _platforms.Count > 1);
+        }
+        protected override void ProcessFrame()
+        {
+            _platformId++;
+            FrameDelayInSeconds = Config.DelayInSeconds.GetValue(_platformId, 169, 1, 0.3f);
+            var count = Player.GetPlayers().Count(r => r.IsAlive);
+            var time = $"{EventTime.Minutes:00}:{EventTime.Seconds:00}";
+            Extensions.Broadcast(Translation.FallBroadcast.Replace("%name%", Name).Replace("%time%", time).Replace("%count%", $"{count}"), (ushort)FrameDelayInSeconds);
+            
+            if (_platforms.Count < 1)
             {
-                Extensions.Broadcast(translation.FallWinner.Replace("%winner%", Player.GetPlayers().First(r => r.IsAlive).Nickname), 10);
+                if (_noPlatformsRemainingWarning)
+                {
+                    DebugLogger.LogDebug("No platforms remaining.", LogLevel.Debug);
+                    _noPlatformsRemainingWarning = false;
+                }
+                return;
+            }
+                
+            var platform = _platforms.RandomItem();
+            platform.GetComponent<PrimitiveObjectToy>().NetworkMaterialColor = Color.red;
+            if (Config.PlatformsHaveColorWarning)
+            {
+                Timing.CallDelayed(Config.WarningDelayInSeconds.GetValue(_platformId, 169, 0, 3), () =>
+                {
+                    _platforms.Remove(platform);
+                    GameObject.Destroy(platform);
+                });
             }
             else
             {
-                Extensions.Broadcast(translation.FallDied, 10);
+                _platforms.Remove(platform);
+                GameObject.Destroy(platform);
             }
-            
-            OnStop();
-            yield break;
+
         }
 
-        public void EventEnd()
+        protected override void OnFinished()
         {
-            Extensions.CleanUpAll();
-            Extensions.TeleportEnd();
-            Extensions.UnLoadMap(GameMap);
-            Extensions.StopAudio();
-            AutoEvent.ActiveEvent = null;
+            if (Player.GetPlayers().Count(r => r.IsAlive) == 1)
+            {
+                Extensions.Broadcast(Translation.FallWinner.Replace("%winner%", Player.GetPlayers().First(r => r.IsAlive).Nickname), 10);
+            }
+            else
+            {
+                Extensions.Broadcast(Translation.FallDied, 10);
+            }
         }
     }
 }

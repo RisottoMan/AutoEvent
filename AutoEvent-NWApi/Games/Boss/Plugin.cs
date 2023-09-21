@@ -6,132 +6,139 @@ using PluginAPI.Events;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using AutoEvent.API;
 using UnityEngine;
 using AutoEvent.Events.Handlers;
+using AutoEvent.Games.Infection;
+using AutoEvent.Interfaces;
 using Event = AutoEvent.Interfaces.Event;
 
 namespace AutoEvent.Games.Boss
 {
-    public class Plugin : Event
+    public class Plugin : Event, IEventMap, IEventSound, IInternalEvent
     {
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.BossTranslate.BossName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.BossTranslate.BossDescription;
         public override string Author { get; set; } = "KoT0XleB";
-        public override string MapName { get; set; } = "DeathParty";
         public override string CommandName { get; set; } = "boss";
-        TimeSpan EventTime { get; set; }
-        SchematicObject GameMap { get; set; }
-        EventHandler _eventHandler { get; set; }
-        Player Boss { get; set; }
-        public override void OnStart()
+        public MapInfo MapInfo { get; set; } = new MapInfo() 
+            { MapName = "DeathParty", Position = new Vector3(6f, 1030f, -43.5f) };
+
+        public SoundInfo SoundInfo { get; set; } = new SoundInfo() 
+            { SoundName = "Boss.ogg", Loop = false, Volume = 7, StartAutomatically = false };
+
+        [EventConfig]
+        public BossConfig Config { get; set; }
+        private EventHandler EventHandler { get; set; }
+        private BossTranslate Translation { get; set; }
+        private Player _boss;
+
+        protected override void RegisterEvents()
         {
-            _eventHandler = new EventHandler();
-
-            EventManager.RegisterEvents(_eventHandler);
-            Servers.TeamRespawn += _eventHandler.OnTeamRespawn;
-            Servers.SpawnRagdoll += _eventHandler.OnSpawnRagdoll;
-            Servers.PlaceBullet += _eventHandler.OnPlaceBullet;
-            Servers.PlaceBlood += _eventHandler.OnPlaceBlood;
-            Players.DropItem += _eventHandler.OnDropItem;
-            Players.DropAmmo += _eventHandler.OnDropAmmo;
-
-            OnEventStarted();
-        }
-        public override void OnStop()
-        {
-            EventManager.UnregisterEvents(_eventHandler);
-            Servers.TeamRespawn -= _eventHandler.OnTeamRespawn;
-            Servers.SpawnRagdoll -= _eventHandler.OnSpawnRagdoll;
-            Servers.PlaceBullet -= _eventHandler.OnPlaceBullet;
-            Servers.PlaceBlood -= _eventHandler.OnPlaceBlood;
-            Players.DropItem -= _eventHandler.OnDropItem;
-            Players.DropAmmo -= _eventHandler.OnDropAmmo;
-
-            _eventHandler = null;
-            Timing.CallDelayed(10f, () => EventEnd());
+            Translation = new BossTranslate();
+            EventHandler = new EventHandler();
+            
+            EventManager.RegisterEvents(EventHandler);
+            Servers.TeamRespawn += EventHandler.OnTeamRespawn;
+            Servers.SpawnRagdoll += EventHandler.OnSpawnRagdoll;
+            Servers.PlaceBullet += EventHandler.OnPlaceBullet;
+            Servers.PlaceBlood += EventHandler.OnPlaceBlood;
+            Players.DropItem += EventHandler.OnDropItem;
+            Players.DropAmmo += EventHandler.OnDropAmmo;
         }
 
-        public void OnEventStarted()
+        protected override void OnStop()
         {
-            EventTime = new TimeSpan(0, 2, 0);
-            GameMap = Extensions.LoadMap(MapName, new Vector3(6f, 1030f, -43.5f), Quaternion.Euler(Vector3.zero), Vector3.one);
+            EventManager.UnregisterEvents(EventHandler);
+            Servers.TeamRespawn -= EventHandler.OnTeamRespawn;
+            Servers.SpawnRagdoll -= EventHandler.OnSpawnRagdoll;
+            Servers.PlaceBullet -= EventHandler.OnPlaceBullet;
+            Servers.PlaceBlood -= EventHandler.OnPlaceBlood;
+            Players.DropItem -= EventHandler.OnDropItem;
+            Players.DropAmmo -= EventHandler.OnDropAmmo;
 
-            foreach (Player player in Player.GetPlayers())
-            {
-                Extensions.SetRole(player, RoleTypeId.NtfSergeant, RoleSpawnFlags.None);
-                player.Position = RandomClass.GetSpawnPosition(GameMap);
-                player.Health = 200;
-
-                RandomClass.CreateSoldier(player);
-                Timing.CallDelayed(0.1f, () =>
-                {
-                    player.CurrentItem = player.Items.First();
-                });
-            }
-
-            Timing.RunCoroutine(OnEventRunning(), "battle_time");
+            EventHandler = null;
         }
 
-        public IEnumerator<float> OnEventRunning()
+
+        protected override IEnumerator<float> BroadcastStartCountdown()
         {
-            var translation = AutoEvent.Singleton.Translation.BossTranslate;
             for (int time = 15; time > 0; time--)
             {
-                Extensions.Broadcast(translation.BossTimeLeft.Replace("{time}", $"{time}"), 5);
+                Extensions.Broadcast(Translation.BossTimeLeft.Replace("{time}", $"{time}"), 5);
                 yield return Timing.WaitForSeconds(1f);
             }
 
-            Extensions.PlayAudio("Boss.ogg", 7, false, Name);
-
-            Boss = Player.GetPlayers().Where(r => r.IsNTF).ToList().RandomItem();
-            Extensions.SetRole(Boss, RoleTypeId.ChaosConscript, RoleSpawnFlags.None);
-            Boss.Position = RandomClass.GetSpawnPosition(GameMap);
-
-            Boss.Health = Player.GetPlayers().Count() * 4000;
-            Extensions.SetPlayerScale(Boss, new Vector3(5, 5, 5));
-
-            Boss.ClearInventory();
-            Boss.AddItem(ItemType.GunLogicer);
-            Timing.CallDelayed(0.1f, () =>
-            {
-                Boss.CurrentItem = Boss.Items.First();
-            });
-
-            while (EventTime.TotalSeconds > 0 && Player.GetPlayers().Count(r => r.Team == Team.FoundationForces) > 0 && Player.GetPlayers().Count(r => r.Team == Team.ChaosInsurgency) > 0)
-            {
-                var text = translation.BossCounter;
-                text = text.Replace("%hp%", $"{(int)Boss.Health}");
-                text = text.Replace("%count%", $"{Player.GetPlayers().Count(r => r.IsNTF)}");
-                text = text.Replace("%time%", $"{EventTime.Minutes}:{EventTime.Seconds}");
-
-                Extensions.Broadcast(text, 1);
-
-                yield return Timing.WaitForSeconds(1f);
-                EventTime -= TimeSpan.FromSeconds(1f);
-            }
-
-            Extensions.SetPlayerScale(Boss, new Vector3(1, 1, 1));
-
-            if (Player.GetPlayers().Count(r => r.Team == Team.FoundationForces) == 0)
-            {
-                Extensions.Broadcast(translation.BossWin.Replace("%hp%", $"{(int)Boss.Health}"), 10);
-            }
-            else if (Player.GetPlayers().Count(r => r.Team == Team.ChaosInsurgency) == 0)
-            {
-                Extensions.Broadcast(translation.BossHumansWin.Replace("%count%", $"{Player.GetPlayers().Count(r => r.IsNTF)}"), 10);
-            }
-
-            OnStop();
             yield break;
         }
 
-        public void EventEnd()
+        protected override bool IsRoundDone()
         {
-            Extensions.CleanUpAll();
-            Extensions.TeleportEnd();
-            Extensions.UnLoadMap(GameMap);
-            Extensions.StopAudio();
-            AutoEvent.ActiveEvent = null;
+            // Round Time is shorter than 2 minutes (+ 15 seconds for countdown)
+            return !(EventTime.TotalSeconds < Config.DurationInSeconds + 15 
+                   && EndConditions.TeamHasMoreThanXPlayers(Team.FoundationForces,0) 
+                   && EndConditions.TeamHasMoreThanXPlayers(Team.ChaosInsurgency,0));
         }
+
+        protected override void CountdownFinished()
+        {
+            StartAudio();
+            // Lots of this is handled by the GiveLoadout() system now.
+            _boss = Player.GetPlayers().Where(r => r.IsNTF).ToList().RandomItem();
+            _boss.GiveLoadout(Config.BossLoadouts);
+            //Extensions.SetRole(_boss, RoleTypeId.ChaosConscript, RoleSpawnFlags.None);
+            _boss.Position = RandomClass.GetSpawnPosition(MapInfo.Map);
+
+            _boss.Health = Player.GetPlayers().Count() * 4000;
+            // Extensions.SetPlayerScale(_boss, new Vector3(5, 5, 5));
+
+            //_boss.ClearInventory();
+            //_boss.AddItem(ItemType.GunLogicer);
+            Timing.CallDelayed(0.1f, () =>
+            {
+                _boss.CurrentItem = _boss.Items.First();
+            });
+        }
+
+        protected override void OnStart()
+        {
+            foreach (Player player in Player.GetPlayers())
+            {
+                player.GiveLoadout(Config.Loadouts);
+                // Extensions.SetRole(player, RoleTypeId.NtfSergeant, RoleSpawnFlags.None);
+                //player.Position = RandomClass.GetSpawnPosition(MapInfo.Map);
+                // player.Health = 200;
+
+                RandomClass.CreateSoldier(player);
+                Timing.CallDelayed(0.1f, () => { player.CurrentItem = player.Items.First(); });
+            }
+
+        }
+
+        protected override void ProcessFrame()
+        {
+            string text = Translation.BossCounter;
+            text = text.Replace("%hp%", $"{(int)_boss.Health}");
+            text = text.Replace("%count%", $"{Player.GetPlayers().Count(r => r.IsNTF)}");
+            text = text.Replace("%time%", $"{EventTime.Minutes:00}:{EventTime.Seconds:00}");
+
+            Extensions.Broadcast(text, 1);
+        }
+
+        protected override void OnFinished()
+        {
+            Extensions.SetPlayerScale(_boss, new Vector3(1, 1, 1));
+
+            if (Player.GetPlayers().Count(r => r.Team == Team.FoundationForces) == 0)
+            {
+                Extensions.Broadcast(Translation.BossWin.Replace("%hp%", $"{(int)_boss.Health}"), 10);
+            }
+            else if (Player.GetPlayers().Count(r => r.Team == Team.ChaosInsurgency) == 0)
+            {
+                Extensions.Broadcast(Translation.BossHumansWin.Replace("%count%", $"{Player.GetPlayers().Count(r => r.IsNTF)}"), 10);
+            }
+            
+        }
+
     }
 }

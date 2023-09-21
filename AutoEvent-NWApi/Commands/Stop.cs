@@ -7,15 +7,15 @@ using Exiled.Permissions.Extensions;
 #endif
 namespace AutoEvent.Commands
 {
-    internal class StopEvent : ICommand
+    internal class Stop : ICommand
     {
-        public string Command => "stop";
+        public string Command => nameof(Stop);
         public string Description => "Kills the running mini-game (just kills all the players)";
-        public string[] Aliases => null;
+        public string[] Aliases => new string[] { };
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
 #if EXILED
-            if (!((CommandSender)sender).CheckPermission("ev.stop"))
+            if (!sender.CheckPermission("ev.stop"))
             {
                 response = "You do not have permission to use this command";
                 return false;
@@ -42,7 +42,7 @@ namespace AutoEvent.Commands
                 return false;
             }
 
-            AutoEvent.ActiveEvent.OnStop();
+            AutoEvent.ActiveEvent.StopEvent();
 
             foreach (Player pl in Player.GetPlayers())
             {

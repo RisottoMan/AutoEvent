@@ -21,18 +21,19 @@ using Exiled.Permissions.Extensions;
 
 namespace AutoEvent.Commands;
 
-public class Volume : ICommand
+public class Volume : ICommand, IUsageProvider
 {
-    public string Command => "volume";
+    public string Command => nameof(Volume);
         public string Description => "Set the global music volume, takes on 1 argument - the volume from 0% - 200%.";
-        public string[] Aliases => null;
+        public string[] Aliases => new string[] { };
+        public string[] Usage => new string[] { "Volume %" };
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
             try
             {
 #if EXILED
-                if (!((CommandSender)sender).CheckPermission("ev.volume"))
+                if (!sender.CheckPermission("ev.volume"))
                 {
                     response = "You do not have permission to use this command";
                     return false;
@@ -72,8 +73,10 @@ public class Volume : ICommand
             catch (Exception e)
             {
                 response = $"Could not set the volume due to an error. This could be a bug. Ensure audio is playing while using this command.";
-                Log.Debug($"An error has occured while trying to set the volume. \n{e}");
+                DebugLogger.LogDebug($"An error has occured while trying to set the volume.", LogLevel.Warn, true);
+                DebugLogger.LogDebug($"{e}", LogLevel.Debug);
                 return false;
             }
         }
+
 }

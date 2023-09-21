@@ -1,13 +1,18 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using AutoEvent.Interfaces;
 using HarmonyLib;
 using PluginAPI.Core.Attributes;
 using PluginAPI.Enums;
 using PluginAPI.Events;
 using AutoEvent.Events.Handlers;
+using Exiled.Loader;
 using GameCore;
+using PluginAPI.Core;
 using Event = AutoEvent.Interfaces.Event;
+using Log = PluginAPI.Core.Log;
 using Paths = PluginAPI.Helpers.Paths;
+using Server = PluginAPI.Core.Server;
 #if EXILED
 using Exiled.API.Features;
 
@@ -17,72 +22,134 @@ namespace AutoEvent
 #if EXILED
     public class AutoEvent : Plugin<Config, Translation>
     {
+        public override System.Version Version => new System.Version(9, 1, 0);
         public override string Name => "AutoEvent";
-        public override string Author => "Created by KoT0XleB, extended by swd and sky";
+        public override string Author => "Created by KoT0XleB, extended by swd and sky, Co-Maintained by Redforce04";
         public static bool IsPlayedGames;
 
 #else
     public class AutoEvent
     {
 #endif
+        public const bool BetaRelease = true; // todo set beta to false before main release
+        /// <summary>
+        /// The location of the AutoEvent folder for schematics, music, external events and event config / translations.
+        /// </summary>
+        /// <example>/home/container/.config/SCP Secret Laboratory/PluginAPI/plugins/global/AutoEvent/</example>
+        public static string BaseConfigPath { get; set;}
         public static IEvent ActiveEvent;
         public static AutoEvent Singleton;
         public static Harmony HarmonyPatch;
+        public static bool Debug => DebugLogger.Debug;
+        public static bool IsFriendlyFireEnabledByDefault { get; set; }
         EventHandler eventHandler;
         
 #if !EXILED
-        [PluginConfig("configs/autoevent.yml")]
-#endif
+        [PluginConfig("Configs/autoevent.yml")]
         public Config Config;
+#endif
 
 #if !EXILED
-        [PluginConfig("configs/translation.yml")]
-#endif
+        [PluginConfig("Configs/translation.yml")]
         public Translation Translation;
+#endif
+#if EXILED
+        public override void OnEnabled()
+#else
+        [PluginPriority(LoadPriority.Low)]
+        [PluginEntryPoint("AutoEvent", "9.1.0", "An event manager plugin that allows you to run mini-games.", "KoT0XleB and Redforce04")]
+        void OnEnabled()
+#endif
+        {
+                if (!Config.IsEnabled) return;
+                if (BetaRelease)
+                {
+                    Log.Warning("Warning: This release of AutoEvent is a Beta-Release. " +
+                                "If you encounter any bugs, please reach out to Redforce04 (redforce04) or KoT0XleB (spagettimen) via discord." +
+                                "Alternatively, make an issue on our github (https://github.com/KoT0XleB/AutoEvent/). Have fun!");
+                }
+                // Call Costura first just to ensure dependencies are loaded.
+                // Also make sure there isn't anything that needs a dependency in this method.
+                CosturaUtility.Initialize();
+                _startup();
+        }
+
+        private void _startup()
+        {
+            try
+            {
+                IsFriendlyFireEnabledByDefault = Server.FriendlyFire;
+                Singleton = this;
+                var debugLogger = new DebugLogger();
+                DebugLogger.Debug = Config.Debug;
+                if (DebugLogger.Debug)
+                {
+                    DebugLogger.LogDebug($"Debug Mode Enabled", LogLevel.Info, true);
+                }
+
+                try
+                {
+                    HarmonyPatch = new Harmony("autoevent");
+                    HarmonyPatch.PatchAll();
+
+                }
+                catch (Exception e)
+                {
+                    Log.Warning("Could not patch harmony methods.");
+                    Log.Debug($"{e}");
+                }
+
+                EventManager.RegisterEvents(this);
+                SCPSLAudioApi.Startup.SetupDependencies();
+
+                eventHandler = new EventHandler();
+                Servers.RemoteAdmin += eventHandler.OnRemoteAdmin;
+
 
 #if !EXILED
-        [PluginPriority(LoadPriority.Low)]
-        [PluginEntryPoint("AutoEvent-NWApi", "8.2.7", "A plugin that allows you to run mini-games.", "KoT0XleB")]
+                // Root plugin path
+                AutoEvent.BaseConfigPath = Path.Combine(Paths.GlobalPlugins.Plugins, "AutoEvent");
+#else
+                AutoEvent.BaseConfigPath = Path.Combine(Exiled.API.Features.Paths.Configs, "AutoEvent");
 #endif
-        void OnEnabled()
+                
+                CreateDirectoryIfNotExists(BaseConfigPath);
+                CreateDirectoryIfNotExists(Config.SchematicsDirectoryPath);
+                CreateDirectoryIfNotExists(Config.MusicDirectoryPath);
+                CreateDirectoryIfNotExists(Config.SchematicsDirectoryPath);
+                CreateDirectoryIfNotExists(Config.EventConfigsDirectoryPath);
+
+                Event.RegisterInternalEvents();
+                Loader.LoadEvents();
+                Event.Events.AddRange(Loader.Events);
+
+                DebugLogger.LogDebug(
+                    Loader.Events.Count > 0
+                        ? $"[ExternalEventLoader] Loaded {Loader.Events.Count} external event{(Loader.Events.Count > 1 ? "s" : "")}."
+                        : "No external events were found.", LogLevel.Info, true);
+            }
+            catch (Exception e)
+            {
+                Log.Warning("Caught an exception while starting plugin.");
+                Log.Debug($"{e}");
+
+            }
+        }
+
+        public static void CreateDirectoryIfNotExists(string directory, string subPath = "")
         {
-            if (!Config.IsEnabled) return;
-
-            Singleton = this;
-            HarmonyPatch = new Harmony("autoevent-nwapi");
-            HarmonyPatch.PatchAll();
-
-            EventManager.RegisterEvents(this);
-            SCPSLAudioApi.Startup.SetupDependencies();
-
-            eventHandler = new EventHandler();
-            Servers.RemoteAdmin += eventHandler.OnRemoteAdmin;
-
-            Event.RegisterEvents();
-            
-            // Load External Events.
-            if (!Directory.Exists(Path.Combine(Paths.GlobalPlugins.Plugins, "Events")))
+            string path = subPath == "" ? directory : Path.Combine(directory, subPath);  
+            if (!Directory.Exists(path))
             {
-                Directory.CreateDirectory(Path.Combine(Paths.GlobalPlugins.Plugins, "Events"));
-            }
-            Loader.LoadEvents();
-            Event.Events.AddRange(Loader.Events);
-            
-            PluginAPI.Core.Log.Info(Loader.Events.Count > 0 ? $"[ExternalEventLoader] Loaded {Loader.Events.Count} external event{(Loader.Events.Count > 1 ? "s" : "")}." : "No external events were found.");
-            if (!Directory.Exists(Path.Combine(Paths.GlobalPlugins.Plugins, "Music")))
-            {
-                Directory.CreateDirectory(Path.Combine(Paths.GlobalPlugins.Plugins, "Music"));
-            }
-
-            if (!Directory.Exists(Path.Combine(Paths.GlobalPlugins.Plugins, "Schematics")))
-            {
-                Directory.CreateDirectory(Path.Combine(Paths.GlobalPlugins.Plugins, "Schematics"));
+                Directory.CreateDirectory(path);
             }
         }
 #if !EXILED
         [PluginUnload]
-#endif
         void OnDisabled()
+#else
+        public override void OnDisabled()
+#endif
         {
             Servers.RemoteAdmin -= eventHandler.OnRemoteAdmin;
             eventHandler = null;

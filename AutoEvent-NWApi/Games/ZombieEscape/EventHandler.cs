@@ -60,7 +60,7 @@ namespace AutoEvent.Games.ZombieEscape
             if (Player.GetPlayers().Count(r => r.Role == RoleTypeId.Scp0492) > 0)
             {
                 Extensions.SetRole(ev.Player, RoleTypeId.Scp0492, RoleSpawnFlags.AssignInventory);
-                ev.Player.Position = RandomClass.GetSpawnPosition(_plugin.GameMap);
+                ev.Player.Position = RandomClass.GetSpawnPosition(_plugin.MapInfo.Map);
                 ev.Player.EffectsManager.EnableEffect<Disabled>();
                 ev.Player.EffectsManager.EnableEffect<Scp1853>();
                 ev.Player.Health = 7000;
@@ -68,7 +68,7 @@ namespace AutoEvent.Games.ZombieEscape
             else
             {
                 Extensions.SetRole(ev.Player, RoleTypeId.NtfSergeant, RoleSpawnFlags.AssignInventory);
-                ev.Player.Position = RandomClass.GetSpawnPosition(_plugin.GameMap);
+                ev.Player.Position = RandomClass.GetSpawnPosition(_plugin.MapInfo.Map);
                 Extensions.SetPlayerAhp(ev.Player, 100, 100, 0);
 
                 Timing.CallDelayed(0.1f, () =>

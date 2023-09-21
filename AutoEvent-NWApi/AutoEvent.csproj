@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="packages\Costura.Fody.5.7.0\build\Costura.Fody.props" Condition="Exists('packages\Costura.Fody.5.7.0\build\Costura.Fody.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -43,6 +44,10 @@
   </PropertyGroup>
   <ItemGroup>
 
+    <Reference Include="Costura, Version=5.7.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\Costura.Fody.5.7.0\lib\netstandard1.0\Costura.dll</HintPath>
+    </Reference>
+
     <Reference Include="Exiled.API, Version=7.1.1.0, Culture=neutral, processorArchitecture=AMD64">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>$(EXILED_REFERENCES)/Exiled.API.dll</HintPath>
@@ -79,11 +84,12 @@
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="PluginAPI, Version=13.1.0.0, Culture=neutral, processorArchitecture=Amd64">
-      <HintPath>packages\Northwood.PluginAPI.13.1.0\lib\net48\PluginAPI.dll</HintPath>
+    <Reference Include="PluginAPI, Version=13.1.1.0, Culture=neutral, processorArchitecture=Amd64">
+      <HintPath>packages\Northwood.PluginAPI.13.1.1\lib\net48\PluginAPI.dll</HintPath>
     </Reference>
     <Reference Include="SCPSLAudioApi" HintPath="$(OTHER_REFERENCES)\SCPSLAudioApi.dll" />
-    <Reference Include="System" />    
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" HintPath="$(SL_REFERENCES)\System.ComponentModel.DataAnnotations.dll" />
     <Reference Include="UnityEngine" HintPath="$(SL_REFERENCES)\UnityEngine.dll" />
     <Reference Include="UnityEngine.AssetBundleModule" HintPath="$(SL_REFERENCES)\UnityEngine.AssetBundleModule.dll" />
     <Reference Include="UnityEngine.CoreModule" HintPath="$(SL_REFERENCES)\UnityEngine.CoreModule.dll" />
@@ -101,8 +107,37 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="API\Attributes\DisabledFeaturesAttribute.cs" />
+    <Compile Include="API\BitwiseExtensions.cs" />
+    <Compile Include="API\DifficultyItem.cs" />
+    <Compile Include="API\ExplodeOnImpactComponent.cs" />
+    <Compile Include="API\Effect.cs" />
+    <Compile Include="API\EndConditions.cs" />
+    <Compile Include="API\Enums\Effects.cs" />
+    <Compile Include="API\Enums\LoadoutFlags.cs" />
     <Compile Include="API\Extensions.cs" />
     <Compile Include="API\FakeConnection.cs" />
+    <Compile Include="API\InfiniteAmmoComponent.cs" />
+    <Compile Include="API\Loadout.cs" />
+    <Compile Include="API\NavigatorActions\AddAction.cs" />
+    <Compile Include="API\NavigatorActions\CollectionSelect.cs" />
+    <Compile Include="API\NavigatorActions\KeyValuePair.cs" />
+    <Compile Include="API\NavigatorActions\ModifyAction.cs" />
+    <Compile Include="API\NavigatorActions\ModifyEntryAction.cs" />
+    <Compile Include="API\NavigatorActions\MoveAction.cs" />
+    <Compile Include="API\NavigatorActions\NavigatorAction.cs" />
+    <Compile Include="API\NavigatorActions\Object.cs" />
+    <Compile Include="API\NavigatorActions\Option.cs" />
+    <Compile Include="API\NavigatorActions\RemoveAction.cs" />
+    <Compile Include="API\NavigatorActions\Yaml.cs" />
+    <Compile Include="API\OptionModificationEngine\OptionModificationEngine.cs" />
+    <Compile Include="API\OptionModificationEngine\OptionModifiers\BasicModifier.cs" />
+    <Compile Include="API\OptionModificationEngine\OptionModifiers\ComplexOptionModifier.cs" />
+    <Compile Include="API\OptionModificationEngine\OptionModifiers\DictionaryModifier.cs" />
+    <Compile Include="API\OptionModificationEngine\OptionModifiers\EnumModifier.cs" />
+    <Compile Include="API\OptionModificationEngine\OptionModifiers\ListModifier.cs" />
+    <Compile Include="API\OptionModificationEngine\OptionModifiers\OptionModifier.cs" />
+    <Compile Include="API\OptionModificationEngine\OptionModifiers\ValueType.cs" />
+    <Compile Include="API\RoleCount.cs" />
     <Compile Include="API\Schematic\AnimationController.cs" />
     <Compile Include="API\Schematic\Enums\BlockType.cs" />
     <Compile Include="API\Schematic\Enums\CullingType.cs" />
@@ -125,13 +160,39 @@
     <Compile Include="API\Schematic\Serializable\SerializableRigidbody.cs" />
     <Compile Include="API\Schematic\Serializable\WorkstationSerializable.cs" />
     <Compile Include="API\Schematic\ObjectHelper.cs" />
-    <Compile Include="Commands\ListEvents.cs" />
+    <Compile Include="Commands\Config\Config.cs" />
+    <Compile Include="Commands\Config\List.cs" />
+    <Compile Include="Commands\Config\Modify.cs" />
+    <Compile Include="Commands\Config\Save.cs" />
+    <Compile Include="Commands\Config\Select.cs" />
+    <Compile Include="Commands\Debug\AntiEnd.cs" />
+    <Compile Include="Commands\Debug\Debug.cs" />
+    <Compile Include="Commands\Debug\Disable.cs" />
+    <Compile Include="Commands\Debug\Enable.cs" />
+    <Compile Include="Commands\Debug\Presets.cs" />
+    <Compile Include="Commands\Debug\Write.cs" />
+    <Compile Include="Commands\List.cs" />
     <Compile Include="Commands\MainCommand.cs" />
-    <Compile Include="Commands\ReloadEventsCommand.cs" />
-    <Compile Include="Commands\RunEvent.cs" />
-    <Compile Include="Commands\StopEvent.cs" />
+    <Compile Include="Commands\Reload\Configs.cs" />
+    <Compile Include="Commands\Reload\Events.cs" />
+    <Compile Include="Commands\Reload\Reload.cs" />
+    <Compile Include="Commands\Reload\Translations.cs" />
+    <Compile Include="Commands\Run.cs" />
+    <Compile Include="Commands\Stop.cs" />
     <Compile Include="Commands\Volume.cs" />
     <Compile Include="Config.cs" />
+    <Compile Include="Configs\Converters\AttachmentIdentifiersConverter.cs" />
+    <Compile Include="Configs\Converters\ColorConverter.cs" />
+    <Compile Include="Configs\Converters\VectorConverters.cs" />
+    <Compile Include="Configs\Serializer.cs" />
+    <Compile Include="Configs\Tools\CommentGatheringTypeInspector.cs" />
+    <Compile Include="Configs\Tools\CommentObjectGraphVisitor.cs" />
+    <Compile Include="Configs\Tools\CommentPropertyDescriptor.cs" />
+    <Compile Include="Configs\Tools\CommentsObjectDescriptor.cs" />
+    <Compile Include="Configs\Tools\TypeAssigningEventEmitter.cs" />
+    <Compile Include="Configs\Tools\UnderscoredNamingConvention.cs" />
+    <Compile Include="Configs\Tools\ValidatingNodeDeserializer.cs" />
+    <Compile Include="DebugLogger.cs" />
     <Compile Include="EventHandler.cs" />
     <Compile Include="Events\EventArgs\LockerInteractArgs.cs" />
     <Compile Include="Events\EventArgs\DropItemArgs.cs" />
@@ -153,49 +214,64 @@
     <Compile Include="Games\Battle\EventHandler.cs" />
     <Compile Include="Games\Battle\Features\RandomClass.cs" />
     <Compile Include="Games\Battle\Plugin.cs" />
-    <Compile Include="Games\Boss\Config.cs" />
+    <Compile Include="Games\Boss\Configs\Config.cs" />
     <Compile Include="Games\Boss\Configs\Translation.cs" />
     <Compile Include="Games\Boss\EventHandler.cs" />
     <Compile Include="Games\Boss\Features\RandomClass.cs" />
     <Compile Include="Games\Boss\Plugin.cs" />
+    <Compile Include="Games\Deathmatch\Configs\DeathmatchConfig.cs" />
     <Compile Include="Games\Deathmatch\Configs\Translation.cs" />
     <Compile Include="Games\Deathmatch\EventHandler.cs" />
     <Compile Include="Games\Deathmatch\Extensions\RandomClass.cs" />
     <Compile Include="Games\Deathmatch\Plugin.cs" />
+    <Compile Include="Games\DeathParty\Configs\DeathPartyConfig.cs" />
     <Compile Include="Games\DeathParty\Configs\Translation.cs" />
     <Compile Include="Games\DeathParty\EventHandler.cs" />
     <Compile Include="Games\DeathParty\Features\RandomClass.cs" />
     <Compile Include="Games\DeathParty\Plugin.cs" />
+    <Compile Include="Games\Escape\Configs\EscapeConfig.cs" />
     <Compile Include="Games\Escape\Configs\Translation.cs" />
     <Compile Include="Games\Escape\Plugin.cs" />
     <Compile Include="Games\Escape\EventHandler.cs" />
+    <Compile Include="Games\Example\Configs\Config.cs" />
+    <Compile Include="Games\Example\Configs\Presets.cs" />
+    <Compile Include="Games\Example\Configs\Translation.cs" />
+    <Compile Include="Games\Example\EventHandler.cs" />
+    <Compile Include="Games\Example\ExampleEvent.cs" />
+    <Compile Include="Games\Example\Features\RandomClass.cs" />
+    <Compile Include="Games\FallDown\Configs\FallDownConfig.cs" />
     <Compile Include="Games\FallDown\Configs\Translation.cs" />
     <Compile Include="Games\FallDown\EventHandler.cs" />
     <Compile Include="Games\FallDown\Extensions\LavaComponent.cs" />
     <Compile Include="Games\FallDown\Extensions\RandomClass.cs" />
     <Compile Include="Games\FallDown\Plugin.cs" />
+    <Compile Include="Games\FinishWay\Configs\FinishWayConfig.cs" />
     <Compile Include="Games\FinishWay\Configs\Translation.cs" />
     <Compile Include="Games\FinishWay\EventHandler.cs" />
     <Compile Include="Games\FinishWay\Extensions\LavaComponent.cs" />
     <Compile Include="Games\FinishWay\Extensions\RandomClass.cs" />
     <Compile Include="Games\FinishWay\Plugin.cs" />
+    <Compile Include="Games\Football\Configs\FootballConfig.cs" />
     <Compile Include="Games\Football\Configs\Translation.cs" />
     <Compile Include="Games\Football\EventHandler.cs" />
     <Compile Include="Games\Football\Features\BallComponent.cs" />
     <Compile Include="Games\Football\Features\RandomClass.cs" />
     <Compile Include="Games\Football\Plugin.cs" />
+    <Compile Include="Games\Glass\Configs\GlassConfig.cs" />
     <Compile Include="Games\Glass\Configs\Translation.cs" />
     <Compile Include="Games\Glass\EventHandler.cs" />
     <Compile Include="Games\Glass\Features\GlassComponent.cs" />
     <Compile Include="Games\Glass\Features\LavaComponent.cs" />
     <Compile Include="Games\Glass\Features\RandomClass.cs" />
     <Compile Include="Games\Glass\Plugin.cs" />
+    <Compile Include="Games\GunGame\Configs\GunGameConfig.cs" />
     <Compile Include="Games\GunGame\Configs\Translation.cs" />
     <Compile Include="Games\GunGame\EventHandler.cs" />
     <Compile Include="Games\GunGame\Extensions\GunGameGuns.cs" />
     <Compile Include="Games\GunGame\Extensions\GunGameRandom.cs" />
     <Compile Include="Games\GunGame\Extensions\Stats.cs" />
     <Compile Include="Games\GunGame\Plugin.cs" />
+    <Compile Include="Games\HideAndSeek\Configs\HideAndSeekConfig.cs" />
     <Compile Include="Games\HideAndSeek\Configs\Translation.cs" />
     <Compile Include="Games\HideAndSeek\EventHandler.cs" />
     <Compile Include="Games\HideAndSeek\Features\RandomClass.cs" />
@@ -205,25 +281,30 @@
     <Compile Include="Games\Infection\EventHandler.cs" />
     <Compile Include="Games\Infection\Extensions\RandomClass.cs" />
     <Compile Include="Games\Infection\Plugin.cs" />
+    <Compile Include="Games\Jail\Configs\JailConfig.cs" />
     <Compile Include="Games\Jail\Configs\Translation.cs" />
     <Compile Include="Games\Jail\EventHandler.cs" />
     <Compile Include="Games\Jail\Extensions\DoorComponent.cs" />
     <Compile Include="Games\Jail\Extensions\JailerComponent.cs" />
     <Compile Include="Games\Jail\Extensions\JailRandom.cs" />
     <Compile Include="Games\Jail\Plugin.cs" />
+    <Compile Include="Games\Knives\Configs\KnivesConfig.cs" />
     <Compile Include="Games\Knives\Configs\Translation.cs" />
     <Compile Include="Games\Knives\EventHandler.cs" />
     <Compile Include="Games\Knives\Features\RandomClass.cs" />
     <Compile Include="Games\Knives\Plugin.cs" />
+    <Compile Include="Games\Lava\Configs\LavaConfig.cs" />
     <Compile Include="Games\Lava\Configs\Translation.cs" />
     <Compile Include="Games\Lava\EventHandler.cs" />
     <Compile Include="Games\Lava\Features\LavaComponent.cs" />
     <Compile Include="Games\Lava\Features\RandomClass.cs" />
     <Compile Include="Games\Lava\Plugin.cs" />
+    <Compile Include="Games\Line\Configs\LineConfig.cs" />
     <Compile Include="Games\Line\Configs\Translation.cs" />
     <Compile Include="Games\Line\EventHandler.cs" />
     <Compile Include="Games\Line\Features\LineComponent.cs" />
     <Compile Include="Games\Line\Plugin.cs" />
+    <Compile Include="Games\Puzzle\Configs\PuzzleConfig.cs" />
     <Compile Include="Games\Puzzle\Configs\Translation.cs" />
     <Compile Include="Games\Puzzle\EventHandler.cs" />
     <Compile Include="Games\Puzzle\Features\LavaComponent.cs" />
@@ -244,8 +325,23 @@
     <Compile Include="Games\ZombieEscape\Extensions\WallComponent.cs" />
     <Compile Include="Games\ZombieEscape\Plugin.cs" />
     <Compile Include="Interfaces\Event.cs" />
+    <Compile Include="Interfaces\EventConfig.cs" />
+    <Compile Include="Interfaces\EventConfigAttribute.cs" />
+    <Compile Include="Interfaces\EventConfigPresetAttribute.cs" />
+    <Compile Include="Interfaces\EventTranslation.cs" />
     <Compile Include="Interfaces\IEvent.cs" />
+    <Compile Include="Interfaces\IEventMap.cs" />
+    <Compile Include="Interfaces\IEventSound.cs" />
+    <Compile Include="Interfaces\IExiledEvent.cs" />
+    <Compile Include="Interfaces\IInternalEvent.cs" />
+    <Compile Include="Interfaces\ITranslation.cs" />
+    <Compile Include="Interfaces\MapInfo.cs" />
+    <Compile Include="Interfaces\SoundInfo.cs" />
     <Compile Include="Loader.cs" />
+    <Compile Include="Patches\EndlessClip\AutomaticAction.cs" />
+    <Compile Include="Patches\EndlessClip\DisruptorAction.cs" />
+    <Compile Include="Patches\EndlessClip\DoubleAction.cs" />
+    <Compile Include="Patches\EndlessClip\PumpAction.cs" />
     <Compile Include="Patches\LockerInteract.cs" />
     <Compile Include="Patches\HandCuff.cs" />
     <Compile Include="Patches\CassieScp.cs" />
@@ -257,6 +353,8 @@
     <Compile Include="Patches\PlaceBullet.cs" />
     <Compile Include="Patches\PlaceTantrum.cs" />
     <Compile Include="Patches\PlayerDying.cs" />
+    <Compile Include="Patches\Reload.cs" />
+    <Compile Include="Patches\ReloadClip\GetPlayerAmmo.cs" />
     <Compile Include="Patches\RemoteAdmin.cs" />
     <Compile Include="Patches\SpawnRagdoll.cs" />
     <Compile Include="Patches\AddItem.cs" />
@@ -270,5 +368,55 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\Docs\Commands.md">
+      <Link>Docs\Commands.md</Link>
+    </Content>
+    <Content Include="..\Docs\Example.md">
+      <Link>Docs\Example.md</Link>
+    </Content>
+    <Content Include="..\Docs\Installation.md">
+      <Link>Docs\Installation.md</Link>
+    </Content>
+    <Content Include="..\Docs\Language.md">
+      <Link>Docs\Language.md</Link>
+    </Content>
+    <Content Include="..\Docs\MiniGames.md">
+      <Link>Docs\MiniGames.md</Link>
+    </Content>
+    <Content Include="..\Docs\Modify.md">
+      <Link>Docs\Modify.md</Link>
+    </Content>
+    <Content Include="..\Docs\Problem.md">
+      <Link>Docs\Problem.md</Link>
+    </Content>
+    <Content Include="..\Docs\Translations\Chinese.md">
+      <Link>Docs\Translations\Chinese.md</Link>
+    </Content>
+    <Content Include="..\Docs\Translations\English.md">
+      <Link>Docs\Translations\English.md</Link>
+    </Content>
+    <Content Include="..\Docs\Translations\Russian.md">
+      <Link>Docs\Translations\Russian.md</Link>
+    </Content>
+    <Content Include="..\README.md">
+      <Link>README.md</Link>
+    </Content>
+    <Content Include="FodyWeavers.xml" />
+    <Content Include="PlantUMLDocuments\ConfigModifyCommand.puml" />
+    <Content Include="PlantUMLDocuments\Event Manager.puml" />
+    <Content Include="PlantUMLDocuments\IEvent Interface.puml" />
+    <Content Include="PlantUMLDocuments\RunEvent.puml" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="packages\Fody.6.8.0\build\Fody.targets" Condition="Exists('packages\Fody.6.8.0\build\Fody.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105.The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('packages\Fody.6.8.0\build\Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Fody.6.8.0\build\Fody.targets'))" />
+    <Error Condition="!Exists('packages\Costura.Fody.5.7.0\build\Costura.Fody.props')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Costura.Fody.5.7.0\build\Costura.Fody.props'))" />
+    <Error Condition="!Exists('packages\Costura.Fody.5.7.0\build\Costura.Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Costura.Fody.5.7.0\build\Costura.Fody.targets'))" />
+  </Target>
+  <Import Project="packages\Costura.Fody.5.7.0\build\Costura.Fody.targets" Condition="Exists('packages\Costura.Fody.5.7.0\build\Costura.Fody.targets')" />
 </Project>

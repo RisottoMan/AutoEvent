@@ -7,65 +7,53 @@ using PluginAPI.Events;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using AutoEvent.API.Enums;
 using UnityEngine;
 using AutoEvent.Events.Handlers;
+using AutoEvent.Games.Infection;
+using AutoEvent.Interfaces;
 using Event = AutoEvent.Interfaces.Event;
 
 namespace AutoEvent.Games.Deathmatch
 {
-    public class Plugin : Event
+    public class Plugin : Event, IEventMap, IEventSound, IInternalEvent
     {
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.DeathmatchTranslate.DeathmatchName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.DeathmatchTranslate.DeathmatchDescription;
         public override string Author { get; set; } = "KoT0XleB";
-        public override string MapName { get; set; } = "Shipment";
         public override string CommandName { get; set; } = "deathmatch";
-        EventHandler _eventHandler { get; set; }
-        public SchematicObject GameMap { get; set; }
+        [EventConfig]
+        public DeathmatchConfig Config { get; set; }
+        public MapInfo MapInfo { get; set; } = new MapInfo()
+            {MapName = "Shipment", Position = new Vector3(93f, 1020f, -43f), };
+        public SoundInfo SoundInfo { get; set; } = new SoundInfo()
+            { SoundName = "ClassicMusic.ogg", Volume = 3, Loop = true };
+        protected override float PostRoundDelay { get; set; } = 10f;
+        private EventHandler EventHandler { get; set; }
+        private DeathmatchTranslate Translation { get; set; }
         public int MtfKills { get; set; }
         public int ChaosKills { get; set; }
-        public int NeedKills { get; set; }
-        private bool isFreindlyFireEnabled { get; set; }
+        private int _needKills;
 
-        public override void OnStart()
+        protected override void RegisterEvents()
         {
-            isFreindlyFireEnabled = Server.FriendlyFire;
+            Translation = new DeathmatchTranslate();
+            EventHandler = new EventHandler(this);
+
+            EventManager.RegisterEvents(EventHandler);
+            Servers.TeamRespawn += EventHandler.OnTeamRespawn;
+            Servers.SpawnRagdoll += EventHandler.OnSpawnRagdoll;
+            Servers.PlaceBullet += EventHandler.OnPlaceBullet;
+            Servers.PlaceBlood += EventHandler.OnPlaceBlood;
+            Players.DropItem += EventHandler.OnDropItem;
+            Players.DropAmmo += EventHandler.OnDropAmmo;
+            Players.PlayerDying += EventHandler.OnPlayerDying;
+            Players.HandCuff += EventHandler.OnHandCuff;
+        }
+
+        protected override void OnStart()
+        {
             Server.FriendlyFire = false;
-            OnEventStarted();
-
-            _eventHandler = new EventHandler(this);
-
-            EventManager.RegisterEvents(_eventHandler);
-            Servers.TeamRespawn += _eventHandler.OnTeamRespawn;
-            Servers.SpawnRagdoll += _eventHandler.OnSpawnRagdoll;
-            Servers.PlaceBullet += _eventHandler.OnPlaceBullet;
-            Servers.PlaceBlood += _eventHandler.OnPlaceBlood;
-            Players.DropItem += _eventHandler.OnDropItem;
-            Players.DropAmmo += _eventHandler.OnDropAmmo;
-            Players.PlayerDying += _eventHandler.OnPlayerDying;
-            Players.HandCuff += _eventHandler.OnHandCuff;
-        }
-
-        public override void OnStop()
-        {
-            Server.FriendlyFire = isFreindlyFireEnabled;
-
-            EventManager.UnregisterEvents(_eventHandler);
-            Servers.TeamRespawn -= _eventHandler.OnTeamRespawn;
-            Servers.SpawnRagdoll -= _eventHandler.OnSpawnRagdoll;
-            Servers.PlaceBullet -= _eventHandler.OnPlaceBullet;
-            Servers.PlaceBlood -= _eventHandler.OnPlaceBlood;
-            Players.DropItem -= _eventHandler.OnDropItem;
-            Players.DropAmmo -= _eventHandler.OnDropAmmo;
-            Players.PlayerDying -= _eventHandler.OnPlayerDying;
-            Players.HandCuff -= _eventHandler.OnHandCuff;
-
-            _eventHandler = null;
-            Timing.CallDelayed(10f, () => EventEnd());
-        }
-
-        public void OnEventStarted()
-        {
             float scale = 1;
             switch (Player.GetPlayers().Count())
             {
@@ -74,53 +62,59 @@ namespace AutoEvent.Games.Deathmatch
                 case int n when (n > 35): scale = 1.3f; break;
             }
 
-            GameMap = Extensions.LoadMap(MapName, new Vector3(93f, 1020f, -43f), Quaternion.Euler(Vector3.zero), Vector3.one * scale);
-            Extensions.PlayAudio("ClassicMusic.ogg", 3, true, Name);
 
             MtfKills = 0;
             ChaosKills = 0;
 
-            for (int i = 0; i < Player.GetPlayers().Count(); i += 5)
-            {
-                NeedKills += 15;
-            }
+
+            _needKills = Config.KillsPerPerson * Player.Count;
 
             var count = 0;
             foreach (Player player in Player.GetPlayers())
             {
                 if (count % 2 == 0)
                 {
-                    Extensions.SetRole(player, RoleTypeId.NtfSergeant, RoleSpawnFlags.None);
-                    player.Position = RandomClass.GetRandomPosition(GameMap);
+                    player.GiveLoadout(Config.NTFLoadouts, LoadoutFlags.ForceInfiniteAmmo | LoadoutFlags.IgnoreGodMode | LoadoutFlags.IgnoreWeapons);
+                    player.Position = RandomClass.GetRandomPosition(MapInfo.Map);
                 }
                 else
                 {
-                    Extensions.SetRole(player, RoleTypeId.ChaosRifleman, RoleSpawnFlags.None);
-                    player.Position = RandomClass.GetRandomPosition(GameMap);
+                    player.GiveLoadout(Config.ChaosLoadouts, LoadoutFlags.ForceInfiniteAmmo | LoadoutFlags.IgnoreGodMode | LoadoutFlags.IgnoreWeapons);
+                    player.Position = RandomClass.GetRandomPosition(MapInfo.Map);
                 }
                 count++;
-
-                player.EffectsManager.EnableEffect<Scp1853>(300);
-                player.EffectsManager.EnableEffect<MovementBoost>(300);
-                player.EffectsManager.ChangeState<MovementBoost>(10);
             }
-
-            Timing.RunCoroutine(OnEventRunning(), "deathmatch_run");
         }
 
-        public IEnumerator<float> OnEventRunning()
+        protected override void OnStop()
         {
-            var translation = AutoEvent.Singleton.Translation.DeathmatchTranslate;
+            EventManager.UnregisterEvents(EventHandler);
+            Servers.TeamRespawn -= EventHandler.OnTeamRespawn;
+            Servers.SpawnRagdoll -= EventHandler.OnSpawnRagdoll;
+            Servers.PlaceBullet -= EventHandler.OnPlaceBullet;
+            Servers.PlaceBlood -= EventHandler.OnPlaceBlood;
+            Players.DropItem -= EventHandler.OnDropItem;
+            Players.DropAmmo -= EventHandler.OnDropAmmo;
+            Players.PlayerDying -= EventHandler.OnPlayerDying;
+            Players.HandCuff -= EventHandler.OnHandCuff;
 
+            EventHandler = null;
+        }
+
+        protected override IEnumerator<float> BroadcastStartCountdown()
+        {
             for (int time = 10; time > 0; time--)
             {
                 Extensions.Broadcast($"<size=100><color=red>{time}</color></size>", 1);
                 yield return Timing.WaitForSeconds(1f);
             }
+        }
 
+        protected override void CountdownFinished()
+        {
             foreach(Player player in Player.GetPlayers())
             {
-                var item = player.AddItem(RandomClass.RandomItems.RandomItem());
+                var item = player.AddItem(Config.AvailableWeapons.RandomItem());
                 player.AddItem(ItemType.ArmorCombat);
 
                 Timing.CallDelayed(0.1f, () =>
@@ -128,48 +122,51 @@ namespace AutoEvent.Games.Deathmatch
                     player.CurrentItem = item;
                 });
             }
+        }
 
-            while (MtfKills < NeedKills && ChaosKills < NeedKills && Player.GetPlayers().Count(r => r.IsNTF) > 0 && Player.GetPlayers().Count(r => r.IsChaos) > 0)
+        protected override bool IsRoundDone()
+        {
+            // Mtf team doesnt have enough kills (NeedKills) &&
+            // Chaos team doesnt have enough kills (NeedKills) &&
+            // Both teams have at least one player
+            return !(MtfKills < _needKills && ChaosKills < _needKills && Player.GetPlayers().Count(r => r.IsNTF) > 0 &&
+                   Player.GetPlayers().Count(r => r.IsChaos) > 0);
+        }
+
+        protected override void ProcessFrame()
+        {
+            string mtfString = string.Empty;
+            string chaosString = string.Empty;
+            for (int i = 0; i < _needKills; i += (int)(_needKills / 5))
             {
-                string mtfString = string.Empty;
-                string chaosString = string.Empty;
-                for (int i = 0; i < NeedKills; i += (int)(NeedKills / 5))
-                {
-                    if (MtfKills >= i) mtfString += "■";
-                    else mtfString += "□";
+                if (MtfKills >= i) mtfString += "■";
+                else mtfString += "□";
 
-                    if (ChaosKills >= i) chaosString = "■" + chaosString;
-                    else chaosString = "□" + chaosString;
-                }
-
-                Extensions.Broadcast(translation.DeathmatchCycle.
-                    Replace("{name}", Name).
-                    Replace("{mtftext}", $"{MtfKills} {mtfString}").
-                    Replace("{chaostext}", $"{chaosString} {ChaosKills}"), 1);
-
-                yield return Timing.WaitForSeconds(1f);
+                if (ChaosKills >= i) chaosString = "■" + chaosString;
+                else chaosString = "□" + chaosString;
             }
 
-            if (MtfKills == NeedKills)
+            Extensions.Broadcast(
+                Translation.DeathmatchCycle.Replace("{name}", Name).Replace("{mtftext}", $"{MtfKills} {mtfString}")
+                    .Replace("{chaostext}", $"{chaosString} {ChaosKills}"), 1);
+
+        }
+
+        protected override void OnFinished()
+        {
+            if (MtfKills == _needKills)
             {
-                Extensions.Broadcast(translation.DeathmatchMtfWin.Replace("{name}", Name), 10);
+                Extensions.Broadcast(Translation.DeathmatchMtfWin.Replace("{name}", Name), 10);
             }
             else
             {
-                Extensions.Broadcast(translation.DeathmatchChaosWin.Replace("{name}", Name), 10);
-            }
-
-            OnStop();
-            yield break;
+                Extensions.Broadcast(Translation.DeathmatchChaosWin.Replace("{name}", Name), 10);
+            }        
         }
 
-        public void EventEnd()
+        protected override void OnCleanup()
         {
-            Extensions.CleanUpAll();
-            Extensions.TeleportEnd();
-            Extensions.UnLoadMap(GameMap);
-            Extensions.StopAudio();
-            AutoEvent.ActiveEvent = null;
+            Server.FriendlyFire = AutoEvent.IsFriendlyFireEnabledByDefault;
         }
     }
 }
