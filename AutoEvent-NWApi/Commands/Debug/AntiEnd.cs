@@ -34,7 +34,7 @@ public class AntiEnd : ICommand, IUsageProvider
     {
 
 #if EXILED
-        if (!((CommandSender)sender).CheckPermission("ev.debug"))
+        if (!sender.CheckPermission("ev.debug"))
         {
             response = "You do not have permission to use this command";
             return false;

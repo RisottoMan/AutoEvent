@@ -22,7 +22,7 @@ using Exiled.Permissions.Extensions;
 
 namespace AutoEvent.Commands.Debug;
 
-public class Debug : ParentCommand, IUsageProvider
+public class Debug : ParentCommand
 {
     public Debug() => LoadGeneratedCommands();
     public override void LoadGeneratedCommands()
@@ -65,5 +65,4 @@ public class Debug : ParentCommand, IUsageProvider
     public override string Command => nameof(Debug);
     public override string[] Aliases => Array.Empty<string>();
     public override string Description => "Runs various debug functions.";
-    public string[] Usage => new string[] { "[option]" };
 }

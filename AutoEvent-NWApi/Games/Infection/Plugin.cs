@@ -22,7 +22,9 @@ namespace AutoEvent.Games.Infection
         [EventConfig] public InfectConfig Config { get; set; }
         public MapInfo MapInfo { get; set; } = new MapInfo()
             { MapName = "Zombie", Position = new Vector3(115.5f, 1030f, -43.5f), MapRotation = Quaternion.identity };
-        public SoundInfo SoundInfo { get; set; }
+
+        public SoundInfo SoundInfo { get; set; } = new SoundInfo()
+            { SoundName = "Zombie.ogg", Volume = 7, Loop = true };
         protected override float PostRoundDelay { get; set; } = 10f;
         private EventHandler EventHandler { get; set; }
         private InfectTranslate Translation { get; set; }
@@ -31,14 +33,7 @@ namespace AutoEvent.Games.Infection
 
         public override void InstantiateEvent()
         {
-            // var music = AutoEvent.Singleton.Config.InfectConfig.ListOfMusic.ToList().RandomItem();
-            // Config.
-            /*SoundInfo = new SoundInfo()
-            {
-                SoundName = music.Key,
-                Volume = music.Value,
-                Loop = true
-            };*/
+           
         }
 
         protected override void RegisterEvents()

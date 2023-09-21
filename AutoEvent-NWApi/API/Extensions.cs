@@ -111,13 +111,13 @@ namespace AutoEvent
                 player.IsGodModeEnabled = true;
             }
             
-            if(loadout.ArtificialHealth != -1 && !flags.HasFlag(LoadoutFlags.IgnoreAHP))
+            if(loadout.ArtificialHealth != 0 && !flags.HasFlag(LoadoutFlags.IgnoreAHP))
                 player.ArtificialHealth = loadout.ArtificialHealth;
             if (!flags.HasFlag(LoadoutFlags.IgnoreStamina) && loadout.Stamina != 0)
             {
                 player.StaminaRemaining = loadout.Stamina;
             }
-            if(!flags.HasFlag(LoadoutFlags.IgnoreSize))
+            if(loadout.Size != Vector3.one && !flags.HasFlag(LoadoutFlags.IgnoreSize))
                 player.SetPlayerScale(loadout.Size);
             if (loadout.Effects is not null && loadout.Effects.Count > 0 && !flags.HasFlag(LoadoutFlags.IgnoreEffects))
             {

@@ -23,7 +23,7 @@ using Exiled.Permissions.Extensions;
 
 namespace AutoEvent.Commands.Reload;
 
-public class Reload : ParentCommand, IUsageProvider
+public class Reload : ParentCommand
 {
     public Reload() => LoadGeneratedCommands();
     public override void LoadGeneratedCommands()
@@ -57,5 +57,4 @@ public class Reload : ParentCommand, IUsageProvider
     public override string Command => nameof(Reload);
     public override string[] Aliases => Array.Empty<string>();
     public override string Description => "Reloads different aspects of the plugin and events.";
-    public string[] Usage => new string[] { "[option]" };
 }

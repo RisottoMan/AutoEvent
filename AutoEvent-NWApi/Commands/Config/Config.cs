@@ -22,15 +22,19 @@ using Exiled.Permissions.Extensions;
 
 namespace AutoEvent.Commands.Config;
 
-public class Config : ParentCommand, IUsageProvider
+public class Config : ParentCommand
 {
     public Config() => LoadGeneratedCommands();
     public override void LoadGeneratedCommands()
     {
         RegisterCommand(new List());
         RegisterCommand(new Select());
-        RegisterCommand(new Modify());
-        RegisterCommand(new Save());
+        if (DebugLogger.Debug)
+        {
+            DebugLogger.LogDebug("Registering 'ev config modify' and 'ev config save' commands. They may be broken or lack functionality.", LogLevel.Warn, true);
+            RegisterCommand(new Modify());
+            RegisterCommand(new Save());
+        }
     }
 
     protected override bool ExecuteParent(ArraySegment<string> arguments, ICommandSender sender, [UnscopedRef] out string response)
@@ -59,7 +63,6 @@ public class Config : ParentCommand, IUsageProvider
     public override string Command => nameof(Config);
     public override string[] Aliases => Array.Empty<string>();
     public override string Description => "Allows modifying configs before and during events..";
-    public string[] Usage => new string[] { "[option]" };
 }
 
 /*

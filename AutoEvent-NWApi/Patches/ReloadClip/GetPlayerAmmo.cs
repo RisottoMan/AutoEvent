@@ -14,7 +14,7 @@ using HarmonyLib;
 using InventorySystem.Items.Firearms.Modules;
 
 namespace AutoEvent.Patches;
-[HarmonyPatch(typeof(InventorySystem.Items.Firearms.Modules.AutomaticAmmoManager),nameof(InventorySystem.Items.Firearms.Modules.AutomaticAmmoManager.UserAmmo),MethodType.Getter)]
+// [HarmonyPatch(typeof(InventorySystem.Items.Firearms.Modules.AutomaticAmmoManager),nameof(InventorySystem.Items.Firearms.Modules.AutomaticAmmoManager.UserAmmo),MethodType.Getter)]
 public class GetPlayerAmmo
 {
     //  public static bool Prefix(AutomaticAmmoManager __instance, )

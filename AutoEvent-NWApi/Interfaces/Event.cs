@@ -34,13 +34,16 @@ namespace AutoEvent.Interfaces
                 {
                     if (type.IsAbstract ||
                         type.IsEnum ||
-                        type.IsInterface || type.GetInterfaces().All(x => x != typeof(IEvent)) || 
-                        Activator.CreateInstance(type) is not Event ev ||
-                        type.GetCustomAttributes(typeof(DisabledFeaturesAttribute), false).Any())
+                        type.IsInterface || type.GetInterfaces().All(x => x != typeof(IEvent)))
+                        continue;
+                    
+                    object evBase = Activator.CreateInstance(type);
+                        if(evBase is null || evBase is not Event ev ||
+                        type.GetCustomAttributes(typeof(DisabledFeaturesAttribute), false).Any(x => x is not null))
                         continue;
 
                     if (!ev.AutoLoad)
-                        return;
+                        continue;
                     ev.Id = Events.Count;
                     try
                     {
@@ -268,7 +271,12 @@ namespace AutoEvent.Interfaces
 
     #endregion
     #region Event Methods // Methods that event authors can / must utilize that are abstracted into the event system.
-    /// <summary>
+        /// <summary>
+        /// Base constructor for an event.
+        /// </summary>
+        public Event(){ }
+        
+        /// <summary>
         /// The method that is called when the event is registered. Should be used instead of a constructor to prevent type load exceptions.
         /// </summary>
         public virtual void InstantiateEvent() { }
@@ -439,7 +447,7 @@ namespace AutoEvent.Interfaces
             {
                 map.MapInfo = conf.AvailableMaps[0].Map;
                 map.MapInfo.SpawnAutomatically = spawnAutomatically;
-                return;
+                goto Message;
             }
 
             foreach (var mapItem in conf.AvailableMaps.Where(x => x.Chance <= 0))
@@ -453,11 +461,13 @@ namespace AutoEvent.Interfaces
                 {
                     map.MapInfo = conf.AvailableMaps[i].Map;
                     map.MapInfo.SpawnAutomatically = spawnAutomatically;
-                    return;
+                    goto Message;
                 }
             }
             map.MapInfo = conf.AvailableMaps[conf.AvailableMaps.Count - 1].Map;
             map.MapInfo.SpawnAutomatically = spawnAutomatically;
+            Message:
+            DebugLogger.LogDebug($"[{this.Name}] Map {map.MapInfo.MapName} selected.", LogLevel.Debug);
         }
         
     }
@@ -467,14 +477,14 @@ namespace AutoEvent.Interfaces
     /// <param name="conf"></param>
     private void _setRandomSound(EventConfig conf)
     {
-        if (this is IEventSound sound && conf.AvailableMaps is not null && conf.AvailableSounds.Count > 0)
+        if (this is IEventSound sound && conf.AvailableSounds is not null && conf.AvailableSounds.Count > 0)
         {
             bool startAutomatically = sound.SoundInfo.StartAutomatically;
             if (conf.AvailableSounds.Count == 1)
             {
                 sound.SoundInfo = conf.AvailableSounds[0].Sound;
                 sound.SoundInfo.StartAutomatically = startAutomatically;
-                return;
+                goto Message;
             }
 
             foreach (var soundItem in conf.AvailableSounds.Where(x => x.Chance <= 0))
@@ -484,15 +494,17 @@ namespace AutoEvent.Interfaces
             
             for (int i = 0; i < conf.AvailableSounds.Count - 1; i++)
             {
-                if (UnityEngine.Random.Range(0, totalChance) <= conf.AvailableMaps[i].Chance)
+                if (UnityEngine.Random.Range(0, totalChance) <= conf.AvailableSounds[i].Chance)
                 {
                     sound.SoundInfo = conf.AvailableSounds[i].Sound;
                     sound.SoundInfo.StartAutomatically = startAutomatically;
-                    return;
+                    goto Message;
                 }
             }
             sound.SoundInfo = conf.AvailableSounds[conf.AvailableSounds.Count - 1].Sound;
             sound.SoundInfo.StartAutomatically = startAutomatically;
+            Message:
+            DebugLogger.LogDebug($"[{this.Name}] Sound {sound.SoundInfo.SoundName} selected.", LogLevel.Debug);
         }
     }
     /// <summary>

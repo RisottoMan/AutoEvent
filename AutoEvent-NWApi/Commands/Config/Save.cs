@@ -27,13 +27,13 @@ public class Save : ICommand, IUsageProvider
     public string Command => nameof(Save);
     public string[] Aliases => Array.Empty<string>();
     public string Description => "Saves an updated config or preset for future use.";
-    public string[] Usage => new string[] {  };
+    public string[] Usage => new string[] { "[Preset / Default]" };
 
     public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
     {
 
 #if EXILED
-        if (!((CommandSender)sender).CheckPermission("ev.config.save"))
+        if (!sender.CheckPermission("ev.config.save"))
         {
             response = "You do not have permission to use this command";
             return false;

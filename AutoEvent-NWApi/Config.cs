@@ -18,7 +18,8 @@ namespace AutoEvent
 
         [Description("If you have donaters, then you can disable the admin panel for them during mini-games.")]
         public bool IsDisableDonators { get; set; } = true;
-
+        
+#if !EXILED
         [Description("A list of admins who can run mini-games. Specify the GroupName from the config_remoteadmin")]
         public List<string> PermissionList { get; set; } = new List<string>()
         {
@@ -26,16 +27,18 @@ namespace AutoEvent
             "admin",
             "moderator"
         };
-
         [Description("List of donaters. Specify the GroupName from the config_remoteadmin")]
         public List<string> DonatorList { get; set; } = new List<string>()
         {
             "donate1"
         };
+#endif
 
         [Description("The global volume of plugins (0 - 200, 100 is normal)")]
         public float Volume = 100;
-
-        public InfectConfig InfectConfig { get; set; } = new InfectConfig();
+        
+        
+        
+        
     }
 }

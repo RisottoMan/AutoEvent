@@ -18,6 +18,7 @@ using InventorySystem.Items.Firearms.Modules;
 
 namespace AutoEvent.Patches;
 
+/*
 [HarmonyPatch(typeof(InventorySystem.Items.Firearms.Modules.AutomaticAction),
     nameof(InventorySystem.Items.Firearms.Modules.AutomaticAction.ServerAuthorizeShot),
     MethodType.Getter)]
@@ -52,4 +53,4 @@ public class AutomaticAction
         //firearmStatusFlags.SetFlag(FirearmStatusFlags.Cocked, true);
         __instance._firearm.Status = new FirearmStatus((byte)((int)__instance._firearm.AmmoManagerModule.MaxAmmo), firearmStatusFlags, __instance._firearm.Status.Attachments);
     }
-}
+}*/

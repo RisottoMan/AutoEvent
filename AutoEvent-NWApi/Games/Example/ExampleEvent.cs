@@ -22,10 +22,11 @@ using PlayerRoles;
 using PluginAPI.Core;
 using PluginAPI.Events;
 using UnityEngine;
+using Event = AutoEvent.Interfaces.Event;
 
 namespace AutoEvent.Games.Example
 {
-    public class ExampleEvent : Interfaces.Event, IEventMap, IEventSound, IInternalEvent
+    public class ExampleEvent : Event, IEventMap, IEventSound, IInternalEvent
     {
 
         // Set the info for the event.

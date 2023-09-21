@@ -23,17 +23,16 @@ using Exiled.Permissions.Extensions;
 namespace AutoEvent.Commands.Debug;
 
 
-public class Disable : ICommand, IUsageProvider
+public class Disable : ICommand
 {
     public string Command => nameof(Disable);
     public string[] Aliases => Array.Empty<string>();
     public string Description => "Disables Debug Mode";
-    public string[] Usage => new string[] { };
     public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
     {
 
 #if EXILED
-        if (!((CommandSender)sender).CheckPermission("ev.debug"))
+        if (!sender.CheckPermission("ev.debug"))
         {
             response = "You do not have permission to use this command";
             return false;

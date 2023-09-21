@@ -1,13 +1,16 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using AutoEvent.Interfaces;
 using HarmonyLib;
 using PluginAPI.Core.Attributes;
 using PluginAPI.Enums;
 using PluginAPI.Events;
 using AutoEvent.Events.Handlers;
+using Exiled.Loader;
 using GameCore;
 using PluginAPI.Core;
 using Event = AutoEvent.Interfaces.Event;
+using Log = PluginAPI.Core.Log;
 using Paths = PluginAPI.Helpers.Paths;
 using Server = PluginAPI.Core.Server;
 #if EXILED
@@ -41,56 +44,89 @@ namespace AutoEvent
         EventHandler eventHandler;
         
 #if !EXILED
-        [PluginConfig("configs/autoevent.yml")]
-#endif
+        [PluginConfig("Configs/autoevent.yml")]
         public Config Config;
-
-#if !EXILED
-        [PluginConfig("configs/translation.yml")]
 #endif
-        public Translation Translation;
 
 #if !EXILED
+        [PluginConfig("Configs/translation.yml")]
+        public Translation Translation;
+#endif
+#if EXILED
+        public override void OnEnabled()
+#else
         [PluginPriority(LoadPriority.Low)]
         [PluginEntryPoint("AutoEvent", "9.0.2", "A plugin that allows you to run mini-games.", "KoT0XleB")]
-#endif
         void OnEnabled()
+#endif
         {
-            if (!Config.IsEnabled) return;
+                // Log.Debug("Enabling AutoEvent");
+                if (!Config.IsEnabled) return;
+                // Call Costura first just to ensure dependencies are loaded.
+                // Also make sure there isn't anything that needs a dependency in this method.
+                CosturaUtility.Initialize();
+                _startup();
+        }
 
-            IsFriendlyFireEnabledByDefault = Server.FriendlyFire;
-            Singleton = this;
-            var debugLogger = new DebugLogger();
-            DebugLogger.Debug = Config.Debug;
-            if (DebugLogger.Debug)
+        private void _startup()
+        {
+            try
             {
-                DebugLogger.LogDebug($"Debug Mode Enabled", LogLevel.Info, true);
-            }
-            HarmonyPatch = new Harmony("autoevent-nwapi");
-            HarmonyPatch.PatchAll();
+                IsFriendlyFireEnabledByDefault = Server.FriendlyFire;
+                Singleton = this;
+                var debugLogger = new DebugLogger();
+                DebugLogger.Debug = Config.Debug;
+                if (DebugLogger.Debug)
+                {
+                    DebugLogger.LogDebug($"Debug Mode Enabled", LogLevel.Info, true);
+                }
 
-            EventManager.RegisterEvents(this);
-            SCPSLAudioApi.Startup.SetupDependencies();
+                try
+                {
+                    HarmonyPatch = new Harmony("autoevent");
+                    HarmonyPatch.PatchAll();
 
-            eventHandler = new EventHandler();
-            Servers.RemoteAdmin += eventHandler.OnRemoteAdmin;
+                }
+                catch (Exception e)
+                {
+                    Log.Warning("Could not patch harmony methods.");
+                    Log.Debug($"{e}");
+                }
+
+                EventManager.RegisterEvents(this);
+                SCPSLAudioApi.Startup.SetupDependencies();
+
+                eventHandler = new EventHandler();
+                Servers.RemoteAdmin += eventHandler.OnRemoteAdmin;
 
 
 #if !EXILED
-            // Root plugin path
-            AutoEvent.BaseConfigPath = Path.Combine(Paths.GlobalPlugins.Plugins, "AutoEvent");
+                // Root plugin path
+                AutoEvent.BaseConfigPath = Path.Combine(Paths.GlobalPlugins.Plugins, "AutoEvent");
+#else
+                AutoEvent.BaseConfigPath = Path.Combine(Exiled.API.Features.Paths.Configs, "AutoEvent");
 #endif
-            CreateDirectoryIfNotExists(BaseConfigPath);
-            CreateDirectoryIfNotExists(BaseConfigPath, "Events");
-            CreateDirectoryIfNotExists(BaseConfigPath, "Music");
-            CreateDirectoryIfNotExists(BaseConfigPath, "Schematics");
-            CreateDirectoryIfNotExists(BaseConfigPath, "Configs");
+                CreateDirectoryIfNotExists(BaseConfigPath);
+                CreateDirectoryIfNotExists(BaseConfigPath, "Events");
+                CreateDirectoryIfNotExists(BaseConfigPath, "Music");
+                CreateDirectoryIfNotExists(BaseConfigPath, "Schematics");
+                CreateDirectoryIfNotExists(BaseConfigPath, "Configs");
 
-            Event.RegisterInternalEvents();
-            Loader.LoadEvents();
-            Event.Events.AddRange(Loader.Events);
-            
-            DebugLogger.LogDebug(Loader.Events.Count > 0 ? $"[ExternalEventLoader] Loaded {Loader.Events.Count} external event{(Loader.Events.Count > 1 ? "s" : "")}." : "No external events were found.", LogLevel.Info, true);
+                Event.RegisterInternalEvents();
+                Loader.LoadEvents();
+                Event.Events.AddRange(Loader.Events);
+
+                DebugLogger.LogDebug(
+                    Loader.Events.Count > 0
+                        ? $"[ExternalEventLoader] Loaded {Loader.Events.Count} external event{(Loader.Events.Count > 1 ? "s" : "")}."
+                        : "No external events were found.", LogLevel.Info, true);
+            }
+            catch (Exception e)
+            {
+                Log.Warning("Caught an exception while starting plugin.");
+                Log.Debug($"{e}");
+
+            }
         }
 
         public static void CreateDirectoryIfNotExists(string directory, string subPath = "")
@@ -103,8 +139,10 @@ namespace AutoEvent
         }
 #if !EXILED
         [PluginUnload]
-#endif
         void OnDisabled()
+#else
+        public override void OnDisabled()
+#endif
         {
             Servers.RemoteAdmin -= eventHandler.OnRemoteAdmin;
             eventHandler = null;

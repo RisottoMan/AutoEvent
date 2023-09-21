@@ -27,13 +27,13 @@ public class Select : ICommand, IUsageProvider
     public string Command => nameof(Select);
     public string[] Aliases => Array.Empty<string>();
     public string Description => "Selects a preset to use for an event.";
-    public string[] Usage => Array.Empty<string>();
+    public string[] Usage => new[] { "[Preset / Default]" };
 
     public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
     {
 
 #if EXILED
-        if (!((CommandSender)sender).CheckPermission("ev.config.presets"))
+        if (!sender.CheckPermission("ev.config.presets"))
         {
             response = "You do not have permission to use this command";
             return false;

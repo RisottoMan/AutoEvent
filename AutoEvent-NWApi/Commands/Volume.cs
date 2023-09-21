@@ -25,7 +25,7 @@ public class Volume : ICommand, IUsageProvider
 {
     public string Command => nameof(Volume);
         public string Description => "Set the global music volume, takes on 1 argument - the volume from 0% - 200%.";
-        public string[] Aliases => null;
+        public string[] Aliases => new string[] { };
         public string[] Usage => new string[] { "Volume %" };
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
@@ -33,7 +33,7 @@ public class Volume : ICommand, IUsageProvider
             try
             {
 #if EXILED
-                if (!((CommandSender)sender).CheckPermission("ev.volume"))
+                if (!sender.CheckPermission("ev.volume"))
                 {
                     response = "You do not have permission to use this command";
                     return false;

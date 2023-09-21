@@ -34,7 +34,7 @@ public class List : ICommand, IUsageProvider
     {
 
 #if EXILED
-        if (!((CommandSender)sender).CheckPermission("ev.config.list"))
+        if (!sender.CheckPermission("ev.config.list"))
         {
             response = "You do not have permission to use this command";
             return false;

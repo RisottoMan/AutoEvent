@@ -1,21 +1,22 @@
 ﻿using CommandSystem;
 using System;
+using PluginAPI.Core;
 
 namespace AutoEvent.Commands
 {
-    [CommandHandler(typeof(RemoteAdminCommandHandler))]
-    public class MainCommand : ParentCommand, IUsageProvider
+    /*[CommandHandler(typeof(RemoteAdminCommandHandler))]
+    [CommandHandler(typeof(GameConsoleCommandHandler))]
+    public class MainCommand : ParentCommand
     {
         public override string Command => "ev";
-        public override string Description => "main command for AutoEvent";
-        public override string[] Aliases => Array.Empty<string>();
-        public string[] Usage => Array.Empty<string>();
+        public override string Description => "Main command for AutoEvent";
+        public override string[] Aliases => new string [] { };
 
         public override void LoadGeneratedCommands()
         {
             try
             {
-
+                // Log.Debug("Skipping Main Command");
                 RegisterCommand(new List());
                 RegisterCommand(new Run());
                 RegisterCommand(new Stop());
@@ -26,11 +27,11 @@ namespace AutoEvent.Commands
             }
             catch (Exception e)
             {
-                DebugLogger.LogDebug($"Caught an exception while registering commands.", LogLevel.Warn, true);
-                DebugLogger.LogDebug($"{e}", LogLevel.Debug);
+                Log.Warning($"Caught an exception while registering commands.");
+                Log.Debug($"{e}");
             }
         }
-        public MainCommand() => LoadGeneratedCommands();
+        public MainCommand() => this.LoadGeneratedCommands();
         protected override bool ExecuteParent(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
             response = "Please enter a valid subcommand: \n";
@@ -47,12 +48,13 @@ namespace AutoEvent.Commands
                 response += $"<color=yellow> {x.Key} {args}<color=white>-> {x.Value.Description}. \n";
             }
         
-                       /*"<color=yellow>  list <color=white>-> gets the list of the events\n" +
-                       "<color=yellow>  run <color=white>-> run an event\n" +
-                       "<color=yellow>  stop <color=white>-> stop the current event\n" +
-                       "<color=yellow>  volume <color=white>-> change the volume of the sounds\n" +
-                       "<color=yellow>  reload <color=white>-> reloads events, configs, and translations";*/
+                       // "<color=yellow>  list <color=white>-> gets the list of the events\n" +
+                       // "<color=yellow>  run <color=white>-> run an event\n" +
+                       // "<color=yellow>  stop <color=white>-> stop the current event\n" +
+                       // "<color=yellow>  volume <color=white>-> change the volume of the sounds\n" +
+                       // "<color=yellow>  reload <color=white>-> reloads events, configs, and translations";
             return false;
         }
     }
+*/
 }

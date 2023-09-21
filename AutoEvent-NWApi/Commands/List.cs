@@ -9,23 +9,26 @@ using Exiled.Permissions.Extensions;
 
 namespace AutoEvent.Commands
 {
-    internal class List : ICommand, IUsageProvider
+    internal class List : ICommand
     {
+        public List()
+        {
+            // Log.Debug("Skipping Registering List Command");
+        }
         public string Command => nameof(List);
         public string Description => "Shows a list of all the events that can be started.";
-        public string[] Aliases => null;
-        public string[] Usage => Array.Empty<string>();
+        public string[] Aliases => new string[] { };
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            var config = AutoEvent.Singleton.Config;
-            var player = Player.Get(sender);
 #if EXILED
-            if (!((CommandSender)sender).CheckPermission("ev.list"))
+            if (!sender.CheckPermission("ev.list"))
             {
                 response = "You do not have permission to use this command";
                 return false;
             }
 #else
+            var config = AutoEvent.Singleton.Config;
+            var player = Player.Get(sender);
             if (sender is ServerConsoleSender || sender is CommandSender cmdSender && cmdSender.FullPermissions)
             {
                 goto skipPermissionCheck;
@@ -36,7 +39,7 @@ namespace AutoEvent.Commands
                 return false;
             }
             skipPermissionCheck:
-#endif            
+#endif
             StringBuilder builder = new StringBuilder();
             builder.AppendLine("\"<color=yellow><b>List of events (when running an event, you are responsible for it)</color></b>:");
 

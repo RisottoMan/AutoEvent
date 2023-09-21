@@ -18,6 +18,7 @@ using InventorySystem.Items.Firearms.Modules;
 
 namespace AutoEvent.Patches;
 
+/*
 [HarmonyPatch(typeof(InventorySystem.Items.Firearms.Modules.DoubleAction),
     nameof(InventorySystem.Items.Firearms.Modules.DoubleAction.ServerAuthorizeShot),
     MethodType.Getter)]
@@ -48,4 +49,4 @@ public class DoubleAction
         }
         __instance._firearm.Status = new FirearmStatus(__instance._firearm.AmmoManagerModule.MaxAmmo, __instance._firearm.Status.Flags, __instance._firearm.Status.Attachments);
     }
-}
+}*/

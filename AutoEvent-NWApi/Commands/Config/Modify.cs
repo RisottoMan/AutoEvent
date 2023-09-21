@@ -43,7 +43,7 @@ public class Modify : ICommand, IUsageProvider
     {
 
 #if EXILED
-        if (!((CommandSender)sender).CheckPermission("ev.config.modify"))
+        if (sender.CheckPermission("ev.config.modify"))
         {
             response = "You do not have permission to use this command";
             return false;
