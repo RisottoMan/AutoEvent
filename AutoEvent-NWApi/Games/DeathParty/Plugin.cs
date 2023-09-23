@@ -32,7 +32,7 @@ namespace AutoEvent.Games.DeathParty
         protected override float PostRoundDelay { get; set; } = 5f;
         private EventHandler EventHandler { get; set; }
         private DeathTranslate Translation { get; set; }
-        public bool RespawnWithGrenades { get; set; } = true;
+        private bool RespawnWithGrenades => Config.RespawnPlayersWithGrenades;
         public int Stage { get; private set; }
         //private int _maxStage;
         private CoroutineHandle _grenadeCoroutineHandle;
@@ -106,7 +106,7 @@ namespace AutoEvent.Games.DeathParty
 
         protected override void ProcessFrame()
         {
-            var count = Player.GetPlayers().Count(r => r.IsAlive).ToString();
+            var count = Player.GetPlayers().Count(r => r.IsAlive && r.Role != RoleTypeId.ChaosConscript).ToString();
             var cycleTime = $"{EventTime.Minutes:00}:{EventTime.Seconds:00}";
             Extensions.Broadcast(Translation.DeathCycle.Replace("%count%", count).Replace("%time%", cycleTime), 1);
         }
@@ -146,7 +146,7 @@ namespace AutoEvent.Games.DeathParty
                 timing = Config.DifficultySpeed.GetValue(Stage, Config.Rounds -1, 0, 5);
                 height = Config.DifficultyHeight.GetValue(Stage, Config.Rounds -1, 0,  30);
                 fuse = Config.DifficultyFuseTime.GetValue(Stage, Config.Rounds -1, 2, 10);
-
+                DebugLogger.LogDebug($"Stage: {Stage}/{Config.Rounds}. Radius: {radius}, Scale: {scale}, Count: {count}, Timing: {timing}, Height: {height}, Fuse: {fuse}, Target: {Config.TargetPlayers}");
                 
                 // Not the last round.
                 if (Stage != Config.Rounds)

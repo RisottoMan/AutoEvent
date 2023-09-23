@@ -4,15 +4,18 @@
 // -----------------------------------------
 //    Solution:         AutoEvent
 //    Project:          AutoEvent
-//    FileName:         Reload.cs
+//    FileName:         PickupComponent.cs
 //    Author:           Redforce04#4091
-//    Revision Date:    09/19/2023 3:22 PM
-//    Created Date:     09/19/2023 3:22 PM
+//    Revision Date:    09/22/2023 10:11 PM
+//    Created Date:     09/22/2023 10:11 PM
 // -----------------------------------------
 
-namespace AutoEvent.Patches;
 
-public class Reload
+using UnityEngine;
+
+namespace AutoEvent.API;
+
+public class PickupComponent : Component
 {
-    
+    // Used to track pickups.
 }

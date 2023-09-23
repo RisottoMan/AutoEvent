@@ -11,6 +11,7 @@ using System.Diagnostics;
 using System.Linq;
 using AutoEvent.Games.Infection;
 using AutoEvent.Interfaces;
+using PluginAPI.Roles;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
 using Event = AutoEvent.Interfaces.Event;
@@ -19,12 +20,16 @@ namespace AutoEvent.Games.ZombieEscape
 {
     public class Plugin : Event, IEventSound, IEventMap, IInternalEvent
     {
+        // todo - add a one way platform or way to fight back as mtf at end, once you are at the actual helicopter.
+        // todo - ensure ending actually ends the game lel.
         public override string Name { get; set; } =
             AutoEvent.Singleton.Translation.ZombieEscapeTranslate.ZombieEscapeName;
         public override string Description { get; set; } =
             AutoEvent.Singleton.Translation.ZombieEscapeTranslate.ZombieEscapeDescription;
         public override string Author { get; set; } = "KoT0XleB";
         public override string CommandName { get; set; } = "zombie3";
+        [EventConfig]
+        public ZombieEscapeConfig Config { get; set; }
         public MapInfo MapInfo { get; set; } = new MapInfo()
             { MapName = "zm_osprey", Position = new Vector3(-15f, 1020f, -80f), MapRotation = Quaternion.identity };
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
@@ -83,15 +88,11 @@ namespace AutoEvent.Games.ZombieEscape
             Server.FriendlyFire = false;
             foreach (Player player in Player.GetPlayers())
             {
-                Extensions.SetRole(player, RoleTypeId.NtfSergeant, RoleSpawnFlags.None);
+                //Extensions.SetRole(player, RoleTypeId.NtfSergeant, RoleSpawnFlags.None);
+                player.GiveLoadout(Config.MTFLoadouts);
                 player.Position = RandomClass.GetSpawnPosition(MapInfo.Map);
-                //Extensions.SetPlayerAhp(player, 100, 100, 0);
 
-                var item = player.AddItem(RandomClass.GetRandomGun());
-                player.AddItem(ItemType.GunCOM18);
-                player.AddItem(ItemType.ArmorCombat);
-
-                Timing.CallDelayed(0.1f, () => { player.CurrentItem = item; });
+                // Timing.CallDelayed(0.1f, () => { player.CurrentItem = item; });
             }
         }
 
@@ -109,23 +110,13 @@ namespace AutoEvent.Games.ZombieEscape
         {
             Extensions.PlayAudio("Zombie2.ogg", 7, false, Name);
 
-            for (int i = 0; i <= Player.GetPlayers().Count() / 10; i++)
+            foreach (Player ply in Config.Zombies.GetPlayers())
             {
-                var playerList = Player.GetPlayers().Where(r => r.IsHuman);
-                if (playerList.Count() > 0)
-                {
-                    var player = playerList.ToList().RandomItem();
-                    DebugLogger.LogDebug($"{player.Nickname} chosen as the zombie.", LogLevel.Debug);
-                    Extensions.SetRole(player, RoleTypeId.Scp0492, RoleSpawnFlags.AssignInventory);
-                    player.EffectsManager.EnableEffect<Disabled>();
-                    player.EffectsManager.EnableEffect<Scp1853>();
-                    player.Health = 10000;
-                }
-                else
-                {
-                    DebugLogger.LogDebug($"Not enough players to choose a random player. Skipping spawn.", LogLevel.Debug);
-                }
+                DebugLogger.LogDebug($"{ply.Nickname} chosen as a zombie.", LogLevel.Debug);
+                ply.GiveLoadout(Config.ZombieLoadouts);
+                ply.EffectsManager.EnableEffect<Disabled>();
             }
+
 
             _button = new GameObject();
             _button1 = new GameObject();
@@ -179,13 +170,13 @@ namespace AutoEvent.Games.ZombieEscape
                 if (Vector3.Distance(player.Position, _button1.transform.position) < 3)
                 {
                     _button1.transform.position += Vector3.down * 5;
-                    _wall.AddComponent<WallComponent>();
+                    _wall.AddComponent<WallComponent>().Duration = Config.GateLockDuration;
                 }
 
                 if (Vector3.Distance(player.Position, _button2.transform.position) < 3)
                 {
                     _button2.transform.position += Vector3.down * 5;
-                    EventTime = new TimeSpan(0, 1, 5);
+                    EventTime = new TimeSpan(0, 0, (int)(Config.RoundDurationInSeconds - Config.EscapeDurationInSeconds));
                     _heli = Extensions.LoadMap("Helicopter_Zombie", MapInfo.Map.Position, Quaternion.identity,
                         Vector3.one);
                 }
@@ -203,8 +194,9 @@ namespace AutoEvent.Games.ZombieEscape
             // At least 1 human player alive &&
             // At least 1 scp player alive && 
             // Elapsed time is shorter than 5 minutes (+ countdown)
-            return !(Player.GetPlayers().Count(r => r.IsHuman) > 0 && Player.GetPlayers().Count(r => r.IsSCP) > 0 &&
-                   EventTime.TotalSeconds < 150 + 20);
+            return !(Player.GetPlayers().Any(ply => Config.MTFLoadouts.Any(loadout => loadout.Roles.Any(role => role.Key == ply.Role))) 
+                     && Player.GetPlayers().Any(ply => Config.ZombieLoadouts.Any(loadout => loadout.Roles.Any(role => role.Key == ply.Role))) &&
+                   EventTime.TotalSeconds < Config.RoundDurationInSeconds);
         }
 
         protected override void OnFinished()

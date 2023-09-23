@@ -39,7 +39,7 @@ namespace AutoEvent.Games.Example
         
         // Make sure you set this to true. Otherwise you must register your plugin via Exiled or NWApi manually.
         // Add the event to AutoEvent.Events to manually register it.
-        public override bool AutoLoad { get; protected set; } = true;
+        public override bool AutoLoad { get; protected set; } = false; // Because this is the example event, we set it to true so users dont see the example event.
         
 
         // Users can use this preset instead of the default config if they choose. 
@@ -196,6 +196,9 @@ namespace AutoEvent.Games.Example
         // Use this to determine if the round is done. If this is false, ProcessFrame() is called once a second.
         protected override bool IsRoundDone()
         {
+            // When Getting Players -> Use Player.GetPlayers.Count() Not Player.Count. -
+            // This has a patch on it to prevent players who are tutorial / blacklisted classes from being counted.
+            
             // Round finishes when either team has no more players.
             return !EndConditions.TeamHasMoreThanXPlayers(Team.FoundationForces,0) ||
                    !EndConditions.TeamHasMoreThanXPlayers(Team.ChaosInsurgency,0);

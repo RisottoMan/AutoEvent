@@ -90,7 +90,7 @@ namespace AutoEvent.Games.GunGame
                 return;
             }
             
-            if (GunGameGuns.GunByLevel is null)
+            if (_plugin.Config.Guns is null)
             {
                 DebugLogger.LogDebug("GetWeapon - Gun By Level is null");
                 return;
@@ -114,7 +114,7 @@ namespace AutoEvent.Games.GunGame
                 return;
             }
 
-            if (!GunGameGuns.GunByLevel.ContainsKey(_playerStats[player].level))
+            if (_plugin.Config.Guns.All(x => x.KillsRequired != _playerStats[player].kill))
             {
                 DebugLogger.LogDebug("GetWeapon - Gun by level is null");
                 return;

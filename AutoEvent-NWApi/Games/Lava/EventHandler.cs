@@ -7,23 +7,52 @@ using PluginAPI.Core.Attributes;
 using PluginAPI.Enums;
 using PluginAPI.Events;
 using System.Collections.Generic;
+using System.Linq;
+using AutoEvent.API.Enums;
 
 namespace AutoEvent.Games.Lava
 {
     public class EventHandler
     {
+        public EventHandler(Plugin plugin)
+        {
+            _plugin = plugin;
+        }
+
+        private Plugin _plugin;
         public void OnPlayerDamage(PlayerDamageArgs ev)
         {
             if (ev.DamageType == DeathTranslations.Falldown.Id)
             {
                 ev.IsAllowed = false;
             }
-
+            
             if (ev.Attacker != null && ev.Target != null)
             {
-                ev.Target.Damage(3f, "Shooting");
-                ev.Attacker.ReceiveHitMarker();
+                ev.IsAllowed = false;
+                if (_plugin.Config.GunEffects is null || _plugin.Config.GunEffects.IsEmpty())
+                {
+                    goto defaultDamage;
+                }
+
+                if(ev.AttackerHandler is not FirearmDamageHandler firearmDamageHandler)
+                    goto defaultDamage;
+
+                var effectHandler = _plugin.Config.GunEffects.FirstOrDefault(x => x.Key == firearmDamageHandler.WeaponType);
+                if (effectHandler.Value is null)
+                    goto defaultDamage;
+                
+                ev.Amount = effectHandler.Value.Damage;
+                foreach (Effect effect in effectHandler.Value.Effects)
+                {
+                    ev.Target.GiveEffect(effect);
+                }
             }
+            defaultDamage:
+                ev.Attacker?.ReceiveHitMarker();
+                ev.Target?.Damage(3, "Shooting");
+                ev.IsAllowed = false;
+                return;
         }
 
         [PluginEvent(ServerEventType.PlayerJoined)]

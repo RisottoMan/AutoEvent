@@ -59,10 +59,10 @@ namespace AutoEvent.Games.FinishWay
 
         protected override void OnStart()
         {
-            _remainingTime = new TimeSpan(0, 0, 70);
             foreach (Player player in Player.GetPlayers())
             {
-                Extensions.SetRole(player, RoleTypeId.ClassD, RoleSpawnFlags.None);
+                //Extensions.SetRole(player, RoleTypeId.ClassD, RoleSpawnFlags.None);
+                player.GiveLoadout(Config.Loadouts);
                 player.Position = RandomPosition.GetSpawnPosition(MapInfo.Map);
             }
 
@@ -101,6 +101,8 @@ namespace AutoEvent.Games.FinishWay
 
         protected override void ProcessFrame()
         {
+            _remainingTime = new TimeSpan(0, 0, Config.EventDurationInSeconds);
+
             var count = Player.GetPlayers().Count(r => r.Role == RoleTypeId.ClassD);
             var time = $"{_remainingTime.Minutes:00}:{_remainingTime.Seconds:00}";
 

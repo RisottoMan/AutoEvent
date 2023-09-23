@@ -36,7 +36,7 @@ public class HideAndSeekConfig : EventConfig
         new Loadout()
         {
             Roles = new Dictionary<RoleTypeId, int>() { { RoleTypeId.ClassD, 100 } },
-            Effects = new List<Effect>() { new Effect() { Type = StatusEffect.MovementBoost, Intensity = 50, Duration = 0 } },
+            Effects = new List<Effect>() { new Effect() { EffectType = StatusEffect.MovementBoost, Intensity = 50, Duration = 0 } },
             Chance = 100,
         }
     };
@@ -46,7 +46,7 @@ public class HideAndSeekConfig : EventConfig
         new Loadout()
         {
             Roles = new Dictionary<RoleTypeId, int>() { { RoleTypeId.Scientist, 100 } },
-            Effects = new List<Effect>() { new Effect() { Type = StatusEffect.MovementBoost, Intensity = 51, Duration = 0 } },
+            Effects = new List<Effect>() { new Effect() { EffectType = StatusEffect.MovementBoost, Intensity = 51, Duration = 0 } },
             Chance = 100,
         }
     };

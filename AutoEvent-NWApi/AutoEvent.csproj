@@ -84,6 +84,9 @@
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="PluginAPI">
+      <HintPath>packages\Northwood.PluginAPI.13.1.1\lib\net48\PluginAPI.dll</HintPath>
+    </Reference>
     <Reference Include="PluginAPI, Version=13.1.1.0, Culture=neutral, processorArchitecture=Amd64">
       <HintPath>packages\Northwood.PluginAPI.13.1.1\lib\net48\PluginAPI.dll</HintPath>
     </Reference>
@@ -116,6 +119,7 @@
     <Compile Include="API\Enums\LoadoutFlags.cs" />
     <Compile Include="API\Extensions.cs" />
     <Compile Include="API\FakeConnection.cs" />
+    <Compile Include="API\GunEffect.cs" />
     <Compile Include="API\InfiniteAmmoComponent.cs" />
     <Compile Include="API\Loadout.cs" />
     <Compile Include="API\NavigatorActions\AddAction.cs" />
@@ -137,6 +141,7 @@
     <Compile Include="API\OptionModificationEngine\OptionModifiers\ListModifier.cs" />
     <Compile Include="API\OptionModificationEngine\OptionModifiers\OptionModifier.cs" />
     <Compile Include="API\OptionModificationEngine\OptionModifiers\ValueType.cs" />
+    <Compile Include="API\PickupComponent.cs" />
     <Compile Include="API\RoleCount.cs" />
     <Compile Include="API\Schematic\AnimationController.cs" />
     <Compile Include="API\Schematic\Enums\BlockType.cs" />
@@ -267,8 +272,6 @@
     <Compile Include="Games\GunGame\Configs\GunGameConfig.cs" />
     <Compile Include="Games\GunGame\Configs\Translation.cs" />
     <Compile Include="Games\GunGame\EventHandler.cs" />
-    <Compile Include="Games\GunGame\Extensions\GunGameGuns.cs" />
-    <Compile Include="Games\GunGame\Extensions\GunGameRandom.cs" />
     <Compile Include="Games\GunGame\Extensions\Stats.cs" />
     <Compile Include="Games\GunGame\Plugin.cs" />
     <Compile Include="Games\HideAndSeek\Configs\HideAndSeekConfig.cs" />
@@ -310,15 +313,18 @@
     <Compile Include="Games\Puzzle\Features\LavaComponent.cs" />
     <Compile Include="Games\Puzzle\Features\RandomClass.cs" />
     <Compile Include="Games\Puzzle\Plugin.cs" />
+    <Compile Include="Games\Survival\Configs\SurvivalConfig.cs" />
     <Compile Include="Games\Survival\Configs\Translation.cs" />
     <Compile Include="Games\Survival\EventHandler.cs" />
     <Compile Include="Games\Survival\Extensions\RandomClass.cs" />
     <Compile Include="Games\Survival\Plugin.cs" />
     <Compile Include="Games\Versus\Configs\Translation.cs" />
+    <Compile Include="Games\Versus\Configs\VersusConfig.cs" />
     <Compile Include="Games\Versus\EventHandler.cs" />
     <Compile Include="Games\Versus\Features\RandomClass.cs" />
     <Compile Include="Games\Versus\Plugin.cs" />
     <Compile Include="Games\ZombieEscape\Configs\Translation.cs" />
+    <Compile Include="Games\ZombieEscape\Configs\ZombieEscapeConfig.cs" />
     <Compile Include="Games\ZombieEscape\EventHandler.cs" />
     <Compile Include="Games\ZombieEscape\Extensions\LavaComponent.cs" />
     <Compile Include="Games\ZombieEscape\Extensions\RandomClass.cs" />
@@ -342,6 +348,7 @@
     <Compile Include="Patches\EndlessClip\DisruptorAction.cs" />
     <Compile Include="Patches\EndlessClip\DoubleAction.cs" />
     <Compile Include="Patches\EndlessClip\PumpAction.cs" />
+    <Compile Include="Patches\GetPlayerPatches.cs" />
     <Compile Include="Patches\LockerInteract.cs" />
     <Compile Include="Patches\HandCuff.cs" />
     <Compile Include="Patches\CassieScp.cs" />
@@ -353,7 +360,6 @@
     <Compile Include="Patches\PlaceBullet.cs" />
     <Compile Include="Patches\PlaceTantrum.cs" />
     <Compile Include="Patches\PlayerDying.cs" />
-    <Compile Include="Patches\Reload.cs" />
     <Compile Include="Patches\ReloadClip\GetPlayerAmmo.cs" />
     <Compile Include="Patches\RemoteAdmin.cs" />
     <Compile Include="Patches\SpawnRagdoll.cs" />

@@ -40,7 +40,7 @@ public enum LoadoutFlags
     /// Players will not have their items cleared before adding items.
     /// </summary>
     DontClearItems = 4,
-    
+
     /// <summary>
     /// Players won't have effects applied to them.
     /// </summary>
@@ -90,4 +90,9 @@ public enum LoadoutFlags
     /// The player will have an endless amount of ammo.
     /// </summary>
     ForceEndlessClip = 4098,
+    
+    /// <summary>
+    /// The player will stay in the default spawn point.
+    /// </summary>
+    UseDefaultSpawnPoint = 8196,
 }

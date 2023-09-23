@@ -31,11 +31,6 @@ namespace AutoEvent.Games.Infection
         private InfectionStage _stage;
         private int _overtime = 30;
 
-        public override void InstantiateEvent()
-        {
-           
-        }
-
         protected override void RegisterEvents()
         {
             Translation = new InfectTranslate();
@@ -67,7 +62,12 @@ namespace AutoEvent.Games.Infection
 
         protected override void OnStart()
         {
-            _stage = InfectionStage.Starting;
+            foreach (Player player in Player.GetPlayers())
+            {
+                player.GiveLoadout(Config.PlayerLoadouts);
+                //Extensions.SetRole(player, RoleTypeId.ClassD, RoleSpawnFlags.None);
+                player.Position = RandomPosition.GetSpawnPosition(MapInfo.Map);
+            }
             float scale = 1;
             switch(Player.GetPlayers().Count())
             {
@@ -90,14 +90,8 @@ namespace AutoEvent.Games.Infection
 
         protected override void CountdownFinished()
         {
-            foreach (Player player in Player.GetPlayers())
-            {
-                player.GiveLoadout(Config.PlayerLoadouts);
-                //Extensions.SetRole(player, RoleTypeId.ClassD, RoleSpawnFlags.None);
-                player.Position = RandomPosition.GetSpawnPosition(MapInfo.Map);
-            }
-                //Extensions.SetRole(Player.GetPlayers().RandomItem(), RoleTypeId.Scp0492, RoleSpawnFlags.None);
-                Player.GetPlayers().RandomItem().GiveLoadout(Config.PlayerLoadouts);
+            //Extensions.SetRole(Player.GetPlayers().RandomItem(), RoleTypeId.Scp0492, RoleSpawnFlags.None);
+            Player.GetPlayers().RandomItem().GiveLoadout(Config.ZombieLoadouts);
             _stage = InfectionStage.Stage1;
         }
 

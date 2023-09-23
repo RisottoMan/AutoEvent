@@ -19,6 +19,8 @@ using AutoEvent.API.Enums;
 using AutoEvent.Games.Battle;
 using AutoEvent.Games.Line;
 using CustomPlayerEffects;
+using Exiled.API.Features.Items;
+using InventorySystem.Configs;
 using InventorySystem.Items.ThrowableProjectiles;
 using InventorySystem.Items;
 using InventorySystem.Items.Usables.Scp244.Hypothermia;
@@ -68,11 +70,20 @@ namespace AutoEvent
         }
         public static void GiveLoadout(this Player player, Loadout loadout, LoadoutFlags flags = LoadoutFlags.None)
         {
+            RoleTypeId role = RoleTypeId.None;
+            RoleSpawnFlags respawnFlags = RoleSpawnFlags.None;
             if (loadout.Roles is not null && loadout.Roles.Count > 0 && !flags.HasFlag(LoadoutFlags.IgnoreRole))
             {
+                if (flags.HasFlag(LoadoutFlags.UseDefaultSpawnPoint))
+                    respawnFlags |= RoleSpawnFlags.UseSpawnpoint;
+                if (flags.HasFlag(LoadoutFlags.DontClearItems))
+                    respawnFlags |= RoleSpawnFlags.AssignInventory;
+                
                 if (loadout.Roles.Count == 1)
                 {
-                    player.SetRole(loadout.Roles.First().Key);
+                    // player.SetRole(loadout.Roles.First().Key, RoleChangeReason.Respawn, respawnFlags);
+                    role = loadout.Roles.First().Key;
+                    goto assignRole;
                 }
                 else
                 {
@@ -82,15 +93,23 @@ namespace AutoEvent
                     {
                         if (UnityEngine.Random.Range(0, roleTotalChance) <= list[i].Value)
                         {
-                            player.SetRole(list[i].Key, RoleChangeReason.Respawn, RoleSpawnFlags.None);
+                            role = list[i].Key;
+                            // player.SetRole(list[i].Key, RoleChangeReason.Respawn, respawnFlags);
                             goto assignRole;
                         }
                     }
-                    player.SetRole(list[list.Count - 1].Key, RoleChangeReason.Respawn, RoleSpawnFlags.None);
+                    // player.SetRole(list[list.Count - 1].Key, RoleChangeReason.Respawn, respawnFlags);
+                    role = list[list.Count - 1].Key;
+                    goto assignRole;
                 }
+                assignRole:
+                if (AutoEvent.Singleton.Config.IgnoredRoles.Contains(role))
+                {
+                    DebugLogger.LogDebug("AutoEvent is trying to set a player to a role that is apart of IgnoreRoles. This is probably an error. The plugin will instead set players to the lobby role to prevent issues.", LogLevel.Error, true);
+                    role = AutoEvent.Singleton.Config.LobbyRole;
+                }
+                player.SetRole(role, RoleChangeReason.Respawn, respawnFlags);
             }
-            assignRole:
-            
             if (loadout.Items is not null && loadout.Items.Count > 0 && !flags.HasFlag(LoadoutFlags.IgnoreItems))
             {
                 foreach (var item in loadout.Items)
@@ -102,7 +121,7 @@ namespace AutoEvent
 
             if ((loadout.InfiniteAmmo != AmmoMode.None && !flags.HasFlag(LoadoutFlags.IgnoreInfiniteAmmo)) || flags.HasFlag(LoadoutFlags.ForceInfiniteAmmo) || flags.HasFlag(LoadoutFlags.ForceEndlessClip))
             {
-                player.GameObject.AddComponent<InfiniteAmmoComponent>().EndlessClip = loadout.InfiniteAmmo == AmmoMode.EndlessClip || flags.HasFlag(LoadoutFlags.ForceEndlessClip);
+                player.GiveInfiniteAmmo(loadout.InfiniteAmmo == AmmoMode.EndlessClip || flags.HasFlag(LoadoutFlags.ForceEndlessClip) ? AmmoMode.EndlessClip : AmmoMode.InfiniteAmmo);
             }
             if(loadout.Health != 0 && !flags.HasFlag(LoadoutFlags.IgnoreHealth))
                 player.Health = loadout.Health;
@@ -123,7 +142,7 @@ namespace AutoEvent
             {
                 foreach (var effect in loadout.Effects)
                 {
-                    player.EffectsManager.ChangeState(effect.Type.ToString(), effect.Intensity, effect.Duration,
+                    player.EffectsManager.ChangeState(effect.EffectType.ToString(), effect.Intensity, effect.Duration,
                         effect.AddDuration);
                 }
             }
@@ -174,6 +193,20 @@ namespace AutoEvent
                 .ServerAddProcess(amount, limit, decay, efficacy, sustain, persistant);
         }
 
+        public static void GiveInfiniteAmmo(this Player player, AmmoMode ammoMode)
+        {
+            if (ammoMode == AmmoMode.None)
+            {
+                return;
+            }
+            foreach (KeyValuePair<ItemType, ushort> AmmoLimit in InventoryLimits.StandardAmmoLimits)
+            {
+                player.SetAmmo(AmmoLimit.Key, AmmoLimit.Value);
+            }
+            player.GameObject.AddComponent<InfiniteAmmoComponent>().EndlessClip = ammoMode.HasFlag(AmmoMode.EndlessClip);
+        }
+        public static void GiveEffect(this Player ply, Effect effect) => GiveEffect(ply, effect.EffectType, effect.Intensity,
+            effect.Duration, effect.AddDuration);
         public static void GiveEffect(this Player ply, StatusEffect effect, byte intensity, float duration = 0f, bool addIntensity = false) =>             
             ply.EffectsManager.ChangeState(effect.ToString(), intensity, duration, addIntensity);
         public static Type GetStatusEffectBaseType(this StatusEffect effect)
@@ -228,7 +261,11 @@ namespace AutoEvent
         {
             foreach (Player player in Player.GetPlayers())
             {
-                player.SetRole(RoleTypeId.Tutorial, RoleChangeReason.None);
+                player.SetRole(AutoEvent.Singleton.Config.LobbyRole, RoleChangeReason.None);
+                if(player.GameObject.TryGetComponent<InfiniteAmmoComponent>(out var infAmmoComp))
+                    Component.Destroy(infAmmoComp);
+                player.IsGodModeEnabled = false;
+                player.SetPlayerScale(new Vector3(1,1,1));
                 player.Position = new Vector3(39.332f, 1014.766f, -31.922f);
             }
         }
@@ -295,15 +332,26 @@ namespace AutoEvent
 
         public static bool IsExistsMap(string schematicName)
         {
-            var data = MapUtils.GetSchematicDataByName(schematicName);
-            if (data == null)
+            try
             {
-                return false;
+
+                var data = MapUtils.GetSchematicDataByName(schematicName);
+                if (data == null)
+                {
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
             }
-            else
+            catch (Exception e)
             {
-                return true;
+                DebugLogger.LogDebug("An error occured at IsExistsMap.", LogLevel.Warn, true);
+                DebugLogger.LogDebug($"{e}", LogLevel.Debug);
             }
+
+            return false;
         }
 
         public static SchematicObject LoadMap(string nameSchematic, Vector3 pos, Quaternion rot, Vector3 scale)

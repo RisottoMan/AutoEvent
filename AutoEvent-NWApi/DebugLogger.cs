@@ -10,6 +10,7 @@
 //    Created Date:     09/05/2023 7:30 PM
 // -----------------------------------------
 
+using System;
 using System.Collections.Generic;
 using System.IO;
 using PluginAPI.Core;
@@ -21,18 +22,58 @@ namespace AutoEvent;
 public class DebugLogger
 {
     public static DebugLogger Singleton;
-    public DebugLogger()
+
+    public DebugLogger(bool writeDirectly)
     {
         Singleton = this;
+        WriteDirectly = writeDirectly;
         _debugLogs = new List<string>();
-    }
+        _loaded = true;
 
+        if (!Directory.Exists(AutoEvent.BaseConfigPath))
+        {
+            Directory.CreateDirectory(AutoEvent.BaseConfigPath);
+        }
+
+        try
+        {
+
+            _filePath = Path.Combine(AutoEvent.BaseConfigPath, "debug-output.log");
+            if (WriteDirectly)
+            {
+                DebugLogger.LogDebug($"Writing debug output directly to \"{_filePath}\"");
+                if (File.Exists(_filePath))
+                {
+                    File.Delete(_filePath);
+                }
+
+                File.Create(_filePath).Close();
+            }
+        }
+        catch (Exception e)
+        {
+            DebugLogger.LogDebug($"An error has occured while trying to create a debug log.", LogLevel.Warn, true);
+            DebugLogger.LogDebug($"{e}");
+        }
+}
+
+    private string _filePath;
+    private static bool _loaded = false;
     public static bool Debug = false;
     public static bool AntiEnd = false;
+    public static bool WriteDirectly = false;
     private List<string> _debugLogs;
     public static void LogDebug(string input, LogLevel level = LogLevel.Debug, bool outputIfNotDebug = false)
     {
-        Singleton._debugLogs.Add($"[{level.ToString()}] {(!outputIfNotDebug ? "[Hidden] ": "")}" + input);
+        if (_loaded)
+        {
+            string log = $"[{level.ToString()}] {(!outputIfNotDebug ? "[Hidden] ": "")}" + input;
+            if (!WriteDirectly)
+                Singleton._debugLogs.Add(log);
+            else
+                File.AppendAllText(Singleton._filePath, "\n" + log);
+        }
+            
         if (outputIfNotDebug || AutoEvent.Debug)
         {
             switch (level)
@@ -53,27 +94,18 @@ public class DebugLogger
         }
     }
 
-    public static void WriteOutput(string fileName)
+    public static void WriteOutput()
     {
-#if !EXILED
-        string folderLoc = Paths.GlobalPlugins.Plugins;
-        string folderName = "AutoEvent-NWApi";
-#else
-        string folderLoc = Exiled.API.Features.Paths.Configs;
-        string folderName = "AutoEvent";
-#endif
-        string folder = Path.Combine(folderLoc, folderName);
-        if (!Directory.Exists(folder))
+        if (WriteDirectly)
+            return;
+        if (_loaded)
+            return;
+        
+        if (File.Exists(Singleton._filePath))
         {
-            Directory.CreateDirectory(folder);
+            File.Delete(Singleton._filePath);
         }
-
-        string filePath = Path.Combine(folder, fileName);
-        if (File.Exists(filePath))
-        {
-            File.Delete(filePath);
-        }
-        File.WriteAllLines(filePath, Singleton._debugLogs);
+        File.WriteAllLines(Singleton._filePath, Singleton._debugLogs);
     }
 }
 

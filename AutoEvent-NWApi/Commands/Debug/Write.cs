@@ -55,7 +55,7 @@ public class Write : ICommand
 
         skipPermissionCheck:
 
-        DebugLogger.WriteOutput(Path.Combine(AutoEvent.BaseConfigPath, "debug-output.log"));
+        DebugLogger.WriteOutput();
         response = "Output written to debug file.";
         return true;
     }

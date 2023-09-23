@@ -31,8 +31,22 @@ namespace AutoEvent.Games.Boss
         public BossConfig Config { get; set; }
         private EventHandler EventHandler { get; set; }
         private BossTranslate Translation { get; set; }
-        private Player _boss;
+        private List<Player> _boss;
 
+        protected override void OnStart()
+        {
+            foreach (Player player in Player.GetPlayers())
+            {
+                player.GiveLoadout(Config.Loadouts);
+                // Extensions.SetRole(player, RoleTypeId.NtfSergeant, RoleSpawnFlags.None);
+                //player.Position = RandomClass.GetSpawnPosition(MapInfo.Map);
+                // player.Health = 200;
+
+                // RandomClass.CreateSoldier(player);
+                Timing.CallDelayed(0.1f, () => { player.CurrentItem = player.Items.First(); });
+            }
+
+        }
         protected override void RegisterEvents()
         {
             Translation = new BossTranslate();
@@ -47,7 +61,7 @@ namespace AutoEvent.Games.Boss
             Players.DropAmmo += EventHandler.OnDropAmmo;
         }
 
-        protected override void OnStop()
+        protected override void UnregisterEvents()
         {
             EventManager.UnregisterEvents(EventHandler);
             Servers.TeamRespawn -= EventHandler.OnTeamRespawn;
@@ -82,43 +96,30 @@ namespace AutoEvent.Games.Boss
 
         protected override void CountdownFinished()
         {
+            _boss = new List<Player>();
             StartAudio();
-            // Lots of this is handled by the GiveLoadout() system now.
-            _boss = Player.GetPlayers().Where(r => r.IsNTF).ToList().RandomItem();
-            _boss.GiveLoadout(Config.BossLoadouts);
-            //Extensions.SetRole(_boss, RoleTypeId.ChaosConscript, RoleSpawnFlags.None);
-            _boss.Position = RandomClass.GetSpawnPosition(MapInfo.Map);
-
-            _boss.Health = Player.GetPlayers().Count() * 4000;
-            // Extensions.SetPlayerScale(_boss, new Vector3(5, 5, 5));
-
-            //_boss.ClearInventory();
-            //_boss.AddItem(ItemType.GunLogicer);
-            Timing.CallDelayed(0.1f, () =>
+            foreach (var player in Config.BossCount.GetPlayers())
             {
-                _boss.CurrentItem = _boss.Items.First();
-            });
-        }
+                // Lots of this is handled by the GiveLoadout() system now.
+                _boss.Add(player);
+                player.GiveLoadout(Config.BossLoadouts);
+                //Extensions.SetRole(_boss, RoleTypeId.ChaosConscript, RoleSpawnFlags.None);
+                player.Position = RandomClass.GetSpawnPosition(MapInfo.Map);
 
-        protected override void OnStart()
-        {
-            foreach (Player player in Player.GetPlayers())
-            {
-                player.GiveLoadout(Config.Loadouts);
-                // Extensions.SetRole(player, RoleTypeId.NtfSergeant, RoleSpawnFlags.None);
-                //player.Position = RandomClass.GetSpawnPosition(MapInfo.Map);
-                // player.Health = 200;
+                player.Health = Player.GetPlayers().Count() * 4000;
+                // Extensions.SetPlayerScale(_boss, new Vector3(5, 5, 5));
 
-                RandomClass.CreateSoldier(player);
+                //_boss.ClearInventory();
+                //_boss.AddItem(ItemType.GunLogicer);
                 Timing.CallDelayed(0.1f, () => { player.CurrentItem = player.Items.First(); });
             }
-
         }
+        
 
         protected override void ProcessFrame()
         {
             string text = Translation.BossCounter;
-            text = text.Replace("%hp%", $"{(int)_boss.Health}");
+            text = text.Replace("%hp%", $"{(int)_boss.Sum(x => x.Health)}");
             text = text.Replace("%count%", $"{Player.GetPlayers().Count(r => r.IsNTF)}");
             text = text.Replace("%time%", $"{EventTime.Minutes:00}:{EventTime.Seconds:00}");
 
@@ -127,11 +128,9 @@ namespace AutoEvent.Games.Boss
 
         protected override void OnFinished()
         {
-            Extensions.SetPlayerScale(_boss, new Vector3(1, 1, 1));
-
             if (Player.GetPlayers().Count(r => r.Team == Team.FoundationForces) == 0)
             {
-                Extensions.Broadcast(Translation.BossWin.Replace("%hp%", $"{(int)_boss.Health}"), 10);
+                Extensions.Broadcast(Translation.BossWin.Replace("%hp%", $"{(int)_boss.Sum(x => x.Health)}"), 10);
             }
             else if (Player.GetPlayers().Count(r => r.Team == Team.ChaosInsurgency) == 0)
             {

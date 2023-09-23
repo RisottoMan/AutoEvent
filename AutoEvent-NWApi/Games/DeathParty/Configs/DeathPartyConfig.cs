@@ -44,6 +44,9 @@ public class DeathPartyConfig : EventConfig
     [Description("Should grenades spawn on top of randomly chosen players. This will not apply on the last round.")]
     public bool TargetPlayers { get; set; } = false;
 
+    [Description("If true, players will respawn as chaos, and get to lob grenades at people who are still alive.")]
+    public bool RespawnPlayersWithGrenades { get; set; } = false;
+
     [Description("The amount of rounds that this gamemode lasts. The last round is always a super big grenade.")] 
     public int Rounds { get; set; } = 5;
 

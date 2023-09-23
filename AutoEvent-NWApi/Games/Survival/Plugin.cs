@@ -21,6 +21,8 @@ namespace AutoEvent.Games.Survival
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.SurvivalTranslate.SurvivalDescription;
         public override string Author { get; set; } = "KoT0XleB";
         public override string CommandName { get; set; } = "zombie2";
+        [EventConfig]
+        public SurvivalConfig Config { get; set; }
         public MapInfo MapInfo { get; set; } = new MapInfo()
             {MapName = "Survival", Position = new Vector3(15f, 1030f, -43.68f), MapRotation = Quaternion.identity};
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
@@ -69,18 +71,8 @@ namespace AutoEvent.Games.Survival
             Server.FriendlyFire = false;
             foreach (Player player in Player.GetPlayers())
             {
-                Extensions.SetRole(player, RoleTypeId.NtfSergeant, RoleSpawnFlags.None);
+                player.GiveLoadout(Config.PlayerLoadouts);
                 player.Position = RandomClass.GetSpawnPosition(MapInfo.Map);
-                //Extensions.SetPlayerAhp(player, 100, 100, 0);
-
-                var item = player.AddItem(RandomClass.GetRandomGun());
-                player.AddItem(ItemType.GunCOM18);
-                player.AddItem(ItemType.ArmorCombat);
-
-                Timing.CallDelayed(0.1f, () =>
-                {
-                    player.CurrentItem = item;
-                });
             }
         }
 
@@ -100,17 +92,20 @@ namespace AutoEvent.Games.Survival
             {
                 Extensions.PlayAudio("Zombie2.ogg", 7, true, Name);
             });
-            for (int i = 0; i <= Player.GetPlayers().Count() / 10; i++)
+            foreach (Player x in Config.Zombies.GetPlayers())
             {
-                var player = Player.GetPlayers().Where(r => r.IsHuman).ToList().RandomItem();
+                /*var player = Player.GetPlayers().Where(r => r.IsHuman).ToList().RandomItem();
                 Extensions.SetRole(player, RoleTypeId.Scp0492, RoleSpawnFlags.AssignInventory);
                 player.EffectsManager.EnableEffect<Disabled>();
                 player.EffectsManager.EnableEffect<Scp1853>();
                 player.Health = 5000;
-
+                */
+                x.GiveLoadout(Config.ZombieLoadouts);
                 if (Player.GetPlayers().Count(r => r.IsSCP) == 1)
                 {
-                    FirstZombie = player;
+                    if (FirstZombie is not null)
+                        continue;
+                    FirstZombie = x;
                 }
             }
 

@@ -149,7 +149,7 @@ namespace AutoEvent.Games.Glass
             bool playerNotOnPlatform = false;
             foreach (Player ply in Player.GetPlayers().Where(ply => ply.IsAlive))
             {
-                if (Vector3.Distance(_finish.transform.position, ply.Position) >= 10)
+                if (Vector3.Distance(_finish.transform.position, ply.Position) >= 4)
                 {
                     playerNotOnPlatform = true;
                     break;

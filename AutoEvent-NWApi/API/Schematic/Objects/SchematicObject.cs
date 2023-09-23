@@ -202,6 +202,7 @@
                     {
                         var itemType = ((ItemType)Enum.Parse(typeof(ItemType), block.Properties["ItemType"].ToString()));
                         pickup = ItemPickup.Create(itemType, new Vector3(0, 0, 0), Quaternion.identity);
+                        pickup.GameObject.AddComponent<PickupComponent>();
                     }
 
                     gameObject = pickup.GameObject;

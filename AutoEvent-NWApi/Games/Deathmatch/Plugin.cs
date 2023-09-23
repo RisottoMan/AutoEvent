@@ -67,7 +67,7 @@ namespace AutoEvent.Games.Deathmatch
             ChaosKills = 0;
 
 
-            _needKills = Config.KillsPerPerson * Player.Count;
+            _needKills = Config.KillsPerPerson * Player.GetPlayers().Count;
 
             var count = 0;
             foreach (Player player in Player.GetPlayers())

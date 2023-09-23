@@ -7,6 +7,7 @@ using PluginAPI.Events;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using AutoEvent.API.Enums;
 using AutoEvent.Games.Infection;
 using AutoEvent.Interfaces;
 using UnityEngine;
@@ -88,7 +89,8 @@ namespace AutoEvent.Games.GunGame
                 }
 
                 player.ClearInventory();
-                Extensions.SetRole(player, GunGameRandom.GetRandomRole(), RoleSpawnFlags.None);
+                //Extensions.SetRole(player, GunGameRandom.GetRandomRole(), RoleSpawnFlags.None);
+                player.GiveLoadout(Config.Loadouts, LoadoutFlags.IgnoreWeapons | LoadoutFlags.IgnoreGodMode);
                 player.Position = SpawnPoints.RandomItem();
 
                 count++;
@@ -132,7 +134,7 @@ namespace AutoEvent.Games.GunGame
             foreach (Player pl in Player.GetPlayers())
             {
                 PlayerStats.TryGetValue(pl, out Stats stats);
-                if (stats.level == GunGameGuns.GunByLevel.Last().Key)
+                if (stats.kill >= Config.Guns.OrderByDescending(x => x.KillsRequired).FirstOrDefault()!.KillsRequired)
                 {
                     _winner = pl;
                 }

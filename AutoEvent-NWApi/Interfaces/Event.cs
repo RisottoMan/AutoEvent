@@ -47,9 +47,9 @@ namespace AutoEvent.Interfaces
                     ev.Id = Events.Count;
                     try
                     {
-                        ev.InstantiateEvent();
                         ev.LoadConfigs();
                         ev.LoadTranslation();
+                        ev.InstantiateEvent();
                     }
                     catch (Exception e)
                     {
@@ -58,7 +58,7 @@ namespace AutoEvent.Interfaces
                     }
                     Events.Add(ev);
 
-                    DebugLogger.LogDebug($"[EventLoader] {ev.Name} has been registered!", LogLevel.Info, true);
+                    DebugLogger.LogDebug($"[EventLoader] {ev.Name} has been registered with {ev.ConfigPresets.Count} config presets!", LogLevel.Info, true);
                 }
                 catch (MissingMethodException) { }
                 catch (Exception ex)
@@ -250,6 +250,27 @@ namespace AutoEvent.Interfaces
             Extensions.UnLoadMap(eventMap.MapInfo.Map);
         }
     }
+
+    /// <summary>
+    /// Can be used to get a list of each <see cref="EventConfig"/> defined in the plugin.
+    /// </summary>
+    /// <returns>Returns a list of the current values of each <see cref="EventConfig"/></returns>
+    public List<EventConfig> GetCurrentConfigsValues()
+    {
+        List<EventConfig> eventConfigs = new List<EventConfig>();
+        foreach (PropertyInfo propertyInfo in this.GetType().GetProperties())
+        {
+            var attr = propertyInfo.GetCustomAttribute<EventConfigAttribute>();
+            if (attr is null)
+                continue;
+            object value = propertyInfo.GetValue(this);
+            if(value is not EventConfig conf)
+                continue;
+            eventConfigs.Add(conf);
+        }
+
+        return eventConfigs;
+    }
     
     /// <summary>
     /// Used to start the event safely.
@@ -359,7 +380,7 @@ namespace AutoEvent.Interfaces
         var path = CreateConfigFolder();
         try
         {
-            loadedConfigs =  _loadValidConfigs(path);
+            loadedConfigs = _loadValidConfigs(path);
         }
         catch (Exception e)
         {
@@ -386,7 +407,7 @@ namespace AutoEvent.Interfaces
             DebugLogger.LogDebug($"[EventLoader] LoadConfigs()->_loadPresets(path) has caught an exception while loading configs for the plugin {Name}", LogLevel.Warn, true);
             DebugLogger.LogDebug($"{e}", LogLevel.Debug);
         }
-        DebugLogger.LogDebug($"[EventLoader] Loaded {loadedConfigs} Configs, and {ConfigPresets.Count} Config Presets, for plugin {Name}", LogLevel.Info);
+        // DebugLogger.LogDebug($"[EventLoader] Loaded {loadedConfigs} Configs, and {ConfigPresets.Count} Config Presets, for plugin {Name}", LogLevel.Info);
     }
     
     /// <summary>
@@ -520,7 +541,7 @@ namespace AutoEvent.Interfaces
             {
                 continue;
             }
-            DebugLogger.LogDebug($"Embedded Config Preset \"{property.Name}\" found for {Name}", LogLevel.Debug);
+            // DebugLogger.LogDebug($"Embedded Config Preset \"{property.Name}\" found for {Name}", LogLevel.Debug);
 
             conf.Load(path, property, property.GetValue(this));
         }
@@ -536,7 +557,7 @@ namespace AutoEvent.Interfaces
         {
             string fileName = Path.GetFileNameWithoutExtension(file);
             EventConfig conf = Configs.Serialization.Deserializer.Deserialize<EventConfig>(File.ReadAllText(file));
-            DebugLogger.LogDebug($"Config Preset \"{file}\" loaded for {Name}", LogLevel.Debug);
+            // DebugLogger.LogDebug($"Config Preset \"{file}\" loaded for {Name}", LogLevel.Debug);
             conf.PresetName = fileName;
             ConfigPresets.Add(conf);
         }
@@ -719,10 +740,10 @@ namespace AutoEvent.Interfaces
             {
 
                 DeSpawnMap();
-
                 StopAudio();
                 Extensions.CleanUpAll();
                 Extensions.TeleportEnd();
+                
             }
             catch (Exception e)
             {
@@ -754,8 +775,12 @@ namespace AutoEvent.Interfaces
             AutoEvent.ActiveEvent = null;
             try
             {
-                // this._setRandomMap();
-                // this._setRandomSound();
+                EventConfig conf = this.GetCurrentConfigsValues().FirstOrDefault();
+                if (conf is not null)
+                {
+                    this._setRandomMap(conf); 
+                    this._setRandomSound(conf);
+                }
             }
             catch (Exception e)
             {

@@ -4,6 +4,7 @@ using InventorySystem.Configs;
 using System.Collections.Generic;
 using CustomPlayerEffects;
 using System.Linq;
+using AutoEvent.API.Enums;
 using AutoEvent.Events.EventArgs;
 using PluginAPI.Core.Attributes;
 using PluginAPI.Enums;
@@ -30,12 +31,13 @@ namespace AutoEvent.Games.Survival
 
             if (ev.Attacker != null && ev.Target != null)
             {
-                if (ev.Attacker.IsSCP)
+                if (ev.Attacker.IsSCP && !ev.Target.IsSCP)
                 {
                     if (ev.Target.Health <= 50)
                     {
-                        ev.Target.SetRole(RoleTypeId.Scp0492);
-                        ev.Target.Health = 3000;
+                        /*ev.Target.SetRole(RoleTypeId.Scp0492);
+                        ev.Target.Health = 3000;*/
+                        ev.Target.GiveLoadout(_plugin.Config.ZombieLoadouts);
                     }
                     else
                     {
@@ -49,10 +51,20 @@ namespace AutoEvent.Games.Survival
 
                 if (ev.Attacker.IsHuman && ev.Target.IsSCP && ev.Target != _plugin.FirstZombie)
                 {
-                    ev.Target.EffectsManager.EnableEffect<Stained>(1);
-                    ev.Target.EffectsManager.EnableEffect<Sinkhole>(1);
+                    foreach (Effect effect in _plugin.Config.GunEffect.Effects)
+                    {
+                        ev.Target.GiveEffect(effect);
+                    }
+
+                    ev.Amount = _plugin.Config.GunEffect.Damage;
+                }
+
+                if (ev.Target == _plugin.FirstZombie)
+                {
+                    ev.Amount = 1;
                 }
             }
+            
         }
 
         [PluginEvent(ServerEventType.PlayerDeath)]
