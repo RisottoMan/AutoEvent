@@ -22,7 +22,7 @@ namespace AutoEvent
 #if EXILED
     public class AutoEvent : Plugin<Config, Translation>
     {
-        public override System.Version Version => new System.Version(9, 1, 3);
+        public override System.Version Version => new System.Version(9, 1, 4);
         public override string Name => "AutoEvent";
         public override string Author => "Created by KoT0XleB, extended by swd and sky, Co-Maintained by Redforce04";
         public static bool IsPlayedGames;
@@ -57,7 +57,7 @@ namespace AutoEvent
         public override void OnEnabled()
 #else
         [PluginPriority(LoadPriority.Low)]
-        [PluginEntryPoint("AutoEvent", "9.1.3", "An event manager plugin that allows you to run mini-games.", "KoT0XleB and Redforce04")]
+        [PluginEntryPoint("AutoEvent", "9.1.4", "An event manager plugin that allows you to run mini-games.", "KoT0XleB and Redforce04")]
         void OnEnabled()
 #endif
         {
@@ -110,15 +110,12 @@ namespace AutoEvent
                     Log.Debug($"{e}");
                 }
 
+                eventHandler = new EventHandler();
+                EventManager.RegisterEvents(eventHandler);
                 EventManager.RegisterEvents(this);
                 SCPSLAudioApi.Startup.SetupDependencies();
 
-                eventHandler = new EventHandler();
                 Servers.RemoteAdmin += eventHandler.OnRemoteAdmin;
-
-
-
-
                 try
                 {
                     DebugLogger.LogDebug($"Base Conf Path: {BaseConfigPath}");

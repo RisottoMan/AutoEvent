@@ -37,9 +37,9 @@ public enum LoadoutFlags
     IgnoreItems = 2,
     
     /// <summary>
-    /// Players will not have their items cleared before adding items.
+    /// Players will not have their default role items cleared before adding items.
     /// </summary>
-    DontClearItems = 4,
+    DontClearDefaultItems = 4,
 
     /// <summary>
     /// Players won't have effects applied to them.
@@ -95,4 +95,15 @@ public enum LoadoutFlags
     /// The player will stay in the default spawn point.
     /// </summary>
     UseDefaultSpawnPoint = 8196,
+    
+    /// <summary>
+    /// Only give players weapons.
+    /// </summary>
+    WeaponsOnly = 15363,
+    
+    /// <summary>
+    /// Only give players items.
+    /// </summary>
+    ItemsOnly = 16389
+    // 16391
 }

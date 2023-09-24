@@ -115,7 +115,7 @@ namespace AutoEvent.Games.DeathParty
         {
             // At least one player is alive &&
             // Stage hasn't yet hit the max stage.
-            return !(Player.GetPlayers().Count(r => r.IsAlive && (!RespawnWithGrenades||r.Role != RoleTypeId.ChaosConscript)) > 0 && Stage <= Config.Rounds);
+            return !(Player.GetPlayers().Count(r => r.IsAlive && r.Role != RoleTypeId.ChaosConscript) > 0 && Stage <= Config.Rounds);
         }
         public IEnumerator<float> GrenadeCoroutine()
         { 

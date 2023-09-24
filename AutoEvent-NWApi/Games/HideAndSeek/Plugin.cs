@@ -7,6 +7,7 @@ using PluginAPI.Events;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using AutoEvent.API;
 using UnityEngine;
 using AutoEvent.Events.Handlers;
 using AutoEvent.Games.Infection;
@@ -106,12 +107,14 @@ namespace AutoEvent.Games.HideAndSeek
             int catchCount = RandomClass.GetCatchByCount(Player.GetPlayers().Count(r => r.IsAlive));
             for (int i = 0; i < catchCount; i++)
             {
-                var player = Player.GetPlayers().Where(r => r.IsAlive &&
-                                                            r.Items.Any(r => r.ItemTypeId == Config.TaggerWeapon) ==
-                                                            false).ToList().RandomItem();
+                var player = Player.GetPlayers().Where(r => r.IsAlive && r.Items.Any(r => r.ItemTypeId == Config.TaggerWeapon) == false).ToList().RandomItem();
                player.GiveLoadout(Config.TaggerLoadouts);
-                var item = player.AddItem(Config.TaggerWeapon);
-                //var scp018 = player.AddItem(ItemType.SCP018);
+               var item = player.AddItem(Config.TaggerWeapon);
+               if(item.ItemTypeId == ItemType.SCP018)
+                   item.MakeRock(new RockSettings(false, 1f, false, false, true));
+               if(item.ItemTypeId == ItemType.GrenadeHE)
+                   item.ExplodeOnCollision(true);
+               //var scp018 = player.AddItem(ItemType.SCP018);
                 Timing.CallDelayed(0.1f, () => { player.CurrentItem = item; });
             }
 

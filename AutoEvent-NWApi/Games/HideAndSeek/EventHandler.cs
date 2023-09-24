@@ -6,6 +6,7 @@ using PluginAPI.Core.Attributes;
 using PluginAPI.Enums;
 using PluginAPI.Events;
 using System.Linq;
+using AutoEvent.API;
 using AutoEvent.API.Enums;
 using CustomPlayerEffects;
 using PluginAPI.Core;
@@ -29,6 +30,7 @@ namespace AutoEvent.Games.HideAndSeek
             
             if (ev.Attacker != null)
             {
+                ev.IsAllowed = false;
                 bool isAttackerTagger = ev.Attacker.Items.FirstOrDefault(r => r.ItemTypeId == _plugin.Config.TaggerWeapon);
                 bool isTargetTagger = ev.Target.Items.FirstOrDefault(r => r.ItemTypeId == _plugin.Config.TaggerWeapon);
                 bool isAllowed = isAttackerTagger && !isTargetTagger;
@@ -36,42 +38,48 @@ namespace AutoEvent.Games.HideAndSeek
                 {
                     case (byte)DamageType.GrenadeExplosion:
                         if (_plugin.Config.TaggerWeapon == ItemType.GrenadeHE)
-                            ev.IsAllowed = false;
+                            ev.IsAllowed = true;
                         return; 
                     /*case DamageType.Jailbird:
                         if (_plugin.Config.TaggerWeapon == ItemType.Jailbird)
                             isAllowed = true;
                         break;*/
                     case (byte)DamageType.Scp018:
-                        ev.IsAllowed = false;
                         if (_plugin.Config.TaggerWeapon == ItemType.SCP018)
                             isAllowed = true;
                         break;
                     default:
                         if (!(_plugin.Config.Range > 0 && Vector3.Distance(ev.Attacker.Position, ev.Target.Position) <=
                                 _plugin.Config.Range))
-                            isAllowed = false;
+                            isAllowed = true;
                         break;
                 }
 
                 if (isAllowed)
                 {
-
+                    DebugLogger.LogDebug($"{ev.Target.Nickname} has been tagged by {ev.Attacker.Nickname}");
                     ev.IsAllowed = false;
                     ev.Attacker.EffectsManager.EnableEffect<SpawnProtected>(_plugin.Config.NoTagBackDuration, false);
                     ev.Attacker.ClearInventory();
                     ev.Attacker.GiveLoadout(_plugin.Config.PlayerLoadouts, LoadoutFlags.IgnoreItems | LoadoutFlags.IgnoreWeapons | LoadoutFlags.IgnoreGodMode);
 
                     var weapon = ev.Target.AddItem(_plugin.Config.TaggerWeapon);
+                    if(weapon.ItemTypeId is ItemType.GrenadeHE)
+                        weapon.ExplodeOnCollision(true);
+                    if(weapon.ItemTypeId is ItemType.SCP018)
+                        weapon.MakeRock(new RockSettings(false, 1f, false, false, true));
                     ev.Target.GiveLoadout(_plugin.Config.TaggerLoadouts, LoadoutFlags.IgnoreItems | LoadoutFlags.IgnoreWeapons | LoadoutFlags.IgnoreGodMode);
                     Timing.CallDelayed(0.1f, () =>
                     {
                         ev.Target.CurrentItem = weapon;
                     });
+                    return;
                 }
+
+                ev.IsAllowed = true;
             }
         }
-
+    
     [PluginEvent(ServerEventType.GrenadeExploded)]
     public void OnGrenadeExplode(GrenadeExplodedEvent ev)
     {
@@ -79,13 +87,8 @@ namespace AutoEvent.Games.HideAndSeek
             return;
         bool noRange = _plugin.Config.Range == 0;
         // Player.GetPlayers().Where(x => x.IsAlive && x.)
-
     }
-
-    public void OnGrenadeThrown()
-    {
-        
-    }
+    
 
         [PluginEvent(ServerEventType.PlayerJoined)]
         public void OnJoin(PlayerJoinedEvent ev)

@@ -25,26 +25,28 @@ namespace AutoEvent.Games.Deathmatch
         {
             if (Player.GetPlayers().Count(r => r.Team == Team.FoundationForces) > Player.GetPlayers().Count(r => r.Team == Team.ChaosInsurgency))
             {
-                Extensions.SetRole(ev.Player, RoleTypeId.ChaosRifleman, RoleSpawnFlags.None);
+                //Extensions.SetRole(ev.Player, RoleTypeId.ChaosRifleman, RoleSpawnFlags.None);
+                ev.Player.GiveLoadout(_plugin.Config.ChaosLoadouts);
             }
             else
             {
-                Extensions.SetRole(ev.Player, RoleTypeId.NtfSergeant, RoleSpawnFlags.None);
+                ev.Player.GiveLoadout(_plugin.Config.NTFLoadouts);
+                // Extensions.SetRole(ev.Player, RoleTypeId.NtfSergeant, RoleSpawnFlags.None);
             }
-
-            var item = ev.Player.AddItem(RandomClass.RandomItems.RandomItem());
+            /*var item = ev.Player.AddItem();
             ev.Player.AddItem(ItemType.ArmorCombat);
 
             ev.Player.EffectsManager.EnableEffect<Scp1853>(150);
             ev.Player.EffectsManager.ChangeState<Scp1853>(255);
             ev.Player.EffectsManager.EnableEffect<MovementBoost>(150);
             ev.Player.EffectsManager.ChangeState<MovementBoost>(10);
-
+            */
+            
             ev.Player.Position = RandomClass.GetRandomPosition(_plugin.MapInfo.Map);
 
             Timing.CallDelayed(0.1f, () =>
             {
-                ev.Player.CurrentItem = item;
+                ev.Player.CurrentItem = ev.Player.Items.First();
             });
         }
 

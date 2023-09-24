@@ -95,6 +95,7 @@
     <Reference Include="System.ComponentModel.DataAnnotations" HintPath="$(SL_REFERENCES)\System.ComponentModel.DataAnnotations.dll" />
     <Reference Include="UnityEngine" HintPath="$(SL_REFERENCES)\UnityEngine.dll" />
     <Reference Include="UnityEngine.AssetBundleModule" HintPath="$(SL_REFERENCES)\UnityEngine.AssetBundleModule.dll" />
+    <Reference Include="UnityEngine.ParticleSystem" HintPath="$(SL_REFERENCES)\UnityEngine.ParticleSystemModule.dll" />
     <Reference Include="UnityEngine.CoreModule" HintPath="$(SL_REFERENCES)\UnityEngine.CoreModule.dll" />
     <Reference Include="UnityEngine.UnityWebRequestModule" HintPath="$(UNITY_REFERENCES)\UnityEngine.UnityWebRequestModule.dll" />
     <Reference Include="UnityEngine.AnimationModule" HintPath="$(UNITY_REFERENCES)\UnityEngine.AnimationModule.dll" />
@@ -109,6 +110,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="API\ArtificialHealth.cs" />
     <Compile Include="API\Attributes\DisabledFeaturesAttribute.cs" />
     <Compile Include="API\BitwiseExtensions.cs" />
     <Compile Include="API\DifficultyItem.cs" />
@@ -120,7 +122,6 @@
     <Compile Include="API\Extensions.cs" />
     <Compile Include="API\FakeConnection.cs" />
     <Compile Include="API\GunEffect.cs" />
-    <Compile Include="API\InfiniteAmmoComponent.cs" />
     <Compile Include="API\Loadout.cs" />
     <Compile Include="API\NavigatorActions\AddAction.cs" />
     <Compile Include="API\NavigatorActions\CollectionSelect.cs" />
@@ -142,6 +143,7 @@
     <Compile Include="API\OptionModificationEngine\OptionModifiers\OptionModifier.cs" />
     <Compile Include="API\OptionModificationEngine\OptionModifiers\ValueType.cs" />
     <Compile Include="API\PickupComponent.cs" />
+    <Compile Include="API\Rock.cs" />
     <Compile Include="API\RoleCount.cs" />
     <Compile Include="API\Schematic\AnimationController.cs" />
     <Compile Include="API\Schematic\Enums\BlockType.cs" />
@@ -174,7 +176,11 @@
     <Compile Include="Commands\Debug\Debug.cs" />
     <Compile Include="Commands\Debug\Disable.cs" />
     <Compile Include="Commands\Debug\Enable.cs" />
+    <Compile Include="Commands\Debug\ImpactGrenade.cs" />
+    <Compile Include="Commands\Debug\InfiniteAmmo.cs" />
     <Compile Include="Commands\Debug\Presets.cs" />
+    <Compile Include="Commands\Debug\Rock.cs" />
+    <Compile Include="Commands\Debug\SetRole.cs" />
     <Compile Include="Commands\Debug\Write.cs" />
     <Compile Include="Commands\List.cs" />
     <Compile Include="Commands\MainCommand.cs" />
@@ -348,6 +354,7 @@
     <Compile Include="Patches\EndlessClip\DisruptorAction.cs" />
     <Compile Include="Patches\EndlessClip\DoubleAction.cs" />
     <Compile Include="Patches\EndlessClip\PumpAction.cs" />
+    <Compile Include="Patches\ExplosionGrenade.cs" />
     <Compile Include="Patches\GetPlayerPatches.cs" />
     <Compile Include="Patches\LockerInteract.cs" />
     <Compile Include="Patches\HandCuff.cs" />
@@ -360,6 +367,7 @@
     <Compile Include="Patches\PlaceBullet.cs" />
     <Compile Include="Patches\PlaceTantrum.cs" />
     <Compile Include="Patches\PlayerDying.cs" />
+    <Compile Include="Patches\ReloadClip\ClipLoadedInternalMagAmmoManagerPatch.cs" />
     <Compile Include="Patches\ReloadClip\GetPlayerAmmo.cs" />
     <Compile Include="Patches\RemoteAdmin.cs" />
     <Compile Include="Patches\SpawnRagdoll.cs" />

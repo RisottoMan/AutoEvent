@@ -8,5 +8,8 @@
         public string JailCycle { get; set; } = "<size=20><color=red>{name}</color>\n<color=yellow>Prisoners: {dclasscount}</color> || <color=#14AAF5>Jailers: {mtfcount}</color>\n<color=red>{time}</color></size>";
         public string JailPrisonersWin { get; set; } = "<color=red><b><i>Prisoners Win</i></b></color>\n<color=red>{time}</color>";
         public string JailJailersWin { get; set; } = "<color=#14AAF5><b><i>Jailers Win</i></b></color>\n<color=red>{time}</color>";
+        public string JailLockdownOnCooldown { get; set; } = "You cannot trigger a lockdown, while it is on cooldown. Cooldown Remaining: {cooldown}";
+        public string JailLivesRemaining { get; set; } = "You have {lives} lives remaining.";
+        public string JailNoLivesRemaining { get; set; } = "You have no more lives remaining.";
     }
 }

@@ -16,15 +16,21 @@ using PluginAPI.Helpers;
 using System.Reflection;
 using AutoEvent.API;
 using AutoEvent.API.Enums;
+using AutoEvent.Commands.Debug;
 using AutoEvent.Games.Battle;
 using AutoEvent.Games.Line;
 using CustomPlayerEffects;
 using Exiled.API.Features.Items;
+using Footprinting;
 using InventorySystem.Configs;
 using InventorySystem.Items.ThrowableProjectiles;
 using InventorySystem.Items;
 using InventorySystem.Items.Usables.Scp244.Hypothermia;
+using PluginAPI.Core.Items;
+using Debug = AutoEvent.Commands.Debug.Debug;
+using Item = PluginAPI.Core.Items.Item;
 using Object = UnityEngine.Object;
+using Random = UnityEngine.Random;
 
 namespace AutoEvent
 {
@@ -76,7 +82,7 @@ namespace AutoEvent
             {
                 if (flags.HasFlag(LoadoutFlags.UseDefaultSpawnPoint))
                     respawnFlags |= RoleSpawnFlags.UseSpawnpoint;
-                if (flags.HasFlag(LoadoutFlags.DontClearItems))
+                if (flags.HasFlag(LoadoutFlags.DontClearDefaultItems))
                     respawnFlags |= RoleSpawnFlags.AssignInventory;
                 
                 if (loadout.Roles.Count == 1)
@@ -110,12 +116,21 @@ namespace AutoEvent
                 }
                 player.SetRole(role, RoleChangeReason.Respawn, respawnFlags);
             }
+
+            if (!flags.HasFlag(LoadoutFlags.DontClearDefaultItems))
+            {
+                player.ClearInventory();
+            }
             if (loadout.Items is not null && loadout.Items.Count > 0 && !flags.HasFlag(LoadoutFlags.IgnoreItems))
             {
                 foreach (var item in loadout.Items)
                 {
-                    if(flags.HasFlag(LoadoutFlags.IgnoreWeapons) && !item.IsWeapon())
-                        player.AddItem(item);
+                    if (flags.HasFlag(LoadoutFlags.IgnoreWeapons) && item.IsWeapon())
+                    {
+                        continue;
+                    }
+
+                    player.AddItem(item);
                 }
             }
 
@@ -129,12 +144,21 @@ namespace AutoEvent
             {
                 player.IsGodModeEnabled = true;
             }
-            
-            if(loadout.ArtificialHealth != 0 && !flags.HasFlag(LoadoutFlags.IgnoreAHP))
-                player.ArtificialHealth = loadout.ArtificialHealth;
+
+            if (loadout.ArtificialHealth is not null && loadout.ArtificialHealth.MaxAmount > 0 && !flags.HasFlag(LoadoutFlags.IgnoreAHP))
+            {
+                //base.Owner.playerStats.GetModule<StaminaStat>().ModifyAmount(1f); 
+                // player.ReferenceHub.playerStats.GetModule<AhpStat>().ServerAddProcess(); - decay???
+                // player.ReferenceHub.playerStats.GetModule<HumeShieldStat>().TryGetHsModule(); - cant do this anymore :(
+
+                loadout.ArtificialHealth.ApplyToPlayer(player);
+                //player.ReferenceHub.playerStats.GetModule<AhpStat>().ServerAddProcess(amount: loadout.ArtificialHealth.InitialAmount, limit: loadout.ArtificialHealth.MaxAmount, decay: loadout., efficacy: 100f, sustain: 5f, persistant: true);
+                // player.ArtificialHealth = loadout.ArtificialHealth;
+            }
             if (!flags.HasFlag(LoadoutFlags.IgnoreStamina) && loadout.Stamina != 0)
             {
-                player.StaminaRemaining = loadout.Stamina;
+                player.ReferenceHub.playerStats.GetModule<StaminaStat>().ModifyAmount(loadout.Stamina); 
+                //player.StaminaRemaining = loadout.Stamina;
             }
             if(loadout.Size != Vector3.one && !flags.HasFlag(LoadoutFlags.IgnoreSize))
                 player.SetPlayerScale(loadout.Size);
@@ -193,17 +217,71 @@ namespace AutoEvent
                 .ServerAddProcess(amount, limit, decay, efficacy, sustain, persistant);
         }
 
+        public static Dictionary<ushort, bool> ExplodeOnCollisionList = new Dictionary<ushort, bool>();
+        public static Dictionary<ushort, RockSettings> RockList = new Dictionary<ushort,RockSettings>();
+
+
+        public static void MakeRock(this Item rock, RockSettings settings) => MakeRock(rock.Serial, settings);
+        public static void MakeRock(this ItemBase rock, RockSettings settings) => MakeRock(rock.ItemSerial, settings);
+
+        public static void MakeRock(ushort serial, RockSettings settings)
+        {
+            RockList.Add(serial, settings);
+        }
+        
+        public static void ExplodeOnCollision(this Item grenade, bool giveNewGrenadeOnExplosion = false) => ExplodeOnCollision(grenade.Serial, giveNewGrenadeOnExplosion);
+        public static void ExplodeOnCollision(this ItemBase grenade, bool giveNewGrenadeOnExplosion = false) => ExplodeOnCollision(grenade.ItemSerial, giveNewGrenadeOnExplosion);
+        public static void ExplodeOnCollision(this ushort item, bool giveNewGrenadeOnExplosion = false)
+        {
+            ExplodeOnCollisionList.Add(item, giveNewGrenadeOnExplosion);
+        }
+        
+        public static ThrowableItem CreateThrowable(ItemType type, Player player = null) => (player != null ? player.ReferenceHub : ReferenceHub.HostHub)
+            .inventory.CreateItemInstance(new ItemIdentifier(type, ItemSerialGenerator.GenerateNext()), false) as ThrowableItem;
+        public static ThrownProjectile SpawnThrowable(
+            this ThrowableItem item,
+            Vector3 position,
+            float fuseTime = -1f,
+            Player owner = null,
+            bool activate = false
+        )
+        {
+            TimeGrenade grenade = (TimeGrenade) Object.Instantiate(item.Projectile, position, Quaternion.identity);
+            if (fuseTime >= 0)
+                grenade._fuseTime = fuseTime;
+            grenade.NetworkInfo = new PickupSyncInfo(item.ItemTypeId, item.Weight, item.ItemSerial);
+            grenade.PreviousOwner = new Footprint(owner != null ? owner.ReferenceHub : ReferenceHub.HostHub);
+            if (grenade is Scp018Projectile scp018)
+                scp018.GetComponent<Rigidbody>().velocity = activate ? new Vector3(Random.value, Random.value, Random.value) : Vector3.zero; // add some force to make the ball bounce
+            NetworkServer.Spawn(grenade.gameObject);
+            if(activate)
+                grenade.ServerActivate();
+            return grenade;
+        }
+        
+        public static Dictionary<Player, AmmoMode> InfiniteAmmoList = new Dictionary<Player, AmmoMode>();
         public static void GiveInfiniteAmmo(this Player player, AmmoMode ammoMode)
         {
             if (ammoMode == AmmoMode.None)
             {
+                if (InfiniteAmmoList is null || InfiniteAmmoList.Count < 1 || !InfiniteAmmoList.ContainsKey(player))
+                    return;
+                InfiniteAmmoList.Remove(player);
                 return;
+            }
+
+            if (InfiniteAmmoList.ContainsKey(player))
+            {
+                InfiniteAmmoList[player] = ammoMode;
+            }
+            else
+            {
+                InfiniteAmmoList.Add(player, ammoMode);
             }
             foreach (KeyValuePair<ItemType, ushort> AmmoLimit in InventoryLimits.StandardAmmoLimits)
             {
                 player.SetAmmo(AmmoLimit.Key, AmmoLimit.Value);
             }
-            player.GameObject.AddComponent<InfiniteAmmoComponent>().EndlessClip = ammoMode.HasFlag(AmmoMode.EndlessClip);
         }
         public static void GiveEffect(this Player ply, Effect effect) => GiveEffect(ply, effect.EffectType, effect.Intensity,
             effect.Duration, effect.AddDuration);
@@ -262,8 +340,7 @@ namespace AutoEvent
             foreach (Player player in Player.GetPlayers())
             {
                 player.SetRole(AutoEvent.Singleton.Config.LobbyRole, RoleChangeReason.None);
-                if(player.GameObject.TryGetComponent<InfiniteAmmoComponent>(out var infAmmoComp))
-                    Component.Destroy(infAmmoComp);
+                player.GiveInfiniteAmmo(AmmoMode.None);
                 player.IsGodModeEnabled = false;
                 player.SetPlayerScale(new Vector3(1,1,1));
                 player.Position = new Vector3(39.332f, 1014.766f, -31.922f);

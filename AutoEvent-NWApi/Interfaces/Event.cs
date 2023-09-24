@@ -8,6 +8,7 @@ using System.Reflection;
 using HarmonyLib;
 using MEC;
 using UnityEngine;
+using YamlDotNet.Core;
 
 namespace AutoEvent.Interfaces
 {

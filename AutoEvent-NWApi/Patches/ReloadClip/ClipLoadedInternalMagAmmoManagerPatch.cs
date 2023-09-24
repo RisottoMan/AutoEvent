@@ -10,7 +10,6 @@
 //    Created Date:     09/19/2023 4:02 PM
 // -----------------------------------------
 
-using AutoEvent.API;
 using HarmonyLib;
 using InventorySystem;
 using InventorySystem.Configs;
@@ -19,8 +18,8 @@ using PluginAPI.Core;
 
 namespace AutoEvent.Patches;
 
-[HarmonyPatch(typeof(InventorySystem.Items.Firearms.Modules.AutomaticAmmoManager),nameof(InventorySystem.Items.Firearms.Modules.AutomaticAmmoManager.UserAmmo),MethodType.Getter)]
-public class GetPlayerAmmo
+[HarmonyPatch(typeof(InventorySystem.Items.Firearms.Modules.ClipLoadedInternalMagAmmoManager),nameof(InventorySystem.Items.Firearms.Modules.ClipLoadedInternalMagAmmoManager.UserAmmo),MethodType.Getter)]
+public class ClipLoadedInternalMagAmmoManagerPatch
 {
     public static bool Prefix(AutomaticAmmoManager __instance, ref ushort __result)
     {

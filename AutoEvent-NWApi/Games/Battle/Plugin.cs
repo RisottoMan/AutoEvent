@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using AutoEvent.API;
+using AutoEvent.API.Enums;
 using AutoEvent.Interfaces;
 using UnityEngine;
 using Event = AutoEvent.Interfaces.Event;
@@ -89,8 +90,8 @@ namespace AutoEvent.Games.Battle
 
                 count++;
 
-                player.GiveLoadout(Config.Loadouts);
-                Timing.CallDelayed(0.1f, () => { player.CurrentItem = player.Items.First(); });
+                player.GiveLoadout(Config.Loadouts, LoadoutFlags.IgnoreRole);
+                Timing.CallDelayed(0.1f, () => { player.CurrentItem = player.Items.FirstOrDefault(x => x); });
             }
 
         }

@@ -34,6 +34,7 @@ namespace AutoEvent.Games.Line
         private Dictionary<int, SchematicObject> _hardGameMap;
         private TimeSpan _timeRemaining;
         private int _hardCounts;
+        // todo - revamp configs for this
 
         protected override void RegisterEvents()
         {
@@ -134,7 +135,7 @@ namespace AutoEvent.Games.Line
         {
             // At least 2 players &&
             // Time is smaller than 2 minutes (+countdown)
-            return !(Player.GetPlayers().Count(r => r.Role == RoleTypeId.ClassD) > 1 && EventTime.TotalSeconds < 120+10);
+            return !(Player.GetPlayers().Count(r => r.Role != AutoEvent.Singleton.Config.LobbyRole) > 1 && EventTime.TotalSeconds < 120+10);
         }
 
         protected override void OnFinished()

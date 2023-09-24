@@ -28,7 +28,7 @@ public class LineConfig : EventConfig
         {
             Roles = new Dictionary<RoleTypeId, int>()
             {
-                { RoleTypeId.ClassD, 100 }
+                { RoleTypeId.Scientist, 100 }
             }
         }
     };

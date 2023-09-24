@@ -13,6 +13,7 @@ using AutoEvent.Games.Infection;
 using AutoEvent.Interfaces;
 using CommandSystem.Commands.RemoteAdmin;
 using InventorySystem.Items.Pickups;
+using Mirror;
 using PluginAPI.Core.Items;
 using UnityEngine;
 using Event = AutoEvent.Interfaces.Event;
@@ -92,19 +93,22 @@ namespace AutoEvent.Games.Lava
         {
             if (Config.ItemsAndWeaponsToSpawn is not null && Config.ItemsAndWeaponsToSpawn.Count > 0)
             {
+                DebugLogger.LogDebug($"Using Config for weapons.");
                 List<Vector3> itemPositions = new List<Vector3>();
-                foreach (var item in UnityEngine.Object.FindObjectsOfType<PickupComponent>())
+                foreach (var item in UnityEngine.Object.FindObjectsOfType<ItemPickupBase>())
                 {
-                    var itemPickup = item.gameObject.GetComponent<ItemPickupBase>();
-                    if (itemPickup is null)
+                    if (item is null || item.Position.y < MapInfo.Position.y - 1)
                         continue;
-                    itemPositions.Add(itemPickup.Position);
-                    itemPickup.DestroySelf();
+                    itemPositions.Add(item.Position);
+                    ItemPickup.Remove(item);
+                    item.DestroySelf();
                 }
+                DebugLogger.LogDebug($"Positions found: {itemPositions.Count}");
+
 
                 foreach (Vector3 position in itemPositions)
                 {
-                    ItemPickup.Create(_getItemByChance(), position + new Vector3(0,0.5f,0), Quaternion.Euler(Vector3.zero));
+                    ItemPickup.Create(_getItemByChance(), position + new Vector3(0,0.5f,0), Quaternion.Euler(Vector3.zero)).Spawn();
                 }
             }
 

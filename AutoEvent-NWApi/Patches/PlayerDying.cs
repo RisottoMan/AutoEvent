@@ -20,10 +20,9 @@ namespace AutoEvent.Patches
 
             if (ev.IsAllowed)
             {
-                var infAmmo = player.GameObject.GetComponent<InfiniteAmmoComponent>();
-                if (infAmmo is not null)
+                if (Extensions.InfiniteAmmoList is not null && Extensions.InfiniteAmmoList.ContainsKey(player))
                 {
-                    Component.Destroy(infAmmo);
+                    Extensions.InfiniteAmmoList.Remove(player);
                 }
             }
             return ev.IsAllowed;

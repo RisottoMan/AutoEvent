@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using AutoEvent.Events.EventArgs;
 using MapGeneration.Distributors;
 using PluginAPI.Core.Attributes;
@@ -7,6 +9,11 @@ using PluginAPI.Events;
 using UnityEngine;
 using AutoEvent;
 using AutoEvent.API.Enums;
+using InventorySystem.Items;
+using PlayerStatsSystem;
+using PluginAPI.Core;
+using PluginAPI.Core.Items;
+using Utils.NonAllocLINQ;
 
 namespace AutoEvent.Games.Jail
 {
@@ -28,11 +35,53 @@ namespace AutoEvent.Games.Jail
 
             if (Vector3.Distance(raycastHit.transform.gameObject.transform.position, _plugin.Button.transform.position) < 3)
             {
-                _plugin.PrisonerDoors.GetComponent<JailerComponent>().ToggleDoor();
+                BypassLevel bypassLevel = BypassLevel.None;
+                if (ev.Player.Items.Any(x => x.ItemTypeId is ItemType.KeycardContainmentEngineer))
+                    bypassLevel = BypassLevel.ContainmentEngineer;
+                if(ev.Player.Items.Any(x => x.ItemTypeId is ItemType.KeycardO5))
+                    bypassLevel = BypassLevel.O5;
+                if (ev.Player.IsBypassEnabled)
+                    bypassLevel = BypassLevel.BypassMode;
+                
+                if (!_plugin.ToggleLockdown(false, bypassLevel))
+                {
+                    ev.Player.ReceiveHint(AutoEvent.Singleton.Translation.JailTranslate.JailLockdownOnCooldown.Replace("{cooldown}", _plugin.LockDownCooldown.ToString()), 5f);
+                    return;
+                }
+                ev.Player.ReceiveHitMarker(2f);
+                //_plugin.PrisonerDoors.GetComponent<JailerComponent>().ToggleDoor();
             }
         }
 
+        public void OnPlayerDying(PlayerDyingArgs ev)
+        {
+            if (!ev.IsAllowed)
+                return;
+            
+            if (_plugin.Deaths is null)
+            {
+                _plugin.Deaths = new Dictionary<Player, int>();
+                return;
+            }
 
+            if (_plugin.Config.JailorLoadouts.Any(loadout => loadout.Roles.Any(role => role.Key == ev.Target.Role)))
+                return;
+            if (!_plugin.Deaths.ContainsKey(ev.Target))
+            {
+                _plugin.Deaths.Add(ev.Target, 1);
+            }
+            if (_plugin.Deaths[ev.Target] >= _plugin.Config.PrisonerLives)
+            {
+                ev.Target.ReceiveHint(AutoEvent.Singleton.Translation.JailTranslate.JailNoLivesRemaining, 4f);
+                return;
+            }
+
+            int livesRemaining = _plugin.Config.PrisonerLives = _plugin.Deaths[ev.Target];
+            ev.Target.ReceiveHint(AutoEvent.Singleton.Translation.JailTranslate.JailLivesRemaining.Replace("{lives}", livesRemaining.ToString()), 4f);
+            ev.Target.GiveLoadout(_plugin.Config.PrisonerLoadouts);
+            ev.Target.Position = JailRandom.GetRandomPosition(_plugin.MapInfo.Map, false);
+
+        }
         public void OnLockerInteract(LockerInteractArgs ev)
         {
             ev.IsAllowed = false;
@@ -43,14 +92,18 @@ namespace AutoEvent.Games.Jail
                 {
                     try
                     {
-
+                        List<ItemBase> itemsToRemove = new List<ItemBase>();
                         foreach (var userInventoryItem in ev.Player.ReferenceHub.inventory.UserInventory.Items)
                         {
-                            var i = userInventoryItem;
-                            if (i.Value.ItemTypeId.IsWeapon())
+                            if (userInventoryItem.Value.ItemTypeId.IsWeapon())
                             {
-                                ev.Player.RemoveItem(i.Value);
+                                itemsToRemove.Add(userInventoryItem.Value);
                             }
+                        }
+
+                        foreach (var item in itemsToRemove)
+                        {
+                            ev.Player.RemoveItem(item);
                         }
                     }
                     catch (Exception e)

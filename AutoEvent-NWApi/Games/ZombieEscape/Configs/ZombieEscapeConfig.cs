@@ -50,7 +50,7 @@ public class ZombieEscapeConfig : EventConfig
         new Loadout()
         {
             Roles = new Dictionary<RoleTypeId, int>() { { RoleTypeId.Scp0492, 100 } },
-            Effects = new List<Effect>() { new Effect() { EffectType = StatusEffect.Scp1853 }, new Effect() { EffectType = StatusEffect.Disabled } },
+            Effects = new List<Effect>() { new Effect() { EffectType = StatusEffect.Scp1853 }, new Effect() { EffectType = StatusEffect.Disabled, Duration = 5 } },
             Health = 10000,
         }
     };

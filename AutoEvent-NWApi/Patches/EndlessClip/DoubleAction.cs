@@ -15,13 +15,13 @@ using HarmonyLib;
 using InventorySystem;
 using InventorySystem.Items.Firearms;
 using InventorySystem.Items.Firearms.Modules;
+using PluginAPI.Core;
 
 namespace AutoEvent.Patches;
 
-/*
+
 [HarmonyPatch(typeof(InventorySystem.Items.Firearms.Modules.DoubleAction),
-    nameof(InventorySystem.Items.Firearms.Modules.DoubleAction.ServerAuthorizeShot),
-    MethodType.Getter)]
+    nameof(InventorySystem.Items.Firearms.Modules.DoubleAction.ServerAuthorizeShot))]
 public class DoubleAction
 {
     [HarmonyPostfix()]
@@ -37,16 +37,15 @@ public class DoubleAction
             return;
         }
 
-        var component = __instance._firearm.Footprint.Hub.gameObject.GetComponent<InfiniteAmmoComponent>();
-        if (component is null)
+        Player ply = Player.Get(__instance._firearm.Owner);
+        if (ply is null)
         {
             return;
         }
-
-        if (!component.EndlessClip)
+        if (Extensions.InfiniteAmmoList is null || !Extensions.InfiniteAmmoList.ContainsKey(ply) || !Extensions.InfiniteAmmoList[ply].HasFlag(AmmoMode.EndlessClip))
         {
             return;
         }
         __instance._firearm.Status = new FirearmStatus(__instance._firearm.AmmoManagerModule.MaxAmmo, __instance._firearm.Status.Flags, __instance._firearm.Status.Attachments);
     }
-}*/
+}

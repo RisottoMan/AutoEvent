@@ -13,6 +13,7 @@
 using System;
 using System.ComponentModel;
 using System.IO;
+using YamlDotNet.Core;
 
 namespace AutoEvent.Interfaces;
 
@@ -27,21 +28,53 @@ public class EventConfigAttribute : Attribute
     public virtual object Load(string folderPath, string configName, Type type)
     {
         string configPath = Path.Combine(folderPath, configName + ".yml");
-        object conf;
-        if (!File.Exists(configPath))
+        object conf = null;
+        try
         {
-            conf = type.GetConstructor(Type.EmptyTypes)?.Invoke(Array.Empty<object>());
-            if (conf is null)
+            if (File.Exists(configPath))
             {
-                DebugLogger.LogDebug("Config is null.", LogLevel.Debug);
+                conf = Configs.Serialization.Deserializer.Deserialize(File.ReadAllText(configPath), type);
             }
-            File.WriteAllText(configPath, Configs.Serialization.Serializer.Serialize(conf));
+
             _isLoaded = true;
             return conf;
         }
-        conf = Configs.Serialization.Deserializer.Deserialize(File.ReadAllText(configPath), type);
+        catch (YamlException e)
+        {
+            DebugLogger.LogDebug("Caught a bad config.");
+            // probably an updated config. We will just replace it.
+        }
+        catch (Exception e)
+        {
+            DebugLogger.LogDebug($"Caught an exception loading a config.", LogLevel.Warn, true);
+            DebugLogger.LogDebug($"{e}");
+        }
+
+        if (File.Exists(configPath))
+        {
+            try
+            {
+                File.Delete(configPath);
+            }
+            catch (Exception e)
+            {
+                //
+            }
+        }
+        CreateNewConfig(ref conf, type, configPath);
         _isLoaded = true;
         return conf;
+    }
+
+    private void CreateNewConfig(ref object conf, Type type, string configPath)
+    {
+        conf = type.GetConstructor(Type.EmptyTypes)?.Invoke(Array.Empty<object>());
+        if (conf is null)
+        {
+            DebugLogger.LogDebug("Config is null.", LogLevel.Debug);
+        }
+        File.WriteAllText(configPath, Configs.Serialization.Serializer.Serialize(conf));
+        _isLoaded = true;
     }
 
     public bool IsLoaded => _isLoaded;

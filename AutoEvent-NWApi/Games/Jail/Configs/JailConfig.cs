@@ -21,6 +21,23 @@ namespace AutoEvent.Games.Infection;
 
 public class JailConfig : EventConfig
 {
+
+    [Description("How long before prisoners are released automatically. -1 to disable.")]
+    public float AutoReleaseDelayInSeconds { get; set; } = 20f;
+
+    [Description("How many lives each prisoner gets.")]
+    public int PrisonerLives { get; set; } = 3;
+
+    [Description("How long the \"Jail Lockdown Button\" will lock the prisoner doors. O5 and containment engineer will double the duration. Bypass mode will permanently lockdown.")]
+    public float LockdownDurationInSeconds { get; set; } = 15f;
+    
+    [Description("How long the cooldown is for the jail lockdown. Bypass mode will skip this cooldown.")]
+    public float LockdownCooldownDurationInSeconds { get; set; } = 15f;
+    
+    
+    [Description("How many players will spawn as the jailors.")]
+    public RoleCount JailorRoleCount { get; set; } = new RoleCount(1, 4, 15f);
+    
     [Description($"A list of loadouts for the jailors.")]
     [YamlMember(DefaultValuesHandling = DefaultValuesHandling.OmitDefaults | DefaultValuesHandling.OmitNull | DefaultValuesHandling.OmitEmptyCollections)]
     public List<Loadout> JailorLoadouts { get; set; } = new List<Loadout>()
@@ -85,7 +102,7 @@ public class JailConfig : EventConfig
     {
         new Loadout()
         {
-            ArtificialHealth = 100
+            ArtificialHealth = new ArtificialHealth(50f, 50f, -3f, 70, false, 10f, true)
         }
     };
 }

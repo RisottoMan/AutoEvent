@@ -22,6 +22,14 @@ namespace AutoEvent.API;
 [Description($"Use this to define how many players should be on a team.")]
 public class RoleCount
 {
+    public RoleCount() { }
+
+    public RoleCount(int minimumPlayers = 0, int maximumPlayers = -1, float playerPercentage = 100)
+    {
+        MinimumPlayers = minimumPlayers;
+        MaximumPlayers = maximumPlayers;
+        PlayerPercentage = playerPercentage;
+    }
     [Description($"The minimum number of players on a team. 0 to ignore.")]
     public int MinimumPlayers { get; set; } = 0;
 

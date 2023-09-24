@@ -3,7 +3,7 @@
 public class JailerComponent : MonoBehaviour
 {
     private Transform doorTransform;
-    private bool isOpen = false;
+    public bool IsOpen { get; private set; } = false;
     private Vector3 originalPosition;
 
     private void Start()
@@ -14,9 +14,9 @@ public class JailerComponent : MonoBehaviour
 
     public void ToggleDoor()
     {
-        isOpen = !isOpen;
+        IsOpen = !IsOpen;
 
-        if (isOpen)
+        if (IsOpen)
         {
             doorTransform.position += new Vector3(-2.2f, 0, 0);
         }

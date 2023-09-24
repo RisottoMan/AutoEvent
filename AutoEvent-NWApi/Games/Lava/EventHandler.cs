@@ -22,6 +22,12 @@ namespace AutoEvent.Games.Lava
         private Plugin _plugin;
         public void OnPlayerDamage(PlayerDamageArgs ev)
         {
+            // prevent infinite recursion
+            if (ev.DamageHandler is CustomReasonDamageHandler)
+            {
+                ev.IsAllowed = true;
+                return;
+            }
             if (ev.DamageType == DeathTranslations.Falldown.Id)
             {
                 ev.IsAllowed = false;
@@ -50,7 +56,7 @@ namespace AutoEvent.Games.Lava
             }
             defaultDamage:
                 ev.Attacker?.ReceiveHitMarker();
-                ev.Target?.Damage(3, "Shooting");
+                ev.Target?.Damage(new CustomReasonDamageHandler("Shooting", 3f));
                 ev.IsAllowed = false;
                 return;
         }

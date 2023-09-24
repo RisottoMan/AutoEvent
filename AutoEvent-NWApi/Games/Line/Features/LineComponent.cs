@@ -22,7 +22,7 @@ namespace AutoEvent.Games.Line
                 if (Player.Get(other.gameObject) != null)
                 {
                     var pl = Player.Get(other.gameObject);
-                    pl.SetRole(RoleTypeId.Tutorial, RoleChangeReason.None);
+                    pl.SetRole(AutoEvent.Singleton.Config.LobbyRole, RoleChangeReason.None);
                     pl.Position = map.MapInfo.Map.AttachedBlocks.First(x => x.name == "SpawnPoint_spec").transform
                         .position;
                 }

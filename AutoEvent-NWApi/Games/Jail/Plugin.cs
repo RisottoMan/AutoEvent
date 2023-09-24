@@ -35,14 +35,22 @@ namespace AutoEvent.Games.Jail
         internal Locker WeaponLocker { get; private set; }
         internal Locker Medical { get; private set; }
         internal Locker Adrenaline { get; private set; }
+        internal Dictionary<Player, int> Deaths { get; set; } 
+        internal float LockDownCooldown { get; set; }
+        internal float LockDownRemainingDuration { get; set; }
+        internal bool LockDownActive => !PrisonerDoors.GetComponent<JailerComponent>().IsOpen;
+
         private List<GameObject> _doors;
         private GameObject _ball;
+        private float _remainingAutoReleaseTime;
+        
 
         protected override void RegisterEvents()
         {
             Translation = new JailTranslate();
             EventHandler = new EventHandler(this);
             EventManager.RegisterEvents(EventHandler);
+            Players.PlayerDying += EventHandler.OnPlayerDying;
             Servers.TeamRespawn += EventHandler.OnTeamRespawn;
             Players.LockerInteract += EventHandler.OnLockerInteract;
         }
@@ -52,12 +60,15 @@ namespace AutoEvent.Games.Jail
             EventManager.UnregisterEvents(EventHandler);
             Servers.TeamRespawn -= EventHandler.OnTeamRespawn;
             Players.LockerInteract -= EventHandler.OnLockerInteract;
+            Players.PlayerDying -= EventHandler.OnPlayerDying;
 
             EventHandler = null;
         }
 
         protected override void OnStart()
         {
+            Deaths = new Dictionary<Player, int>();
+            _remainingAutoReleaseTime = Config.AutoReleaseDelayInSeconds;
             Server.FriendlyFire = true;
 
             _doors = new List<GameObject>();
@@ -134,30 +145,77 @@ namespace AutoEvent.Games.Jail
 
             foreach (Player player in Player.GetPlayers())
             {
-                if (Player.GetPlayers().Count(r => r.Team == Team.FoundationForces) < 2) // 0
-                {
-                    player.GiveLoadout(Config.JailorLoadouts, LoadoutFlags.IgnoreWeapons );
-                    // Extensions.SetRole(player, RoleTypeId.NtfCaptain, RoleSpawnFlags.None);
-                    player.Position = JailRandom.GetRandomPosition(MapInfo.Map, true);
-                    // player.AddItem(ItemType.GunE11SR);
-                    // player.AddItem(ItemType.GunCOM18);
-                }
-                else if (player.Role != RoleTypeId.NtfCaptain)
-                {
-                    player.GiveLoadout(Config.PrisonerLoadouts);
-                    // Extensions.SetRole(player, RoleTypeId.ClassD, RoleSpawnFlags.None);
-                    player.Position = JailRandom.GetRandomPosition(MapInfo.Map, false);
-                }
+                player.GiveLoadout(Config.PrisonerLoadouts);
+                player.Position = JailRandom.GetRandomPosition(MapInfo.Map, false);
+            }
+
+            foreach (Player ply in Config.JailorRoleCount.GetPlayers())
+            {
+                ply.GiveLoadout(Config.JailorLoadouts, LoadoutFlags.IgnoreWeapons );
+                ply.Position = JailRandom.GetRandomPosition(MapInfo.Map, true);
             }
             
         }
 
+        
+        internal bool ToggleLockdown(bool autoRelease = false, BypassLevel bypassLevel = BypassLevel.None)
+        {
+            if (autoRelease)
+            {
+                DebugLogger.LogDebug("Auto Releasing Lockdown.");
+                _remainingAutoReleaseTime = -1;
+                if(LockDownActive)
+                    PrisonerDoors.GetComponent<JailerComponent>().ToggleDoor();
+                return true;
+            }
+            
+            // If a lockdown is triggered, release it and add a cooldown.
+            if (LockDownActive)
+            {
+                DebugLogger.LogDebug("Releasing Lockdown.");
+                ToggleLockdown();
+                LockDownCooldown = Config.LockdownCooldownDurationInSeconds;
+                LockDownRemainingDuration = 0;
+                return true;
+            }
+            if (bypassLevel == BypassLevel.BypassMode)
+            {
+                DebugLogger.LogDebug("Bypass Mode - Skipping Cooldown. Duration will be maximum.");
+                ToggleLockdown();
+                LockDownRemainingDuration = float.MaxValue;
+                return true;
+            }
+            // If cooldown is not done, wait.
+            if (!LockDownActive && LockDownCooldown > 0)
+            {
+                DebugLogger.LogDebug("Cooldown is not finished. Cannot trigger lockdown.");
+                return false;
+            }
+
+            // Allow Locking Down Doors
+            if (!LockDownActive && LockDownCooldown <= 0)
+            {
+                DebugLogger.LogDebug("Cooldown is finished, Triggering lockdown.");
+                ToggleLockdown();
+                LockDownCooldown = 0;
+                LockDownRemainingDuration = Config.LockdownDurationInSeconds * (int) bypassLevel;
+                return true;
+            }
+
+            DebugLogger.LogDebug("Error lockdown trigger somehow failed.");
+            return false;
+        }
         protected override IEnumerator<float> BroadcastStartCountdown()
         {
             for (int time = 15; time > 0; time--)
             {
                 Extensions.Broadcast(Translation.JailBeforeStart.Replace("{name}", Name).Replace("{time}", time.ToString()), 1);
                 yield return Timing.WaitForSeconds(1f);
+                if(_remainingAutoReleaseTime > 0)
+                    _remainingAutoReleaseTime -= 1;
+                if (_remainingAutoReleaseTime == 0)
+                {
+                }
             }
         }
 
@@ -171,6 +229,31 @@ namespace AutoEvent.Games.Jail
 
         protected override void ProcessFrame()
         {
+            if (_remainingAutoReleaseTime > 0)
+            {
+                _remainingAutoReleaseTime -= this.FrameDelayInSeconds;
+            }
+
+            if (_remainingAutoReleaseTime == 0)
+            {
+                ToggleLockdown(true);
+            }
+
+            if (LockDownCooldown > 0)
+            {
+                LockDownCooldown -= this.FrameDelayInSeconds;
+            }
+            
+            if (LockDownRemainingDuration > 0)
+            {
+                LockDownRemainingDuration -= this.FrameDelayInSeconds;
+            }
+
+            if (LockDownRemainingDuration == 0)
+            {
+                ToggleLockdown();
+            }
+            
             string dClassCount = Player.GetPlayers().Count(r => r.Role == RoleTypeId.ClassD).ToString();
             string mtfCount = Player.GetPlayers().Count(r => r.Team == Team.FoundationForces).ToString();
             string time = $"{EventTime.Minutes:00}:{EventTime.Seconds:00}";
@@ -222,4 +305,13 @@ namespace AutoEvent.Games.Jail
         }
 
     }
+}
+
+public enum BypassLevel
+{
+    None = 1,
+    Guard = 1,
+    ContainmentEngineer = 2,
+    O5 = 2,
+    BypassMode = 5
 }

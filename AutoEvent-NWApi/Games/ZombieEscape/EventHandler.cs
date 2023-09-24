@@ -68,14 +68,16 @@ namespace AutoEvent.Games.ZombieEscape
                 
                 ev.Player.GiveLoadout(_plugin.Config.ZombieLoadouts);
                 // Extensions.SetRole(ev.Player, RoleTypeId.Scp0492, RoleSpawnFlags.AssignInventory);
-                ev.Player.Position = RandomClass.GetSpawnPosition(_plugin.MapInfo.Map);
-                
+                ev.Player.Position = Player.GetPlayers().FirstOrDefault(x => x.IsSCP)!.Position;
+                //RandomClass.GetSpawnPosition(_plugin.MapInfo.Map);
+
             }
             else
             {
                 ev.Player.GiveLoadout(_plugin.Config.MTFLoadouts);
                 // Extensions.SetRole(ev.Player, RoleTypeId.NtfSergeant, RoleSpawnFlags.AssignInventory);
-                ev.Player.Position = RandomClass.GetSpawnPosition(_plugin.MapInfo.Map);
+                // ev.Player.Position = RandomClass.GetSpawnPosition(_plugin.MapInfo.Map);
+                ev.Player.Position = Player.GetPlayers().FirstOrDefault(x => !x.IsSCP)!.Position;
                 // Extensions.SetPlayerAhp(ev.Player, 100, 100, 0);
 
                 Timing.CallDelayed(0.1f, () =>

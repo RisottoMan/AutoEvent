@@ -33,6 +33,10 @@ public class Debug : ParentCommand
         this.RegisterCommand(new Write());
         this.RegisterCommand(new AntiEnd());
         this.RegisterCommand(new Presets());
+        this.RegisterCommand(new InfiniteAmmo());
+        this.RegisterCommand(new ImpactGrenade());
+        this.RegisterCommand(new Rock());
+        this.RegisterCommand(new SetRole());
     }
 
     protected override bool ExecuteParent(ArraySegment<string> arguments, ICommandSender sender, [UnscopedRef] out string response)

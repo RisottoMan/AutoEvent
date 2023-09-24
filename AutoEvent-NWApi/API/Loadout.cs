@@ -38,11 +38,19 @@ public class Loadout
     // [DefaultValue(0)]
     [Description("The health that this class has. 0 is default role health. -1 is godmode.")]
     public int Health { get; set; } = 0;
-    
-    [YamlMember(DefaultValuesHandling = DefaultValuesHandling.OmitDefaults | DefaultValuesHandling.OmitNull | DefaultValuesHandling.OmitEmptyCollections)]
+
+    [YamlMember(DefaultValuesHandling = DefaultValuesHandling.OmitDefaults | DefaultValuesHandling.OmitNull |
+                                        DefaultValuesHandling.OmitEmptyCollections)]
     // [DefaultValue(0)]
     [Description("How much artificial health the class has. 0 is default artificial health.")]
-    public int ArtificialHealth { get; set; } = 0;
+    public ArtificialHealth ArtificialHealth { get; set; } = new ArtificialHealth()
+    {
+        AbsorptionPercent = 100,
+        Permanent = true,
+        InitialAmount = 0,
+        MaxAmount = 0,
+        RegenerationAmount = 0
+    };
     
     [YamlMember(DefaultValuesHandling = DefaultValuesHandling.OmitDefaults | DefaultValuesHandling.OmitNull | DefaultValuesHandling.OmitEmptyCollections)]
     // [DefaultValue(0)]

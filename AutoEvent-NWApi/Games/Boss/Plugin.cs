@@ -39,7 +39,7 @@ namespace AutoEvent.Games.Boss
             {
                 player.GiveLoadout(Config.Loadouts);
                 // Extensions.SetRole(player, RoleTypeId.NtfSergeant, RoleSpawnFlags.None);
-                //player.Position = RandomClass.GetSpawnPosition(MapInfo.Map);
+                player.Position = RandomClass.GetSpawnPosition(MapInfo.Map);
                 // player.Health = 200;
 
                 // RandomClass.CreateSoldier(player);
@@ -118,10 +118,11 @@ namespace AutoEvent.Games.Boss
 
         protected override void ProcessFrame()
         {
+            TimeSpan duration = EventTime.Subtract(TimeSpan.FromSeconds(Config.DurationInSeconds));
             string text = Translation.BossCounter;
             text = text.Replace("%hp%", $"{(int)_boss.Sum(x => x.Health)}");
             text = text.Replace("%count%", $"{Player.GetPlayers().Count(r => r.IsNTF)}");
-            text = text.Replace("%time%", $"{EventTime.Minutes:00}:{EventTime.Seconds:00}");
+            text = text.Replace("%time%", $"{duration.Minutes:00}:{duration.Seconds:00}");
 
             Extensions.Broadcast(text, 1);
         }

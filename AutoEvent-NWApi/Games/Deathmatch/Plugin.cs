@@ -50,6 +50,20 @@ namespace AutoEvent.Games.Deathmatch
             Players.PlayerDying += EventHandler.OnPlayerDying;
             Players.HandCuff += EventHandler.OnHandCuff;
         }
+        protected override void UnregisterEvents()
+        {
+            EventManager.UnregisterEvents(EventHandler);
+            Servers.TeamRespawn -= EventHandler.OnTeamRespawn;
+            Servers.SpawnRagdoll -= EventHandler.OnSpawnRagdoll;
+            Servers.PlaceBullet -= EventHandler.OnPlaceBullet;
+            Servers.PlaceBlood -= EventHandler.OnPlaceBlood;
+            Players.DropItem -= EventHandler.OnDropItem;
+            Players.DropAmmo -= EventHandler.OnDropAmmo;
+            Players.PlayerDying -= EventHandler.OnPlayerDying;
+            Players.HandCuff -= EventHandler.OnHandCuff;
+
+            EventHandler = null;
+        }
 
         protected override void OnStart()
         {
@@ -86,20 +100,7 @@ namespace AutoEvent.Games.Deathmatch
             }
         }
 
-        protected override void OnStop()
-        {
-            EventManager.UnregisterEvents(EventHandler);
-            Servers.TeamRespawn -= EventHandler.OnTeamRespawn;
-            Servers.SpawnRagdoll -= EventHandler.OnSpawnRagdoll;
-            Servers.PlaceBullet -= EventHandler.OnPlaceBullet;
-            Servers.PlaceBlood -= EventHandler.OnPlaceBlood;
-            Players.DropItem -= EventHandler.OnDropItem;
-            Players.DropAmmo -= EventHandler.OnDropAmmo;
-            Players.PlayerDying -= EventHandler.OnPlayerDying;
-            Players.HandCuff -= EventHandler.OnHandCuff;
-
-            EventHandler = null;
-        }
+        
 
         protected override IEnumerator<float> BroadcastStartCountdown()
         {

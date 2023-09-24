@@ -5,7 +5,7 @@ using PluginAPI.Core;
 using RemoteAdmin;
 using System;
 using System.Linq;
-
+/*
 namespace AutoEvent.Patches
 {
     [HarmonyPatch(typeof(CommandProcessor), nameof(CommandProcessor.ProcessQuery))]
@@ -14,6 +14,7 @@ namespace AutoEvent.Patches
         public static Config config = AutoEvent.Singleton.Config;
         static bool Prefix(string q, CommandSender sender)
         {
+            
             try
             {
                 if (q.Contains("$"))
@@ -49,3 +50,4 @@ namespace AutoEvent.Patches
         }
     }
 }
+*/
