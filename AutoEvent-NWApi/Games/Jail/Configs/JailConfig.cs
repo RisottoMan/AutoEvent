@@ -21,20 +21,12 @@ namespace AutoEvent.Games.Infection;
 
 public class JailConfig : EventConfig
 {
-
-    [Description("How long before prisoners are released automatically. -1 to disable.")]
-    public float AutoReleaseDelayInSeconds { get; set; } = 20f;
-
     [Description("How many lives each prisoner gets.")]
     public int PrisonerLives { get; set; } = 3;
 
-    [Description("How long the \"Jail Lockdown Button\" will lock the prisoner doors. O5 and containment engineer will double the duration. Bypass mode will permanently lockdown.")]
-    public float LockdownDurationInSeconds { get; set; } = 15f;
-    
-    [Description("How long the cooldown is for the jail lockdown. Bypass mode will skip this cooldown.")]
-    public float LockdownCooldownDurationInSeconds { get; set; } = 15f;
-    
-    
+    [Description("A list of lockdown settings available.")]
+    public LockdownSettings LockdownSettings { get; set; } = new LockdownSettings();
+
     [Description("How many players will spawn as the jailors.")]
     public RoleCount JailorRoleCount { get; set; } = new RoleCount(1, 4, 15f);
     
@@ -48,7 +40,8 @@ public class JailConfig : EventConfig
             Items = new List<ItemType>()
             {
                 ItemType.GunE11SR,
-                ItemType.GunCOM18
+                ItemType.GunCOM18,
+                ItemType.KeycardMTFCaptain
             }
         },
     };
@@ -102,7 +95,16 @@ public class JailConfig : EventConfig
     {
         new Loadout()
         {
-            ArtificialHealth = new ArtificialHealth(50f, 50f, -3f, 70, false, 10f, true)
+            ArtificialHealth = new ArtificialHealth()
+            {
+                InitialAmount = 50f,
+                MaxAmount = 50f,
+                RegenerationAmount = -3f,
+                AbsorptionPercent = 70,
+                Permanent = false,
+                Duration = 10f,
+                ClearOtherInstances = true,
+            }
         }
     };
 }

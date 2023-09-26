@@ -75,6 +75,7 @@ namespace AutoEvent.Games.Versus
 
         protected override void OnStart()
         {
+            Server.FriendlyFire = false;
             Scientist = null;
             ClassD = null;
             
@@ -203,5 +204,11 @@ namespace AutoEvent.Games.Versus
                 Extensions.Broadcast(Translation.VersusScientistWin.Replace("{name}", Name), 10);
             }
         }
+
+        protected override void OnCleanup()
+        {
+            Server.FriendlyFire = AutoEvent.IsFriendlyFireEnabledByDefault;
+        }
+    
     }
 }

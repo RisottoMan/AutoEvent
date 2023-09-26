@@ -16,6 +16,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using AutoEvent.API;
 using AutoEvent.API.Enums;
+using AutoEvent.Interfaces;
 using CommandSystem;
 #if EXILED
 using Exiled.Permissions.Extensions;
@@ -27,34 +28,17 @@ using Utils.NonAllocLINQ;
 
 namespace AutoEvent.Commands.Debug;
 
-public class SetRole : ICommand, IUsageProvider
+public class SetRole : ICommand, IUsageProvider, IPermission
 {
+public string Permission { get; set; } = "ev.debug";
     public bool Execute(ArraySegment<string> arguments, ICommandSender sender, [UnscopedRef] out string response)
     {
-
-#if EXILED
-        if (!sender.CheckPermission("ev.debug"))
-        {
-            response = "You do not have permission to use this command";
-            return false;
-        }
-#else
-        var config = AutoEvent.Singleton.Config;
-        var player = Player.Get(sender);
-        if (sender is ServerConsoleSender || sender is CommandSender cmdSender && cmdSender.FullPermissions)
-        {
-            goto skipPermissionCheck;
-        }
-
-        if (!config.PermissionList.Contains(ServerStatic.PermissionsHandler._members[player.UserId]))
+        if (!sender.CheckPermission(((IPermission)this).Permission, out bool IsConsoleCommandSender))
         {
             response = "<color=red>You do not have permission to use this command!</color>";
             return false;
         }
-#endif
-
-        skipPermissionCheck:
-
+        
         // ev debug setrole [ply] [class / none] [effect 1 / none] [infinite ammo (infinite / endless / none)] [size] [health] [artificial health] [stamina] [items] [flags]
         // ev debug setrole lfg sci none none 1 100 100 1 none 0
         if (arguments.Count >= 1)

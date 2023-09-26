@@ -32,7 +32,7 @@ namespace AutoEvent
         public void OnRemoteAdmin(RemoteAdminArgs ev)
         {
             var config = AutoEvent.Singleton.Config;
-
+            
             if (AutoEvent.ActiveEvent == null || !config.IsDisableDonators)
                 return;
 

@@ -11,48 +11,33 @@
 // -----------------------------------------
 
 using System;
+using AutoEvent.Interfaces;
 using CommandSystem;
 using MEC;
 using PluginAPI.Core;
 using SCPSLAudioApi.AudioCore;
-#if EXILED
-using Exiled.Permissions.Extensions;
-#endif
+using Player = Exiled.Events.Handlers.Player;
 
 namespace AutoEvent.Commands;
 
-public class Volume : ICommand, IUsageProvider
+public class Volume : ICommand, IUsageProvider, IPermission
 {
     public string Command => nameof(Volume);
         public string Description => "Set the global music volume, takes on 1 argument - the volume from 0% - 200%.";
         public string[] Aliases => new string[] { };
         public string[] Usage => new string[] { "Volume %" };
+        public string Permission { get; set; } = "ev.volume";
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
+            
             try
             {
-#if EXILED
-                if (!sender.CheckPermission("ev.volume"))
-                {
-                    response = "You do not have permission to use this command";
-                    return false;
-                }
-#else
-                var config = AutoEvent.Singleton.Config;
-                var player = Player.Get(sender);
-                if (sender is ServerConsoleSender || sender is CommandSender cmdSender && cmdSender.FullPermissions)
-                {
-                    goto skipPermissionCheck;
-                }
-                if (!config.PermissionList.Contains(ServerStatic.PermissionsHandler._members[player.UserId]))
+                if (!sender.CheckPermission(((IPermission)this).Permission, out bool IsConsoleCommandSender))
                 {
                     response = "<color=red>You do not have permission to use this command!</color>";
                     return false;
                 }
-#endif     
-                skipPermissionCheck:
-                
                 if (arguments.Count != 1)
                 {
                     response =
@@ -67,7 +52,7 @@ public class Volume : ICommand, IUsageProvider
                     var audioPlayer = AudioPlayerBase.Get(Extensions.AudioBot).Volume = newVolume;
                 }
 
-                response = $"<color=green>The volume has been set!</color>";
+                response = $"The volume has been set!";
                 return true;
             }
             catch (Exception e)

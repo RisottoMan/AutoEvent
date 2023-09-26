@@ -32,37 +32,24 @@ using Exiled.Permissions.Extensions;
 namespace AutoEvent.Commands.Config;
 
 
-public class Modify : ICommand, IUsageProvider
+public class Modify : ICommand, IUsageProvider, IPermission
 {
     public string Command => nameof(Modify);
     public string[] Aliases => Array.Empty<string>();
     public string Description => "Modifies an option in a config or preset for an event.";
     public string[] Usage => new string[] { "event", "preset", "option", "[value]" };
+    
+    public string Permission { get; set; } = "ev.config.modify";
 
     public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
     {
 
-#if EXILED
-        if (sender.CheckPermission("ev.config.modify"))
-        {
-            response = "You do not have permission to use this command";
-            return false;
-        }
-#else
-        var config = AutoEvent.Singleton.Config;
-        var player = Player.Get(sender);
-        if (sender is ServerConsoleSender || sender is CommandSender cmdSender && cmdSender.FullPermissions)
-        {
-            goto skipPermissionCheck;
-        }
-
-        if (!config.PermissionList.Contains(ServerStatic.PermissionsHandler._members[player.UserId]))
+        if (!sender.CheckPermission(((IPermission)this).Permission, out bool IsConsoleCommandSender))
         {
             response = "<color=red>You do not have permission to use this command!</color>";
             return false;
         }
-#endif
-        skipPermissionCheck:
+        
         response = "";
 
         // Event Missing
@@ -118,8 +105,10 @@ public class Modify : ICommand, IUsageProvider
                     desc = description.Description;
                 }
 
-                resp +=
-                    $"  <color=yellow>{prop.Name}</color> [{prop.PropertyType.Name}]{(desc == "" ? "" : " - " + desc)}, \n";
+                if(!IsConsoleCommandSender)
+                    resp += $"  <color=yellow>{prop.Name}</color> [{prop.PropertyType.Name}]{(desc == "" ? "" : " - " + desc)}, \n";
+                else
+                    resp += $"  {prop.Name} [{prop.PropertyType.Name}]{(desc == "" ? "" : " - " + desc)}, \n";
             }
 
             response = resp;
@@ -133,15 +122,27 @@ public class Modify : ICommand, IUsageProvider
         
         // List basic command usage.
         BasicUsage:
-        response += $"Command Usage: \n" +
-                    $"  <color=yellow>modify [event] [config / preset] [option] [new value]  \n</color>" +
-                    $"   For modifying lists or dictionaries, use the following actions: \n" +
-                    "      <color=yellow>Add [key*] [value]</color>       -> Add a new entry to the. *Note: Key is not necessary for lists.*\n" +
-                    "      <color=yellow>Remove [key]</color>             -> Remove an existing entry.\n" +
-                    "      <color=yellow>Modify [key] [new value]</color> -> Modify an existing entry." +
-                    "    For complex configs, you can use json or yaml to serialize the config.";
+        if (!IsConsoleCommandSender)
+        {
 
-
+            response += $"Command Usage: \n" +
+                        $"  <color=yellow>modify [event] [config / preset] [option] [new value]  \n</color>" +
+                        $"   For modifying lists or dictionaries, use the following actions: \n" +
+                        "      <color=yellow>Add [key*] [value]</color>       -> Add a new entry to the. *Note: Key is not necessary for lists.*\n" +
+                        "      <color=yellow>Remove [key]</color>             -> Remove an existing entry.\n" +
+                        "      <color=yellow>Modify [key] [new value]</color> -> Modify an existing entry." +
+                        "    For complex configs, you can use json or yaml to serialize the config.";
+        }
+        else
+        {
+            response += $"Command Usage: \n" +
+                        $"  modify [event] [config / preset] [option] [new value]  \n" +
+                        $"   For modifying lists or dictionaries, use the following actions: \n" +
+                        "      Add [key*] [value]       -> Add a new entry to the. *Note: Key is not necessary for lists.*\n" +
+                        "      Remove [key]             -> Remove an existing entry.\n" +
+                        "      Modify [key] [new value] -> Modify an existing entry." +
+                        "    For complex configs, you can use json or yaml to serialize the config.";
+        }
         return false;
     }
 }

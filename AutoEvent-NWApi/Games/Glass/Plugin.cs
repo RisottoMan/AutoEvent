@@ -122,7 +122,8 @@ namespace AutoEvent.Games.Glass
             {
                 Extensions.SetRole(player, RoleTypeId.ClassD, RoleSpawnFlags.None);
                 player.Position = RandomClass.GetSpawnPosition(MapInfo.Map);
-                player.EffectsManager.EnableEffect<Disabled>();
+                // player.EffectsManager.EnableEffect<MovementBoost>(0, false);
+                // player.EffectsManager.Eff<MovementBoost>;
             }
         }
 

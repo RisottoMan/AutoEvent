@@ -53,7 +53,10 @@ public class Debug : ParentCommand
                     args += $"[{arg}] ";
                 }
             }
-            response += $"<color=yellow> {x.Key} {args}<color=white>-> {x.Value.Description}. \n";
+            if(sender is not ServerConsoleSender)
+                response += $"<color=yellow> {x.Key} {args} <color=white>-> {x.Value.Description}. \n";
+            else    
+                response += $" {x.Key} {args} -> {x.Value.Description}. \n";
         }
         /*
                    "<color=yellow>  Enable <color=white>-> Enables Debug Mode. \n" +

@@ -1,4 +1,5 @@
-﻿using AutoEvent.Events.EventArgs;
+﻿using System;
+using AutoEvent.Events.EventArgs;
 using MEC;
 using PlayerRoles;
 using PlayerStatsSystem;
@@ -27,23 +28,32 @@ namespace AutoEvent.Games.HideAndSeek
             {
                 ev.IsAllowed = false;
             }
-            
+
+            if (ev.Target.EffectsManager.GetEffect<SpawnProtected>().IsEnabled)
+            {
+                ev.IsAllowed = false;
+                return;
+            }
             if (ev.Attacker != null)
             {
                 ev.IsAllowed = false;
-                bool isAttackerTagger = ev.Attacker.Items.FirstOrDefault(r => r.ItemTypeId == _plugin.Config.TaggerWeapon);
-                bool isTargetTagger = ev.Target.Items.FirstOrDefault(r => r.ItemTypeId == _plugin.Config.TaggerWeapon);
-                bool isAllowed = isAttackerTagger && !isTargetTagger;
-                switch (ev.DamageType)
+                bool isAttackerTagger = ev.Attacker.Items.Any(r => r.ItemTypeId == _plugin.Config.TaggerWeapon);
+                bool isTargetTagger = ev.Target.Items.Any(r => r.ItemTypeId == _plugin.Config.TaggerWeapon);
+                if (!isAttackerTagger || isTargetTagger)
+                {
+                    ev.IsAllowed = false;
+                    return;
+                }
+                /*switch (ev.DamageTypze)
                 {
                     case (byte)DamageType.GrenadeExplosion:
                         if (_plugin.Config.TaggerWeapon == ItemType.GrenadeHE)
                             ev.IsAllowed = true;
                         return; 
-                    /*case DamageType.Jailbird:
+                    case (byte)DamageType.Jailbird:
                         if (_plugin.Config.TaggerWeapon == ItemType.Jailbird)
                             isAllowed = true;
-                        break;*/
+                        break;
                     case (byte)DamageType.Scp018:
                         if (_plugin.Config.TaggerWeapon == ItemType.SCP018)
                             isAllowed = true;
@@ -52,31 +62,45 @@ namespace AutoEvent.Games.HideAndSeek
                         if (!(_plugin.Config.Range > 0 && Vector3.Distance(ev.Attacker.Position, ev.Target.Position) <=
                                 _plugin.Config.Range))
                             isAllowed = true;
+                        else
+                        {
+                            ev.IsAllowed = false;
+                            return;
+                        }
                         break;
-                }
+                }*/
 
-                if (isAllowed)
-                {
                     DebugLogger.LogDebug($"{ev.Target.Nickname} has been tagged by {ev.Attacker.Nickname}");
                     ev.IsAllowed = false;
                     ev.Attacker.EffectsManager.EnableEffect<SpawnProtected>(_plugin.Config.NoTagBackDuration, false);
-                    ev.Attacker.ClearInventory();
                     ev.Attacker.GiveLoadout(_plugin.Config.PlayerLoadouts, LoadoutFlags.IgnoreItems | LoadoutFlags.IgnoreWeapons | LoadoutFlags.IgnoreGodMode);
-
+                    ev.Attacker.ClearInventory();
+                    for (int i = 0; i < 8; i++)
+                    {
+                        try
+                        {
+                            ev.Attacker.AddItem(ItemType.Coin);
+                        }
+                        catch (Exception)
+                        {
+                            break;
+                        }
+                    }
+                    
+                    ev.Target.GiveLoadout(_plugin.Config.TaggerLoadouts, LoadoutFlags.IgnoreItems | LoadoutFlags.IgnoreWeapons | LoadoutFlags.IgnoreGodMode);
+                    ev.Target.ClearInventory();
                     var weapon = ev.Target.AddItem(_plugin.Config.TaggerWeapon);
                     if(weapon.ItemTypeId is ItemType.GrenadeHE)
                         weapon.ExplodeOnCollision(true);
                     if(weapon.ItemTypeId is ItemType.SCP018)
                         weapon.MakeRock(new RockSettings(false, 1f, false, false, true));
-                    ev.Target.GiveLoadout(_plugin.Config.TaggerLoadouts, LoadoutFlags.IgnoreItems | LoadoutFlags.IgnoreWeapons | LoadoutFlags.IgnoreGodMode);
+                
                     Timing.CallDelayed(0.1f, () =>
                     {
                         ev.Target.CurrentItem = weapon;
                     });
                     return;
-                }
 
-                ev.IsAllowed = true;
             }
         }
     

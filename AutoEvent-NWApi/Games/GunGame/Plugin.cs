@@ -85,7 +85,7 @@ namespace AutoEvent.Games.GunGame
             {
                 if (!PlayerStats.ContainsKey(player))
                 {
-                    PlayerStats.Add(player, new Stats() { level = 0, kill = 0 });
+                    PlayerStats.Add(player, new Stats(0));
                 }
 
                 player.ClearInventory();
@@ -129,7 +129,7 @@ namespace AutoEvent.Games.GunGame
 
         protected override void ProcessFrame()
         {
-            var leaderStat = PlayerStats.OrderByDescending(r => r.Value.level).FirstOrDefault();
+            var leaderStat = PlayerStats.OrderByDescending(r => r.Value.kill).FirstOrDefault();
 
             foreach (Player pl in Player.GetPlayers())
             {
@@ -141,9 +141,9 @@ namespace AutoEvent.Games.GunGame
 
                 pl.ClearBroadcasts();
                 pl.SendBroadcast(
-                    Translation.GunGameCycle.Replace("{name}", Name).Replace("{level}", $"{stats.level}")
+                    Translation.GunGameCycle.Replace("{name}", Name).Replace("{gun}", pl.Items.FirstOrDefault(x => Config.Guns.Any(y => y.Item == x.ItemTypeId))?.ItemTypeId.ToString() )
                         .Replace("{kills}", $"{2 - stats.kill}").Replace("{leadnick}", leaderStat.Key.Nickname)
-                        .Replace("{leadlevel}", $"{leaderStat.Value.level}"), 1);
+                        .Replace("{leadgun}", $"{leaderStat.Key.Items.FirstOrDefault(x => Config.Guns.Any(y => y.Item == x.ItemTypeId))?.ItemTypeId.ToString()}"), 1);
             }
         }
 

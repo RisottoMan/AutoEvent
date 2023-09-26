@@ -25,39 +25,23 @@ using Exiled.Permissions.Extensions;
 namespace AutoEvent.Commands.Config;
 
 
-public class Select : ICommand, IUsageProvider
+public class Select : ICommand, IUsageProvider, IPermission
 {
     public string Command => nameof(Select);
     public string[] Aliases => Array.Empty<string>();
     public string Description => "Selects a config preset to use for an event.";
     public string[] Usage => new[] { "[Event]", "[Preset / Default]" };
+    public string Permission { get; set; } = "ev.config.select";
 
     public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
     {
-
-#if EXILED
-        if (!sender.CheckPermission("ev.config.select"))
-        {
-            response = "You do not have permission to use this command";
-            return false;
-        }
-#else
-        var config = AutoEvent.Singleton.Config;
-        var player = Player.Get(sender);
-        if (sender is ServerConsoleSender || sender is CommandSender cmdSender && cmdSender.FullPermissions)
-        {
-            goto skipPermissionCheck;
-        }
-
-        if (!config.PermissionList.Contains(ServerStatic.PermissionsHandler._members[player.UserId]))
+        
+        if (!sender.CheckPermission(((IPermission)this).Permission, out bool IsConsoleCommandSender))
         {
             response = "<color=red>You do not have permission to use this command!</color>";
             return false;
         }
-#endif
-
-        skipPermissionCheck:
-
+        
         // Event Missing
         if (arguments.Count < 1)
         {
@@ -107,7 +91,7 @@ public class Select : ICommand, IUsageProvider
             }
             catch (Exception e)
             {
-                DebugLogger.LogDebug("Could not set value of property while changing presets. \n{e}");
+                DebugLogger.LogDebug($"Could not set value of property while changing presets. \n{e}");
             }
         }
         
@@ -115,8 +99,11 @@ public class Select : ICommand, IUsageProvider
         response = $"Successfully selected preset {conf.PresetName} for event \"{ev.Name}\".";
         return true; 
     BasicUsage:
-    response += $"Command Usage: \n" +
-                $"  <color=yellow>modify [event] [preset / default]</color>";
+    response += $"Command Usage: \n";
+    if(!IsConsoleCommandSender)
+        response += $"  <color=yellow>modify [event] [preset / default]</color>";
+    else
+        response += $"  modify [event] [preset / default]";
 
         return false;
     }

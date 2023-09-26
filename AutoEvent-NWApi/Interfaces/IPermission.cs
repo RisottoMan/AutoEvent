@@ -4,16 +4,15 @@
 // -----------------------------------------
 //    Solution:         AutoEvent
 //    Project:          AutoEvent
-//    FileName:         GlassConfig.cs
+//    FileName:         IPermission.cs
 //    Author:           Redforce04#4091
-//    Revision Date:    09/18/2023 4:33 PM
-//    Created Date:     09/18/2023 4:33 PM
+//    Revision Date:    09/25/2023 1:54 PM
+//    Created Date:     09/25/2023 1:54 PM
 // -----------------------------------------
 
-using AutoEvent.Interfaces;
+namespace AutoEvent.Interfaces;
 
-namespace AutoEvent.Games.Infection;
-
-public class GlassConfig : EventConfig
+public interface IPermission
 {
+    public string Permission { get; set; }
 }

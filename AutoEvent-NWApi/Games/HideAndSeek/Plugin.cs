@@ -14,6 +14,7 @@ using AutoEvent.Games.Infection;
 using AutoEvent.Interfaces;
 using InventorySystem.Items.ThrowableProjectiles;
 using Event = AutoEvent.Interfaces.Event;
+using Player = PluginAPI.Core.Player;
 
 namespace AutoEvent.Games.HideAndSeek
 {
@@ -94,8 +95,10 @@ namespace AutoEvent.Games.HideAndSeek
             return false;
         }
 
-        protected override IEnumerator<float> RunGameCoroutine()
+
+        private IEnumerator<float> PlayerBreak()
         {
+            // Wait for 15 seconds before choosing next batch.
             for (float _time = 15; _time > 0; _time--)
             {
                 Extensions.Broadcast(Translation.HideBroadcast.Replace("%time%", $"{_time}"), 1);
@@ -103,21 +106,10 @@ namespace AutoEvent.Games.HideAndSeek
                 yield return Timing.WaitForSeconds(1f);
                 EventTime += TimeSpan.FromSeconds(1f);
             }
+        }
 
-            int catchCount = RandomClass.GetCatchByCount(Player.GetPlayers().Count(r => r.IsAlive));
-            for (int i = 0; i < catchCount; i++)
-            {
-                var player = Player.GetPlayers().Where(r => r.IsAlive && r.Items.Any(r => r.ItemTypeId == Config.TaggerWeapon) == false).ToList().RandomItem();
-               player.GiveLoadout(Config.TaggerLoadouts);
-               var item = player.AddItem(Config.TaggerWeapon);
-               if(item.ItemTypeId == ItemType.SCP018)
-                   item.MakeRock(new RockSettings(false, 1f, false, false, true));
-               if(item.ItemTypeId == ItemType.GrenadeHE)
-                   item.ExplodeOnCollision(true);
-               //var scp018 = player.AddItem(ItemType.SCP018);
-                Timing.CallDelayed(0.1f, () => { player.CurrentItem = item; });
-            }
-
+        private IEnumerator<float> TagPeriod()
+        {
             for (int time = 15; time > 0; time--)
             {
                 Extensions.Broadcast(Translation.HideCycle.Replace("%time%", $"{time}"), 1);
@@ -125,26 +117,60 @@ namespace AutoEvent.Games.HideAndSeek
                 yield return Timing.WaitForSeconds(1f);
                 EventTime += TimeSpan.FromSeconds(1f);
             }
+        }
 
-            foreach (Player player in Player.GetPlayers())
+        private void SelectPlayers()
+        {
+            List<Player> playersToChoose = Player.GetPlayers().Where(x => x.IsAlive).ToList();
+            foreach(Player ply in Config.TaggerCount.GetPlayers(playersToChoose))
             {
-                if (player.Items.Any(r => r.ItemTypeId == Config.TaggerWeapon))
-                {
-                    player.ClearInventory();
-                    player.Damage(200, Translation.HideHurt);
-                }
+                ply.GiveLoadout(Config.TaggerLoadouts);
+                var item = ply.AddItem(Config.TaggerWeapon);
+                if(item.ItemTypeId == ItemType.SCP018)
+                    item.MakeRock(new RockSettings(false, 1f, false, false, true));
+                if(item.ItemTypeId == ItemType.GrenadeHE)
+                    item.ExplodeOnCollision(true);
+                Timing.CallDelayed(0.1f, () => { ply.CurrentItem = item; });
             }
+        }
+        protected override IEnumerator<float> RunGameCoroutine()
+        {
+            int playersAlive = Player.GetPlayers().Count(ply => ply.IsAlive && ply.HasLoadout(Config.PlayerLoadouts));
+            while (DebugLogger.AntiEnd || playersAlive > 1)
+            {
+                SelectPlayers();
+                
+                yield return Timing.WaitUntilDone(Timing.RunCoroutine(TagPeriod(), "TagPeriod"));
+
+                // Kill players who are taggers.
+                foreach (Player player in Player.GetPlayers())
+                {
+                    if (player.Items.Any(r => r.ItemTypeId == Config.TaggerWeapon))
+                    {
+                        player.ClearInventory();
+                        player.Damage(200, Translation.HideHurt);
+                    }
+                }
+                playersAlive = Player.GetPlayers().Count(ply => ply.IsAlive && ply.HasLoadout(Config.PlayerLoadouts));
+                DebugLogger.LogDebug($"Players Alive: {playersAlive}");
+                if (playersAlive <= 1)
+                    break;
+                
+                yield return Timing.WaitUntilDone(Timing.RunCoroutine(PlayerBreak(), "PlayerBreak"));
+            }
+
+            yield break;
         }
 
         protected override void OnFinished()
         {
             var translation = AutoEvent.Singleton.Translation.HideTranslate;
 
-            if (Player.GetPlayers().Count(r => r.IsAlive) > 1)
+            /*if (Player.GetPlayers().Count(r => r.IsAlive) > 1)
             {
                 Extensions.Broadcast(translation.HideMorePlayer.Replace("%time%", $"{EventTime.Minutes:00}:{EventTime.Seconds:00}"), 10);
-            }
-            else if (Player.GetPlayers().Count(r => r.IsAlive) == 1)
+            }*/
+             if (Player.GetPlayers().Count(r => r.IsAlive) >= 1)
             {
                 var text = translation.HideOnePlayer;
                 text = text.Replace("%winner%", Player.GetPlayers().First(r => r.IsAlive).Nickname);

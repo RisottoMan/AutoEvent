@@ -79,31 +79,26 @@ public enum LoadoutFlags
     /// <summary>
     /// Players will not recieve weapons.
     /// </summary>
-    IgnoreWeapons = 1028,
+    IgnoreWeapons = 1024,
     
     /// <summary>
     /// Stamina will not be added.
     /// </summary>
-    IgnoreStamina = 2056,
+    IgnoreStamina = 2048,
     
     /// <summary>
     /// The player will have an endless amount of ammo.
     /// </summary>
-    ForceEndlessClip = 4098,
+    ForceEndlessClip = 4096,
     
     /// <summary>
     /// The player will stay in the default spawn point.
     /// </summary>
-    UseDefaultSpawnPoint = 8196,
-    
-    /// <summary>
-    /// Only give players weapons.
-    /// </summary>
-    WeaponsOnly = 15363,
-    
+    UseDefaultSpawnPoint = 8192,
+
     /// <summary>
     /// Only give players items.
     /// </summary>
-    ItemsOnly = 16389
-    // 16391
+    ItemsOnly = 16382,
+    // 16384
 }

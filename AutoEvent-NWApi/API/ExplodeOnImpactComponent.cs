@@ -37,12 +37,21 @@ public class GrenadeCollision : MonoBehaviour
         Grenade.Network_syncTargetTime = NetworkTime.time + 0.05;
         if (GiveOwnerNewGrenadeOnExplosion)
         {
-            if (Grenade.PreviousOwner.Hub is null)
-                return;
-            var player = Player.Get(Grenade.PreviousOwner.Hub);
-            if (player is null)
-                return;
-            player.AddItem(Grenade.TryGetComponent<ExplosionGrenade>(out _) ? ItemType.GrenadeHE : ItemType.GrenadeFlash).ExplodeOnCollision();
+            try
+            {
+                if (Grenade.PreviousOwner.Hub is null)
+                    return;
+                var player = Player.Get(Grenade.PreviousOwner.Hub);
+                if (player is null)
+                    return;
+                player.AddItem(Grenade.TryGetComponent<ExplosionGrenade>(out _)
+                    ? ItemType.GrenadeHE
+                    : ItemType.GrenadeFlash).ExplodeOnCollision();
+            }
+            catch (Exception e)
+            {
+                // full inv
+            }
         }
     }
 }

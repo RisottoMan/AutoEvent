@@ -22,39 +22,22 @@ using Exiled.Permissions.Extensions;
 namespace AutoEvent.Commands.Config;
 
 
-public class Save : ICommand, IUsageProvider
+public class Save : ICommand, IUsageProvider, IPermission
 {
     public string Command => nameof(Save);
     public string[] Aliases => Array.Empty<string>();
     public string Description => "Saves an updated config or preset for future use.";
     public string[] Usage => new string[] { "[Preset / Default]" };
 
+    public string Permission { get; set; } = "ev.config.save";
     public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
     {
-
-#if EXILED
-        if (!sender.CheckPermission("ev.config.save"))
-        {
-            response = "You do not have permission to use this command";
-            return false;
-        }
-#else
-        var config = AutoEvent.Singleton.Config;
-        var player = Player.Get(sender);
-        if (sender is ServerConsoleSender || sender is CommandSender cmdSender && cmdSender.FullPermissions)
-        {
-            goto skipPermissionCheck;
-        }
-
-        if (!config.PermissionList.Contains(ServerStatic.PermissionsHandler._members[player.UserId]))
+        
+        if (!sender.CheckPermission(((IPermission)this).Permission, out bool IsConsoleCommandSender))
         {
             response = "<color=red>You do not have permission to use this command!</color>";
             return false;
         }
-#endif
-
-        skipPermissionCheck:
-
         
         DebugLogger.Debug = true;
         response = "Debug mode has been enabled.";

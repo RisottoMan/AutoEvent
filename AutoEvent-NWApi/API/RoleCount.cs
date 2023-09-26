@@ -14,6 +14,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using JetBrains.Annotations;
 using PluginAPI.Core;
 using UnityEngine;
 
@@ -39,18 +40,33 @@ public class RoleCount
     [Description($"The percentage of players that will be on the team. -1 to ignore.")]
     public float PlayerPercentage { get; set; } = 100;
 
-    public List<Player> GetPlayers()
+    public List<Player> GetPlayers([CanBeNull] List<Player> availablePlayers = null)
     {
         float percent = Player.GetPlayers().Count * (PlayerPercentage / 100f);
-        int players = Mathf.Clamp(Mathf.RoundToInt(percent), MinimumPlayers,
+        int players = Mathf.Clamp((int)percent, MinimumPlayers,
             MaximumPlayers == -1 ? Player.GetPlayers().Count : MaximumPlayers);
         List<Player> validPlayers = new List<Player>();
+        // DebugLogger.LogDebug($"Selecting Players: {players} < {(int)percent:F2} ({percent}) <  ");
         try
         {
             for (int i = 0; i < players; i++)
             {
+                List<Player> playersToPullFrom = (availablePlayers ?? Player.GetPlayers()) .Where(x => !validPlayers.Contains(x)).ToList();
+                if (playersToPullFrom.Count < 1)
+                {
+                    DebugLogger.LogDebug("Cannot pull more players.");
+                    break;
+                }
 
-                Player ply = Player.GetPlayers().Where(x => !validPlayers.Contains(x)).ToList().RandomItem();
+                if (playersToPullFrom.Count < 2)
+                {
+                    DebugLogger.LogDebug("Only one more player available. Pulling that player.");
+                    validPlayers.Add(playersToPullFrom[0]);
+                    break;
+                }
+                int rndm = UnityEngine.Random.Range((int)0, (int)playersToPullFrom.Count);
+                
+                Player ply = playersToPullFrom[rndm];
                 validPlayers.Add(ply);
             }
         }

@@ -36,8 +36,13 @@ public class EventConfigAttribute : Attribute
                 conf = Configs.Serialization.Deserializer.Deserialize(File.ReadAllText(configPath), type);
             }
 
-            _isLoaded = true;
-            return conf;
+            if (!(conf is null or not EventConfig))
+            {
+                _isLoaded = true;
+                return conf;
+            }
+            DebugLogger.LogDebug("Config was not serialized into an event config. It will be deleted and remade.");
+            
         }
         catch (YamlException e)
         {
@@ -71,7 +76,7 @@ public class EventConfigAttribute : Attribute
         conf = type.GetConstructor(Type.EmptyTypes)?.Invoke(Array.Empty<object>());
         if (conf is null)
         {
-            DebugLogger.LogDebug("Config is null.", LogLevel.Debug);
+            DebugLogger.LogDebug("Conefig is null.", LogLevel.Debug);
         }
         File.WriteAllText(configPath, Configs.Serialization.Serializer.Serialize(conf));
         _isLoaded = true;

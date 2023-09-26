@@ -30,6 +30,9 @@ public class HideAndSeekConfig : EventConfig
     [Description("How long should the tagger get immunity.")]
     public float NoTagBackDuration { get; set; } = 3f;
 
+    [Description("The amount of taggers that should spawn.")]
+    public RoleCount TaggerCount { get; set; } = new RoleCount(1, 3, 10);
+
     [Description("A list of loadouts players can get.")]
     public List<Loadout> PlayerLoadouts { get; set; } = new List<Loadout>()
     {

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using AutoEvent.Commands;
 using AutoEvent.Interfaces;
 using HarmonyLib;
 using PluginAPI.Core.Attributes;
@@ -8,6 +9,7 @@ using PluginAPI.Events;
 using AutoEvent.Events.Handlers;
 using Exiled.Loader;
 using GameCore;
+using MEC;
 using PluginAPI.Core;
 using Event = AutoEvent.Interfaces.Event;
 using Log = PluginAPI.Core.Log;
@@ -57,27 +59,29 @@ namespace AutoEvent
         public override void OnEnabled()
 #else
         [PluginPriority(LoadPriority.Low)]
-        [PluginEntryPoint("AutoEvent", "9.1.4", "An event manager plugin that allows you to run mini-games.", "KoT0XleB and Redforce04")]
+        [PluginEntryPoint("AutoEvent", "9.1.4", "An event manager plugin that allows you to run mini-games.",
+            "KoT0XleB and Redforce04")]
         void OnEnabled()
 #endif
         {
-                if (!Config.IsEnabled) return;
-                if (BetaRelease)
-                {
-                    Log.Warning("Warning: This release of AutoEvent is a Beta-Release." +
-                                " If you encounter any bugs, please reach out to Redforce04 (redforce04) or KoT0XleB (spagettimen) via discord." +
-                                " Alternatively, make an issue on our github (https://github.com/KoT0XleB/AutoEvent/). Have fun!");
-                }
-                // Call Costura first just to ensure dependencies are loaded.
-                // Also make sure there isn't anything that needs a dependency in this method.
-                CosturaUtility.Initialize();
+            if (!Config.IsEnabled) return;
+            if (BetaRelease)
+            {
+                Log.Warning("Warning: This release of AutoEvent is a Beta-Release." +
+                            " If you encounter any bugs, please reach out to Redforce04 (redforce04) or KoT0XleB (spagettimen) via discord." +
+                            " Alternatively, make an issue on our github (https://github.com/KoT0XleB/AutoEvent/). Have fun!");
+            }
+
+            // Call Costura first just to ensure dependencies are loaded.
+            // Also make sure there isn't anything that needs a dependency in this method.
+            CosturaUtility.Initialize();
 #if !EXILED
-                // Root plugin path
-                AutoEvent.BaseConfigPath = Path.Combine(Paths.GlobalPlugins.Plugins, "AutoEvent");
+            // Root plugin path
+            AutoEvent.BaseConfigPath = Path.Combine(Paths.GlobalPlugins.Plugins, "AutoEvent");
 #else
-                AutoEvent.BaseConfigPath = Path.Combine(Exiled.API.Features.Paths.Configs, "AutoEvent");
+            AutoEvent.BaseConfigPath = Path.Combine(Exiled.API.Features.Paths.Configs, "AutoEvent");
 #endif
-                _startup();
+            _startup();
         }
 
         private void _startup()
@@ -152,6 +156,11 @@ namespace AutoEvent
                 Log.Debug($"{e}");
 
             }
+
+            Timing.CallDelayed(3f, () =>
+            {
+                PermissionSystem.Load();
+            });
         }
 
         public static void CreateDirectoryIfNotExists(string directory, string subPath = "")

@@ -9,6 +9,7 @@ using PluginAPI.Events;
 using System.Collections.Generic;
 using System.Linq;
 using AutoEvent.API.Enums;
+using AutoEvent.Games.Infection;
 using CustomPlayerEffects;
 using InventorySystem.Items.Firearms;
 
@@ -34,7 +35,7 @@ namespace AutoEvent.Games.GunGame
         {
             if (!_playerStats.ContainsKey(ev.Player))
             {
-                _playerStats.Add(ev.Player, new Stats { level = 0, kill = 0 });
+                _playerStats.Add(ev.Player, new Stats(0));
             }
 
             ev.Player.GiveLoadout(_plugin.Config.Loadouts, LoadoutFlags.IgnoreGodMode | LoadoutFlags.IgnoreWeapons);
@@ -61,16 +62,20 @@ namespace AutoEvent.Games.GunGame
 
             ev.Target.Health = 100;
 
+            if (_playerStats is null)
+            {
+                _playerStats = new Dictionary<Player, Stats>();
+            }
             if (ev.Attacker != null)
             {
-                _playerStats.TryGetValue(ev.Attacker, out Stats statsAttacker);
-
-                statsAttacker.kill++;
-
-                if (statsAttacker.kill >= 2)
+                if (!_playerStats.TryGetValue(ev.Attacker, out Stats statsAttacker))
                 {
-                    statsAttacker.kill = 0;
-                    statsAttacker.level++;
+                    _playerStats.Add(ev.Attacker, new Stats(1));
+                    GetWeaponForPlayer(ev.Attacker);
+                }
+                else
+                {
+                    statsAttacker.kill++;
                     GetWeaponForPlayer(ev.Attacker);
                 }
             }
@@ -92,38 +97,46 @@ namespace AutoEvent.Games.GunGame
             
             if (_plugin.Config.Guns is null)
             {
-                DebugLogger.LogDebug("GetWeapon - Gun By Level is null");
-                return;
+                GunGameConfig conf = new GunGameConfig();
+                _plugin.Config.Guns = conf.Guns;
+                DebugLogger.LogDebug("GetWeapon - Gun By Level is null. Setting new Defaults.");
+                //return;
             }
 
             if (_playerStats is null)
             {
-                DebugLogger.LogDebug("GetWeapon - Player stats is null");
-                return;
+                _playerStats = new Dictionary<Player, Stats>();
+                // DebugLogger.LogDebug("GetWeapon - Player stats is null");
+                // return;
             }
             
             if (!_playerStats.ContainsKey(player))
             {
-                DebugLogger.LogDebug("GetWeapon - Player stats doesnt contain player");
-                return;
+                _playerStats.Add(player, new Stats(0));
+                //DebugLogger.LogDebug("GetWeapon - Player stats doesnt contain player");
+                //return;
             }
 
             if (_playerStats[player] is null)
             {
-                DebugLogger.LogDebug("GetWeapon - Player level is null");
-                return;
+                _playerStats[player] = new Stats(0);
+                //DebugLogger.LogDebug("GetWeapon - Player level is null");
+                //return;
             }
 
-            if (_plugin.Config.Guns.All(x => x.KillsRequired != _playerStats[player].kill))
+            var gun = _plugin.Config.Guns.OrderBy(y => y.KillsRequired)
+                .FirstOrDefault(x => _playerStats[player].kill >= x.KillsRequired)!.Item;
+            if (gun is ItemType.None)
             {
                 DebugLogger.LogDebug("GetWeapon - Gun by level is null");
-                return;
+                // return;
+                gun = ItemType.GunCOM15;
             }
             
             DebugLogger.LogDebug($"Getting player {player.Nickname} weapon.");
             player.EffectsManager.EnableEffect<SpawnProtected>(2f);
             player.ClearInventory();
-            var item = player.AddItem(_plugin.Config.Guns.OrderByDescending(y => y.KillsRequired).FirstOrDefault(x => _playerStats[player].kill >= x.KillsRequired )!.Item);
+            var item = player.AddItem(gun);
             if (item is Firearm firearm)
             {
                 var status = firearm.Status;

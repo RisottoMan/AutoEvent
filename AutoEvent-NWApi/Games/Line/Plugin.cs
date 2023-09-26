@@ -91,9 +91,9 @@ namespace AutoEvent.Games.Line
             {
                 switch (block.name)
                 {
-                    case "DeadZone": block.AddComponent<LineComponent>(); break;
-                    case "DeadWall": block.AddComponent<LineComponent>(); break;
-                    case "Line": block.AddComponent<LineComponent>(); break;
+                    case "DeadZone": block.AddComponent<LineComponent>().Init(this, ObstacleType.MiniWalls); break;
+                    case "DeadWall": block.AddComponent<LineComponent>().Init(this, ObstacleType.Wall); break;
+                    case "Line": block.AddComponent<LineComponent>().Init(this, ObstacleType.Ground); break;
                     case "Shield": GameObject.Destroy(block); break;
                 }
             }

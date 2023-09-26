@@ -50,7 +50,10 @@ public class Config : ParentCommand
                     args += $"[{arg}] ";
                 }
             }
-            response += $"<color=yellow> {x.Key} {args}<color=white>-> {x.Value.Description}. \n";
+            if(sender is not ServerConsoleSender)
+                response += $"<color=yellow> {x.Key} {args} <color=white>-> {x.Value.Description}. \n";
+            else
+                response += $" {x.Key} {args} -> {x.Value.Description}. \n";
         }
         /*"<color=yellow>  List <color=white>-> List the presets available for an event.\n" +
                    "<color=yellow>  Select <color=white>-> Select a preset to use for an event round.\n" +

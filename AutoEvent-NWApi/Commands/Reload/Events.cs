@@ -22,37 +22,21 @@ using Exiled.Permissions.Extensions;
 #endif
 namespace AutoEvent.Commands.Reload;
 
-public class Events : ICommand
+public class Events : ICommand, IPermission
 {
     public string Command => nameof(Events);
     public string[] Aliases => Array.Empty<string>();
     public string Description => "Reloads all events";
+    public string Permission { get; set; } = "ev.reload";
+
 
     public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
     {
-
-#if EXILED
-        if (!((CommandSender)sender).CheckPermission("ev.reload"))
-        {
-            response = "You do not have permission to use this command";
-            return false;
-        }
-#else
-        var config = AutoEvent.Singleton.Config;
-        var player = Player.Get(sender);
-        if (sender is ServerConsoleSender || sender is CommandSender cmdSender && cmdSender.FullPermissions)
-        {
-            goto skipPermissionCheck;
-        }
-
-        if (!config.PermissionList.Contains(ServerStatic.PermissionsHandler._members[player.UserId]))
+        if (!sender.CheckPermission(((IPermission)this).Permission, out bool IsConsoleCommandSender))
         {
             response = "<color=red>You do not have permission to use this command!</color>";
             return false;
         }
-#endif
-
-        skipPermissionCheck:
 
         if (AutoEvent.ActiveEvent != null)
         {

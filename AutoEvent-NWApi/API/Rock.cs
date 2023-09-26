@@ -114,8 +114,27 @@ public class Rock : MonoBehaviour
             skipSpawn:
             if (GiveOwnerNewRockOnHit && Thrower.Hub is not null && Player.Get(Thrower.Hub) is not null)
             {
-                var item = Player.Get(Thrower.Hub).AddItem(ItemType.SCP018);
-                item.MakeRock(new RockSettings(this.FriendlyFire, this.ThrowDamage, this.ExplodeOnCollision, this.LeaveBehindRock, GiveOwnerNewRockOnHit));
+                try
+                {
+                    DebugLogger.LogDebug("Giving player new rock.");
+
+                    Player ply = Player.Get(Thrower.Hub);
+                    if (ply.Items.Count < 8)
+                    {
+                        var item = ply.AddItem(ItemType.SCP018);
+                        item.MakeRock(new RockSettings(this.FriendlyFire, this.ThrowDamage, this.ExplodeOnCollision,
+                            this.LeaveBehindRock, GiveOwnerNewRockOnHit));
+                    }
+                    else
+                    {
+                        DebugLogger.LogDebug("Cannot give rock to player. Full Inventory.");
+                    }
+                }
+                catch (Exception e)
+                {
+                    DebugLogger.LogDebug($"Could not add a rock to inventory. Reason: \n{e}");
+                    // full inv
+                }
             }
             Destroy(Owner.gameObject);
             Destroy(this);
@@ -168,7 +187,7 @@ public class Rock : MonoBehaviour
 
         if (ev.Damage > 0)
         {
-            ev.Target.Damage(ev.Damage, "A rock has hit you.");
+            ev.Target.Damage(ev.Damage, "Smashed by a rock .");
             Player.Get(Thrower.Hub).ReceiveHitMarker(1f);
         }
     }
@@ -197,10 +216,60 @@ public class RockHitPlayerArgs
         Thrower = footprint;
         TargetObject = collision.collider.gameObject;
         var refHub = collision.collider.GetComponentInParent<ReferenceHub>();
+        
         if (refHub is not null)
         {
             Target = Player.Get(refHub);
+            DebugLogger.LogDebug("Target player for rock found.");
+            return;
         }
+        var gameObject = collision.collider.transform.root.gameObject;
+        Player ply = Player.Get(gameObject);
+        if (ply is not null)
+        {
+            DebugLogger.LogDebug("Target player for rock found.");
+            Target = ply;
+            return;
+        }
+
+        foreach (var collider in Physics.OverlapSphere(collision.GetContact(0).point, 1f))
+        {
+            if (collider.TryGetComponent<IDestructible>(out IDestructible destructible))
+            {
+                DebugLogger.LogDebug($"Found Destructible");
+            }
+
+            if (collider.TryGetComponent<HitboxIdentity>(out HitboxIdentity identity))
+            {
+                DebugLogger.LogDebug($"Found Hitbox");
+            }
+        }
+#if EXILED
+        var exPly1 = Exiled.API.Features.Player.Get(collision.gameObject);
+        var exPly2 = Exiled.API.Features.Player.Get(collision.collider);
+        DebugLogger.LogDebug($"Player: {exPly1 is not null}, {exPly2 is not null} ");
+#endif
+        DebugLogger.LogDebug("============ Direct Components ============");
+        foreach (var x in collision.collider.GetComponents<Component>())
+        {
+            DebugLogger.LogDebug($"{x.GetType().Name}");
+        }
+        DebugLogger.LogDebug("============ Parent Components ============");
+        foreach (var x in collision.collider.GetComponentsInParent<Component>())
+        {
+            DebugLogger.LogDebug($"{x.GetType().Name}");
+        }
+        DebugLogger.LogDebug("============ Direct Components (collider 1) ============");
+        foreach (var x in collision.contacts[0].otherCollider.GetComponents<Component>())
+        {
+            DebugLogger.LogDebug($"{x.GetType().Name}");
+        }
+        DebugLogger.LogDebug("============ Parent Components (collider 1) ============");
+        foreach (var x in collision.contacts[0].otherCollider.GetComponentsInParent<Component>())
+        {
+            DebugLogger.LogDebug($"{x.GetType().Name}");
+        }
+        DebugLogger.LogDebug("Could not get target player for rock.");
     }
 
     public Footprint Thrower { get; private set; }

@@ -28,6 +28,8 @@ namespace AutoEvent.Games.Lava
         public override string CommandName { get; set; } = "lava";
         [EventConfig]
         public LavaConfig Config { get; set; }
+
+        [EventConfigPreset] public LavaConfig OriginalLavaMap => LavaConfigPreset.Original;
         public MapInfo MapInfo { get; set; } = new MapInfo()
             {MapName = "Lava", Position = new Vector3(120f, 1020f, -43.5f), };
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()

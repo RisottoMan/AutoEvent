@@ -91,6 +91,7 @@
       <HintPath>packages\Northwood.PluginAPI.13.1.1\lib\net48\PluginAPI.dll</HintPath>
     </Reference>
     <Reference Include="SCPSLAudioApi" HintPath="$(OTHER_REFERENCES)\SCPSLAudioApi.dll" />
+    <Reference Include="SCPSLAudioApi" HintPath="$(OTHER_REFERENCES)\NWAPIPermissionSystem.dll" />
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" HintPath="$(SL_REFERENCES)\System.ComponentModel.DataAnnotations.dll" />
     <Reference Include="UnityEngine" HintPath="$(SL_REFERENCES)\UnityEngine.dll" />
@@ -114,6 +115,7 @@
     <Compile Include="API\Attributes\DisabledFeaturesAttribute.cs" />
     <Compile Include="API\BitwiseExtensions.cs" />
     <Compile Include="API\DifficultyItem.cs" />
+    <Compile Include="API\Enums\KeycardPermissions.cs" />
     <Compile Include="API\ExplodeOnImpactComponent.cs" />
     <Compile Include="API\Effect.cs" />
     <Compile Include="API\EndConditions.cs" />
@@ -167,6 +169,7 @@
     <Compile Include="API\Schematic\Serializable\SerializableRigidbody.cs" />
     <Compile Include="API\Schematic\Serializable\WorkstationSerializable.cs" />
     <Compile Include="API\Schematic\ObjectHelper.cs" />
+    <Compile Include="Commands\PermissionSystem.cs" />
     <Compile Include="Commands\Config\Config.cs" />
     <Compile Include="Commands\Config\List.cs" />
     <Compile Include="Commands\Config\Modify.cs" />
@@ -291,10 +294,13 @@
     <Compile Include="Games\Infection\Extensions\RandomClass.cs" />
     <Compile Include="Games\Infection\Plugin.cs" />
     <Compile Include="Games\Jail\Configs\JailConfig.cs" />
+    <Compile Include="Games\Jail\Configs\JailConfigPresets.cs" />
+    <Compile Include="Games\Jail\Configs\LockdownSettings.cs" />
     <Compile Include="Games\Jail\Configs\Translation.cs" />
     <Compile Include="Games\Jail\EventHandler.cs" />
     <Compile Include="Games\Jail\Extensions\DoorComponent.cs" />
     <Compile Include="Games\Jail\Extensions\JailerComponent.cs" />
+    <Compile Include="Games\Jail\Extensions\JailLockdownSystem.cs" />
     <Compile Include="Games\Jail\Extensions\JailRandom.cs" />
     <Compile Include="Games\Jail\Plugin.cs" />
     <Compile Include="Games\Knives\Configs\KnivesConfig.cs" />
@@ -303,6 +309,7 @@
     <Compile Include="Games\Knives\Features\RandomClass.cs" />
     <Compile Include="Games\Knives\Plugin.cs" />
     <Compile Include="Games\Lava\Configs\LavaConfig.cs" />
+    <Compile Include="Games\Lava\Configs\LavaConfigPresets.cs" />
     <Compile Include="Games\Lava\Configs\Translation.cs" />
     <Compile Include="Games\Lava\EventHandler.cs" />
     <Compile Include="Games\Lava\Features\LavaComponent.cs" />
@@ -346,6 +353,7 @@
     <Compile Include="Interfaces\IEventSound.cs" />
     <Compile Include="Interfaces\IExiledEvent.cs" />
     <Compile Include="Interfaces\IInternalEvent.cs" />
+    <Compile Include="Interfaces\IPermission.cs" />
     <Compile Include="Interfaces\ITranslation.cs" />
     <Compile Include="Interfaces\MapInfo.cs" />
     <Compile Include="Interfaces\SoundInfo.cs" />

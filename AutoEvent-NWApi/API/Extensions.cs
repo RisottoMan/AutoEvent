@@ -25,7 +25,9 @@ using Footprinting;
 using InventorySystem.Configs;
 using InventorySystem.Items.ThrowableProjectiles;
 using InventorySystem.Items;
+using InventorySystem.Items.Keycards;
 using InventorySystem.Items.Usables.Scp244.Hypothermia;
+using JetBrains.Annotations;
 using PluginAPI.Core.Items;
 using Debug = AutoEvent.Commands.Debug.Debug;
 using Item = PluginAPI.Core.Items.Item;
@@ -48,6 +50,45 @@ namespace AutoEvent
             player.ReferenceHub.roleManager.ServerSetRole(newRole, RoleChangeReason.RemoteAdmin, spawnFlags);
         }
 
+        public enum LoadoutCheckMethods
+        {
+            HasRole,
+            HasSomeItems,
+            HasAllItems,
+            
+        }
+
+        public static List<Player> GetAllPlayersWithLoadout(this List<Loadout> loadout, LoadoutCheckMethods checkMethod = LoadoutCheckMethods.HasRole, [CanBeNull] List<Player> players = null)
+        {
+            List<Player> plyList = new List<Player>();
+            foreach (Player ply in players ?? Player.GetPlayers())
+            {
+                if (ply.HasLoadout(loadout, checkMethod))
+                    plyList.Add(ply);
+            }
+
+            return plyList;
+        }
+
+        public static List<Player> GetAllPlayersWithLoadout(this Loadout loadout, LoadoutCheckMethods checkMethod = LoadoutCheckMethods.HasRole, [CanBeNull] List<Player> players = null) =>
+            GetAllPlayersWithLoadout(new List<Loadout>() { loadout }, checkMethod, players);
+        public static bool HasLoadout(this Player ply, List<Loadout> loadouts, LoadoutCheckMethods checkMethod = LoadoutCheckMethods.HasRole)
+        {
+            switch (checkMethod)
+            {
+                case LoadoutCheckMethods.HasRole:
+                    return loadouts.Any(loadout => loadout.Roles.Any(role => role.Key == ply.Role));
+                case LoadoutCheckMethods.HasAllItems:
+                    return loadouts.Any(loadout => loadout.Items.All(item => ply.Items.Select(itm => itm.ItemTypeId).Contains(item)));
+                case LoadoutCheckMethods.HasSomeItems:
+                    return loadouts.Any(loadout => loadout.Items.Any(item => ply.Items.Select(itm => itm.ItemTypeId).Contains(item)));
+            }
+
+            return false;
+        }
+
+        public static bool HasLoadout(this Player ply, Loadout loadout, LoadoutCheckMethods checkMethod = LoadoutCheckMethods.HasRole) =>
+            ply.HasLoadout(new List<Loadout>() { loadout }, checkMethod);
         public static void GiveLoadout(this Player player, List<Loadout> loadouts, LoadoutFlags flags = LoadoutFlags.None)
         {
             Loadout loadout;
@@ -84,7 +125,7 @@ namespace AutoEvent
                     respawnFlags |= RoleSpawnFlags.UseSpawnpoint;
                 if (flags.HasFlag(LoadoutFlags.DontClearDefaultItems))
                     respawnFlags |= RoleSpawnFlags.AssignInventory;
-                
+
                 if (loadout.Roles.Count == 1)
                 {
                     // player.SetRole(loadout.Roles.First().Key, RoleChangeReason.Respawn, respawnFlags);
@@ -104,29 +145,35 @@ namespace AutoEvent
                             goto assignRole;
                         }
                     }
+
                     // player.SetRole(list[list.Count - 1].Key, RoleChangeReason.Respawn, respawnFlags);
                     role = list[list.Count - 1].Key;
                     goto assignRole;
                 }
+
                 assignRole:
                 if (AutoEvent.Singleton.Config.IgnoredRoles.Contains(role))
                 {
-                    DebugLogger.LogDebug("AutoEvent is trying to set a player to a role that is apart of IgnoreRoles. This is probably an error. The plugin will instead set players to the lobby role to prevent issues.", LogLevel.Error, true);
+                    DebugLogger.LogDebug(
+                        "AutoEvent is trying to set a player to a role that is apart of IgnoreRoles. This is probably an error. The plugin will instead set players to the lobby role to prevent issues.",
+                        LogLevel.Error, true);
                     role = AutoEvent.Singleton.Config.LobbyRole;
                 }
+
                 player.SetRole(role, RoleChangeReason.Respawn, respawnFlags);
             }
-
             if (!flags.HasFlag(LoadoutFlags.DontClearDefaultItems))
             {
                 player.ClearInventory();
             }
+
             if (loadout.Items is not null && loadout.Items.Count > 0 && !flags.HasFlag(LoadoutFlags.IgnoreItems))
             {
                 foreach (var item in loadout.Items)
                 {
                     if (flags.HasFlag(LoadoutFlags.IgnoreWeapons) && item.IsWeapon())
                     {
+                        // DebugLogger.LogDebug($"Skipping item, is weapon.");
                         continue;
                     }
 
@@ -228,7 +275,60 @@ namespace AutoEvent
         {
             RockList.Add(serial, settings);
         }
+
         
+        /// <summary>
+        /// Gets the keycard permissions of a player.
+        /// </summary>
+        /// <param name="ply">The player to get the permissions of./param>
+        /// <param name="inHandOnly">Will only cards that are in hand count. (Bypass / SCP Override as well)</param>
+        /// <returns></returns>
+        public static KeycardPermissions KeyCardLevel(this Player ply, bool inHandOnly = false)
+        {
+            KeycardPermissions perms = KeycardPermissions.None;
+            
+            // Add Current Keycard Only
+            if (inHandOnly && ply.CurrentItem is KeycardItem keycard)
+                perms = (KeycardPermissions)keycard.Permissions;
+
+            // Add all keycards
+            if (!inHandOnly)
+            {
+                foreach (var item in ply.Items)
+                {
+                    if (item is not KeycardItem keycardItem)
+                        continue;
+                    perms.Include((int)keycardItem.Permissions);
+                }
+            }
+            // Add bypass mode
+            if (ply.IsBypassEnabled)
+                perms |= KeycardPermissions.BypassMode;
+
+            // Add scp override
+            if (ply.IsSCP)
+                perms |= KeycardPermissions.ScpOverride;
+            
+            // Add 079 override
+            if (ply.Role == RoleTypeId.Scp079)
+                perms |= KeycardPermissions.Scp079Override;
+
+            return perms;
+        }
+        
+
+        /// <summary>
+        /// Checks whether a player has a keycard level.
+        /// </summary>
+        /// <param name="ply">The player to get the permissions of.</param>
+        /// <param name="inHandOnly">Will only cards that are in hand count. (Bypass / SCP Override as well)</param>
+        /// <returns>True if the player has the level. False if the player does not have the level.</returns>
+        public static bool HasKeycardLevel(this Player ply, KeycardPermissions perms, bool inHandOnly = false)
+        {
+            KeycardPermissions curPerms = ply.KeyCardLevel(inHandOnly);
+            return curPerms.HasRequiredFlags(perms);
+        }
+
         public static void ExplodeOnCollision(this Item grenade, bool giveNewGrenadeOnExplosion = false) => ExplodeOnCollision(grenade.Serial, giveNewGrenadeOnExplosion);
         public static void ExplodeOnCollision(this ItemBase grenade, bool giveNewGrenadeOnExplosion = false) => ExplodeOnCollision(grenade.ItemSerial, giveNewGrenadeOnExplosion);
         public static void ExplodeOnCollision(this ushort item, bool giveNewGrenadeOnExplosion = false)

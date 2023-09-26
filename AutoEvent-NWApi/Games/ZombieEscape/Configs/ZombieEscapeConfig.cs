@@ -71,7 +71,13 @@ public class ZombieEscapeConfig : EventConfig
             new Effect()
             {
                 EffectType = StatusEffect.Concussed,
-                Duration = 1,
+                Duration = 0.5f,
+                AddDuration = true
+            },
+            new Effect()
+            {
+                EffectType = StatusEffect.Disabled,
+                Duration = 0.5f,
                 AddDuration = true
             },
         }

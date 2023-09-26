@@ -377,6 +377,13 @@ namespace AutoEvent.Interfaces
     /// </summary>
     internal void LoadConfigs()
     {
+        foreach (Event ev in Event.Events)
+        {
+            if (ev.ConfigPresets is not null)
+                ev.ConfigPresets.Clear();
+            else
+                ev.ConfigPresets = new List<EventConfig>();
+        }
         int loadedConfigs = 0;
         var path = CreateConfigFolder();
         try

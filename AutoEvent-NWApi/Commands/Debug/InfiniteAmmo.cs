@@ -14,6 +14,7 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using AutoEvent.API;
+using AutoEvent.Interfaces;
 using CommandSystem;
 using PluginAPI.Core;
 using Utils.NonAllocLINQ;
@@ -23,33 +24,16 @@ using Exiled.Permissions.Extensions;
 
 namespace AutoEvent.Commands.Debug;
 
-public class InfiniteAmmo : ICommand, IUsageProvider
+public class InfiniteAmmo : ICommand, IUsageProvider, IPermission
 {
+    public string Permission { get; set; } = "ev.debug";
     public bool Execute(ArraySegment<string> arguments, ICommandSender sender, [UnscopedRef] out string response)
     {
-
-#if EXILED
-        if (!sender.CheckPermission("ev.debug"))
-        {
-            response = "You do not have permission to use this command";
-            return false;
-        }
-#else
-        var config = AutoEvent.Singleton.Config;
-        var player = Player.Get(sender);
-        if (sender is ServerConsoleSender || sender is CommandSender cmdSender && cmdSender.FullPermissions)
-        {
-            goto skipPermissionCheck;
-        }
-
-        if (!config.PermissionList.Contains(ServerStatic.PermissionsHandler._members[player.UserId]))
+        if (!sender.CheckPermission(((IPermission)this).Permission, out bool IsConsoleCommandSender))
         {
             response = "<color=red>You do not have permission to use this command!</color>";
             return false;
         }
-#endif
-
-        skipPermissionCheck:
 
         if (arguments.Count >= 1)
         {
