@@ -30,7 +30,7 @@
                 room = RoomIdentifier.AllRoomIdentifiers.First(r => r.Name == RoomName.Outside);
             }
 
-            GameObject gameObject = new($"CustomSchematic-{schematicObject.SchematicName}")
+            GameObject gameObject = new($"CustomAutoEventSchematic-{schematicObject.SchematicName}")
             {
                 transform =
                 {

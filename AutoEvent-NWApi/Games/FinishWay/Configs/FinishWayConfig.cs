@@ -28,7 +28,7 @@ public class FinishWayConfig : EventConfig
     {
         new Loadout()
         {
-            Roles = new Dictionary<RoleTypeId, int>() { { RoleTypeId.Tutorial, 100 } }
+            Roles = new Dictionary<RoleTypeId, int>() { { RoleTypeId.ClassD, 100 } }
         }
     };
 }

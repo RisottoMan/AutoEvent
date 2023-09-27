@@ -20,6 +20,7 @@ namespace AutoEvent.Games.FinishWay
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.FinishWayTranslate.FinishWayDescription;
         public override string Author { get; set; } = "KoT0XleB";
         public override string CommandName { get; set; } = "race";
+        [EventConfig]
         public FinishWayConfig Config { get; set; }
         public MapInfo MapInfo { get; set; } = new MapInfo()
             {MapName = "FinishWay", Position = new Vector3(115.5f, 1030f, -43.5f), };
@@ -79,6 +80,7 @@ namespace AutoEvent.Games.FinishWay
         }
         protected override void CountdownFinished()
         {
+            _remainingTime = new TimeSpan(0, 0, Config.EventDurationInSeconds);
             StartAudio();
             _point = new GameObject();
             foreach(var gameObject in MapInfo.Map.AttachedBlocks)
@@ -96,12 +98,11 @@ namespace AutoEvent.Games.FinishWay
         {
             // At least one player is alive &&
             // Elapsed time is shorter than a minute (+ broadcast duration)
-            return !(Player.GetPlayers().Count(r => r.IsAlive) > 0 && EventTime.TotalSeconds < Config.EventDurationInSeconds + 10);
+            return !(Player.GetPlayers().Count(r => r.IsAlive) > 0 && EventTime.TotalSeconds < Config.EventDurationInSeconds );
         }
 
         protected override void ProcessFrame()
         {
-            _remainingTime = new TimeSpan(0, 0, Config.EventDurationInSeconds);
 
             var count = Player.GetPlayers().Count(r => r.Role == RoleTypeId.ClassD);
             var time = $"{_remainingTime.Minutes:00}:{_remainingTime.Seconds:00}";

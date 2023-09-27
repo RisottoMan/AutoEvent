@@ -11,6 +11,7 @@ using AutoEvent.API.Enums;
 using AutoEvent.Games.Infection;
 using AutoEvent.Interfaces;
 using UnityEngine;
+using Utils.NonAllocLINQ;
 using Event = AutoEvent.Interfaces.Event;
 
 namespace AutoEvent.Games.GunGame
@@ -23,6 +24,8 @@ namespace AutoEvent.Games.GunGame
 
         [EventConfig]
         public GunGameConfig Config { get; set; }
+
+        [EventConfigPreset] public GunGameConfig EasyGunsFirst => GunGameConfigPresets.EasyGunsFirst;
         public override string CommandName { get; set; } = "gungame";
         public MapInfo MapInfo { get; set; } = new MapInfo()
             {MapName = "Shipment", Position = new Vector3(93f, 1020f, -43f), };
@@ -124,13 +127,14 @@ namespace AutoEvent.Games.GunGame
             // Winner is not null &&
             // Over one player is alive && 
             // Elapsed time is smaller than 10 minutes (+ countdown)
-            return !(_winner == null && Player.GetPlayers().Count(r => r.IsAlive) > 1 && EventTime.TotalSeconds < 600 + 10);
+            return !(_winner == null && Enumerable.Count(Player.GetPlayers(), r => r.IsAlive) > 1 && EventTime.TotalSeconds < 600 + 10);
         }
-
+        
         protected override void ProcessFrame()
         {
             var leaderStat = PlayerStats.OrderByDescending(r => r.Value.kill).FirstOrDefault();
-
+            List<GunRole> gunsInOrder = Config.Guns.OrderByDescending(x => x.KillsRequired).ToList();
+            GunRole leadersWeapon = gunsInOrder.FirstOrDefault(x => leaderStat.Value.kill >= x.KillsRequired);
             foreach (Player pl in Player.GetPlayers())
             {
                 PlayerStats.TryGetValue(pl, out Stats stats);
@@ -139,11 +143,26 @@ namespace AutoEvent.Games.GunGame
                     _winner = pl;
                 }
 
+                int kills = EventHandler._playerStats[pl].kill;
+                ListExtensions.TryGetFirstIndex(gunsInOrder, x => kills >= x.KillsRequired, out int indexOfFirst);
+
+                string nextGun = "";
+                int killsNeeded = 0; 
+                if (indexOfFirst <= 0)
+                {
+                    killsNeeded = gunsInOrder[0].KillsRequired + 1 - kills;
+                    nextGun = "Last Weapon";
+                }
+                else
+                {
+                    killsNeeded = gunsInOrder[indexOfFirst - 1].KillsRequired - kills;
+                    nextGun = gunsInOrder[indexOfFirst].Item.ToString();
+                }
                 pl.ClearBroadcasts();
                 pl.SendBroadcast(
-                    Translation.GunGameCycle.Replace("{name}", Name).Replace("{gun}", pl.Items.FirstOrDefault(x => Config.Guns.Any(y => y.Item == x.ItemTypeId))?.ItemTypeId.ToString() )
-                        .Replace("{kills}", $"{2 - stats.kill}").Replace("{leadnick}", leaderStat.Key.Nickname)
-                        .Replace("{leadgun}", $"{leaderStat.Key.Items.FirstOrDefault(x => Config.Guns.Any(y => y.Item == x.ItemTypeId))?.ItemTypeId.ToString()}"), 1);
+                    Translation.GunGameCycle.Replace("{name}", Name).Replace("{gun}", nextGun )
+                        .Replace("{kills}", $"{killsNeeded}").Replace("{leadnick}", leaderStat.Key.Nickname)
+                        .Replace("{leadgun}", $"{(leadersWeapon is null ? nextGun : leadersWeapon.Item)}"), 1);
             }
         }
 

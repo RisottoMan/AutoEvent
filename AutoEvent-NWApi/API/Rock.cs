@@ -101,10 +101,15 @@ public class Rock : MonoBehaviour
             if (LeaveBehindRock && false)
             {
                 // this doesnt work :(
+                
                 var throwable = Extensions.CreateThrowable(ItemType.SCP018);
                 TimeGrenade grenade = (TimeGrenade) Object.Instantiate(throwable.Projectile, collision.GetContact(0).point, Quaternion.identity);
                 grenade.PreviousOwner = new Footprint(args.Thrower.Hub != null ? args.Thrower.Hub : ReferenceHub.HostHub);
-
+                if (grenade.TryGetComponent<Scp018Projectile>(out Scp018Projectile ball))
+                {
+                    // delete the scp018 component.
+                    Component.Destroy(ball);
+                }
                 DebugLogger.LogDebug($"spawning new Scp018");
                 ((Scp018Projectile)grenade).PhysicsModule.DestroyModule();
                 ((Scp018Projectile)grenade).PhysicsModule = new PickupStandardPhysics(((Scp018Projectile)grenade), PickupStandardPhysics.FreezingMode.FreezeWhenSleeping);
@@ -232,9 +237,23 @@ public class RockHitPlayerArgs
             return;
         }
 
-        foreach (var collider in Physics.OverlapSphere(collision.GetContact(0).point, 1f))
-        {
-            if (collider.TryGetComponent<IDestructible>(out IDestructible destructible))
+        ReferenceHub hub = Collision.collider.GetComponentInParent<ReferenceHub>();
+        
+        
+        
+        
+        //foreach (var collider in Physics.OverlapSphere(collision.GetContact(0).point, 1f))
+        // {
+
+            /*foreach (var transform in collider.GetComponentsInParent<ReferenceHub>())
+            {
+                foreach (var obj in transform.GetComponentsInParent<Component>())
+                {
+                    DebugLogger.LogDebug($"Component: {obj.GetType().Name}{obj.name}");
+                }
+            }*/
+            
+            /*if (collider.TryGetComponent<IDestructible>(out IDestructible destructible))
             {
                 DebugLogger.LogDebug($"Found Destructible");
             }
@@ -243,32 +262,39 @@ public class RockHitPlayerArgs
             {
                 DebugLogger.LogDebug($"Found Hitbox");
             }
-        }
+            */
+        /*DebugLogger.LogDebug("============ Direct Components ============");
+            foreach (var x in collider.GetComponents<Component>())
+            {
+                DebugLogger.LogDebug($"{x.GetType().Name}");
+            }
+            DebugLogger.LogDebug("============ Parent Components ============");
+            foreach (var x in collider.GetComponentsInParent<Component>())
+            {
+                DebugLogger.LogDebug($"{x.GetType().Name}");
+            }*/
+            DebugLogger.LogDebug("============ Direct Components (collider 1) ============");
+            foreach (var x in collision.contacts[0].otherCollider.GetComponents<Component>())
+            {
+                DebugLogger.LogDebug($"{x.GetType().Name}");
+            }
+            DebugLogger.LogDebug("============ Child Components (collider 1) ============");
+            foreach (var x in collision.contacts[0].otherCollider.GetComponentsInChildren<Component>())
+            {
+                DebugLogger.LogDebug($"{x.GetType().Name}");
+            }
+            DebugLogger.LogDebug("============ Parent Components (collider 1) ============");
+            foreach (var x in collision.contacts[0].otherCollider.GetComponentsInParent<Component>())
+            {
+                DebugLogger.LogDebug($"{x.GetType().Name}");
+            }
+        
 #if EXILED
+        //var exPly3 = Exiled.API.Features.Player.Get(collision.gameObject.transform);
         var exPly1 = Exiled.API.Features.Player.Get(collision.gameObject);
         var exPly2 = Exiled.API.Features.Player.Get(collision.collider);
         DebugLogger.LogDebug($"Player: {exPly1 is not null}, {exPly2 is not null} ");
 #endif
-        DebugLogger.LogDebug("============ Direct Components ============");
-        foreach (var x in collision.collider.GetComponents<Component>())
-        {
-            DebugLogger.LogDebug($"{x.GetType().Name}");
-        }
-        DebugLogger.LogDebug("============ Parent Components ============");
-        foreach (var x in collision.collider.GetComponentsInParent<Component>())
-        {
-            DebugLogger.LogDebug($"{x.GetType().Name}");
-        }
-        DebugLogger.LogDebug("============ Direct Components (collider 1) ============");
-        foreach (var x in collision.contacts[0].otherCollider.GetComponents<Component>())
-        {
-            DebugLogger.LogDebug($"{x.GetType().Name}");
-        }
-        DebugLogger.LogDebug("============ Parent Components (collider 1) ============");
-        foreach (var x in collision.contacts[0].otherCollider.GetComponentsInParent<Component>())
-        {
-            DebugLogger.LogDebug($"{x.GetType().Name}");
-        }
         DebugLogger.LogDebug("Could not get target player for rock.");
     }
 

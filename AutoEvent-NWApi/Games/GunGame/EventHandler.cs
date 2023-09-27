@@ -19,7 +19,7 @@ namespace AutoEvent.Games.GunGame
     {
         Plugin _plugin;
 
-        private Dictionary<Player, Stats> _playerStats
+        internal Dictionary<Player, Stats> _playerStats
         {
             get => _plugin.PlayerStats;
             set => _plugin.PlayerStats = value;
@@ -124,7 +124,7 @@ namespace AutoEvent.Games.GunGame
                 //return;
             }
 
-            var gun = _plugin.Config.Guns.OrderBy(y => y.KillsRequired)
+            var gun = _plugin.Config.Guns.OrderByDescending(y => y.KillsRequired)
                 .FirstOrDefault(x => _playerStats[player].kill >= x.KillsRequired)!.Item;
             if (gun is ItemType.None)
             {

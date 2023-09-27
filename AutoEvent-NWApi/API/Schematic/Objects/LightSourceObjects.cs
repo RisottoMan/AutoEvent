@@ -7,7 +7,7 @@ namespace AutoEvent.API.Schematic.Objects
     using Serializable;
     using UnityEngine;
 
-    public class LightSourceObject : MapEditorObject
+    public class LightSourceObjects : MapEditorObject
     {
         private Transform _transform;
         private LightSourceToy _lightSourceToy;
@@ -18,9 +18,9 @@ namespace AutoEvent.API.Schematic.Objects
             _lightSourceToy = GetComponent<LightSourceToy>();
         }
 
-        public LightSourceObject Init(LightSourceSerializable lightSourceSerializable, bool spawn = true)
+        public LightSourceObjects Init(LightSourcesSerializable lightSourcesSerializable, bool spawn = true)
         {
-            Base = lightSourceSerializable;
+            Base = lightSourcesSerializable;
             _lightSourceToy.MovementSmoothing = 60;
 
             UpdateObject();
@@ -35,6 +35,7 @@ namespace AutoEvent.API.Schematic.Objects
 
         public override MapEditorObject Init(SchematicBlockData block)
         {
+            DebugLogger.LogDebug("Init Light Object");
             base.Init(block);
 
             Base = new(block);
@@ -45,7 +46,7 @@ namespace AutoEvent.API.Schematic.Objects
             return this;
         }
 
-        public LightSourceSerializable Base;
+        public LightSourcesSerializable Base;
 
         public override bool IsRotatable => false;
 
@@ -53,6 +54,7 @@ namespace AutoEvent.API.Schematic.Objects
 
         public override void UpdateObject()
         {
+            DebugLogger.LogDebug($"Updating Light: Position: {Position} Color: {Base.Color}, Intensity: {Base.Intensity}, Range: {Base.Range}, Shadows: {Base.Shadows}");
             _lightSourceToy.Position = _transform.position;
             _lightSourceToy.LightColor = GetColorFromString(Base.Color);
             _lightSourceToy.LightIntensity = Base.Intensity;
