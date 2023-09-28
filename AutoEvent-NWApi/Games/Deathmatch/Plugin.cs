@@ -21,7 +21,7 @@ namespace AutoEvent.Games.Deathmatch
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.DeathmatchTranslate.DeathmatchName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.DeathmatchTranslate.DeathmatchDescription;
         public override string Author { get; set; } = "KoT0XleB";
-        public override string CommandName { get; set; } = "deathmatch";
+        public override string CommandName { get; set; } = AutoEvent.Singleton.Translation.DeathmatchTranslate.DeathmatchCommandName;
         [EventConfig]
         public DeathmatchConfig Config { get; set; }
         public MapInfo MapInfo { get; set; } = new MapInfo()
@@ -67,7 +67,6 @@ namespace AutoEvent.Games.Deathmatch
 
         protected override void OnStart()
         {
-            Server.FriendlyFire = false;
             float scale = 1;
             switch (Player.GetPlayers().Count())
             {
@@ -165,9 +164,5 @@ namespace AutoEvent.Games.Deathmatch
             }        
         }
 
-        protected override void OnCleanup()
-        {
-            Server.FriendlyFire = AutoEvent.IsFriendlyFireEnabledByDefault;
-        }
     }
 }

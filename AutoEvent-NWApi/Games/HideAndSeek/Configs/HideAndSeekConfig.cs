@@ -41,6 +41,7 @@ public class HideAndSeekConfig : EventConfig
             Roles = new Dictionary<RoleTypeId, int>() { { RoleTypeId.ClassD, 100 } },
             Effects = new List<Effect>() { new Effect() { EffectType = StatusEffect.MovementBoost, Intensity = 50, Duration = 0 } },
             Chance = 100,
+            InfiniteAmmo = AmmoMode.InfiniteAmmo
         }
     };
 
@@ -51,6 +52,7 @@ public class HideAndSeekConfig : EventConfig
             Roles = new Dictionary<RoleTypeId, int>() { { RoleTypeId.Scientist, 100 } },
             Effects = new List<Effect>() { new Effect() { EffectType = StatusEffect.MovementBoost, Intensity = 51, Duration = 0 } },
             Chance = 100,
+            InfiniteAmmo = AmmoMode.InfiniteAmmo
         }
     };
 }

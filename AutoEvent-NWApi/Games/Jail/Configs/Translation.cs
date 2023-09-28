@@ -1,7 +1,14 @@
-﻿namespace AutoEvent.Games.Infection
+﻿using Exiled.API.Interfaces;
+
+namespace AutoEvent.Games.Infection
 {
-    public class JailTranslate
+#if EXILED
+    public class JailTranslate  : ITranslation 
+#else
+    public class JailTranslate 
+#endif
     {
+        public string JailCommandName { get; set; } = "jail";
         public string JailName { get; set; } = "Simon's Prison";
         public string JailDescription { get; set; } = "Jail mode from CS 1.6, in which you need to hold events [VERY HARD].";
         public string JailBeforeStart { get; set; } = "<color=yellow><color=red><b><i>{name}</i></b></color>\n<i>Trigger or release a lockdown by shooting the big button</i>\nBefore the start: <color=red>{time}</color> seconds</color>";

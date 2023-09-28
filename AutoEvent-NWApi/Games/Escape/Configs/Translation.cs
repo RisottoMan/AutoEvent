@@ -1,7 +1,14 @@
-﻿namespace AutoEvent.Games.Infection
+﻿using Exiled.API.Interfaces;
+
+namespace AutoEvent.Games.Infection
 {
+#if EXILED
+    public class EscapeTranslate : ITranslation 
+#else
     public class EscapeTranslate
+#endif
     {
+        public string EscapeCommandName { get; set; } = "Atomic Escape";
         public string EscapeName { get; set; } = "Atomic Escape";
         public string EscapeDescription { get; set; } = "Escape from the facility behind SCP-173 at supersonic speed!";
         public string EscapeBeforeStart { get; set; } = "{name}\nPrepare to escape from the facility before it explodes!\n<color=red>Time until round starts: {time} seconds</color>";

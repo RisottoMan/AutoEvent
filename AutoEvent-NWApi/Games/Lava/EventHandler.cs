@@ -40,19 +40,13 @@ namespace AutoEvent.Games.Lava
                 {
                     goto defaultDamage;
                 }
-
-                if(ev.AttackerHandler is not FirearmDamageHandler firearmDamageHandler)
-                    goto defaultDamage;
-
-                var effectHandler = _plugin.Config.GunEffects.FirstOrDefault(x => x.Key == firearmDamageHandler.WeaponType);
-                if (effectHandler.Value is null)
-                    goto defaultDamage;
-                
-                ev.Amount = effectHandler.Value.Damage;
-                foreach (Effect effect in effectHandler.Value.Effects)
-                {
-                    ev.Target.GiveEffect(effect);
-                }
+                ev.IsAllowed = true;
+                _plugin.Config.GunEffects.ApplyWeaponEffect(ref ev);
+                ev.Attacker.ReceiveHitMarker(1);
+                ev.Target?.Damage(new CustomReasonDamageHandler("Shooting", ev.Amount));
+                DebugLogger.LogDebug($"Applying Custom Weapon Effect. Damage: {ev.Amount}");
+                ev.IsAllowed = false;
+                return;
             }
             defaultDamage:
                 ev.Attacker?.ReceiveHitMarker();

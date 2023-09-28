@@ -20,7 +20,7 @@ namespace AutoEvent.Games.Boss
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.BossTranslate.BossName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.BossTranslate.BossDescription;
         public override string Author { get; set; } = "KoT0XleB";
-        public override string CommandName { get; set; } = "boss";
+        public override string CommandName { get; set; } = AutoEvent.Singleton.Translation.BossTranslate.BossCommandName;
         public MapInfo MapInfo { get; set; } = new MapInfo() 
             { MapName = "DeathParty", Position = new Vector3(6f, 1030f, -43.5f) };
 
@@ -32,9 +32,11 @@ namespace AutoEvent.Games.Boss
         private EventHandler EventHandler { get; set; }
         private BossTranslate Translation { get; set; }
         private List<Player> _boss;
+        private TimeSpan _elapsedDuration { get; set; }
 
         protected override void OnStart()
         {
+            _elapsedDuration = TimeSpan.FromSeconds(Config.DurationInSeconds);
             foreach (Player player in Player.GetPlayers())
             {
                 player.GiveLoadout(Config.Loadouts);
@@ -49,7 +51,6 @@ namespace AutoEvent.Games.Boss
         }
         protected override void RegisterEvents()
         {
-            Translation = new BossTranslate();
             EventHandler = new EventHandler();
             
             EventManager.RegisterEvents(EventHandler);
@@ -89,7 +90,7 @@ namespace AutoEvent.Games.Boss
         protected override bool IsRoundDone()
         {
             // Round Time is shorter than 2 minutes (+ 15 seconds for countdown)
-            return !(EventTime.TotalSeconds < Config.DurationInSeconds + 15 
+            return !(EventTime.TotalSeconds < Config.DurationInSeconds 
                    && EndConditions.TeamHasMoreThanXPlayers(Team.FoundationForces,0) 
                    && EndConditions.TeamHasMoreThanXPlayers(Team.ChaosInsurgency,0));
         }
@@ -113,29 +114,30 @@ namespace AutoEvent.Games.Boss
                 //_boss.AddItem(ItemType.GunLogicer);
                 Timing.CallDelayed(0.1f, () => { player.CurrentItem = player.Items.First(); });
             }
+            TimeSpan duration = EventTime.Subtract(TimeSpan.FromSeconds(Config.DurationInSeconds));
         }
         
 
         protected override void ProcessFrame()
         {
-            TimeSpan duration = EventTime.Subtract(TimeSpan.FromSeconds(Config.DurationInSeconds));
             string text = Translation.BossCounter;
-            text = text.Replace("%hp%", $"{(int)_boss.Sum(x => x.Health)}");
-            text = text.Replace("%count%", $"{Player.GetPlayers().Count(r => r.IsNTF)}");
-            text = text.Replace("%time%", $"{duration.Minutes:00}:{duration.Seconds:00}");
+            text = text.Replace("{hp}", $"{(int)_boss.Sum(x => x.Health)}");
+            text = text.Replace("{count}", $"{Player.GetPlayers().Count(r => r.IsNTF)}");
+            text = text.Replace("{time}", $"{_elapsedDuration.Minutes:00}:{_elapsedDuration.Seconds:00}");
 
             Extensions.Broadcast(text, 1);
+            _elapsedDuration -= TimeSpan.FromSeconds(FrameDelayInSeconds);
         }
 
         protected override void OnFinished()
         {
             if (Player.GetPlayers().Count(r => r.Team == Team.FoundationForces) == 0)
             {
-                Extensions.Broadcast(Translation.BossWin.Replace("%hp%", $"{(int)_boss.Sum(x => x.Health)}"), 10);
+                Extensions.Broadcast(Translation.BossWin.Replace("{hp}", $"{(int)_boss.Sum(x => x.Health)}"), 10);
             }
             else if (Player.GetPlayers().Count(r => r.Team == Team.ChaosInsurgency) == 0)
             {
-                Extensions.Broadcast(Translation.BossHumansWin.Replace("%count%", $"{Player.GetPlayers().Count(r => r.IsNTF)}"), 10);
+                Extensions.Broadcast(Translation.BossHumansWin.Replace("{count}", $"{Player.GetPlayers().Count(r => r.IsNTF)}"), 10);
             }
             
         }

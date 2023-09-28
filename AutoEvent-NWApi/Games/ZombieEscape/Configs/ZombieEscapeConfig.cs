@@ -17,7 +17,7 @@ using AutoEvent.API.Enums;
 using AutoEvent.Interfaces;
 using PlayerRoles;
 
-namespace AutoEvent.Games.Infection;
+namespace AutoEvent.Games.ZombieEscape;
 
 public class ZombieEscapeConfig : EventConfig
 {
@@ -35,12 +35,14 @@ public class ZombieEscapeConfig : EventConfig
         new Loadout()
         {
             Roles = new Dictionary<RoleTypeId, int>() { { RoleTypeId.NtfSergeant, 100 } },
-            Items = new List<ItemType>() { ItemType.GunAK, ItemType.GunCOM18, ItemType.ArmorCombat }
+            Items = new List<ItemType>() { ItemType.GunAK, ItemType.GunCOM18, ItemType.ArmorCombat },
+            InfiniteAmmo = AmmoMode.InfiniteAmmo
         },
         new Loadout()
         {
             Roles = new Dictionary<RoleTypeId, int>() { { RoleTypeId.NtfSergeant, 100 } },
-            Items = new List<ItemType>() { ItemType.GunE11SR, ItemType.GunCOM18, ItemType.ArmorCombat }
+            Items = new List<ItemType>() { ItemType.GunE11SR, ItemType.GunCOM18, ItemType.ArmorCombat },
+            InfiniteAmmo = AmmoMode.InfiniteAmmo
         }
     };
 
@@ -63,7 +65,7 @@ public class ZombieEscapeConfig : EventConfig
         PlayerPercentage = 10,
     };
 
-    public GunEffect GunEffect { get; set; } = new GunEffect()
+    public WeaponEffect WeaponEffect { get; set; } = new WeaponEffect()
     {
         Damage = 3f,
         Effects = new List<Effect>()

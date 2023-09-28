@@ -20,7 +20,7 @@ namespace AutoEvent.Games.Line
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.LineTranslate.LineName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.LineTranslate.LineDescription;
         public override string Author { get; set; } = "Logic_Gun";
-        public override string CommandName { get; set; } = "line";
+        public override string CommandName { get; set; } = AutoEvent.Singleton.Translation.LineTranslate.LineCommandName;
         [EventConfig]
         public LineConfig Config { get; set; }
         public MapInfo MapInfo { get; set; } = new MapInfo()
@@ -101,10 +101,9 @@ namespace AutoEvent.Games.Line
 
         protected override void ProcessFrame()
         {
-            Extensions.Broadcast(Translation.LineCycle.Replace("%name%", Name).
-                Replace("%min%", $"{_timeRemaining.Minutes:00}").
-                Replace("%sec%", $"{_timeRemaining.Seconds:00}").
-                Replace("%count%", $"{Player.GetPlayers().Count(r => r.Role == RoleTypeId.ClassD)}"), 10);
+            Extensions.Broadcast(Translation.LineCycle.Replace("{name}", Name).
+                Replace("{time}", $"{_timeRemaining.Minutes:00}:{_timeRemaining.Seconds:00}").
+                Replace("{count}", $"{Player.GetPlayers().Count(r => r.Role == RoleTypeId.ClassD)}"), 10);
 
             if (EventTime.Seconds == 30 && _hardCounts < _hardCountsLimit)
             {
@@ -135,22 +134,22 @@ namespace AutoEvent.Games.Line
         {
             // At least 2 players &&
             // Time is smaller than 2 minutes (+countdown)
-            return !(Player.GetPlayers().Count(r => r.Role != AutoEvent.Singleton.Config.LobbyRole) > 1 && EventTime.TotalSeconds < 120+10);
+            return !(Player.GetPlayers().Count(r => r.Role != AutoEvent.Singleton.Config.LobbyRole) > 1 && EventTime.TotalSeconds < 120);
         }
 
         protected override void OnFinished()
         {
-            if (Player.GetPlayers().Count(r => r.Role == RoleTypeId.ClassD) > 1)
+            if (Player.GetPlayers().Count(r => r.Role !=AutoEvent.Singleton.Config.LobbyRole) > 1)
             {
                 Extensions.Broadcast(Translation.LineMorePlayers.
-                    Replace("%name%", Name).
-                    Replace("%count%", $"{Player.GetPlayers().Count(r => r.Role == RoleTypeId.ClassD)}"), 10);
+                    Replace("{name}", Name).
+                    Replace("{count}", $"{Player.GetPlayers().Count(r => r.Role != AutoEvent.Singleton.Config.LobbyRole)}"), 10);
             }
-            else if (Player.GetPlayers().Count(r => r.Role == RoleTypeId.ClassD) == 1)
+            else if (Player.GetPlayers().Count(r => r.Role != AutoEvent.Singleton.Config.LobbyRole) == 1)
             {
                 Extensions.Broadcast(Translation.LineWinner.
-                    Replace("%name%", Name).
-                    Replace("%winner%", Player.GetPlayers().First(r => r.Role == RoleTypeId.ClassD).Nickname), 10);
+                    Replace("{name}", Name).
+                    Replace("{winner}", Player.GetPlayers().First(r => r.Role != AutoEvent.Singleton.Config.LobbyRole).Nickname), 10);
             }
             else
             {

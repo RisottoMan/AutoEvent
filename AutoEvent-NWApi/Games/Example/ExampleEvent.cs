@@ -32,7 +32,7 @@ namespace AutoEvent.Games.Example
     {
 
         // Set the info for the event.
-        public override string Name { get; set; } = "Example";
+        public override string Name { get; set; } = "Example"; // It is recommended to use a translation for everything but author.
         public override string Description { get; set; } = "An example event based on the battle event.";
         public override string Author { get; set; } = "KoT0XleB";
         public override string CommandName { get; set; } = "example";

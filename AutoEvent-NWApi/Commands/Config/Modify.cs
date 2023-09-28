@@ -84,7 +84,7 @@ public class Modify : ICommand, IUsageProvider, IPermission
         }
 
         // Config doesnt exist.
-        var conf = ev.ConfigPresets.FirstOrDefault(x => x.PresetName.ToLower() == arguments.At(1).ToLower());
+        var conf = ev.ConfigPresets.FirstOrDefault(x => ((EventConfig)x).PresetName.ToLower() == arguments.At(1).ToLower());
         if (conf is null)
         {
             response = $"Could not find preset \"{arguments.At(1)}\"";
@@ -94,7 +94,7 @@ public class Modify : ICommand, IUsageProvider, IPermission
         // List available options in a preset. 
         if (arguments.Count < 3)
         {
-            string resp = $"Available options for preset \"{conf.PresetName}\" (event {ev.Name}):\n";
+            string resp = $"Available options for preset \"{((EventConfig)conf).PresetName}\" (event {ev.Name}):\n";
             var properties = conf.GetType().GetProperties();
             foreach (var prop in properties)
             {
@@ -116,7 +116,7 @@ public class Modify : ICommand, IUsageProvider, IPermission
         }
         
         // Process Config Modifications
-        var engine = new OptionModificationEngine(arguments.ToArray(), ev, conf);
+        var engine = new OptionModificationEngine(arguments.ToArray(), ev, (EventConfig)conf);
         return engine.Process(ref response);
         
         

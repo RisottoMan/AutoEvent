@@ -20,7 +20,7 @@ namespace AutoEvent.Games.Escape
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.EscapeTranslate.EscapeName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.EscapeTranslate.EscapeDescription;
         public override string Author { get; set; } = "KoT0XleB";
-        public override string CommandName { get; set; } = "escape";
+        public override string CommandName { get; set; } = AutoEvent.Singleton.Translation.EscapeTranslate.EscapeCommandName;
         [EventConfig]
         public EscapeConfig Config { get; set; }
         public SoundInfo SoundInfo { get; set; } =
@@ -54,7 +54,7 @@ namespace AutoEvent.Games.Escape
         {
             // Elapsed Time is smaller than the explosion time &&
             // At least one player is alive.
-            return !(EventTime.TotalSeconds <= Config.EscapeDurationInSeconds + 10 && Player.GetPlayers().Count(r => r.IsAlive) > 0);
+            return !(EventTime.TotalSeconds <= Config.EscapeDurationInSeconds && Player.GetPlayers().Count(r => r.IsAlive) > 0);
         }
 
         protected override void OnStart()

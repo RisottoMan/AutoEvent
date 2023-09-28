@@ -1,7 +1,14 @@
-﻿namespace AutoEvent.Games.Infection
+﻿using Exiled.API.Interfaces;
+
+namespace AutoEvent.Games.Infection
 {
+#if EXILED
+    public class GlassTranslate  : ITranslation 
+#else
     public class GlassTranslate
+#endif
     {
+        public string GlassCommandName { get; set; } = "glass";
         public string GlassName { get; set; } = "Dead Jump";
         public string GlassDescription { get; set; } = "Jump on fragile platforms";
         public string GlassStart { get; set; } = "<size=50>Dead Jump\nJump on fragile platforms</size>\n<size=20>Alive players: {plyAlive} \nTime left: {eventTime}</size>";

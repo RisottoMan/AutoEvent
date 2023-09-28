@@ -25,7 +25,7 @@ namespace AutoEvent.Games.Lava
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.LavaTranslate.LavaName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.LavaTranslate.LavaDescription;
         public override string Author { get; set; } = "KoT0XleB";
-        public override string CommandName { get; set; } = "lava";
+        public override string CommandName { get; set; } = AutoEvent.Singleton.Translation.LavaTranslate.LavaCommandName;
         [EventConfig]
         public LavaConfig Config { get; set; }
 
@@ -127,7 +127,7 @@ namespace AutoEvent.Games.Lava
         {
             for (int time = 10; time > 0; time--)
             {
-                Extensions.Broadcast(Translation.LavaBeforeStart.Replace("%time%", $"{time}"), 1);
+                Extensions.Broadcast(Translation.LavaBeforeStart.Replace("{time}", $"{time}"), 1);
                 yield return Timing.WaitForSeconds(1f);
             }   
         }
@@ -146,7 +146,7 @@ namespace AutoEvent.Games.Lava
         {
             // If over one player is alive &&
             // Time is under 10 minutes (+ countdown)
-            return !(Player.GetPlayers().Count(r => r.IsAlive) > 1 && EventTime.TotalSeconds < 600 + 10);
+            return !(Player.GetPlayers().Count(r => r.IsAlive) > 1 && EventTime.TotalSeconds < 600 );
         }
 
         protected override void ProcessFrame()
@@ -161,7 +161,7 @@ namespace AutoEvent.Games.Lava
                 text = "<size=90><color=red><b>!</b></color></size>\n";
             }
 
-            Extensions.Broadcast(text + Translation.LavaCycle.Replace("%count%", $"{Player.GetPlayers().Count(r => r.IsAlive)}"), 1);
+            Extensions.Broadcast(text + Translation.LavaCycle.Replace("{count}", $"{Player.GetPlayers().Count(r => r.IsAlive)}"), 1);
             _lava.transform.position += new Vector3(0, 0.08f, 0);
         }
 
@@ -169,16 +169,12 @@ namespace AutoEvent.Games.Lava
         {
             if (Player.GetPlayers().Count(r => r.IsAlive) == 1)
             {
-                Extensions.Broadcast(Translation.LavaWin.Replace("%winner%", Player.GetPlayers().First(r => r.IsAlive).Nickname), 10);
+                Extensions.Broadcast(Translation.LavaWin.Replace("{winner}", Player.GetPlayers().First(r => r.IsAlive).Nickname), 10);
             }
             else
             {
                 Extensions.Broadcast(Translation.LavaAllDead, 10);
             }
-        }
-        protected override void OnCleanup()
-        {
-            Server.FriendlyFire = AutoEvent.IsFriendlyFireEnabledByDefault;
         }
 
     }

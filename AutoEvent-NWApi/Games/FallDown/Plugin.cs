@@ -20,12 +20,12 @@ namespace AutoEvent.Games.FallDown
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.FallTranslate.FallName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.FallTranslate.FallDescription;
         public override string Author { get; set; } = "KoT0XleB";
+        public override string CommandName { get; set; } = AutoEvent.Singleton.Translation.FallTranslate.FallCommandName;
         [EventConfig] public FallDownConfig Config { get; set; } = null;
         public MapInfo MapInfo { get; set; } = new MapInfo()
             {MapName = "FallDown", Position = new Vector3(10f, 1020f, -43.68f) };
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
             { SoundName = "Puzzle.ogg", Volume = 15, Loop = true };
-        public override string CommandName { get; set; } = "fall";
         protected override float FrameDelayInSeconds { get; set; } = 0.9f;
         protected override float PostRoundDelay { get; set; } = 10f;
         private EventHandler EventHandler { get; set; }
@@ -109,7 +109,7 @@ namespace AutoEvent.Games.FallDown
             FrameDelayInSeconds = Config.DelayInSeconds.GetValue(_platformId, 169, 1, 0.3f);
             var count = Player.GetPlayers().Count(r => r.IsAlive);
             var time = $"{EventTime.Minutes:00}:{EventTime.Seconds:00}";
-            Extensions.Broadcast(Translation.FallBroadcast.Replace("%name%", Name).Replace("%time%", time).Replace("%count%", $"{count}"), (ushort)FrameDelayInSeconds);
+            Extensions.Broadcast(Translation.FallBroadcast.Replace("{name}", Name).Replace("{time}", time).Replace("{count}", $"{count}"), (ushort)FrameDelayInSeconds);
             
             if (_platforms.Count < 1)
             {
@@ -143,7 +143,7 @@ namespace AutoEvent.Games.FallDown
         {
             if (Player.GetPlayers().Count(r => r.IsAlive) == 1)
             {
-                Extensions.Broadcast(Translation.FallWinner.Replace("%winner%", Player.GetPlayers().First(r => r.IsAlive).Nickname), 10);
+                Extensions.Broadcast(Translation.FallWinner.Replace("{winner}", Player.GetPlayers().First(r => r.IsAlive).Nickname), 10);
             }
             else
             {

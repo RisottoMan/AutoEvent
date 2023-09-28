@@ -22,7 +22,7 @@ namespace AutoEvent.Games.Puzzle
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.PuzzleTranslate.PuzzleName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.PuzzleTranslate.PuzzleDescription;
         public override string Author { get; set; } = "KoT0XleB";
-        public override string CommandName { get; set; } = "puzzle";
+        public override string CommandName { get; set; } = AutoEvent.Singleton.Translation.PuzzleTranslate.PuzzleCommandName;
         [EventConfig]
         public PuzzleConfig Config { get; set; }
         public MapInfo MapInfo { get; set; } = new MapInfo()
@@ -91,7 +91,7 @@ namespace AutoEvent.Games.Puzzle
         {
             for (int time = 15; time > 0; time--)
             {
-                Extensions.Broadcast($"{_broadcastName}\n{Translation.PuzzleStart.Replace("%time%", $"{time}")}", 1);
+                Extensions.Broadcast($"{_broadcastName}\n{Translation.PuzzleStart.Replace("{time}", $"{time}")}", 1);
                 yield return Timing.WaitForSeconds(1f);
             }
         }
@@ -131,9 +131,9 @@ namespace AutoEvent.Games.Puzzle
         public IEnumerator<float> PuzzleCoroutine()
         {
             _stageText = Translation.PuzzleStage
-                    .Replace("%stageNum%", $"{_stage}")
-                    .Replace("%stageFinal%", $"{_finaleStage}")
-                    .Replace("%plyCount%", $"{Player.GetPlayers().Count(r => r.IsAlive)}");
+                    .Replace("{stageNum}", $"{_stage}")
+                    .Replace("{stageFinal}", $"{_finaleStage}")
+                    .Replace("{plyCount}", $"{Player.GetPlayers().Count(r => r.IsAlive)}");
                 /*for (float time = speed * 2; time > 0; time--)
                 {
                     foreach (var platform in Platformes)
@@ -240,7 +240,7 @@ namespace AutoEvent.Games.Puzzle
             else if (Player.GetPlayers().Count(r => r.IsAlive) == 1)
             {
                 var player = Player.GetPlayers().First(r => r.IsAlive).DisplayNickname;
-                Extensions.Broadcast($"<b>{_broadcastName}</b>\n{Translation.PuzzleWinner.Replace("%plyWinner%", $"{player}")}", 10);
+                Extensions.Broadcast($"<b>{_broadcastName}</b>\n{Translation.PuzzleWinner.Replace("{winner}", $"{player}")}", 10);
             }
             else
             {

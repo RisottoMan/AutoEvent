@@ -1,7 +1,14 @@
-﻿namespace AutoEvent.Games.Infection
+﻿using Exiled.API.Interfaces;
+
+namespace AutoEvent.Games.Infection
 {
-    public class LavaTranslate
+#if EXILED
+    public class LavaTranslate : ITranslation 
+#else
+    public class LavaTranslate 
+#endifL
     {
+        public string LavaCommandName { get; set; } = "lava";
         public string LavaName { get; set; } = "The floor is LAVA";
         public string LavaDescription { get; set; } = "Survival, in which you need to avoid lava and shoot at others.";
         public string LavaBeforeStart { get; set; } = "<size=100><color=red>%time%</color></size>\nTake weapons and climb up.";

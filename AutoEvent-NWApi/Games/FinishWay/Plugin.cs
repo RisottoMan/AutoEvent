@@ -19,7 +19,7 @@ namespace AutoEvent.Games.FinishWay
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.FinishWayTranslate.FinishWayName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.FinishWayTranslate.FinishWayDescription;
         public override string Author { get; set; } = "KoT0XleB";
-        public override string CommandName { get; set; } = "race";
+        public override string CommandName { get; set; } = AutoEvent.Singleton.Translation.FinishWayTranslate.FinishWayCommandName;
         [EventConfig]
         public FinishWayConfig Config { get; set; }
         public MapInfo MapInfo { get; set; } = new MapInfo()
@@ -107,7 +107,7 @@ namespace AutoEvent.Games.FinishWay
             var count = Player.GetPlayers().Count(r => r.Role == RoleTypeId.ClassD);
             var time = $"{_remainingTime.Minutes:00}:{_remainingTime.Seconds:00}";
 
-            Extensions.Broadcast(Translation.FinishWayCycle.Replace("%name%", Name).Replace("%time%", time), 1);
+            Extensions.Broadcast(Translation.FinishWayCycle.Replace("{name}", Name).Replace("{time}", time), 1);
             _remainingTime -= TimeSpan.FromSeconds(FrameDelayInSeconds);
         }
 
@@ -123,11 +123,11 @@ namespace AutoEvent.Games.FinishWay
 
             if (Player.GetPlayers().Count(r => r.IsAlive) > 1)
             {
-                Extensions.Broadcast(Translation.FinishWaySeveralSurvivors.Replace("%count%", Player.GetPlayers().Count(r => r.IsAlive).ToString()), 10);
+                Extensions.Broadcast(Translation.FinishWaySeveralSurvivors.Replace("{count}", Player.GetPlayers().Count(r => r.IsAlive).ToString()), 10);
             }
             else if (Player.GetPlayers().Count(r => r.IsAlive) == 1)
             {
-                Extensions.Broadcast(Translation.FinishWayOneSurvived.Replace("%player%", Player.GetPlayers().First(r => r.IsAlive).Nickname), 10);
+                Extensions.Broadcast(Translation.FinishWayOneSurvived.Replace("{player}", Player.GetPlayers().First(r => r.IsAlive).Nickname), 10);
             }
             else
             {

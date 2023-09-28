@@ -20,6 +20,6 @@ public static class LavaConfigPreset
     public static LavaConfig Original = new LavaConfig()
     {
         ItemsAndWeaponsToSpawn = new Dictionary<ItemType, float>(),
-        GunEffects = new Dictionary<ItemType, GunEffect>(),
+        GunEffects = new List<WeaponEffect>(),
     };
 }

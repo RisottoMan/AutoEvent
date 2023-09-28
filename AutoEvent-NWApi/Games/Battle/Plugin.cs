@@ -21,7 +21,7 @@ namespace AutoEvent.Games.Battle
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.BattleTranslate.BattleName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.BattleTranslate.BattleDescription;
         public override string Author { get; set; } = "KoT0XleB";
-        public override string CommandName { get; set; } = "battle";
+        public override string CommandName { get; set; } =  AutoEvent.Singleton.Translation.BattleTranslate.BattleCommandName;
 
         // Map Info can be inherited as long as the event inherits IEventMap.
         // MapInfo.Map is the Schematic Object for the map.
@@ -72,8 +72,6 @@ namespace AutoEvent.Games.Battle
         // Define what you want to happen when the even is started / run.
         protected override void OnStart()
         {
-            Translation = new BattleTranslate();
-
             int count = 0;
             foreach (Player player in Player.GetPlayers())
             {

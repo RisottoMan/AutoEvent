@@ -21,7 +21,7 @@ namespace AutoEvent.Games.Football
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.FootballTranslate.FootballName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.FootballTranslate.FootballDescription;
         public override string Author { get; set; } = "KoT0XleB";
-        public override string CommandName { get; set; } = "ball";
+        public override string CommandName { get; set; } = AutoEvent.Singleton.Translation.FootballTranslate.FootballCommandName;
         [EventConfig] public FootballConfig Config { get; set; }
         public MapInfo MapInfo { get; set; } = new MapInfo()
             {MapName = "Football", Position = new Vector3(76f, 1026.5f, -43.68f), };
@@ -122,7 +122,7 @@ namespace AutoEvent.Games.Football
                     player.SendBroadcast(text + Translation.FootballTimeLeft.
                         Replace("{BluePnt}", $"{_bluePoints}").
                         Replace("{RedPnt}", $"{_redPoints}").
-                        Replace("{eventTime}", time), 1);
+                        Replace("{time}", time), 1);
                 }
 
                 if (Vector3.Distance(_ball.transform.position, _triggers.ElementAt(0).transform.position) < 3)

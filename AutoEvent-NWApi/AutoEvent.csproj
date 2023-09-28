@@ -44,6 +44,10 @@
   </PropertyGroup>
   <ItemGroup>
 
+    <Reference Include="CedModV3">
+      <HintPath>..\..\..\OneDrive\Documents\SCP Plugin\ExiledReferences\CedModV3-NWApi.dll</HintPath>
+    </Reference>
+
     <Reference Include="Costura, Version=5.7.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>packages\Costura.Fody.5.7.0\lib\netstandard1.0\Costura.dll</HintPath>
     </Reference>
@@ -115,6 +119,7 @@
     <Compile Include="API\Attributes\DisabledFeaturesAttribute.cs" />
     <Compile Include="API\BitwiseExtensions.cs" />
     <Compile Include="API\DifficultyItem.cs" />
+    <Compile Include="API\Enums\FriendlyFireSettings.cs" />
     <Compile Include="API\Enums\KeycardPermissions.cs" />
     <Compile Include="API\ExplodeOnImpactComponent.cs" />
     <Compile Include="API\Effect.cs" />
@@ -123,7 +128,7 @@
     <Compile Include="API\Enums\LoadoutFlags.cs" />
     <Compile Include="API\Extensions.cs" />
     <Compile Include="API\FakeConnection.cs" />
-    <Compile Include="API\GunEffect.cs" />
+    <Compile Include="API\WeaponEffect.cs" />
     <Compile Include="API\Loadout.cs" />
     <Compile Include="API\NavigatorActions\AddAction.cs" />
     <Compile Include="API\NavigatorActions\CollectionSelect.cs" />
@@ -223,6 +228,7 @@
     <Compile Include="Events\EventArgs\PlaceBloodArgs.cs" />
     <Compile Include="Events\Handlers\Players.cs" />
     <Compile Include="Events\Handlers\Servers.cs" />
+    <Compile Include="FriendlyFireSystem.cs" />
     <Compile Include="Games\Battle\Configs\Config.cs" />
     <Compile Include="Games\Battle\Configs\Translation.cs" />
     <Compile Include="Games\Battle\EventHandler.cs" />
@@ -419,6 +425,9 @@
     </Content>
     <Content Include="..\Docs\Translations\English.md">
       <Link>Docs\Translations\English.md</Link>
+    </Content>
+    <Content Include="..\Docs\Translations\GeneralTranslations.md">
+      <Link>Docs\Translations\GeneralTranslations.md</Link>
     </Content>
     <Content Include="..\Docs\Translations\Russian.md">
       <Link>Docs\Translations\Russian.md</Link>

@@ -12,6 +12,7 @@
 
 using System.Collections.Generic;
 using System.ComponentModel;
+using AutoEvent.API.Enums;
 using YamlDotNet.Serialization;
 
 namespace AutoEvent.Interfaces;
@@ -28,7 +29,14 @@ public class EventConfig
     [Description("A list of maps that can be used for this event.")]
     public List<MapChance> AvailableMaps { get; set; } = new List<MapChance>();
 
+    [Description("A list of sounds that can be used for this event.")]
     public List<SoundChance> AvailableSounds { get; set; } = new List<SoundChance>();
+
+    [Description("Some plugins may override this out of necessity.")]
+    public FriendlyFireSettings EnableFriendlyFireAutoban { get; set; } = FriendlyFireSettings.Default;
+
+    [Description("Some plugins may override this out of necessity.")]
+    public FriendlyFireSettings EnableFriendlyFire { get; set; } = FriendlyFireSettings.Default;
     
     [Description("Should this plugin output debug logs.")]
     public bool Debug { get; set; }

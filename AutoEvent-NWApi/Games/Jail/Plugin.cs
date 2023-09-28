@@ -21,7 +21,7 @@ namespace AutoEvent.Games.Jail
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.JailTranslate.JailName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.JailTranslate.JailDescription;
         public override string Author { get; set; } = "KoT0XleB";
-        public override string CommandName { get; set; } = "jail";
+        public override string CommandName { get; set; } = AutoEvent.Singleton.Translation.JailTranslate.JailCommandName;
         [EventConfig]
         public JailConfig Config { get; set; }
         [EventConfigPreset] public JailConfig AdminEvent => JailConfigPresets.AdminEvent;
@@ -267,12 +267,6 @@ namespace AutoEvent.Games.Jail
                 Extensions.Broadcast(Translation.JailJailersWin.Replace("{time}", $"{EventTime.Minutes:00}:{EventTime.Seconds:00}"), 10);
             }   
         }
-
-        protected override void OnCleanup()
-        {
-            Server.FriendlyFire = AutoEvent.IsFriendlyFireEnabledByDefault;
-        }
-
     }
 }
 

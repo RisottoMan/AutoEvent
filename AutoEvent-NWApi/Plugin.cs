@@ -32,6 +32,11 @@ namespace AutoEvent
 #else
     public class AutoEvent
     {
+        [PluginConfig("Configs/autoevent.yml")]
+        public Config Config;
+
+        [PluginConfig("Configs/translation.yml")]
+        public Translation Translation;
 #endif
         public const bool BetaRelease = true; // todo set beta to false before main release
         /// <summary>
@@ -43,18 +48,8 @@ namespace AutoEvent
         public static AutoEvent Singleton;
         public static Harmony HarmonyPatch;
         public static bool Debug => DebugLogger.Debug;
-        public static bool IsFriendlyFireEnabledByDefault { get; set; }
         EventHandler eventHandler;
         
-#if !EXILED
-        [PluginConfig("Configs/autoevent.yml")]
-        public Config Config;
-#endif
-
-#if !EXILED
-        [PluginConfig("Configs/translation.yml")]
-        public Translation Translation;
-#endif
 #if EXILED
         public override void OnEnabled()
 #else
@@ -94,7 +89,8 @@ namespace AutoEvent
                     DebugLogger.LogDebug("The Lobby Role is also in ignored roles. This will break the game if not changed. The plugin will remove the lobby role from ignored roles.", LogLevel.Error, true);
                     Config.IgnoredRoles.Remove(Config.LobbyRole);
                 }
-                IsFriendlyFireEnabledByDefault = Server.FriendlyFire;
+
+                FriendlyFireSystem.IsFriendlyFireEnabledByDefault = Server.FriendlyFire;
                 var debugLogger = new DebugLogger(Config.AutoLogDebug);
                 DebugLogger.Debug = Config.Debug;
                 if (DebugLogger.Debug)

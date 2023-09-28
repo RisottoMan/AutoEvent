@@ -21,7 +21,6 @@
 
         public LightSourcesSerializable(SchematicBlockData block)
         {
-            DebugLogger.LogDebug($"Color: {Color}, Intensity: {Intensity}, Range: {Range}, Shadows: {Shadows}");
             Color = block.Properties["Color"].ToString();
             Intensity = float.Parse(block.Properties["Intensity"].ToString());
             Range = float.Parse(block.Properties["Range"].ToString());

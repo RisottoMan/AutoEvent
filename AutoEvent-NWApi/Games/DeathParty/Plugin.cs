@@ -21,6 +21,7 @@ namespace AutoEvent.Games.DeathParty
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.DeathTranslate.DeathName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.DeathTranslate.DeathDescription;
         public override string Author { get; set; } = "KoT0XleB";
+        public override string CommandName { get; set; } = AutoEvent.Singleton.Translation.DeathTranslate.DeathCommandName;
         public MapInfo MapInfo { get; set; } = new MapInfo()
             {MapName = "DeathParty", Position = new Vector3(10f, 1012f, -40f), };
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
@@ -28,7 +29,6 @@ namespace AutoEvent.Games.DeathParty
 
         [EventConfig]
         public DeathPartyConfig Config { get; set; }
-        public override string CommandName { get; set; } = "airstrike";
         protected override float PostRoundDelay { get; set; } = 5f;
         private EventHandler EventHandler { get; set; }
         private DeathTranslate Translation { get; set; }
@@ -39,7 +39,6 @@ namespace AutoEvent.Games.DeathParty
 
         protected override void RegisterEvents()
         {
-            Translation = new DeathTranslate();
             EventHandler = new EventHandler(this);
 
             EventManager.RegisterEvents(EventHandler);
@@ -108,7 +107,7 @@ namespace AutoEvent.Games.DeathParty
         {
             var count = Player.GetPlayers().Count(r => r.IsAlive && r.Role != RoleTypeId.ChaosConscript).ToString();
             var cycleTime = $"{EventTime.Minutes:00}:{EventTime.Seconds:00}";
-            Extensions.Broadcast(Translation.DeathCycle.Replace("%count%", count).Replace("%time%", cycleTime), 1);
+            Extensions.Broadcast(Translation.DeathCycle.Replace("{count}", count).Replace("{time}", cycleTime), 1);
         }
 
         protected override bool IsRoundDone()
@@ -194,26 +193,22 @@ namespace AutoEvent.Games.DeathParty
                 });
             }
             var time = $"{EventTime.Minutes:00}:{EventTime.Seconds:00}";
-            if (Player.GetPlayers().Count(r => r.IsAlive) > 1)
+            if (Player.GetPlayers().Count(r => r.Role != RoleTypeId.ChaosConscript) > 1)
             {
-                Extensions.Broadcast(Translation.DeathMorePlayer.Replace("%count%", $"{Player.GetPlayers().Count(r => r.IsAlive)}").Replace("%time%", time), 10);
+                Extensions.Broadcast(Translation.DeathMorePlayer.Replace("{count}", $"{Player.GetPlayers().Count(r => r.Role != RoleTypeId.ChaosConscript)}").Replace("{time}", time), 10);
             }
             else if (Player.GetPlayers().Count(r => r.IsAlive) == 1)
             {
                 var player = Player.GetPlayers().First(r => r.IsAlive);
                 player.Health = 1000;
-                Extensions.Broadcast(Translation.DeathOnePlayer.Replace("%winner%", player.Nickname).Replace("%time%", time), 10);
+                Extensions.Broadcast(Translation.DeathOnePlayer.Replace("{winner}", player.Nickname).Replace("{time}", time), 10);
             }
             else
             {
-                Extensions.Broadcast(Translation.DeathAllDie.Replace("%time%", time), 10);
+                Extensions.Broadcast(Translation.DeathAllDie.Replace("{time}", time), 10);
             }
         }
 
-        protected override void OnCleanup()
-        {
-            Server.FriendlyFire = AutoEvent.IsFriendlyFireEnabledByDefault;
-        }
         
 }
 }

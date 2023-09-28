@@ -17,10 +17,13 @@ using AutoEvent.API.Enums;
 using AutoEvent.Interfaces;
 using PlayerRoles;
 
-namespace AutoEvent.Games.Infection;
+namespace AutoEvent.Games.Survival;
 
 public class SurvivalConfig : EventConfig
 {
+    [Description("How long the round should last in seconds.")]
+    public int RoundDurationInSeconds { get; set; } = 300;
+    
     [Description("A list of lodaouts players can get.")]
     public List<Loadout> PlayerLoadouts { get; set; } = new List<Loadout>()
     {
@@ -32,7 +35,8 @@ public class SurvivalConfig : EventConfig
                 ItemType.GunAK,
                 ItemType.GunCOM18,
                 ItemType.ArmorCombat,
-            }
+            },
+            InfiniteAmmo = AmmoMode.InfiniteAmmo
         },
         new Loadout()
         {
@@ -42,7 +46,8 @@ public class SurvivalConfig : EventConfig
                 ItemType.GunE11SR,
                 ItemType.GunCOM18,
                 ItemType.ArmorCombat,
-            }
+            },
+            InfiniteAmmo = AmmoMode.InfiniteAmmo
         },
         new Loadout()
         {
@@ -52,7 +57,8 @@ public class SurvivalConfig : EventConfig
                 ItemType.GunShotgun,
                 ItemType.GunCOM18,
                 ItemType.ArmorCombat,
-            }
+            },
+            InfiniteAmmo = AmmoMode.InfiniteAmmo
         }
     };
     
@@ -79,20 +85,22 @@ public class SurvivalConfig : EventConfig
         PlayerPercentage = 10,
     };
 
-    public GunEffect GunEffect { get; set; } = new GunEffect()
+    [Description("The effect that guns should have.")]
+    public WeaponEffect WeaponEffect { get; set; } = new WeaponEffect()
     {
         Effects = new List<Effect>()
         {
             new Effect()
             {
                 EffectType = StatusEffect.SinkHole,
-                Duration = 1,
+                Duration = .5f,
+                Intensity = 255,
                 AddDuration = true,
             },
             new Effect()
             {
                 EffectType = StatusEffect.Stained,
-                Duration = 1,
+                Duration = .5f,
                 AddDuration = true,
             }
         }

@@ -21,13 +21,10 @@ namespace AutoEvent.Games.ZombieEscape
     public class Plugin : Event, IEventSound, IEventMap, IInternalEvent
     {
         // todo - add a one way platform or way to fight back as mtf at end, once you are at the actual helicopter.
-        // todo - ensure ending actually ends the game lel.
-        public override string Name { get; set; } =
-            AutoEvent.Singleton.Translation.ZombieEscapeTranslate.ZombieEscapeName;
-        public override string Description { get; set; } =
-            AutoEvent.Singleton.Translation.ZombieEscapeTranslate.ZombieEscapeDescription;
+        public override string Name { get; set; } = AutoEvent.Singleton.Translation.ZombieEscapeTranslate.ZombieEscapeName;
+        public override string Description { get; set; } = AutoEvent.Singleton.Translation.ZombieEscapeTranslate.ZombieEscapeDescription;
         public override string Author { get; set; } = "KoT0XleB";
-        public override string CommandName { get; set; } = "zombie3";
+        public override string CommandName { get; set; } = AutoEvent.Singleton.Translation.ZombieEscapeTranslate.ZombieEscapeCommandName;
         [EventConfig]
         public ZombieEscapeConfig Config { get; set; }
         public MapInfo MapInfo { get; set; } = new MapInfo()
@@ -101,7 +98,7 @@ namespace AutoEvent.Games.ZombieEscape
             for (float _time = 20; _time > 0; _time--)
             {
                 Extensions.Broadcast(
-                    Translation.ZombieEscapeBeforeStart.Replace("%name%", Name).Replace("%time%", $"{_time}"), 1);
+                    Translation.ZombieEscapeBeforeStart.Replace("{name}", Name).Replace("{time}", $"{_time}"), 1);
                 yield return Timing.WaitForSeconds(1f);
             }
         }
@@ -110,7 +107,7 @@ namespace AutoEvent.Games.ZombieEscape
         {
             Extensions.PlayAudio("Zombie2.ogg", 7, false, Name);
 
-            foreach (Player ply in Config.Zombies.GetPlayers())
+            foreach (Player ply in  Config.Zombies.GetPlayers())
             {
                 DebugLogger.LogDebug($"{ply.Nickname} chosen as a zombie.", LogLevel.Debug);
                 ply.GiveLoadout(Config.ZombieLoadouts);
@@ -181,8 +178,8 @@ namespace AutoEvent.Games.ZombieEscape
                         Vector3.one);
                 }
 
-                string text = Translation.ZombieEscapeHelicopter.Replace("%name%", Name)
-                    .Replace("%count%", $"{Player.GetPlayers().Count(r => r.IsHuman)}");
+                string text = Translation.ZombieEscapeHelicopter.Replace("{name}", Name)
+                    .Replace("{count}", $"{Player.GetPlayers().Count(r => r.IsHuman)}");
                 player.ClearBroadcasts();
                 player.SendBroadcast(text, 1);
             }
@@ -227,7 +224,6 @@ namespace AutoEvent.Games.ZombieEscape
         }
         protected override void OnCleanup()
         {
-            Server.FriendlyFire = AutoEvent.IsFriendlyFireEnabledByDefault;
             if (_boat != null)
                 Extensions.UnLoadMap(_boat);
 

@@ -43,19 +43,19 @@ public class LavaConfig : EventConfig
     };
     
     [Description("A list of damage / effects that each gun will give.")]
-    public Dictionary<ItemType, GunEffect> GunEffects { get; set; } = new Dictionary<ItemType, GunEffect>()
+    public List<WeaponEffect> GunEffects { get; set; } = new List<WeaponEffect>()
     {
-        { ItemType.GunA7,        new GunEffect(3,    new List<Effect>(){ new Effect(StatusEffect.Concussed, 1, 0.50f, true) }) },
-        { ItemType.GunAK,        new GunEffect(3,    new List<Effect>(){ new Effect(StatusEffect.Concussed, 1, 0.50f, true) }) },
-        { ItemType.GunE11SR,     new GunEffect(3,    new List<Effect>(){ new Effect(StatusEffect.Concussed, 1, 0.50f, true) }) },
-        { ItemType.GunShotgun,   new GunEffect(30,   new List<Effect>(){ new Effect(StatusEffect.Concussed, 1, 5.00f, true) }) },
-        { ItemType.GunCom45,     new GunEffect(10,   new List<Effect>(){ new Effect(StatusEffect.Concussed, 1, 1.00f, true) }) },
-        { ItemType.GunCrossvec,  new GunEffect(3,    new List<Effect>(){ new Effect(StatusEffect.Concussed, 1, 0.50f, true) }) },
-        { ItemType.GunCOM15,     new GunEffect(20,   new List<Effect>(){ new Effect(StatusEffect.Concussed, 1, 1.00f, true) }) },
-        { ItemType.GunCOM18,     new GunEffect(20,   new List<Effect>(){ new Effect(StatusEffect.Concussed, 1, 1.00f, true) }) },
-        { ItemType.GunLogicer,   new GunEffect(3,    new List<Effect>(){ new Effect(StatusEffect.Concussed, 1, 0.50f, true) }) },
-        { ItemType.GunRevolver,  new GunEffect(20,   new List<Effect>(){ new Effect(StatusEffect.Concussed, 1, 1.00f, true) }) },
-        { ItemType.GunFRMG0,     new GunEffect(2,    new List<Effect>(){ new Effect(StatusEffect.Concussed, 1, 0.50f, true) }) },
-        { ItemType.GunFSP9,      new GunEffect(3,    new List<Effect>(){ new Effect(StatusEffect.Concussed, 1, 0.50f, true) }) },
+        { new WeaponEffect(5,    new List<Effect>(){ new Effect(StatusEffect.Concussed, 1, 0.1f, true) }, ItemType.GunA7) },
+        { new WeaponEffect(5,    new List<Effect>(){ new Effect(StatusEffect.Concussed, 1, 0.15f, true) }, ItemType.GunAK) },
+        { new WeaponEffect(3,    new List<Effect>(){ new Effect(StatusEffect.Concussed, 1, 0.1f, true) }, ItemType.GunE11SR) },
+        { new WeaponEffect(4,    new List<Effect>(){ new Effect(StatusEffect.Concussed, 1, 3.00f, true) }, ItemType.GunShotgun) },
+        { new WeaponEffect(10,   new List<Effect>(){ new Effect(StatusEffect.Concussed, 1, 1.00f, true) }, ItemType.GunCom45) },
+        { new WeaponEffect(3,    new List<Effect>(){ new Effect(StatusEffect.Concussed, 1, 0.1f, true) }, ItemType.GunCrossvec) },
+        { new WeaponEffect(8,   new List<Effect>(){ new Effect(StatusEffect.Concussed, 1, 1.00f, true) }, ItemType.GunCOM15) },
+        { new WeaponEffect(8,   new List<Effect>(){ new Effect(StatusEffect.Concussed, 1, 1.00f, true) }, ItemType.GunCOM18) },
+        { new WeaponEffect(3,    new List<Effect>(){ new Effect(StatusEffect.Concussed, 1, 0.1F, true) }, ItemType.GunLogicer) },
+        { new WeaponEffect(12,   new List<Effect>(){ new Effect(StatusEffect.Concussed, 1, 2.00f, true) }, ItemType.GunRevolver) },
+        { new WeaponEffect(2,    new List<Effect>(){ new Effect(StatusEffect.Concussed, 1, 0.03f, true) }, ItemType.GunFRMG0) },
+        { new WeaponEffect(3,    new List<Effect>(){ new Effect(StatusEffect.Concussed, 1, 0.1f, true) }, ItemType.GunFSP9) },
     };
 }

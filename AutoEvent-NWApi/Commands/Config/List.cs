@@ -63,7 +63,7 @@ public class List : ICommand, IUsageProvider, IPermission
         string presets = $"Available Config Presets for Event \"{ev.Name}\": \n";
         foreach (var x in ev.ConfigPresets)
         {
-            presets += $"  {x.PresetName}, \n";
+            presets += $"  {((EventConfig)x).PresetName}, \n";
         }
 
         response = presets;

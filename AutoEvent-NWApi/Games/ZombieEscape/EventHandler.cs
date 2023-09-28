@@ -35,13 +35,9 @@ namespace AutoEvent.Games.ZombieEscape
                 // do zombie stun
                 if (_plugin.Config.ZombieLoadouts.Any(x => x.Roles.Any(x => x.Key == ev.Target.Role)))
                 {
-                    ev.Amount = _plugin.Config.GunEffect.Damage;
-
+                    _plugin.Config.WeaponEffect.ApplyGunEffect(ref ev);
+                    
                     ev.Attacker.ReceiveHitMarker();
-                    foreach (var gunEffect in _plugin.Config.GunEffect.Effects)
-                    {
-                        ev.Target.GiveEffect(gunEffect);
-                    }
                 }
                 // do player instakill
                 if (_plugin.Config.ZombieLoadouts.Any(x => x.Roles.Any(x => x.Key == ev.Attacker.Role)) && 

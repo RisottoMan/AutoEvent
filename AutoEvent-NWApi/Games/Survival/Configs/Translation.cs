@@ -1,7 +1,15 @@
-﻿namespace AutoEvent.Games.Infection
+﻿using Exiled.API.Interfaces;
+
+namespace AutoEvent.Games.Infection
 {
+#if EXILED
+    public class  SurvivalTranslate : ITranslation 
+#else
     public class SurvivalTranslate
+#endif
+
     {
+        public string SurvivalCommandName { get; set; } = "zombie2";
         public string SurvivalName { get; set; } = "Zombie Survival";
         public string SurvivalDescription { get; set; } = "Humans surviving from zombies";
         public string SurvivalBeforeInfection { get; set; } = "<b>%name%</b>\n<color=yellow>There are </color> %time% <color=yellow>second before infection begins</color>";

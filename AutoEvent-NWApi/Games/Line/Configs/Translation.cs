@@ -1,7 +1,14 @@
-﻿namespace AutoEvent.Games.Infection
+﻿using Exiled.API.Interfaces;
+
+namespace AutoEvent.Games.Infection
 {
-    public class LineTranslate
+#if EXILED
+    public class LineTranslate : ITranslation 
+#else
+    public class LineTranslate 
+#endif
     {
+        public string LineCommandName { get; set; } = "line";
         public string LineName { get; set; } = "DeathLine";
         public string LineDescription { get; set; } = "Avoid the spinning platform to survive.";
         public string LineCycle { get; set; } = "<color=#FF4242>%name%</color>\n<color=#14AAF5>Time remaining: %min%</color><color=#4a4a4a>:</color><color=#14AAF5>%sec%</color>\n<color=yellow>Players Remaining: %count%</color>";

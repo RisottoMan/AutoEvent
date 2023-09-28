@@ -38,25 +38,25 @@ public class Presets : ICommand, IPermission
             return false;
         }
 
-        if (arguments.Count <= 1)
+        if (arguments.Count < 1)
         {
             response = "You must specify an event first.";
             return false;
         }
 
-        var ev = Event.Events.FirstOrDefault(x => x.Name.ToLower() == arguments.At(1).ToLower());
+        var ev = Event.GetEvent(arguments.At(0));
         if (ev is null)
         {
-            response = $"Could not find Event \"{arguments.At(1)}\"";
+            response = $"Could not find Event \"{arguments.At(0)}\"";
             return false;
         }
         string x = $"{ev.ConfigPresets.Count} Presets Available: \n";
         foreach (var preset in ev.ConfigPresets)
         {
             if(!IsConsoleCommandSender)
-                x += $"<color=yellow>[{preset.PresetName}]<color=white>, \n";
+                x += $"<color=yellow>[{((EventConfig)preset).PresetName}]<color=white>, \n";
             else
-                x += $"[{preset.PresetName}], \n";
+                x += $"[{((EventConfig)preset).PresetName}], \n";
         }
         response = x;
         return true;

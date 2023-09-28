@@ -35,7 +35,6 @@ namespace AutoEvent.API.Schematic.Objects
 
         public override MapEditorObject Init(SchematicBlockData block)
         {
-            DebugLogger.LogDebug("Init Light Object");
             base.Init(block);
 
             Base = new(block);
@@ -54,7 +53,6 @@ namespace AutoEvent.API.Schematic.Objects
 
         public override void UpdateObject()
         {
-            DebugLogger.LogDebug($"Updating Light: Position: {Position} Color: {Base.Color}, Intensity: {Base.Intensity}, Range: {Base.Range}, Shadows: {Base.Shadows}");
             _lightSourceToy.Position = _transform.position;
             _lightSourceToy.LightColor = GetColorFromString(Base.Color);
             _lightSourceToy.LightIntensity = Base.Intensity;

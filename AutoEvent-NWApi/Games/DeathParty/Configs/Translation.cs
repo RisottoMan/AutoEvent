@@ -1,7 +1,14 @@
-﻿namespace AutoEvent.Games.Infection
+﻿using Exiled.API.Interfaces;
+
+namespace AutoEvent.Games.Infection
 {
+#if EXILED
+    public class DeathTranslate : ITranslation 
+#else
     public class DeathTranslate
+#endif
     {
+        public string DeathCommandName { get; set; } = "airstrike";
         public string DeathName { get; set; } = "Airstrike Party";
         public string DeathDescription { get; set; } = "Survive as aistrikes rain down from above.";
         public string DeathCycle { get; set; } = "<color=yellow>Dodge the airstrikes!</color>\n<color=green>%time% seconds have elapsed</color>\n<color=red>%count% players left</color>";

@@ -1,7 +1,14 @@
-﻿namespace AutoEvent.Games.Infection
+﻿using Exiled.API.Interfaces;
+
+namespace AutoEvent.Games.Infection
 {
+#if EXILED
+    public class FootballTranslate : ITranslation
+#else
     public class FootballTranslate
+#endif
     {
+        public string FootballCommandName { get; set; } = "ball"; // Soccer in america - football everywhere else 🦅🦅🦅🇺🇸🇺🇸🇺🇸 <- (USA Flag doesnt render in rider...)
         public string FootballName { get; set; } = "Soccer"; // Soccer in america - football everywhere else 🦅🦅🦅🇺🇸🇺🇸🇺🇸 <- (USA Flag doesnt render in rider...)
         public string FootballDescription { get; set; } = "Score 3 goals to win";
         public string FootballRedTeam { get; set; } = "<color=red>Your Team: Red Team\n</color>";

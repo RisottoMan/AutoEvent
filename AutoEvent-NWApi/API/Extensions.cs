@@ -17,6 +17,7 @@ using System.Reflection;
 using AutoEvent.API;
 using AutoEvent.API.Enums;
 using AutoEvent.Commands.Debug;
+using AutoEvent.Events.EventArgs;
 using AutoEvent.Games.Battle;
 using AutoEvent.Games.Line;
 using CustomPlayerEffects;
@@ -87,6 +88,24 @@ namespace AutoEvent
             return false;
         }
 
+        public static void ApplyWeaponEffect(this List<WeaponEffect> effects, ref PlayerDamageArgs ev)
+        {
+            var globalEffect = effects.FirstOrDefault(x => x.WeaponType == ItemType.None);
+            if (globalEffect is not null)
+            {
+                globalEffect.ApplyGunEffect(ref ev);
+                return;
+            }
+
+            PlayerDamageArgs args = ev;
+            var applicableWeaponEffect = effects.FirstOrDefault(effect => effect.IsCustomWeaponEffect(args));
+            if (applicableWeaponEffect is null)
+            {
+                return;
+            } 
+            applicableWeaponEffect.ApplyGunEffect(ref ev);
+        }
+        
         public static bool HasLoadout(this Player ply, Loadout loadout, LoadoutCheckMethods checkMethod = LoadoutCheckMethods.HasRole) =>
             ply.HasLoadout(new List<Loadout>() { loadout }, checkMethod);
         public static void GiveLoadout(this Player player, List<Loadout> loadouts, LoadoutFlags flags = LoadoutFlags.None)

@@ -20,7 +20,7 @@ namespace AutoEvent.Games.Survival
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.SurvivalTranslate.SurvivalName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.SurvivalTranslate.SurvivalDescription;
         public override string Author { get; set; } = "KoT0XleB";
-        public override string CommandName { get; set; } = "zombie2";
+        public override string CommandName { get; set; } = AutoEvent.Singleton.Translation.SurvivalTranslate.SurvivalCommandName;
         [EventConfig]
         public SurvivalConfig Config { get; set; }
         public MapInfo MapInfo { get; set; } = new MapInfo()
@@ -80,7 +80,7 @@ namespace AutoEvent.Games.Survival
         {
             for (float _time = 20; _time > 0; _time--)
             {
-                Extensions.Broadcast(Translation.SurvivalBeforeInfection.Replace("%name%", Name).Replace("%time%", $"{_time}"), 1);
+                Extensions.Broadcast(Translation.SurvivalBeforeInfection.Replace("{name}", Name).Replace("{time}", $"{_time}"), 1);
                 yield return Timing.WaitForSeconds(1f);
             }
         }
@@ -92,14 +92,10 @@ namespace AutoEvent.Games.Survival
             {
                 Extensions.PlayAudio("Zombie2.ogg", 7, true, Name);
             });
-            foreach (Player x in Config.Zombies.GetPlayers())
+            List<Player> players =Config.Zombies.GetPlayers();
+            foreach (Player x in players)
             {
-                /*var player = Player.GetPlayers().Where(r => r.IsHuman).ToList().RandomItem();
-                Extensions.SetRole(player, RoleTypeId.Scp0492, RoleSpawnFlags.AssignInventory);
-                player.EffectsManager.EnableEffect<Disabled>();
-                player.EffectsManager.EnableEffect<Scp1853>();
-                player.Health = 5000;
-                */
+                DebugLogger.LogDebug($"Making player {x.Nickname} a zombie.");
                 x.GiveLoadout(Config.ZombieLoadouts);
                 if (Player.GetPlayers().Count(r => r.IsSCP) == 1)
                 {
@@ -118,17 +114,19 @@ namespace AutoEvent.Games.Survival
             // At least 1 human player &&
             // At least 1 scp player &&
             // round time under 5 minutes (+ countdown)
-            return Player.GetPlayers().Count(r => r.IsHuman) > 0 && Player.GetPlayers().Count(r => r.IsSCP) > 0 &&
-                EventTime.TotalSeconds < 300 + 20;
+            bool a = Player.GetPlayers().Any(ply => ply.HasLoadout(Config.PlayerLoadouts));
+            bool b = Player.GetPlayers().Any(ply => ply.HasLoadout(Config.ZombieLoadouts));
+            bool c = EventTime.TotalSeconds < Config.RoundDurationInSeconds;
+            return !(a && b && c);
         }
 
         protected override void ProcessFrame()
         {
             var text = Translation.SurvivalAfterInfection;
             
-            text = text.Replace("%name%", Name);
-            text = text.Replace("%humanCount%", Player.GetPlayers().Count(r => r.IsHuman).ToString());
-            text = text.Replace("%time%", $"{_remainingTime.Minutes:00}:{_remainingTime.Seconds:00}");
+            text = text.Replace("{name}", Name);
+            text = text.Replace("{humanCount}", Player.GetPlayers().Count(r => r.IsHuman).ToString());
+            text = text.Replace("{time}", $"{_remainingTime.Minutes:00}:{_remainingTime.Seconds:00}");
 
             foreach (var player in Player.GetPlayers())
             {
@@ -161,11 +159,6 @@ namespace AutoEvent.Games.Survival
                 Extensions.Broadcast(Translation.SurvivalHumanWinTime, 10);
                 Extensions.PlayAudio("HumanWin.ogg", 7, false, Name);
             }
-        }
-
-        protected override void OnCleanup()
-        {
-            Server.FriendlyFire = AutoEvent.IsFriendlyFireEnabledByDefault;
         }
     }
 }

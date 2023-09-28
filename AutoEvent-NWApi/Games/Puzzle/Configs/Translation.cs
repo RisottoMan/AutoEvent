@@ -1,7 +1,14 @@
-﻿namespace AutoEvent.Games.Infection
+﻿using Exiled.API.Interfaces;
+
+namespace AutoEvent.Games.Infection
 {
-    public class PuzzleTranslate
+#if EXILED
+    public class PuzzleTranslate : ITranslation 
+#else
+    public class PuzzleTranslate 
+#endif
     {
+        public string PuzzleCommandName { get; set; } = "puzzle";
         public string PuzzleName { get; set; } = "Puzzle";
         public string PuzzleDescription { get; set; } = "Get up the fastest on the right color.";
         public string PuzzleStart { get; set; } = "<color=red>Starts in: </color>%time%";

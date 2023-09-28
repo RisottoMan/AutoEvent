@@ -1,9 +1,15 @@
 ﻿using System.ComponentModel;
+using Exiled.API.Interfaces;
 
 namespace AutoEvent.Games.Infection
 {
+#if EXILED
+    public class InfectTranslate : ITranslation 
+#else
     public class InfectTranslate
+#endif
     {
+        public string ZombieCommandName { get; set; } = "Zombie";
         public string ZombieName { get; set; } = "Zombie Infection";
         public string ZombieDescription { get; set; } = "Zombie mode, the purpose of which is to infect all players.";
         public string ZombieBeforeStart { get; set; } = "<color=#D71868><b><i>{name}</i></b></color>\n<color=#ABF000>There are <color=red>{time}</color> seconds left before the game starts.</color>";

@@ -18,7 +18,7 @@ namespace AutoEvent.Games.Infection
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.InfectTranslate.ZombieName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.InfectTranslate.ZombieDescription;
         public override string Author { get; set; } = "KoT0XleB";
-        public override string CommandName { get; set; } = "zombie";
+        public override string CommandName { get; set; } = AutoEvent.Singleton.Translation.InfectTranslate.ZombieCommandName;
         [EventConfig] public InfectConfig Config { get; set; }
         public MapInfo MapInfo { get; set; } = new MapInfo()
             { MapName = "Zombie", Position = new Vector3(115.5f, 1030f, -43.5f), MapRotation = Quaternion.identity };
@@ -97,19 +97,18 @@ namespace AutoEvent.Games.Infection
 
         
         protected override bool IsRoundDone()
-        {
-            var list = Config.PlayerLoadouts.Select(x => x.Roles.Keys).ToList();
+        { 
             // Finished
             if (_stage == InfectionStage.Finished)
                 return true;
             // Last Player Dead.
-            if (Player.GetPlayers().Count(r => list.Any(x => x.Contains(r.Role)) ) == 0)
+            if (!Player.GetPlayers().Any(r => r.HasLoadout(Config.PlayerLoadouts)))
                 return true;
             // Last Player Alive.
             if (_stage == InfectionStage.LastPlayer)
                 return false;
             // Many Players Alive.
-            if (_stage == InfectionStage.Stage1 && Player.GetPlayers().Count(r => list.Any(x => x.Contains(r.Role)) ) > 1)
+            if (_stage == InfectionStage.Stage1 && Player.GetPlayers().Count(r => r.HasLoadout(Config.PlayerLoadouts)) > 1)
                 return false;
             // Last Player Alive
             _stage = InfectionStage.LastPlayer;

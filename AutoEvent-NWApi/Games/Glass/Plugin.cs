@@ -23,7 +23,7 @@ namespace AutoEvent.Games.Glass
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.GlassTranslate.GlassName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.GlassTranslate.GlassDescription;
         public override string Author { get; set; } = "KoT0XleB";
-        public override string CommandName { get; set; } = "glass";
+        public override string CommandName { get; set; } =  AutoEvent.Singleton.Translation.GlassTranslate.GlassCommandName;
         [EventConfig] public GlassConfig Config { get; set; }
         public MapInfo MapInfo { get; set; } = new MapInfo()
             {MapName = "Glass", Position = new Vector3(76f, 1026.5f, -43.68f) };
@@ -156,14 +156,14 @@ namespace AutoEvent.Games.Glass
                     break;
                 }
             }
-            return !(EventTime.TotalSeconds < _matchTimeInSeconds + 15 && Player.GetPlayers().Count(r => r.IsAlive) > 0 && playerNotOnPlatform);
+            return !(EventTime.TotalSeconds < _matchTimeInSeconds && Player.GetPlayers().Count(r => r.IsAlive) > 0 && playerNotOnPlatform);
         }
 
         protected override void ProcessFrame()
         {
             var text = Translation.GlassStart;
             text = text.Replace("{plyAlive}", Player.GetPlayers().Count(r => r.IsAlive).ToString());
-            text = text.Replace("{eventTime}", $"{EventTime.Minutes:00}:{EventTime.Seconds:00}");
+            text = text.Replace("{time}", $"{EventTime.Minutes:00}:{EventTime.Seconds:00}");
 
             Extensions.Broadcast(text, 1);
         }
@@ -180,7 +180,7 @@ namespace AutoEvent.Games.Glass
             
             if (Player.GetPlayers().Count(r => r.IsAlive) > 1)
             {
-                Extensions.Broadcast(Translation.GlassWinSurvived.Replace("{countAlive}", Player.GetPlayers().Count(r => r.IsAlive).ToString()), 3);
+                Extensions.Broadcast(Translation.GlassWinSurvived.Replace("{plyAlive}", Player.GetPlayers().Count(r => r.IsAlive).ToString()), 3);
             }
             else if (Player.GetPlayers().Count(r => r.IsAlive) == 1)
             {

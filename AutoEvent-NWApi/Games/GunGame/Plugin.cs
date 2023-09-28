@@ -21,12 +21,12 @@ namespace AutoEvent.Games.GunGame
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.GunGameTranslate.GunGameName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.GunGameTranslate.GunGameDescription;
         public override string Author { get; set; } = "KoT0XleB";
+        public override string CommandName { get; set; } = AutoEvent.Singleton.Translation.GunGameTranslate.GunGameCommandName;
 
         [EventConfig]
         public GunGameConfig Config { get; set; }
 
         [EventConfigPreset] public GunGameConfig EasyGunsFirst => GunGameConfigPresets.EasyGunsFirst;
-        public override string CommandName { get; set; } = "gungame";
         public MapInfo MapInfo { get; set; } = new MapInfo()
             {MapName = "Shipment", Position = new Vector3(93f, 1020f, -43f), };
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
@@ -127,7 +127,7 @@ namespace AutoEvent.Games.GunGame
             // Winner is not null &&
             // Over one player is alive && 
             // Elapsed time is smaller than 10 minutes (+ countdown)
-            return !(_winner == null && Enumerable.Count(Player.GetPlayers(), r => r.IsAlive) > 1 && EventTime.TotalSeconds < 600 + 10);
+            return !(_winner == null && Enumerable.Count(Player.GetPlayers(), r => r.IsAlive) > 1 && EventTime.TotalSeconds < 600);
         }
         
         protected override void ProcessFrame()
@@ -180,9 +180,5 @@ namespace AutoEvent.Games.GunGame
             }
         }
 
-        protected override void OnCleanup()
-        {
-            Server.FriendlyFire = AutoEvent.IsFriendlyFireEnabledByDefault;
-        }
     }
 }

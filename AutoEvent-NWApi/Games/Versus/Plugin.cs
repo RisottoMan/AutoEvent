@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using AutoEvent.API.Enums;
 using MEC;
 using PlayerRoles;
 using AutoEvent.API.Schematic.Objects;
@@ -20,13 +21,15 @@ namespace AutoEvent.Games.Versus
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.VersusTranslate.VersusName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.VersusTranslate.VersusDescription;
         public override string Author { get; set; } = "KoT0XleB";
-        public override string CommandName { get; set; } = "versus";
+        public override string CommandName { get; set; } = AutoEvent.Singleton.Translation.VersusTranslate.VersusCommandName;
         [EventConfig]
         public VersusConfig Config { get; set; }
         public MapInfo MapInfo { get; set; } = new MapInfo()
             {MapName = "35Hp", Position = new Vector3(6f, 1015f, -5f), };
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
             { SoundName = "Knife.ogg", Volume = 10, Loop = true };
+
+        protected override FriendlyFireSettings ForceEnableFriendlyFire { get; set; } = FriendlyFireSettings.Disable;
         private EventHandler EventHandler { get; set; }
         private VersusTranslate Translation { get; set; }
         public Player Scientist { get; set; }
@@ -75,7 +78,6 @@ namespace AutoEvent.Games.Versus
 
         protected override void OnStart()
         {
-            Server.FriendlyFire = false;
             Scientist = null;
             ClassD = null;
             
@@ -204,11 +206,6 @@ namespace AutoEvent.Games.Versus
                 Extensions.Broadcast(Translation.VersusScientistWin.Replace("{name}", Name), 10);
             }
         }
-
-        protected override void OnCleanup()
-        {
-            Server.FriendlyFire = AutoEvent.IsFriendlyFireEnabledByDefault;
-        }
-    
+        
     }
 }

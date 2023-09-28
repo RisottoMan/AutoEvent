@@ -51,12 +51,7 @@ namespace AutoEvent.Games.Survival
 
                 if (ev.Attacker.IsHuman && ev.Target.IsSCP && ev.Target != _plugin.FirstZombie)
                 {
-                    foreach (Effect effect in _plugin.Config.GunEffect.Effects)
-                    {
-                        ev.Target.GiveEffect(effect);
-                    }
-
-                    ev.Amount = _plugin.Config.GunEffect.Damage;
+                    _plugin.Config.WeaponEffect.ApplyGunEffect(ref ev);
                 }
 
                 if (ev.Target == _plugin.FirstZombie)

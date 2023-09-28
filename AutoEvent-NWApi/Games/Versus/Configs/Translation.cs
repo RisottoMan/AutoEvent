@@ -1,7 +1,14 @@
-﻿namespace AutoEvent.Games.Infection
+﻿using Exiled.API.Interfaces;
+
+namespace AutoEvent.Games.Infection
 {
+#if EXILED
+    public class VersusTranslate : ITranslation 
+#else
     public class VersusTranslate
+#endif
     {
+        public string VersusCommandName { get; set; } = "versus";
         public string VersusName { get; set; } = "Fight Club";
         public string VersusDescription { get; set; } = "Duel of players on the 35hp map from cs 1.6";
         public string VersusPlayersNull { get; set; } = "<color=#D71868><b><i>{name}</i></b></color>\nGo inside the arena to fight each other!\n<color=red>{remain}</color> seconds left";

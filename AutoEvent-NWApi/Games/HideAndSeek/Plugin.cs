@@ -23,7 +23,7 @@ namespace AutoEvent.Games.HideAndSeek
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.HideTranslate.HideName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.HideTranslate.HideDescription;
         public override string Author { get; set; } = "KoT0XleB";
-        public override string CommandName { get; set; } = "hns";
+        public override string CommandName { get; set; } = AutoEvent.Singleton.Translation.HideTranslate.HideCommandName;
 
         [EventConfig]
         public HideAndSeekConfig Config { get; set; }
@@ -83,7 +83,7 @@ namespace AutoEvent.Games.HideAndSeek
         {
             for (float _time = 15; _time > 0; _time--)
             {
-                Extensions.Broadcast(Translation.HideBroadcast.Replace("%time%", $"{_time}"), 1);
+                Extensions.Broadcast(Translation.HideBroadcast.Replace("{time}", $"{_time}"), 1);
 
                 yield return Timing.WaitForSeconds(1f);
                 EventTime += TimeSpan.FromSeconds(1f);
@@ -101,7 +101,7 @@ namespace AutoEvent.Games.HideAndSeek
             // Wait for 15 seconds before choosing next batch.
             for (float _time = 15; _time > 0; _time--)
             {
-                Extensions.Broadcast(Translation.HideBroadcast.Replace("%time%", $"{_time}"), 1);
+                Extensions.Broadcast(Translation.HideBroadcast.Replace("{time}", $"{_time}"), 1);
 
                 yield return Timing.WaitForSeconds(1f);
                 EventTime += TimeSpan.FromSeconds(1f);
@@ -112,7 +112,7 @@ namespace AutoEvent.Games.HideAndSeek
         {
             for (int time = 15; time > 0; time--)
             {
-                Extensions.Broadcast(Translation.HideCycle.Replace("%time%", $"{time}"), 1);
+                Extensions.Broadcast(Translation.HideCycle.Replace("{time}", $"{time}"), 1);
 
                 yield return Timing.WaitForSeconds(1f);
                 EventTime += TimeSpan.FromSeconds(1f);
@@ -173,21 +173,16 @@ namespace AutoEvent.Games.HideAndSeek
              if (Player.GetPlayers().Count(r => r.IsAlive) >= 1)
             {
                 var text = translation.HideOnePlayer;
-                text = text.Replace("%winner%", Player.GetPlayers().First(r => r.IsAlive).Nickname);
-                text = text.Replace("%time%", $"{EventTime.Minutes:00}:{EventTime.Seconds:00}");
+                text = text.Replace("{winner}", Player.GetPlayers().First(r => r.IsAlive).Nickname);
+                text = text.Replace("{time}", $"{EventTime.Minutes:00}:{EventTime.Seconds:00}");
 
                 Extensions.Broadcast(text, 10);
             }
             else
             {
-                Extensions.Broadcast(translation.HideAllDie.Replace("%time%", $"{EventTime.Minutes:00}:{EventTime.Seconds:00}"), 10);
+                Extensions.Broadcast(translation.HideAllDie.Replace("{time}", $"{EventTime.Minutes:00}:{EventTime.Seconds:00}"), 10);
             }
 
-        }
-
-        protected override void OnCleanup()
-        {
-            Server.FriendlyFire = AutoEvent.IsFriendlyFireEnabledByDefault;
         }
     }
 }

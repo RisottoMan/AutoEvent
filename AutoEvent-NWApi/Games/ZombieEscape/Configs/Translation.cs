@@ -1,7 +1,14 @@
-﻿namespace AutoEvent.Games.Infection
+﻿using Exiled.API.Interfaces;
+
+namespace AutoEvent.Games.Infection
 {
-    public class ZombieEscapeTranslate
+#if EXILED
+    public class ZombieEscapeTranslate : ITranslation 
+#else
+    public class ZombieEscapeTranslate 
+#endif
     {
+        public string ZombieEscapeCommandName { get; set; } = "zombie3";
         public string ZombieEscapeName { get; set; } = "Zombie Escape";
         public string ZombieEscapeDescription { get; set; } = "Уou need to run away from zombies and escape by helicopter.";
         public string ZombieEscapeBeforeStart { get; set; } = "<color=#D71868><b><i>Run Forward</i></b></color>\nInfection starts in: %time%";
