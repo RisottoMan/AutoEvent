@@ -70,6 +70,7 @@ namespace AutoEvent
             // Call Costura first just to ensure dependencies are loaded.
             // Also make sure there isn't anything that needs a dependency in this method.
             CosturaUtility.Initialize();
+            
 #if !EXILED
             // Root plugin path
             AutoEvent.BaseConfigPath = Path.Combine(Paths.GlobalPlugins.Plugins, "AutoEvent");

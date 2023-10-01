@@ -18,7 +18,7 @@ namespace AutoEvent.Patches
 
             newInstructions.InsertRange(0, new List<CodeInstruction>()
             {
-                new (OpCodes.Ldsfld, AccessTools.Field(typeof(Extensions), nameof(Extensions.Dummy))),
+                new (OpCodes.Ldsfld, AccessTools.Field(typeof(Extensions), nameof(Extensions.AudioBot))),
                 new (OpCodes.Ldarg_0),
                 new (OpCodes.Ldfld, AccessTools.Field(typeof(CharacterClassManager), nameof(CharacterClassManager._hub))),
                 new (OpCodes.Callvirt, AccessTools.Method(typeof(List<ReferenceHub>), nameof(List<ReferenceHub>.Contains))),
