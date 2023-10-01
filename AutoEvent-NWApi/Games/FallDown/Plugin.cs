@@ -29,7 +29,7 @@ namespace AutoEvent.Games.FallDown
         protected override float FrameDelayInSeconds { get; set; } = 0.9f;
         protected override float PostRoundDelay { get; set; } = 10f;
         private EventHandler EventHandler { get; set; }
-        private FallTranslate Translation { get; set; }
+        private FallTranslate Translation { get; set; } = AutoEvent.Singleton.Translation.FallTranslate;
         private int _platformId { get; set; }
         private List<GameObject> _platforms;
         private GameObject _lava;
@@ -37,7 +37,6 @@ namespace AutoEvent.Games.FallDown
 
         protected override void RegisterEvents()
         {
-            Translation = new FallTranslate();
             EventHandler = new EventHandler();
             EventManager.RegisterEvents(EventHandler);
             Servers.TeamRespawn += EventHandler.OnTeamRespawn;

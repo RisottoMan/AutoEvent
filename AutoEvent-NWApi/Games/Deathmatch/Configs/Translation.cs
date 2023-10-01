@@ -3,7 +3,7 @@
 namespace AutoEvent.Games.Infection
 {
 #if EXILED
-    public class DeathmatchTranslate  : DeITranslation 
+    public class DeathmatchTranslate  : ITranslation 
 #else
     public class DeathmatchTranslate 
 #endif

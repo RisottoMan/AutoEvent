@@ -33,7 +33,7 @@ namespace AutoEvent.Games.GunGame
             { SoundName = "ClassicMusic.ogg", Volume = 3, Loop = true };
         protected override float PostRoundDelay { get; set; } = 10f;
         private EventHandler EventHandler { get; set; }
-        private GunGameTranslate Translation { get; set; }
+        private GunGameTranslate Translation { get; set; } = AutoEvent.Singleton.Translation.GunGameTranslate;
         internal List<Vector3> SpawnPoints { get; private set; }
         internal Dictionary<Player, Stats> PlayerStats { get; set; }
         private Player _winner;
@@ -41,7 +41,6 @@ namespace AutoEvent.Games.GunGame
         protected override void RegisterEvents()
         {
             PlayerStats = new Dictionary<Player, Stats>();
-            Translation = new GunGameTranslate();
 
             EventHandler = new EventHandler(this);
 

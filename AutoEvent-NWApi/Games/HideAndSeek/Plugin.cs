@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using AutoEvent.API;
+using AutoEvent.API.Enums;
 using UnityEngine;
 using AutoEvent.Events.Handlers;
 using AutoEvent.Games.Infection;
@@ -33,11 +34,10 @@ namespace AutoEvent.Games.HideAndSeek
             { SoundName = "HideAndSeek.ogg", Volume = 5, Loop = true };
         protected override float PostRoundDelay { get; set; } = 10f;
         private EventHandler EventHandler { get; set; }
-        private HideTranslate Translation { get; set; }
+        private HideTranslate Translation { get; set; } = AutoEvent.Singleton.Translation.HideTranslate;
 
         protected override void RegisterEvents()
         {
-            Translation = new HideTranslate();
             EventHandler = new EventHandler(this);
 
             EventManager.RegisterEvents(EventHandler);
@@ -98,8 +98,12 @@ namespace AutoEvent.Games.HideAndSeek
 
         private IEnumerator<float> PlayerBreak()
         {
+            if (Config.BreakDuration < 1)
+            {
+                yield break;
+            }
             // Wait for 15 seconds before choosing next batch.
-            for (float _time = 15; _time > 0; _time--)
+            for (float _time = Config.BreakDuration; _time > 0; _time--)
             {
                 Extensions.Broadcast(Translation.HideBroadcast.Replace("{time}", $"{_time}"), 1);
 
@@ -110,7 +114,11 @@ namespace AutoEvent.Games.HideAndSeek
 
         private IEnumerator<float> TagPeriod()
         {
-            for (int time = 15; time > 0; time--)
+            if (Config.TagDuration < 1)
+            {
+                yield break;
+            }
+            for (int time = Config.TagDuration; time > 0; time--)
             {
                 Extensions.Broadcast(Translation.HideCycle.Replace("{time}", $"{time}"), 1);
 
@@ -131,6 +139,14 @@ namespace AutoEvent.Games.HideAndSeek
                 if(item.ItemTypeId == ItemType.GrenadeHE)
                     item.ExplodeOnCollision(true);
                 Timing.CallDelayed(0.1f, () => { ply.CurrentItem = item; });
+            }
+
+            if (Player.GetPlayers().Count(ply => ply.HasLoadout(Config.PlayerLoadouts)) <= Config.PlayersRequiredForBreachScannerEffect)
+            {
+                foreach(Player ply in Player.GetPlayers().Where(ply => ply.HasLoadout(Config.PlayerLoadouts)))
+                {
+                    ply.GiveEffect(StatusEffect.Scanned, 255, 0f, false);
+                }
             }
         }
         protected override IEnumerator<float> RunGameCoroutine()

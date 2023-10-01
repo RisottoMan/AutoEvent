@@ -29,7 +29,7 @@ namespace AutoEvent.Games.Line
             { SoundName = "LineLite.ogg", Volume = 10, Loop = true };
         protected override float PostRoundDelay { get; set; } = 10f;
         private EventHandler EventHandler { get; set; }
-        private LineTranslate Translation { get; set; }
+        private LineTranslate Translation { get; set; } = AutoEvent.Singleton.Translation.LineTranslate;
         private readonly int _hardCountsLimit = 8;
         private Dictionary<int, SchematicObject> _hardGameMap;
         private TimeSpan _timeRemaining;
@@ -38,7 +38,6 @@ namespace AutoEvent.Games.Line
 
         protected override void RegisterEvents()
         {
-            Translation = new LineTranslate();
             EventHandler = new EventHandler();
             EventManager.RegisterEvents(EventHandler);
             Servers.TeamRespawn += EventHandler.OnTeamRespawn;

@@ -29,7 +29,7 @@ namespace AutoEvent.Games.Survival
             { SoundName = "DeathParty.ogg", Volume = 5, Loop = true };
         protected override float PostRoundDelay { get; set; } = 10f;
         private EventHandler EventHandler { get; set; }
-        private SurvivalTranslate Translation { get; set; }
+        private SurvivalTranslate Translation { get; set; } = AutoEvent.Singleton.Translation.SurvivalTranslate;
         internal Player FirstZombie { get; private set; }
         private GameObject _teleport;
         private GameObject _teleport1;
@@ -37,7 +37,6 @@ namespace AutoEvent.Games.Survival
 
         protected override void RegisterEvents()
         {
-            Translation = new SurvivalTranslate();
 
             EventHandler = new EventHandler(this);
             EventManager.RegisterEvents(EventHandler);

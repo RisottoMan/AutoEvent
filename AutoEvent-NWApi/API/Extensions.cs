@@ -404,8 +404,8 @@ namespace AutoEvent
         }
         public static void GiveEffect(this Player ply, Effect effect) => GiveEffect(ply, effect.EffectType, effect.Intensity,
             effect.Duration, effect.AddDuration);
-        public static void GiveEffect(this Player ply, StatusEffect effect, byte intensity, float duration = 0f, bool addIntensity = false) =>             
-            ply.EffectsManager.ChangeState(effect.ToString(), intensity, duration, addIntensity);
+        public static void GiveEffect(this Player ply, StatusEffect effect, byte intensity, float duration = 0f, bool addDuration = false) =>             
+            ply.EffectsManager.ChangeState(effect.ToString(), intensity, duration, addDuration);
         public static Type GetStatusEffectBaseType(this StatusEffect effect)
         {
             // I should have done this via reflection but oh well... 

@@ -27,13 +27,12 @@ namespace AutoEvent.Games.Infection
             { SoundName = "Zombie.ogg", Volume = 7, Loop = true };
         protected override float PostRoundDelay { get; set; } = 10f;
         private EventHandler EventHandler { get; set; }
-        private InfectTranslate Translation { get; set; }
+        private InfectTranslate Translation { get; set; } = AutoEvent.Singleton.Translation.InfectTranslate;
         private InfectionStage _stage;
         private int _overtime = 30;
 
         protected override void RegisterEvents()
         {
-            Translation = new InfectTranslate();
             EventHandler = new EventHandler(this);
             EventManager.RegisterEvents(EventHandler);
 

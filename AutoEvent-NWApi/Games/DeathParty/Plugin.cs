@@ -31,7 +31,7 @@ namespace AutoEvent.Games.DeathParty
         public DeathPartyConfig Config { get; set; }
         protected override float PostRoundDelay { get; set; } = 5f;
         private EventHandler EventHandler { get; set; }
-        private DeathTranslate Translation { get; set; }
+        private DeathTranslate Translation { get; set; } = AutoEvent.Singleton.Translation.DeathTranslate;
         private bool RespawnWithGrenades => Config.RespawnPlayersWithGrenades;
         public int Stage { get; private set; }
         //private int _maxStage;

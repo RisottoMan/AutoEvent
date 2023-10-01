@@ -21,6 +21,7 @@ Here are a list of common variables:
 
 | Name    | Description                                                                                                                                | Example     |
 |---------|--------------------------------------------------------------------------------------------------------------------------------------------|-------------|
+| Name    | The name of the plugin. (Set by [Event]Name option.)                                                                                       | `{name}`    |
 | Time    | The remaining time left / elapsed time. If there is a pre-round text, this will be the time until the round starts. (10 -> 9 -> 8, etc...) | `{time}`    |
 | Players | The remaining players alive.                                                                                                               | `{players}` |
 
@@ -255,7 +256,8 @@ Note - `{mtftext}` and `{chaostext}` has a status bar with squares to demonstrat
 | Translations    | Description                                                       | Variables  |
 |-----------------|-------------------------------------------------------------------|------------|
 | LavaBeforeStart | Pre-Round information text.                                       | `{time}`   |
-| LavaCycle       | Displayed when the game is finished and one person is left alive. | `{winner}` |
+| LavaCycle       | Displayed while the round is running.                             | `{count}`  |
+| LavaWin         | Displayed when the game is finished and one person is left alive. | `{winner}` |
 | LavaAllDead     | Displayed when the game is finished and everyone died.            |            |
 
 | Variables  | Description                                |
@@ -288,8 +290,8 @@ Note - `{mtftext}` and `{chaostext}` has a status bar with squares to demonstrat
 | PuzzleStage            | Displayed while the game is running.                              | `{stageNum}`, `{stageFinal}`, `{plyCount}` |
 | PuzzleDied             | Displayed to a player when they die.                              |                                            |
 | PuzzleAllDied          | Displayed when the game is finished and nobody survives.          |                                            |
-| PuzzleSeveralSurvivors | Displayed when the game is finished and several players survived. | `{winner}`                                 |
-| PuzzleWinner           | Displayed when the game is finished and only one player survived. |                                            |
+| PuzzleSeveralSurvivors | Displayed when the game is finished and several players survived. |                                            |
+| PuzzleWinner           | Displayed when the game is finished and only one player survived. | `{winner}`                                 |
 
 | Variables | Description                              |
 |-----------|------------------------------------------|

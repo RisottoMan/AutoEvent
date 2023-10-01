@@ -44,6 +44,8 @@ namespace AutoEvent.Games.HideAndSeek
                     ev.IsAllowed = false;
                     return;
                 }
+
+                bool isLastPlayers = Player.GetPlayers().Count(ply => ply.HasLoadout(_plugin.Config.PlayerLoadouts)) <= _plugin.Config.PlayersRequiredForBreachScannerEffect;
                 /*switch (ev.DamageTypze)
                 {
                     case (byte)DamageType.GrenadeExplosion:
@@ -86,6 +88,9 @@ namespace AutoEvent.Games.HideAndSeek
                             break;
                         }
                     }
+                    if (isLastPlayers)
+                        ev.Attacker.GiveEffect(StatusEffect.Scanned, 255, 0f, false);
+                    
                     
                     ev.Target.GiveLoadout(_plugin.Config.TaggerLoadouts, LoadoutFlags.IgnoreItems | LoadoutFlags.IgnoreWeapons | LoadoutFlags.IgnoreGodMode);
                     ev.Target.ClearInventory();
@@ -94,6 +99,8 @@ namespace AutoEvent.Games.HideAndSeek
                         weapon.ExplodeOnCollision(true);
                     if(weapon.ItemTypeId is ItemType.SCP018)
                         weapon.MakeRock(new RockSettings(false, 1f, false, false, true));
+                    if(isLastPlayers)
+                        ev.Target.GiveEffect(StatusEffect.Scanned, 0, 1f, false);
                 
                     Timing.CallDelayed(0.1f, () =>
                     {

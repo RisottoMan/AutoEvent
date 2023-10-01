@@ -33,7 +33,7 @@ namespace AutoEvent.Games.ZombieEscape
             { SoundName = "Survival.ogg", Volume = 10, Loop = false };
         protected override float PostRoundDelay { get; set; } = 10f;
         private EventHandler EventHandler { get; set; }
-        private ZombieEscapeTranslate Translation { get; set; }
+        private ZombieEscapeTranslate Translation { get; set; } = AutoEvent.Singleton.Translation.ZombieEscapeTranslate;
         private SchematicObject _boat;
         private SchematicObject _heli;
         private GameObject _button;
@@ -45,7 +45,6 @@ namespace AutoEvent.Games.ZombieEscape
 
         protected override void RegisterEvents()
         {
-            Translation = new ZombieEscapeTranslate();
 
             EventHandler = new EventHandler(this);
             EventManager.RegisterEvents(EventHandler);

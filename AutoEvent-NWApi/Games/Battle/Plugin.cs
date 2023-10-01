@@ -35,7 +35,7 @@ namespace AutoEvent.Games.Battle
         // Define the fields/properties here. Make sure to set them, in OnStart() or OnRegisteringEvents()
         // Define the properties that may be used by this event, or by its handler class.
         private EventHandler EventHandler { get; set; }
-        private BattleTranslate Translation { get; set; }
+        private BattleTranslate Translation { get; set; } = AutoEvent.Singleton.Translation.BattleTranslate;
         
         [EventConfig]
         public BattleConfig Config { get; set; }

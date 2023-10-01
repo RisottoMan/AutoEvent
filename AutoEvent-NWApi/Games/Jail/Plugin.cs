@@ -31,7 +31,7 @@ namespace AutoEvent.Games.Jail
         protected override float FrameDelayInSeconds { get; set; } = 0.5f;
         protected override float PostRoundDelay { get; set; } = 10f;
         private EventHandler EventHandler { get; set; }
-        private JailTranslate Translation { get; set; }
+        private JailTranslate Translation { get; set; } = AutoEvent.Singleton.Translation.JailTranslate;
         internal GameObject Button { get; private set; }
         internal GameObject PrisonerDoors { get; private set; }
         internal Locker WeaponLocker { get; private set; }
@@ -47,7 +47,6 @@ namespace AutoEvent.Games.Jail
 
         protected override void RegisterEvents()
         {
-            Translation = new JailTranslate();
             EventHandler = new EventHandler(this);
             JailLockdownSystem = new JailLockdownSystem(this);
             EventManager.RegisterEvents(EventHandler);

@@ -24,7 +24,7 @@ class Patch
         if (__instance is Scp018Projectile && Extensions.RockList.ContainsKey(__instance.Info.Serial))
         {
             RockSettings settings = Extensions.RockList[__instance.Info.Serial];
-            __instance.gameObject.AddComponent<Rock>().Init(__instance.gameObject, __instance.PreviousOwner, settings.FriendlyFire, settings.ThrowDamage, settings.ExplodeOnCollision);
+            __instance.gameObject.AddComponent<Rock>().Init(__instance.gameObject, __instance.PreviousOwner, settings.FriendlyFire, settings.ThrowDamage, settings.ExplodeOnCollision, settings.LeaveBehindRock,settings.GiveOwnerNewRockOnHit, settings.LayerMask);
             return;
         }
         if (__instance is Scp018Projectile && Extensions.ExplodeOnCollisionList.ContainsKey(__instance.Info.Serial))

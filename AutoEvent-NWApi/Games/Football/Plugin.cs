@@ -30,7 +30,7 @@ namespace AutoEvent.Games.Football
         protected override float PostRoundDelay { get; set; } = 10f;
         protected override float FrameDelayInSeconds { get; set; } = 0.3f;
         private EventHandler EventHandler { get; set; }
-        private FootballTranslate Translation { get; set; }
+        private FootballTranslate Translation { get; set; } = AutoEvent.Singleton.Translation.FootballTranslate;
         private TimeSpan _remainingTime;
         private int _bluePoints;
         private int _redPoints;
@@ -38,7 +38,6 @@ namespace AutoEvent.Games.Football
         private List<GameObject> _triggers;
         protected override void RegisterEvents()
         {
-            Translation = new FootballTranslate();
             EventHandler = new EventHandler();
             EventManager.RegisterEvents(EventHandler);
             Servers.TeamRespawn += EventHandler.OnTeamRespawn;

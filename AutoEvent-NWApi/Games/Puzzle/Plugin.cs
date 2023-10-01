@@ -31,7 +31,7 @@ namespace AutoEvent.Games.Puzzle
             { SoundName = "Puzzle.ogg", Volume = 15, Loop = true };
         protected override float PostRoundDelay { get; set; } = 10f;
         private EventHandler EventHandler { get; set; }
-        private PuzzleTranslate Translation { get; set; }
+        private PuzzleTranslate Translation { get; set; } = AutoEvent.Singleton.Translation.PuzzleTranslate;
         private readonly string _broadcastName = "<color=#F59F00>P</color><color=#F68523>u</color><color=#F76B46>z</color><color=#F85169>z</color><color=#F9378C>l</color><color=#FA1DAF>e</color>";
         /// <summary>
         /// A local list of platforms that changes round to round.
@@ -50,7 +50,6 @@ namespace AutoEvent.Games.Puzzle
 
         protected override void RegisterEvents()
         {
-            Translation = new PuzzleTranslate();
             EventHandler = new EventHandler();
             EventManager.RegisterEvents(EventHandler);
             Servers.TeamRespawn += EventHandler.OnTeamRespawn;

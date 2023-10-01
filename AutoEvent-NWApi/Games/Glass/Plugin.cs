@@ -31,7 +31,7 @@ namespace AutoEvent.Games.Glass
             { SoundName = "CrabGame.ogg", Volume = 15, Loop = true };
         protected override float PostRoundDelay { get; set; } = 10f;
         private EventHandler EventHandler { get; set; }
-        private GlassTranslate Translation { get; set; }
+        private GlassTranslate Translation { get; set; } = AutoEvent.Singleton.Translation.GlassTranslate;
         private List<GameObject> _platforms;
         private GameObject _lava;
         private GameObject _finish;
@@ -39,7 +39,6 @@ namespace AutoEvent.Games.Glass
 
         protected override void RegisterEvents()
         {
-            Translation = new GlassTranslate();
             EventHandler = new EventHandler();
             EventManager.RegisterEvents(EventHandler);
             Servers.TeamRespawn += EventHandler.OnTeamRespawn;

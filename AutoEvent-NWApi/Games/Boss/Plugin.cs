@@ -27,10 +27,10 @@ namespace AutoEvent.Games.Boss
         public SoundInfo SoundInfo { get; set; } = new SoundInfo() 
             { SoundName = "Boss.ogg", Loop = false, Volume = 7, StartAutomatically = false };
 
-        [EventConfig]
-        public BossConfig Config { get; set; }
+        [EventConfig] 
+        public BossConfig Config { get; set; } 
         private EventHandler EventHandler { get; set; }
-        private BossTranslate Translation { get; set; }
+        private BossTranslate Translation { get; set; } = AutoEvent.Singleton.Translation.BossTranslate;
         private List<Player> _boss;
         private TimeSpan _elapsedDuration { get; set; }
 

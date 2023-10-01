@@ -11,6 +11,7 @@
 // -----------------------------------------
 
 using System;
+using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using AutoEvent.API;
@@ -44,10 +45,21 @@ public class Rock : ICommand, IUsageProvider, IPermission
                 response = $"Player \"{arguments.At(0)}\" not found. Please specify a valid player.";
                 return false;
             }
-            
+
+            bool giveBackToOwner = arguments.Count >= 2 && arguments.At(1).ToLower() == "true";
+            bool dropRock = arguments.Count >= 3 && arguments.At(2).ToLower() == "true";
+            bool explodeRock = arguments.Count >= 4 && arguments.At(3).ToLower() == "true";
+            int layerMask = -1;
+            if (arguments.Count >= 5)
+                int.TryParse(arguments.At(4), out layerMask);
+
             var item = ply.AddItem(ItemType.SCP018);
-            item.MakeRock(new RockSettings());
+            item.MakeRock(new RockSettings(true, 10f, explodeRock,dropRock, giveBackToOwner){ LayerMask = layerMask});
             DebugLogger.LogDebug($"Item Serial: {item.ItemSerial}");
+            foreach (var x in ply.GameObject.GetComponents(typeof(Component)))
+            {
+                DebugLogger.LogDebug($"{x.GetType().Name} - {x.name}");
+            }
             response = $"Rock has been given.";
             return true;
         }

@@ -28,14 +28,12 @@ namespace AutoEvent.Games.FinishWay
             { SoundName = "FinishWay.ogg", Volume = 8, Loop = false, StartAutomatically = false };
         protected override float PostRoundDelay { get; set; } = 10f;
         private EventHandler EventHandler { get; set; }
-        private FinishWayTranslate Translation { get; set; }
+        private FinishWayTranslate Translation { get; set; } = AutoEvent.Singleton.Translation.FinishWayTranslate;
         private TimeSpan _remainingTime;
         private GameObject _point;
 
         protected override void RegisterEvents()
-        {
-            Translation = new FinishWayTranslate();
-            EventHandler = new EventHandler();
+        { EventHandler = new EventHandler();
             EventManager.RegisterEvents(EventHandler);
             Servers.TeamRespawn += EventHandler.OnTeamRespawn;
             Servers.SpawnRagdoll += EventHandler.OnSpawnRagdoll;

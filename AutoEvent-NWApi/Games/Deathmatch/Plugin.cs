@@ -30,14 +30,13 @@ namespace AutoEvent.Games.Deathmatch
             { SoundName = "ClassicMusic.ogg", Volume = 3, Loop = true };
         protected override float PostRoundDelay { get; set; } = 10f;
         private EventHandler EventHandler { get; set; }
-        private DeathmatchTranslate Translation { get; set; }
+        private DeathmatchTranslate Translation { get; set; } = AutoEvent.Singleton.Translation.DeathmatchTranslate;
         public int MtfKills { get; set; }
         public int ChaosKills { get; set; }
         private int _needKills;
 
         protected override void RegisterEvents()
         {
-            Translation = new DeathmatchTranslate();
             EventHandler = new EventHandler(this);
 
             EventManager.RegisterEvents(EventHandler);

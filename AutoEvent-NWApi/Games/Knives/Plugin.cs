@@ -29,11 +29,10 @@ namespace AutoEvent.Games.Knives
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
             { SoundName = "Knife.ogg", Volume = 10, Loop = true };
         private EventHandler EventHandler { get; set; }
-        private KnivesTranslate Translation { get; set; }
+        private KnivesTranslate Translation { get; set; } = AutoEvent.Singleton.Translation.KnivesTranslate;
 
         protected override void RegisterEvents()
         {
-            Translation = new KnivesTranslate();
 
             EventHandler = new EventHandler();
             EventManager.RegisterEvents(EventHandler);

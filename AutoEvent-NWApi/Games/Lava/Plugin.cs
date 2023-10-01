@@ -35,12 +35,11 @@ namespace AutoEvent.Games.Lava
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
             { SoundName = "Lava.ogg", Volume = 7, Loop = false };
         private EventHandler EventHandler { get; set; }
-        private LavaTranslate Translation { get; set; }
+        private LavaTranslate Translation { get; set; } = AutoEvent.Singleton.Translation.LavaTranslate;
         private GameObject _lava;
 
         protected override void RegisterEvents()
         {
-            Translation = new LavaTranslate();
             
             EventHandler = new EventHandler(this);
             EventManager.RegisterEvents(EventHandler);

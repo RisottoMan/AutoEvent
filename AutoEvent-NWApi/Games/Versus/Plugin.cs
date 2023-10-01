@@ -31,7 +31,7 @@ namespace AutoEvent.Games.Versus
 
         protected override FriendlyFireSettings ForceEnableFriendlyFire { get; set; } = FriendlyFireSettings.Disable;
         private EventHandler EventHandler { get; set; }
-        private VersusTranslate Translation { get; set; }
+        private VersusTranslate Translation { get; set; } = AutoEvent.Singleton.Translation.VersusTranslate;
         public Player Scientist { get; set; }
         public Player ClassD { get; set; }
         private List<GameObject> _triggers;
@@ -51,7 +51,6 @@ namespace AutoEvent.Games.Versus
 
         protected override void RegisterEvents()
         {
-            Translation = new VersusTranslate();
 
             EventHandler = new EventHandler(this);
             EventManager.RegisterEvents(EventHandler);
