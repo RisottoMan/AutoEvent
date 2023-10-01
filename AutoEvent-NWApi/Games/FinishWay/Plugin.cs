@@ -19,7 +19,8 @@ namespace AutoEvent.Games.FinishWay
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.FinishWayTranslate.FinishWayName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.FinishWayTranslate.FinishWayDescription;
         public override string Author { get; set; } = "KoT0XleB";
-        public override string CommandName { get; set; } = "race";
+        public override string CommandName { get; set; } = AutoEvent.Singleton.Translation.FinishWayTranslate.FinishWayCommandName;
+        [EventConfig]
         public FinishWayConfig Config { get; set; }
         public MapInfo MapInfo { get; set; } = new MapInfo()
             {MapName = "FinishWay", Position = new Vector3(115.5f, 1030f, -43.5f), };
@@ -27,14 +28,12 @@ namespace AutoEvent.Games.FinishWay
             { SoundName = "FinishWay.ogg", Volume = 8, Loop = false, StartAutomatically = false };
         protected override float PostRoundDelay { get; set; } = 10f;
         private EventHandler EventHandler { get; set; }
-        private FinishWayTranslate Translation { get; set; }
+        private FinishWayTranslate Translation { get; set; } = AutoEvent.Singleton.Translation.FinishWayTranslate;
         private TimeSpan _remainingTime;
         private GameObject _point;
 
         protected override void RegisterEvents()
-        {
-            Translation = new FinishWayTranslate();
-            EventHandler = new EventHandler();
+        { EventHandler = new EventHandler();
             EventManager.RegisterEvents(EventHandler);
             Servers.TeamRespawn += EventHandler.OnTeamRespawn;
             Servers.SpawnRagdoll += EventHandler.OnSpawnRagdoll;
@@ -59,10 +58,10 @@ namespace AutoEvent.Games.FinishWay
 
         protected override void OnStart()
         {
-            _remainingTime = new TimeSpan(0, 0, 70);
             foreach (Player player in Player.GetPlayers())
             {
-                Extensions.SetRole(player, RoleTypeId.ClassD, RoleSpawnFlags.None);
+                //Extensions.SetRole(player, RoleTypeId.ClassD, RoleSpawnFlags.None);
+                player.GiveLoadout(Config.Loadouts);
                 player.Position = RandomPosition.GetSpawnPosition(MapInfo.Map);
             }
 
@@ -79,6 +78,7 @@ namespace AutoEvent.Games.FinishWay
         }
         protected override void CountdownFinished()
         {
+            _remainingTime = new TimeSpan(0, 0, Config.EventDurationInSeconds);
             StartAudio();
             _point = new GameObject();
             foreach(var gameObject in MapInfo.Map.AttachedBlocks)
@@ -96,15 +96,16 @@ namespace AutoEvent.Games.FinishWay
         {
             // At least one player is alive &&
             // Elapsed time is shorter than a minute (+ broadcast duration)
-            return !(Player.GetPlayers().Count(r => r.IsAlive) > 0 && EventTime.TotalSeconds < Config.EventDurationInSeconds + 10);
+            return !(Player.GetPlayers().Count(r => r.IsAlive) > 0 && EventTime.TotalSeconds < Config.EventDurationInSeconds );
         }
 
         protected override void ProcessFrame()
         {
+
             var count = Player.GetPlayers().Count(r => r.Role == RoleTypeId.ClassD);
             var time = $"{_remainingTime.Minutes:00}:{_remainingTime.Seconds:00}";
 
-            Extensions.Broadcast(Translation.FinishWayCycle.Replace("%name%", Name).Replace("%time%", time), 1);
+            Extensions.Broadcast(Translation.FinishWayCycle.Replace("{name}", Name).Replace("{time}", time), 1);
             _remainingTime -= TimeSpan.FromSeconds(FrameDelayInSeconds);
         }
 
@@ -120,11 +121,11 @@ namespace AutoEvent.Games.FinishWay
 
             if (Player.GetPlayers().Count(r => r.IsAlive) > 1)
             {
-                Extensions.Broadcast(Translation.FinishWaySeveralSurvivors.Replace("%count%", Player.GetPlayers().Count(r => r.IsAlive).ToString()), 10);
+                Extensions.Broadcast(Translation.FinishWaySeveralSurvivors.Replace("{count}", Player.GetPlayers().Count(r => r.IsAlive).ToString()), 10);
             }
             else if (Player.GetPlayers().Count(r => r.IsAlive) == 1)
             {
-                Extensions.Broadcast(Translation.FinishWayOneSurvived.Replace("%player%", Player.GetPlayers().First(r => r.IsAlive).Nickname), 10);
+                Extensions.Broadcast(Translation.FinishWayOneSurvived.Replace("{player}", Player.GetPlayers().First(r => r.IsAlive).Nickname), 10);
             }
             else
             {

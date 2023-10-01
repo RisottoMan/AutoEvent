@@ -31,7 +31,7 @@ namespace AutoEvent.Games.Infection
                 {
                     // ev.Target.SetRole(RoleTypeId.Scp0492);
                     ev.Target.GiveLoadout(_plugin.Config.ZombieLoadouts);
-                    ev.Attacker.ReceiveHitMarker();
+                    ev.Attacker.ReceiveHitMarker(1f);
                 }
             }
         }

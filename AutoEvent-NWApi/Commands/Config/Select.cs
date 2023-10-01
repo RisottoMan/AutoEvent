@@ -25,39 +25,23 @@ using Exiled.Permissions.Extensions;
 namespace AutoEvent.Commands.Config;
 
 
-public class Select : ICommand, IUsageProvider
+public class Select : ICommand, IUsageProvider, IPermission
 {
     public string Command => nameof(Select);
     public string[] Aliases => Array.Empty<string>();
     public string Description => "Selects a config preset to use for an event.";
     public string[] Usage => new[] { "[Event]", "[Preset / Default]" };
+    public string Permission { get; set; } = "ev.config.select";
 
     public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
     {
-
-#if EXILED
-        if (!sender.CheckPermission("ev.config.select"))
-        {
-            response = "You do not have permission to use this command";
-            return false;
-        }
-#else
-        var config = AutoEvent.Singleton.Config;
-        var player = Player.Get(sender);
-        if (sender is ServerConsoleSender || sender is CommandSender cmdSender && cmdSender.FullPermissions)
-        {
-            goto skipPermissionCheck;
-        }
-
-        if (!config.PermissionList.Contains(ServerStatic.PermissionsHandler._members[player.UserId]))
+        
+        if (!sender.CheckPermission(((IPermission)this).Permission, out bool IsConsoleCommandSender))
         {
             response = "<color=red>You do not have permission to use this command!</color>";
             return false;
         }
-#endif
-
-        skipPermissionCheck:
-
+        
         // Event Missing
         if (arguments.Count < 1)
         {
@@ -97,26 +81,41 @@ public class Select : ICommand, IUsageProvider
             return false;
         }
 
+        bool failed = false;
         foreach (PropertyInfo property in ev.GetType().GetProperties())
         {
             if (property.GetCustomAttribute<EventConfigAttribute>() is null)
                 continue;
+            if (property.GetCustomAttribute<EventConfigPresetAttribute>() is not null)
+                continue;
+            if (property.PropertyType != conf.GetType() && property.PropertyType.BaseType != conf.GetType())
+                continue;
+            DebugLogger.LogDebug($"[{conf.PresetName}->{property.Name}] Property: {property.PropertyType?.Name} PropBase: {property.PropertyType.BaseType?.Name}, Conf: {conf.GetType()?.Name}, ConfBase: {conf.GetType().BaseType?.Name}");
             try
             {
                 property.SetValue(ev, conf);
             }
             catch (Exception e)
             {
-                DebugLogger.LogDebug("Could not set value of property while changing presets. \n{e}");
+                failed = true;
+                DebugLogger.LogDebug($"Could not set value of property while changing presets. \n{e}");
             }
         }
-        
+
+        if (failed)
+        {
+            response = "Could not load config presets due to an error.";
+            return false;
+        }
         
         response = $"Successfully selected preset {conf.PresetName} for event \"{ev.Name}\".";
         return true; 
     BasicUsage:
-    response += $"Command Usage: \n" +
-                $"  <color=yellow>modify [event] [preset / default]</color>";
+    response += $"Command Usage: \n";
+    if(!IsConsoleCommandSender)
+        response += $"  <color=yellow>select [event] [preset / default]</color>";
+    else
+        response += $"  select [event] [preset / default]";
 
         return false;
     }

@@ -4,15 +4,15 @@
 // -----------------------------------------
 //    Solution:         AutoEvent
 //    Project:          AutoEvent
-//    FileName:         Reload.cs
+//    FileName:         IPermission.cs
 //    Author:           Redforce04#4091
-//    Revision Date:    09/19/2023 3:22 PM
-//    Created Date:     09/19/2023 3:22 PM
+//    Revision Date:    09/25/2023 1:54 PM
+//    Created Date:     09/25/2023 1:54 PM
 // -----------------------------------------
 
-namespace AutoEvent.Patches;
+namespace AutoEvent.Interfaces;
 
-public class Reload
+public interface IPermission
 {
-    
+    public string Permission { get; set; }
 }

@@ -23,53 +23,40 @@ using Exiled.Permissions.Extensions;
 namespace AutoEvent.Commands.Debug;
 
 
-public class Presets : ICommand
+public class Presets : ICommand, IPermission
 {
     public string Command => nameof(Presets);
     public string[] Aliases => Array.Empty<string>();
     public string Description => "Logs the available presets for an event.";
+    public string Permission { get; set; } = "ev.debug";
     public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
     {
 
-#if EXILED
-        if (!sender.CheckPermission("ev.debug"))
-        {
-            response = "You do not have permission to use this command";
-            return false;
-        }
-#else
-        var config = AutoEvent.Singleton.Config;
-        var player = Player.Get(sender);
-        if (sender is ServerConsoleSender || sender is CommandSender cmdSender && cmdSender.FullPermissions)
-        {
-            goto skipPermissionCheck;
-        }
-
-        if (!config.PermissionList.Contains(ServerStatic.PermissionsHandler._members[player.UserId]))
+        if (!sender.CheckPermission(((IPermission)this).Permission, out bool IsConsoleCommandSender))
         {
             response = "<color=red>You do not have permission to use this command!</color>";
             return false;
         }
-#endif
 
-        skipPermissionCheck:
-
-        if (arguments.Count <= 1)
+        if (arguments.Count < 1)
         {
             response = "You must specify an event first.";
             return false;
         }
 
-        var ev = Event.Events.FirstOrDefault(x => x.Name.ToLower() == arguments.At(1).ToLower());
+        var ev = Event.GetEvent(arguments.At(0));
         if (ev is null)
         {
-            response = $"Could not find Event \"{arguments.At(1)}\"";
+            response = $"Could not find Event \"{arguments.At(0)}\"";
             return false;
         }
         string x = $"{ev.ConfigPresets.Count} Presets Available: \n";
         foreach (var preset in ev.ConfigPresets)
         {
-            x += $"<color=yellow>[{preset.PresetName}]<color=white>, \n";
+            if(!IsConsoleCommandSender)
+                x += $"<color=yellow>[{((EventConfig)preset).PresetName}]<color=white>, \n";
+            else
+                x += $"[{((EventConfig)preset).PresetName}], \n";
         }
         response = x;
         return true;

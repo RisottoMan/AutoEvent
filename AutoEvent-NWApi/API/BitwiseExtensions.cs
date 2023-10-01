@@ -16,6 +16,38 @@ namespace AutoEvent.API;
 
 public static class BitwiseExtensions
 {
+    /*public static T AppendSeparateEnumValue<T>(this T value, Enum append) where T : Enum
+    {
+        Enum[] valuesToAppend = (Enum[])Enum.GetValues(append.GetType());
+        Enum[] currentValues = (Enum[])Enum.GetValues(value.GetType());
+        object result = value;
+        for (int i = 0; i < currentValues.Length && i < valuesToAppend.Length; i++)
+        {
+            if (!append.HasFlag(valuesToAppend[i]))
+            {
+                continue;
+            }
+
+            if (!Enum.IsDefined(((Enum)valuesToAppend[i]).GetType(), result))
+                continue;
+            if (((Enum)result).HasFlag(valuesToAppend[i]))
+            {
+                continue;
+            }
+
+            // ((Enum)result).SetFlag(valuesToAppend[i], true);
+        }
+    }*/
+
+    public static bool HasRequiredFlags(this Enum value, Enum requiredValues)
+    {
+        foreach (Enum flag in Enum.GetValues(requiredValues.GetType()))
+        {
+            if (requiredValues.HasFlag(flag) && !value.HasFlag(flag))
+                return false;
+        }
+        return true;
+    }
     public static T IncludeAll<T>(this Enum value)
     {
         Type type = value.GetType();

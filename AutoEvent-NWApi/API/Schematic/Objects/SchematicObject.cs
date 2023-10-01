@@ -109,7 +109,7 @@
                     return;
                 }
 
-                Base.SchematicName = name.Replace("CustomSchematic-", string.Empty);
+                Base.SchematicName = name.Replace("CustomAutoEventSchematic-", string.Empty);
             }
 
             OriginalPosition = RelativePosition;
@@ -172,7 +172,7 @@
                 {
                     if (Instantiate(ObjectHelper.LightBaseObject, parentTransform).TryGetComponent(out LightSourceToy lightSourceToy))
                     {
-                        gameObject = lightSourceToy.gameObject.AddComponent<LightSourceObject>().Init(block).gameObject;
+                        gameObject = lightSourceToy.gameObject.AddComponent<LightSourceObjects>().Init(block).gameObject;
 
                         if (TryGetAnimatorController(block.AnimatorName, out animatorController))
                             _animators.Add(lightSourceToy._light.gameObject, animatorController);
@@ -202,6 +202,7 @@
                     {
                         var itemType = ((ItemType)Enum.Parse(typeof(ItemType), block.Properties["ItemType"].ToString()));
                         pickup = ItemPickup.Create(itemType, new Vector3(0, 0, 0), Quaternion.identity);
+                        pickup.GameObject.AddComponent<PickupComponent>();
                     }
 
                     gameObject = pickup.GameObject;

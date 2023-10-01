@@ -5,13 +5,13 @@
     using YamlDotNet.Serialization;
 
     [Serializable]
-    public class LightSourceSerializable : SerializableObject
+    public class LightSourcesSerializable : SerializableObject
     {
-        public LightSourceSerializable()
+        public LightSourcesSerializable()
         {
         }
 
-        public LightSourceSerializable(string color, float intensity, float range, bool shadows)
+        public LightSourcesSerializable(string color, float intensity, float range, bool shadows)
         {
             Color = color;
             Intensity = intensity;
@@ -19,7 +19,7 @@
             Shadows = shadows;
         }
 
-        public LightSourceSerializable(SchematicBlockData block)
+        public LightSourcesSerializable(SchematicBlockData block)
         {
             Color = block.Properties["Color"].ToString();
             Intensity = float.Parse(block.Properties["Intensity"].ToString());

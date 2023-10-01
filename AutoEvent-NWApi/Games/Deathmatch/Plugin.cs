@@ -21,7 +21,7 @@ namespace AutoEvent.Games.Deathmatch
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.DeathmatchTranslate.DeathmatchName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.DeathmatchTranslate.DeathmatchDescription;
         public override string Author { get; set; } = "KoT0XleB";
-        public override string CommandName { get; set; } = "deathmatch";
+        public override string CommandName { get; set; } = AutoEvent.Singleton.Translation.DeathmatchTranslate.DeathmatchCommandName;
         [EventConfig]
         public DeathmatchConfig Config { get; set; }
         public MapInfo MapInfo { get; set; } = new MapInfo()
@@ -30,14 +30,13 @@ namespace AutoEvent.Games.Deathmatch
             { SoundName = "ClassicMusic.ogg", Volume = 3, Loop = true };
         protected override float PostRoundDelay { get; set; } = 10f;
         private EventHandler EventHandler { get; set; }
-        private DeathmatchTranslate Translation { get; set; }
+        private DeathmatchTranslate Translation { get; set; } = AutoEvent.Singleton.Translation.DeathmatchTranslate;
         public int MtfKills { get; set; }
         public int ChaosKills { get; set; }
         private int _needKills;
 
         protected override void RegisterEvents()
         {
-            Translation = new DeathmatchTranslate();
             EventHandler = new EventHandler(this);
 
             EventManager.RegisterEvents(EventHandler);
@@ -50,10 +49,23 @@ namespace AutoEvent.Games.Deathmatch
             Players.PlayerDying += EventHandler.OnPlayerDying;
             Players.HandCuff += EventHandler.OnHandCuff;
         }
+        protected override void UnregisterEvents()
+        {
+            EventManager.UnregisterEvents(EventHandler);
+            Servers.TeamRespawn -= EventHandler.OnTeamRespawn;
+            Servers.SpawnRagdoll -= EventHandler.OnSpawnRagdoll;
+            Servers.PlaceBullet -= EventHandler.OnPlaceBullet;
+            Servers.PlaceBlood -= EventHandler.OnPlaceBlood;
+            Players.DropItem -= EventHandler.OnDropItem;
+            Players.DropAmmo -= EventHandler.OnDropAmmo;
+            Players.PlayerDying -= EventHandler.OnPlayerDying;
+            Players.HandCuff -= EventHandler.OnHandCuff;
+
+            EventHandler = null;
+        }
 
         protected override void OnStart()
         {
-            Server.FriendlyFire = false;
             float scale = 1;
             switch (Player.GetPlayers().Count())
             {
@@ -67,7 +79,7 @@ namespace AutoEvent.Games.Deathmatch
             ChaosKills = 0;
 
 
-            _needKills = Config.KillsPerPerson * Player.Count;
+            _needKills = Config.KillsPerPerson * Player.GetPlayers().Count;
 
             var count = 0;
             foreach (Player player in Player.GetPlayers())
@@ -86,20 +98,7 @@ namespace AutoEvent.Games.Deathmatch
             }
         }
 
-        protected override void OnStop()
-        {
-            EventManager.UnregisterEvents(EventHandler);
-            Servers.TeamRespawn -= EventHandler.OnTeamRespawn;
-            Servers.SpawnRagdoll -= EventHandler.OnSpawnRagdoll;
-            Servers.PlaceBullet -= EventHandler.OnPlaceBullet;
-            Servers.PlaceBlood -= EventHandler.OnPlaceBlood;
-            Players.DropItem -= EventHandler.OnDropItem;
-            Players.DropAmmo -= EventHandler.OnDropAmmo;
-            Players.PlayerDying -= EventHandler.OnPlayerDying;
-            Players.HandCuff -= EventHandler.OnHandCuff;
-
-            EventHandler = null;
-        }
+        
 
         protected override IEnumerator<float> BroadcastStartCountdown()
         {
@@ -164,9 +163,5 @@ namespace AutoEvent.Games.Deathmatch
             }        
         }
 
-        protected override void OnCleanup()
-        {
-            Server.FriendlyFire = AutoEvent.IsFriendlyFireEnabledByDefault;
-        }
     }
 }

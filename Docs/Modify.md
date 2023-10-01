@@ -87,8 +87,6 @@ namespace AutoEvent.Events.Example
         // Define what you want to happen when the even is started / run.
         protected override void OnStart()
         {
-            Translation = new ExampleTranslate();
-
             int count = 0;
             foreach (Player player in Player.GetPlayers())
             {

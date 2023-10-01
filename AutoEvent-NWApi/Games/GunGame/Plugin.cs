@@ -7,9 +7,11 @@ using PluginAPI.Events;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using AutoEvent.API.Enums;
 using AutoEvent.Games.Infection;
 using AutoEvent.Interfaces;
 using UnityEngine;
+using Utils.NonAllocLINQ;
 using Event = AutoEvent.Interfaces.Event;
 
 namespace AutoEvent.Games.GunGame
@@ -19,17 +21,19 @@ namespace AutoEvent.Games.GunGame
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.GunGameTranslate.GunGameName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.GunGameTranslate.GunGameDescription;
         public override string Author { get; set; } = "KoT0XleB";
+        public override string CommandName { get; set; } = AutoEvent.Singleton.Translation.GunGameTranslate.GunGameCommandName;
 
         [EventConfig]
         public GunGameConfig Config { get; set; }
-        public override string CommandName { get; set; } = "gungame";
+
+        [EventConfigPreset] public GunGameConfig EasyGunsFirst => GunGameConfigPresets.EasyGunsFirst;
         public MapInfo MapInfo { get; set; } = new MapInfo()
             {MapName = "Shipment", Position = new Vector3(93f, 1020f, -43f), };
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
             { SoundName = "ClassicMusic.ogg", Volume = 3, Loop = true };
         protected override float PostRoundDelay { get; set; } = 10f;
         private EventHandler EventHandler { get; set; }
-        private GunGameTranslate Translation { get; set; }
+        private GunGameTranslate Translation { get; set; } = AutoEvent.Singleton.Translation.GunGameTranslate;
         internal List<Vector3> SpawnPoints { get; private set; }
         internal Dictionary<Player, Stats> PlayerStats { get; set; }
         private Player _winner;
@@ -37,7 +41,6 @@ namespace AutoEvent.Games.GunGame
         protected override void RegisterEvents()
         {
             PlayerStats = new Dictionary<Player, Stats>();
-            Translation = new GunGameTranslate();
 
             EventHandler = new EventHandler(this);
 
@@ -84,11 +87,12 @@ namespace AutoEvent.Games.GunGame
             {
                 if (!PlayerStats.ContainsKey(player))
                 {
-                    PlayerStats.Add(player, new Stats() { level = 0, kill = 0 });
+                    PlayerStats.Add(player, new Stats(0));
                 }
 
                 player.ClearInventory();
-                Extensions.SetRole(player, GunGameRandom.GetRandomRole(), RoleSpawnFlags.None);
+                //Extensions.SetRole(player, GunGameRandom.GetRandomRole(), RoleSpawnFlags.None);
+                player.GiveLoadout(Config.Loadouts, LoadoutFlags.IgnoreWeapons | LoadoutFlags.IgnoreGodMode);
                 player.Position = SpawnPoints.RandomItem();
 
                 count++;
@@ -122,26 +126,42 @@ namespace AutoEvent.Games.GunGame
             // Winner is not null &&
             // Over one player is alive && 
             // Elapsed time is smaller than 10 minutes (+ countdown)
-            return !(_winner == null && Player.GetPlayers().Count(r => r.IsAlive) > 1 && EventTime.TotalSeconds < 600 + 10);
+            return !(_winner == null && Enumerable.Count(Player.GetPlayers(), r => r.IsAlive) > 1 && EventTime.TotalSeconds < 600);
         }
-
+        
         protected override void ProcessFrame()
         {
-            var leaderStat = PlayerStats.OrderByDescending(r => r.Value.level).FirstOrDefault();
-
+            var leaderStat = PlayerStats.OrderByDescending(r => r.Value.kill).FirstOrDefault();
+            List<GunRole> gunsInOrder = Config.Guns.OrderByDescending(x => x.KillsRequired).ToList();
+            GunRole leadersWeapon = gunsInOrder.FirstOrDefault(x => leaderStat.Value.kill >= x.KillsRequired);
             foreach (Player pl in Player.GetPlayers())
             {
                 PlayerStats.TryGetValue(pl, out Stats stats);
-                if (stats.level == GunGameGuns.GunByLevel.Last().Key)
+                if (stats.kill >= Config.Guns.OrderByDescending(x => x.KillsRequired).FirstOrDefault()!.KillsRequired)
                 {
                     _winner = pl;
                 }
 
+                int kills = EventHandler._playerStats[pl].kill;
+                ListExtensions.TryGetFirstIndex(gunsInOrder, x => kills >= x.KillsRequired, out int indexOfFirst);
+
+                string nextGun = "";
+                int killsNeeded = 0; 
+                if (indexOfFirst <= 0)
+                {
+                    killsNeeded = gunsInOrder[0].KillsRequired + 1 - kills;
+                    nextGun = "Last Weapon";
+                }
+                else
+                {
+                    killsNeeded = gunsInOrder[indexOfFirst - 1].KillsRequired - kills;
+                    nextGun = gunsInOrder[indexOfFirst].Item.ToString();
+                }
                 pl.ClearBroadcasts();
                 pl.SendBroadcast(
-                    Translation.GunGameCycle.Replace("{name}", Name).Replace("{level}", $"{stats.level}")
-                        .Replace("{kills}", $"{2 - stats.kill}").Replace("{leadnick}", leaderStat.Key.Nickname)
-                        .Replace("{leadlevel}", $"{leaderStat.Value.level}"), 1);
+                    Translation.GunGameCycle.Replace("{name}", Name).Replace("{gun}", nextGun )
+                        .Replace("{kills}", $"{killsNeeded}").Replace("{leadnick}", leaderStat.Key.Nickname)
+                        .Replace("{leadgun}", $"{(leadersWeapon is null ? nextGun : leadersWeapon.Item)}"), 1);
             }
         }
 
@@ -159,9 +179,5 @@ namespace AutoEvent.Games.GunGame
             }
         }
 
-        protected override void OnCleanup()
-        {
-            Server.FriendlyFire = AutoEvent.IsFriendlyFireEnabledByDefault;
-        }
     }
 }

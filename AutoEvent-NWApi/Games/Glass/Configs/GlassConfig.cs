@@ -16,5 +16,4 @@ namespace AutoEvent.Games.Infection;
 
 public class GlassConfig : EventConfig
 {
-    
 }

@@ -15,12 +15,11 @@ using HarmonyLib;
 using InventorySystem;
 using InventorySystem.Items.Firearms;
 using InventorySystem.Items.Firearms.Modules;
+using PluginAPI.Core;
 
 namespace AutoEvent.Patches;
-/* todo fix patches :)
 [HarmonyPatch(typeof(InventorySystem.Items.Firearms.Modules.PumpAction),
-    nameof(InventorySystem.Items.Firearms.Modules.PumpAction.ServerAuthorizeShot),
-    MethodType.Getter)]
+    nameof(InventorySystem.Items.Firearms.Modules.PumpAction.ServerAuthorizeShot))]
 public class PumpAction
 {
     [HarmonyPostfix()]
@@ -36,13 +35,12 @@ public class PumpAction
             return;
         }
 
-        var component = __instance._firearm.Footprint.Hub.gameObject.GetComponent<InfiniteAmmoComponent>();
-        if (component is null)
+        Player ply = Player.Get(__instance._firearm.Owner);
+        if (ply is null)
         {
             return;
         }
-
-        if (!component.EndlessClip)
+        if (Extensions.InfiniteAmmoList is null || !Extensions.InfiniteAmmoList.ContainsKey(ply) || !Extensions.InfiniteAmmoList[ply].HasFlag(AmmoMode.EndlessClip))
         {
             return;
         }
@@ -52,4 +50,4 @@ public class PumpAction
         flags.SetFlag(FirearmStatusFlags.Cocked, true);
         __instance._firearm.Status = new FirearmStatus(__instance._firearm.AmmoManagerModule.MaxAmmo, flags, __instance._firearm.Status.Attachments);
     }
-}*/
+}

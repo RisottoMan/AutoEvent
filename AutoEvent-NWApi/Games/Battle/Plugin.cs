@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using AutoEvent.API;
+using AutoEvent.API.Enums;
 using AutoEvent.Interfaces;
 using UnityEngine;
 using Event = AutoEvent.Interfaces.Event;
@@ -20,7 +21,7 @@ namespace AutoEvent.Games.Battle
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.BattleTranslate.BattleName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.BattleTranslate.BattleDescription;
         public override string Author { get; set; } = "KoT0XleB";
-        public override string CommandName { get; set; } = "battle";
+        public override string CommandName { get; set; } =  AutoEvent.Singleton.Translation.BattleTranslate.BattleCommandName;
 
         // Map Info can be inherited as long as the event inherits IEventMap.
         // MapInfo.Map is the Schematic Object for the map.
@@ -34,7 +35,7 @@ namespace AutoEvent.Games.Battle
         // Define the fields/properties here. Make sure to set them, in OnStart() or OnRegisteringEvents()
         // Define the properties that may be used by this event, or by its handler class.
         private EventHandler EventHandler { get; set; }
-        private BattleTranslate Translation { get; set; }
+        private BattleTranslate Translation { get; set; } = AutoEvent.Singleton.Translation.BattleTranslate;
         
         [EventConfig]
         public BattleConfig Config { get; set; }
@@ -71,8 +72,6 @@ namespace AutoEvent.Games.Battle
         // Define what you want to happen when the even is started / run.
         protected override void OnStart()
         {
-            Translation = new BattleTranslate();
-
             int count = 0;
             foreach (Player player in Player.GetPlayers())
             {
@@ -89,8 +88,8 @@ namespace AutoEvent.Games.Battle
 
                 count++;
 
-                player.GiveLoadout(Config.Loadouts);
-                Timing.CallDelayed(0.1f, () => { player.CurrentItem = player.Items.First(); });
+                player.GiveLoadout(Config.Loadouts, LoadoutFlags.IgnoreRole);
+                Timing.CallDelayed(0.1f, () => { player.CurrentItem = player.Items.FirstOrDefault(x => x); });
             }
 
         }

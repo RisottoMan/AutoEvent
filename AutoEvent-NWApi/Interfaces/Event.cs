@@ -5,9 +5,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using AutoEvent.API.Enums;
 using HarmonyLib;
 using MEC;
 using UnityEngine;
+using YamlDotNet.Core;
 
 namespace AutoEvent.Interfaces
 {
@@ -47,18 +49,22 @@ namespace AutoEvent.Interfaces
                     ev.Id = Events.Count;
                     try
                     {
-                        ev.InstantiateEvent();
                         ev.LoadConfigs();
                         ev.LoadTranslation();
+                        ev.InstantiateEvent();
                     }
                     catch (Exception e)
                     {
                         DebugLogger.LogDebug($"[EventLoader] {ev.Name} encountered an error while registering.", LogLevel.Warn, true);
                         DebugLogger.LogDebug($"[EventLoader] {e}", LogLevel.Debug);
                     }
+                    string confs = "";
+                    foreach (var conf in ev.ConfigPresets)
+                    {
+                        confs += $"{conf.PresetName}, ";
+                    }
                     Events.Add(ev);
-
-                    DebugLogger.LogDebug($"[EventLoader] {ev.Name} has been registered!", LogLevel.Info, true);
+                    DebugLogger.LogDebug($"[EventLoader] {ev.Name} has been registered. Presets: {(confs + ",").Replace(", ,", "")}", LogLevel.Info, true);
                 }
                 catch (MissingMethodException) { }
                 catch (Exception ex)
@@ -84,7 +90,7 @@ namespace AutoEvent.Interfaces
 
             if (!TryGetEventByCName(type, out ev)) 
                 return Events.FirstOrDefault(ev => ev.Name.ToLower() == type.ToLower());
-
+            
             return ev;
         }
 
@@ -154,6 +160,17 @@ namespace AutoEvent.Interfaces
         /// How many seconds the event waits after each ProcessFrame().
         /// </summary>
         protected virtual float FrameDelayInSeconds { get; set; } = 1f;
+        
+        /// <summary>
+        /// Use this to force specific settings for friendly fire. 
+        /// </summary>
+        protected virtual FriendlyFireSettings ForceEnableFriendlyFire { get; set; } = FriendlyFireSettings.Default;
+        
+        /// <summary>
+        /// Use this to force specific settings for friendly fire autoban. 
+        /// </summary>
+        protected virtual FriendlyFireSettings ForceEnableFriendlyFireAutoban { get; set; } = FriendlyFireSettings.Default;
+        
     #endregion
     #region Event Variables // Variables that the event author has access too, which are abstracted into the event system.
         
@@ -249,6 +266,27 @@ namespace AutoEvent.Interfaces
         {
             Extensions.UnLoadMap(eventMap.MapInfo.Map);
         }
+    }
+
+    /// <summary>
+    /// Can be used to get a list of each <see cref="EventConfig"/> defined in the plugin.
+    /// </summary>
+    /// <returns>Returns a list of the current values of each <see cref="EventConfig"/></returns>
+    public List<EventConfig> GetCurrentConfigsValues()
+    {
+        List<EventConfig> eventConfigs = new List<EventConfig>();
+        foreach (PropertyInfo propertyInfo in this.GetType().GetProperties())
+        {
+            var attr = propertyInfo.GetCustomAttribute<EventConfigAttribute>();
+            if (attr is null)
+                continue;
+            object value = propertyInfo.GetValue(this);
+            if(value is not EventConfig conf)
+                continue;
+            eventConfigs.Add(conf);
+        }
+
+        return eventConfigs;
     }
     
     /// <summary>
@@ -349,17 +387,23 @@ namespace AutoEvent.Interfaces
     /// A list of available config presets. WIP
     /// </summary>
     public List<EventConfig> ConfigPresets { get; set; } = new List<EventConfig>();
-    
+
+    private List<Type> _confTypes { get; set; } = new List<Type>();
     /// <summary>
     /// Validates and loads any configs and presets for the given event.
     /// </summary>
     internal void LoadConfigs()
     {
+        if (this.ConfigPresets is not null)
+            this.ConfigPresets.Clear();
+        else
+            this.ConfigPresets = new List<EventConfig>();
+        
         int loadedConfigs = 0;
         var path = CreateConfigFolder();
         try
         {
-            loadedConfigs =  _loadValidConfigs(path);
+            loadedConfigs = _loadValidConfigs(path);
         }
         catch (Exception e)
         {
@@ -386,7 +430,7 @@ namespace AutoEvent.Interfaces
             DebugLogger.LogDebug($"[EventLoader] LoadConfigs()->_loadPresets(path) has caught an exception while loading configs for the plugin {Name}", LogLevel.Warn, true);
             DebugLogger.LogDebug($"{e}", LogLevel.Debug);
         }
-        DebugLogger.LogDebug($"[EventLoader] Loaded {loadedConfigs} Configs, and {ConfigPresets.Count} Config Presets, for plugin {Name}", LogLevel.Info);
+        // DebugLogger.LogDebug($"[EventLoader] Loaded {loadedConfigs} Configs, and {ConfigPresets.Count} Config Presets, for plugin {Name}", LogLevel.Info);
     }
     
     /// <summary>
@@ -425,8 +469,8 @@ namespace AutoEvent.Interfaces
             _setRandomSound(evConfig);
             
             property.SetValue(this, config);
-            
             ConfigPresets.Add((EventConfig)config);
+            _confTypes.Add(config.GetType());
 
             i++;
         }
@@ -520,7 +564,7 @@ namespace AutoEvent.Interfaces
             {
                 continue;
             }
-            DebugLogger.LogDebug($"Embedded Config Preset \"{property.Name}\" found for {Name}", LogLevel.Debug);
+            // DebugLogger.LogDebug($"Embedded Config Preset \"{property.Name}\" found for {Name}", LogLevel.Debug);
 
             conf.Load(path, property, property.GetValue(this));
         }
@@ -535,10 +579,17 @@ namespace AutoEvent.Interfaces
         foreach (string file in Directory.GetFiles(path, "*.yml"))
         {
             string fileName = Path.GetFileNameWithoutExtension(file);
-            EventConfig conf = Configs.Serialization.Deserializer.Deserialize<EventConfig>(File.ReadAllText(file));
-            DebugLogger.LogDebug($"Config Preset \"{file}\" loaded for {Name}", LogLevel.Debug);
-            conf.PresetName = fileName;
-            ConfigPresets.Add(conf);
+            
+            object conf = Configs.Serialization.Deserializer.Deserialize(File.ReadAllText(file), _confTypes.FirstOrDefault() ?? typeof(EventConfig));
+            if (conf is not EventConfig)
+            {
+                DebugLogger.LogDebug("Not Event Config.");
+                continue;
+            }
+            // DebugLogger.LogDebug($"Config Preset \"{file}\" loaded for {Name}", LogLevel.Debug);
+            ((EventConfig)conf).PresetName = fileName;
+            ConfigPresets.Add((EventConfig)conf);
+            DebugLogger.LogDebug($"Config Preset: {conf.GetType().Name}, BaseType: {conf.GetType().BaseType?.Name}");
         }
     }
     
@@ -591,6 +642,38 @@ namespace AutoEvent.Interfaces
             AutoEvent.ActiveEvent = this;
             EventTime = new TimeSpan();
             StartTime = DateTime.UtcNow;
+
+            try
+            {
+                // todo finish implementation.
+                if (this.ForceEnableFriendlyFire == FriendlyFireSettings.Enable)
+                {
+                    FriendlyFireSystem.EnableFriendlyFire(this.ForceEnableFriendlyFireAutoban == FriendlyFireSettings.Enable);
+                    return;
+                }
+
+                if (this.ForceEnableFriendlyFire == FriendlyFireSettings.Disable)
+                {
+                    FriendlyFireSystem.DisableFriendlyFire();
+                    return;
+                }
+
+                if (this.ForceEnableFriendlyFireAutoban == FriendlyFireSettings.Enable)
+                {
+                    FriendlyFireSystem.EnableFriendlyFireDetector();
+                    return;
+                }
+                
+                if (this.ForceEnableFriendlyFireAutoban == FriendlyFireSettings.Disable)
+                {
+                    FriendlyFireSystem.DisableFriendlyFireDetector();
+                }
+            }
+            catch (Exception e)
+            {
+                DebugLogger.LogDebug($"Could not modify friendly fire / ff autoban settings.", LogLevel.Error, true);
+                DebugLogger.LogDebug($"{e}");
+            }
             
             SpawnMap(true);
             try
@@ -717,12 +800,21 @@ namespace AutoEvent.Interfaces
 
             try
             {
+                FriendlyFireSystem.RestoreFriendlyFire();
+            }
+            catch (Exception e)
+            {
+                DebugLogger.LogDebug($"Friendly Fire was not able to be restored. Please ensure it is disabled. PLAYERS MAY BE AUTO-BANNED ACCIDENTALLY OR MAY NOT BE BANNED FOR FF.", LogLevel.Error, true);
+                DebugLogger.LogDebug($"{e}");
+            }
 
+            try
+            {
                 DeSpawnMap();
-
                 StopAudio();
                 Extensions.CleanUpAll();
                 Extensions.TeleportEnd();
+                
             }
             catch (Exception e)
             {
@@ -754,8 +846,12 @@ namespace AutoEvent.Interfaces
             AutoEvent.ActiveEvent = null;
             try
             {
-                // this._setRandomMap();
-                // this._setRandomSound();
+                EventConfig conf = this.GetCurrentConfigsValues().FirstOrDefault();
+                if (conf is not null)
+                {
+                    this._setRandomMap(conf); 
+                    this._setRandomSound(conf);
+                }
             }
             catch (Exception e)
             {

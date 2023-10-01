@@ -7,12 +7,15 @@ using PluginAPI.Events;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using AutoEvent.API;
+using AutoEvent.API.Enums;
 using UnityEngine;
 using AutoEvent.Events.Handlers;
 using AutoEvent.Games.Infection;
 using AutoEvent.Interfaces;
 using InventorySystem.Items.ThrowableProjectiles;
 using Event = AutoEvent.Interfaces.Event;
+using Player = PluginAPI.Core.Player;
 
 namespace AutoEvent.Games.HideAndSeek
 {
@@ -21,7 +24,7 @@ namespace AutoEvent.Games.HideAndSeek
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.HideTranslate.HideName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.HideTranslate.HideDescription;
         public override string Author { get; set; } = "KoT0XleB";
-        public override string CommandName { get; set; } = "hns";
+        public override string CommandName { get; set; } = AutoEvent.Singleton.Translation.HideTranslate.HideCommandName;
 
         [EventConfig]
         public HideAndSeekConfig Config { get; set; }
@@ -31,11 +34,10 @@ namespace AutoEvent.Games.HideAndSeek
             { SoundName = "HideAndSeek.ogg", Volume = 5, Loop = true };
         protected override float PostRoundDelay { get; set; } = 10f;
         private EventHandler EventHandler { get; set; }
-        private HideTranslate Translation { get; set; }
+        private HideTranslate Translation { get; set; } = AutoEvent.Singleton.Translation.HideTranslate;
 
         protected override void RegisterEvents()
         {
-            Translation = new HideTranslate();
             EventHandler = new EventHandler(this);
 
             EventManager.RegisterEvents(EventHandler);
@@ -81,7 +83,7 @@ namespace AutoEvent.Games.HideAndSeek
         {
             for (float _time = 15; _time > 0; _time--)
             {
-                Extensions.Broadcast(Translation.HideBroadcast.Replace("%time%", $"{_time}"), 1);
+                Extensions.Broadcast(Translation.HideBroadcast.Replace("{time}", $"{_time}"), 1);
 
                 yield return Timing.WaitForSeconds(1f);
                 EventTime += TimeSpan.FromSeconds(1f);
@@ -93,72 +95,110 @@ namespace AutoEvent.Games.HideAndSeek
             return false;
         }
 
-        protected override IEnumerator<float> RunGameCoroutine()
+
+        private IEnumerator<float> PlayerBreak()
         {
-            for (float _time = 15; _time > 0; _time--)
+            if (Config.BreakDuration < 1)
             {
-                Extensions.Broadcast(Translation.HideBroadcast.Replace("%time%", $"{_time}"), 1);
+                yield break;
+            }
+            // Wait for 15 seconds before choosing next batch.
+            for (float _time = Config.BreakDuration; _time > 0; _time--)
+            {
+                Extensions.Broadcast(Translation.HideBroadcast.Replace("{time}", $"{_time}"), 1);
 
                 yield return Timing.WaitForSeconds(1f);
                 EventTime += TimeSpan.FromSeconds(1f);
             }
+        }
 
-            int catchCount = RandomClass.GetCatchByCount(Player.GetPlayers().Count(r => r.IsAlive));
-            for (int i = 0; i < catchCount; i++)
+        private IEnumerator<float> TagPeriod()
+        {
+            if (Config.TagDuration < 1)
             {
-                var player = Player.GetPlayers().Where(r => r.IsAlive &&
-                                                            r.Items.Any(r => r.ItemTypeId == Config.TaggerWeapon) ==
-                                                            false).ToList().RandomItem();
-               player.GiveLoadout(Config.TaggerLoadouts);
-                var item = player.AddItem(Config.TaggerWeapon);
-                //var scp018 = player.AddItem(ItemType.SCP018);
-                Timing.CallDelayed(0.1f, () => { player.CurrentItem = item; });
+                yield break;
             }
-
-            for (int time = 15; time > 0; time--)
+            for (int time = Config.TagDuration; time > 0; time--)
             {
-                Extensions.Broadcast(Translation.HideCycle.Replace("%time%", $"{time}"), 1);
+                Extensions.Broadcast(Translation.HideCycle.Replace("{time}", $"{time}"), 1);
 
                 yield return Timing.WaitForSeconds(1f);
                 EventTime += TimeSpan.FromSeconds(1f);
             }
+        }
 
-            foreach (Player player in Player.GetPlayers())
+        private void SelectPlayers()
+        {
+            List<Player> playersToChoose = Player.GetPlayers().Where(x => x.IsAlive).ToList();
+            foreach(Player ply in Config.TaggerCount.GetPlayers(playersToChoose))
             {
-                if (player.Items.Any(r => r.ItemTypeId == Config.TaggerWeapon))
+                ply.GiveLoadout(Config.TaggerLoadouts);
+                var item = ply.AddItem(Config.TaggerWeapon);
+                if(item.ItemTypeId == ItemType.SCP018)
+                    item.MakeRock(new RockSettings(false, 1f, false, false, true));
+                if(item.ItemTypeId == ItemType.GrenadeHE)
+                    item.ExplodeOnCollision(true);
+                Timing.CallDelayed(0.1f, () => { ply.CurrentItem = item; });
+            }
+
+            if (Player.GetPlayers().Count(ply => ply.HasLoadout(Config.PlayerLoadouts)) <= Config.PlayersRequiredForBreachScannerEffect)
+            {
+                foreach(Player ply in Player.GetPlayers().Where(ply => ply.HasLoadout(Config.PlayerLoadouts)))
                 {
-                    player.ClearInventory();
-                    player.Damage(200, Translation.HideHurt);
+                    ply.GiveEffect(StatusEffect.Scanned, 255, 0f, false);
                 }
             }
+        }
+        protected override IEnumerator<float> RunGameCoroutine()
+        {
+            int playersAlive = Player.GetPlayers().Count(ply => ply.IsAlive && ply.HasLoadout(Config.PlayerLoadouts));
+            while (DebugLogger.AntiEnd || playersAlive > 1)
+            {
+                SelectPlayers();
+                
+                yield return Timing.WaitUntilDone(Timing.RunCoroutine(TagPeriod(), "TagPeriod"));
+
+                // Kill players who are taggers.
+                foreach (Player player in Player.GetPlayers())
+                {
+                    if (player.Items.Any(r => r.ItemTypeId == Config.TaggerWeapon))
+                    {
+                        player.ClearInventory();
+                        player.Damage(200, Translation.HideHurt);
+                    }
+                }
+                playersAlive = Player.GetPlayers().Count(ply => ply.IsAlive && ply.HasLoadout(Config.PlayerLoadouts));
+                DebugLogger.LogDebug($"Players Alive: {playersAlive}");
+                if (playersAlive <= 1)
+                    break;
+                
+                yield return Timing.WaitUntilDone(Timing.RunCoroutine(PlayerBreak(), "PlayerBreak"));
+            }
+
+            yield break;
         }
 
         protected override void OnFinished()
         {
             var translation = AutoEvent.Singleton.Translation.HideTranslate;
 
-            if (Player.GetPlayers().Count(r => r.IsAlive) > 1)
+            /*if (Player.GetPlayers().Count(r => r.IsAlive) > 1)
             {
                 Extensions.Broadcast(translation.HideMorePlayer.Replace("%time%", $"{EventTime.Minutes:00}:{EventTime.Seconds:00}"), 10);
-            }
-            else if (Player.GetPlayers().Count(r => r.IsAlive) == 1)
+            }*/
+             if (Player.GetPlayers().Count(r => r.IsAlive) >= 1)
             {
                 var text = translation.HideOnePlayer;
-                text = text.Replace("%winner%", Player.GetPlayers().First(r => r.IsAlive).Nickname);
-                text = text.Replace("%time%", $"{EventTime.Minutes:00}:{EventTime.Seconds:00}");
+                text = text.Replace("{winner}", Player.GetPlayers().First(r => r.IsAlive).Nickname);
+                text = text.Replace("{time}", $"{EventTime.Minutes:00}:{EventTime.Seconds:00}");
 
                 Extensions.Broadcast(text, 10);
             }
             else
             {
-                Extensions.Broadcast(translation.HideAllDie.Replace("%time%", $"{EventTime.Minutes:00}:{EventTime.Seconds:00}"), 10);
+                Extensions.Broadcast(translation.HideAllDie.Replace("{time}", $"{EventTime.Minutes:00}:{EventTime.Seconds:00}"), 10);
             }
 
-        }
-
-        protected override void OnCleanup()
-        {
-            Server.FriendlyFire = AutoEvent.IsFriendlyFireEnabledByDefault;
         }
     }
 }

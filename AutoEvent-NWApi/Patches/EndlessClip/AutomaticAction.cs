@@ -10,18 +10,19 @@
 //    Created Date:     09/19/2023 3:22 PM
 // -----------------------------------------
 
+using System.Linq;
 using AutoEvent.API;
 using HarmonyLib;
 using InventorySystem;
 using InventorySystem.Items.Firearms;
 using InventorySystem.Items.Firearms.Modules;
+using PluginAPI.Core;
 
 namespace AutoEvent.Patches;
 
-/*
+
 [HarmonyPatch(typeof(InventorySystem.Items.Firearms.Modules.AutomaticAction),
-    nameof(InventorySystem.Items.Firearms.Modules.AutomaticAction.ServerAuthorizeShot),
-    MethodType.Getter)]
+    nameof(InventorySystem.Items.Firearms.Modules.AutomaticAction.ServerAuthorizeShot))]
 public class AutomaticAction
 {
     [HarmonyPostfix()]
@@ -37,13 +38,12 @@ public class AutomaticAction
             return;
         }
 
-        var component = __instance._firearm.Footprint.Hub.gameObject.GetComponent<InfiniteAmmoComponent>();
-        if (component is null)
+        Player ply = Player.Get(__instance._firearm.Owner);
+        if (ply is null)
         {
             return;
         }
-
-        if (!component.EndlessClip)
+        if (Extensions.InfiniteAmmoList is null || !Extensions.InfiniteAmmoList.ContainsKey(ply) || !Extensions.InfiniteAmmoList[ply].HasFlag(AmmoMode.EndlessClip))
         {
             return;
         }
@@ -53,4 +53,4 @@ public class AutomaticAction
         //firearmStatusFlags.SetFlag(FirearmStatusFlags.Cocked, true);
         __instance._firearm.Status = new FirearmStatus((byte)((int)__instance._firearm.AmmoManagerModule.MaxAmmo), firearmStatusFlags, __instance._firearm.Status.Attachments);
     }
-}*/
+}

@@ -33,6 +33,10 @@ public class Debug : ParentCommand
         this.RegisterCommand(new Write());
         this.RegisterCommand(new AntiEnd());
         this.RegisterCommand(new Presets());
+        this.RegisterCommand(new InfiniteAmmo());
+        this.RegisterCommand(new ImpactGrenade());
+        this.RegisterCommand(new Rock());
+        this.RegisterCommand(new SetRole());
     }
 
     protected override bool ExecuteParent(ArraySegment<string> arguments, ICommandSender sender, [UnscopedRef] out string response)
@@ -49,7 +53,10 @@ public class Debug : ParentCommand
                     args += $"[{arg}] ";
                 }
             }
-            response += $"<color=yellow> {x.Key} {args}<color=white>-> {x.Value.Description}. \n";
+            if(sender is not ServerConsoleSender)
+                response += $"<color=yellow> {x.Key} {args} <color=white>-> {x.Value.Description}. \n";
+            else    
+                response += $" {x.Key} {args} -> {x.Value.Description}. \n";
         }
         /*
                    "<color=yellow>  Enable <color=white>-> Enables Debug Mode. \n" +
@@ -62,7 +69,7 @@ public class Debug : ParentCommand
         return false;
     }
 
-    public override string Command => nameof(Debug);
+    public override string Command => nameof(global::AutoEvent.Commands.Debug);
     public override string[] Aliases => Array.Empty<string>();
     public override string Description => "Runs various debug functions.";
 }

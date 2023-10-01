@@ -45,7 +45,11 @@ namespace AutoEvent.Commands
                         args += $"[{arg}] ";
                     }
                 }
-                response += $"<color=yellow> {x.Key} {args}<color=white>-> {x.Value.Description}. \n";
+
+                if (sender is not ServerConsoleSender)
+                    response += $"<color=yellow> {x.Key} {args}<color=white>-> {x.Value.Description}. \n";
+                else
+                    response += $" {x.Key} {args} -> {x.Value.Description}. \n";
             }
         
                        // "<color=yellow>  list <color=white>-> gets the list of the events\n" +

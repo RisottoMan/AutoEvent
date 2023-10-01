@@ -23,39 +23,21 @@ using Exiled.Permissions.Extensions;
 namespace AutoEvent.Commands.Config;
 
 
-public class List : ICommand, IUsageProvider
+public class List : ICommand, IUsageProvider, IPermission
 {
     public string Command => nameof(List);
     public string[] Aliases => Array.Empty<string>();
     public string Description => "Lists available presets for an event.";
     public string[] Usage => new string[] { "event" };
 
+    public string Permission { get; set; } = "ev.config.list";
     public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
     {
-
-#if EXILED
-        if (!sender.CheckPermission("ev.config.list"))
-        {
-            response = "You do not have permission to use this command";
-            return false;
-        }
-#else
-        var config = AutoEvent.Singleton.Config;
-        var player = Player.Get(sender);
-        if (sender is ServerConsoleSender || sender is CommandSender cmdSender && cmdSender.FullPermissions)
-        {
-            goto skipPermissionCheck;
-        }
-
-        if (!config.PermissionList.Contains(ServerStatic.PermissionsHandler._members[player.UserId]))
+        if (!sender.CheckPermission(((IPermission)this).Permission, out bool IsConsoleCommandSender))
         {
             response = "<color=red>You do not have permission to use this command!</color>";
             return false;
         }
-#endif
-
-        skipPermissionCheck:
-
 
         if (arguments.Count == 0)
         {
@@ -81,7 +63,7 @@ public class List : ICommand, IUsageProvider
         string presets = $"Available Config Presets for Event \"{ev.Name}\": \n";
         foreach (var x in ev.ConfigPresets)
         {
-            presets += $"  {x.PresetName}, \n";
+            presets += $"  {((EventConfig)x).PresetName}, \n";
         }
 
         response = presets;

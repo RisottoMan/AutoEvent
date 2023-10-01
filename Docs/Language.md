@@ -1,6 +1,12 @@
 # Language :rocket:
 ### We already have several different translations that you can use. :moyai:
 ### If you have a translation for your country, then we can add it to the repository. :monocle_face:
+
+<br>
+
+## General Config Information: [``Click Me``](https://github.com/KoT0XleB/AutoEvent/blob/main/Docs/Translations/GeneralTranslations.md)
+### This is a list of all translations present and the variables available.
+
 ----
 ## > English [``Click Me``](https://github.com/KoT0XleB/AutoEvent/blob/main/Docs/Translations/English.md)
 ### This is a default language that can be easily changed.

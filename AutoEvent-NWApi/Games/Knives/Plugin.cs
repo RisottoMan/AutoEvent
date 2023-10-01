@@ -21,7 +21,7 @@ namespace AutoEvent.Games.Knives
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.KnivesTranslate.KnivesName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.KnivesTranslate.KnivesDescription;
         public override string Author { get; set; } = "KoT0XleB";
-        public override string CommandName { get; set; } = "knife";
+        public override string CommandName { get; set; } = AutoEvent.Singleton.Translation.KnivesTranslate.KnivesCommandName;
         [EventConfig]
         public KnivesConfig Config { get; set; }
         public MapInfo MapInfo { get; set; } = new MapInfo()
@@ -29,11 +29,10 @@ namespace AutoEvent.Games.Knives
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
             { SoundName = "Knife.ogg", Volume = 10, Loop = true };
         private EventHandler EventHandler { get; set; }
-        private KnivesTranslate Translation { get; set; }
+        private KnivesTranslate Translation { get; set; } = AutoEvent.Singleton.Translation.KnivesTranslate;
 
         protected override void RegisterEvents()
         {
-            Translation = new KnivesTranslate();
 
             EventHandler = new EventHandler();
             EventManager.RegisterEvents(EventHandler);
@@ -135,10 +134,6 @@ namespace AutoEvent.Games.Knives
             {
                 Extensions.Broadcast(Translation.KnivesMtfWin.Replace("{name}", Name), 10);
             }
-        }
-        protected override void OnCleanup()
-        {
-            Server.FriendlyFire = AutoEvent.IsFriendlyFireEnabledByDefault;
         }
     }
 }

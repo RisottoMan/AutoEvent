@@ -1,7 +1,14 @@
-﻿namespace AutoEvent.Games.Infection
+﻿using Exiled.API.Interfaces;
+
+namespace AutoEvent.Games.Infection
 {
+#if EXILED
+    public class KnivesTranslate : ITranslation 
+#else
     public class KnivesTranslate
+#endif
     {
+        public string KnivesCommandName { get; set; } = "knives";
         public string KnivesName { get; set; } = "Knives of Death";
         public string KnivesDescription { get; set; } = "Knife players against each other on a 35hp map from cs 1.6";
         public string KnivesCycle { get; set; } = "<color=#D71868><b><i>{name}</i></b></color>\n<color=yellow><color=blue>{mtfcount} MTF</color> <color=red>VS</color> <color=green>{chaoscount} CHAOS</color></color>";

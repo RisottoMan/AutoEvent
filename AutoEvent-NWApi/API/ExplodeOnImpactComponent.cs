@@ -12,48 +12,46 @@
 
 using System;
 using InventorySystem.Items.ThrowableProjectiles;
+using Mirror;
 using PluginAPI.Core;
 using UnityEngine;
 
 namespace AutoEvent;
-
-public class ExplodeOnImpactComponent : MonoBehaviour
+public class GrenadeCollision : MonoBehaviour
 {
-    private bool initialized;
-    public GameObject Owner { get; private set; }
-
     public TimeGrenade Grenade { get; private set; }
 
-    public void Init(GameObject owner, ThrownProjectile grenade)
+    public bool GiveOwnerNewGrenadeOnExplosion { get; set; } = false;
+
+    public void Init(bool giveOwnerNewGrenadeOnExplosion = false)
     {
-        Owner = owner;
-        Grenade = (TimeGrenade)grenade;
-        initialized = true;
+        GiveOwnerNewGrenadeOnExplosion = giveOwnerNewGrenadeOnExplosion;
+    } 
+    public void Awake()
+    {
+        Grenade = GetComponent<TimeGrenade>();
     }
 
-    private void OnCollisionEnter(Collision collision)
+    public void OnCollisionEnter()
     {
-        try
+        Grenade.Network_syncTargetTime = NetworkTime.time + 0.05;
+        if (GiveOwnerNewGrenadeOnExplosion)
         {
-            if (!initialized)
-                return;
-            if (Owner == null)
-                Log.Error($"Owner is null!");
-            if (Grenade == null)
-                Log.Error($"Grenade is null!");
-            if (collision is null)
-                Log.Error($"wat");
-            if (collision.gameObject == null)
-                Log.Error($"clueless");
-            if (collision.gameObject == Owner || collision.gameObject.TryGetComponent<EffectGrenade>(out _))
-                return;
-
-            Grenade.TargetTime = 0.1;
-        }
-        catch (Exception e)
-        {
-            Log.Error($"{nameof(OnCollisionEnter)} error:\n{e}");
-            Destroy(this);
+            try
+            {
+                if (Grenade.PreviousOwner.Hub is null)
+                    return;
+                var player = Player.Get(Grenade.PreviousOwner.Hub);
+                if (player is null)
+                    return;
+                player.AddItem(Grenade.TryGetComponent<ExplosionGrenade>(out _)
+                    ? ItemType.GrenadeHE
+                    : ItemType.GrenadeFlash).ExplodeOnCollision();
+            }
+            catch (Exception e)
+            {
+                // full inv
+            }
         }
     }
 }

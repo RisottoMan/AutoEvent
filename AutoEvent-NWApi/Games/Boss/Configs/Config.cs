@@ -58,7 +58,7 @@ namespace AutoEvent.Games.Infection
                     ItemType.Medkit,
                 },
                 Health = 200,
-                ArtificialHealth = 100,
+                ArtificialHealth = new ArtificialHealth(100),
                 Roles = new Dictionary<RoleTypeId, int>() { { RoleTypeId.NtfCaptain, 100 } }
             }
         };

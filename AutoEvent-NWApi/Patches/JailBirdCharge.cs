@@ -20,14 +20,14 @@ namespace AutoEvent.Patches
                 Label retLabel = generator.DefineLabel();
 
                 const int offset = 2;
+                // index places new code right after IL_0023 (stloc.0)
                 int index = newInstructions.FindIndex(instruction => instruction.Calls(Method(typeof(NetworkReader), nameof(NetworkReader.ReadByte)))) + offset;
-
                 newInstructions.InsertRange(
                     index,
                     new[]
                     {
-                    new CodeInstruction(OpCodes.Ldarg_0),
-                    new CodeInstruction(OpCodes.Ldloc_0),
+                    new CodeInstruction(OpCodes.Ldarg_0), // this (JailbirdItem)
+                    new CodeInstruction(OpCodes.Ldloc_0), // JailbirdMessageType
                     new(OpCodes.Call, Method(typeof(JailbirdPatch), nameof(HandleJailbird))),
                     new(OpCodes.Brfalse_S, retLabel),
                     });
@@ -44,9 +44,12 @@ namespace AutoEvent.Patches
             {
                 if (AutoEvent.ActiveEvent == null)
                     return true;
-
+                
                 if (messageType == JailbirdMessageType.ChargeLoadTriggered)
+                {
+                    // instance.SendRpc(JailbirdMessageType.ChargeLoadTriggered, null);
                     return false;
+                }
 
                 return true;
             }

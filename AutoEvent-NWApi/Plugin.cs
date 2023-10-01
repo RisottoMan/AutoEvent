@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using AutoEvent.Commands;
 using AutoEvent.Interfaces;
 using HarmonyLib;
 using PluginAPI.Core.Attributes;
@@ -8,6 +9,7 @@ using PluginAPI.Events;
 using AutoEvent.Events.Handlers;
 using Exiled.Loader;
 using GameCore;
+using MEC;
 using PluginAPI.Core;
 using Event = AutoEvent.Interfaces.Event;
 using Log = PluginAPI.Core.Log;
@@ -22,7 +24,7 @@ namespace AutoEvent
 #if EXILED
     public class AutoEvent : Plugin<Config, Translation>
     {
-        public override System.Version Version => new System.Version(9, 1, 0);
+        public override System.Version Version => new System.Version(9, 1, 5);
         public override string Name => "AutoEvent";
         public override string Author => "Created by KoT0XleB, extended by swd and sky, Co-Maintained by Redforce04";
         public static bool IsPlayedGames;
@@ -30,6 +32,11 @@ namespace AutoEvent
 #else
     public class AutoEvent
     {
+        [PluginConfig("Configs/autoevent.yml")]
+        public Config Config;
+
+        [PluginConfig("Configs/translation.yml")]
+        public Translation Translation;
 #endif
         public const bool BetaRelease = true; // todo set beta to false before main release
         /// <summary>
@@ -41,46 +48,51 @@ namespace AutoEvent
         public static AutoEvent Singleton;
         public static Harmony HarmonyPatch;
         public static bool Debug => DebugLogger.Debug;
-        public static bool IsFriendlyFireEnabledByDefault { get; set; }
         EventHandler eventHandler;
         
-#if !EXILED
-        [PluginConfig("Configs/autoevent.yml")]
-        public Config Config;
-#endif
-
-#if !EXILED
-        [PluginConfig("Configs/translation.yml")]
-        public Translation Translation;
-#endif
 #if EXILED
         public override void OnEnabled()
 #else
         [PluginPriority(LoadPriority.Low)]
-        [PluginEntryPoint("AutoEvent", "9.1.0", "An event manager plugin that allows you to run mini-games.", "KoT0XleB and Redforce04")]
+        [PluginEntryPoint("AutoEvent", "9.1.5", "An event manager plugin that allows you to run mini-games.",
+            "KoT0XleB and Redforce04")]
         void OnEnabled()
 #endif
         {
-                if (!Config.IsEnabled) return;
-                if (BetaRelease)
-                {
-                    Log.Warning("Warning: This release of AutoEvent is a Beta-Release. " +
-                                "If you encounter any bugs, please reach out to Redforce04 (redforce04) or KoT0XleB (spagettimen) via discord." +
-                                "Alternatively, make an issue on our github (https://github.com/KoT0XleB/AutoEvent/). Have fun!");
-                }
-                // Call Costura first just to ensure dependencies are loaded.
-                // Also make sure there isn't anything that needs a dependency in this method.
-                CosturaUtility.Initialize();
-                _startup();
+            if (!Config.IsEnabled) return;
+            if (BetaRelease)
+            {
+                Log.Warning("Warning: This release of AutoEvent is a Beta-Release." +
+                            " If you encounter any bugs, please reach out to Redforce04 (redforce04) or KoT0XleB (spagettimen) via discord." +
+                            " Alternatively, make an issue on our github (https://github.com/KoT0XleB/AutoEvent/). Have fun!");
+            }
+
+            // Call Costura first just to ensure dependencies are loaded.
+            // Also make sure there isn't anything that needs a dependency in this method.
+            CosturaUtility.Initialize();
+            
+#if !EXILED
+            // Root plugin path
+            AutoEvent.BaseConfigPath = Path.Combine(Paths.GlobalPlugins.Plugins, "AutoEvent");
+#else
+            AutoEvent.BaseConfigPath = Path.Combine(Exiled.API.Features.Paths.Configs, "AutoEvent");
+#endif
+            _startup();
         }
 
         private void _startup()
         {
             try
             {
-                IsFriendlyFireEnabledByDefault = Server.FriendlyFire;
                 Singleton = this;
-                var debugLogger = new DebugLogger();
+                if (Config.IgnoredRoles.Contains(Config.LobbyRole))
+                {
+                    DebugLogger.LogDebug("The Lobby Role is also in ignored roles. This will break the game if not changed. The plugin will remove the lobby role from ignored roles.", LogLevel.Error, true);
+                    Config.IgnoredRoles.Remove(Config.LobbyRole);
+                }
+
+                FriendlyFireSystem.IsFriendlyFireEnabledByDefault = Server.FriendlyFire;
+                var debugLogger = new DebugLogger(Config.AutoLogDebug);
                 DebugLogger.Debug = Config.Debug;
                 if (DebugLogger.Debug)
                 {
@@ -99,25 +111,32 @@ namespace AutoEvent
                     Log.Debug($"{e}");
                 }
 
+                eventHandler = new EventHandler();
+                EventManager.RegisterEvents(eventHandler);
                 EventManager.RegisterEvents(this);
                 SCPSLAudioApi.Startup.SetupDependencies();
 
-                eventHandler = new EventHandler();
                 Servers.RemoteAdmin += eventHandler.OnRemoteAdmin;
+                try
+                {
+                    DebugLogger.LogDebug($"Base Conf Path: {BaseConfigPath}");
+                    DebugLogger.LogDebug($"Configs paths: \n" +
+                                         $"{Config.SchematicsDirectoryPath}\n" +
+                                         $"{Config.MusicDirectoryPath}\n" + 
+                                         $"{Config.ExternalEventsDirectoryPath}\n" +
+                                         $"{Config.EventConfigsDirectoryPath}\n");
+                    CreateDirectoryIfNotExists(BaseConfigPath);
+                    CreateDirectoryIfNotExists(Config.SchematicsDirectoryPath);
+                    CreateDirectoryIfNotExists(Config.MusicDirectoryPath);
+                    CreateDirectoryIfNotExists(Config.ExternalEventsDirectoryPath);
+                    CreateDirectoryIfNotExists(Config.EventConfigsDirectoryPath);
+                }
+                catch (Exception e)
+                {
+                    DebugLogger.LogDebug($"An error has occured while trying to initialize directories.", LogLevel.Warn, true);
+                    DebugLogger.LogDebug($"{e}");
+                }
 
-
-#if !EXILED
-                // Root plugin path
-                AutoEvent.BaseConfigPath = Path.Combine(Paths.GlobalPlugins.Plugins, "AutoEvent");
-#else
-                AutoEvent.BaseConfigPath = Path.Combine(Exiled.API.Features.Paths.Configs, "AutoEvent");
-#endif
-                
-                CreateDirectoryIfNotExists(BaseConfigPath);
-                CreateDirectoryIfNotExists(Config.SchematicsDirectoryPath);
-                CreateDirectoryIfNotExists(Config.MusicDirectoryPath);
-                CreateDirectoryIfNotExists(Config.SchematicsDirectoryPath);
-                CreateDirectoryIfNotExists(Config.EventConfigsDirectoryPath);
 
                 Event.RegisterInternalEvents();
                 Loader.LoadEvents();
@@ -134,14 +153,29 @@ namespace AutoEvent
                 Log.Debug($"{e}");
 
             }
-        }
 
+            Timing.CallDelayed(3f, () =>
+            {
+                PermissionSystem.Load();
+            });
+        }
         public static void CreateDirectoryIfNotExists(string directory, string subPath = "")
         {
-            string path = subPath == "" ? directory : Path.Combine(directory, subPath);  
-            if (!Directory.Exists(path))
+            string path = "";
+            try
             {
-                Directory.CreateDirectory(path);
+                path = subPath == "" ? directory : Path.Combine(directory, subPath);
+                // DebugLogger.LogDebug($"Filepath: {path}");
+                if (!Directory.Exists(path))
+                {
+                    Directory.CreateDirectory(path);
+                }
+            }
+            catch (Exception e)
+            {
+                DebugLogger.LogDebug($"An error has occured while trying to create a new directory.", LogLevel.Warn, true);
+                DebugLogger.LogDebug($"Path: {path}");
+                DebugLogger.LogDebug($"{e}");
             }
         }
 #if !EXILED

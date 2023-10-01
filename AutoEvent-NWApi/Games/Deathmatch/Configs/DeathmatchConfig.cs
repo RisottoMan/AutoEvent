@@ -36,13 +36,13 @@ public class DeathmatchConfig : EventConfig
             {
                 new Effect()
                 {
-                    Type = StatusEffect.MovementBoost,
+                    EffectType = StatusEffect.MovementBoost,
                     Intensity = 10,
                     Duration = 0,
                 },
                 new Effect()
                 {
-                    Type = StatusEffect.Scp1853,
+                    EffectType = StatusEffect.Scp1853,
                     Intensity = 1,
                     Duration = 0,
                 }
@@ -62,13 +62,13 @@ public class DeathmatchConfig : EventConfig
             {
                 new Effect()
                 {
-                    Type = StatusEffect.MovementBoost,
+                    EffectType = StatusEffect.MovementBoost,
                     Intensity = 10,
                     Duration = 0,
                 },
                 new Effect()
                 {
-                    Type = StatusEffect.Scp1853,
+                    EffectType = StatusEffect.Scp1853,
                     Intensity = 1,
                     Duration = 0,
                 }

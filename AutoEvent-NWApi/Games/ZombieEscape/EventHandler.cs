@@ -4,12 +4,14 @@ using InventorySystem.Configs;
 using System.Collections.Generic;
 using CustomPlayerEffects;
 using System.Linq;
+using AutoEvent.API.Enums;
 using AutoEvent.Events.EventArgs;
 using PluginAPI.Core.Attributes;
 using PluginAPI.Enums;
 using PluginAPI.Events;
 using PluginAPI.Core;
 using PlayerStatsSystem;
+using Utils.NonAllocLINQ;
 
 namespace AutoEvent.Games.ZombieEscape
 {
@@ -30,46 +32,49 @@ namespace AutoEvent.Games.ZombieEscape
 
             if (ev.Attacker != null && ev.Target != null)
             {
-                if (ev.Attacker.IsSCP)
+                // do zombie stun
+                if (_plugin.Config.ZombieLoadouts.Any(x => x.Roles.Any(x => x.Key == ev.Target.Role)))
                 {
-                    if (ev.Target.Health <= 50)
-                    {
-                        ev.Target.SetRole(RoleTypeId.Scp0492);
-                        ev.Target.Health = 5000;
-                    }
-                    else
-                    {
-                        ev.Amount = 0;
-                        ev.Target.Health -= 50;
-                    }
-
+                    _plugin.Config.WeaponEffect.ApplyGunEffect(ref ev);
+                    
                     ev.Attacker.ReceiveHitMarker();
                 }
+                // do player instakill
+                if (_plugin.Config.ZombieLoadouts.Any(x => x.Roles.Any(x => x.Key == ev.Attacker.Role)) && 
+                    _plugin.Config.MTFLoadouts.Any(x => x.Roles.Any(x => x.Key == ev.Target.Role)))
+                {
+                    ev.Amount = 0;
+                    ev.Target.GiveLoadout(_plugin.Config.ZombieLoadouts);
+                }
 
-                if (ev.Attacker.IsHuman && ev.Target.IsSCP)
+                /*if (ev.Attacker.IsHuman && ev.Target.IsSCP)
                 {
                     ev.Target.EffectsManager.EnableEffect<Stained>(1);
                     ev.Target.EffectsManager.EnableEffect<Sinkhole>(1);
-                }
+                }*/
             }
         }
 
         [PluginEvent(ServerEventType.PlayerJoined)]
         public void OnPlayerJoin(PlayerJoinedEvent ev)
         {
-            if (Player.GetPlayers().Count(r => r.Role == RoleTypeId.Scp0492) > 0)
+            // if zombies are alive.
+            if (Player.GetPlayers().Any(ply => _plugin.Config.ZombieLoadouts.Any(loadout => loadout.Roles.Any(role => role.Key == ply.Role ))))
             {
-                Extensions.SetRole(ev.Player, RoleTypeId.Scp0492, RoleSpawnFlags.AssignInventory);
-                ev.Player.Position = RandomClass.GetSpawnPosition(_plugin.MapInfo.Map);
-                ev.Player.EffectsManager.EnableEffect<Disabled>();
-                ev.Player.EffectsManager.EnableEffect<Scp1853>();
-                ev.Player.Health = 7000;
+                
+                ev.Player.GiveLoadout(_plugin.Config.ZombieLoadouts);
+                // Extensions.SetRole(ev.Player, RoleTypeId.Scp0492, RoleSpawnFlags.AssignInventory);
+                ev.Player.Position = Player.GetPlayers().FirstOrDefault(x => x.IsSCP)!.Position;
+                //RandomClass.GetSpawnPosition(_plugin.MapInfo.Map);
+
             }
             else
             {
-                Extensions.SetRole(ev.Player, RoleTypeId.NtfSergeant, RoleSpawnFlags.AssignInventory);
-                ev.Player.Position = RandomClass.GetSpawnPosition(_plugin.MapInfo.Map);
-                Extensions.SetPlayerAhp(ev.Player, 100, 100, 0);
+                ev.Player.GiveLoadout(_plugin.Config.MTFLoadouts);
+                // Extensions.SetRole(ev.Player, RoleTypeId.NtfSergeant, RoleSpawnFlags.AssignInventory);
+                // ev.Player.Position = RandomClass.GetSpawnPosition(_plugin.MapInfo.Map);
+                ev.Player.Position = Player.GetPlayers().FirstOrDefault(x => !x.IsSCP)!.Position;
+                // Extensions.SetPlayerAhp(ev.Player, 100, 100, 0);
 
                 Timing.CallDelayed(0.1f, () =>
                 {

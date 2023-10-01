@@ -23,7 +23,7 @@ namespace AutoEvent.Games.Glass
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.GlassTranslate.GlassName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.GlassTranslate.GlassDescription;
         public override string Author { get; set; } = "KoT0XleB";
-        public override string CommandName { get; set; } = "glass";
+        public override string CommandName { get; set; } =  AutoEvent.Singleton.Translation.GlassTranslate.GlassCommandName;
         [EventConfig] public GlassConfig Config { get; set; }
         public MapInfo MapInfo { get; set; } = new MapInfo()
             {MapName = "Glass", Position = new Vector3(76f, 1026.5f, -43.68f) };
@@ -31,7 +31,7 @@ namespace AutoEvent.Games.Glass
             { SoundName = "CrabGame.ogg", Volume = 15, Loop = true };
         protected override float PostRoundDelay { get; set; } = 10f;
         private EventHandler EventHandler { get; set; }
-        private GlassTranslate Translation { get; set; }
+        private GlassTranslate Translation { get; set; } = AutoEvent.Singleton.Translation.GlassTranslate;
         private List<GameObject> _platforms;
         private GameObject _lava;
         private GameObject _finish;
@@ -39,7 +39,6 @@ namespace AutoEvent.Games.Glass
 
         protected override void RegisterEvents()
         {
-            Translation = new GlassTranslate();
             EventHandler = new EventHandler();
             EventManager.RegisterEvents(EventHandler);
             Servers.TeamRespawn += EventHandler.OnTeamRespawn;
@@ -122,7 +121,8 @@ namespace AutoEvent.Games.Glass
             {
                 Extensions.SetRole(player, RoleTypeId.ClassD, RoleSpawnFlags.None);
                 player.Position = RandomClass.GetSpawnPosition(MapInfo.Map);
-                player.EffectsManager.EnableEffect<Disabled>();
+                // player.EffectsManager.EnableEffect<MovementBoost>(0, false);
+                // player.EffectsManager.Eff<MovementBoost>;
             }
         }
 
@@ -149,20 +149,20 @@ namespace AutoEvent.Games.Glass
             bool playerNotOnPlatform = false;
             foreach (Player ply in Player.GetPlayers().Where(ply => ply.IsAlive))
             {
-                if (Vector3.Distance(_finish.transform.position, ply.Position) >= 10)
+                if (Vector3.Distance(_finish.transform.position, ply.Position) >= 4)
                 {
                     playerNotOnPlatform = true;
                     break;
                 }
             }
-            return !(EventTime.TotalSeconds < _matchTimeInSeconds + 15 && Player.GetPlayers().Count(r => r.IsAlive) > 0 && playerNotOnPlatform);
+            return !(EventTime.TotalSeconds < _matchTimeInSeconds && Player.GetPlayers().Count(r => r.IsAlive) > 0 && playerNotOnPlatform);
         }
 
         protected override void ProcessFrame()
         {
             var text = Translation.GlassStart;
             text = text.Replace("{plyAlive}", Player.GetPlayers().Count(r => r.IsAlive).ToString());
-            text = text.Replace("{eventTime}", $"{EventTime.Minutes:00}:{EventTime.Seconds:00}");
+            text = text.Replace("{time}", $"{EventTime.Minutes:00}:{EventTime.Seconds:00}");
 
             Extensions.Broadcast(text, 1);
         }
@@ -179,7 +179,7 @@ namespace AutoEvent.Games.Glass
             
             if (Player.GetPlayers().Count(r => r.IsAlive) > 1)
             {
-                Extensions.Broadcast(Translation.GlassWinSurvived.Replace("{countAlive}", Player.GetPlayers().Count(r => r.IsAlive).ToString()), 3);
+                Extensions.Broadcast(Translation.GlassWinSurvived.Replace("{plyAlive}", Player.GetPlayers().Count(r => r.IsAlive).ToString()), 3);
             }
             else if (Player.GetPlayers().Count(r => r.IsAlive) == 1)
             {

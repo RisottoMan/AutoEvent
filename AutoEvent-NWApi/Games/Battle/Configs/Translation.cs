@@ -1,7 +1,14 @@
-﻿namespace AutoEvent.Games.Battle
+﻿using Exiled.API.Interfaces;
+
+namespace AutoEvent.Games.Battle
 {
-    public class BattleTranslate
+#if EXILED
+    public class BattleTranslate  : ITranslation 
+#else
+    public class BattleTranslate 
+#endif
     {
+        public string BattleCommandName { get; set; } = "battle";
         public string BattleName { get; set; } = "Battle";
         public string BattleDescription { get; set; } = "MTF fight against CI in an arena!";
         public string BattleTimeLeft { get; set; } = "<size=100><color=red>Battle Starting in {time} </color></size>";

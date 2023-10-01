@@ -123,9 +123,9 @@ public class Loader
 
                         try
                         {
-                            eventPlugin.InstantiateEvent();
                             eventPlugin.LoadConfigs();
                             eventPlugin.LoadTranslation();
+                            eventPlugin.InstantiateEvent();
                         }
                         catch (Exception e)
                         {

@@ -35,11 +35,13 @@ public class GunGameConfig : EventConfig
         new GunRole(ItemType.GunE11SR, 8),
         new GunRole(ItemType.GunRevolver, 9),
         new GunRole(ItemType.ParticleDisruptor, 10),
-        new GunRole(ItemType.GunAK, 11),
-        new GunRole(ItemType.GunE11SR, 12),
-        new GunRole(ItemType.GunLogicer, 13),
-        new GunRole(ItemType.Jailbird, 14),
-        new GunRole(ItemType.None, 15),
+        new GunRole(ItemType.GunA7, 11),
+        new GunRole(ItemType.GunAK, 12),
+        new GunRole(ItemType.GunE11SR, 13),
+        new GunRole(ItemType.GunLogicer, 14),
+        new GunRole(ItemType.GunFRMG0, 15),
+        new GunRole(ItemType.Jailbird, 16),
+        new GunRole(ItemType.None, 17),
     };
 
     [Description("The loadouts a player can get.")]

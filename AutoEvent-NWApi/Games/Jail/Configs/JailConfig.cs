@@ -21,6 +21,15 @@ namespace AutoEvent.Games.Infection;
 
 public class JailConfig : EventConfig
 {
+    [Description("How many lives each prisoner gets.")]
+    public int PrisonerLives { get; set; } = 3;
+
+    [Description("A list of lockdown settings available.")]
+    public LockdownSettings LockdownSettings { get; set; } = new LockdownSettings();
+
+    [Description("How many players will spawn as the jailors.")]
+    public RoleCount JailorRoleCount { get; set; } = new RoleCount(1, 4, 15f);
+    
     [Description($"A list of loadouts for the jailors.")]
     [YamlMember(DefaultValuesHandling = DefaultValuesHandling.OmitDefaults | DefaultValuesHandling.OmitNull | DefaultValuesHandling.OmitEmptyCollections)]
     public List<Loadout> JailorLoadouts { get; set; } = new List<Loadout>()
@@ -31,7 +40,8 @@ public class JailConfig : EventConfig
             Items = new List<ItemType>()
             {
                 ItemType.GunE11SR,
-                ItemType.GunCOM18
+                ItemType.GunCOM18,
+                ItemType.KeycardMTFCaptain
             }
         },
     };
@@ -85,7 +95,16 @@ public class JailConfig : EventConfig
     {
         new Loadout()
         {
-            ArtificialHealth = 100
+            ArtificialHealth = new ArtificialHealth()
+            {
+                InitialAmount = 50f,
+                MaxAmount = 50f,
+                RegenerationAmount = -3f,
+                AbsorptionPercent = 70,
+                Permanent = false,
+                Duration = 10f,
+                ClearOtherInstances = true,
+            }
         }
     };
 }

@@ -20,18 +20,17 @@ namespace AutoEvent.Games.Escape
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.EscapeTranslate.EscapeName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.EscapeTranslate.EscapeDescription;
         public override string Author { get; set; } = "KoT0XleB";
-        public override string CommandName { get; set; } = "escape";
+        public override string CommandName { get; set; } = AutoEvent.Singleton.Translation.EscapeTranslate.EscapeCommandName;
         [EventConfig]
         public EscapeConfig Config { get; set; }
         public SoundInfo SoundInfo { get; set; } =
             new SoundInfo() { SoundName = "Escape.ogg", Volume = 25, Loop = true};
         protected override float PostRoundDelay { get; set; } = 5f;
         private EventHandler EventHandler { get; set; }
-        private EscapeTranslate _translation;
+        private EscapeTranslate Translation { get; set; } = AutoEvent.Singleton.Translation.EscapeTranslate;
 
         protected override void RegisterEvents()
         {
-            _translation = new EscapeTranslate();
             EventHandler = new EventHandler();
             EventManager.RegisterEvents(EventHandler);
             Servers.TeamRespawn += EventHandler.OnTeamRespawn;
@@ -54,7 +53,7 @@ namespace AutoEvent.Games.Escape
         {
             // Elapsed Time is smaller than the explosion time &&
             // At least one player is alive.
-            return !(EventTime.TotalSeconds <= Config.EscapeDurationInSeconds + 10 && Player.GetPlayers().Count(r => r.IsAlive) > 0);
+            return !(EventTime.TotalSeconds <= Config.EscapeDurationInSeconds && Player.GetPlayers().Count(r => r.IsAlive) > 0);
         }
 
         protected override void OnStart()
@@ -78,7 +77,7 @@ namespace AutoEvent.Games.Escape
 
         protected override void ProcessFrame()
         {
-            Extensions.Broadcast(_translation.EscapeCycle.Replace("{name}", Name).Replace("{time}", (Config.EscapeDurationInSeconds - EventTime.TotalSeconds).ToString("00")), 1);
+            Extensions.Broadcast(Translation.EscapeCycle.Replace("{name}", Name).Replace("{time}", (Config.EscapeDurationInSeconds - EventTime.TotalSeconds).ToString("00")), 1);
         }
 
         protected override IEnumerator<float> BroadcastStartCountdown()
@@ -86,7 +85,7 @@ namespace AutoEvent.Games.Escape
             for (int time = 10; time > 0; time--)
             {
                 Extensions.Broadcast(
-                    _translation.EscapeBeforeStart.Replace("{name}", Name).Replace("{time}", ((int)time).ToString()), 1);
+                    Translation.EscapeBeforeStart.Replace("{name}", Name).Replace("{time}", ((int)time).ToString()), 1);
                 yield return Timing.WaitForSeconds(1f);
             }
 
@@ -107,7 +106,7 @@ namespace AutoEvent.Games.Escape
                 }
             }
 
-            Extensions.Broadcast(_translation.EscapeEnd.Replace("{name}", Name).Replace("{players}", Player.GetPlayers().Count(x => x.IsAlive).ToString()), 10);
+            Extensions.Broadcast(Translation.EscapeEnd.Replace("{name}", Name).Replace("{players}", Player.GetPlayers().Count(x => x.IsAlive).ToString()), 10);
         }
 
     }

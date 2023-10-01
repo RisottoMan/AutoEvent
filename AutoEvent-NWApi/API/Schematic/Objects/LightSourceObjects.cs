@@ -7,7 +7,7 @@ namespace AutoEvent.API.Schematic.Objects
     using Serializable;
     using UnityEngine;
 
-    public class LightSourceObject : MapEditorObject
+    public class LightSourceObjects : MapEditorObject
     {
         private Transform _transform;
         private LightSourceToy _lightSourceToy;
@@ -18,9 +18,9 @@ namespace AutoEvent.API.Schematic.Objects
             _lightSourceToy = GetComponent<LightSourceToy>();
         }
 
-        public LightSourceObject Init(LightSourceSerializable lightSourceSerializable, bool spawn = true)
+        public LightSourceObjects Init(LightSourcesSerializable lightSourcesSerializable, bool spawn = true)
         {
-            Base = lightSourceSerializable;
+            Base = lightSourcesSerializable;
             _lightSourceToy.MovementSmoothing = 60;
 
             UpdateObject();
@@ -45,7 +45,7 @@ namespace AutoEvent.API.Schematic.Objects
             return this;
         }
 
-        public LightSourceSerializable Base;
+        public LightSourcesSerializable Base;
 
         public override bool IsRotatable => false;
 

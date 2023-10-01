@@ -4,18 +4,18 @@
 // -----------------------------------------
 //    Solution:         AutoEvent
 //    Project:          AutoEvent
-//    FileName:         InfiniteAmmoComponent.cs
+//    FileName:         PickupComponent.cs
 //    Author:           Redforce04#4091
-//    Revision Date:    09/19/2023 3:08 PM
-//    Created Date:     09/19/2023 3:08 PM
+//    Revision Date:    09/22/2023 10:11 PM
+//    Created Date:     09/22/2023 10:11 PM
 // -----------------------------------------
+
 
 using UnityEngine;
 
 namespace AutoEvent.API;
 
-public class InfiniteAmmoComponent : Component
+public class PickupComponent : Component
 {
-    public InfiniteAmmoComponent() { }
-    public bool EndlessClip { get; set; } = false;
+    // Used to track pickups.
 }
