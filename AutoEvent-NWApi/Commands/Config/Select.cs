@@ -15,6 +15,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
+using AutoEvent.API;
 using AutoEvent.Interfaces;
 using CommandSystem;
 using PluginAPI.Core;
@@ -73,42 +74,21 @@ public class Select : ICommand, IUsageProvider, IPermission
             return false;
         }
 
-        // Config doesnt exist.
-        var conf = ev.ConfigPresets.FirstOrDefault(x => x.PresetName.ToLower() == arguments.At(1).ToLower());
-        if (conf is null)
+        if (!ev.TryGetPresetName(arguments.At(1), out string presetName))
         {
             response = $"Could not find preset \"{arguments.At(1)}\"";
             return false;
         }
+        
 
-        bool failed = false;
-        foreach (PropertyInfo property in ev.GetType().GetProperties())
+        if (ev.SetConfig(arguments.At(1)))
         {
-            if (property.GetCustomAttribute<EventConfigAttribute>() is null)
-                continue;
-            if (property.GetCustomAttribute<EventConfigPresetAttribute>() is not null)
-                continue;
-            if (property.PropertyType != conf.GetType() && property.PropertyType.BaseType != conf.GetType())
-                continue;
-            DebugLogger.LogDebug($"[{conf.PresetName}->{property.Name}] Property: {property.PropertyType?.Name} PropBase: {property.PropertyType.BaseType?.Name}, Conf: {conf.GetType()?.Name}, ConfBase: {conf.GetType().BaseType?.Name}");
-            try
-            {
-                property.SetValue(ev, conf);
-            }
-            catch (Exception e)
-            {
-                failed = true;
-                DebugLogger.LogDebug($"Could not set value of property while changing presets. \n{e}");
-            }
-        }
-
-        if (failed)
-        {
+            
             response = "Could not load config presets due to an error.";
             return false;
         }
         
-        response = $"Successfully selected preset {conf.PresetName} for event \"{ev.Name}\".";
+        response = $"Successfully selected preset {presetName} for event \"{ev.Name}\".";
         return true; 
     BasicUsage:
     response += $"Command Usage: \n";

@@ -11,6 +11,7 @@
 // -----------------------------------------
 
 using System.Collections.Generic;
+using AutoEvent.API;
 using YamlDotNet.Serialization;
 
 namespace AutoEvent.Configs.Tools;
