@@ -24,7 +24,7 @@ namespace AutoEvent
 #if EXILED
     public class AutoEvent : Plugin<Config, Translation>
     {
-        public override System.Version Version => new System.Version(9, 1, 5);
+        public override System.Version Version => new System.Version(9, 1, 7);
         public override string Name => "AutoEvent";
         public override string Author => "Created by KoT0XleB, extended by swd and sky, Co-Maintained by Redforce04";
         public static bool IsPlayedGames;
@@ -54,7 +54,7 @@ namespace AutoEvent
         public override void OnEnabled()
 #else
         [PluginPriority(LoadPriority.Low)]
-        [PluginEntryPoint("AutoEvent", "9.1.5", "An event manager plugin that allows you to run mini-games.",
+        [PluginEntryPoint("AutoEvent", "9.1.7", "An event manager plugin that allows you to run mini-games.",
             "KoT0XleB and Redforce04")]
         void OnEnabled()
 #endif
