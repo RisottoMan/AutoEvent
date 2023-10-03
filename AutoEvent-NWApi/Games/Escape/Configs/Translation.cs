@@ -8,7 +8,7 @@ namespace AutoEvent.Games.Infection
     public class EscapeTranslate
 #endif
     {
-        public string EscapeCommandName { get; set; } = "Atomic Escape";
+        public string EscapeCommandName { get; set; } = "escape";
         public string EscapeName { get; set; } = "Atomic Escape";
         public string EscapeDescription { get; set; } = "Escape from the facility behind SCP-173 at supersonic speed!";
         public string EscapeBeforeStart { get; set; } = "{name}\nPrepare to escape from the facility before it explodes!\n<color=red>Time until round starts: {time} seconds</color>";

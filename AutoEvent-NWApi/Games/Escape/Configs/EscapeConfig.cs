@@ -13,10 +13,10 @@
 using System.ComponentModel;
 using AutoEvent.Interfaces;
 
-namespace AutoEvent.Games.Infection;
+namespace AutoEvent.Games.Escape;
 
 public class EscapeConfig : EventConfig
 {
-    [Description("How long players have to escape. [Default: 80]")]
-    public int EscapeDurationInSeconds { get; set; } = 80;
+    [Description("How long players have to escape. [Default: 70]")]
+    public int EscapeDurationInSeconds { get; set; } = 70;
 }

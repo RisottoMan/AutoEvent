@@ -42,7 +42,7 @@ namespace AutoEvent.Commands
                 switch (ev)
                 {
                     case IInternalEvent:
-                        color = "yellow";
+                        color = "red";
                         break;
                     case IExiledEvent:
                         color = "blue";
@@ -52,19 +52,19 @@ namespace AutoEvent.Commands
                         break;
                 }
                 if(!IsConsoleCommandSender)
-                    builder.AppendLine($"<color={color}>{ev.Name} [<color=white>{ev.CommandName}<color={color}>]: {ev.Description}");
+                    builder.AppendLine($"<color={color}>{ev.Name}</color> [<color=yellow>{ev.CommandName}</color>]: <color=white>{ev.Description}</color>");
                 else
                     builder.AppendLine($"{ev.Name} [{ev.CommandName}]: {ev.Description}");
             }
 
             if (!IsConsoleCommandSender)
             {
-                builder.AppendLine("\n<color=yellow>To run an event, use the [<i><color=white>Command Name<color=yellow></i>] like following:</color>");
-                builder.AppendLine("<color=yellow>Ev Run <i>CommandName</i></color>");
+                builder.AppendLine("\nTo run an event, use the [<i><color=yellow>CommandName</color></i>] like following:");
+                builder.AppendLine("Ev Run <i><color=yellow>CommandName</color></i>");
             }
             else
             {
-                builder.AppendLine("\nTo run an event, use the [Command Name] like following:");
+                builder.AppendLine("\nTo run an event, use the [CommandName] like following:");
                 builder.AppendLine("Ev Run CommandName");
                 
             }
