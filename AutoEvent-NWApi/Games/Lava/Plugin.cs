@@ -33,7 +33,7 @@ namespace AutoEvent.Games.Lava
         public MapInfo MapInfo { get; set; } = new MapInfo()
             {MapName = "Lava", Position = new Vector3(120f, 1020f, -43.5f), };
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
-            { SoundName = "Lava.ogg", Volume = 7, Loop = false };
+            { SoundName = "Lava.ogg", Volume = 8, Loop = false };
         private EventHandler EventHandler { get; set; }
         private LavaTranslate Translation { get; set; } = AutoEvent.Singleton.Translation.LavaTranslate;
         private GameObject _lava;

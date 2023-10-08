@@ -16,7 +16,7 @@ using AutoEvent.API;
 using AutoEvent.Interfaces;
 using PlayerRoles;
 
-namespace AutoEvent.Games.Infection;
+namespace AutoEvent.Games.Versus;
 
 public class VersusConfig : EventConfig
 {

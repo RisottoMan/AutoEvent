@@ -29,7 +29,7 @@ namespace AutoEvent.Games.Versus
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
             { SoundName = "Knife.ogg", Volume = 10, Loop = true };
 
-        protected override FriendlyFireSettings ForceEnableFriendlyFire { get; set; } = FriendlyFireSettings.Disable;
+        //protected override FriendlyFireSettings ForceEnableFriendlyFire { get; set; } = FriendlyFireSettings.Disable;
         private EventHandler EventHandler { get; set; }
         private VersusTranslate Translation { get; set; } = AutoEvent.Singleton.Translation.VersusTranslate;
         public Player Scientist { get; set; }

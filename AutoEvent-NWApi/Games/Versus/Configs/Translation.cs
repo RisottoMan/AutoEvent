@@ -9,7 +9,7 @@ namespace AutoEvent.Games.Infection
 #endif
     {
         public string VersusCommandName { get; set; } = "versus";
-        public string VersusName { get; set; } = "Fight Club";
+        public string VersusName { get; set; } = "Cock Fights";
         public string VersusDescription { get; set; } = "Duel of players on the 35hp map from cs 1.6";
         public string VersusPlayersNull { get; set; } = "<color=#D71868><b><i>{name}</i></b></color>\nGo inside the arena to fight each other!\n<color=red>{remain}</color> seconds left";
         public string VersusClassDNull { get; set; } = "<color=#D71868><b><i>{name}</i></b></color>\nThe player left alive <color=yellow>{scientist}</color>\nGo inside in <color=orange>{remain}</color> seconds";
