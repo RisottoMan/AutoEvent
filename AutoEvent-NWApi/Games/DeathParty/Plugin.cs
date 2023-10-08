@@ -34,7 +34,6 @@ namespace AutoEvent.Games.DeathParty
         private DeathTranslate Translation { get; set; } = AutoEvent.Singleton.Translation.DeathTranslate;
         private bool RespawnWithGrenades => Config.RespawnPlayersWithGrenades;
         public int Stage { get; private set; }
-        //private int _maxStage;
         private CoroutineHandle _grenadeCoroutineHandle;
 
         protected override void RegisterEvents()
@@ -69,8 +68,6 @@ namespace AutoEvent.Games.DeathParty
         protected override void OnStart()
         {
             Server.FriendlyFire = true;
-            //_maxStage = Config.Rounds;
-            //_maxStage = 5;
 
             foreach (Player player in Player.GetPlayers())
             {
@@ -116,6 +113,7 @@ namespace AutoEvent.Games.DeathParty
             // Stage hasn't yet hit the max stage.
             return !(Player.GetPlayers().Count(r => r.IsAlive && r.Role != RoleTypeId.ChaosConscript) > 0 && Stage <= Config.Rounds);
         }
+
         public IEnumerator<float> GrenadeCoroutine()
         { 
             Stage = 1;
@@ -132,19 +130,7 @@ namespace AutoEvent.Games.DeathParty
                 {
                     yield break;
                 }
-                // Defaults: 
-                // count += 30;     20,  50,  80,  110, [ignored last round] 1
-                // timing -= 0.3f;  1.0, 0.7, 0.4, 0.1, [ignored last round] 10
-                // height -= 5f;    20,  15,  10,  5,   [ignored last round] 20
-                // fuse -= 2f;      10,  8,   6,   4,   [ignored last round] 10
-                // scale -= 1;      4,   3,   2,   1,   [ignored last round] 75
-                // radius += 7f;    4,   11,  18,  25   [ignored last round] 10
-                radius = Config.DifficultySpawnRadius.GetValue(Stage, Config.Rounds -1, 0.1f, 75);
-                scale = Config.DifficultyScale.GetValue(Stage, Config.Rounds -1, 0.1f, 75);
-                count = (int) Config.DifficultyCount.GetValue(Stage, Config.Rounds -1, 1, 300);
-                timing = Config.DifficultySpeed.GetValue(Stage, Config.Rounds -1, 0, 5);
-                height = Config.DifficultyHeight.GetValue(Stage, Config.Rounds -1, 0,  30);
-                fuse = Config.DifficultyFuseTime.GetValue(Stage, Config.Rounds -1, 2, 10);
+
                 DebugLogger.LogDebug($"Stage: {Stage}/{Config.Rounds}. Radius: {radius}, Scale: {scale}, Count: {count}, Timing: {timing}, Height: {height}, Fuse: {fuse}, Target: {Config.TargetPlayers}");
                 
                 // Not the last round.
@@ -174,7 +160,23 @@ namespace AutoEvent.Games.DeathParty
                 }
 
                 yield return Timing.WaitForSeconds(15f);
+
+                // Defaults: 
+                count += 30;     //20,  50,  80,  110, [ignored last round] 1
+                timing -= 0.3f;  //1.0, 0.7, 0.4, 0.1, [ignored last round] 10
+                height -= 5f;    //20,  15,  10,  5,   [ignored last round] 20
+                fuse -= 2f;      //10,  8,   6,   4,   [ignored last round] 10
+                scale -= 1;      //4,   3,   2,   1,   [ignored last round] 75
+                radius += 7f;    //4,   11,  18,  25   [ignored last round] 10
                 Stage++;
+                /*
+                radius = Config.DifficultySpawnRadius.GetValue(Stage, Config.Rounds -1, 0.1f, 75);
+                scale = Config.DifficultyScale.GetValue(Stage, Config.Rounds -1, 0.1f, 75);
+                count = (int) Config.DifficultyCount.GetValue(Stage, Config.Rounds -1, 1, 300);
+                timing = Config.DifficultySpeed.GetValue(Stage, Config.Rounds -1, 0, 5);
+                height = Config.DifficultyHeight.GetValue(Stage, Config.Rounds -1, 0,  30);
+                fuse = Config.DifficultyFuseTime.GetValue(Stage, Config.Rounds -1, 2, 10);
+                */
             }
 
             yield break;
@@ -197,9 +199,9 @@ namespace AutoEvent.Games.DeathParty
             {
                 Extensions.Broadcast(Translation.DeathMorePlayer.Replace("{count}", $"{Player.GetPlayers().Count(r => r.Role != RoleTypeId.ChaosConscript)}").Replace("{time}", time), 10);
             }
-            else if (Player.GetPlayers().Count(r => r.IsAlive) == 1)
+            else if (Player.GetPlayers().Count(r => r.IsAlive && r.Role != RoleTypeId.ChaosConscript) == 1)
             {
-                var player = Player.GetPlayers().First(r => r.IsAlive);
+                var player = Player.GetPlayers().First(r => r.IsAlive && r.Role != RoleTypeId.ChaosConscript);
                 player.Health = 1000;
                 Extensions.Broadcast(Translation.DeathOnePlayer.Replace("{winner}", player.Nickname).Replace("{time}", time), 10);
             }
@@ -208,7 +210,5 @@ namespace AutoEvent.Games.DeathParty
                 Extensions.Broadcast(Translation.DeathAllDie.Replace("{time}", time), 10);
             }
         }
-
-        
-}
+    }
 }

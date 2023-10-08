@@ -25,7 +25,7 @@ namespace AutoEvent.Games.Boss
             { MapName = "DeathParty", Position = new Vector3(6f, 1030f, -43.5f) };
 
         public SoundInfo SoundInfo { get; set; } = new SoundInfo() 
-            { SoundName = "Boss.ogg", Loop = false, Volume = 7, StartAutomatically = false };
+            { SoundName = "Boss.ogg", Loop = true, Volume = 7, StartAutomatically = false };
 
         [EventConfig] 
         public BossConfig Config { get; set; } 
