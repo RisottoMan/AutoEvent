@@ -32,7 +32,7 @@ namespace AutoEvent.Games.Lava
                 if (Player.Get(other.gameObject) is Player)
                 {
                     var pl = Player.Get(other.gameObject);
-                    pl.Damage(new CustomReasonDamageHandler(AutoEvent.Singleton.Translation.PuzzleTranslate.PuzzleDied, 30));
+                    pl.Damage(30, "<color=red>Burned in Lava</color>");
                 }
             }
         }

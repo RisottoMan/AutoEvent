@@ -145,7 +145,7 @@ namespace AutoEvent.Games.Lava
         {
             // If over one player is alive &&
             // Time is under 10 minutes (+ countdown)
-            return !(Player.GetPlayers().Count(r => r.IsAlive) > 1 && EventTime.TotalSeconds < 600 );
+            return !(Player.GetPlayers().Count(r => r.IsAlive) > 1 && EventTime.TotalSeconds < 600);
         }
 
         protected override void ProcessFrame()
