@@ -1,11 +1,13 @@
 ﻿using AutoEvent.Events.EventArgs;
 using InventorySystem.Configs;
+using InventorySystem.Items.Firearms;
 using PlayerRoles;
 using PluginAPI.Core;
 using PluginAPI.Core.Attributes;
 using PluginAPI.Enums;
 using PluginAPI.Events;
 using System.Collections.Generic;
+using YamlDotNet.Core.Tokens;
 
 namespace AutoEvent.Games.Boss
 {
@@ -15,6 +17,12 @@ namespace AutoEvent.Games.Boss
         public void OnJoin(PlayerJoinedEvent ev)
         {
             ev.Player.SetRole(RoleTypeId.Spectator);
+        }
+
+        [PluginEvent(ServerEventType.PlayerShotWeapon)]
+        public void OnShooting(PlayerShotWeaponEvent ev)
+        {
+            ev.Firearm.Status = new FirearmStatus(255, ev.Firearm.Status.Flags, ev.Firearm.Status.Attachments);
         }
 
         [PluginEvent(ServerEventType.PlayerReloadWeapon)]

@@ -33,6 +33,7 @@ namespace AutoEvent.Games.Boss
         private BossTranslate Translation { get; set; } = AutoEvent.Singleton.Translation.BossTranslate;
         private List<Player> _boss;
         private TimeSpan _elapsedDuration { get; set; }
+        private int _maxHp { get; set; }
 
         protected override void OnStart()
         {
@@ -101,31 +102,33 @@ namespace AutoEvent.Games.Boss
             StartAudio();
             foreach (var player in Config.BossCount.GetPlayers())
             {
-                // Lots of this is handled by the GiveLoadout() system now.
                 _boss.Add(player);
                 player.GiveLoadout(Config.BossLoadouts);
-                //Extensions.SetRole(_boss, RoleTypeId.ChaosConscript, RoleSpawnFlags.None);
                 player.Position = RandomClass.GetSpawnPosition(MapInfo.Map);
-
                 player.Health = Player.GetPlayers().Count() * 4000;
-                // Extensions.SetPlayerScale(_boss, new Vector3(5, 5, 5));
-
-                //_boss.ClearInventory();
-                //_boss.AddItem(ItemType.GunLogicer);
                 Timing.CallDelayed(0.1f, () => { player.CurrentItem = player.Items.First(); });
             }
+
+            _maxHp = (int)_boss.Sum(x => x.Health);
             TimeSpan duration = EventTime.Subtract(TimeSpan.FromSeconds(Config.DurationInSeconds));
         }
         
-
         protected override void ProcessFrame()
         {
+            string hpBar = ">■";
+            for (int i = 0; i < (int)((_boss.Sum(x => x.Health) * 10) / _maxHp); i++)
+            {
+                hpBar += "■■";
+            }
+            hpBar += "<";
+
             string text = Translation.BossCounter;
-            text = text.Replace("{hp}", $"{(int)_boss.Sum(x => x.Health)}");
+            text = text.Replace("{hpbar}", hpBar);
             text = text.Replace("{count}", $"{Player.GetPlayers().Count(r => r.IsNTF)}");
             text = text.Replace("{time}", $"{_elapsedDuration.Minutes:00}:{_elapsedDuration.Seconds:00}");
 
             Extensions.Broadcast(text, 1);
+
             _elapsedDuration -= TimeSpan.FromSeconds(FrameDelayInSeconds);
         }
 
@@ -139,8 +142,6 @@ namespace AutoEvent.Games.Boss
             {
                 Extensions.Broadcast(Translation.BossHumansWin.Replace("{count}", $"{Player.GetPlayers().Count(r => r.IsNTF)}"), 10);
             }
-            
         }
-
     }
 }
