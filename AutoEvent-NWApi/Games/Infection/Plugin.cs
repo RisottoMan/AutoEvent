@@ -141,7 +141,6 @@ namespace AutoEvent.Games.Infection
             }
         }
 
-
         protected override void OnFinished()
         {
             if (Player.GetPlayers().Count(r => r.Role == RoleTypeId.ClassD) == 0)

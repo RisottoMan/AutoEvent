@@ -175,8 +175,6 @@ namespace AutoEvent.Games.Jail
             
         }
 
-        
-        
         protected override IEnumerator<float> BroadcastStartCountdown()
         {
             List<Player> jailors = new List<Player>();
@@ -199,7 +197,7 @@ namespace AutoEvent.Games.Jail
                     ply.SendBroadcast(Translation.JailBeforeStart.Replace("{name}", Name).Replace("{time}", time.ToString()), 1);
                 }
                 yield return Timing.WaitForSeconds(1f);
-                JailLockdownSystem.ProcessTick(true);
+                //JailLockdownSystem.ProcessTick(true);
             }
         }
 
@@ -213,9 +211,6 @@ namespace AutoEvent.Games.Jail
 
         protected override void ProcessFrame()
         {
-            JailLockdownSystem.ProcessTick();
-            
-            
             string dClassCount = Player.GetPlayers().Count(r => r.Role == RoleTypeId.ClassD).ToString();
             string mtfCount = Player.GetPlayers().Count(r => r.Team == Team.FoundationForces).ToString();
             string time = $"{EventTime.Minutes:00}:{EventTime.Seconds:00}";
@@ -233,7 +228,6 @@ namespace AutoEvent.Games.Jail
                     Translation.JailCycle.Replace("{name}", Name).Replace("{dclasscount}", dClassCount)
                         .Replace("{mtfcount}", mtfCount).Replace("{time}", time), 1);
             }
-
             
             foreach (var doorComponent in _doors)
             {
@@ -242,10 +236,12 @@ namespace AutoEvent.Games.Jail
                 bool lockdownActive = JailLockdownSystem.LockDownActive;
                 foreach (Player player in Player.GetPlayers())
                 {
+                    /*
                     if (Config.LockdownSettings.LockdownLocksGatesAsWell && lockdownActive && !player.HasKeycardLevel(KeycardPermissions.Checkpoints | KeycardPermissions.BypassMode))
                     {
                         continue;
                     }
+                    */
                     if (Vector3.Distance(doorTransform.position, player.Position) < 3)
                     {
                         doorComponent.GetComponent<DoorComponent>().Open();

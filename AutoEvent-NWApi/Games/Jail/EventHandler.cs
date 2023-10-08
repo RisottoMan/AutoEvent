@@ -135,16 +135,13 @@ namespace AutoEvent.Games.Jail
                             _plugin.MapInfo.Map.gameObject.transform.position +
                             new Vector3(17.855f, -12.43052f, -23.632f)) < 2)
                     {
-                        ev.Player.GiveLoadout(_plugin.Config.MedicalLoadouts,
-                            LoadoutFlags.IgnoreRole | LoadoutFlags.IgnoreGodMode | LoadoutFlags.IgnoreWeapons);
-                        //Extensions.SetPlayerAhp(ev.Player, 100, 100, 0);
-                        //ev.Player.ArtificialHealth = 100;
+                        ev.Player.GiveLoadout(_plugin.Config.AdrenalineLoadouts,
+                            LoadoutFlags.IgnoreRole | LoadoutFlags.IgnoreGodMode | LoadoutFlags.IgnoreWeapons | LoadoutFlags.DontClearDefaultItems);
                     }
                     else
                     {
-                        ev.Player.GiveLoadout(_plugin.Config.AdrenalineLoadouts,
-                            LoadoutFlags.IgnoreRole | LoadoutFlags.IgnoreGodMode | LoadoutFlags.IgnoreWeapons);
-                        // ev.Player.Health = ev.Player.MaxHealth;
+                        ev.Player.GiveLoadout(_plugin.Config.MedicalLoadouts,
+                            LoadoutFlags.IgnoreRole | LoadoutFlags.IgnoreGodMode | LoadoutFlags.IgnoreWeapons | LoadoutFlags.DontClearDefaultItems);
                     }
                 }
             }

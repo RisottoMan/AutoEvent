@@ -40,8 +40,7 @@ public class JailConfig : EventConfig
             Items = new List<ItemType>()
             {
                 ItemType.GunE11SR,
-                ItemType.GunCOM18,
-                ItemType.KeycardMTFCaptain
+                ItemType.GunCOM18
             }
         },
     };
@@ -52,6 +51,7 @@ public class JailConfig : EventConfig
     {
         new Loadout()
         {
+            InfiniteAmmo = AmmoMode.InfiniteAmmo,
             Roles = new Dictionary<RoleTypeId, int>()
             {
                 { RoleTypeId.ClassD, 100 }
@@ -65,6 +65,7 @@ public class JailConfig : EventConfig
     {
         new Loadout()
         {
+            InfiniteAmmo = AmmoMode.InfiniteAmmo,
             Items = new List<ItemType>()
             {
                 ItemType.GunE11SR,
@@ -73,6 +74,7 @@ public class JailConfig : EventConfig
         },
         new Loadout()
         {
+            InfiniteAmmo = AmmoMode.InfiniteAmmo,
             Items = new List<ItemType>()
             {
                 ItemType.GunCrossvec,
@@ -97,12 +99,12 @@ public class JailConfig : EventConfig
         {
             ArtificialHealth = new ArtificialHealth()
             {
-                InitialAmount = 50f,
-                MaxAmount = 50f,
-                RegenerationAmount = -3f,
+                InitialAmount = 100f,
+                MaxAmount = 100f,
+                RegenerationAmount = 0,
                 AbsorptionPercent = 70,
                 Permanent = false,
-                Duration = 10f,
+                Duration = 0,
                 ClearOtherInstances = true,
             }
         }

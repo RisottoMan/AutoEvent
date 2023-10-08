@@ -485,6 +485,8 @@ namespace AutoEvent
 
         public static void StopAudio()
         {
+            if (AudioBot == null) return;
+
             var audioPlayer = AudioPlayerBase.Get(AudioBot);
 
             if (audioPlayer.CurrentPlay != null)
