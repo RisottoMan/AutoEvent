@@ -101,7 +101,6 @@ namespace AutoEvent.Games.Puzzle
             _speed = 5;
             _timeDelay = 0.5f;
             _listPlatforms = _platforms;
-
         }
 
         protected override bool IsRoundDone()
@@ -110,6 +109,7 @@ namespace AutoEvent.Games.Puzzle
             // at least one player is alive.
             return !(_stage <= _finaleStage && Player.GetPlayers().Count(r => r.IsAlive) > 0);
         }
+
         protected override IEnumerator<float> RunGameCoroutine()
         {
             while (!IsRoundDone() || DebugLogger.AntiEnd)
@@ -130,105 +130,63 @@ namespace AutoEvent.Games.Puzzle
         public IEnumerator<float> PuzzleCoroutine()
         {
             _stageText = Translation.PuzzleStage
-                    .Replace("{stageNum}", $"{_stage}")
-                    .Replace("{stageFinal}", $"{_finaleStage}")
-                    .Replace("{plyCount}", $"{Player.GetPlayers().Count(r => r.IsAlive)}");
-                /*for (float time = speed * 2; time > 0; time--)
-                {
-                    foreach (var platform in Platformes)
-                    {
-                        platform.GetComponent<PrimitiveObjectToy>().NetworkMaterialColor = new Color(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f), 1f);
-                    }
-                    
-                    Extensions.Broadcast($"<b>{Name}</b>\n{stageText}", 1);
-                    yield return Timing.WaitForSeconds(timing);
-                }*/
-                for (float time = _speed * 2; time > 0; time--)
-                {
-                    foreach (var platform in _platforms)
-                    {
-                        platform.GetComponent<PrimitiveObjectToy>().NetworkMaterialColor =
-                            new Color(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f), 1f);
-                    }
+                .Replace("{stageNum}", $"{_stage}")
+                .Replace("{stageFinal}", $"{_finaleStage}")
+                .Replace("{plyCount}", $"{Player.GetPlayers().Count(r => r.IsAlive)}");
 
-                    Extensions.Broadcast($"<b>{Name}</b>\n{_stageText}", 1);
-                    yield return Timing.WaitForSeconds(_timeDelay);
-                }
-
-
-                /*var randPlatform = ListPlatformes.RandomItem();
-                ListPlatformes = new List<GameObject>();
-                randPlatform.GetComponent<PrimitiveObjectToy>().NetworkMaterialColor = Color.green;*/
-                
-                var randPlatform = _listPlatforms.RandomItem();
-                _listPlatforms = new List<GameObject>();
-                randPlatform.GetComponent<PrimitiveObjectToy>().NetworkMaterialColor = Color.green;
-
-                /*foreach (var platform in Platformes)
-                {
-                    if (platform != randPlatform)
-                    {
-                        platform.GetComponent<PrimitiveObjectToy>().NetworkMaterialColor = Color.magenta;
-                        ListPlatformes.Add(platform);
-                    }
-                }*/
+            for (float time = _speed * 2; time > 0; time--)
+            {
                 foreach (var platform in _platforms)
                 {
-                    if (platform != randPlatform)
-                    {
-                        platform.GetComponent<PrimitiveObjectToy>().NetworkMaterialColor = Color.magenta;
-                        _listPlatforms.Add(platform);
-                    }
+                    platform.GetComponent<PrimitiveObjectToy>().NetworkMaterialColor =
+                        new Color(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f), 1f);
                 }
-                /*Extensions.Broadcast($"<b>{_broadcastName}</b>\n{stageText}", (ushort)(speed + 1));
-                yield return Timing.WaitForSeconds(speed);*/
-                
-                Extensions.Broadcast($"<b>{_broadcastName}</b>\n{_stageText}", (ushort)(_speed + 1));
-                yield return Timing.WaitForSeconds(_speed);
 
-                /*foreach (var platform in Platformes)
-                {
-                    if (platform != randPlatform)
-                    {
-                        platform.transform.position += Vector3.down * 5;
-                    }
-                }*/
-                
-                foreach (var platform in _platforms)
-                {
-                    if (platform != randPlatform)
-                    {
-                        platform.transform.position += Vector3.down * 5;
-                    }
-                }
-                /*Extensions.Broadcast($"<b>{_broadcastName}</b>\n{stageText}", (ushort)(speed + 1));
-                yield return Timing.WaitForSeconds(speed); */
-                
-                Extensions.Broadcast($"<b>{_broadcastName}</b>\n{_stageText}", (ushort)(_speed + 1));
-                yield return Timing.WaitForSeconds(_speed);
-                
-                /*foreach (var platform in )
-                {
-                    if (platform != randPlatform)
-                    {
-                        platform.transform.position += Vector3.up * 5;
-                    }
-                }*/
-                foreach (var platform in _platforms)
-                {
-                    if (platform != randPlatform)
-                    {
-                        platform.transform.position += Vector3.up * 5;
-                    }
-                }
-                Extensions.Broadcast($"<b>{_broadcastName}</b>\n{_stageText}", (ushort)(_speed + 1));
-                yield return Timing.WaitForSeconds(_speed);
+                Extensions.Broadcast($"<b>{Name}</b>\n{_stageText}", 1);
+                yield return Timing.WaitForSeconds(_timeDelay);
+            }
 
-                _speed -= 0.4f;
-                _stage++;
-                _timeDelay -= 0.04f;
+            var randPlatform = _listPlatforms.RandomItem();
+            _listPlatforms = new List<GameObject>();
+            randPlatform.GetComponent<PrimitiveObjectToy>().NetworkMaterialColor = Color.green;
+
+            foreach (var platform in _platforms)
+            {
+                if (platform != randPlatform)
+                {
+                    platform.GetComponent<PrimitiveObjectToy>().NetworkMaterialColor = Color.magenta;
+                    _listPlatforms.Add(platform);
+                }
+            }
+                
+            Extensions.Broadcast($"<b>{_broadcastName}</b>\n{_stageText}", (ushort)(_speed + 1));
+            yield return Timing.WaitForSeconds(_speed);
+
+            foreach (var platform in _platforms)
+            {
+                if (platform != randPlatform)
+                {
+                    platform.transform.position += Vector3.down * 5;
+                }
+            }
+                
+            Extensions.Broadcast($"<b>{_broadcastName}</b>\n{_stageText}", (ushort)(_speed + 1));
+            yield return Timing.WaitForSeconds(_speed);
+                
+            foreach (var platform in _platforms)
+            {
+                if (platform != randPlatform)
+                {
+                    platform.transform.position += Vector3.up * 5;
+                }
+            }
+            Extensions.Broadcast($"<b>{_broadcastName}</b>\n{_stageText}", (ushort)(_speed + 1.5f));
+            yield return Timing.WaitForSeconds(_speed);
+
+            _speed -= 0.39f;
+            _stage++;
+            _timeDelay -= 0.039f;
         }
-
 
         protected override void OnFinished()
         {
