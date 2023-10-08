@@ -1,218 +1,79 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{3C3FC008-22E1-4B28-BA50-A241B30CC216}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>AutoEvent</RootNamespace>
-    <AssemblyName>AutoEvent</AssemblyName>
+    <TargetFramework>net48</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <AssemblyTitle>AutoEvent</AssemblyTitle>
+    <Product>AutoEvent</Product>
+    <Copyright>Copyright RisottoMan and Redforce04 © 2023</Copyright>
+    <OutputPath>bin\$(Configuration)\</OutputPath>
+    <Nullable>enable</Nullable>
+    <Configurations>Release</Configurations>
+    <Platforms>AnyCPU</Platforms>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release EXILED|AnyCPU' ">
+    <OutputPath>..\bin\Release\Exiled</OutputPath>
+    <DefineConstants>TRACE;EXILED</DefineConstants>
+    <Optimize>true</Optimize>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <PlatformTarget>x64</PlatformTarget>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
     <LangVersion>default</LangVersion>
     <TargetFrameworkProfile />
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>x64</PlatformTarget>
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <LangVersion>default</LangVersion>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>x64</PlatformTarget>
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release NWApi|AnyCPU' ">
+    <OutputPath>..\bin\Release\NWApi</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+    <Optimize>true</Optimize>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <PlatformTarget>x64</PlatformTarget>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
     <LangVersion>default</LangVersion>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Assembly-CSharp-firstpass, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(SL_REFERENCES)/Assembly-CSharp-firstpass.dll</HintPath>
-    </Reference>
-    <Reference Include="Assembly-CSharp-Publicized, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(SL_REFERENCES)/Assembly-CSharp-Publicized.dll</HintPath>
-    </Reference>
-    <Reference Include="Exiled.API, Version=7.1.1.0, Culture=neutral, processorArchitecture=AMD64">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(EXILED_REFERENCES)/Exiled.API.dll</HintPath>
-    </Reference>
-    <Reference Include="Exiled.Bootstrap">
-      <HintPath>$(EXILED_REFERENCES)/Exiled.Bootstrap.dll</HintPath>
-    </Reference>
-    <Reference Include="Exiled.CreditTags">
-      <HintPath>$(EXILED_REFERENCES)/Exiled.CreditTags.dll</HintPath>
-    </Reference>
-    <Reference Include="Exiled.CustomItems">
-      <HintPath>$(EXILED_REFERENCES)/Exiled.CustomItems.dll</HintPath>
-    </Reference>
-    <Reference Include="Exiled.CustomRoles">
-      <HintPath>$(EXILED_REFERENCES)/Exiled.CustomRoles.dll</HintPath>
-    </Reference>
-    <Reference Include="Exiled.Events, Version=7.1.1.0, Culture=neutral, processorArchitecture=AMD64">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(EXILED_REFERENCES)/Exiled.Events.dll</HintPath>
-    </Reference>
-    <Reference Include="Exiled.Loader, Version=7.1.1.0, Culture=neutral, processorArchitecture=AMD64">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(EXILED_REFERENCES)/Exiled.Loader.dll</HintPath>
-    </Reference>
-    <Reference Include="Exiled.Permissions, Version=7.1.1.0, Culture=neutral, processorArchitecture=AMD64">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(EXILED_REFERENCES)/Exiled.Permissions.dll</HintPath>
-    </Reference>
-    <Reference Include="Exiled.Updater">
-      <HintPath>$(EXILED_REFERENCES)/Exiled.Updater.dll</HintPath>
-    </Reference>
-    <Reference Include="MapEditorReborn, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(OTHER_REFERENCES)/MapEditorReborn.dll</HintPath>
-    </Reference>
-    <Reference Include="NorthwoodLib, Version=1.2.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(SL_REFERENCES)/NorthwoodLib.dll</HintPath>
-    </Reference>
-    <Reference Include="PluginAPI, Version=12.0.0.0, Culture=neutral, processorArchitecture=AMD64">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(SL_REFERENCES)/PluginAPI.dll</HintPath>
-    </Reference>
+    <PackageReference Include="Costura.Fody" Version="5.7.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="EXILED" Version="8.2.1" />
+    <PackageReference Include="Fody" Version="6.8.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Lib.Harmony" Version="2.2.2" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="Northwood.PluginAPI" Version="13.1.1" />
+    <PackageReference Include="YamlDotNet" Version="13.3.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="CedModV3" HintPath="$(OTHER_REFERENCES)\CedModV3-NWApi.dll" />
+    <Reference Include="Assembly-CSharp-Publicized" HintPath="$(SL_REFERENCES)\Assembly-CSharp-Publicized.dll" />
+    <Reference Include="Mirror" HintPath="$(SL_REFERENCES)\Mirror.dll" />
+    <Reference Include="SCPSLAudioApi" HintPath="$(OTHER_REFERENCES)\SCPSLAudioApi.dll" />
+    <Reference Include="SCPSLAudioApi" HintPath="$(OTHER_REFERENCES)\NWAPIPermissionSystem.dll" />
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" HintPath="$(SL_REFERENCES)\System.ComponentModel.DataAnnotations.dll" />
     <Reference Include="UnityEngine" HintPath="$(SL_REFERENCES)\UnityEngine.dll" />
+    <Reference Include="UnityEngine.AssetBundleModule" HintPath="$(SL_REFERENCES)\UnityEngine.AssetBundleModule.dll" />
+    <Reference Include="UnityEngine.ParticleSystem" HintPath="$(SL_REFERENCES)\UnityEngine.ParticleSystemModule.dll" />
     <Reference Include="UnityEngine.CoreModule" HintPath="$(SL_REFERENCES)\UnityEngine.CoreModule.dll" />
     <Reference Include="UnityEngine.UnityWebRequestModule" HintPath="$(UNITY_REFERENCES)\UnityEngine.UnityWebRequestModule.dll" />
     <Reference Include="UnityEngine.AnimationModule" HintPath="$(UNITY_REFERENCES)\UnityEngine.AnimationModule.dll" />
     <Reference Include="UnityEngine.PhysicsModule" HintPath="$(UNITY_REFERENCES)\UnityEngine.PhysicsModule.dll" />
+    <Reference Include="Assembly-CSharp-firstpass" HintPath="$(SL_REFERENCES)\Assembly-CSharp-firstpass.dll" />
     <Reference Include="UnityEngine.AudioModule" HintPath="$(UNITY_REFERENCES)\UnityEngine.AudioModule.dll" />
     <Reference Include="CommandSystem.Core" HintPath="$(SL_REFERENCES)\CommandSystem.Core.dll" />
-    <Reference Include="YamlDotNet" HintPath="$(SL_REFERENCES)\YamlDotNet.dll" />
-    <Reference Include="0Harmony" HintPath="$(EXILED_REFERENCES)\0Harmony.dll" />
-    <Reference Include="Pooling" HintPath="$(SL_REFERENCES)\Pooling.dll" />
-    <Reference Include="Mirror" HintPath="$(SL_REFERENCES)\Mirror.dll" />
-    <Reference Include="Caress" HintPath="$(SL_REFERENCES)\Caress.dll" />
-    <Reference Include="SCPSLAudioApi" HintPath="$(OTHER_REFERENCES)\SCPSLAudioApi.dll" />
+    <Reference Include="NorthwoodLib" HintPath="$(SL_REFERENCES)\NorthwoodLib.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="API\Attributes\DisabledFeaturesAttribute.cs" />
-    <Compile Include="API\Extensions.cs" />
-    <Compile Include="API\FakeConnection.cs" />
-    <Compile Include="Commands\DebugCommand.cs" />
-    <Compile Include="Commands\ListEvents.cs" />
-    <Compile Include="Commands\MainCommand.cs" />
-    <Compile Include="Commands\ReloadEventsCommand.cs" />
-    <Compile Include="Commands\RunEvent.cs" />
-    <Compile Include="Commands\StopEvent.cs" />
-    <Compile Include="Commands\Volume.cs" />
-    <Compile Include="Config.cs" />
-    <Compile Include="DebugLogger.cs" />
-    <Compile Include="Events\Lobby\EventHandler.cs" />
-    <Compile Include="Events\Lobby\Features\RandomClass.cs" />
-    <Compile Include="Events\Lobby\Plugin.cs" />
-    <Compile Include="Events\Vote\EventHandler.cs" />
-    <Compile Include="Events\Vote\Plugin.cs" />
-    <Compile Include="Events\Boss\EventHandler.cs" />
-    <Compile Include="Events\Boss\Features\RandomClass.cs" />
-    <Compile Include="Events\Boss\Plugin.cs" />
-    <Compile Include="Events\Battle\EventHandler.cs" />
-    <Compile Include="Events\Battle\Features\RandomClass.cs" />
-    <Compile Include="Events\Battle\Plugin.cs" />
-    <Compile Include="Events\Cube\EventHandler.cs" />
-    <Compile Include="Events\Cube\Features\CubeComponent.cs" />
-    <Compile Include="Events\Cube\Plugin.cs" />
-    <Compile Include="Events\SkipRope\EventHandler.cs" />
-    <Compile Include="Events\SkipRope\Features\RandomClass.cs" />
-    <Compile Include="Events\SkipRope\Plugin.cs" />
-    <Compile Include="Events\Line\EventHandler.cs" />
-    <Compile Include="Events\Line\Features\LineComponent.cs" />
-    <Compile Include="Events\Line\Plugin.cs" />
-    <Compile Include="Events\Deathmatch\Extensions\RandomClass.cs" />
-    <Compile Include="Events\Deathmatch\Plugin.cs" />
-    <Compile Include="Events\Deathmatch\EventHandler.cs" />
-    <Compile Include="Events\DeathParty\EventHandler.cs" />
-    <Compile Include="Events\DeathParty\Plugin.cs" />
-    <Compile Include="Events\DeathParty\Features\RandomClass.cs" />
-    <Compile Include="Events\Example\EventHandler.cs" />
-    <Compile Include="Events\Example\Plugin.cs" />
-    <Compile Include="Events\FallDown\Extensions\LavaComponent.cs" />
-    <Compile Include="Events\FinishWay\Extensions\LavaComponent.cs" />
-    <Compile Include="Events\Jail\Extensions\JailerComponent.cs" />
-    <Compile Include="Events\Jail\Extensions\DoorComponent.cs" />
-    <Compile Include="Events\FallDown\EventHandler.cs" />
-    <Compile Include="Events\FallDown\Extensions\RandomClass.cs" />
-    <Compile Include="Events\FallDown\Plugin.cs" />
-    <Compile Include="Events\Football\EventHandler.cs" />
-    <Compile Include="Events\Football\Features\BallComponent.cs" />
-    <Compile Include="Events\Football\Features\RandomClass.cs" />
-    <Compile Include="Events\Football\Plugin.cs" />
-    <Compile Include="Events\Glass\EventHandler.cs" />
-    <Compile Include="Events\Glass\Features\LavaComponent.cs" />
-    <Compile Include="Events\Glass\Features\GlassComponent.cs" />
-    <Compile Include="Events\Glass\Features\RandomClass.cs" />
-    <Compile Include="Events\Glass\Plugin.cs" />
-    <Compile Include="Events\HideAndSeek\EventHandler.cs" />
-    <Compile Include="Events\HideAndSeek\Features\RandomClass.cs" />
-    <Compile Include="Events\HideAndSeek\Plugin.cs" />
-    <Compile Include="Events\FinishWay\EventHandler.cs" />
-    <Compile Include="Events\FinishWay\Extensions\RandomClass.cs" />
-    <Compile Include="Events\FinishWay\Plugin.cs" />
-    <Compile Include="Events\Infection\Config.cs" />
-    <Compile Include="Events\Infection\Extensions\RandomClass.cs" />
-    <Compile Include="Events\GunGame\Plugin.cs" />
-    <Compile Include="Events\GunGame\Extensions\GunGameGuns.cs" />
-    <Compile Include="Events\GunGame\EventHandler.cs" />
-    <Compile Include="Events\GunGame\Extensions\GunGameRandom.cs" />
-    <Compile Include="Events\GunGame\Extensions\Stats.cs" />
-    <Compile Include="Events\Knives\Features\RandomClass.cs" />
-    <Compile Include="Events\Knives\Plugin.cs" />
-    <Compile Include="Events\Knives\EventHandler.cs" />
-    <Compile Include="Events\Escape\Plugin.cs" />
-    <Compile Include="Events\Escape\EventHandler.cs" />
-    <Compile Include="Events\Infection\Plugin.cs" />
-    <Compile Include="Events\Infection\EventHandler.cs" />
-    <Compile Include="Events\Jail\Plugin.cs" />
-    <Compile Include="Events\Jail\EventHandler.cs" />
-    <Compile Include="Events\Jail\Extensions\JailRandom.cs" />
-    <Compile Include="Events\Lava\EventHandler.cs" />
-    <Compile Include="Events\Lava\Features\LavaComponent.cs" />
-    <Compile Include="Events\Lava\Features\RandomClass.cs" />
-    <Compile Include="Events\Lava\Plugin.cs" />
-    <Compile Include="Events\ZombieEscape\EventHandler.cs" />
-    <Compile Include="Events\ZombieEscape\Extensions\WallComponent.cs" />
-    <Compile Include="Events\ZombieEscape\Extensions\LavaComponent.cs" />
-    <Compile Include="Events\ZombieEscape\Extensions\RandomClass.cs" />
-    <Compile Include="Events\ZombieEscape\Plugin.cs" />
-    <Compile Include="Events\Puzzle\Features\LavaComponent.cs" />
-    <Compile Include="Events\Puzzle\Features\RandomClass.cs" />
-    <Compile Include="Events\Survival\EventHandler.cs" />
-    <Compile Include="Events\Survival\Extensions\RandomClass.cs" />
-    <Compile Include="Events\Survival\Plugin.cs" />
-    <Compile Include="Events\Puzzle\EventHandler.cs" />
-    <Compile Include="Events\Puzzle\Plugin.cs" />
-    <Compile Include="Events\Versus\Features\RandomClass.cs" />
-    <Compile Include="Events\Versus\Plugin.cs" />
-    <Compile Include="Events\Versus\EventHandler.cs" />
-    <Compile Include="Interfaces\Event.cs" />
-    <Compile Include="Interfaces\IEvent.cs" />
-    <Compile Include="Loader.cs" />
-    <Compile Include="Patch\CreatePickupPatch.cs" />
-    <Compile Include="Patch\JailBirdPatch.cs" />
-    <Compile Include="Patch\RemoteAdminPatch.cs" />
-    <Compile Include="Plugin.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Translation.cs" />
+    <Content Include="..\Docs\*" Link="Docs\*" />
+    <Content Include="..\Docs\Translations\*" Link="Docs\Translations\*" />
+    <Content Include="..\README.md" Link="README.md" />
+    <Content Include="FodyWeavers.xml" />
+    <Content Include="PlantUMLDocuments\*" />
   </ItemGroup>
-  <ItemGroup />
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

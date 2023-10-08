@@ -4,9 +4,8 @@ using System.IO;
 using System.IO.Compression;
 using System.Reflection;
 using AutoEvent.Interfaces;
-using Exiled.API.Features;
-using Exiled.API.Interfaces;
-using Exiled.Events.Commands.Reload;
+using PluginAPI.Helpers;
+using PluginAPI.Core;
 
 namespace AutoEvent;
 
@@ -15,8 +14,11 @@ public class Loader
     /// <summary>
     /// Overrides the Exiled check for the version of the plugin that is exiled exclusive.
     /// </summary>
+#if EXILED
     private const bool IsExiledPlugin = true;
-    
+#else
+    private const bool IsExiledPlugin = false;
+#endif    
     /// <summary>
     /// If enabled, a debug log is output everytime a plugin is loaded. Not necessary for players.
     /// </summary>
@@ -63,7 +65,12 @@ public class Loader
     public static void LoadEvents()
     {
         Dictionary<Assembly, string> locations = new Dictionary<Assembly, string>();
-        foreach (string assemblyPath in Directory.GetFiles(Path.Combine(Paths.Configs, "Events"), "*.dll"))
+#if !EXILED
+        string filepath = AutoEvent.Singleton.Config.ExternalEventsDirectoryPath;
+#else
+        string filepath = Path.Combine(AutoEvent.BaseConfigPath, "Events");
+#endif
+        foreach (string assemblyPath in Directory.GetFiles(filepath, "*.dll"))
         {
             try
             {
@@ -91,7 +98,8 @@ public class Loader
 
         foreach (Assembly assembly in locations.Keys)
         {
-            
+            if (locations[assembly].Contains("dependencies"))
+                continue;
             try
             {
 
@@ -104,13 +112,6 @@ public class Loader
                         if (eventPlugin is null)
                             continue;
 
-                        if (eventPlugin.UsesExiled && !isExiledPresent())
-                        {
-                            DebugLogger.LogDebug($"[ExternalEventLoader] Cannot register plugin {eventPlugin.Name} because it requires exiled to work. Exiled has not loaded yet, or is not present at all.",LogLevel.Warn, true);
-;
-                            continue;
-                        }
-
                         if (!eventPlugin.AutoLoad)
                         {
                             continue;
@@ -122,7 +123,9 @@ public class Loader
 
                         try
                         {
-                            eventPlugin.RegisterEvent();
+                            eventPlugin.LoadConfigs();
+                            eventPlugin.LoadTranslation();
+                            eventPlugin.InstantiateEvent();
                         }
                         catch (Exception e)
                         {
@@ -189,13 +192,19 @@ public class Loader
 
                         continue;
                     }
-
+                    
                     if (!IsDerivedFromPlugin(type))
                     {
                         DebugLogger.LogDebug(
                             $"[ExternalEventLoader] \"{type.FullName}\" does not inherit from Event, skipping.",
                             LogLevel.Debug);
 
+                        continue;
+                    }
+                    
+                    if(type.GetInterface(nameof(IExiledEvent)) is not null && !isExiledPresent())
+                    {
+                        DebugLogger.LogDebug($"[ExternalEventLoader] Cannot register plugin {type.Name} because it requires exiled to work. Exiled has not loaded yet, or is not present at all.",LogLevel.Warn, true);
                         continue;
                     }
 
