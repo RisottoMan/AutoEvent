@@ -24,9 +24,9 @@ namespace AutoEvent.Games.Survival
         [EventConfig]
         public SurvivalConfig Config { get; set; }
         public MapInfo MapInfo { get; set; } = new MapInfo()
-            {MapName = "Survival", Position = new Vector3(15f, 1030f, -43.68f), MapRotation = Quaternion.identity};
+            { MapName = "Survival", Position = new Vector3(15f, 1030f, -43.68f), MapRotation = Quaternion.identity };
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
-            { SoundName = "DeathParty.ogg", Volume = 5, Loop = true };
+            { SoundName = "Survival.ogg", Volume = 10, Loop = false };
         protected override float PostRoundDelay { get; set; } = 10f;
         private EventHandler EventHandler { get; set; }
         private SurvivalTranslate Translation { get; set; } = AutoEvent.Singleton.Translation.SurvivalTranslate;
@@ -86,11 +86,8 @@ namespace AutoEvent.Games.Survival
 
         protected override void CountdownFinished()
         {
-            Extensions.StopAudio();
-            Timing.CallDelayed(0.1f, () =>
-            {
-                Extensions.PlayAudio("Zombie2.ogg", 7, true, Name);
-            });
+            Extensions.PlayAudio("Zombie2.ogg", 7, true, Name);
+
             List<Player> players =Config.Zombies.GetPlayers();
             foreach (Player x in players)
             {
