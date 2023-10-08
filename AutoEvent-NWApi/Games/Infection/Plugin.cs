@@ -25,10 +25,8 @@ namespace AutoEvent.Games.Infection
 
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
             { SoundName = "Zombie.ogg", Volume = 7, Loop = true };
-        protected override float PostRoundDelay { get; set; } = 10f;
         private EventHandler EventHandler { get; set; }
         private InfectTranslate Translation { get; set; } = AutoEvent.Singleton.Translation.InfectTranslate;
-        private InfectionStage _stage;
         private int _overtime = 30;
 
         protected override void RegisterEvents()
@@ -61,12 +59,14 @@ namespace AutoEvent.Games.Infection
 
         protected override void OnStart()
         {
+            _overtime = 30;
+
             foreach (Player player in Player.GetPlayers())
             {
                 player.GiveLoadout(Config.PlayerLoadouts);
-                //Extensions.SetRole(player, RoleTypeId.ClassD, RoleSpawnFlags.None);
                 player.Position = RandomPosition.GetSpawnPosition(MapInfo.Map);
             }
+
             float scale = 1;
             switch(Player.GetPlayers().Count())
             {
@@ -89,55 +89,31 @@ namespace AutoEvent.Games.Infection
 
         protected override void CountdownFinished()
         {
-            //Extensions.SetRole(Player.GetPlayers().RandomItem(), RoleTypeId.Scp0492, RoleSpawnFlags.None);
             Player.GetPlayers().RandomItem().GiveLoadout(Config.ZombieLoadouts);
-            _stage = InfectionStage.Stage1;
         }
 
-        
         protected override bool IsRoundDone()
-        { 
-            // Finished
-            if (_stage == InfectionStage.Finished)
-                return true;
-            // Last Player Dead.
-            if (!Player.GetPlayers().Any(r => r.HasLoadout(Config.PlayerLoadouts)))
-                return true;
-            // Last Player Alive.
-            if (_stage == InfectionStage.LastPlayer)
-                return false;
-            // Many Players Alive.
-            if (_stage == InfectionStage.Stage1 && Player.GetPlayers().Count(r => r.HasLoadout(Config.PlayerLoadouts)) > 1)
-                return false;
-            // Last Player Alive
-            _stage = InfectionStage.LastPlayer;
-            return false;
+        {
+            if (Player.GetPlayers().Count(r => r.Role == RoleTypeId.ClassD) > 0 && _overtime > 0) return false;
+            else return true;
         }
         
         protected override void ProcessFrame()
         {
-            if (_stage == InfectionStage.Stage1)
-            {
-                var count = Player.GetPlayers().Count(r => r.Role == RoleTypeId.ClassD);
-                var time = $"{EventTime.Minutes:00}:{EventTime.Seconds:00}";
+            var count = Player.GetPlayers().Count(r => r.Role == RoleTypeId.ClassD);
+            var time = $"{EventTime.Minutes:00}:{EventTime.Seconds:00}";
 
+            if (count > 1)
+            {
                 Extensions.Broadcast(Translation.ZombieCycle.Replace("{name}", Name).Replace("{count}", count.ToString()).Replace("{time}", time), 1);
             }
-
-            if (_stage == InfectionStage.Starting)
+            else if (count == 1)
             {
-                if (_overtime <= 0)
-                {
-                    _stage = InfectionStage.Finished;
-                    return;
-                }
-
                 _overtime--;
                 Extensions.Broadcast(
                     Translation.ZombieExtraTime
                         .Replace("{extratime}", _overtime.ToString("00"))
                         .Replace("{time}", $"{EventTime.Minutes:00}:{EventTime.Seconds:00}"), 1);
-
             }
         }
 
@@ -155,12 +131,4 @@ namespace AutoEvent.Games.Infection
             }
         }
     }
-}
-
-enum InfectionStage
-{
-    Starting = 0,
-    Stage1 = 1,
-    LastPlayer = 2,
-    Finished,
 }
