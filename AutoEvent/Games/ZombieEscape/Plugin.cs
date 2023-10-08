@@ -113,7 +113,6 @@ namespace AutoEvent.Games.ZombieEscape
                 ply.EffectsManager.EnableEffect<Disabled>();
             }
 
-
             _button = new GameObject();
             _button1 = new GameObject();
             _button2 = new GameObject();

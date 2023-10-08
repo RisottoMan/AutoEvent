@@ -106,9 +106,10 @@ namespace AutoEvent.Games.FallDown
         {
             _platformId++;
             FrameDelayInSeconds = Config.DelayInSeconds.GetValue(_platformId, 169, 1, 0.3f);
+
             var count = Player.GetPlayers().Count(r => r.IsAlive);
             var time = $"{EventTime.Minutes:00}:{EventTime.Seconds:00}";
-            Extensions.Broadcast(Translation.FallBroadcast.Replace("{name}", Name).Replace("{time}", time).Replace("{count}", $"{count}"), (ushort)FrameDelayInSeconds);
+            Extensions.Broadcast(Translation.FallBroadcast.Replace("{name}", Name).Replace("{time}", time).Replace("{count}", $"{count}"), 1);
             
             if (_platforms.Count < 1)
             {
