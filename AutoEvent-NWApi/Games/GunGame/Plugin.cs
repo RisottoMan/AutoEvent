@@ -154,8 +154,14 @@ namespace AutoEvent.Games.GunGame
                 }
                 else
                 {
+                    /*
+                     * 0 Most Kill Gun
+                       1 Medium Kill Gun
+                       2 Current gun - get current gun - 1 for next
+                       3 Lowest kill gun
+                    */
                     killsNeeded = gunsInOrder[indexOfFirst - 1].KillsRequired - kills;
-                    nextGun = gunsInOrder[indexOfFirst].Item.ToString();
+                    nextGun = gunsInOrder[indexOfFirst - 1].Item.ToString();
                 }
                 pl.ClearBroadcasts();
                 pl.SendBroadcast(
