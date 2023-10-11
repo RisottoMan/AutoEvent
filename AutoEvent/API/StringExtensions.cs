@@ -1,4 +1,4 @@
-﻿﻿// <copyright file="Log.cs" company="Redforce04#4091">
+// <copyright file="Log.cs" company="Redforce04#4091">
 // Copyright (c) Redforce04. All rights reserved.
 // </copyright>
 // -----------------------------------------

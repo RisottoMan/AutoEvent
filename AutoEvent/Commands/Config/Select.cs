@@ -15,10 +15,10 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
+using AutoEvent.API;
 using AutoEvent.Interfaces;
 using CommandSystem;
 using PluginAPI.Core;
-using AutoEvent.API;
 #if EXILED
 using Exiled.API.Features;
 using Exiled.Permissions.Extensions;
@@ -74,15 +74,16 @@ public class Select : ICommand, IUsageProvider, IPermission
             return false;
         }
 
-        // Config doesnt exist.
         if (!ev.TryGetPresetName(arguments.At(1), out string presetName))
         {
             response = $"Could not find preset \"{arguments.At(1)}\"";
             return false;
         }
+        
+
         if (ev.SetConfig(arguments.At(1)))
         {
-
+            
             response = "Could not load config presets due to an error.";
             return false;
         }

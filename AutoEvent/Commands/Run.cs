@@ -1,11 +1,11 @@
 ﻿using AutoEvent.Interfaces;
 using CommandSystem;
 using System;
+using System.Linq;
+using AutoEvent.API;
 using MEC;
 using PluginAPI.Core;
 using Utils.NonAllocLINQ;
-using AutoEvent.API;
-using System.Linq;
 #if EXILED
 using Exiled.Permissions.Extensions;
 #endif
@@ -60,7 +60,6 @@ namespace AutoEvent.Commands
                     return false;
                 }
             }
-
 
             if (!(ev is IEventMap map && !string.IsNullOrEmpty(map.MapInfo.MapName) && map.MapInfo.MapName.ToLower() != "none"))
             {
