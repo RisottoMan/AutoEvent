@@ -130,7 +130,12 @@ namespace AutoEvent.Games.DeathParty
                 {
                     yield break;
                 }
-
+                radius = Config.DifficultySpawnRadius.GetValue(Stage, Config.Rounds -1, 0.1f, 75);
+                scale = Config.DifficultyScale.GetValue(Stage, Config.Rounds -1, 0.1f, 75);
+                count = (int) Config.DifficultyCount.GetValue(Stage, Config.Rounds -1, 1, 300);
+                timing = Config.DifficultySpeed.GetValue(Stage, Config.Rounds -1, 0, 5);
+                height = Config.DifficultyHeight.GetValue(Stage, Config.Rounds -1, 0,  30);
+                fuse = Config.DifficultyFuseTime.GetValue(Stage, Config.Rounds -1, 2, 10);
                 DebugLogger.LogDebug($"Stage: {Stage}/{Config.Rounds}. Radius: {radius}, Scale: {scale}, Count: {count}, Timing: {timing}, Height: {height}, Fuse: {fuse}, Target: {Config.TargetPlayers}");
                 
                 // Not the last round.
@@ -160,7 +165,9 @@ namespace AutoEvent.Games.DeathParty
                 }
 
                 yield return Timing.WaitForSeconds(15f);
+                Stage++;
 
+                /* This was moved earlier intentionally
                 // Defaults: 
                 count += 30;     //20,  50,  80,  110, [ignored last round] 1
                 timing -= 0.3f;  //1.0, 0.7, 0.4, 0.1, [ignored last round] 10
@@ -168,8 +175,6 @@ namespace AutoEvent.Games.DeathParty
                 fuse -= 2f;      //10,  8,   6,   4,   [ignored last round] 10
                 scale -= 1;      //4,   3,   2,   1,   [ignored last round] 75
                 radius += 7f;    //4,   11,  18,  25   [ignored last round] 10
-                Stage++;
-                /*
                 radius = Config.DifficultySpawnRadius.GetValue(Stage, Config.Rounds -1, 0.1f, 75);
                 scale = Config.DifficultyScale.GetValue(Stage, Config.Rounds -1, 0.1f, 75);
                 count = (int) Config.DifficultyCount.GetValue(Stage, Config.Rounds -1, 1, 300);

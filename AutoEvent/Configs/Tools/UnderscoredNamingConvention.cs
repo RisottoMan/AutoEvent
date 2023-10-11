@@ -12,6 +12,7 @@
 
 using System.Collections.Generic;
 using YamlDotNet.Serialization;
+using AutoEvent.API;
 
 namespace AutoEvent.Configs.Tools;
 

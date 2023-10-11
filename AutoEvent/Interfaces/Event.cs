@@ -6,6 +6,8 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using AutoEvent.API.Enums;
+using AutoEvent.API;
+using AutoEvent.Configs;
 using HarmonyLib;
 using MEC;
 using UnityEngine;
@@ -49,6 +51,7 @@ namespace AutoEvent.Interfaces
                     ev.Id = Events.Count;
                     try
                     {
+                        ev.VerifyEventInfo();
                         ev.LoadConfigs();
                         ev.LoadTranslation();
                         ev.InstantiateEvent();
@@ -389,6 +392,15 @@ namespace AutoEvent.Interfaces
     public List<EventConfig> ConfigPresets { get; set; } = new List<EventConfig>();
 
     private List<Type> _confTypes { get; set; } = new List<Type>();
+    
+    /// <summary>
+    /// Ensures that information such as the command name is valid.
+    /// </summary>
+    internal void VerifyEventInfo()
+    {
+        this.CommandName = CommandName.ToCamelCase(true);
+    }
+    
     /// <summary>
     /// Validates and loads any configs and presets for the given event.
     /// </summary>

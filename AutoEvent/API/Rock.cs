@@ -253,6 +253,8 @@ public class RockHitPlayerArgs
             return;
         }
 
+        if (!DebugLogger.Debug)
+            return;
         ReferenceHub hub = Collision.collider.GetComponentInParent<ReferenceHub>();
         int a = Collision.GetContact(0).thisCollider.gameObject.layer;
         int b = Collision.GetContact(0).otherCollider.gameObject.layer;

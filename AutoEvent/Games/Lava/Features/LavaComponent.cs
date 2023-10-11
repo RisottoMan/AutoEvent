@@ -32,7 +32,8 @@ namespace AutoEvent.Games.Lava
                 if (Player.Get(other.gameObject) is Player)
                 {
                     var pl = Player.Get(other.gameObject);
-                    pl.Damage(30, "<color=red>Burned in Lava</color>");
+                    //pl.Damage(30, "<color=red>Burned in Lava</color>");
+                    pl.Damage(new CustomReasonDamageHandler("<color=red>Burned in Lava</color>", 30));
                 }
             }
         }

@@ -123,6 +123,7 @@ public class Loader
 
                         try
                         {
+                            eventPlugin.VerifyEventInfo();
                             eventPlugin.LoadConfigs();
                             eventPlugin.LoadTranslation();
                             eventPlugin.InstantiateEvent();

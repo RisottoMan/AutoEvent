@@ -3,6 +3,9 @@ using CommandSystem;
 using System;
 using MEC;
 using PluginAPI.Core;
+using Utils.NonAllocLINQ;
+using AutoEvent.API;
+using System.Linq;
 #if EXILED
 using Exiled.Permissions.Extensions;
 #endif
@@ -42,6 +45,22 @@ namespace AutoEvent.Commands
                 response = $"The mini-game {arguments.At(0)} is not found.";
                 return false;
             }
+            string conf = "";
+            EventConfig? config = null;
+            if (arguments.Count >= 2)
+            {
+                if (!ev.TryGetPresetName(arguments.At(1), out string presetName))
+                {
+                    response = $"Could not find preset \"{arguments.At(1)}\".";
+                    return false;
+                }
+                if (!ev.SetConfig(arguments.At(1)))
+                {
+                    response = $"could not set preset \"{presetName}\". This is probably due to an error.";
+                    return false;
+                }
+            }
+
 
             if (!(ev is IEventMap map && !string.IsNullOrEmpty(map.MapInfo.MapName) && map.MapInfo.MapName.ToLower() != "none"))
             {

@@ -25,6 +25,7 @@ namespace AutoEvent.Games.Infection
 
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
             { SoundName = "Zombie.ogg", Volume = 7, Loop = true };
+        protected override float PostRoundDelay { get; set; } = 10f;
         private EventHandler EventHandler { get; set; }
         private InfectTranslate Translation { get; set; } = AutoEvent.Singleton.Translation.InfectTranslate;
         private int _overtime = 30;

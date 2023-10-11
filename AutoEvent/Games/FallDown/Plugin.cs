@@ -109,7 +109,7 @@ namespace AutoEvent.Games.FallDown
 
             var count = Player.GetPlayers().Count(r => r.IsAlive);
             var time = $"{EventTime.Minutes:00}:{EventTime.Seconds:00}";
-            Extensions.Broadcast(Translation.FallBroadcast.Replace("{name}", Name).Replace("{time}", time).Replace("{count}", $"{count}"), 1);
+            Extensions.Broadcast(Translation.FallBroadcast.Replace("{name}", Name).Replace("{time}", time).Replace("{count}", $"{count}"), (ushort)FrameDelayInSeconds);
             
             if (_platforms.Count < 1)
             {
