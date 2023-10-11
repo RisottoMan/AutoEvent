@@ -102,7 +102,7 @@ namespace AutoEvent.Games.Line
         {
             Extensions.Broadcast(Translation.LineCycle.Replace("{name}", Name).
                 Replace("{time}", $"{_timeRemaining.Minutes:00}:{_timeRemaining.Seconds:00}").
-                Replace("{count}", $"{Player.GetPlayers().Count(r => r.Role == RoleTypeId.Scientist)}"), 10);
+                Replace("{count}", $"{Player.GetPlayers().Count(r => r.HasLoadout(Config.Loadouts))}"), 10);
 
             if (EventTime.Seconds == 30 && _hardCounts < _hardCountsLimit)
             {
@@ -133,7 +133,7 @@ namespace AutoEvent.Games.Line
         {
             // At least 2 players &&
             // Time is smaller than 2 minutes (+countdown)
-            return !(Player.GetPlayers().Count(r => r.Role == RoleTypeId.Scientist) > 1 && EventTime.TotalSeconds < 120);
+            return !(Player.GetPlayers().Count(r => r.HasLoadout(Config.Loadouts)) > 1 && EventTime.TotalSeconds < 120);
         }
 
         protected override void OnFinished()
@@ -142,13 +142,13 @@ namespace AutoEvent.Games.Line
             {
                 Extensions.Broadcast(Translation.LineMorePlayers.
                     Replace("{name}", Name).
-                    Replace("{count}", $"{Player.GetPlayers().Count(r => r.Role == RoleTypeId.Scientist)}"), 10);
+                    Replace("{count}", $"{Player.GetPlayers().Count(r => r.HasLoadout(Config.Loadouts))}"), 10);
             }
             else if (Player.GetPlayers().Count(r => r.Role != AutoEvent.Singleton.Config.LobbyRole) == 1)
             {
                 Extensions.Broadcast(Translation.LineWinner.
                     Replace("{name}", Name).
-                    Replace("{winner}", Player.GetPlayers().First(r => r.Role == RoleTypeId.Scientist).Nickname), 10);
+                    Replace("{winner}", Player.GetPlayers().First(r => r.HasLoadout(Config.Loadouts)).Nickname), 10);
             }
             else
             {

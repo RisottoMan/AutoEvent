@@ -236,32 +236,30 @@ public class RockHitPlayerArgs
         ExplodeOnCollision = explodeOnCollision;
         Thrower = footprint;
         TargetObject = collision.collider.gameObject;
-        if (DebugLogger.Debug)
+        var refHub = collision.collider.GetComponentInParent<ReferenceHub>();
+        
+        if (refHub is not null)
         {
+            Target = Player.Get(refHub);
+            DebugLogger.LogDebug("Target player for rock found.");
+            return;
+        }
+        var gameObject = collision.collider.transform.root.gameObject;
+        Player ply = Player.Get(gameObject);
+        if (ply is not null)
+        {
+            DebugLogger.LogDebug("Target player for rock found.");
+            Target = ply;
+            return;
+        }
 
-            var refHub = collision.collider.GetComponentInParent<ReferenceHub>();
-
-            if (refHub is not null)
-            {
-                Target = Player.Get(refHub);
-                DebugLogger.LogDebug("Target player for rock found.");
-                return;
-            }
-
-            var gameObject = collision.collider.transform.root.gameObject;
-            Player ply = Player.Get(gameObject);
-            if (ply is not null)
-            {
-                DebugLogger.LogDebug("Target player for rock found.");
-                Target = ply;
-                return;
-            }
-
-            ReferenceHub hub = Collision.collider.GetComponentInParent<ReferenceHub>();
-            int a = Collision.GetContact(0).thisCollider.gameObject.layer;
-            int b = Collision.GetContact(0).otherCollider.gameObject.layer;
-            DebugLogger.LogDebug($"A: {a}, B: {b}");
-
+        if (!DebugLogger.Debug)
+            return;
+        ReferenceHub hub = Collision.collider.GetComponentInParent<ReferenceHub>();
+        int a = Collision.GetContact(0).thisCollider.gameObject.layer;
+        int b = Collision.GetContact(0).otherCollider.gameObject.layer;
+        DebugLogger.LogDebug($"A: {a}, B: {b}");
+        
 
             /*foreach (var transform in collider.GetComponentsInParent<ReferenceHub>())
             {
@@ -270,7 +268,7 @@ public class RockHitPlayerArgs
                     DebugLogger.LogDebug($"Component: {obj.GetType().Name}{obj.name}");
                 }
             }*/
-
+            
             /*if (collider.TryGetComponent<IDestructible>(out IDestructible destructible))
             {
                 DebugLogger.LogDebug($"Found Destructible");
@@ -281,120 +279,104 @@ public class RockHitPlayerArgs
                 DebugLogger.LogDebug($"Found Hitbox");
             }
             */
-            /*DebugLogger.LogDebug("============ Direct Components ============");
-                foreach (var x in collider.GetComponents<Component>())
-                {
-                    DebugLogger.LogDebug($"{x.GetType().Name}");
-                }
-                DebugLogger.LogDebug("============ Parent Components ============");
-                foreach (var x in collider.GetComponentsInParent<Component>())
-                {
-                    DebugLogger.LogDebug($"{x.GetType().Name}");
-                }*/
+        /*DebugLogger.LogDebug("============ Direct Components ============");
+            foreach (var x in collider.GetComponents<Component>())
+            {
+                DebugLogger.LogDebug($"{x.GetType().Name}");
+            }
+            DebugLogger.LogDebug("============ Parent Components ============");
+            foreach (var x in collider.GetComponentsInParent<Component>())
+            {
+                DebugLogger.LogDebug($"{x.GetType().Name}");
+            }*/
             /*var refHub = collision.collider.GetComponentInParent<ReferenceHub>();
         if (refHub is not null)
         {
             var player x = Player.Get(refHub);
         }*/
-            DebugLogger.LogDebug(
-                $"HitboxIdentity: {collision.collider.GetComponentInParent<HitboxIdentity>() is not null}");
-            DebugLogger.LogDebug(
-                $"IDestructible: {collision.collider.GetComponentInParent<IDestructible>() is not null}");
-            DebugLogger.LogDebug($"RefHub: {collision.collider.GetComponentInParent<ReferenceHub>() is not null}");
-            DebugLogger.LogDebug(
-                $"HitboxIdentity: {collision.contacts[0].otherCollider.GetComponentInParent<HitboxIdentity>() is not null}");
-            DebugLogger.LogDebug(
-                $"IDestructible: {collision.contacts[0].otherCollider.GetComponentInParent<IDestructible>() is not null}");
-            DebugLogger.LogDebug(
-                $"RefHub: {collision.contacts[0].otherCollider.GetComponentInParent<ReferenceHub>() is not null}");
+        DebugLogger.LogDebug($"HitboxIdentity: {collision.collider.GetComponentInParent<HitboxIdentity>() is not null}");
+        DebugLogger.LogDebug($"IDestructible: {collision.collider.GetComponentInParent<IDestructible>() is not null}");
+        DebugLogger.LogDebug($"RefHub: {collision.collider.GetComponentInParent<ReferenceHub>() is not null}");
+        DebugLogger.LogDebug($"HitboxIdentity: {collision.contacts[0].otherCollider.GetComponentInParent<HitboxIdentity>() is not null}");
+        DebugLogger.LogDebug($"IDestructible: {collision.contacts[0].otherCollider.GetComponentInParent<IDestructible>() is not null}");
+        DebugLogger.LogDebug($"RefHub: {collision.contacts[0].otherCollider.GetComponentInParent<ReferenceHub>() is not null}");
 
-
-            int i = 0;
-            // foreach (var collider in collision.contacts)
-            foreach (var collider in Physics.OverlapSphere(collision.GetContact(0).point, 1f,
-                         layerMask == -1 ? 8 : layerMask))
+        
+        int i = 0;
+        // foreach (var collider in collision.contacts)
+        foreach (var collider in Physics.OverlapSphere(collision.GetContact(0).point, 1f, layerMask == -1 ? 8 : layerMask))
+        {
+            //DebugLogger.LogDebug($"User: {collider.GetComponentInParent<ReferenceHub>().nicknameSync.DisplayName}");
+           // DebugLogger.LogDebug($"User: {collider.GetComponentInParent<ReferenceHub>().nicknameSync.DisplayName}");
+            
+            
+            
+            DebugLogger.LogDebug($"RefHub: {collider.TryGetComponent<ReferenceHub>(out _)}");
+            DebugLogger.LogDebug($"SafeTeleportPosition: {collider.TryGetComponent<SafeTeleportPosition>(out _)}");
+            DebugLogger.LogDebug($"Transform: {collider.TryGetComponent<Transform>(out _)}");
+            DebugLogger.LogDebug($"IDestructible: {collider.TryGetComponent<IDestructible>(out _)}");
+            DebugLogger.LogDebug($"HitboxIdentity: {collider.TryGetComponent<HitboxIdentity>(out _)}");
+            DebugLogger.LogDebug($"HitboxIdentity: {collider.GetComponentInParent<HitboxIdentity>() is not null}");
+            DebugLogger.LogDebug($"IDestructible: {collider.GetComponentInParent<IDestructible>() is not null}");
+            DebugLogger.LogDebug($"RefHub: {collider.GetComponentInParent<ReferenceHub>() is not null}");
+            DebugLogger.LogDebug($"SafeTeleportPosition: {collider.GetComponentInParent<SafeTeleportPosition>() is not null}");
+            DebugLogger.LogDebug($"Transform: {collider.GetComponentInParent<Transform>() is not null}");
+            foreach (var transform in collider.GetComponents<Transform>())
             {
-                //DebugLogger.LogDebug($"User: {collider.GetComponentInParent<ReferenceHub>().nicknameSync.DisplayName}");
-                // DebugLogger.LogDebug($"User: {collider.GetComponentInParent<ReferenceHub>().nicknameSync.DisplayName}");
-
-
-
-                DebugLogger.LogDebug($"RefHub: {collider.TryGetComponent<ReferenceHub>(out _)}");
-                DebugLogger.LogDebug($"SafeTeleportPosition: {collider.TryGetComponent<SafeTeleportPosition>(out _)}");
-                DebugLogger.LogDebug($"Transform: {collider.TryGetComponent<Transform>(out _)}");
-                DebugLogger.LogDebug($"IDestructible: {collider.TryGetComponent<IDestructible>(out _)}");
-                DebugLogger.LogDebug($"HitboxIdentity: {collider.TryGetComponent<HitboxIdentity>(out _)}");
-                DebugLogger.LogDebug($"HitboxIdentity: {collider.GetComponentInParent<HitboxIdentity>() is not null}");
-                DebugLogger.LogDebug($"IDestructible: {collider.GetComponentInParent<IDestructible>() is not null}");
-                DebugLogger.LogDebug($"RefHub: {collider.GetComponentInParent<ReferenceHub>() is not null}");
-                DebugLogger.LogDebug(
-                    $"SafeTeleportPosition: {collider.GetComponentInParent<SafeTeleportPosition>() is not null}");
-                DebugLogger.LogDebug($"Transform: {collider.GetComponentInParent<Transform>() is not null}");
-                foreach (var transform in collider.GetComponents<Transform>())
-                {
-                    DebugLogger.LogDebug($"Transform: {transform.transform.position}");
-                }
-
-                foreach (var transform in collider.GetComponentsInParent<Transform>())
-                {
-                    DebugLogger.LogDebug($"Parent Transform: {transform.transform.position}");
-                }
-
-                foreach (var destructible in collider.GetComponents<IDestructible>())
-                {
-                    DebugLogger.LogDebug($"IDestructible: {destructible.NetworkId}");
-                }
-
-                foreach (var destructible in collider.GetComponentsInParent<IDestructible>())
-                {
-                    DebugLogger.LogDebug($"Parent IDestructible: {destructible.NetworkId}");
-                }
-
-                foreach (var hitbox in collider.GetComponents<HitboxIdentity>())
-                {
-                    DebugLogger.LogDebug($"Hitbox: {hitbox.NetworkId}");
-                }
-
-                foreach (var hitbox in collider.GetComponentsInParent<HitboxIdentity>())
-                {
-                    DebugLogger.LogDebug($"Parent Hitbox: {hitbox.NetworkId}");
-                }
-
-                foreach (var tpPos in collider.GetComponents<SafeTeleportPosition>())
-                {
-                    DebugLogger.LogDebug($"TP Pos: {tpPos.SafePositions.Length}");
-                }
-
-                foreach (var tpPos in collider.GetComponentsInParent<SafeTeleportPosition>())
-                {
-                    DebugLogger.LogDebug($"Parent Tp Pos: {tpPos.SafePositions.Length}");
-                }
-
-
-                DebugLogger.LogDebug($"============ Direct Components (collider {i}) ============");
-                foreach (var x in collider.GetComponents<Component>())
-                {
-                    DebugLogger.LogDebug($"{x.GetType().Name}");
-                }
-
-                DebugLogger.LogDebug($"============ Parent Components (collider {i}) ============");
-                foreach (var x in collider.GetComponentsInParent<Component>())
-                {
-                    DebugLogger.LogDebug($"{x.GetType().Name}");
-                }
-
-                i++;
+                DebugLogger.LogDebug($"Transform: {transform.transform.position}");
+            }
+            foreach (var transform in collider.GetComponentsInParent<Transform>())
+            {
+                DebugLogger.LogDebug($"Parent Transform: {transform.transform.position}");
+            }
+            foreach (var destructible in collider.GetComponents<IDestructible>())
+            {
+                DebugLogger.LogDebug($"IDestructible: {destructible.NetworkId}");
+            }
+            foreach (var destructible in collider.GetComponentsInParent<IDestructible>())
+            {
+                DebugLogger.LogDebug($"Parent IDestructible: {destructible.NetworkId}");
+            }foreach (var hitbox in collider.GetComponents<HitboxIdentity>())
+            {
+                DebugLogger.LogDebug($"Hitbox: {hitbox.NetworkId}");
+            }
+            foreach (var hitbox in collider.GetComponentsInParent<HitboxIdentity>())
+            {
+                DebugLogger.LogDebug($"Parent Hitbox: {hitbox.NetworkId}");
+            }
+            
+            foreach (var tpPos in collider.GetComponents<SafeTeleportPosition>())
+            {
+                DebugLogger.LogDebug($"TP Pos: {tpPos.SafePositions.Length}");
+            }
+            foreach (var tpPos in collider.GetComponentsInParent<SafeTeleportPosition>())
+            {
+                DebugLogger.LogDebug($"Parent Tp Pos: {tpPos.SafePositions.Length}");
             }
 
 
-#if EXILED
-            //var exPly3 = Exiled.API.Features.Player.Get(collision.gameObject.transform);
-            var exPly1 = Exiled.API.Features.Player.Get(collision.gameObject);
-            var exPly2 = Exiled.API.Features.Player.Get(collision.collider);
-            DebugLogger.LogDebug($"Player: {exPly1 is not null}, {exPly2 is not null} ");
-#endif
-            DebugLogger.LogDebug("Could not get target player for rock.");
+            DebugLogger.LogDebug($"============ Direct Components (collider {i}) ============");
+            foreach (var x in collider.GetComponents<Component>())
+            {
+                DebugLogger.LogDebug($"{x.GetType().Name}");
+            }
+            DebugLogger.LogDebug($"============ Parent Components (collider {i}) ============");
+            foreach (var x in collider.GetComponentsInParent<Component>())
+            {
+                DebugLogger.LogDebug($"{x.GetType().Name}");
+            }
+
+            i++;
         }
+        
+            
+#if EXILED
+        //var exPly3 = Exiled.API.Features.Player.Get(collision.gameObject.transform);
+        var exPly1 = Exiled.API.Features.Player.Get(collision.gameObject);
+        var exPly2 = Exiled.API.Features.Player.Get(collision.collider);
+        DebugLogger.LogDebug($"Player: {exPly1 is not null}, {exPly2 is not null} ");
+#endif
+        DebugLogger.LogDebug("Could not get target player for rock.");
     }
 
     public int LayerMask { get; private set; }

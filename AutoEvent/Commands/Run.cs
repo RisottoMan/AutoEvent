@@ -38,6 +38,7 @@ namespace AutoEvent.Commands
                 response = "Only 1 argument is needed - the command name of the event!";
                 return false;
             }
+
             Event ev = Event.GetEvent(arguments.At(0));
             if (ev == null)
             {
