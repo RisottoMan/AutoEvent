@@ -59,9 +59,8 @@ public class Loadout
     
     [YamlMember(DefaultValuesHandling = DefaultValuesHandling.OmitDefaults | DefaultValuesHandling.OmitNull | DefaultValuesHandling.OmitEmptyCollections)]
     // [DefaultValue(default(List<ItemType>))]
-    
     [Description("The items that this class spawns with.")]
-    public List<Item> Items { get; set; } = default(List<Item>);
+    public List<ItemType> Items { get; set; } = default(List<ItemType>);
 
     [YamlMember(DefaultValuesHandling = DefaultValuesHandling.OmitDefaults | DefaultValuesHandling.OmitNull | DefaultValuesHandling.OmitEmptyCollections)]
     // [DefaultValue(default(List<Effect>))]
