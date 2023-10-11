@@ -56,7 +56,7 @@ namespace AutoEvent.Games.Vote
             var count = Player.GetPlayers().Count(r => r.Role == RoleTypeId.ClassD);
             var time = $"{(_voteTime - EventTime.Seconds):00}";
 
-            Extensions.Broadcast($"Vote: Press [Alt] to vote\n" +
+            Extensions.Broadcast($"Vote: Press [Alt] Pros or twice Cons\n" +
                 $"{_voteList.Count(r => r.Value == true)} of {_voteList.Count} players for Mini-Game %Name%\n" +
                 $"{time} seconds left!", 1);
         }
