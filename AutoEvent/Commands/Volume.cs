@@ -11,31 +11,33 @@
 // -----------------------------------------
 
 using System;
+using AutoEvent.Interfaces;
 using CommandSystem;
-using Exiled.Permissions.Extensions;
 using MEC;
 using PluginAPI.Core;
 using SCPSLAudioApi.AudioCore;
+using Player = Exiled.Events.Handlers.Player;
 
 namespace AutoEvent.Commands;
 
-public class Volume : ICommand
+public class Volume : ICommand, IUsageProvider, IPermission
 {
-    public string Command => "volume";
+    public string Command => nameof(Volume);
         public string Description => "Set the global music volume, takes on 1 argument - the volume from 0% - 200%.";
-        public string[] Aliases => null;
+        public string[] Aliases => new string[] { };
+        public string[] Usage => new string[] { "Volume %" };
+        public string Permission { get; set; } = "ev.volume";
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
+            
             try
             {
-
-                if (!((CommandSender)sender).CheckPermission("ev.volume"))
+                if (!sender.CheckPermission(((IPermission)this).Permission, out bool IsConsoleCommandSender))
                 {
                     response = "<color=red>You do not have permission to use this command!</color>";
                     return false;
                 }
-
                 if (arguments.Count != 1)
                 {
                     response =
@@ -45,19 +47,21 @@ public class Volume : ICommand
 
                 float newVolume = float.Parse(arguments.At(0));
                 AutoEvent.Singleton.Config.Volume = newVolume;
-                if (Extensions.Dummy is not null)
+                if (Extensions.AudioBot is not null)
                 {
-                    var audioPlayer = AudioPlayerBase.Get(Extensions.Dummy).Volume = newVolume;
+                    var audioPlayer = AudioPlayerBase.Get(Extensions.AudioBot).Volume = newVolume;
                 }
 
-                response = $"<color=green>The volume has been set!</color>";
+                response = $"The volume has been set!";
                 return true;
             }
             catch (Exception e)
             {
                 response = $"Could not set the volume due to an error. This could be a bug. Ensure audio is playing while using this command.";
-                Log.Debug($"An error has occured while trying to set the volume. \n{e}");
+                DebugLogger.LogDebug($"An error has occured while trying to set the volume.", LogLevel.Warn, true);
+                DebugLogger.LogDebug($"{e}", LogLevel.Debug);
                 return false;
             }
         }
+
 }
