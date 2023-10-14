@@ -16,7 +16,7 @@ namespace AutoEvent.Commands
             // Log.Debug("Skipping Registering List Command");
         }
         public string Command => nameof(List);
-        public string Description => "Shows a list of all the events that can be started.";
+        public string Description => "Shows a list of all the events that can be started";
         public string[] Aliases => new string[] { };
         public string Permission { get; set; } = "ev.list";
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
@@ -51,6 +51,7 @@ namespace AutoEvent.Commands
                         color = "orange";
                         break;
                 }
+                if (ev is Invisible) continue;
                 if(!IsConsoleCommandSender)
                     builder.AppendLine($"<color={color}>{ev.Name}</color> [<color=yellow>{ev.CommandName}</color>]: <color=white>{ev.Description}</color>");
                 else

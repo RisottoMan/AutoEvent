@@ -5,20 +5,20 @@ using System.Linq;
 using AutoEvent.API;
 using MEC;
 using PluginAPI.Core;
-using Utils.NonAllocLINQ;
+using PlayerRoles;
 #if EXILED
 using Exiled.Permissions.Extensions;
 #endif
 
 namespace AutoEvent.Commands
 {
-    internal class Run : ICommand, IUsageProvider, IPermission
+    internal class Vote : ICommand, IUsageProvider, IPermission
     {
-        public string Command => nameof(Run);
-        public string Description => "Run the event, takes on 1 argument - the command name of the event";
-        public string[] Aliases => new []{ "start", "play", "begin" };
+        public string Command => nameof(Vote);
+        public string Description => "Starts voting for mini-game, 1 argument - the command name of the event";
+        public string[] Aliases => new string[] { };
         public string[] Usage => new string[] { "Event Name" };
-        public string Permission { get; set; } = "ev.run";
+        public string Permission { get; set; } = "ev.vote";
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
@@ -52,32 +52,21 @@ namespace AutoEvent.Commands
                 return false;
             }
 
-            string conf = "";
-            EventConfig? config = null;
-            if (arguments.Count >= 2)
+            Event vote = Event.GetEvent("Vote");
+            if (vote == null)
             {
-                if (!ev.TryGetPresetName(arguments.At(1), out string presetName))
-                {
-                    response = $"Could not find preset \"{arguments.At(1)}\".";
-                    return false;
-                }
-                if (!ev.SetConfig(arguments.At(1)))
-                {
-                    response = $"could not set preset \"{presetName}\". This is probably due to an error.";
-                    return false;
-                }
-            }
-
-            if (!(ev is IEventMap map && !string.IsNullOrEmpty(map.MapInfo.MapName) && map.MapInfo.MapName.ToLower() != "none"))
-            {
-                DebugLogger.LogDebug("No map has been specified for this event!", LogLevel.Warn, true);
-            }
-            else if (!Extensions.IsExistsMap(map.MapInfo.MapName))
-            {
-                response = $"You need a map {map.MapInfo.MapName} to run a mini-game.";
+                response = $"The vote is not found.";
                 return false;
             }
 
+            IVote comp = vote as IVote;
+            if (comp == null)
+            {
+                response = $"The IVote is not found.";
+                return false;
+            }
+
+            comp.NewEvent = ev;
             Round.IsLocked = true;
 
             if (!Round.IsRoundStarted)
@@ -86,23 +75,18 @@ namespace AutoEvent.Commands
 
                 Timing.CallDelayed(2f, () => {
 
-                    foreach (Player player in Player.GetPlayers())
-                    {
-                        player.ClearInventory();
-                    }
-
-                    ev.StartEvent();
-                    AutoEvent.ActiveEvent = ev;
+                    Extensions.TeleportEnd();
+                    vote.StartEvent();
+                    AutoEvent.ActiveEvent = vote;
                 });
             }
             else
             {
-                ev.StartEvent();
-                AutoEvent.ActiveEvent = ev;
+                vote.StartEvent();
+                AutoEvent.ActiveEvent = vote;
             }
 
-            response = $"The mini-game {
-                ev.Name} has started!";
+            response = $"The vote {ev.Name} has started!";
             return true;
         }
 
