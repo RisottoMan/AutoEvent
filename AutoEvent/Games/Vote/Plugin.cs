@@ -11,7 +11,7 @@ using Player = PluginAPI.Core.Player;
 
 namespace AutoEvent.Games.Vote
 {
-    public class Plugin : Event, IEventSound, Invisible, IVote
+    public class Plugin : Event, IEventSound, IHidden, IVote
     {
         public override string Name { get; set; } = "Vote";
         public override string Description { get; set; } = "Start voting for the mini-game.";

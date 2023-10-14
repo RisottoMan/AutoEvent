@@ -40,18 +40,13 @@ namespace AutoEvent.Commands
             }
 
             Event ev = Event.GetEvent(arguments.At(0));
-            if (ev == null)
+            if (ev == null || ev is IHidden)
             {
+                // No need to acknowledge it if it is hidden.
                 response = $"The mini-game {arguments.At(0)} is not found.";
                 return false;
             }
-
-            if (ev is Invisible)
-            {
-                response = $"The mini-game {arguments.At(0)} is invisible.";
-                return false;
-            }
-
+            
             string conf = "";
             EventConfig? config = null;
             if (arguments.Count >= 2)
