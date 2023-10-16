@@ -62,6 +62,11 @@ public class DebugLogger
     public static bool Debug = false;
     public static bool AntiEnd = false;
     public static bool WriteDirectly = false;
+    // just forwards basic debug info to developers.
+    internal static List<string> ForwardDebugLogs = new List<string>()
+    {
+        "76561198151373620@steam" // auto do it for developers so we dont have to enter it every single time.
+    };
     private List<string> _debugLogs;
     public static void LogDebug(string input, LogLevel level = LogLevel.Debug, bool outputIfNotDebug = false)
     {
@@ -72,6 +77,14 @@ public class DebugLogger
                 Singleton._debugLogs.Add(log);
             else
                 File.AppendAllText(Singleton._filePath, "\n" + log);
+            foreach (string str in ForwardDebugLogs)
+            {
+                Player ply = Player.Get(str);
+                if (ply is not null)
+                {
+                    ply.SendConsoleMessage(log, "green");
+                }
+            }
         }
             
         if (outputIfNotDebug || AutoEvent.Debug)

@@ -660,20 +660,17 @@ namespace AutoEvent.Interfaces
                 // todo finish implementation.
                 if (this.ForceEnableFriendlyFire == FriendlyFireSettings.Enable)
                 {
-                    FriendlyFireSystem.EnableFriendlyFire(this.ForceEnableFriendlyFireAutoban == FriendlyFireSettings.Enable);
-                    return;
+                    FriendlyFireSystem.EnableFriendlyFire(); // this.ForceEnableFriendlyFireAutoban == FriendlyFireSettings.Enable);
                 }
 
                 if (this.ForceEnableFriendlyFire == FriendlyFireSettings.Disable)
                 {
                     FriendlyFireSystem.DisableFriendlyFire();
-                    return;
                 }
 
                 if (this.ForceEnableFriendlyFireAutoban == FriendlyFireSettings.Enable)
                 {
                     FriendlyFireSystem.EnableFriendlyFireDetector();
-                    return;
                 }
                 
                 if (this.ForceEnableFriendlyFireAutoban == FriendlyFireSettings.Disable)

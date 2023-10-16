@@ -26,6 +26,7 @@ using Footprinting;
 using InventorySystem.Configs;
 using InventorySystem.Items.ThrowableProjectiles;
 using InventorySystem.Items;
+using InventorySystem.Items.Jailbird;
 using InventorySystem.Items.Keycards;
 using InventorySystem.Items.Usables.Scp244.Hypothermia;
 using JetBrains.Annotations;
@@ -39,6 +40,8 @@ namespace AutoEvent
 {
     public static class Extensions
     {
+        public static bool JailbirdIsInvincible { get; set; } = true;
+        public static List<JailbirdItem> InvincibleJailbirds { get; set; } = new List<JailbirdItem>();
         public static ReferenceHub AudioBot = new ReferenceHub();
 
         private static MethodInfo sendSpawnMessage;

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using AutoEvent.API.Enums;
 using UnityEngine;
 using PlayerRoles;
 using PluginAPI.Core;
@@ -30,6 +31,9 @@ namespace AutoEvent.Games.DeathParty
         [EventConfig]
         public DeathPartyConfig Config { get; set; }
         protected override float PostRoundDelay { get; set; } = 5f;
+        protected override FriendlyFireSettings ForceEnableFriendlyFire { get; set; } = FriendlyFireSettings.Enable;
+        protected override FriendlyFireSettings ForceEnableFriendlyFireAutoban { get; set; } = FriendlyFireSettings.Disable;
+        
         private EventHandler EventHandler { get; set; }
         private DeathTranslate Translation { get; set; } = AutoEvent.Singleton.Translation.DeathTranslate;
         private bool RespawnWithGrenades => Config.RespawnPlayersWithGrenades;
@@ -111,7 +115,7 @@ namespace AutoEvent.Games.DeathParty
         {
             // At least one player is alive &&
             // Stage hasn't yet hit the max stage.
-            return !(Player.GetPlayers().Count(r => r.IsAlive && r.Role != RoleTypeId.ChaosConscript) > 0 && Stage <= Config.Rounds);
+            return !(Player.GetPlayers().Count(r => r.IsAlive && r.Role != RoleTypeId.ChaosConscript) > (Config.LastPlayerAliveWins ? 1 : 0) && Stage <= Config.Rounds);
         }
 
         public IEnumerator<float> GrenadeCoroutine()
@@ -124,7 +128,7 @@ namespace AutoEvent.Games.DeathParty
             float scale = 4;
             float radius = MapInfo.Map.AttachedBlocks.First(x => x.name == "Arena").transform.localScale.x / 2 - 6f;
 
-            while (Player.GetPlayers().Count(r => r.IsAlive) > 0 && Stage <= Config.Rounds)
+            while (Player.GetPlayers().Count(r => r.IsAlive) > (Config.LastPlayerAliveWins ? 1 : 0) && Stage <= Config.Rounds)
             {
                 if (KillLoop)
                 {
@@ -149,10 +153,21 @@ namespace AutoEvent.Games.DeathParty
                         // has to be re-iterated every run because a player could have been killed from the last one.
                         if (Config.TargetPlayers)
                         {
-                            Player randomPlayer = Player.GetPlayers().Where(x => x.Role == RoleTypeId.ClassD).ToList().RandomItem();
-                            pos = randomPlayer.Position;
-                            pos.y = height;
+                            try
+                            {
+                                Player randomPlayer = Player.GetPlayers().Where(x => x.Role == RoleTypeId.ClassD)
+                                    .ToList().RandomItem();
+                                pos = randomPlayer.Position;
+                                pos.y = height + MapInfo.Map.Position.y;
+                                // Log.Debug($"Target Player Position: ({pos.x}, {pos.y}, {pos.z})");
+                            }
+                            catch (Exception e)
+                            {
+                                DebugLogger.LogDebug("Caught an error while targeting a player.", LogLevel.Warn, true);
+                                DebugLogger.LogDebug($"{e}");
+                            }
                         }
+                        // Log.Debug($"Target Position: ({pos.x}, {pos.y}, {pos.z})");
                         Extensions.GrenadeSpawn(fuse, pos, scale);
                         yield return Timing.WaitForSeconds(timing);
                         playerIndex++;
@@ -184,6 +199,7 @@ namespace AutoEvent.Games.DeathParty
                 */
             }
 
+            Log.Debug("Finished Grenade Coroutine.");
             yield break;
         }
 

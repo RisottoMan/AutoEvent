@@ -28,7 +28,7 @@ namespace AutoEvent.Games.Versus
                 _plugin.Scientist = null;
             }
         }
-
+        
         [PluginEvent(ServerEventType.PlayerJoined)]
         public void OnPlayerJoin(PlayerJoinedEvent ev)
         {
@@ -41,5 +41,6 @@ namespace AutoEvent.Games.Versus
         public void OnPlaceBlood(PlaceBloodArgs ev) => ev.IsAllowed = false;
         public void OnDropItem(DropItemArgs ev) => ev.IsAllowed = false;
         public void OnDropAmmo(DropAmmoArgs ev) => ev.IsAllowed = false;
+        public void OnJailbirdCharge(ChargingJailbirdEventArgs ev) => ev.IsAllowed = _plugin.Config.JailbirdCanCharge;
     }
 }

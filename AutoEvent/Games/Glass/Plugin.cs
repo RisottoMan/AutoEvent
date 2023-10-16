@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using MEC;
 using PlayerRoles;
 using UnityEngine;
@@ -13,8 +15,10 @@ using AutoEvent.API.Schematic.Objects;
 using AutoEvent.Events.Handlers;
 using AutoEvent.Games.Infection;
 using AutoEvent.Interfaces;
+using HarmonyLib;
 using Object = UnityEngine.Object;
 using Event = AutoEvent.Interfaces.Event;
+using Random = UnityEngine.Random;
 
 namespace AutoEvent.Games.Glass
 {
@@ -94,8 +98,22 @@ namespace AutoEvent.Games.Glass
 
             _platforms = new List<GameObject>();
             var delta = new Vector3(3.69f, 0, 0);
+            PlatformSelector selector = new PlatformSelector(platformCount, Config.SeedSalt, Config.MinimumSideOffset, Config.MaximumSideOffset, Config.PlatformScrambleMethod);
             for (int i = 0; i < platformCount; i++)
             {
+                PlatformData data;
+                try
+                {
+                    data = selector.PlatformData[i];
+                }
+                catch (Exception e)
+                {
+                    data = new PlatformData(Random.Range(0, 2) == 1, -1);
+                    DebugLogger.LogDebug("An error has occured while processing platform data.", LogLevel.Warn, true);
+                    DebugLogger.LogDebug($"selector count: {selector.PlatformCount}, selector length: {selector.PlatformData.Count}, specified count: {platformCount}, [i: {i}]");
+                    DebugLogger.LogDebug($"{e}");
+                }
+
                 var newPlatform = Object.Instantiate(platform, platform.transform.position + delta * (i + 1), Quaternion.identity);
                 NetworkServer.Spawn(newPlatform);
                 _platforms.Add(newPlatform);
@@ -104,13 +122,14 @@ namespace AutoEvent.Games.Glass
                 NetworkServer.Spawn(newPlatform1);
                 _platforms.Add(newPlatform1);
 
-                if (UnityEngine.Random.Range(0, 2) == 0)
+                
+                if (data.LeftSideIsDangerous)
                 {
-                    newPlatform.AddComponent<GlassComponent>();
+                    newPlatform.AddComponent<GlassComponent>().Init(Config.BrokenPlatformRegenerateDelayInSeconds);
                 }
                 else
                 {
-                    newPlatform1.AddComponent<GlassComponent>();
+                    newPlatform1.AddComponent<GlassComponent>().Init(Config.BrokenPlatformRegenerateDelayInSeconds);
                 }
             }
 
@@ -194,6 +213,141 @@ namespace AutoEvent.Games.Glass
         protected override void OnCleanup()
         {
             _platforms.ForEach(Object.Destroy);
+        }
+    }
+
+    public class PlatformSelector
+    {
+        public int PlatformCount { get; set; }
+        internal string Seed { get; set; }
+        internal List<PlatformData> PlatformData { get; set; }
+        public int MinimumSideOffset { get; set; } = 0;
+        public int MaximumSideOffset { get; set; } = 0;
+        public int LeftSidedPlatforms { get; set; } = 0;
+        public int RightSidedPlatforms { get; set; }= 0;
+        private SeedMethod _seedMethod;
+        public PlatformSelector(int platformCount, string salt, int minimumSideOffset, int maximumSideOffset, SeedMethod seedMethod)
+        {
+            PlatformCount = platformCount;
+            PlatformData = new List<PlatformData>();
+            MinimumSideOffset = minimumSideOffset;
+            MaximumSideOffset = maximumSideOffset;
+            _seedMethod = seedMethod;
+            initSeed(salt);
+            _selectPlatformSideCount();
+            _createPlatforms();
+            _logOutput();
+        }
+
+        private void initSeed(string salt)
+        {
+            var bytes = GetRandomBytes().AddRangeToArray(TextToBytes(salt));
+            Seed = GetSeed(bytes);
+        }
+        private void _selectPlatformSideCount()
+        {
+            bool leftSidePriority = true;
+            int seedInt = GetIntFromSeededString(Seed, 3, 4, 0);
+            int percent = 50;
+            int priority = 5;
+            int remainder = 5;
+            switch (_seedMethod)
+            {
+               case SeedMethod.UnityRandom:
+                   Random.InitState(seedInt);
+                   leftSidePriority = Random.Range(0, 2) == 1; 
+                   percent = Random.Range((int)MinimumSideOffset, (int)MaximumSideOffset);
+                   break;
+                case SeedMethod.SystemRandom:
+                    var random = new System.Random(seedInt);
+                    leftSidePriority = random.Next(0,2) == 1; 
+                    percent = random.Next((int)MinimumSideOffset, (int)MaximumSideOffset);
+                    random.Next();
+                    break;
+            }
+                    priority = (int)((float)PlatformCount * ((float)percent / 100f));
+                    remainder = PlatformCount - priority;
+                   LeftSidedPlatforms = leftSidePriority ? priority : remainder;
+                   RightSidedPlatforms = leftSidePriority ? remainder : priority;
+        }
+
+        private void _createPlatforms()
+        {
+            List<PlatformData> data = new List<PlatformData>();
+            for (int i = 0; i < LeftSidedPlatforms; i++)
+            {
+                data.Add(new PlatformData(true, GetIntFromSeededString(Seed, 4, 4, 1 + i)));
+            }
+
+            for (int i = 0; i < RightSidedPlatforms; i++)
+            {
+                data.Add(new PlatformData(false,  GetIntFromSeededString(Seed, 4, 4, 1 + i + LeftSidedPlatforms)));
+            }
+
+            PlatformData = data.OrderBy(x => x.Placement).ToList();
+        }
+
+        private void _logOutput()
+        {
+            DebugLogger.LogDebug($"Selecting {PlatformCount} Platforms. [{MinimumSideOffset}, {MaximumSideOffset}]   {LeftSidedPlatforms} | {RightSidedPlatforms}  Seed: {Seed}", LogLevel.Debug, false);
+            foreach (var platform in PlatformData.OrderByDescending(x => x.Placement))
+            {
+                DebugLogger.LogDebug((platform.LeftSideIsDangerous ? "[X] [=]" : "[=] [X]") + $"  Priority: {platform.Placement}", LogLevel.Debug, false);
+            }
+        }
+        
+        
+        public static int GetIntFromSeededString(string seed, int count, int offset, int amount)
+        {
+            string seedGen = "";
+            for(int s = 0; s < count; s++) {
+                int indexer = (amount * count) + s;
+                while(indexer >= seed.Length)
+                    indexer -= seed.Length -1 ;
+                seedGen += seed[indexer].ToString();
+            }
+
+            return int.Parse(seedGen);
+        }
+        public static byte[] GetRandomBytes(){
+            RNGCryptoServiceProvider rng = new RNGCryptoServiceProvider();
+            byte[] rand = new byte[8];
+            rng.GetBytes(rand);
+            return rand;
+        }
+
+        public static byte[] TextToBytes(string inputText)
+        {
+            byte[] rand = Encoding.ASCII.GetBytes(inputText);
+            return rand;
+        }
+        public static string GetSeed(byte[] seed)
+        {
+		
+            var sha = SHA256.Create();
+            byte[] bytes = sha.ComputeHash(seed);// System.Text.Encoding.ASCII.GetBytes(seed));
+		
+            string newSeed = "";
+            foreach(byte bytemap in bytes){
+                newSeed += bytemap.ToString();
+            }
+		
+            return newSeed;
+        }
+    }
+    public struct PlatformData
+    {
+        public PlatformData(bool leftSideIsDangerous, int placement)
+        {
+            LeftSideIsDangerous = leftSideIsDangerous;
+            Placement = placement;
+        }
+        public int Placement { get; set; }
+        public bool LeftSideIsDangerous { get; set; }
+        public bool RightSideIsDangerous
+        {
+            get => !LeftSideIsDangerous;
+            set => LeftSideIsDangerous = !value;
         }
     }
 }

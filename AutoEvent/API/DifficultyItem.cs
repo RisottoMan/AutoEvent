@@ -40,6 +40,7 @@ public class DifficultyItem
     public float GetValue(int round, int maxRound, float minClamp, float maxClamp)
     {
 
+        round -= 1;
         var zero = new Vector2(0, Mathf.Clamp(StartingValue, minClamp, maxClamp));
         var end = new Vector2(maxRound - 1, Mathf.Clamp(EndingValue, minClamp, maxClamp));
         return _getLinearValue(zero, end, round);

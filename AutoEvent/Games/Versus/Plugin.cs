@@ -28,7 +28,6 @@ namespace AutoEvent.Games.Versus
             {MapName = "35Hp", Position = new Vector3(6f, 1015f, -5f), };
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
             { SoundName = "Knife.ogg", Volume = 10, Loop = true };
-
         protected override FriendlyFireSettings ForceEnableFriendlyFire { get; set; } = FriendlyFireSettings.Disable;
         private EventHandler EventHandler { get; set; }
         private VersusTranslate Translation { get; set; } = AutoEvent.Singleton.Translation.VersusTranslate;
@@ -60,6 +59,7 @@ namespace AutoEvent.Games.Versus
             Servers.PlaceBlood += EventHandler.OnPlaceBlood;
             Players.DropItem += EventHandler.OnDropItem;
             Players.DropAmmo += EventHandler.OnDropAmmo;
+            Players.ChargingJailbird += EventHandler.OnJailbirdCharge;
         }
 
         protected override void UnregisterEvents()
@@ -71,6 +71,7 @@ namespace AutoEvent.Games.Versus
             Servers.PlaceBlood -= EventHandler.OnPlaceBlood;
             Players.DropItem -= EventHandler.OnDropItem;
             Players.DropAmmo -= EventHandler.OnDropAmmo;
+            Players.ChargingJailbird -= EventHandler.OnJailbirdCharge;
 
             EventHandler = null;
         }
@@ -131,8 +132,6 @@ namespace AutoEvent.Games.Versus
 
         protected override void ProcessFrame()
         {
-            
-
             foreach (Player player in Player.GetPlayers())
             {
                 if (Scientist == null)

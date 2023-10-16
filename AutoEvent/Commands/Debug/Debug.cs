@@ -37,6 +37,7 @@ public class Debug : ParentCommand
         this.RegisterCommand(new ImpactGrenade());
         this.RegisterCommand(new Rock());
         this.RegisterCommand(new SetRole());
+        this.RegisterCommand(new RNG());
     }
 
     protected override bool ExecuteParent(ArraySegment<string> arguments, ICommandSender sender, [UnscopedRef] out string response)

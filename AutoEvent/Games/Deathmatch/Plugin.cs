@@ -134,15 +134,23 @@ namespace AutoEvent.Games.Deathmatch
 
         protected override void ProcessFrame()
         {
+            DebugLogger.LogDebug("frame");
             string mtfString = string.Empty;
             string chaosString = string.Empty;
-            for (int i = 0; i < _needKills; i += (int)(_needKills / 5))
-            {
-                if (MtfKills >= i) mtfString += "■";
-                else mtfString += "□";
+            int neededKills = _needKills;
 
-                if (ChaosKills >= i) chaosString = "■" + chaosString;
-                else chaosString = "□" + chaosString;
+            string progress = "||||||||||||||||||||";
+            for (int i = 0; i < neededKills; i += (int)(_needKills / 5))
+            {
+                if (MtfKills >= i) 
+                    mtfString += "■";
+                else 
+                    mtfString += "□";
+
+                if (ChaosKills >= i) 
+                    chaosString = "■" + chaosString;
+                else 
+                    chaosString = "□" + chaosString;
             }
 
             Extensions.Broadcast(
