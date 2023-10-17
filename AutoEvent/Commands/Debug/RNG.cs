@@ -15,7 +15,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using AutoEvent.Games.Glass;
+using AutoEvent.Games.Glass.Features;
 using AutoEvent.Games.Infection;
+using AutoEvent.Games.Puzzle;
 using AutoEvent.Interfaces;
 using CommandSystem;
 using HarmonyLib;
@@ -43,14 +45,72 @@ public class RNG : ICommand, IPermission
             return false;
         }
 
+        if (arguments.Count > 0)
+        {
+            switch (arguments.At(0).ToLower())
+            {
+                case "platform" or "glass":
+                    goto platform;
+                case "puzzle" or "grid":
+                    goto grid;
+            }
+        }
+
+        response = "You must specify a valid rng usage.";
+        return false;
+        
+        grid:
+        byte platformSpread = 1;
+        byte sizeX = 5;
+        byte sizeY = 5;
+        SeedMethod method = SeedMethod.UnityRandom;
+        string salt = "salty hashbrown";
+        for (int i = 1; i < arguments.Count; i++)
+        {
+            switch (i - 1)
+            {
+                case 0:
+                    sizeX = byte.Parse(arguments.At(i));
+                    break;
+                case 1:
+                    sizeY = byte.Parse(arguments.At(i));
+                    break;
+                case 2:
+                    platformSpread = byte.Parse(arguments.At(i));
+                    break;
+                case 3:
+                    if (arguments.At(i).ToLower() == "unity")
+                        method = SeedMethod.UnityRandom;
+                    else
+                        method = SeedMethod.SystemRandom;
+                    break;
+                case 4:
+                    salt = arguments.At(i);
+                    break;
+                default:
+                    salt += arguments.At(i);
+                    break;
+            }
+        }
+        DebugLogger.LogDebug($"Generating Grid Selector. Settings: Size: {sizeX}x{sizeY}, (salt: \"{salt}\"), Method: {method}");
+        var selector = new GridSelector(sizeX, sizeY, salt, method);
+        DebugLogger.LogDebug($"Selecting Grid Item. Platform Spread: {platformSpread}");
+        selector.SelectGridItem(platformSpread: platformSpread);
+        response = "Output to console successfully.";
+        return true;
+        
+        
+        
+        
+        platform:
         int platformCount = 10;
         SeedMethod seedMethod = SeedMethod.UnityRandom;
         int minimumSideOffset = 40;
         int maximumSideOffset = 60;
-        string salt = "salty hashbrown";
-        for (int i = 0; i < arguments.Count; i++)
+        salt = "salty hashbrown";
+        for (int i = 1; i < arguments.Count; i++)
         {
-            switch (i)
+            switch (i - 1)
             {
                 case 0:
                     platformCount = int.Parse(arguments.At(i));
@@ -71,7 +131,7 @@ public class RNG : ICommand, IPermission
                     salt = arguments.At(i);
                     break;
                 default:
-                    salt += arguments.At(i); 
+                    salt += arguments.At(i);
                     break;
             }
         }
@@ -81,11 +141,11 @@ public class RNG : ICommand, IPermission
         foreach (var platform in platformSelector.PlatformData.OrderByDescending(x => x.Placement))
         {
             if (IsConsoleCommandSender)
-                response += (platform.LeftSideIsDangerous ? "[X] [=]" : "[=] [X]") +$"  Priority: {platform.Placement}\n";
+                response += (platform.LeftSideIsDangerous ? "[X] [=]" : "[=] [X]") + $"  Priority: {platform.Placement}\n";
             else
                 response += (platform.LeftSideIsDangerous ? "<color=red>[X]<color=white> [=]" : "[=] <color=red>[X]<color=white>") + $"  Priority: <color=yellow>{platform.Placement}\n";
         }
-        
+
         return true;
     }
 }

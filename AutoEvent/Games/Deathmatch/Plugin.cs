@@ -134,13 +134,21 @@ namespace AutoEvent.Games.Deathmatch
 
         protected override void ProcessFrame()
         {
-            DebugLogger.LogDebug("frame");
-            string mtfString = string.Empty;
-            string chaosString = string.Empty;
-            int neededKills = _needKills;
-
-            string progress = "||||||||||||||||||||";
-            for (int i = 0; i < neededKills; i += (int)(_needKills / 5))
+            //string mtfString = string.Empty;
+            //string chaosString = string.Empty;
+            
+            // This wont crash the server because its not possible to enumerate into 0.
+            // These colors allow us to change the color of the mtf percent bar without
+            // affecting the index offset to compensate for the spare characters.
+            string mtfColor = "<color=#42AAFF>";
+            string chaosColor = "<color=green>";
+            string whiteColor = "<color=white>";
+            int mtfIndex = mtfColor.Length + (int)((float)MtfKills / _needKills * 20f);
+            int chaosIndex = whiteColor.Length + 20 - (int)((float)ChaosKills / _needKills * 20f);
+            string mtfString = $"{mtfColor}||||||||||||||||||||{mtfColor}".Insert(mtfIndex, whiteColor);
+            string chaosString = $"{whiteColor}||||||||||||||||||||".Insert(chaosIndex, chaosColor);
+            
+            /*for (int i = 0; i < neededKills; i += (int)(_needKills / 5))
             {
                 if (MtfKills >= i) 
                     mtfString += "■";
@@ -151,7 +159,7 @@ namespace AutoEvent.Games.Deathmatch
                     chaosString = "■" + chaosString;
                 else 
                     chaosString = "□" + chaosString;
-            }
+            }*/
 
             Extensions.Broadcast(
                 Translation.DeathmatchCycle.Replace("{name}", Name).Replace("{mtftext}", $"{MtfKills} {mtfString}")

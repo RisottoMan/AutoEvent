@@ -22,6 +22,7 @@ namespace AutoEvent.Games.FallDown
         public override string Author { get; set; } = "KoT0XleB";
         public override string CommandName { get; set; } = AutoEvent.Singleton.Translation.FallTranslate.FallCommandName;
         [EventConfig] public FallDownConfig Config { get; set; } = null;
+        [EventConfig] public FallDownConfig Warning => FallDownConfigPresets.PlatformWarning;
         public MapInfo MapInfo { get; set; } = new MapInfo()
             {MapName = "FallDown", Position = new Vector3(10f, 1020f, -43.68f) };
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
