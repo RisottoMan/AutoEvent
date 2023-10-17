@@ -68,6 +68,7 @@
     <Reference Include="UnityEngine.AudioModule" HintPath="$(UNITY_REFERENCES)\UnityEngine.AudioModule.dll" />
     <Reference Include="CommandSystem.Core" HintPath="$(SL_REFERENCES)\CommandSystem.Core.dll" />
     <Reference Include="NorthwoodLib" HintPath="$(SL_REFERENCES)\NorthwoodLib.dll" />
+    <Reference Include="Pooling" HintPath="$(SL_REFERENCES)\Pooling.dll" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="..\Docs\*" Link="Docs\*" />

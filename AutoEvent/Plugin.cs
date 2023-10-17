@@ -24,7 +24,7 @@ namespace AutoEvent
 #if EXILED
     public class AutoEvent : Plugin<Config, Translation>
     {
-        public override System.Version Version => new System.Version(9, 1, 5);
+        public override System.Version Version => new System.Version(9, 1, 10);
         public override string Name => "AutoEvent";
         public override string Author => "Created by KoT0XleB, extended by swd and sky, Co-Maintained by Redforce04";
         public static bool IsPlayedGames;
@@ -116,6 +116,7 @@ namespace AutoEvent
                 EventManager.RegisterEvents(this);
                 SCPSLAudioApi.Startup.SetupDependencies();
 
+                var powerupManager = new PowerupManager();
                 Servers.RemoteAdmin += eventHandler.OnRemoteAdmin;
                 try
                 {
