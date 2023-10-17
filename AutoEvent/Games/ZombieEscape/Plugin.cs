@@ -165,7 +165,7 @@ namespace AutoEvent.Games.ZombieEscape
                 if (Vector3.Distance(player.Position, _button1.transform.position) < 3)
                 {
                     _button1.transform.position += Vector3.down * 5;
-                    _wall.AddComponent<WallComponent>().Duration = Config.GateLockDuration;
+                    _wall.AddComponent<WallComponent>().Init(Config.GateLockDuration);
                 }
 
                 if (Vector3.Distance(player.Position, _button2.transform.position) < 3)

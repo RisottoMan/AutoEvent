@@ -82,6 +82,7 @@ public class FriendlyFireSystem
 
     public static void EnableFriendlyFireDetector()
     {
+        Log.Debug("Enabling Friendly Fire Detector.");
         try
         {
             FriendlyFireConfig.PauseDetector = false;
@@ -101,6 +102,7 @@ public class FriendlyFireSystem
     {
         try
         {
+            Log.Debug("Disabling Friendly Fire Detector.");
             FriendlyFireConfig.PauseDetector = true;
 
             if (CedModIsPresent)
@@ -114,9 +116,9 @@ public class FriendlyFireSystem
         }
     }
 
-    public static void EnableFriendlyFire(bool shouldAutobanTeamKills = false)
+    public static void EnableFriendlyFire(/*bool shouldAutobanTeamKills = false*/)
     {
-        if (shouldAutobanTeamKills && FriendlyFireDetectorIsDisabled)
+        /*if (shouldAutobanTeamKills && FriendlyFireDetectorIsDisabled)
         {
             EnableFriendlyFireDetector();
         }
@@ -124,19 +126,23 @@ public class FriendlyFireSystem
         if (!shouldAutobanTeamKills && !FriendlyFireDetectorIsDisabled)
         {
             DisableFriendlyFireDetector();
-        }
+        }*/
 
+        DebugLogger.LogDebug("Enabling Friendly Fire.");
         Server.FriendlyFire = true;
     }
 
     public static void DisableFriendlyFire()
     {
+        DebugLogger.LogDebug("Disabling Friendly Fire.");
+        
         Server.FriendlyFire = false;
-        EnableFriendlyFireDetector();
+        // EnableFriendlyFireDetector();
     }
 
     public static void RestoreFriendlyFire()
     {
+        DebugLogger.LogDebug("Restoring Friendly Fire and Detector.");
         Server.FriendlyFire = IsFriendlyFireEnabledByDefault;
         if (FriendlyFireAutoBanDefaultEnabled && FriendlyFireDetectorIsDisabled)
         {

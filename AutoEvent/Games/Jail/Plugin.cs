@@ -185,7 +185,7 @@ namespace AutoEvent.Games.Jail
             }
             for (int time = 15; time > 0; time--)
             {
-                Extensions.Broadcast(Translation.JailBeforeStartPrisoners.Replace("{name}", Name).Replace("{time}", time.ToString()), 1);
+                Extensions.Broadcast(Translation.JailBeforeStartPrisoners.Replace("{name}", Name).Replace("{time}", time.ToString("00")), 1);
                 foreach (Player ply in jailors)
                 {
                     if (ply is null)
@@ -194,7 +194,7 @@ namespace AutoEvent.Games.Jail
                         continue;
                     }
                     ply.ClearBroadcasts();
-                    ply.SendBroadcast(Translation.JailBeforeStart.Replace("{name}", Name).Replace("{time}", time.ToString()), 1);
+                    ply.SendBroadcast(Translation.JailBeforeStart.Replace("{name}", Name).Replace("{time}", time.ToString("00")), 1);
                 }
                 yield return Timing.WaitForSeconds(1f);
                 //JailLockdownSystem.ProcessTick(true);
