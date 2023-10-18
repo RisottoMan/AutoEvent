@@ -1,4 +1,5 @@
-﻿using PluginAPI.Core;
+﻿using MEC;
+using PluginAPI.Core;
 using UnityEngine;
 
 namespace AutoEvent.Games.Glass.Features
@@ -6,6 +7,12 @@ namespace AutoEvent.Games.Glass.Features
     public class GlassComponent : MonoBehaviour
     {
         private BoxCollider collider;
+
+        public float RegenerationDelay { get; set; } = 0;
+        public void Init(float regenerationDelay)
+        {
+            RegenerationDelay = regenerationDelay;
+        }
         private void Start()
         {
             collider = gameObject.AddComponent<BoxCollider>();
@@ -16,7 +23,15 @@ namespace AutoEvent.Games.Glass.Features
         {
             if (Player.Get(other.gameObject) is Player)
             {
-                Destroy(gameObject);
+                //Destroy(gameObject);
+                gameObject.transform.position += Vector3.down * 5;
+                if (RegenerationDelay > 0)
+                {
+                    Timing.CallDelayed(RegenerationDelay, () =>
+                    {
+                        gameObject.transform.position += Vector3.up * 5;
+                    });
+                }
             }
         }
     }

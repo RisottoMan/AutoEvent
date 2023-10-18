@@ -22,6 +22,8 @@ namespace AutoEvent.Games.DeathParty
 
         public void OnPlayerDying(PlayerDyingArgs ev)
         {
+            if (!_plugin.Config.RespawnPlayersWithGrenades)
+                return;
             Timing.CallDelayed(1f, () =>
             {
                 ev.Target.SetRole(RoleTypeId.ChaosConscript, RoleChangeReason.Respawn);

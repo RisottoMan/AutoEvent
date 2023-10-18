@@ -83,13 +83,30 @@ namespace AutoEvent.Games.Deathmatch
                 _plugin.MtfKills++;
             }
 
+            // bool isChaos = _plugin.Config.ChaosLoadouts.Any(loadout => loadout.Roles.Any(role => role.Key == ev.Target.Role));
+            //ev.Target.GiveLoadout(isChaos ? _plugin.Config.ChaosLoadouts : _plugin.Config.NTFLoadouts);
+
             ev.Target.EffectsManager.EnableEffect<Flashed>(0.1f);
             ev.Target.Position = RandomClass.GetRandomPosition(_plugin.MapInfo.Map);
             ev.Target.Health = 100;
 
+            List<ItemType> itemsToDrop = new List<ItemType>();
+            foreach (var itemBase in ev.Target.Items)
+            {
+                if (itemBase.ItemTypeId.IsWeapon())
+                {
+                    itemsToDrop.Add(itemBase.ItemTypeId);
+                }
+            }
+
+            foreach (var itemType in itemsToDrop)
+            {
+                ev.Target.RemoveItems(itemType);
+            }
+            var item = ev.Target.AddItem(_plugin.Config.AvailableWeapons.RandomItem());
             Timing.CallDelayed(0.1f, () =>
             {
-                ev.Target.CurrentItem = ev.Target.Items.ElementAt(0);
+                ev.Target.CurrentItem = item; // ev.Target.Items.ElementAt(0);
             });
         }
 

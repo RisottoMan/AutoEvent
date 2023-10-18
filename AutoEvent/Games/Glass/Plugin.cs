@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using MEC;
 using PlayerRoles;
 using UnityEngine;
@@ -13,8 +15,10 @@ using AutoEvent.API.Schematic.Objects;
 using AutoEvent.Events.Handlers;
 using AutoEvent.Games.Infection;
 using AutoEvent.Interfaces;
+using HarmonyLib;
 using Object = UnityEngine.Object;
 using Event = AutoEvent.Interfaces.Event;
+using Random = UnityEngine.Random;
 
 namespace AutoEvent.Games.Glass
 {
@@ -94,8 +98,22 @@ namespace AutoEvent.Games.Glass
 
             _platforms = new List<GameObject>();
             var delta = new Vector3(3.69f, 0, 0);
+            PlatformSelector selector = new PlatformSelector(platformCount, Config.SeedSalt, Config.MinimumSideOffset, Config.MaximumSideOffset, Config.PlatformScrambleMethod);
             for (int i = 0; i < platformCount; i++)
             {
+                PlatformData data;
+                try
+                {
+                    data = selector.PlatformData[i];
+                }
+                catch (Exception e)
+                {
+                    data = new PlatformData(Random.Range(0, 2) == 1, -1);
+                    DebugLogger.LogDebug("An error has occured while processing platform data.", LogLevel.Warn, true);
+                    DebugLogger.LogDebug($"selector count: {selector.PlatformCount}, selector length: {selector.PlatformData.Count}, specified count: {platformCount}, [i: {i}]");
+                    DebugLogger.LogDebug($"{e}");
+                }
+
                 var newPlatform = Object.Instantiate(platform, platform.transform.position + delta * (i + 1), Quaternion.identity);
                 NetworkServer.Spawn(newPlatform);
                 _platforms.Add(newPlatform);
@@ -104,13 +122,14 @@ namespace AutoEvent.Games.Glass
                 NetworkServer.Spawn(newPlatform1);
                 _platforms.Add(newPlatform1);
 
-                if (UnityEngine.Random.Range(0, 2) == 0)
+                
+                if (data.LeftSideIsDangerous)
                 {
-                    newPlatform.AddComponent<GlassComponent>();
+                    newPlatform.AddComponent<GlassComponent>().Init(Config.BrokenPlatformRegenerateDelayInSeconds);
                 }
                 else
                 {
-                    newPlatform1.AddComponent<GlassComponent>();
+                    newPlatform1.AddComponent<GlassComponent>().Init(Config.BrokenPlatformRegenerateDelayInSeconds);
                 }
             }
 
@@ -196,4 +215,6 @@ namespace AutoEvent.Games.Glass
             _platforms.ForEach(Object.Destroy);
         }
     }
+
+    
 }

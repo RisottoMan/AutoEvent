@@ -27,7 +27,7 @@ public class DeathPartyConfig : EventConfig
     public DifficultyItem DifficultyCount { get; set; } = new DifficultyItem(20, 110);
     
     [Description("How fast grenades will appear from 0 - 5. [Default: 1 - 0.25]")]
-    public DifficultyItem DifficultySpeed { get; set; } = new DifficultyItem(1f, 0.1f);
+    public DifficultyItem DifficultySpeed { get; set; } = new DifficultyItem(3f, 1f);
 
     [Description("How high the grenades should spawn from 0 - 30. [Default: 20 - 5]")]
     public DifficultyItem DifficultyHeight { get; set; } = new DifficultyItem(20, 5);
@@ -49,6 +49,9 @@ public class DeathPartyConfig : EventConfig
 
     [Description("The amount of rounds that this gamemode lasts. The last round is always a super big grenade.")] 
     public int Rounds { get; set; } = 5;
+
+    [Description("If enabled the minigame will end when there is only one player left. Otherwise it will end when everyone dies, or the rounds (configurable) are over.")] 
+    public bool LastPlayerAliveWins { get; set; } = true;
 
 }
 
