@@ -20,8 +20,8 @@ namespace AutoEvent.Commands
                 RegisterCommand(new List());
                 RegisterCommand(new Run());
                 RegisterCommand(new Stop());
-                RegisterCommand(new Lobby());
-                RegisterCommand(new Vote());
+                //RegisterCommand(new Lobby());
+                //RegisterCommand(new Vote());
                 RegisterCommand(new Volume());
                 RegisterCommand(new Reload.Reload());
                 RegisterCommand(new Debug.Debug());
