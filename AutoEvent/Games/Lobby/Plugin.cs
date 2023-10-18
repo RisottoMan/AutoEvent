@@ -11,7 +11,7 @@ using MEC;
 
 namespace AutoEvent.Games.Lobby
 {
-    public class Plugin : Event, IEventMap, IEventSound, Invisible, IVote
+    public class Plugin : Event, IEventMap, IEventSound, IHidden, IVote
     {
         public override string Name { get; set; } = "Lobby";
         public override string Description { get; set; } = "A lobby in which one quick player chooses a mini-game.";

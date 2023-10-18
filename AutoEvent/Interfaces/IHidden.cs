@@ -1,6 +1,6 @@
 ﻿namespace AutoEvent.Interfaces;
 
-internal interface Invisible
+internal interface IHidden
 {
     
 }

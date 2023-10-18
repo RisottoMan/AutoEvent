@@ -46,7 +46,7 @@ namespace AutoEvent.Commands
                 return false;
             }
 
-            if (ev is Invisible)
+            if (ev is IHidden)
             {
                 response = $"The mini-game {arguments.At(0)} is invisible.";
                 return false;

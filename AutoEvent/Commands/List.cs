@@ -51,7 +51,7 @@ namespace AutoEvent.Commands
                         color = "orange";
                         break;
                 }
-                if (ev is Invisible) continue;
+                if (ev is IHidden) continue;
                 if(!IsConsoleCommandSender)
                     builder.AppendLine($"<color={color}>{ev.Name}</color> [<color=yellow>{ev.CommandName}</color>]: <color=white>{ev.Description}</color>");
                 else
