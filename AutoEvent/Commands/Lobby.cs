@@ -13,7 +13,7 @@ using Exiled.Permissions.Extensions;
 
 namespace AutoEvent.Commands
 {
-    internal class Lobby : ICommand, IPermission
+    internal class Lobby// : ICommand, IPermission
     {
         public string Command => nameof(Lobby);
         public string Description => "Starting a lobby in which the winner chooses a mini-game";

@@ -12,7 +12,7 @@ using Exiled.Permissions.Extensions;
 
 namespace AutoEvent.Commands
 {
-    internal class Vote : ICommand, IUsageProvider, IPermission
+    internal class Vote// : ICommand, IUsageProvider, IPermission
     {
         public string Command => nameof(Vote);
         public string Description => "Starts voting for mini-game, 1 argument - the command name of the event";
@@ -40,15 +40,9 @@ namespace AutoEvent.Commands
             }
 
             Event ev = Event.GetEvent(arguments.At(0));
-            if (ev == null)
+            if (ev == null || ev is IHidden)
             {
                 response = $"The mini-game {arguments.At(0)} is not found.";
-                return false;
-            }
-
-            if (ev is IHidden)
-            {
-                response = $"The mini-game {arguments.At(0)} is invisible.";
                 return false;
             }
 

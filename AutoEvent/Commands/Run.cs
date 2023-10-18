@@ -40,13 +40,7 @@ namespace AutoEvent.Commands
             }
 
             Event ev = Event.GetEvent(arguments.At(0));
-            if (ev == null)
-            {
-                response = $"The mini-game {arguments.At(0)} is not found.";
-                return false;
-            }
-
-            if (ev is IHidden)
+            if (ev == null || ev is IHidden)
             {
                 response = $"The mini-game {arguments.At(0)} is not found.";
                 return false;
