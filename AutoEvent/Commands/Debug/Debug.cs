@@ -72,5 +72,5 @@ public class Debug : ParentCommand
 
     public override string Command => nameof(global::AutoEvent.Commands.Debug);
     public override string[] Aliases => Array.Empty<string>();
-    public override string Description => "Runs various debug functions.";
+    public override string Description => "Runs various debug functions";
 }
