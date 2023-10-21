@@ -2,6 +2,7 @@ using AutoEvent.Games.Infection;
 using System.ComponentModel;
 using AutoEvent.Games.Battle;
 using AutoEvent.Games.Boss;
+using AutoEvent.Games.Spleef.Configs;
 #if EXILED
 using Exiled.API.Interfaces;
 #endif 
@@ -48,6 +49,9 @@ namespace AutoEvent
 
         [Description("Puzzle Game Mode")]
         public PuzzleTranslate PuzzleTranslate { get; set; } = new PuzzleTranslate();
+
+        [Description("Spleef Game Mode")]
+        public SpleefTranslation SpleefTranslate { get; set; } = new SpleefTranslation();
 
         [Description("Zombie Survival Game Mode (Zombie 2)")]
         public SurvivalTranslate SurvivalTranslate { get; set; } = new SurvivalTranslate();
