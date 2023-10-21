@@ -21,6 +21,9 @@ namespace AutoEvent.Games.Infection;
 
 public class LavaConfig : EventConfig
 {
+
+    [Description("Can players drop guns.")]
+    public bool PlayersCanDropGuns { get; set; } = true;
     [Description("A list of available loadouts that players can get.")]
     public List<Loadout> Loadouts { get; set; } = new List<Loadout>()
     {

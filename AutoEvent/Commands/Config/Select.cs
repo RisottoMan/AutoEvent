@@ -81,9 +81,8 @@ public class Select : ICommand, IUsageProvider, IPermission
         }
         
 
-        if (ev.SetConfig(arguments.At(1)))
+        if (!ev.SetConfig(arguments.At(1)))
         {
-            
             response = "Could not load config presets due to an error.";
             return false;
         }

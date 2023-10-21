@@ -48,7 +48,7 @@ public static class ConfigExtensions
             }
         }
 
-        return failed;
+        return !failed;
     }
 
     /// <summary>

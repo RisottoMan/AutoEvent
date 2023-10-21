@@ -13,6 +13,8 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using MEC;
+using PluginAPI;
 using PluginAPI.Core;
 using PluginAPI.Helpers;
 using UnityEngine;
@@ -48,6 +50,30 @@ public class DebugLogger
                 }
 
                 File.Create(_filePath).Close();
+                /*Timing.CallDelayed(5f, () =>
+                {
+
+                    string text = $"Plugin Api Info: \n" +
+                                  $"  Version: {PluginApiVersion.Version}\n" +
+                                  $"  VersionStatic: {PluginApiVersion.VersionStatic}\n" +
+                                  $"  VersionString: {PluginApiVersion.VersionString}\n" +
+                                  $"Plugins Present: ";
+                    /*Plugins Present:
+                     *  MapEditorReborn.dll (MapEditorReborn vX by Author)
+                     *    Assembly Hash: 142wesdvsdfsg
+                     *
+                     * 
+                     *//*
+
+                    foreach (var plugin in PluginAPI.Loader.AssemblyLoader.Plugins)
+                    {
+                        var hashId = plugin.Key.ManifestModule.ModuleVersionId;
+
+                        //text += $"  {plugin.Key.FullName} {plugin.}";
+                        text += $"    Assembly Hash: {hashId}";
+                    }
+                        File.AppendAllText(_filePath,);
+                });*/
             }
         }
         catch (Exception e)
@@ -62,6 +88,11 @@ public class DebugLogger
     public static bool Debug = false;
     public static bool AntiEnd = false;
     public static bool WriteDirectly = false;
+    // just forwards basic debug info to developers.
+    internal static List<string> ForwardDebugLogs = new List<string>()
+    {
+        "76561198151373620@steam" // auto do it for developers so we dont have to enter it every single time.
+    };
     private List<string> _debugLogs;
     public static void LogDebug(string input, LogLevel level = LogLevel.Debug, bool outputIfNotDebug = false)
     {
@@ -72,6 +103,14 @@ public class DebugLogger
                 Singleton._debugLogs.Add(log);
             else
                 File.AppendAllText(Singleton._filePath, "\n" + log);
+            foreach (string str in ForwardDebugLogs)
+            {
+                Player ply = Player.Get(str);
+                if (ply is not null)
+                {
+                    ply.SendConsoleMessage(log, "green");
+                }
+            }
         }
             
         if (outputIfNotDebug || AutoEvent.Debug)

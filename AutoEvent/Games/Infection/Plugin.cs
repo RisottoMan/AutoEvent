@@ -83,7 +83,7 @@ namespace AutoEvent.Games.Infection
         {
             for (float time = 15; time > 0; time--)
             {
-                Extensions.Broadcast(Translation.ZombieBeforeStart.Replace("{name}", Name).Replace("{time}", time.ToString()), 1);
+                Extensions.Broadcast(Translation.ZombieBeforeStart.Replace("{name}", Name).Replace("{time}", time.ToString("00")), 1);
                 yield return Timing.WaitForSeconds(1f);
             }
         }

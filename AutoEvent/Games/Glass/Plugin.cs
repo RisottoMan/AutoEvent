@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using MEC;
 using PlayerRoles;
 using UnityEngine;
@@ -13,8 +15,10 @@ using AutoEvent.API.Schematic.Objects;
 using AutoEvent.Events.Handlers;
 using AutoEvent.Games.Infection;
 using AutoEvent.Interfaces;
+using HarmonyLib;
 using Object = UnityEngine.Object;
 using Event = AutoEvent.Interfaces.Event;
+using Random = UnityEngine.Random;
 
 namespace AutoEvent.Games.Glass
 {
@@ -36,6 +40,7 @@ namespace AutoEvent.Games.Glass
         private GameObject _lava;
         private GameObject _finish;
         private int _matchTimeInSeconds;
+        private TimeSpan _remaining;
 
         protected override void RegisterEvents()
         {
@@ -60,7 +65,6 @@ namespace AutoEvent.Games.Glass
         {
             _lava = MapInfo.Map.AttachedBlocks.First(x => x.name == "Lava");
             _lava.AddComponent<LavaComponent>();
- 
             int platformCount;
             int playerCount = Player.GetPlayers().Count(r => r.IsAlive);
             if (playerCount <= 5)
@@ -88,14 +92,29 @@ namespace AutoEvent.Games.Glass
                 platformCount = 15;
                 _matchTimeInSeconds = 150;
             }
+            _remaining = TimeSpan.FromSeconds(_matchTimeInSeconds);
 
             var platform = MapInfo.Map.AttachedBlocks.First(x => x.name == "Platform");
             var platform1 = MapInfo.Map.AttachedBlocks.First(x => x.name == "Platform1");
 
             _platforms = new List<GameObject>();
             var delta = new Vector3(3.69f, 0, 0);
+            PlatformSelector selector = new PlatformSelector(platformCount, Config.SeedSalt, Config.MinimumSideOffset, Config.MaximumSideOffset, Config.PlatformScrambleMethod);
             for (int i = 0; i < platformCount; i++)
             {
+                PlatformData data;
+                try
+                {
+                    data = selector.PlatformData[i];
+                }
+                catch (Exception e)
+                {
+                    data = new PlatformData(Random.Range(0, 2) == 1, -1);
+                    DebugLogger.LogDebug("An error has occured while processing platform data.", LogLevel.Warn, true);
+                    DebugLogger.LogDebug($"selector count: {selector.PlatformCount}, selector length: {selector.PlatformData.Count}, specified count: {platformCount}, [i: {i}]");
+                    DebugLogger.LogDebug($"{e}");
+                }
+
                 var newPlatform = Object.Instantiate(platform, platform.transform.position + delta * (i + 1), Quaternion.identity);
                 NetworkServer.Spawn(newPlatform);
                 _platforms.Add(newPlatform);
@@ -104,13 +123,14 @@ namespace AutoEvent.Games.Glass
                 NetworkServer.Spawn(newPlatform1);
                 _platforms.Add(newPlatform1);
 
-                if (UnityEngine.Random.Range(0, 2) == 0)
+                
+                if (data.LeftSideIsDangerous)
                 {
-                    newPlatform.AddComponent<GlassComponent>();
+                    newPlatform.AddComponent<GlassComponent>().Init(Config.BrokenPlatformRegenerateDelayInSeconds);
                 }
                 else
                 {
-                    newPlatform1.AddComponent<GlassComponent>();
+                    newPlatform1.AddComponent<GlassComponent>().Init(Config.BrokenPlatformRegenerateDelayInSeconds);
                 }
             }
 
@@ -160,9 +180,10 @@ namespace AutoEvent.Games.Glass
 
         protected override void ProcessFrame()
         {
+            _remaining -= TimeSpan.FromSeconds(FrameDelayInSeconds);
             var text = Translation.GlassStart;
             text = text.Replace("{plyAlive}", Player.GetPlayers().Count(r => r.IsAlive).ToString());
-            text = text.Replace("{time}", $"{EventTime.Minutes:00}:{EventTime.Seconds:00}");
+            text = text.Replace("{time}", $"{_remaining.Minutes:00}:{_remaining.Seconds:00}");
 
             Extensions.Broadcast(text, 1);
         }
@@ -196,4 +217,6 @@ namespace AutoEvent.Games.Glass
             _platforms.ForEach(Object.Destroy);
         }
     }
+
+    
 }

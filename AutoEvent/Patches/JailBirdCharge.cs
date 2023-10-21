@@ -10,7 +10,7 @@ namespace AutoEvent.Patches
 {
     internal class JailBirdCharge
     {
-        [HarmonyPatch(typeof(JailbirdItem), nameof(JailbirdItem.ServerProcessCmd))]
+        // [HarmonyPatch(typeof(JailbirdItem), nameof(JailbirdItem.ServerProcessCmd))]
         internal static class JailbirdPatch
         {
             private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)

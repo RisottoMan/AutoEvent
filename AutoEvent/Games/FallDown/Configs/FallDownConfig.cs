@@ -25,6 +25,6 @@ public class FallDownConfig : EventConfig
     public DifficultyItem WarningDelayInSeconds { get; set; } = new DifficultyItem(0.7f, 0f);
     
     [Description("Should platforms have a color warning for when they are about to fall.")]
-    public bool PlatformsHaveColorWarning = false;
+    public bool PlatformsHaveColorWarning { get; set; } = false;
 
 }
