@@ -1,4 +1,4 @@
-﻿using Powerups.Api;
+﻿using Powerups;
 
 namespace Powerups
 {

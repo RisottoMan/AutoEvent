@@ -17,8 +17,8 @@ using MEC;
 using PluginAPI.Core;
 using Powerups.Extensions;
 
-namespace Powerups.Api;
-
+namespace Powerups;
+ 
 public sealed class PowerupManager
 {
     /// <summary>
