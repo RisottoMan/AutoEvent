@@ -11,7 +11,7 @@
 // -----------------------------------------
 
 using System.ComponentModel;
-using AutoEvent.API.Schematic.Objects;
+using MER.Lite.Objects;
 using UnityEngine;
 using YamlDotNet.Serialization;
 

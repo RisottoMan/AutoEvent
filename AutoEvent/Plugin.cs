@@ -11,6 +11,7 @@ using Exiled.Loader;
 using GameCore;
 using MEC;
 using PluginAPI.Core;
+using Powerups;
 using Event = AutoEvent.Interfaces.Event;
 using Log = PluginAPI.Core.Log;
 using Paths = PluginAPI.Helpers.Paths;
@@ -85,6 +86,9 @@ namespace AutoEvent
             try
             {
                 Singleton = this;
+                MER.Lite.API.Initialize(AutoEvent.Singleton.Config.SchematicsDirectoryPath, Config.Debug);
+                Powerups.API.Initialize();
+                
                 if (Config.IgnoredRoles.Contains(Config.LobbyRole))
                 {
                     DebugLogger.LogDebug("The Lobby Role is also in ignored roles. This will break the game if not changed. The plugin will remove the lobby role from ignored roles.", LogLevel.Error, true);
@@ -116,7 +120,6 @@ namespace AutoEvent
                 EventManager.RegisterEvents(this);
                 SCPSLAudioApi.Startup.SetupDependencies();
 
-                var powerupManager = new PowerupManager();
                 Servers.RemoteAdmin += eventHandler.OnRemoteAdmin;
                 try
                 {

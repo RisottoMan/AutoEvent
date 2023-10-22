@@ -1,4 +1,4 @@
-﻿using AutoEvent.API.Schematic.Objects;
+﻿using MER.Lite.Objects;
 using AutoEvent.Events.Handlers;
 using MEC;
 using PlayerRoles;
