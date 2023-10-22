@@ -18,7 +18,6 @@ using AutoEvent.Interfaces;
 using CommandSystem;
 using PluginAPI.Core;
 using Powerups;
-using Powerups.Api;
 using UnityEngine;
 using Player = PluginAPI.Core.Player;
 #if EXILED
