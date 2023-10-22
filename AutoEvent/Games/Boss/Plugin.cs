@@ -1,4 +1,4 @@
-﻿using AutoEvent.API.Schematic.Objects;
+﻿using MER.Lite.Objects;
 using MEC;
 using PlayerRoles;
 using PluginAPI.Core;
@@ -100,7 +100,7 @@ namespace AutoEvent.Games.Boss
         {
             _boss = new List<Player>();
             StartAudio();
-            foreach (var player in Config.BossCount.GetPlayers())
+            foreach (var player in Config.BossCount.GetPlayers(true))
             {
                 _boss.Add(player);
                 player.GiveLoadout(Config.BossLoadouts);

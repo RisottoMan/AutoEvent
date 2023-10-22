@@ -1,5 +1,5 @@
 ﻿using CustomPlayerEffects;
-using AutoEvent.API.Schematic.Objects;
+using MER.Lite.Objects;
 using MEC;
 using PlayerRoles;
 using PluginAPI.Core;

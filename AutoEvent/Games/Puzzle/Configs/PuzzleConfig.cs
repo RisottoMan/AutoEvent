@@ -44,9 +44,12 @@ public class PuzzleConfig : EventConfig
     [Description("Uses random platform colors instead of green and magenta.")]
     public bool UseRandomPlatformColors { get; set; } = false;
     [Description("How far the platforms are spread out.")]
-    public DifficultyItem PlatformSpread { get; set; } = new DifficultyItem(1, 5f);
+    public DifficultyItem PlatformSpread { get; set; } = new DifficultyItem(5, 30f);
 
+    [Description("Used for color selection. This will be reworked in the future.")]
     public DifficultyItem HueDifficulty { get; set; } = new DifficultyItem(1, 0.6f);
+    [Description("Used for color selection. This will be reworked in the future.")]
     public DifficultyItem SaturationDifficulty { get; set; } = new DifficultyItem(1, 0.6f);
+    [Description("Used for color selection. This will be reworked in the future.")]
     public DifficultyItem VDifficulty { get; set; } = new DifficultyItem(1, 0.6f);
 }
