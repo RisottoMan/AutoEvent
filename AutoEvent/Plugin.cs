@@ -25,7 +25,7 @@ namespace AutoEvent
 #if EXILED
     public class AutoEvent : Plugin<Config, Translation>
     {
-        public override System.Version Version => new System.Version(9, 1, 10);
+        public override System.Version Version => new System.Version(9, 2, 0);
         public override string Name => "AutoEvent";
         public override string Author => "Created by KoT0XleB, extended by swd and sky, Co-Maintained by Redforce04";
         public static bool IsPlayedGames;
@@ -39,7 +39,7 @@ namespace AutoEvent
         [PluginConfig("Configs/translation.yml")]
         public Translation Translation;
 #endif
-        public const bool BetaRelease = true; // todo set beta to false before main release
+        public const bool BetaRelease = false; // todo set beta to false before main release
         /// <summary>
         /// The location of the AutoEvent folder for schematics, music, external events and event config / translations.
         /// </summary>
@@ -55,7 +55,7 @@ namespace AutoEvent
         public override void OnEnabled()
 #else
         [PluginPriority(LoadPriority.Low)]
-        [PluginEntryPoint("AutoEvent", "9.1.5", "An event manager plugin that allows you to run mini-games.",
+        [PluginEntryPoint("AutoEvent", "9.2.0", "An event manager plugin that allows you to run mini-games.",
             "KoT0XleB and Redforce04")]
         void OnEnabled()
 #endif
