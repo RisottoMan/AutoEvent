@@ -106,7 +106,7 @@ namespace AutoEvent.Games.ZombieEscape
         {
             Extensions.PlayAudio("Zombie2.ogg", 7, false, Name);
 
-            foreach (Player ply in  Config.Zombies.GetPlayers())
+            foreach (Player ply in  Config.Zombies.GetPlayers(true))
             {
                 DebugLogger.LogDebug($"{ply.Nickname} chosen as a zombie.", LogLevel.Debug);
                 ply.GiveLoadout(Config.ZombieLoadouts);
