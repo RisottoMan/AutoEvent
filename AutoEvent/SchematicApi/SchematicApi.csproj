@@ -23,6 +23,10 @@
         <LangVersion>default</LangVersion>
         <TargetFrameworkProfile />
     </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+      <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+      <DocumentationFile>bin\Release\SchematicApi.xml</DocumentationFile>
+    </PropertyGroup>
     <ItemGroup>
         <PackageReference Include="Costura.Fody" Version="5.7.0">
             <PrivateAssets>all</PrivateAssets>
