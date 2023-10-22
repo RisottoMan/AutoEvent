@@ -47,6 +47,7 @@
     <PackageReference Include="Lib.Harmony" Version="2.2.2" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="Northwood.PluginAPI" Version="13.1.1" />
+    <PackageReference Include="NVorbis" Version="0.10.5" />
     <PackageReference Include="YamlDotNet" Version="13.3.1" />
   </ItemGroup>
   <ItemGroup>
@@ -68,6 +69,7 @@
     <Reference Include="UnityEngine.AudioModule" HintPath="$(UNITY_REFERENCES)\UnityEngine.AudioModule.dll" />
     <Reference Include="CommandSystem.Core" HintPath="$(SL_REFERENCES)\CommandSystem.Core.dll" />
     <Reference Include="NorthwoodLib" HintPath="$(SL_REFERENCES)\NorthwoodLib.dll" />
+    <Reference Include="Pooling" HintPath="$(SL_REFERENCES)\Pooling.dll" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="..\Docs\*" Link="Docs\*" />
@@ -75,5 +77,27 @@
     <Content Include="..\README.md" Link="README.md" />
     <Content Include="FodyWeavers.xml" />
     <Content Include="PlantUMLDocuments\*" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Remove="SchematicApi\**" />
+    <EmbeddedResource Remove="SchematicApi\*" />
+    <EmbeddedResource Remove="PowerupApi\**" />
+    <EmbeddedResource Remove="PowerupApi\*" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="SchematicApi\**" />
+    <None Remove="SchematicApi\*" />
+    <None Remove="PowerupApi\**" />
+    <None Remove="PowerupApi\*" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="SchematicApi\**" />
+    <Compile Remove="SchematicApi\*" />
+    <Compile Remove="PowerupApi\**" />
+    <Compile Remove="PowerupApi\*" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="PowerupApi\PowerupApi.csproj" />
+    <ProjectReference Include="SchematicApi\SchematicApi.csproj" />
   </ItemGroup>
 </Project>

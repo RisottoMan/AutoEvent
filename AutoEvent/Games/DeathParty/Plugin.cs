@@ -7,7 +7,7 @@ using UnityEngine;
 using PlayerRoles;
 using PluginAPI.Core;
 using PluginAPI.Events;
-using AutoEvent.API.Schematic.Objects;
+using MER.Lite.Objects;
 using AutoEvent.Events.Handlers;
 using AutoEvent.Games.Infection;
 using AutoEvent.Interfaces;

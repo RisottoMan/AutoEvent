@@ -13,6 +13,8 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using MEC;
+using PluginAPI;
 using PluginAPI.Core;
 using PluginAPI.Helpers;
 using UnityEngine;
@@ -48,6 +50,30 @@ public class DebugLogger
                 }
 
                 File.Create(_filePath).Close();
+                /*Timing.CallDelayed(5f, () =>
+                {
+
+                    string text = $"Plugin Api Info: \n" +
+                                  $"  Version: {PluginApiVersion.Version}\n" +
+                                  $"  VersionStatic: {PluginApiVersion.VersionStatic}\n" +
+                                  $"  VersionString: {PluginApiVersion.VersionString}\n" +
+                                  $"Plugins Present: ";
+                    /*Plugins Present:
+                     *  MapEditorReborn.dll (MapEditorReborn vX by Author)
+                     *    Assembly Hash: 142wesdvsdfsg
+                     *
+                     * 
+                     *//*
+
+                    foreach (var plugin in PluginAPI.Loader.AssemblyLoader.Plugins)
+                    {
+                        var hashId = plugin.Key.ManifestModule.ModuleVersionId;
+
+                        //text += $"  {plugin.Key.FullName} {plugin.}";
+                        text += $"    Assembly Hash: {hashId}";
+                    }
+                        File.AppendAllText(_filePath,);
+                });*/
             }
         }
         catch (Exception e)
