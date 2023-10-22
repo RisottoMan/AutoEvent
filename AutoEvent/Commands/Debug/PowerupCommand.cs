@@ -17,6 +17,8 @@ using System.Linq;
 using AutoEvent.Interfaces;
 using CommandSystem;
 using PluginAPI.Core;
+using Powerups;
+using Powerups.Api;
 using UnityEngine;
 using Player = PluginAPI.Core.Player;
 #if EXILED
@@ -28,7 +30,7 @@ namespace AutoEvent.Commands.Debug;
 
 public class PowerupCommand : ICommand, IPermission, IUsageProvider
 {
-    public string Command => nameof(Interfaces.Powerup);
+    public string Command => "Powerup";
     public string[] Aliases => Array.Empty<string>();
     public string Description => "Manages powerups.";
     public string[] Usage => new []{ "Give / Remove / Spawn / List", "Player / Powerup",  "Powerup / Position X", "Position Y", "Position Z" };
@@ -47,7 +49,7 @@ public class PowerupCommand : ICommand, IPermission, IUsageProvider
             goto usage;
         }
         Player ply = null!;
-        Interfaces.Powerup powerup = null!;
+        Powerup powerup = null!;
         
         switch (arguments.At(0).ToLower())
         {
@@ -142,7 +144,7 @@ public class PowerupCommand : ICommand, IPermission, IUsageProvider
                 case 1:
                     if (arguments.At(i) == "*")
                     {
-                        foreach (Interfaces.Powerup powerupInstance in PowerupManager.RegisteredPowerups)
+                        foreach (Powerup powerupInstance in PowerupManager.RegisteredPowerups)
                         {
                             if (powerupInstance.ActivePlayers.ContainsKey(ply))
                             {

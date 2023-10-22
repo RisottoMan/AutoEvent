@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using MEC;
 using PlayerRoles;
-using AutoEvent.API.Schematic.Objects;
+using MER.Lite.Objects;
 using UnityEngine;
 using PluginAPI.Core;
 using PluginAPI.Events;
