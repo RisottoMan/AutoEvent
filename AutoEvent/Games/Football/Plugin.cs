@@ -8,7 +8,7 @@ using UnityEngine;
 using AutoEvent.Games.Football.Features;
 using PluginAPI.Events;
 using PluginAPI.Core;
-using AutoEvent.API.Schematic.Objects;
+using MER.Lite.Objects;
 using AutoEvent.Events.Handlers;
 using AutoEvent.Games.Infection;
 using AutoEvent.Interfaces;

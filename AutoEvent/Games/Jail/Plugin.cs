@@ -1,4 +1,4 @@
-﻿using AutoEvent.API.Schematic.Objects;
+﻿using MER.Lite.Objects;
 using MEC;
 using PlayerRoles;
 using System;
@@ -159,7 +159,7 @@ namespace AutoEvent.Games.Jail
                 }
             }
 
-            foreach (Player ply in Config.JailorRoleCount.GetPlayers())
+            foreach (Player ply in Config.JailorRoleCount.GetPlayers(true))
             {
                 ply.GiveLoadout(Config.JailorLoadouts, LoadoutFlags.IgnoreWeapons);
                 try

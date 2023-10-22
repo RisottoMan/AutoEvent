@@ -1,5 +1,5 @@
 ﻿using CustomPlayerEffects;
-using AutoEvent.API.Schematic.Objects;
+using MER.Lite.Objects;
 using MEC;
 using PlayerRoles;
 using PluginAPI.Core;
@@ -130,7 +130,7 @@ namespace AutoEvent.Games.HideAndSeek
         private void SelectPlayers()
         {
             List<Player> playersToChoose = Player.GetPlayers().Where(x => x.IsAlive).ToList();
-            foreach(Player ply in Config.TaggerCount.GetPlayers(playersToChoose))
+            foreach(Player ply in Config.TaggerCount.GetPlayers(true, playersToChoose))
             {
                 ply.GiveLoadout(Config.TaggerLoadouts);
                 var item = ply.AddItem(Config.TaggerWeapon);

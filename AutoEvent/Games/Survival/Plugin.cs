@@ -1,5 +1,5 @@
 ﻿using CustomPlayerEffects;
-using AutoEvent.API.Schematic.Objects;
+using MER.Lite.Objects;
 using MEC;
 using PlayerRoles;
 using PluginAPI.Core;
@@ -88,7 +88,7 @@ namespace AutoEvent.Games.Survival
         {
             Extensions.PlayAudio("Zombie2.ogg", 7, true, Name);
 
-            List<Player> players =Config.Zombies.GetPlayers();
+            List<Player> players = Config.Zombies.GetPlayers(true);
             foreach (Player x in players)
             {
                 DebugLogger.LogDebug($"Making player {x.Nickname} a zombie.");

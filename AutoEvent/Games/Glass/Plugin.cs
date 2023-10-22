@@ -11,7 +11,7 @@ using Mirror;
 using CustomPlayerEffects;
 using PluginAPI.Core;
 using PluginAPI.Events;
-using AutoEvent.API.Schematic.Objects;
+using MER.Lite.Objects;
 using AutoEvent.Events.Handlers;
 using AutoEvent.Games.Infection;
 using AutoEvent.Interfaces;
@@ -40,6 +40,7 @@ namespace AutoEvent.Games.Glass
         private GameObject _lava;
         private GameObject _finish;
         private int _matchTimeInSeconds;
+        private TimeSpan _remaining;
 
         protected override void RegisterEvents()
         {
@@ -64,7 +65,6 @@ namespace AutoEvent.Games.Glass
         {
             _lava = MapInfo.Map.AttachedBlocks.First(x => x.name == "Lava");
             _lava.AddComponent<LavaComponent>();
- 
             int platformCount;
             int playerCount = Player.GetPlayers().Count(r => r.IsAlive);
             if (playerCount <= 5)
@@ -92,6 +92,7 @@ namespace AutoEvent.Games.Glass
                 platformCount = 15;
                 _matchTimeInSeconds = 150;
             }
+            _remaining = TimeSpan.FromSeconds(_matchTimeInSeconds);
 
             var platform = MapInfo.Map.AttachedBlocks.First(x => x.name == "Platform");
             var platform1 = MapInfo.Map.AttachedBlocks.First(x => x.name == "Platform1");
@@ -179,9 +180,10 @@ namespace AutoEvent.Games.Glass
 
         protected override void ProcessFrame()
         {
+            _remaining -= TimeSpan.FromSeconds(FrameDelayInSeconds);
             var text = Translation.GlassStart;
             text = text.Replace("{plyAlive}", Player.GetPlayers().Count(r => r.IsAlive).ToString());
-            text = text.Replace("{time}", $"{EventTime.Minutes:00}:{EventTime.Seconds:00}");
+            text = text.Replace("{time}", $"{_remaining.Minutes:00}:{_remaining.Seconds:00}");
 
             Extensions.Broadcast(text, 1);
         }
