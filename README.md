@@ -1,6 +1,8 @@
 # AutoEvent
 ## ENG: Allows you to run auto Mini-Games in the game.
 ## RUS: Позволяет запускать автоматические Мини-Игры в игре.
+**Developers:** SchematicApi (MER.Lite) releases can be found [here](https://github.com/Redforce04/SchematicApi). Powerup Api releases can be found [here](https://github.com/Redforce04/PowerupApi). Development for both of these Api's occur on the dev branch of this repo.
+
 ![Logo](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/MiniGames(mini).png)
 
 # Guides:
