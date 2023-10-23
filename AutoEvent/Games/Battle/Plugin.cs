@@ -22,6 +22,7 @@ namespace AutoEvent.Games.Battle
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.BattleTranslate.BattleDescription;
         public override string Author { get; set; } = "KoT0XleB";
         public override string CommandName { get; set; } =  AutoEvent.Singleton.Translation.BattleTranslate.BattleCommandName;
+        public override Version Version { get; set; } = new Version(1, 0, 0);
 
         // Map Info can be inherited as long as the event inherits IEventMap.
         // MapInfo.Map is the Schematic Object for the map.

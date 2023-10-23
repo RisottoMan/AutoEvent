@@ -19,6 +19,7 @@ namespace AutoEvent.Games.Infection
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.InfectTranslate.ZombieDescription;
         public override string Author { get; set; } = "KoT0XleB";
         public override string CommandName { get; set; } = AutoEvent.Singleton.Translation.InfectTranslate.ZombieCommandName;
+        public override Version Version { get; set; } = new Version(1, 0, 0);
         [EventConfig] public InfectConfig Config { get; set; }
         public MapInfo MapInfo { get; set; } = new MapInfo()
             { MapName = "Zombie", Position = new Vector3(115.5f, 1030f, -43.5f), MapRotation = Quaternion.identity };

@@ -21,6 +21,7 @@ namespace AutoEvent.Games.Line
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.LineTranslate.LineDescription;
         public override string Author { get; set; } = "Logic_Gun";
         public override string CommandName { get; set; } = AutoEvent.Singleton.Translation.LineTranslate.LineCommandName;
+        public override Version Version { get; set; } = new Version(1, 0, 0);
         [EventConfig]
         public LineConfig Config { get; set; }
         public MapInfo MapInfo { get; set; } = new MapInfo()

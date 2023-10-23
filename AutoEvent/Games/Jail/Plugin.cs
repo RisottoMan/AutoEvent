@@ -22,6 +22,7 @@ namespace AutoEvent.Games.Jail
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.JailTranslate.JailDescription;
         public override string Author { get; set; } = "KoT0XleB";
         public override string CommandName { get; set; } = AutoEvent.Singleton.Translation.JailTranslate.JailCommandName;
+        public override Version Version { get; set; } = new Version(1, 0, 0);
         [EventConfig]
         public JailConfig Config { get; set; }
         [EventConfigPreset] public JailConfig AdminEvent => JailConfigPresets.AdminEvent;

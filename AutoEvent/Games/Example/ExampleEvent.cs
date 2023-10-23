@@ -36,6 +36,7 @@ namespace AutoEvent.Games.Example
         public override string Description { get; set; } = "An example event based on the battle event.";
         public override string Author { get; set; } = "KoT0XleB";
         public override string CommandName { get; set; } = "example";
+        public override Version Version { get; set; } = new Version(1, 0, 0);
         
         // Make sure you set this to true. Otherwise you must register your plugin via Exiled or NWApi manually.
         // Add the event to AutoEvent.Events to manually register it.
