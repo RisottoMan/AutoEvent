@@ -2,9 +2,10 @@ using AutoEvent.Games.Infection;
 using System.ComponentModel;
 using AutoEvent.Games.Battle;
 using AutoEvent.Games.Boss;
+using AutoEvent.Games.Trouble;
 #if EXILED
 using Exiled.API.Interfaces;
-#endif 
+#endif
 namespace AutoEvent
 {
     // Yes, it looks terrible. I just have very little time to create a large plugin.
@@ -75,5 +76,8 @@ namespace AutoEvent
 
         [Description("Boss Battle Game Mode")]
         public BossTranslate BossTranslate { get; set; } = new BossTranslate();
+
+        [Description("Trouble in Terrorist Town Game Mode")]
+        public TroubleTranslate TroubleTranslate { get; set; } = new TroubleTranslate();
     }
 }
