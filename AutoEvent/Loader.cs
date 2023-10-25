@@ -33,7 +33,7 @@ public class Loader
     /// Checks to see if exiled is present on this server.
     /// </summary>
     /// <returns></returns>
-    private static bool isExiledPresent()
+    internal static bool isExiledPresent()
     {
         if (IsExiledPlugin)
         {
