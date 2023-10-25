@@ -36,6 +36,7 @@ public class VersionInfo
     public const string CommitHash = "{CI_COMMIT_SHORT_SHA}";
     public const string CommitBranch = "{CI_COMMIT_BRANCH}";
     public const string CommitVersion = "{CI_COMMIT_VERSION_TAG}";
+    public const ActiveFeatures ActiveFeatures = global::AutoEvent.ActiveFeatures.All;
     public const string BuildUser = "{BUILD_USER}";
     public static DateTime BuildTime { get; } = DateTime.Parse("{BUILD_DATE_TIME}");
     private const string BuildDependencies = "{BUILD_DEPENDENCIES}";
