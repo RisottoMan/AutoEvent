@@ -73,6 +73,9 @@
     <Reference Include="Pooling" HintPath="$(SL_REFERENCES)\Pooling.dll" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="..\.gitignore">
+      <Link>.gitignore</Link>
+    </Content>
     <Content Include="..\Docs\*" Link="Docs\*" />
     <Content Include="..\Docs\Translations\*" Link="Docs\Translations\*" />
     <Content Include="..\README.md" Link="README.md" />
