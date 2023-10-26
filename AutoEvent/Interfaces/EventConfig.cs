@@ -10,6 +10,7 @@
 //    Created Date:     09/13/2023 3:32 PM
 // -----------------------------------------
 
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using AutoEvent.API.Enums;
@@ -40,6 +41,9 @@ public class EventConfig
     
     [Description("Should this plugin output debug logs.")]
     public bool Debug { get; set; }
+    
+    [Description("DO NOT CHANGE THIS. IT WILL BREAK THINGS. AutoEvent will automatically manage this setting.")]
+    public virtual Version ConfigVersion { get; set; }
 }
 public class MapChance
 {

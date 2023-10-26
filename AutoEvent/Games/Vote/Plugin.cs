@@ -1,20 +1,23 @@
-﻿using PlayerRoles;
+﻿using System;
+using PlayerRoles;
 using PluginAPI.Events;
 using System.Collections.Generic;
 using System.Linq;
 using AutoEvent.Interfaces;
 using AutoEvent.Events.Handlers;
+using CommandSystem;
 using Event = AutoEvent.Interfaces.Event;
 using Player = PluginAPI.Core.Player;
 
 namespace AutoEvent.Games.Vote
 {
-    public class Plugin : Event, IEventSound, IInternalEvent
+    public class Plugin : Event, IEventSound, IInternalEvent, IHiddenCommand
     {
         public override string Name { get; set; } = "Vote";
         public override string Description { get; set; } = "Start voting for the mini-game.";
         public override string Author { get; set; } = "KoT0XleB";
         public override string CommandName { get; set; } = "vote";
+        public override Version Version { get; set; } = new Version(1, 0, 0);
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
             { SoundName = "FireSale.ogg", Volume = 10, Loop = false };
         private EventHandler EventHandler { get; set; }
