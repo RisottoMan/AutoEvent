@@ -15,9 +15,9 @@ public class Loader
     /// Overrides the Exiled check for the version of the plugin that is exiled exclusive.
     /// </summary>
 #if EXILED
-    private const bool IsExiledPlugin = true;
+    public const bool IsExiledPlugin = true;
 #else
-    private const bool IsExiledPlugin = false;
+    public const bool IsExiledPlugin = false;
 #endif    
     /// <summary>
     /// If enabled, a debug log is output everytime a plugin is loaded. Not necessary for players.

@@ -32,7 +32,7 @@ public class DebugLogger
     }
     public static DebugLogger Singleton;
     internal static List<AssemblyInfo> Assemblies { get; set; }
-    internal static string SLVersion { get; set; }
+    internal static string SLVersion => GameCore.Version.VersionString;
     public DebugLogger(bool writeDirectly)
     {
         Singleton = this;
@@ -74,7 +74,7 @@ public class DebugLogger
         string text = "";
 
         text += $"Plugin Api Info: \n";
-        SLVersion = $"SCP SL Version: v{GameCore.Version.Major}.{GameCore.Version.Minor}.{GameCore.Version.Revision}, (Backwards Compatible: {GameCore.Version.BackwardCompatibility}, Backward Revision: {GameCore.Version.BackwardRevision})";
+        // SLVersion = $"SCP SL Version: v{GameCore.Version.Major}.{GameCore.Version.Minor}.{GameCore.Version.Revision}, (Backwards Compatible: {GameCore.Version.BackwardCompatibility}, Backward Revision: {GameCore.Version.BackwardRevision})";
         text += $"  {SLVersion}";
         text += $"  Version: ({PluginApiVersion.Version}, {PluginApiVersion.VersionStatic}, {PluginApiVersion.VersionString})\n";
         text += $"  VersionString: \n";
