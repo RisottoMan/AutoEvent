@@ -15,7 +15,7 @@
     <OutputPath>..\bin\Release\Exiled</OutputPath>
     <DefineConstants>TRACE;EXILED</DefineConstants>
     <Optimize>true</Optimize>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <z>true</z>
     <PlatformTarget>x64</PlatformTarget>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
