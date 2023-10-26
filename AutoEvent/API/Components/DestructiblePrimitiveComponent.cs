@@ -18,7 +18,7 @@ using UnityEngine;
 
 namespace AutoEvent.API.Components;
 
-public class DestructiblePrimitiveComponent : MonoBehaviour, IDestructible
+public class DestructiblePrimitiveComponent : Component, IDestructible
 {
     public bool Damage(float damage, DamageHandlerBase handler, Vector3 exactHitPos)
     {

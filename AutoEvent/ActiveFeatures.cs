@@ -24,5 +24,6 @@ public enum ActiveFeatures
     Powerups = 8,
     SchematicApi = 16,
     BuildInfo = 32,
+    MinigameSpleef = 64,
     All = ~0,
 }

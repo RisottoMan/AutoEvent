@@ -10,6 +10,7 @@
 //    Created Date:     10/17/2023 6:20 PM
 // -----------------------------------------
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using AdminToys;
@@ -36,6 +37,7 @@ public class Plugin : Event, IEventMap, IEventSound
     public override string Description { get; set; } = AutoEvent.Singleton.Translation.SpleefTranslate.SpleefDescription;
     public override string Author { get; set; } = "Redforce04";
     public override string CommandName { get; set; } = AutoEvent.Singleton.Translation.SpleefTranslate.SpleefCommandName;
+    public override Version Version { get; set; } = new Version(1, 0, 1);
     public SpleefTranslation Translation { get; set; } = AutoEvent.Singleton.Translation.SpleefTranslate;
 
     [EventConfig]
@@ -144,7 +146,7 @@ public class Plugin : Event, IEventMap, IEventSound
                 var newPlatform = GameObject.Instantiate(primary, position, Quaternion.identity);
                 _platforms.Add(id, newPlatform);
 
-                newPlatform.AddComponent<DestructiblePrimitiveComponent>();
+                newPlatform.AddComponent<DestructiblePrimitiveComponent>().DamagingPrimitive += OnDamage;
                 
                 var prim = newPlatform.GetComponent<PrimitiveObjectToy>() ?? newPlatform.AddComponent<PrimitiveObjectToy>();
                 prim.Position = position;
