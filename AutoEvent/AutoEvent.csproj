@@ -14,6 +14,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release EXILED|AnyCPU' ">
     <OutputPath>..\bin\Release\Exiled</OutputPath>
     <DefineConstants>TRACE;EXILED</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <Optimize>true</Optimize>
     <z>true</z>
     <PlatformTarget>x64</PlatformTarget>
@@ -58,8 +59,14 @@
     <Reference Include="CedModV3" HintPath="$(OTHER_REFERENCES)\CedModV3-NWApi.dll" />
     <Reference Include="Assembly-CSharp-Publicized" HintPath="$(SL_REFERENCES)\Assembly-CSharp-Publicized.dll" />
     <Reference Include="Mirror" HintPath="$(SL_REFERENCES)\Mirror.dll" />
+    <Reference Include="PowerupApi">
+      <HintPath>PowerupApi\bin\Release\net48\PowerupApi.dll</HintPath>
+    </Reference>
+    <Reference Include="SchematicApi">
+      <HintPath>SchematicApi\bin\Release\net48\SchematicApi.dll</HintPath>
+    </Reference>
     <Reference Include="SCPSLAudioApi" HintPath="$(OTHER_REFERENCES)\SCPSLAudioApi.dll" />
-    <Reference Include="SCPSLAudioApi" HintPath="$(OTHER_REFERENCES)\NWAPIPermissionSystem.dll" />
+    <Reference Include="NWAPIPermissionSystem" HintPath="$(OTHER_REFERENCES)\NWAPIPermissionSystem.dll" />
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" HintPath="$(SL_REFERENCES)\System.ComponentModel.DataAnnotations.dll" />
     <Reference Include="UnityEngine" HintPath="$(SL_REFERENCES)\UnityEngine.dll" />
@@ -108,10 +115,6 @@
     <Compile Remove="PowerupApi\*" />
     <Compile Remove="ReplaceTextWithVariables\**" />
     <Compile Remove="ReplaceTextWithVariables\*" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="PowerupApi\PowerupApi.csproj" />
-    <ProjectReference Include="SchematicApi\SchematicApi.csproj" />
   </ItemGroup>
   <Target Name="RemoveFile" BeforeTargets="ReplaceFile">
     <Exec Command="if exist $(SolutionDir)VersionInfo.cs del $(SolutionDir)VersionInfo.cs" />
