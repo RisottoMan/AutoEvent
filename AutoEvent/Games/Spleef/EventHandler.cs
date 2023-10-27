@@ -10,8 +10,13 @@
 //    Created Date:     10/17/2023 6:20 PM
 // -----------------------------------------
 
+using System;
 using AutoEvent.API.Components;
 using AutoEvent.Events.EventArgs;
+using AutoEvent.Games.Spleef.Features;
+using InventorySystem.Items.Armor;
+using InventorySystem.Items.Firearms;
+using InventorySystem.Items.Firearms.Modules;
 using PlayerStatsSystem;
 using PluginAPI.Core.Attributes;
 using PluginAPI.Enums;
@@ -22,29 +27,33 @@ namespace AutoEvent.Games.Spleef;
 
 public class EventHandler
 {
-    [PluginEvent(ServerEventType.PlayerShotWeapon)]
-    public void OnShooting(PlayerShotWeaponEvent ev)
+    private Plugin _plugin { get; set; }
+    public EventHandler(Plugin plugin)
     {
-        if (Physics.Raycast(ev.Player.Position, ev.Player.ReferenceHub.transform.forward, out RaycastHit hit, 20))
-        {
-            var destructible = hit.collider.GetComponent<DestructiblePrimitiveComponent>();
-            if (destructible is null)
-            {
-                DebugLogger.LogDebug("Destructible is null.");
-                return;
-            }
-            var damageHandler = new FirearmDamageHandler(ev.Firearm, 1000, false);
-            if (damageHandler is null)
-            {
-                DebugLogger.LogDebug("Damagehandler is null");
-            
-            }
-            bool result = destructible.Damage(1000, damageHandler, hit.point);
-            DebugLogger.LogDebug($"Result: {result}");
-            
-        }
+        _plugin = plugin;
     }
-    
+    public void OnShot(ShotEventArgs ev)
+    {
+        if (_plugin.Config.PlatformHealth < 0)
+        {
+            return;
+        }
+
+        if (ev.Player.CurrentItem is not Firearm firearm)
+        {
+            return;
+        }
+        if (ev.Damage <= 0)
+        {
+            ev.Damage = BodyArmorUtils.ProcessDamage(0, firearm.BaseStats.DamageAtDistance(firearm, ev.Distance), Mathf.RoundToInt(firearm.ArmorPenetration * 100f));
+        }
+        ev.RaycastHit.collider.transform.GetComponentsInParent<FallPlatformComponent>().ForEach(x =>
+        {
+            var damageHandler = new FirearmDamageHandler(ev.Player.CurrentItem as Firearm, ev.Damage, false);
+            bool result = x.Damage(ev.Damage, damageHandler, ev.RaycastHit.point);
+        });
+    }
+
 
     public void OnTeamRespawn(TeamRespawnArgs ev) => ev.IsAllowed = false;
     public void OnSpawnRagdoll(SpawnRagdollArgs ev) => ev.IsAllowed = false;

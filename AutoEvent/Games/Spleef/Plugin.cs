@@ -19,9 +19,11 @@ using AutoEvent.API.Enums;
 using AutoEvent.Events.Handlers;
 using AutoEvent.Games.FallDown;
 using AutoEvent.Games.Spleef.Configs;
+using AutoEvent.Games.Spleef.Features;
 using AutoEvent.Interfaces;
 using CommandSystem.Commands.RemoteAdmin;
 using InventorySystem.Items.Usables;
+using MEC;
 using Mirror;
 using PluginAPI.Core;
 using PluginAPI.Events;
@@ -54,7 +56,8 @@ public class Plugin : Event, IEventMap, IEventSound
     private List<GameObject> _listPlatforms;
 
     private List<GameObject> _colorIndicators;
-    private float _spawnHeight; 
+    private float _spawnHeight;
+    private TimeSpan _remaining;
 
     /// <summary>
     /// All platforms in the map.
@@ -64,25 +67,34 @@ public class Plugin : Event, IEventMap, IEventSound
 
     protected override void RegisterEvents()
     {
-        EventHandler = new EventHandler();
+        EventHandler = new EventHandler(this);
         Servers.TeamRespawn += EventHandler.OnTeamRespawn;
         Servers.SpawnRagdoll += EventHandler.OnSpawnRagdoll;
         Servers.PlaceBullet += EventHandler.OnPlaceBullet;
         Servers.PlaceBlood += EventHandler.OnPlaceBlood;
         Players.DropItem += EventHandler.OnDropItem;
         Players.DropAmmo += EventHandler.OnDropAmmo;
+        Players.Shot += EventHandler.OnShot;
         EventManager.RegisterEvents(EventHandler);
+
     }
 
     protected override void UnregisterEvents()
     {
         EventManager.UnregisterEvents(EventHandler);
-        
+        Servers.TeamRespawn -= EventHandler.OnTeamRespawn;
+        Servers.SpawnRagdoll -= EventHandler.OnSpawnRagdoll;
+        Servers.PlaceBullet -= EventHandler.OnPlaceBullet;
+        Servers.PlaceBlood -= EventHandler.OnPlaceBlood;
+        Players.DropItem -= EventHandler.OnDropItem;
+        Players.DropAmmo -= EventHandler.OnDropAmmo;
+        Players.Shot -= EventHandler.OnShot;
         EventHandler = null;
     }
 
     protected override void OnStart()
     {
+        _remaining = TimeSpan.FromSeconds(Config.RoundDurationInSeconds);
         _platforms = new Dictionary<ushort, GameObject>();
         _lava = MapInfo.Map.AttachedBlocks.First(x => x.name == "Lava");
         _lava.AddComponent<LavaComponent>();
@@ -145,21 +157,12 @@ public class Plugin : Event, IEventMap, IEventSound
                 Vector3 position = MapInfo.Map.Position + new Vector3(platform.PositionX, platform.PositionZ ,platform.PositionY);
                 var newPlatform = GameObject.Instantiate(primary, position, Quaternion.identity);
                 _platforms.Add(id, newPlatform);
-
-                if (newPlatform == null)
-                {
-                    DebugLogger.LogDebug("null platform.");
-                }
                 
-
                 try
                 {
-                    var component = newPlatform.AddComponent<DestructiblePrimitiveComponent>();
-                    if (component == null)
-                    {
-                        DebugLogger.LogDebug("null component");
-                    }
-                    component.DamagingPrimitive += OnDamage;
+                    var component = newPlatform.AddComponent<FallPlatformComponent>();
+                    component.Init(Config.RegeneratePlatformsAfterXSeconds, Config.PlatformFallDelay, Config.PlatformHealth, 15);
+                    // component.DamagingPrimitive += OnDamage;
                 }
                 catch (Exception e)
                 {
@@ -167,6 +170,8 @@ public class Plugin : Event, IEventMap, IEventSound
                 }
                 
                 var prim = newPlatform.GetComponent<PrimitiveObjectToy>() ?? newPlatform.AddComponent<PrimitiveObjectToy>();
+                prim.NetworkMaterialColor = Color.green;
+
                 prim.Position = position;
                 prim.NetworkPosition = position;
                 prim.transform.position = position;
@@ -182,23 +187,53 @@ public class Plugin : Event, IEventMap, IEventSound
             GameObject.Destroy(primary);
         }
 
-    private void OnDamage(DamagingPrimitiveArgs ev)
+
+    protected override IEnumerator<float> BroadcastStartCountdown()
     {
-        DebugLogger.LogDebug("Damaging Primitive.");
+        for (int time = 15; time > 0; time--)
+        {
+            Extensions.Broadcast($"{Translation.SpleefDescription}\n{Translation.SpleefStart.Replace("{time}", $"{time}")}", 1);
+            yield return Timing.WaitForSeconds(1f);
+        }
     }
+    
+    protected override void CountdownFinished()
+    {
+        foreach (Player ply in Player.GetPlayers())
+        {
+            ply.GiveLoadout(Config.PlayerLoadouts, LoadoutFlags.ItemsOnly);
+        }
+    }
+
     protected override bool IsRoundDone()
     {
         return !(Player.GetPlayers().Count(ply => ply.IsAlive) > 1) && EventTime.TotalSeconds < Config.RoundDurationInSeconds;
     }
-
     protected override void ProcessFrame()
     {
-        
+        int count = Player.GetPlayers().Count(x => x.IsAlive);
+        foreach (Player ply in Player.GetPlayers())
+        {
+            ply.SendBroadcast(Translation.SpleefRunning.Replace("{players}", count.ToString()).Replace("{remaining}", $"{_remaining.Minutes:00}:{_remaining.Seconds:00}"), (ushort)this.FrameDelayInSeconds);
+        }
+        _remaining -= TimeSpan.FromSeconds(FrameDelayInSeconds);
     }
 
     protected override void OnFinished()
     {
-        
+        int count = Player.GetPlayers().Count(x => x.IsAlive);
+        if (count > 1)
+        {
+            Server.SendBroadcast(Translation.SpleefSeveralSurvivors, 10);
+        }
+        else if (count == 1)
+        {
+            Server.SendBroadcast(Translation.SpleefWinner.Replace("{winner}", Player.GetPlayers().First(x => x.IsAlive).Nickname), 10);
+        }
+        else
+        {
+            Server.SendBroadcast(Translation.SpleefAllDied, 10);
+        }
     }
 
     protected override void OnCleanup()

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using AutoEvent.Commands;
+using AutoEvent.Events.EventArgs;
 using AutoEvent.Interfaces;
 using HarmonyLib;
 using PluginAPI.Core.Attributes;
@@ -15,6 +16,7 @@ using Powerups;
 using Event = AutoEvent.Interfaces.Event;
 using Log = PluginAPI.Core.Log;
 using Paths = PluginAPI.Helpers.Paths;
+using Player = PluginAPI.Core.Player;
 using Server = PluginAPI.Core.Server;
 #if EXILED
 using Exiled.API.Features;
@@ -88,6 +90,15 @@ namespace AutoEvent
                 Singleton = this;
                 MER.Lite.API.Initialize(AutoEvent.Singleton.Config.SchematicsDirectoryPath, Config.Debug);
                 Powerups.API.Initialize();
+                #if EXILED
+                Exiled.Events.Handlers.Player.Shot += (Exiled.Events.EventArgs.Player.ShotEventArgs ev) =>
+                {
+                    var args = new ShotEventArgs(Player.Get(ev.Player.ReferenceHub), ev.RaycastHit, ev.Hitbox, ev.Damage);
+                    global::AutoEvent.Events.Handlers.Players.OnShot(args);
+                    ev.Damage = args.Damage;
+                    ev.CanHurt = args.CanHurt;
+                };
+                #endif
                 
                 if (Config.IgnoredRoles.Contains(Config.LobbyRole))
                 {
