@@ -154,7 +154,7 @@ public class BuildInfo : ICommand
         return true;
     }
 
-    public string Command => nameof(BuildInfo);
-    public string[] Aliases => new[] { "info", "build" };
+    public string Command => "ev"+ nameof(BuildInfo);
+    public string[] Aliases => new[] { "evinfo", "evbuild" };
     public string Description => $"Gets the info for the current build of AutoEvent and other important info.";
 }
