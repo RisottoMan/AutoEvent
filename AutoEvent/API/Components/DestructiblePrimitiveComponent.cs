@@ -18,12 +18,12 @@ using UnityEngine;
 
 namespace AutoEvent.API.Components;
 
-public class DestructiblePrimitiveComponent : Component, IDestructible
+public class DestructiblePrimitiveComponent : UnityEngine.MonoBehaviour, IDestructible
 {
     public bool Damage(float damage, DamageHandlerBase handler, Vector3 exactHitPos)
     {
         var ev = new DamagingPrimitiveArgs(damage, handler, exactHitPos);
-        DamagingPrimitive.Invoke(ev);
+        DamagingPrimitive?.Invoke(ev);
         if (!ev.IsAllowed)
         {
             return false;

@@ -27,7 +27,21 @@ public class EventHandler
     {
         if (Physics.Raycast(ev.Player.Position, ev.Player.ReferenceHub.transform.forward, out RaycastHit hit, 20))
         {
-            hit.collider.GetComponent<DestructiblePrimitiveComponent>().Damage(1000, new FirearmDamageHandler(ev.Firearm, 1000, false), hit.point);
+            var destructible = hit.collider.GetComponent<DestructiblePrimitiveComponent>();
+            if (destructible is null)
+            {
+                DebugLogger.LogDebug("Destructible is null.");
+                return;
+            }
+            var damageHandler = new FirearmDamageHandler(ev.Firearm, 1000, false);
+            if (damageHandler is null)
+            {
+                DebugLogger.LogDebug("Damagehandler is null");
+            
+            }
+            bool result = destructible.Damage(1000, damageHandler, hit.point);
+            DebugLogger.LogDebug($"Result: {result}");
+            
         }
     }
     

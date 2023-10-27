@@ -146,7 +146,25 @@ public class Plugin : Event, IEventMap, IEventSound
                 var newPlatform = GameObject.Instantiate(primary, position, Quaternion.identity);
                 _platforms.Add(id, newPlatform);
 
-                newPlatform.AddComponent<DestructiblePrimitiveComponent>().DamagingPrimitive += OnDamage;
+                if (newPlatform == null)
+                {
+                    DebugLogger.LogDebug("null platform.");
+                }
+                
+
+                try
+                {
+                    var component = newPlatform.AddComponent<DestructiblePrimitiveComponent>();
+                    if (component == null)
+                    {
+                        DebugLogger.LogDebug("null component");
+                    }
+                    component.DamagingPrimitive += OnDamage;
+                }
+                catch (Exception e)
+                {
+                    DebugLogger.LogDebug($"Exception \n{e}");
+                }
                 
                 var prim = newPlatform.GetComponent<PrimitiveObjectToy>() ?? newPlatform.AddComponent<PrimitiveObjectToy>();
                 prim.Position = position;
