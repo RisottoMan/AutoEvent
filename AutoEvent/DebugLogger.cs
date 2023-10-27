@@ -33,6 +33,7 @@ public class DebugLogger
     public static DebugLogger Singleton;
     internal static List<AssemblyInfo> Assemblies { get; set; }
     internal static string SLVersion => GameCore.Version.VersionString;
+    public const string Version = "9.2.1";
     public DebugLogger(bool writeDirectly)
     {
         Singleton = this;
