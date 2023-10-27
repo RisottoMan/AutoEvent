@@ -20,6 +20,7 @@ namespace AutoEvent.Games.FinishWay
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.FinishWayTranslate.FinishWayDescription;
         public override string Author { get; set; } = "KoT0XleB";
         public override string CommandName { get; set; } = AutoEvent.Singleton.Translation.FinishWayTranslate.FinishWayCommandName;
+        public override Version Version { get; set; } = new Version(1, 0, 0);
         [EventConfig]
         public FinishWayConfig Config { get; set; }
         public MapInfo MapInfo { get; set; } = new MapInfo()

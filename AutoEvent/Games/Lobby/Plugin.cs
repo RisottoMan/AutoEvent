@@ -16,6 +16,7 @@ namespace AutoEvent.Games.Lobby
         public override string Description { get; set; } = "A lobby in which one quick player chooses a mini-game.";
         public override string Author { get; set; } = "KoT0XleB";
         public override string CommandName { get; set; } = "lobby";
+        public override Version Version { get; set; } = new Version(1, 0, 0);
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
             { SoundName = "FireSale.ogg", Volume = 10, Loop = false };
         public MapInfo MapInfo { get; set; } = new MapInfo()

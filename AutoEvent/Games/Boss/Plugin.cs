@@ -21,6 +21,8 @@ namespace AutoEvent.Games.Boss
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.BossTranslate.BossDescription;
         public override string Author { get; set; } = "KoT0XleB";
         public override string CommandName { get; set; } = AutoEvent.Singleton.Translation.BossTranslate.BossCommandName;
+        public override Version Version { get; set; } = new Version(1, 0, 0);
+
         public MapInfo MapInfo { get; set; } = new MapInfo() 
             { MapName = "DeathParty", Position = new Vector3(6f, 1030f, -43.5f) };
 

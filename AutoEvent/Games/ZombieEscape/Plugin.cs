@@ -25,6 +25,7 @@ namespace AutoEvent.Games.ZombieEscape
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.ZombieEscapeTranslate.ZombieEscapeDescription;
         public override string Author { get; set; } = "KoT0XleB";
         public override string CommandName { get; set; } = AutoEvent.Singleton.Translation.ZombieEscapeTranslate.ZombieEscapeCommandName;
+        public override Version Version { get; set; } = new Version(1, 0, 0);
         [EventConfig]
         public ZombieEscapeConfig Config { get; set; }
         public MapInfo MapInfo { get; set; } = new MapInfo()
