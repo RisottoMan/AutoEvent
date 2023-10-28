@@ -14,7 +14,9 @@ using PluginAPI.Core;
 using Powerups;
 using Event = AutoEvent.Interfaces.Event;
 using Log = PluginAPI.Core.Log;
+using Map = PluginAPI.Core.Map;
 using Paths = PluginAPI.Helpers.Paths;
+using Player = PluginAPI.Core.Player;
 using Server = PluginAPI.Core.Server;
 #if EXILED
 using Exiled.API.Features;
@@ -208,6 +210,36 @@ namespace AutoEvent
             EventManager.UnregisterEvents(this);
             HarmonyPatch.UnpatchAll();
             Singleton = null;
+        }
+
+        public void OnEventFinished()
+        {
+            if (Config.RestartAfterRoundFinish && !DebugLogger.NoRestartEnabled)
+            {
+                foreach (Player ply in Player.GetPlayers())
+                {
+                    if (ply.CheckPermission("ev.norestart", out bool isConsole))
+                    {
+                        ply.ClearBroadcasts();
+                        ply.SendBroadcast($"The server is going to restart in 10 seconds. Use the `Ev NoRestart` command to prevent this.", 10);
+                    }
+                }
+                Timing.CallDelayed(7f, () =>
+                {
+                    if (Config.RestartAfterRoundFinish && !DebugLogger.NoRestartEnabled)
+                    {
+                        Map.ClearBroadcasts();
+                        Map.Broadcast(5, Config.ServerRestartMessage);
+                    }
+                });
+                Timing.CallDelayed(10f, () =>
+                {
+                    if (Config.RestartAfterRoundFinish && !DebugLogger.NoRestartEnabled)
+                    {
+                        Server.Restart();
+                    }
+                });
+            }
         }
     }
 }
