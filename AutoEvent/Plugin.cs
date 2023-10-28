@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using AutoEvent.Commands;
+using AutoEvent.Events.EventArgs;
 using AutoEvent.Interfaces;
 using HarmonyLib;
 using PluginAPI.Core.Attributes;
@@ -90,20 +91,16 @@ namespace AutoEvent
                 Singleton = this;
                 MER.Lite.API.Initialize(AutoEvent.Singleton.Config.SchematicsDirectoryPath, Config.Debug);
                 Powerups.API.Initialize();
-                InventoryMenu.API.MenuManager.Init();
-                InventoryMenu.API.Log.OnLog += (s, level) =>
+                #if EXILED
+                Exiled.Events.Handlers.Player.Shot += (Exiled.Events.EventArgs.Player.ShotEventArgs ev) =>
                 {
-                    LogLevel lvl = level switch
-                    {
-                        InventoryMenu.API.Log.LogLevel.Info => LogLevel.Info,
-                        InventoryMenu.API.Log.LogLevel.Warn => LogLevel.Warn,
-                        InventoryMenu.API.Log.LogLevel.Error => LogLevel.Error,
-                        InventoryMenu.API.Log.LogLevel.Debug => LogLevel.Debug,
-                        _ => LogLevel.Debug
-                    };
-                    DebugLogger.LogDebug($"[Inventory Menus] [{level}] {s}",lvl, lvl != LogLevel.Debug);
+                    var args = new ShotEventArgs(Player.Get(ev.Player.ReferenceHub), ev.RaycastHit, ev.Hitbox, ev.Damage);
+                    global::AutoEvent.Events.Handlers.Players.OnShot(args);
+                    ev.Damage = args.Damage;
+                    ev.CanHurt = args.CanHurt;
                 };
-
+                #endif
+                
                 if (Config.IgnoredRoles.Contains(Config.LobbyRole))
                 {
                     DebugLogger.LogDebug("The Lobby Role is also in ignored roles. This will break the game if not changed. The plugin will remove the lobby role from ignored roles.", LogLevel.Error, true);
