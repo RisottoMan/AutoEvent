@@ -10,6 +10,7 @@
 //    Created Date:     10/28/2023 12:53 PM
 // -----------------------------------------
 
+using System;
 using System.Diagnostics.CodeAnalysis;
 using AutoEvent.Interfaces;
 using CommandSystem;
