@@ -157,7 +157,7 @@ public class Plugin : Event, IEventSound, IInternalEvent
         {
             for (float _time = 15; _time > 0; _time--)
             {
-                Extensions.Broadcast(Translation.Replace("{time}", $"{_time}"), 1);
+                //Extensions.Broadcast(Translation.Replace("{time}", $"{_time}"), 1);
 
                 yield return Timing.WaitForSeconds(1f);
                 EventTime += TimeSpan.FromSeconds(1f);
@@ -166,7 +166,7 @@ public class Plugin : Event, IEventSound, IInternalEvent
 
         protected override bool IsRoundDone()
         {
-            
+            return true;
         }
 
         protected override void ProcessFrame()
@@ -174,13 +174,13 @@ public class Plugin : Event, IEventSound, IInternalEvent
             var time = $"{_remainingTime.Minutes:00}:{_remainingTime.Seconds:00}";
                 foreach (Player player in Player.GetPlayers())
                 {
-                    player.SendBroadcast("");
+                    //player.SendBroadcast("");
                 }
 
-                var a = PluginAPI.Core.Map.Rooms.First(x => x.Name == RoomName.HczCheckpointA);
-                var b = PluginAPI.Core.Map.Rooms.First(x => x.Name == RoomName.HczCheckpointB);
+                //var a = PluginAPI.Core.Map.Rooms.First(x => x.Name == RoomName.HczCheckpointA);
+                //var b = PluginAPI.Core.Map.Rooms.First(x => x.Name == RoomName.HczCheckpointB);
                 //a.ApiRoom
-                var nameTag = a.gameObject.GetComponentInChildren<DoorNametagExtension>().TargetDoor.ServerChangeLock() ? name.GetName : null;
+                //var nameTag = a.gameObject.GetComponentInChildren<DoorNametagExtension>().TargetDoor.ServerChangeLock() ? name.GetName : null;
 
                 _remainingTime -= TimeSpan.FromSeconds(FrameDelayInSeconds);
         }
