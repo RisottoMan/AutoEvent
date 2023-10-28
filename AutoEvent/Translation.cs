@@ -4,9 +4,10 @@ using AutoEvent.Games.Battle;
 using AutoEvent.Games.Boss;
 using AutoEvent.Games.GhostBusters.Configs;
 using AutoEvent.Games.Spleef.Configs;
+using AutoEvent.Games.Trouble;
 #if EXILED
 using Exiled.API.Interfaces;
-#endif 
+#endif
 namespace AutoEvent
 {
     // Yes, it looks terrible. I just have very little time to create a large plugin.
@@ -83,5 +84,8 @@ namespace AutoEvent
         
         [Description("Ghost Busters Game Mode")]
         public GhostBustersTranslate GhostBustersTranslate { get; set; } = new GhostBustersTranslate();
+      
+        [Description("Trouble in Terrorist Town Game Mode")]
+        public TroubleTranslate TroubleTranslate { get; set; } = new TroubleTranslate();
     }
 }
