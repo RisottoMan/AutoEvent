@@ -56,5 +56,5 @@ public class Reload : ParentCommand
 
     public override string Command => nameof(Reload);
     public override string[] Aliases => Array.Empty<string>();
-    public override string Description => "Reloads different aspects of the plugin and events.";
+    public override string Description => "Reloads different aspects of the plugin and events";
 }

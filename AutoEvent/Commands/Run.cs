@@ -15,9 +15,9 @@ namespace AutoEvent.Commands
     internal class Run : ICommand, IUsageProvider, IPermission
     {
         public string Command => nameof(Run);
-        public string Description => "Run the event, takes on 1 argument - the command name of the event.";
+        public string Description => "Run the event, takes on 1 argument - the command name of the event";
         public string[] Aliases => new []{ "start", "play", "begin" };
-        public string[] Usage => new string[] { "[Event Name]" };
+        public string[] Usage => new string[] { "Event Name" };
         public string Permission { get; set; } = "ev.run";
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
@@ -40,11 +40,12 @@ namespace AutoEvent.Commands
             }
 
             Event ev = Event.GetEvent(arguments.At(0));
-            if (ev == null)
+            if (ev == null || ev is IHidden)
             {
                 response = $"The mini-game {arguments.At(0)} is not found.";
                 return false;
             }
+
             string conf = "";
             EventConfig? config = null;
             if (arguments.Count >= 2)

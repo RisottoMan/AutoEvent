@@ -18,7 +18,7 @@ namespace AutoEvent.Commands
             // Log.Debug("Skipping Registering List Command");
         }
         public string Command => nameof(List);
-        public string Description => "Shows a list of all the events that can be started.";
+        public string Description => "Shows a list of all the events that can be started";
         public string[] Aliases => new string[] { };
         public string Permission { get; set; } = "ev.list";
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
@@ -28,6 +28,7 @@ namespace AutoEvent.Commands
                 response = "<color=red>You do not have permission to use this command!</color>";
                 return false;
             }
+            
             StringBuilder builder = new StringBuilder();
             if (!IsConsoleCommandSender)
             {
@@ -75,11 +76,10 @@ namespace AutoEvent.Commands
                         builder.AppendLine($"{(!IsConsoleCommandSender ? "<color=white>" : "")}[{(!IsConsoleCommandSender ? $"<color={color}>" : "")}==Exiled Events=={(!IsConsoleCommandSender ? "<color=white>" : "")}]");
                         break;
                 }
-
+                
                 foreach (Event ev in eventlist.Value)
                 {
-                    
-
+                    if (ev is IHidden) continue;
                     if (!IsConsoleCommandSender)
                         builder.AppendLine(
                             $"<color={color}>{ev.Name}</color> [<color=yellow>{ev.CommandName}</color>]: <color=white>{ev.Description}</color>");
@@ -103,6 +103,5 @@ namespace AutoEvent.Commands
             response = builder.ToString();
             return true;
         }
-
     }
 }

@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using AutoEvent.Interfaces;
 using AutoEvent.Events.Handlers;
+using MEC;
+using PluginAPI.Core;
 using CommandSystem;
 using Event = AutoEvent.Interfaces.Event;
 using Player = PluginAPI.Core.Player;
@@ -23,6 +25,8 @@ namespace AutoEvent.Games.Vote
         private EventHandler EventHandler { get; set; }
         public Dictionary<Player, bool> _voteList { get; set; }
         private int _voteTime = 30;
+        public static string EventName { get; set; }
+        public Event NewEvent { get; set; }
 
         protected override void RegisterEvents()
         {
@@ -59,8 +63,8 @@ namespace AutoEvent.Games.Vote
             var count = Player.GetPlayers().Count(r => r.Role == RoleTypeId.ClassD);
             var time = $"{(_voteTime - EventTime.Seconds):00}";
 
-            Extensions.Broadcast($"Vote: Press [Alt] Pros or twice Cons\n" +
-                $"{_voteList.Count(r => r.Value == true)} of {_voteList.Count} players for Mini-Game %Name%\n" +
+            Extensions.Broadcast($"Vote: Press [Alt] Pros or [Alt]x2 Cons\n" +
+                $"{_voteList.Count(r => r.Value == true)} of {_voteList.Count} players for {NewEvent.Name}\n" +
                 $"{time} seconds left!", 1);
         }
 
@@ -69,14 +73,17 @@ namespace AutoEvent.Games.Vote
             string results;
             if (_voteList.Count(r => r.Value == true) > _voteList.Count(r => r.Value == false))
             {
-                results = "Mini-Game %Name% will start soon.";
-                // timing -> ev run name
-                // idea: do I need to make an auto discord message about voting? About launching a mini-game?
+                results = $"{NewEvent.Name} will start soon.";
+
+                // There is no way to change PostRoundDelay time to 5 second
+                Timing.CallDelayed(10.1f, () =>
+                {
+                    Server.RunCommand($"ev run {NewEvent.CommandName}");
+                });
             }
             else
             {
-                results = "Mini-Game %Name% will not start.";
-                // nothing 
+                results = $"{NewEvent.Name} will not start.";
             }
 
             Extensions.Broadcast($"Vote: End of voting\n" +
