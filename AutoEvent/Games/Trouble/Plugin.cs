@@ -23,6 +23,7 @@ namespace AutoEvent.Games.Trouble
         protected override float PostRoundDelay { get; set; } = 10f;
         private EventHandler EventHandler { get; set; }
         private TroubleTranslate Translation { get; set; } = AutoEvent.Singleton.Translation.TroubleTranslate;
+        public override Version Version { get; set; } = new Version(1, 0, 0);
 
         protected override void RegisterEvents()
         {
