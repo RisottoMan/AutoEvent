@@ -23,7 +23,7 @@ namespace AutoEvent.Commands;
 public class Volume : ICommand, IUsageProvider, IPermission
 {
     public string Command => nameof(Volume);
-        public string Description => "Set the global music volume, takes on 1 argument - the volume from 0% - 200%.";
+        public string Description => "Set the global music volume, takes on 1 argument - the volume from 0%-200%";
         public string[] Aliases => new string[] { };
         public string[] Usage => new string[] { "Volume %" };
         public string Permission { get; set; } = "ev.volume";

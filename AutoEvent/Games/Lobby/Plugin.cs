@@ -7,6 +7,8 @@ using System.Linq;
 using CommandSystem;
 using Event = AutoEvent.Interfaces.Event;
 using Player = PluginAPI.Core.Player;
+using PluginAPI.Core;
+using MEC;
 
 namespace AutoEvent.Games.Lobby
 {
@@ -26,7 +28,9 @@ namespace AutoEvent.Games.Lobby
         Player _chooser { get; set; }
         List<GameObject> _spawnpoints { get; set; }
         List<GameObject> _teleports { get; set; }
-        List<GameObject> _platformes { get; set; }
+        Dictionary<GameObject, string> _platformes { get; set; }
+        public List<string> _eventList { get; set; }
+        public Event NewEvent { get; set; }
 
         protected override void RegisterEvents()
         {
@@ -66,7 +70,7 @@ namespace AutoEvent.Games.Lobby
                     {
                         case "Spawnpoint": _spawnpoints.Add(obj); break;
                         case "Teleport": _teleports.Add(obj); break;
-                        case "Platform": _platformes.Add(obj); break;
+                        case "Platform": _platformes.Add(obj, obj.transform.parent.name); break;
                     }
                 }
                 catch (Exception e)
@@ -79,7 +83,7 @@ namespace AutoEvent.Games.Lobby
 
         protected override bool IsRoundDone()
         {
-            DebugLogger.LogDebug($"Lobby state is {_state}");
+            DebugLogger.LogDebug($"Lobby state is {_state} and {(NewEvent is null ? "null" : NewEvent.Name)}");
 
             if (_state == LobbyState.Waiting)
                 return false;
@@ -96,9 +100,8 @@ namespace AutoEvent.Games.Lobby
         protected override void ProcessFrame()
         {
             string message = "Get ready to run to the center and choose a mini game";
-            string time = $"{(16 - EventTime.Seconds):00}";
 
-            if (_state == LobbyState.Waiting && EventTime.TotalSeconds >= 15)
+            if (_state == LobbyState.Waiting && EventTime.TotalSeconds >= 5)
             {
                 GameObject.Destroy(MapInfo.Map.AttachedBlocks.First(r => r.name == "Wall").gameObject);
                 EventTime = new();
@@ -108,7 +111,7 @@ namespace AutoEvent.Games.Lobby
             if (_state == LobbyState.Running)
             {
                 message = "RUN";
-                if (EventTime.TotalSeconds <= 15)
+                if (EventTime.TotalSeconds <= 10)
                 {
                     foreach (Player player in Player.GetPlayers())
                     {
@@ -137,31 +140,36 @@ namespace AutoEvent.Games.Lobby
                 {
                     foreach (var platform in _platformes)
                     {
-                        if (Vector3.Distance(platform.transform.position, _chooser.Position) < 2)
+                        if (Vector3.Distance(platform.Key.transform.position, _chooser.Position) < 2)
                         {
-                            // ev run mg
+                            NewEvent = Event.GetEvent(platform.Value);
                             _state = LobbyState.Ending;
                         }
                     }
                 }
                 else
                 {
-                    // Random mg
+                    NewEvent = Event.GetEvent(_platformes.ToList().RandomItem().Value);
                     _state = LobbyState.Ending;
                 }
             }
 
             Extensions.Broadcast($"Lobby\n" +
                 $"{message}\n" +
-                $"players = {Player.GetPlayers().Count()} | {time} seconds left!", 1);
+                $"{Player.GetPlayers().Count()} players in the lobby", 1);
         }
 
         protected override void OnFinished()
         {
             DebugLogger.LogDebug($"Lobby is finished");
             Extensions.Broadcast($"The lobby is finished.\n" +
-                $"The player {_chooser.Nickname} chose the %name% mini-game.\n" +
+                $"The player {_chooser.Nickname} chose the {NewEvent.Name} mini-game.\n" +
                 $"Total {Player.GetPlayers().Count()} players in the lobby", 10);
+
+            Timing.CallDelayed(10.1f, () =>
+            {
+                Server.RunCommand($"ev run {NewEvent.CommandName}");
+            });
         }
     }
 }
