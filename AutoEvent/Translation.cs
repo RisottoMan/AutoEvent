@@ -2,6 +2,7 @@ using AutoEvent.Games.Infection;
 using System.ComponentModel;
 using AutoEvent.Games.Battle;
 using AutoEvent.Games.Boss;
+using AutoEvent.Games.GhostBusters.Configs;
 using AutoEvent.Games.Spleef.Configs;
 #if EXILED
 using Exiled.API.Interfaces;
@@ -79,5 +80,8 @@ namespace AutoEvent
 
         [Description("Boss Battle Game Mode")]
         public BossTranslate BossTranslate { get; set; } = new BossTranslate();
+        
+        [Description("Ghost Busters Game Mode")]
+        public GhostBustersTranslate GhostBustersTranslate { get; set; } = new GhostBustersTranslate();
     }
 }

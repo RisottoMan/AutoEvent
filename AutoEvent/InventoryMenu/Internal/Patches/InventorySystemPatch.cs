@@ -14,6 +14,8 @@ using System.Diagnostics;
 using System.Text;
 using HarmonyLib;
 using InventoryMenu.API;
+using InventoryMenu.API.EventArgs;
+using InventoryMenu.API.Features;
 using InventorySystem.Items;
 using NorthwoodLib.Pools;
 using PluginAPI.Core;
@@ -34,8 +36,21 @@ internal static class InventorySystemPatch
         HashSet<ItemIdentifier> hashSet = HashSetPool<ItemIdentifier>.Shared.Rent();
         Player ply = Player.Get(__instance._hub);
         var instance = MenuManager.Menus.FirstOrDefault(x => x.CanPlayerSee(ply));
+        GetMenuItemsForPlayerArgs? args = null;
 
-        var items = (instance is not null ? instance._itemBases : __instance.UserInventory.Items);
+        if (instance is not null)
+        {
+            try
+            {
+                args = new GetMenuItemsForPlayerArgs(ply, instance);
+                instance.OnGetMenuItems(args);
+            }
+            catch (Exception e)
+            {
+                Log.Debug($"An error has occured while getting menu items.\n {e}");
+            }
+        }
+        var items = (args is not null ? args.Items : __instance.UserInventory.Items);
         // Log.Debug($"[{instance is null}], Menus: {MenuManager.Menus.Count}, Total Caches: {MenuManager.Menus.Sum(x => x.PlayerInventoryCaches.Count())}");
         
         // Log.Debug($"Item Count: {items.Count}, Inv Count: {__instance.UserInventory.Items.Count} Menu null: {instance is null}, ");
