@@ -17,13 +17,14 @@ using InventoryMenu.API;
 using InventorySystem.Items;
 using NorthwoodLib.Pools;
 using PluginAPI.Core;
+using Log = InventoryMenu.API.Log;
 
 namespace InventoryMenu.Internal.Patches;
 
 [HarmonyPatch(typeof(InventorySystem.Inventory), nameof(InventorySystem.Inventory.ServerSendItems))]
-public static class InventorySystemPatch
+internal static class InventorySystemPatch
 {
-    public static bool Prefix(InventorySystem.Inventory __instance)
+    internal static bool Prefix(InventorySystem.Inventory __instance)
     {
         if (__instance.isLocalPlayer)
         {
@@ -32,9 +33,13 @@ public static class InventorySystemPatch
 
         HashSet<ItemIdentifier> hashSet = HashSetPool<ItemIdentifier>.Shared.Rent();
         Player ply = Player.Get(__instance._hub);
-        var instance = MenuManager.Menus.FirstOrDefault(x => x.PlayerInventoryCaches.ContainsKey(ply));
+        var instance = MenuManager.Menus.FirstOrDefault(x => x.CanPlayerSee(ply));
+
+        var items = (instance is not null ? instance._itemBases : __instance.UserInventory.Items);
+        // Log.Debug($"[{instance is null}], Menus: {MenuManager.Menus.Count}, Total Caches: {MenuManager.Menus.Sum(x => x.PlayerInventoryCaches.Count())}");
         
-        foreach (KeyValuePair<ushort, ItemBase> item in instance?.PlayerInventoryCaches[ply].Items ?? __instance.UserInventory.Items)
+        // Log.Debug($"Item Count: {items.Count}, Inv Count: {__instance.UserInventory.Items.Count} Menu null: {instance is null}, ");
+        foreach (KeyValuePair<ushort, ItemBase> item in items.OrderByDescending(x => x.Key))
         {
             hashSet.Add(new ItemIdentifier(item.Value.ItemTypeId, item.Key));
         }

@@ -27,6 +27,22 @@ public class Log
     internal static void Message(string message, LogLevel logLevel)
     {
         OnLog?.Invoke(message, logLevel);
+        return;
+        switch (logLevel)
+        {
+            case LogLevel.Debug:
+                PluginAPI.Core.Log.Debug(message, "Inventory Menus");
+                break;
+            case LogLevel.Info:
+                PluginAPI.Core.Log.Info(message, "Inventory Menus"); 
+                break;
+            case LogLevel.Warn:
+                PluginAPI.Core.Log.Warning(message, "Inventory Menus"); 
+                break;
+            case LogLevel.Error:
+                PluginAPI.Core.Log.Error(message, "Inventory Menus");
+                break;
+        }
     }
 
     internal static void Debug(string message) => Message(message, LogLevel.Debug);

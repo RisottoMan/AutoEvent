@@ -12,7 +12,7 @@
 
 using HarmonyLib;
 using InventoryMenu.API.Features;
-using TheRiptide;
+using PluginAPI.Core.Attributes;
 
 namespace InventoryMenu.API;
 
@@ -44,6 +44,7 @@ public sealed class MenuManager
     /// <summary>
     /// Initializes the <see cref="MenuManager"/>. This is required for the menu system to work.
     /// </summary>
+    [PluginEntryPoint("Inventory Menus", "v1.0.1", "Provides Inventory Menus", "Redforce04")]
     public static void Init() => new MenuManager();
     
     /// <summary>
@@ -53,7 +54,7 @@ public sealed class MenuManager
     internal static void RegisterMenu(Menu menu)
     {
         if(!_menus.Contains(menu))
-            _menus.AddItem(menu);
+            _menus.Add(menu);
     }
     
     /// <summary>

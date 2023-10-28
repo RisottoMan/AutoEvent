@@ -11,7 +11,9 @@
 // -----------------------------------------
 
 using InventoryMenu.API;
+using InventoryMenu.API.EventArgs;
 using InventoryMenu.API.Features;
+using PluginAPI.Core;
 using PluginAPI.Core.Attributes;
 using PluginAPI.Enums;
 using PluginAPI.Events;
@@ -22,7 +24,7 @@ internal class Handlers
 {
     internal static Handlers Singleton { get; private set; }
     internal static void Init() => new Handlers();
-    public Handlers()
+    internal Handlers()
     {
         // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
         if (Singleton is not null)
@@ -32,22 +34,10 @@ internal class Handlers
         EventManager.RegisterEvents(this);
     }
 
-    [PluginEvent(ServerEventType.PlayerSearchedPickup)]
-    private bool OnPickup(PlayerSearchedPickupEvent ev)
+    [PluginEvent(ServerEventType.PlayerSearchPickup)]
+    internal bool OnPickupItem(PlayerSearchPickupEvent ev)
     {
-        // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
-        if (MenuManager.Menus is null || MenuManager.Menus.FirstOrDefault(x => !x.CanPlayerSee(ev.Player)) is not { } menu)
-        {
-            return true;
-        }
-
-        if (!menu.CanPlayersPickupItems)
-        {
-            return false;
-        }
-
-        menu.ProcessPickup(ev.Player, ev.Item);
-        return false;
+        var menu = MenuManager.Menus.FirstOrDefault(x => x.CanPlayerSee(ev.Player));
+        return menu?.CanPlayersPickupItems ?? true;
     }
-
 }

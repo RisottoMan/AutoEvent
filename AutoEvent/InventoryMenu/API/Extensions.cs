@@ -27,12 +27,5 @@ public static class Extensions
         
         instance.HideForPlayer(ply);
     }
-    public static PlayerInventoryCache StoreInventory(this Player ply) => new PlayerInventoryCache(ply);
-    public static PlayerInventoryCache StoreAndClearInventory(this Player ply)
-    {
-        var cache = new PlayerInventoryCache(ply);
-        cache.StoreAndClearInventory();
-        return cache;
-    }
     
 }

@@ -17,13 +17,20 @@ namespace InventoryMenu.API.EventArgs;
 
 public class MenuItemClickedArgs
 {
-    public MenuItemClickedArgs(Player player, MenuItem itemClicked, bool isAllowed = true)
+    public MenuItemClickedArgs(Player player, MenuItem menuItemClicked, bool isLeftClick, bool isAllowed = true)
     {
+        if (menuItemClicked is null)
+        {
+            Log.Warn("Menu item clicked was null. This is an error!");
+            return;
+        }
         Player = player;
-        ItemClicked = itemClicked;
+        MenuItemClicked = menuItemClicked;
+        IsLeftClick = isLeftClick;
         IsAllowed = isAllowed;
     }
     public Player Player { get; private set; }
-    public MenuItem ItemClicked { get; private set; }
+    public MenuItem MenuItemClicked { get; private set; }
+    public bool IsLeftClick { get; set; }
     public bool IsAllowed { get; set; }
 }

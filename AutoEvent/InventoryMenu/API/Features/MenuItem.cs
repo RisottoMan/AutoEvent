@@ -22,8 +22,10 @@ public sealed class MenuItem
     /// </summary>
     private static int Index { get; set; } = 0;
     
-    public MenuItem(ItemType item, string description, Action<MenuItemClickedArgs>? onClicked = null, Menu? parent = null)
+    public MenuItem(ItemType item, string description, byte position = 255, Action<MenuItemClickedArgs>? onClicked = null, Menu? parent = null)
     {
+        CachedPosition = position;
+        
         Id = Index;
         Index++;
         
@@ -46,6 +48,11 @@ public sealed class MenuItem
     /// The item type of the selection.
     /// </summary>
     public ItemType Item { get; private set; }
+    
+    /// <summary>
+    /// The serial of the item.
+    /// </summary>
+    public ushort Serial { get; internal set; }
     
     /// <summary>
     /// The description shown to players for the item.

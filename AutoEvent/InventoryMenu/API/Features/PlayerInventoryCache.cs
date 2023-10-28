@@ -1,4 +1,4 @@
-﻿// <copyright file="Log.cs" company="Redforce04#4091">
+﻿/*// <copyright file="Log.cs" company="Redforce04#4091">
 // Copyright (c) Redforce04. All rights reserved.
 // </copyright>
 // -----------------------------------------
@@ -84,9 +84,10 @@ public class PlayerInventoryCache
     /// </summary>
     public void RestoreInventory()
     { 
-        Player.ReferenceHub.inventory.UserInventory.Items = Items;
+        /*Player.ReferenceHub.inventory.UserInventory.Items = Items;
         Items.Clear();
         InventoryIsCleared = false;
+        *//*
     }
 
 
@@ -98,3 +99,4 @@ public class PlayerInventoryCache
         InventoryIsCleared = inventoryIsCleared;
     }
 }
+*/

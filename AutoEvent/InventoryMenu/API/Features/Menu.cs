@@ -28,12 +28,13 @@ public sealed class Menu
     {
         return MenuManager.Menus.FirstOrDefault(x => x.Id == id);
     }
-    public Menu(string description, Dictionary<byte, MenuItem>? items = null)
+    public Menu(string description, bool canPickupItems = false, Dictionary<byte, MenuItem>? items = null)
     {
         this.Id = Index;
         Index++;
+        this.CanPlayersPickupItems = canPickupItems;
         this.Description = description;
-        this._playerInventoryCaches = new Dictionary<Player, PlayerInventoryCache>();
+        this._activePlayers = new List<Player>();
         this._items = items ?? new Dictionary<byte, MenuItem>();
         MenuManager.RegisterMenu(this);
     }
@@ -76,7 +77,7 @@ public sealed class Menu
         byte position = (item.CachedPosition == 255) ? (byte)0 : item.CachedPosition;
         
         // Something already exists there.
-        if (_items.ContainsKey(item.CachedPosition))
+        if (_items.ContainsKey(position))
         {
             for (byte i = 0; i < 8; i++)
             {
@@ -86,9 +87,18 @@ public sealed class Menu
                 break;
             }
         }
-
-        item.CachedPosition = 255;
+        
         _items.Add(position, item);
+        
+        item.CachedPosition = 255;
+        ushort serial = ItemSerialGenerator.GenerateNext();
+        if(InventoryItemLoader.AvailableItems.TryGetValue(item.Item, out var value) && value is not null)
+        {
+            this._itemBases.Add(serial, value);
+            item.Serial = serial;
+            return true;
+        }
+        // ItemBase itemBase = ply.ReferenceHub.inventory.CreateItemInstance(new ItemIdentifier(item.Info.ItemId, serial), ply.ReferenceHub.inventory.isLocalPlayer);
         return true;
     }
 
@@ -99,6 +109,9 @@ public sealed class Menu
             return false;
             // dont try to remove it
         }
+
+        if (_itemBases.ContainsKey(item.Serial))
+            _itemBases.Remove(item.Serial);
         byte key = _items.FirstOrDefault(x => x.Value == item).Key;
         _items.Remove(key);
         item.AssignParentMenu(null);
@@ -126,12 +139,12 @@ public sealed class Menu
         return true;
     }
 
-    private Dictionary<Player, PlayerInventoryCache> _playerInventoryCaches { get; set; }
+    private List<Player> _activePlayers { get; set; }
     
     /// <summary>
     /// The instances of players viewing this menu.
     /// </summary>
-    public ReadOnlyDictionary<Player, PlayerInventoryCache> PlayerInventoryCaches => new(_playerInventoryCaches);
+    public IReadOnlyList<Player> PlayerInventoryCaches => _activePlayers.AsReadOnly();
 
     /// <summary>
     /// Checks if a player is being shown the menu.
@@ -140,92 +153,54 @@ public sealed class Menu
     /// <returns></returns>
     public bool CanPlayerSee(Player ply)
     {
-        return _playerInventoryCaches.ContainsKey(ply);
+        return _activePlayers.Contains(ply);
     }
-    
+
     /// <summary>
     /// Shows a menu to a player.
     /// </summary>
     /// <param name="ply">The <see cref="Player"/> to show the menu to.</param>
     public void ShowToPlayer(Player ply)
     {
-        if (_playerInventoryCaches.ContainsKey(ply))
+        if (_activePlayers.Contains(ply))
             return;
-        
-        _playerInventoryCaches.Add(ply, ply.StoreAndClearInventory());
+        ply.HideMenu();
+        _activePlayers.Add(ply);
+        List<string> broadcast = new List<string>();
+        if (this.Description != "")
+            broadcast.Add(this.Description);
+        for (byte i = 0; i < this._items.Count(); i++)
+        {
+            if (this._items[i].Description != "")
+                broadcast.Add(this._items[i].Description);
+        }
+        if (!broadcast.IsEmpty())
+        {
+            if (broadcast.Count >= 7)
+                BroadcastOverride.SetEvenLineSizes(ply, broadcast.Count() + 1);
+            else
+                BroadcastOverride.SetEvenLineSizes(ply, 7);
+            BroadcastOverride.BroadcastLines(ply, 1, 1500.0f, BroadcastPriority.High, broadcast);
+        }
+
+
         ply.ReferenceHub.inventory.SendItemsNextFrame = true;
     }
-
+    
     /// <summary>
     /// Hides the menu for a player. 
     /// </summary>
     /// <param name="ply">The <see cref="Player"/> to hide the menu from.</param>
     public void HideForPlayer(Player ply)
     {
-        if (!_playerInventoryCaches.ContainsKey(ply))
+        if (!_activePlayers.Contains(ply))
             return;
         
-        _playerInventoryCaches[ply].RestoreInventory();
-        _playerInventoryCaches.Remove(ply);
+        _activePlayers.Remove(ply);
+        ply.ReferenceHub.inventory.SendItemsNextFrame = true;
+
     }
 
-    /// <summary>
-    /// Adds pickups to the "internal" inventory instead.
-    /// </summary>
-    /// <param name="ply">The <see cref="Player"/> picking up the item.</param>
-    /// <param name="item">The item the player is receiving.</param>
-    internal void ProcessPickup(Player ply, ItemPickupBase item)
-    {
-        /*
-        ushort serial = item.Info.Serial;
-        //if (ply.ReferenceHub.inventory.UserInventory.Items.Count >= 8 && InventoryItemLoader.AvailableItems.TryGetValue(item.Info.ItemId, out var value) && value.Category != ItemCategory.Ammo)
-        if (!this._playerInventoryCaches.ContainsKey(ply))
-        {
-            var cache = new PlayerInventoryCache(ply);
-            cache.ForceClearedInventory(true);
-            _playerInventoryCaches.Add(ply, cache);
-        }
-        if(this._playerInventoryCaches[ply].Items.Count >= 8 && InventoryItemLoader.AvailableItems.TryGetValue(item.Info.ItemId, out var value) && value.Category != ItemCategory.Ammo)
-        {
-            goto itemSkip;
-        }
-        if (serial == 0)
-        {
-            serial = ItemSerialGenerator.GenerateNext();
-        }
-        ItemBase itemBase = ply.ReferenceHub.inventory.CreateItemInstance(new ItemIdentifier(item.Info.ItemId, serial), ply.ReferenceHub.inventory.isLocalPlayer);
-        if (itemBase == null)
-        {
-            goto itemSkip;
-        }
-        
-        // ply.ReferenceHub.inventory.UserInventory.Items[serial] = itemBase;
-        _playerInventoryCaches[ply].Items[serial] = itemBase;
-        
-        itemBase.OnAdded(item);
-        try
-        {
-            typeof(InventoryExtensions).GetEvents().First(x => x.Name == nameof(InventoryExtensions.OnItemAdded))
-                .RaiseMethod.Invoke(null, new object[] { ply.ReferenceHub, itemBase, item });
-        }
-        catch (Exception e)
-        {
-            Log.Error($"Could not raise Event InventoryExtensions.OnItemAdded. This will call it manually, however it may break plugins and exiled.");
-            Log.Debug($"Exception at Menu.ProcessPickup => InventoryExtensions.OnItemAdded.Invoke(). Exception: \n{e}");
-            
-            Respawning.ItemPickupTokens.OnItemAdded(ply.ReferenceHub, itemBase, item);
-            Achievements.Handlers.ItemPickupHandler.OnItemAdded(ply.ReferenceHub, itemBase, item);
-        }
-        if (ply.ReferenceHub.inventory.isLocalPlayer && itemBase is IAcquisitionConfirmationTrigger acquisitionConfirmationTrigger)
-        {
-            acquisitionConfirmationTrigger.ServerConfirmAcqusition();
-            acquisitionConfirmationTrigger.AcquisitionAlreadyReceived = true;
-        }
-        //ply.ReferenceHub.inventory.SendItemsNextFrame = true;
-        
-        itemSkip:
-        item.DestroySelf();
-        */
-    }
-
+    public Dictionary<ushort, ItemBase> _itemBases { get; set; } = new Dictionary<ushort, ItemBase>();
+    public ReadOnlyDictionary<ushort, ItemBase> ItemBases => new(_itemBases);
 }
