@@ -60,8 +60,8 @@
     <Reference Include="Assembly-CSharp-Publicized" HintPath="$(SL_REFERENCES)\Assembly-CSharp-Publicized.dll" />
     <Reference Include="Mirror" HintPath="$(SL_REFERENCES)\Mirror.dll" />
     <Reference Include="PowerupApi" HintPath="PowerupApi\bin\Release\net48\PowerupApi.dll" />
-    <Reference Include="SchematicApi" HintPath="SchematicApi\bin\Release\net48\SchematicApi.dll" />
     <Reference Include="InventoryMenu" HintPath="InventoryMenu\bin\Debug\net48\InventoryMenu.dll" />
+    <Reference Include="SchematicApi" HintPath="SchematicApi\bin\Release\net48\SchematicApi.dll" />
     <Reference Include="SCPSLAudioApi" HintPath="$(OTHER_REFERENCES)\SCPSLAudioApi.dll" />
     <Reference Include="NWAPIPermissionSystem" HintPath="$(OTHER_REFERENCES)\NWAPIPermissionSystem.dll" />
     <Reference Include="System" />
@@ -118,9 +118,6 @@
     <Compile Remove="ReplaceTextWithVariables\*" />
     <Compile Remove="InventoryMenu\**" />
     <Compile Remove="InventoryMenu\*" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Games\GhostBusters\Features" />
   </ItemGroup>
   <Target Name="RemoveFile" BeforeTargets="ReplaceFile">
     <Exec Command="if exist $(SolutionDir)VersionInfo.cs del $(SolutionDir)VersionInfo.cs" />

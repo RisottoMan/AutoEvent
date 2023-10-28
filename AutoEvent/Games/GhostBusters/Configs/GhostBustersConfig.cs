@@ -11,6 +11,7 @@
 // -----------------------------------------
 
 using System.Collections.Generic;
+using System.ComponentModel;
 using AutoEvent.API;
 using AutoEvent.API.Enums;
 using AutoEvent.Interfaces;
@@ -20,6 +21,31 @@ namespace AutoEvent.Games.GhostBusters.Configs;
 
 public class GhostBustersConfig : EventConfig
 {
+    [Description("How much time the hunters have to kill the ghosts until ghosts can kill them.")]
+    public int TimeUntilMidnightInSeconds { get; set; } = 180;
+
+    [Description("How much time the ghosts have to kill the hunters, after midnight hits.")]
+    public int MidnightDurationInSeconds { get; set; } = 120;
+
+    public RoleCount HunterCount { get; set; } = new RoleCount(2, 4, 20);
+
+    public List<Loadout> GhostLoadouts { get; set; } = new List<Loadout>()
+    {
+        new Loadout()
+        {
+            Roles = new Dictionary<RoleTypeId, int>()
+            {
+                { RoleTypeId.Scientist, 100 }
+            },
+            Effects = new List<Effect>()
+            {
+                new Effect()
+                {
+                    EffectType = StatusEffect.Ghostly
+                },
+            },
+        }
+    };
     public Loadout SniperLoadout { get; set; } = new Loadout()
     {
         Roles = new Dictionary<RoleTypeId, int>()
@@ -29,7 +55,8 @@ public class GhostBustersConfig : EventConfig
         Items = new List<ItemType>()
         {
             ItemType.ParticleDisruptor
-        }
+        },
+        Health = 2000,
     };
     public Loadout TankLoadout { get; set; } = new Loadout()
     {
@@ -41,6 +68,7 @@ public class GhostBustersConfig : EventConfig
         {
             ItemType.MicroHID
         },
+        Health = 2000,
     };
     public Loadout MeleeLoadout { get; set; } = new Loadout()
     {
@@ -59,7 +87,8 @@ public class GhostBustersConfig : EventConfig
                 EffectType = StatusEffect.MovementBoost,
                 Intensity = 20,
             }
-        }
+        },
+        Health = 2000,
     };
     
 }

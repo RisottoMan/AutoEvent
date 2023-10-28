@@ -13,6 +13,7 @@
 using System.Collections.ObjectModel;
 using HarmonyLib;
  using InventoryMenu.API;
+using InventoryMenu.API.EventArgs;
 using InventorySystem;
 using InventorySystem.Items;
 using InventorySystem.Items.Pickups;
@@ -28,7 +29,7 @@ public sealed class Menu
     {
         return MenuManager.Menus.FirstOrDefault(x => x.Id == id);
     }
-    public Menu(string description, bool canPickupItems = false, Dictionary<byte, MenuItem>? items = null)
+    public Menu(string description, bool canPickupItems = false, Action<GetMenuItemsForPlayerArgs>? onGetMenuItems = null, Dictionary<byte, MenuItem>? items = null)
     {
         this.Id = Index;
         Index++;
@@ -36,6 +37,7 @@ public sealed class Menu
         this.Description = description;
         this._activePlayers = new List<Player>();
         this._items = items ?? new Dictionary<byte, MenuItem>();
+        if(onGetMenuItems is not null)[]
         MenuManager.RegisterMenu(this);
     }
     /// <summary>
@@ -53,6 +55,9 @@ public sealed class Menu
     /// </summary>
     /// <returns>True if the player can pickup an item. False if a player cannot pickup items.</returns>
     public bool CanPlayersPickupItems { get; set; } = false;
+
+    public event Action<GetMenuItemsForPlayerArgs> GetMenuItems;
+    public void OnGetMenuItems(GetMenuItemsForPlayerArgs ev) => GetMenuItems?.Invoke(ev);
     
     /// <summary>
     /// An internal dictionary of menu items corresponding to their position.
