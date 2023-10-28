@@ -25,6 +25,7 @@ namespace AutoEvent.Games.HideAndSeek
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.HideTranslate.HideDescription;
         public override string Author { get; set; } = "KoT0XleB";
         public override string CommandName { get; set; } = AutoEvent.Singleton.Translation.HideTranslate.HideCommandName;
+        public override Version Version { get; set; } = new Version(1, 0, 0);
 
         [EventConfig]
         public HideAndSeekConfig Config { get; set; }

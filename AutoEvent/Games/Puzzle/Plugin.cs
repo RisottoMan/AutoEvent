@@ -24,6 +24,7 @@ namespace AutoEvent.Games.Puzzle
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.PuzzleTranslate.PuzzleDescription;
         public override string Author { get; set; } = "KoT0XleB";
         public override string CommandName { get; set; } = AutoEvent.Singleton.Translation.PuzzleTranslate.PuzzleCommandName;
+        public override Version Version { get; set; } = new Version(1, 0, 0);
         [EventConfig]
         public PuzzleConfig Config { get; set; }
 
