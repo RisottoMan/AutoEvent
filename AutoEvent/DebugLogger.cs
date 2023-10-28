@@ -26,7 +26,7 @@ namespace AutoEvent;
 
 public class DebugLogger
 {
-    static DebugLogger()
+    static DebugLogger() 
     {
         Assemblies = new List<AssemblyInfo>();
     }

@@ -1,0 +1,59 @@
+﻿// <copyright file="Log.cs" company="Redforce04#4091">
+// Copyright (c) Redforce04. All rights reserved.
+// </copyright>
+// -----------------------------------------
+//    Solution:         AutoEvent
+//    Project:          InventoryMenu
+//    FileName:         Log.cs
+//    Author:           Redforce04#4091
+//    Revision Date:    10/27/2023 4:01 PM
+//    Created Date:     10/27/2023 4:01 PM
+// -----------------------------------------
+
+namespace InventoryMenu.API;
+
+public class Log
+{
+    /// <summary>
+    /// Invoked on logging. Hook this to receive logs from the api.
+    /// </summary>
+    public static event Action<string, LogLevel> OnLog;
+
+    /// <summary>
+    /// Used to log information.
+    /// </summary>
+    /// <param name="message">The message to send.</param>
+    /// <param name="logLevel">The <see cref="LogLevel"/> of the log.</param>
+    internal static void Message(string message, LogLevel logLevel)
+    {
+        OnLog?.Invoke(message, logLevel);
+    }
+
+    internal static void Debug(string message) => Message(message, LogLevel.Debug);
+    internal static void Warn (string message) => Message(message, LogLevel.Warn);
+    internal static void Error(string message) => Message(message, LogLevel.Error);
+    internal static void Info (string message) => Message(message, LogLevel.Info);
+    
+    public enum LogLevel
+    {
+        /// <summary>
+        /// Debugging information. Users typically don't need to see this.
+        /// </summary>
+        Debug,
+        
+        /// <summary>
+        /// Non-Critical Errors.
+        /// </summary>
+        Warn,
+        
+        /// <summary>
+        /// Critical Errors.
+        /// </summary>
+        Error,
+        
+        /// <summary>
+        /// General API Information.
+        /// </summary>
+        Info
+    }
+}

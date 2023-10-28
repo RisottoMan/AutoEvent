@@ -59,12 +59,9 @@
     <Reference Include="CedModV3" HintPath="$(OTHER_REFERENCES)\CedModV3-NWApi.dll" />
     <Reference Include="Assembly-CSharp-Publicized" HintPath="$(SL_REFERENCES)\Assembly-CSharp-Publicized.dll" />
     <Reference Include="Mirror" HintPath="$(SL_REFERENCES)\Mirror.dll" />
-    <Reference Include="PowerupApi">
-      <HintPath>PowerupApi\bin\Release\net48\PowerupApi.dll</HintPath>
-    </Reference>
-    <Reference Include="SchematicApi">
-      <HintPath>SchematicApi\bin\Release\net48\SchematicApi.dll</HintPath>
-    </Reference>
+    <Reference Include="PowerupApi" HintPath="PowerupApi\bin\Release\net48\PowerupApi.dll" />
+    <Reference Include="SchematicApi" HintPath="SchematicApi\bin\Release\net48\SchematicApi.dll" />
+    <Reference Include="InventoryMenu" HintPath="InventoryMenu\bin\Debug\net48\InventoryMenu.dll" />
     <Reference Include="SCPSLAudioApi" HintPath="$(OTHER_REFERENCES)\SCPSLAudioApi.dll" />
     <Reference Include="NWAPIPermissionSystem" HintPath="$(OTHER_REFERENCES)\NWAPIPermissionSystem.dll" />
     <Reference Include="System" />
@@ -99,6 +96,8 @@
     <EmbeddedResource Remove="PowerupApi\*" />
     <EmbeddedResource Remove="ReplaceTextWithVariables\**" />
     <EmbeddedResource Remove="ReplaceTextWithVariables\*" />
+    <EmbeddedResource Remove="InventoryMenu\**" />
+    <EmbeddedResource Remove="InventoryMenu\*" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="SchematicApi\**" />
@@ -107,6 +106,8 @@
     <None Remove="PowerupApi\*" />
     <None Remove="ReplaceTextWithVariables\**" />
     <None Remove="ReplaceTextWithVariables\*" />
+    <None Remove="InventoryMenu\**" />
+    <None Remove="InventoryMenu\*" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="SchematicApi\**" />
@@ -115,6 +116,8 @@
     <Compile Remove="PowerupApi\*" />
     <Compile Remove="ReplaceTextWithVariables\**" />
     <Compile Remove="ReplaceTextWithVariables\*" />
+    <Compile Remove="InventoryMenu\**" />
+    <Compile Remove="InventoryMenu\*" />
   </ItemGroup>
   <Target Name="RemoveFile" BeforeTargets="ReplaceFile">
     <Exec Command="if exist $(SolutionDir)VersionInfo.cs del $(SolutionDir)VersionInfo.cs" />
