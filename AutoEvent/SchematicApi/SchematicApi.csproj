@@ -43,11 +43,11 @@
         <PackageReference Include="YamlDotNet" Version="13.3.1" />
     </ItemGroup>
     <ItemGroup>
-        <Reference Include="CedModV3" HintPath="$(OTHER_REFERENCES)\CedModV3-NWApi.dll" />
-        <Reference Include="Assembly-CSharp-Publicized" HintPath="$(SL_REFERENCES)\Assembly-CSharp-Publicized.dll" />
-        <Reference Include="Mirror" HintPath="$(SL_REFERENCES)\Mirror.dll" />
+        <Reference Include="CedModV3" HintPath="$(OTHER_REFERENCES)\CedModV3-13-3.dll" />
+        <Reference Include="Assembly-CSharp-Publicized" HintPath="$(SL_REFERENCES)\Assembly-CSharp-Halloween-Publicized.dll" />
+        <Reference Include="Mirror" HintPath="$(SL_REFERENCES)\Mirror-Publicized-SL-13.3.dll" />
         <Reference Include="SCPSLAudioApi" HintPath="$(OTHER_REFERENCES)\SCPSLAudioApi.dll" />
-        <Reference Include="SCPSLAudioApi" HintPath="$(OTHER_REFERENCES)\NWAPIPermissionSystem.dll" />
+        <Reference Include="SCPSLAudioApi" HintPath="$(OTHER_REFERENCES)\NWAPIPermissionSystem-New.dll" />
         <Reference Include="System" />
         <Reference Include="System.ComponentModel.DataAnnotations" HintPath="$(SL_REFERENCES)\System.ComponentModel.DataAnnotations.dll" />
         <Reference Include="UnityEngine" HintPath="$(SL_REFERENCES)\UnityEngine.dll" />

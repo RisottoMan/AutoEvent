@@ -16,6 +16,7 @@ using AutoEvent.API.RNG;
 using AutoEvent.Games.Infection;
 using HarmonyLib;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace AutoEvent.Games.Glass.Features;
 
