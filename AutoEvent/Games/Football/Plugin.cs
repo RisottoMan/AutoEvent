@@ -22,6 +22,7 @@ namespace AutoEvent.Games.Football
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.FootballTranslate.FootballDescription;
         public override string Author { get; set; } = "KoT0XleB";
         public override string CommandName { get; set; } = AutoEvent.Singleton.Translation.FootballTranslate.FootballCommandName;
+        public override Version Version { get; set; } = new Version(1, 0, 0);
         [EventConfig] public FootballConfig Config { get; set; }
         public MapInfo MapInfo { get; set; } = new MapInfo()
             {MapName = "Football", Position = new Vector3(76f, 1026.5f, -43.68f), };

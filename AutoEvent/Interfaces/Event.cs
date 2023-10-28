@@ -12,6 +12,7 @@ using HarmonyLib;
 using MEC;
 using UnityEngine;
 using YamlDotNet.Core;
+using Version = System.Version;
 
 namespace AutoEvent.Interfaces
 {
@@ -135,6 +136,8 @@ namespace AutoEvent.Interfaces
         /// The name of the map that is used to run the map via command.
         /// </summary> 
         public abstract string CommandName { get; set; }
+
+        public abstract Version Version { get; set; }
     #endregion
     #region Event Settings // Settings that event authors can define to modify the abstracted implementations
         /// <summary>

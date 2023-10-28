@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using AutoEvent.Interfaces;
 using UnityEngine;
 using System.Linq;
+using CommandSystem;
 using Event = AutoEvent.Interfaces.Event;
 using Player = PluginAPI.Core.Player;
 using PluginAPI.Core;
@@ -11,12 +12,13 @@ using MEC;
 
 namespace AutoEvent.Games.Lobby
 {
-    public class Plugin : Event, IEventMap, IEventSound, IHidden, IVote
+    public class Plugin : Event, IEventMap, IEventSound, IInternalEvent, IHiddenCommand
     {
         public override string Name { get; set; } = "Lobby";
         public override string Description { get; set; } = "A lobby in which one quick player chooses a mini-game.";
         public override string Author { get; set; } = "KoT0XleB";
         public override string CommandName { get; set; } = "lobby";
+        public override Version Version { get; set; } = new Version(1, 0, 0);
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
             { SoundName = "FireSale.ogg", Volume = 10, Loop = false };
         public MapInfo MapInfo { get; set; } = new MapInfo()

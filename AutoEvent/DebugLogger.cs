@@ -13,18 +13,28 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 using MEC;
 using PluginAPI;
 using PluginAPI.Core;
 using PluginAPI.Helpers;
+using PluginAPI.Loader;
 using UnityEngine;
+using Version = GameCore.Version;
 
 namespace AutoEvent;
 
 public class DebugLogger
 {
+    static DebugLogger() 
+    {
+        Assemblies = new List<AssemblyInfo>();
+    }
     public static DebugLogger Singleton;
-
+    internal static List<AssemblyInfo> Assemblies { get; set; }
+    internal static string SLVersion => GameCore.Version.VersionString;
+    public static bool NoRestartEnabled { get; set; } = false;
+    public const string Version = "9.2.2";
     public DebugLogger(bool writeDirectly)
     {
         Singleton = this;
@@ -50,30 +60,7 @@ public class DebugLogger
                 }
 
                 File.Create(_filePath).Close();
-                /*Timing.CallDelayed(5f, () =>
-                {
-
-                    string text = $"Plugin Api Info: \n" +
-                                  $"  Version: {PluginApiVersion.Version}\n" +
-                                  $"  VersionStatic: {PluginApiVersion.VersionStatic}\n" +
-                                  $"  VersionString: {PluginApiVersion.VersionString}\n" +
-                                  $"Plugins Present: ";
-                    /*Plugins Present:
-                     *  MapEditorReborn.dll (MapEditorReborn vX by Author)
-                     *    Assembly Hash: 142wesdvsdfsg
-                     *
-                     * 
-                     *//*
-
-                    foreach (var plugin in PluginAPI.Loader.AssemblyLoader.Plugins)
-                    {
-                        var hashId = plugin.Key.ManifestModule.ModuleVersionId;
-
-                        //text += $"  {plugin.Key.FullName} {plugin.}";
-                        text += $"    Assembly Hash: {hashId}";
-                    }
-                        File.AppendAllText(_filePath,);
-                });*/
+                Timing.CallDelayed(5f, () => { _getPlugins(); });
             }
         }
         catch (Exception e)
@@ -81,8 +68,193 @@ public class DebugLogger
             DebugLogger.LogDebug($"An error has occured while trying to create a debug log.", LogLevel.Warn, true);
             DebugLogger.LogDebug($"{e}");
         }
-}
+    }
 
+    private void _getPlugins()
+    {
+
+        string text = "";
+
+        text += $"Plugin Api Info: \n";
+        // SLVersion = $"SCP SL Version: v{GameCore.Version.Major}.{GameCore.Version.Minor}.{GameCore.Version.Revision}, (Backwards Compatible: {GameCore.Version.BackwardCompatibility}, Backward Revision: {GameCore.Version.BackwardRevision})";
+        text += $"  {SLVersion}";
+        text += $"  Version: ({PluginApiVersion.Version}, {PluginApiVersion.VersionStatic}, {PluginApiVersion.VersionString})\n";
+        text += $"  VersionString: \n";
+        text += $"NWApi Plugins Present: \n";
+        text += _getNWApiPlugins();
+        /*Plugins Present:
+         *  MapEditorReborn.dll
+         *    Assembly Hash: 142wesdvsdfsg
+         *    Assembly Plugins:
+         *      - MapEditorReborn by Micheal (v1.0.0)
+         */
+
+        
+        
+        text += "Exiled Plugins Present:\n";
+        if (!Loader.isExiledPresent())
+            text += $"  Exiled Not Installed.\n";
+        else
+            text += _getExiledPlugins();
+
+        File.AppendAllText(_filePath, text);
+    }
+
+    private static string _getNWApiPlugins()
+    {
+        string text = "";
+        try
+        {
+
+            foreach (var keyValuePair in PluginAPI.Loader.AssemblyLoader.Plugins)
+            {
+                try
+                {
+                    var version = keyValuePair.Key.GetCustomAttribute<AssemblyInformationalVersionAttribute>().InformationalVersion ?? "";
+                    AssemblyInfo info = new AssemblyInfo()
+                    {
+                        Name = keyValuePair.Key.GetName().ToString(),
+                        Hash = keyValuePair.Key.ManifestModule.ModuleVersionId.ToString(),
+                        Dependency = false,
+                        Exiled = false,
+                        Version = version
+                    };
+                    var hashId = keyValuePair.Key.ManifestModule.ModuleVersionId;
+                    text += $"  {keyValuePair.Key.GetName()}";
+                    text += $"    - Hash: {hashId}\n";
+                    foreach (var plugin in keyValuePair.Value)
+                    {
+                        info.Plugins.Add(new PluginInfo()
+                        {
+                            Name = plugin.Value.PluginName, ExiledPlugin = false, Authors = plugin.Value.PluginAuthor,
+                            Version = plugin.Value.PluginVersion
+                        });
+                        text += $"    - Plugins:\n";
+                        text += $"      - {plugin.Value.PluginName} by {plugin.Value.PluginAuthor} (v{plugin.Value.PluginVersion})\n";
+                    }
+
+                    Assemblies.Add(info);
+                }
+                catch
+                {
+                }
+            }
+
+            text += "NWApi Dependencies Loaded:\n";
+            foreach (var dependency in PluginAPI.Loader.AssemblyLoader.Dependencies)
+            {
+                try
+                {
+                    if (dependency is null)
+                    {
+                        continue;
+                    }
+                    var version = dependency.GetCustomAttribute<AssemblyInformationalVersionAttribute>().InformationalVersion ?? "";
+
+                    Assemblies.Add(new AssemblyInfo()
+                    {
+                        Name = dependency.GetName().ToString(),
+                        Hash = dependency.ManifestModule.ModuleVersionId.ToString(),
+                        Dependency = true,
+                        Exiled = false,
+                        Version = version
+                    });
+                    text += $"  {dependency.GetName()}\n";
+                    var hashId = dependency.ManifestModule.ModuleVersionId;
+                    text += $"    - Hash: {hashId}\n";
+                }
+                catch
+                {
+                }
+            }
+
+            return text;
+        }
+        catch (Exception)
+        {
+            return "";
+        }
+
+        return "";
+    }
+    private static string _getExiledPlugins()
+    {
+        try
+        {
+            string text = "";
+            var plugins = Exiled.Loader.Loader.Plugins;
+            foreach (var plugin in plugins)
+            {
+                try
+                {
+                    var version = plugin.Assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>().InformationalVersion ?? "";
+
+                    AssemblyInfo info = new AssemblyInfo()
+                    {
+                        Name = plugin.Assembly.GetName().ToString(),
+                        Hash = plugin.Assembly.ManifestModule.ModuleVersionId.ToString(),
+                        Dependency = false,
+                        Exiled = true,
+                        Version = version,
+                    };
+                    info.Plugins.Add(new PluginInfo()
+                    {
+                        ExiledPlugin = true,
+                        Authors = plugin.Author,
+                        Name = plugin.Name,
+                        Version = plugin.Version.ToString(),
+                        Descriptions = "",
+                    });
+                    Assemblies.Add(info);
+                    text += $"  {plugin.Assembly.GetName()}\n";
+                    var hashId = plugin.Assembly.ManifestModule.ModuleVersionId;
+                    text += $"    - Hash: {hashId}\n";
+                    text += $"    - Plugins:\n";
+                    text += $"      {plugin.Name} by {plugin.Author} (v{plugin.Version})\n";
+                }
+                catch(Exception e)
+                {
+                    Log.Debug($"Couldn't find exiled plugins. Error: {e}");
+                }
+            }
+
+            text += $"Exiled Dependencies Loaded: \n";
+            foreach (var dependency in Exiled.Loader.Loader.Dependencies)
+            {
+                try
+                {
+                    if (dependency is null)
+                    {
+                        continue;
+                    }
+                    var version = dependency.GetCustomAttribute<AssemblyInformationalVersionAttribute>().InformationalVersion ?? "";
+
+                    AssemblyInfo info = new AssemblyInfo()
+                    {
+                        Name = dependency.GetName().ToString(),
+                        Hash = dependency.ManifestModule.ModuleVersionId.ToString(),
+                        Dependency = true,
+                        Exiled = true,
+                        Version = version
+                    };
+                    Assemblies.Add(info);
+                    text += $"  {dependency.GetName()}\n";
+                    var hashId = dependency.ManifestModule.ModuleVersionId;
+                    text += $"    - Hash: {hashId}\n";
+                }
+                catch(Exception e)
+                {
+                    Log.Debug($"Couldn't find exiled dependencies. Error: {e}");
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            return "";
+        }
+
+        return "";
+    }
     private string _filePath;
     private static bool _loaded = false;
     public static bool Debug = false;
@@ -154,4 +326,41 @@ public enum LogLevel
     Debug,
     Warn,
     Error,
+}
+
+
+internal struct AssemblyInfo
+{
+    public AssemblyInfo()
+    {
+        Plugins = new List<PluginInfo>();
+        Exiled = false;
+        Dependency = false;
+        Name = "";
+        Hash = "";
+        Version = "";
+    }
+    public bool Exiled { get; set; }
+    public bool Dependency { get; set; }
+    public string Name { get; set; }
+    public string Hash { get; set; }
+    public string Version { get; set; }
+    public List<PluginInfo> Plugins { get; set; }
+}
+
+internal struct PluginInfo
+{
+    public PluginInfo()
+    {
+        ExiledPlugin = false;
+        Name = "";
+        Version = "";
+        Authors = "";
+        Descriptions = "";
+    }
+    public bool ExiledPlugin { get; set; }
+    public string Name { get; set; }
+    public string Version { get; set; }
+    public string Authors { get; set; }
+    public string Descriptions { get; set; }
 }
