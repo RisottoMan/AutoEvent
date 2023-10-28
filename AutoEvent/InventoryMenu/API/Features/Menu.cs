@@ -37,7 +37,10 @@ public sealed class Menu
         this.Description = description;
         this._activePlayers = new List<Player>();
         this._items = items ?? new Dictionary<byte, MenuItem>();
-        if(onGetMenuItems is not null)[]
+        if (onGetMenuItems is not null)
+        {
+            GetMenuItems += onGetMenuItems;
+        }
         MenuManager.RegisterMenu(this);
     }
     /// <summary>
