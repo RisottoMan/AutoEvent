@@ -17,8 +17,8 @@ using AutoEvent.Events.Handlers;
 using AutoEvent.Games.GhostBusters.Configs;
 using AutoEvent.Games.Infection;
 using AutoEvent.Interfaces;
-using CedMod.Handlers;
 using PlayerRoles;
+using PluginAPI.Core;
 using PluginAPI.Events;
 using UnityEngine;
 using Event = AutoEvent.Interfaces.Event;
@@ -82,65 +82,25 @@ public class Plugin : Event, IEventSound, IInternalEvent
             var time = $"{_remainingTime.Minutes:00}:{_remainingTime.Seconds:00}";
                 foreach (Player player in Player.GetPlayers())
                 {
-                    var text = string.Empty;
-                    if (Vector3.Distance(_ball.transform.position, player.Position) < 2)
-                    {
-                        _ball.gameObject.TryGetComponent(out Rigidbody rig);
-                        rig.AddForce(player.ReferenceHub.transform.forward + new Vector3(0, 0.1f, 0), ForceMode.Impulse);
-                    }
-
-                    if (player.Team == Team.FoundationForces)
-                    {
-                        text += Translation.FootballBlueTeam;
-                    }
-                    else
-                    {
-                        text += Translation.FootballRedTeam;
-                    }
-
-                    player.ClearBroadcasts();
-                    player.SendBroadcast(text + Translation.FootballTimeLeft.
-                        Replace("{BluePnt}", $"{_bluePoints}").
-                        Replace("{RedPnt}", $"{_redPoints}").
-                        Replace("{time}", time), 1);
+                    
                 }
 
-                if (Vector3.Distance(_ball.transform.position, _triggers.ElementAt(0).transform.position) < 3)
-                {
-                    _ball.transform.position = MapInfo.Map.Position + new Vector3(0, 2.5f, 0);
-                    _ball.GetComponent<Rigidbody>().velocity = Vector3.zero;
-                    _redPoints++;
-                }
-
-                if (Vector3.Distance(_ball.transform.position, _triggers.ElementAt(1).transform.position) < 3)
-                {
-                    _ball.transform.position = MapInfo.Map.Position + new Vector3(0, 2.5f, 0);
-                    _ball.GetComponent<Rigidbody>().velocity = Vector3.zero;
-                    _bluePoints++;
-                }
-
-                if (_ball.transform.position.y < MapInfo.Map.Position.y - 10f)
-                {
-                    _ball.transform.position = MapInfo.Map.Position + new Vector3(0, 2.5f, 0);
-                    _ball.GetComponent<Rigidbody>().velocity = Vector3.zero;
-                }
+                
 
                 _remainingTime -= TimeSpan.FromSeconds(FrameDelayInSeconds);
         }
 
         protected override void OnFinished()
         {
-            if (_bluePoints > _redPoints)
+            int ghosts = Player.GetPlayers().Count(x => !x.HasLoadout(Config.MeleeLoadout) && !x.HasLoadout(Config.SniperLoadout) &&
+                                                        !x.HasLoadout(Config.TankLoadout));
+            if (ghosts > 0)
             {
-                Extensions.Broadcast($"{Translation.FootballBlueWins}", 10);
-            }
-            else if (_redPoints > _bluePoints)
-            {
-                Extensions.Broadcast($"{Translation.FootballRedWins}", 10);
+                Map.Broadcast(10, Translation.GhostBustersGhostsWin);
             }
             else
             {
-                Extensions.Broadcast($"{Translation.FootballDraw.Replace("{BluePnt}", $"{_bluePoints}").Replace("{RedPnt}", $"{_redPoints}")}", 3);
+                Map.Broadcast(10, Translation.GhostBustersHuntersWin);
             }
         }
     }
