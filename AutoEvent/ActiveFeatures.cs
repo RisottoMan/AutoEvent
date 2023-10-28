@@ -25,5 +25,6 @@ public enum ActiveFeatures
     SchematicApi = 16,
     BuildInfo = 32,
     InventoryMenuApi,
+    MinigamesGhostBusters,
     All = ~0,
 }
