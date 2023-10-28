@@ -9,6 +9,7 @@ namespace AutoEvent.Games.Trouble
 {
     public class TroubleConfig : EventConfig
     {
+        /*
         public List<Loadout> PlayerLoadouts { get; set; } = new List<Loadout>()
         {
             new Loadout()
@@ -29,5 +30,6 @@ namespace AutoEvent.Games.Trouble
                 Roles = new Dictionary<RoleTypeId, int>() { { RoleTypeId.Scp939, 100 } }
             }
         };
+        */
     }
 }
