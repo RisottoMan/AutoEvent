@@ -17,6 +17,8 @@ using AutoEvent.Events.Handlers;
 using AutoEvent.Games.GhostBusters.Configs;
 using AutoEvent.Games.Infection;
 using AutoEvent.Interfaces;
+using Interactables.Interobjects.DoorUtils;
+using MapGeneration;
 using PlayerRoles;
 using PluginAPI.Core;
 using PluginAPI.Events;
@@ -85,7 +87,10 @@ public class Plugin : Event, IEventSound, IInternalEvent
                     
                 }
 
-                
+                var a = PluginAPI.Core.Map.Rooms.First(x => x.Name == RoomName.HczCheckpointA);
+                var b = PluginAPI.Core.Map.Rooms.First(x => x.Name == RoomName.HczCheckpointB);
+                //a.ApiRoom
+                var nameTag = a.gameObject.GetComponentInChildren<DoorNametagExtension>().TargetDoor.ServerChangeLock() ? name.GetName : null;
 
                 _remainingTime -= TimeSpan.FromSeconds(FrameDelayInSeconds);
         }
