@@ -60,9 +60,9 @@ public class PlatformSelector
         switch (_seedMethod)
         {
             case SeedMethod.UnityRandom:
-                Random.InitState(seedInt);
-                leftSidePriority = Random.Range(0, 2) == 1;
-                percent = Random.Range((int)MinimumSideOffset, (int)MaximumSideOffset);
+                UnityEngine.Random.InitState(seedInt);
+                leftSidePriority = UnityEngine.Random.Range(0, 2) == 1;
+                percent = UnityEngine.Random.Range((int)MinimumSideOffset, (int)MaximumSideOffset);
                 break;
             case SeedMethod.SystemRandom:
                 var random = new System.Random(seedInt);

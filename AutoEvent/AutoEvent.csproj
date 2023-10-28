@@ -99,6 +99,8 @@
     <EmbeddedResource Remove="PowerupApi\*" />
     <EmbeddedResource Remove="ReplaceTextWithVariables\**" />
     <EmbeddedResource Remove="ReplaceTextWithVariables\*" />
+    <EmbeddedResource Remove="InventoryMenu\**" />
+    <EmbeddedResource Remove="InventoryMenu\*" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="SchematicApi\**" />
@@ -107,6 +109,8 @@
     <None Remove="PowerupApi\*" />
     <None Remove="ReplaceTextWithVariables\**" />
     <None Remove="ReplaceTextWithVariables\*" />
+    <None Remove="InventoryMenu\**" />
+    <None Remove="InventoryMenu\*" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="SchematicApi\**" />
@@ -115,6 +119,8 @@
     <Compile Remove="PowerupApi\*" />
     <Compile Remove="ReplaceTextWithVariables\**" />
     <Compile Remove="ReplaceTextWithVariables\*" />
+    <Compile Remove="InventoryMenu\**" />
+    <Compile Remove="InventoryMenu\*" />
   </ItemGroup>
   <Target Name="RemoveFile" BeforeTargets="ReplaceFile">
     <Exec Command="if exist $(SolutionDir)VersionInfo.cs del $(SolutionDir)VersionInfo.cs" />
