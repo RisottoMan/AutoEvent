@@ -22,6 +22,7 @@ namespace AutoEvent.Commands
                 RegisterCommand(new Stop());
                 RegisterCommand(new BuildInfo());
                 RegisterCommand(new Volume());
+                RegisterCommand(new NoRestart());
                 RegisterCommand(new Reload.Reload());
                 RegisterCommand(new Debug.Debug());
                 RegisterCommand(new Config.Config());
