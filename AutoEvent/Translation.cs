@@ -84,8 +84,5 @@ namespace AutoEvent
         
         [Description("Ghost Busters Game Mode")]
         public GhostBustersTranslate GhostBustersTranslate { get; set; } = new GhostBustersTranslate();
-      
-        [Description("Trouble in Terrorist Town Game Mode")]
-        public TroubleTranslate TroubleTranslate { get; set; } = new TroubleTranslate();
     }
 }

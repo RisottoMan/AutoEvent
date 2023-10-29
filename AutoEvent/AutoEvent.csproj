@@ -119,6 +119,9 @@
     <Compile Remove="InventoryMenu\**" />
     <Compile Remove="InventoryMenu\*" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Games\Trouble\Configs\" />
+  </ItemGroup>
   <Target Name="RemoveFile" BeforeTargets="ReplaceFile">
     <Exec Command="if exist $(SolutionDir)VersionInfo.cs del $(SolutionDir)VersionInfo.cs" />
   </Target>
