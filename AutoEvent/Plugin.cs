@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using AutoEvent.Commands;
+using AutoEvent.Events.EventArgs;
 using AutoEvent.Interfaces;
 using HarmonyLib;
 using PluginAPI.Core.Attributes;
@@ -14,7 +15,9 @@ using PluginAPI.Core;
 using Powerups;
 using Event = AutoEvent.Interfaces.Event;
 using Log = PluginAPI.Core.Log;
+using Map = PluginAPI.Core.Map;
 using Paths = PluginAPI.Helpers.Paths;
+using Player = PluginAPI.Core.Player;
 using Server = PluginAPI.Core.Server;
 #if EXILED
 using Exiled.API.Features;
@@ -25,7 +28,7 @@ namespace AutoEvent
 #if EXILED
     public class AutoEvent : Plugin<Config, Translation>
     {
-        public override System.Version Version => new System.Version(9, 2, 0);
+        public override System.Version Version => System.Version.Parse(DebugLogger.Version);
         public override string Name => "AutoEvent";
         public override string Author => "Created by KoT0XleB, extended by swd and sky, Co-Maintained by Redforce04";
         public static bool IsPlayedGames;
@@ -55,7 +58,7 @@ namespace AutoEvent
         public override void OnEnabled()
 #else
         [PluginPriority(LoadPriority.Low)]
-        [PluginEntryPoint("AutoEvent", "9.2.0", "An event manager plugin that allows you to run mini-games.",
+        [PluginEntryPoint("AutoEvent", DebugLogger.Version, "An event manager plugin that allows you to run mini-games.",
             "KoT0XleB and Redforce04")]
         void OnEnabled()
 #endif
@@ -88,6 +91,22 @@ namespace AutoEvent
                 Singleton = this;
                 MER.Lite.API.Initialize(AutoEvent.Singleton.Config.SchematicsDirectoryPath, Config.Debug);
                 Powerups.API.Initialize();
+                SCPSLAudioApi.Startup.SetupDependencies();
+                InventoryMenu.API.MenuManager.Init();
+                InventoryMenu.API.Log.OnLog += (msg, level) =>
+                {
+                    DebugLogger.LogDebug($"[InventorySystem] {msg}", (LogLevel)level,
+                        level != InventoryMenu.API.Log.LogLevel.Debug);
+                };
+                #if EXILED
+                Exiled.Events.Handlers.Player.Shot += (Exiled.Events.EventArgs.Player.ShotEventArgs ev) =>
+                {
+                    var args = new ShotEventArgs(Player.Get(ev.Player.ReferenceHub), ev.RaycastHit, ev.Hitbox, ev.Damage);
+                    global::AutoEvent.Events.Handlers.Players.OnShot(args);
+                    ev.Damage = args.Damage;
+                    ev.CanHurt = args.CanHurt;
+                };
+                #endif
                 
                 if (Config.IgnoredRoles.Contains(Config.LobbyRole))
                 {
@@ -195,6 +214,36 @@ namespace AutoEvent
             EventManager.UnregisterEvents(this);
             HarmonyPatch.UnpatchAll();
             Singleton = null;
+        }
+
+        public void OnEventFinished()
+        {
+            if (Config.RestartAfterRoundFinish && !DebugLogger.NoRestartEnabled)
+            {
+                foreach (Player ply in Player.GetPlayers())
+                {
+                    if (ply.CheckPermission("ev.norestart", out bool isConsole))
+                    {
+                        ply.ClearBroadcasts();
+                        ply.SendBroadcast($"The server is going to restart in 10 seconds. Use the `Ev NoRestart` command to prevent this.", 10);
+                    }
+                }
+                Timing.CallDelayed(7f, () =>
+                {
+                    if (Config.RestartAfterRoundFinish && !DebugLogger.NoRestartEnabled)
+                    {
+                        Map.ClearBroadcasts();
+                        Map.Broadcast(5, Config.ServerRestartMessage);
+                    }
+                });
+                Timing.CallDelayed(10f, () =>
+                {
+                    if (Config.RestartAfterRoundFinish && !DebugLogger.NoRestartEnabled)
+                    {
+                        Server.Restart();
+                    }
+                });
+            }
         }
     }
 }

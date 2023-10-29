@@ -22,6 +22,7 @@ namespace AutoEvent.Games.Deathmatch
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.DeathmatchTranslate.DeathmatchDescription;
         public override string Author { get; set; } = "KoT0XleB";
         public override string CommandName { get; set; } = AutoEvent.Singleton.Translation.DeathmatchTranslate.DeathmatchCommandName;
+        public override Version Version { get; set; } = new Version(1, 0, 0);
         [EventConfig]
         public DeathmatchConfig Config { get; set; }
         public MapInfo MapInfo { get; set; } = new MapInfo()
@@ -84,7 +85,7 @@ namespace AutoEvent.Games.Deathmatch
             var count = 0;
             foreach (Player player in Player.GetPlayers())
             {
-                if (count % 2 == 0)
+                if (UnityEngine.Random.Range(0,2) == 1)
                 {
                     player.GiveLoadout(Config.NTFLoadouts, LoadoutFlags.ForceInfiniteAmmo | LoadoutFlags.IgnoreGodMode | LoadoutFlags.IgnoreWeapons);
                     player.Position = RandomClass.GetRandomPosition(MapInfo.Map);

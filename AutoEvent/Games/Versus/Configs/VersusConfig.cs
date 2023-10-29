@@ -25,7 +25,10 @@ public class VersusConfig : EventConfig
     
     [Description("How long to wait before forcefully selecting a random player. Set to -1 to disable.")]
     public int AutoSelectDelayInSeconds { get; set; } = 10;
-
+    
+    [Description("Enables the halloween effect melee instead of jailbird.")]
+    public bool HalloweenMelee { get; set; } = true;
+    
     [Description("Loadouts for team 1.")]
     public List<Loadout> Team1Loadouts { get; set; } = new List<Loadout>()
     {

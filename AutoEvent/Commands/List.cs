@@ -48,9 +48,9 @@ namespace AutoEvent.Commands
                 //{ "cedmod", new List<Event>() },
                 //{ "riptide", new List<Event>() },
             };
-            events["Internal Events"] = Event.Events.Where(ev => ev is IInternalEvent).OrderBy(x => x.Name).ToList();
-            events["External Events"] = Event.Events.Where(ev => ev is not IInternalEvent && ev is not IExiledEvent).OrderBy(x => x.Name).ToList();
-            events["Exiled Events"] = Event.Events.Where(ev => ev is IExiledEvent).OrderBy(x => x.Name).ToList();
+            events["Internal Events"] = Event.Events.Where(ev => ev is IInternalEvent && ev is not IHiddenCommand).OrderBy(x => x.Name).ToList();
+            events["External Events"] = Event.Events.Where(ev => ev is not IInternalEvent && ev is not IExiledEvent && ev is not IHiddenCommand).OrderBy(x => x.Name).ToList();
+            events["Exiled Events"] = Event.Events.Where(ev => ev is IExiledEvent && ev is not IHiddenCommand).OrderBy(x => x.Name).ToList();
             //events["cedmod"] = Event.Events.Where(ev => ev is IInternalEvent).OrderBy(x => x.Name).ToList();
             // events["riptide"] = Event.Events.Where(ev => ev is IInternalEvent).OrderBy(x => x.Name).ToList();
             foreach (KeyValuePair<string, List<Event>> eventlist in events)

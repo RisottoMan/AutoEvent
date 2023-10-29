@@ -26,6 +26,7 @@ namespace AutoEvent.Games.Lava
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.LavaTranslate.LavaDescription;
         public override string Author { get; set; } = "KoT0XleB";
         public override string CommandName { get; set; } = AutoEvent.Singleton.Translation.LavaTranslate.LavaCommandName;
+        public override Version Version { get; set; } = new Version(1, 0, 0);
         [EventConfig]
         public LavaConfig Config { get; set; }
 

@@ -157,4 +157,23 @@ public enum StatusEffect
     /// Teleports the player to the pocket dimension and drains health until the player escapes or is killed.
     /// </summary>
     PocketCorroding,
+    
+    /// <summary>
+    /// The effect permit player to go trough door like Scp-106.
+    /// </summary>
+    Ghostly,
+    
+    /// <summary>
+    /// Effect given to player when being strangled by SCP-3114.
+    /// </summary>
+    Strangled,
+    OrangeCandy,
+    Spicy,
+    SugarCrave,
+    SugarHigh,
+    SugarRush,
+    TraumatizedByEvil,
+    Metal,
+    Prismatic,
+    SlowMetabolism,
 }

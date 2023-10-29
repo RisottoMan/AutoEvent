@@ -38,7 +38,7 @@ public class FriendlyFireSystem
         }
         else
             DebugLogger.LogDebug("CedMod has not been detected.");
-    }
+    } 
 
     public static bool FriendlyFireDetectorIsDisabled {
         get

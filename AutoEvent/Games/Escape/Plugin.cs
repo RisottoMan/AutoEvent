@@ -21,6 +21,7 @@ namespace AutoEvent.Games.Escape
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.EscapeTranslate.EscapeDescription;
         public override string Author { get; set; } = "KoT0XleB";
         public override string CommandName { get; set; } = AutoEvent.Singleton.Translation.EscapeTranslate.EscapeCommandName;
+        public override Version Version { get; set; } = new Version(1, 0, 0);
         [EventConfig]
         public EscapeConfig Config { get; set; }
         public SoundInfo SoundInfo { get; set; } =

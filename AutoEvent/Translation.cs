@@ -2,9 +2,12 @@ using AutoEvent.Games.Infection;
 using System.ComponentModel;
 using AutoEvent.Games.Battle;
 using AutoEvent.Games.Boss;
+using AutoEvent.Games.GhostBusters.Configs;
+using AutoEvent.Games.Spleef.Configs;
+using AutoEvent.Games.Trouble;
 #if EXILED
 using Exiled.API.Interfaces;
-#endif 
+#endif
 namespace AutoEvent
 {
     // Yes, it looks terrible. I just have very little time to create a large plugin.
@@ -49,6 +52,9 @@ namespace AutoEvent
         [Description("Puzzle Game Mode")]
         public PuzzleTranslate PuzzleTranslate { get; set; } = new PuzzleTranslate();
 
+        [Description("Spleef Game Mode")]
+        public SpleefTranslation SpleefTranslate { get; set; } = new SpleefTranslation();
+
         [Description("Zombie Survival Game Mode (Zombie 2)")]
         public SurvivalTranslate SurvivalTranslate { get; set; } = new SurvivalTranslate();
 
@@ -75,5 +81,11 @@ namespace AutoEvent
 
         [Description("Boss Battle Game Mode")]
         public BossTranslate BossTranslate { get; set; } = new BossTranslate();
+        
+        [Description("Ghost Busters Game Mode")]
+        public GhostBustersTranslate GhostBustersTranslate { get; set; } = new GhostBustersTranslate();
+      
+        [Description("Trouble in Terrorist Town Game Mode")]
+        public TroubleTranslate TroubleTranslate { get; set; } = new TroubleTranslate();
     }
 }

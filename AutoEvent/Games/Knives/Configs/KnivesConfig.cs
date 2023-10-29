@@ -20,6 +20,9 @@ namespace AutoEvent.Games.Infection;
 
 public class KnivesConfig : EventConfig
 {
+    [Description("Enables the halloween effect melee instead of jailbird.")]
+    public bool HalloweenMelee { get; set; } = true;
+    
     [Description("A list of loadouts that players on team 1 can get.")]
     public List<Loadout> Team1Loadouts { get; set; } = new List<Loadout>()
     {
