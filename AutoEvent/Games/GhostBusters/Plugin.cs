@@ -131,15 +131,20 @@ public class Plugin : Event, IInternalEvent//, IEventSound
                 }
             });
             CurrentStage = Stage.Prep;
-            Abilities = new List<Ability>()
-            {
-                new Ability(ItemType.SCP268, GhostBusterClassType.GhostInvisibility, "Invisibility - You can go invisible for a few seconds.", 20, -2, 2, 5, Features.AbilityImplementations.UseInvisibilityAbility),
-                new Ability(ItemType.SCP207, GhostBusterClassType.GhostSpeed, "Speed Rush - You can trigger a speed rush to get away.", 20, -2, 2, 5, Features.AbilityImplementations.UseSpeedEffect),
-                new Ability(ItemType.GrenadeHE, GhostBusterClassType.GhostExplosive, "Explosive - You have a trap that can be placed.", 20, -2, 2, 5, Features.AbilityImplementations.UseExplosionEffect),
-                new Ability(ItemType.GrenadeFlash, GhostBusterClassType.GhostFlash, "Flash - You can flash the hunters for a brief period of time.", 20, -2, 2, 5, Features.AbilityImplementations.UseFlashEffect),
-                new Ability(ItemType.SCP018, GhostBusterClassType.GhostBall, "Ball - You have a ball that you can throw at hunters to do damage.", 20, -2, 2, 5, Features.AbilityImplementations.UseBallEffect),
-                new Ability(ItemType.SCP2176, GhostBusterClassType.GhostLockdown, "Lockdown - You can lock a room for a few moments to get away.", 20, -2,2, 5, Features.AbilityImplementations.UseLockdownEffect),
-            };
+            Abilities = new List<Ability>() { };
+            var a = Config.Abilities[GhostBusterClassType.GhostInvisibility];
+            Abilities.Add(new Ability(ItemType.SCP268, GhostBusterClassType.GhostInvisibility, "Invisibility - You can go invisible for a few seconds.", a.Cooldown, -2, (short) a.AllowedUses, a.Duration, Features.AbilityImplementations.UseInvisibilityAbility));
+            a = Config.Abilities[GhostBusterClassType.GhostSpeed];
+            Abilities.Add(new Ability(ItemType.SCP207, GhostBusterClassType.GhostSpeed, "Speed Rush - You can trigger a speed rush to get away.",  a.Cooldown, -2, (short)a.AllowedUses, a.Duration, Features.AbilityImplementations.UseSpeedEffect)); 
+            a = Config.Abilities[GhostBusterClassType.GhostExplosive];
+            Abilities.Add(new Ability(ItemType.GrenadeHE, GhostBusterClassType.GhostExplosive, "Explosive - You have a trap that can be placed.",  a.Cooldown, -2,(short) a.AllowedUses, a.Duration, Features.AbilityImplementations.UseExplosionEffect));
+            a = Config.Abilities[GhostBusterClassType.GhostFlash];
+            Abilities.Add(new Ability(ItemType.GrenadeFlash, GhostBusterClassType.GhostFlash, "Flash - You can flash the hunters for a brief period of time.", a.Cooldown, -2,(short) a.AllowedUses, a.Duration, Features.AbilityImplementations.UseFlashEffect));
+            a = Config.Abilities[GhostBusterClassType.GhostBall];
+            Abilities.Add(new Ability(ItemType.SCP018, GhostBusterClassType.GhostBall, "Ball - You have a ball that you can throw at hunters to do damage.", a.Cooldown, -2,(short) a.AllowedUses, a.Duration, Features.AbilityImplementations.UseBallEffect));
+            a = Config.Abilities[GhostBusterClassType.GhostLockdown];
+            Abilities.Add(new Ability(ItemType.SCP2176, GhostBusterClassType.GhostLockdown, "Lockdown - You can lock a room for a few moments to get away.", a.Cooldown, -2,(short) a.AllowedUses, a.Duration, Features.AbilityImplementations.UseLockdownEffect));
+            
             Classes = new Dictionary<Player, GhostBusterClass>();
             Extensions.JailbirdIsInvincible = true;
             HunterRoleMenu = new Menu("Available Roles. Right click to view more details, left click to select the role.", false);
@@ -303,7 +308,7 @@ public class Plugin : Event, IInternalEvent//, IEventSound
                 }
                 if (Classes.ContainsKey(player) && Classes[player].AbilityCooldown > 0)
                 {
-                    Classes[player].AbilityCooldown = Mathf.Clamp(FrameDelayInSeconds - Classes[player].AbilityCooldown, 0, 10000);
+                    Classes[player].AbilityCooldown = Mathf.Clamp(Classes[player].AbilityCooldown - FrameDelayInSeconds, 0, 10000);
                 }
                 if (CurrentStage == Stage.Midnight)
                 {

@@ -174,12 +174,13 @@ public class AbilityImplementations
         Timing.CallDelayed(0.1f, () =>
         {
             ply.CurrentItem = itemBase;
-            var projectileSettings = ((ThrowableItem)itemBase); 
+            var projectileSettings = ((ThrowableItem)itemBase);
             double startVelocity = (double) projectileSettings.FullThrowSettings.StartVelocity;
             double upwardsFactor = (double) projectileSettings.FullThrowSettings.UpwardsFactor;
             Vector3 startTorque = projectileSettings.FullThrowSettings.StartTorque;
             Vector3 limitedVelocity = ThrowableNetworkHandler.GetLimitedVelocity(ply.Velocity);
             projectileSettings.ServerThrow((float)startVelocity * 3, (float)upwardsFactor, startTorque * 3, limitedVelocity);
+            projectileSettings.gameObject.TryGetComponent<Scp2176Projectile>(out var comp);
             Timing.CallDelayed(1f, () => ply.ShowMenu(_plugin.GhostPowerupMenu));
             
         });

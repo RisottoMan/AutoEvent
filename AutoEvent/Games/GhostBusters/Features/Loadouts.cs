@@ -117,6 +117,8 @@ public class Loadouts
             return;
         var ability = _plugin.Abilities.First(x => x.ClassType == _plugin.Classes[ev.Player].ClassType);
         var item = ev.Menu.ItemBases.First(x => x.Key == ability.Serial);
+        
         ev.Items = new Dictionary<ushort, ItemBase>() { { item.Key, item.Value } };
+        
     }
 }

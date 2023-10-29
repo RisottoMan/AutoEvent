@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using AutoEvent.API;
 using AutoEvent.API.Enums;
+using AutoEvent.Games.GhostBusters.Features;
 using AutoEvent.Interfaces;
 using PlayerRoles;
 
@@ -30,6 +31,15 @@ public class GhostBustersConfig : EventConfig
     public float MicroRechargePercentPerSecond { get; set; } = 10;
     public float MicroRechargeDelayOffset { get; set; } = 5;
 
+    public Dictionary<GhostBusterClassType, GhostAbility> Abilities { get; set; } = new()
+    {
+        { GhostBusterClassType.GhostBall, new GhostAbility(2, 0, 20) },
+        { GhostBusterClassType.GhostExplosive, new GhostAbility(2, 0, 20) },
+        { GhostBusterClassType.GhostFlash, new GhostAbility(2, 5, 20) },
+        { GhostBusterClassType.GhostLockdown, new GhostAbility(2, 5, 20) },
+        { GhostBusterClassType.GhostInvisibility, new GhostAbility(2, 5, 20) },
+        { GhostBusterClassType.GhostSpeed, new GhostAbility(2, 5, 20, 20) },
+    };
     public RoleCount HunterCount { get; set; } = new RoleCount(2, 4, 30);
 
     [Description("Recommended to use Metal or Ghostly effects, as they are the most fitting. Ghostly can be too hard to see.")]
@@ -59,7 +69,8 @@ public class GhostBustersConfig : EventConfig
         Items = new List<ItemType>()
         {
             ItemType.ParticleDisruptor,
-            ItemType.Radio
+            ItemType.Radio,
+            ItemType.KeycardO5
         },
         Health = 2000,
     };
@@ -72,7 +83,8 @@ public class GhostBustersConfig : EventConfig
         Items = new List<ItemType>()
         {
             ItemType.MicroHID,
-            ItemType.Radio
+            ItemType.Radio,
+            ItemType.KeycardO5
         },
         Health = 2000,
     };
@@ -85,7 +97,8 @@ public class GhostBustersConfig : EventConfig
         Items = new List<ItemType>()
         {
             ItemType.Jailbird, 
-            ItemType.Radio
+            ItemType.Radio,
+            ItemType.KeycardO5
         },
         Effects = new List<Effect>()
         {
@@ -98,4 +111,20 @@ public class GhostBustersConfig : EventConfig
         Health = 2000,
     };
     
+}
+
+public struct GhostAbility
+{
+    public GhostAbility(int allowedUses, float duration, float cooldown, byte intensity = 0)
+    {
+        AllowedUses = allowedUses;
+        Duration = duration;
+        Cooldown = cooldown;
+        Intensity = intensity;
+    }
+    //public float InitialCooldown { get; set; }
+    public float Cooldown { get; set; }
+    public int AllowedUses { get; set; }
+    public float Duration { get; set; }
+    public byte Intensity { get; set; }
 }

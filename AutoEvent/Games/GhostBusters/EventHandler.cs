@@ -11,7 +11,10 @@
 // -----------------------------------------
 
 using AutoEvent.Events.EventArgs;
+using AutoEvent.Games.GhostBusters.Features;
+using CustomPlayerEffects;
 using InventorySystem.Items.Firearms;
+using InventorySystem.Items.ThrowableProjectiles;
 using PlayerStatsSystem;
 using PluginAPI.Core.Attributes;
 using PluginAPI.Enums;
@@ -34,6 +37,23 @@ public class EventHandler
         {
             _plugin.Hunters.Remove(ev.Player);
         }
+    }
+
+    [PluginEvent(ServerEventType.PlayerReceiveEffect)]
+    public bool OnReceiveEffect(PlayerReceiveEffectEvent ev)
+    {
+        if (ev.Effect is Flashed)
+        {
+            ev.Duration = _plugin.Config.Abilities[GhostBusterClassType.GhostFlash].Duration;
+            ev.Intensity = _plugin.Config.Abilities[GhostBusterClassType.GhostFlash].Intensity;
+        }
+        return true;
+    }
+
+    [PluginEvent(ServerEventType.PlayerThrowProjectile)]
+    public bool OnThrowableItem(PlayerThrowProjectileEvent ev)
+    {
+        return true;
     }
 
     [PluginEvent(ServerEventType.PlayerShotWeapon)]
