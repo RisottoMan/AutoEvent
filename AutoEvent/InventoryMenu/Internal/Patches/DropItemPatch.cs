@@ -15,6 +15,7 @@ using InventoryMenu.API;
 using InventoryMenu.API.EventArgs;
 using InventorySystem;
 using PluginAPI.Core;
+using Log = InventoryMenu.API.Log;
 
 namespace InventoryMenu.Internal.Patches;
 
@@ -36,6 +37,7 @@ internal class DropItemPatch
         var item = instance.Items.FirstOrDefault(x => x.Value.Serial == itemSerial).Value;
         if (item is null)
         {
+            Log.Debug($"Item is null. Items Avail: {instance.Items.Values.Select(x => x.Serial.ToString()).Aggregate((x, y) => x += $" {y}")}");
             return false;
         }
 
@@ -45,7 +47,8 @@ internal class DropItemPatch
         }
         catch (Exception e)
         {
-            
+            Log.Warn($"Caught an error while processing menu click.");
+            Log.Debug($"MenuClick (Right) Error: \n{e}");   
         }
         return false;
     }

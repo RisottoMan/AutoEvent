@@ -15,7 +15,7 @@ using System.Globalization;
 namespace AutoEvent.API;
 
 public static class BitwiseExtensions
-{
+{ 
     /*public static T AppendSeparateEnumValue<T>(this T value, Enum append) where T : Enum
     {
         Enum[] valuesToAppend = (Enum[])Enum.GetValues(append.GetType());

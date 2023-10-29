@@ -23,9 +23,14 @@ public static class Extensions
         var instance = MenuManager.Menus.FirstOrDefault(x => x.CanPlayerSee(ply));
         
         if (instance is null)
-            return;
+            return; 
         
         instance.HideForPlayer(ply);
+    }
+
+    public static void RefreshInventory(this Player ply)
+    {
+        ply.ReferenceHub.inventory.SendItemsNextFrame = true;
     }
     
 }

@@ -22,7 +22,7 @@ public class GetMenuItemsForPlayerArgs
     {
         Player = ply;
         Menu = menu;
-        if (items is null)
+        if (items is null || items.IsEmpty())
         {
             Items = Menu._itemBases;
         }

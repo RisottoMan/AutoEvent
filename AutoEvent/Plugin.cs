@@ -91,6 +91,13 @@ namespace AutoEvent
                 Singleton = this;
                 MER.Lite.API.Initialize(AutoEvent.Singleton.Config.SchematicsDirectoryPath, Config.Debug);
                 Powerups.API.Initialize();
+                SCPSLAudioApi.Startup.SetupDependencies();
+                InventoryMenu.API.MenuManager.Init();
+                InventoryMenu.API.Log.OnLog += (msg, level) =>
+                {
+                    DebugLogger.LogDebug($"[InventorySystem] {msg}", (LogLevel)level,
+                        level != InventoryMenu.API.Log.LogLevel.Debug);
+                };
                 #if EXILED
                 Exiled.Events.Handlers.Player.Shot += (Exiled.Events.EventArgs.Player.ShotEventArgs ev) =>
                 {

@@ -134,7 +134,7 @@ namespace AutoEvent.Games.GunGame
             }
             
             DebugLogger.LogDebug($"Getting player {player.Nickname} weapon.");
-            player.EffectsManager.EnableEffect<SpawnProtected>(2f);
+            player.EffectsManager.EnableEffect<SpawnProtected>(.5f);
             player.ClearInventory();
             var item = player.AddItem(gun);
             if (item is Firearm firearm)

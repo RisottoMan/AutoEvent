@@ -20,6 +20,7 @@ using AutoEvent.Commands.Debug;
 using AutoEvent.Events.EventArgs;
 using AutoEvent.Games.Battle;
 using AutoEvent.Games.Line;
+using AutoEvent.Patches;
 using CustomPlayerEffects;
 using Exiled.API.Features.Items;
 using Footprinting;
@@ -30,6 +31,7 @@ using InventorySystem.Items.Jailbird;
 using InventorySystem.Items.Keycards;
 using InventorySystem.Items.Usables.Scp244.Hypothermia;
 using JetBrains.Annotations;
+using PlayerRoles.Ragdolls;
 using PluginAPI.Core.Items;
 using Debug = AutoEvent.Commands.Debug.Debug;
 using Item = PluginAPI.Core.Items.Item;
@@ -505,8 +507,8 @@ namespace AutoEvent
             var fakeConnection = new FakeConnection(0);
             var hubPlayer = newPlayer.GetComponent<ReferenceHub>();
             NetworkServer.AddPlayerForConnection(fakeConnection, newPlayer);
-            hubPlayer.characterClassManager.InstanceMode = ClientInstanceMode.Unverified;
-
+            hubPlayer.authManager.InstanceMode = CentralAuth.ClientInstanceMode.Unverified;
+            // CharacterClassManager.instance
             try
             {
                 hubPlayer.nicknameSync.SetNick("MiniGames");
@@ -596,6 +598,7 @@ namespace AutoEvent
 
             NetworkServer.Spawn(grenade.gameObject);
             grenade.ServerActivate();
+            
         }
     }
 }

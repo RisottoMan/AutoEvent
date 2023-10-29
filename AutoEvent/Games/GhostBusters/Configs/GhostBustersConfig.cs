@@ -22,13 +22,17 @@ namespace AutoEvent.Games.GhostBusters.Configs;
 public class GhostBustersConfig : EventConfig
 {
     [Description("How much time the hunters have to kill the ghosts until ghosts can kill them.")]
-    public int TimeUntilMidnightInSeconds { get; set; } = 180;
+    public int TimeUntilMidnightInSeconds { get; set; } = 260;
 
     [Description("How much time the ghosts have to kill the hunters, after midnight hits.")]
     public int MidnightDurationInSeconds { get; set; } = 120;
 
-    public RoleCount HunterCount { get; set; } = new RoleCount(2, 4, 20);
+    public float MicroRechargePercentPerSecond { get; set; } = 10;
+    public float MicroRechargeDelayOffset { get; set; } = 5;
 
+    public RoleCount HunterCount { get; set; } = new RoleCount(2, 4, 30);
+
+    [Description("Recommended to use Metal or Ghostly effects, as they are the most fitting. Ghostly can be too hard to see.")]
     public List<Loadout> GhostLoadouts { get; set; } = new List<Loadout>()
     {
         new Loadout()
@@ -41,7 +45,7 @@ public class GhostBustersConfig : EventConfig
             {
                 new Effect()
                 {
-                    EffectType = StatusEffect.Ghostly
+                    EffectType = StatusEffect.Metal
                 },
             },
         }
@@ -54,7 +58,8 @@ public class GhostBustersConfig : EventConfig
         },
         Items = new List<ItemType>()
         {
-            ItemType.ParticleDisruptor
+            ItemType.ParticleDisruptor,
+            ItemType.Radio
         },
         Health = 2000,
     };
@@ -66,7 +71,8 @@ public class GhostBustersConfig : EventConfig
         },
         Items = new List<ItemType>()
         {
-            ItemType.MicroHID
+            ItemType.MicroHID,
+            ItemType.Radio
         },
         Health = 2000,
     };
@@ -79,6 +85,7 @@ public class GhostBustersConfig : EventConfig
         Items = new List<ItemType>()
         {
             ItemType.Jailbird, 
+            ItemType.Radio
         },
         Effects = new List<Effect>()
         {

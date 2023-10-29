@@ -23,6 +23,8 @@ public class HideAndSeekConfig : EventConfig
 {
     [Description("The item that the tagged player should get. Do not do Scp018 or Grenades for now. - They will break the event. (working on it - redforce)")]
     public ItemType TaggerWeapon { get; set; } = ItemType.Jailbird;
+    [Description("Enables the marshmello effect instead.")]
+    public bool HalloweenMelee { get; set; } = true;
     
     [Description("Players who are not the tagger will have the breach scanner effect applied to them, when there are less than or equal to this many non-taggers alive.")]
     public int PlayersRequiredForBreachScannerEffect { get; set; } = 2;
