@@ -14,7 +14,7 @@ namespace AutoEvent.Games.Infection;
 
 public static class FallDownConfigPresets
 {
-    public static FallDownConfig PlatformWarning() => new FallDownConfig()
+    public static FallDownConfig PlatformWarning => new FallDownConfig()
     {
         PlatformsHaveColorWarning = true
     };

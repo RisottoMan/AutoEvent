@@ -55,21 +55,21 @@ public class Log
         /// <summary>
         /// Debugging information. Users typically don't need to see this.
         /// </summary>
-        Debug,
+        Debug = 0,
         
         /// <summary>
         /// Non-Critical Errors.
         /// </summary>
-        Warn,
+        Warn = 1,
         
         /// <summary>
         /// Critical Errors.
         /// </summary>
-        Error,
+        Error = 2,
         
         /// <summary>
         /// General API Information.
         /// </summary>
-        Info
+        Info = 3
     }
 }

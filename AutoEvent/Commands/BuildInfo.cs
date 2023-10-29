@@ -118,7 +118,7 @@ public class BuildInfo : ICommand
             $"  - Build Branch - {colorYellow}{VersionInfo.CommitBranch}{colorWhite} (Commit {colorpink}{VersionInfo.CommitHash}{colorNickel})\n" +
             $"  - Build Tag    - {VersionInfo.CommitVersion}{colorNickel}\n" +
             $"  - Built by     - {VersionInfo.BuildUser}\n" +
-            $"  - Build Date   - {VersionInfo.BuildTime.Month}/{VersionInfo.BuildTime.Day}/{VersionInfo.BuildTime.Year}\n";
+            $"  - Build Date   - {VersionInfo.BuildTime.Month}/{VersionInfo.BuildTime.Day}/{VersionInfo.BuildTime.Year} [{VersionInfo.BuildTime.Hour:00}:{VersionInfo.BuildTime.Minute:00}.{VersionInfo.BuildTime.Second:00}]\n";
         string versionString =
             $"\nAuto Event Version - {colorAqua}{(CurrentRelease.Version)}{colorWhite}-{(Loader.IsExiledPlugin ? "Exiled" : "NWApi")}{(AutoEvent.BetaRelease ? $"{colorRed} [Beta]{colorWhite}" : "")}\n{colorWhite}" +
             $"SL Version - {(DebugLogger.SLVersion)}\n" +

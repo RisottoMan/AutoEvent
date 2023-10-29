@@ -22,12 +22,15 @@ public class GhostBustersTranslate : ITranslation
 #endif
 {
     public string GhostBustersCommandName { get; set; } = "ghosts"; // Soccer in america - football everywhere else 🦅🦅🦅🇺🇸🇺🇸🇺🇸 <- (USA Flag doesnt render in rider...)
-    public string GhostBustersName { get; set; } = "Ghost Busters"; // Soccer in america - football everywhere else 🦅🦅🦅🇺🇸🇺🇸🇺🇸 <- (USA Flag doesnt render in rider...)
+    public string GhostBustersName { get; set; } = "Ghost Busters <color=purple>[Halloween]</color>"; // Soccer in america - football everywhere else 🦅🦅🦅🇺🇸🇺🇸🇺🇸 <- (USA Flag doesnt render in rider...)
     public string GhostBustersDescription { get; set; } = "Ghostbusters vs ghosts. The clock is ticking, will the ghost-busters be able to kill all ghosts before midnight hits?";
-    public string GhostBustersStartGhostMessage { get; set; } = "You're a Ghost!\nRun and Hide from the Ghost Busters! They will try and take you out! \nYou can pickup powerups and use them in the inventory menu.";
-    public string GhostBustersStartHunterMessage { get; set; } = "You're a Ghost-Buster!\nFind all the ghosts before it is too late!\nYou can select a role in your inventory menu.";
-    public string GhostBustersMidnightGhostMessage { get; set; } = "Midnight Has Hit\nFind and kill the Ghost Busters!";
-    public string GhostBustersMidnightHunterMessage { get; set; } = "Midnight Has Hit\nRun and hide for your life! The ghosts are after you!";
-    public string GhostBustersGhostsWin { get; set; } = "Ghost Win\nThe ghosts have killed all hunters.";
-    public string GhostBustersHuntersWin { get; set; } = "Ghost-Buster Win\nThe Ghost-Busters have exterminated all of the ghosts.";
+    public string GhostBustersStartGhostMessage { get; set; } = "<color=#D71868>You're a <b><color=#a9a9a9>Ghost!</color></b>\n<color=#ff4500><b>Run</b></color> and <color=#6495ed><b>Hide</b></color> from the <color=#cc0000><b>Ghost Busters!</color></b> They will try and <color=red>take you out!</color>\n<color=#ff8c00>Select a role via your <b>inventory menu.</b></color> \n<color=#ff8c00>You will be given a <b>powerup</b> that can be accessed in you <b>inventory menu.</b></color>";
+    public string GhostBustersStartHunterMessage { get; set; } = "You're a <color=#cc0000><b>Ghost-Buster!</color></b>\nFind all the <b><color=#a9a9a9>ghosts</color></b> before it is too late!\nYou can select a role in your <b>inventory menu.</b> ";
+    public string GhostBustersRunning { get; set; } = "Time Until Midnight: <b>{time}</b>\nGhosts Alive: <b><color=#a9a9a9>{ghosts}</color>,</b> <color=#cc0000>Ghost-Busters</color> Alive:<b> {hunters}</b>";
+    public string GhostBustersMidnightGhostMessage { get; set; } = "<b><color=#800000>Midnight Has Hit</color></b>\nFind and <b><color=#cd0000>kill</color></b> the <color=#cc0000><b>Ghost Busters!</color></b>\n{time}";
+    public string GhostBustersMidnightHunterMessage { get; set; } = "<b><color=#800000>Midnight Has Hit</color></b>\n<b>Run</b> and <b>hide</b> for your life! The ghosts are after you!\n{time}";
+    public string GhostBustersGhostsWin { get; set; } = "<b><color=#a9a9a9>Ghost Win</b></color>\nThe <b><color=#a9a9a9>ghosts</b></color> have killed all <color=#cc0000><b>hunters.</color></b>";
+
+    public string GhostBustersHuntersWin { get; set; } = "<color=#cc0000><b>Ghost-Buster Win</color></b>\nThe <color=#cc0000><b>Ghost-Busters</color></b> have managed to exterminate all of the <b><color=#a9a9a9>ghosts.</color></b>";
+    public string GhostBustersTie { get; set; } = "<color=#cc0000><b>Ghost-Buster Win</color></b>\nThe <color=#cc0000><b>Ghost-Busters</color></b> have managed to <color=#008000>survive the night.</color>";
     }
