@@ -144,7 +144,13 @@ namespace AutoEvent.Games.GunGame
                 var stats = new FirearmStatus(ammo, status.Flags, status.Attachments);
                 firearm.Status = stats;
             }
-            Timing.CallDelayed(.1f, () => player.CurrentItem = item);
+            Timing.CallDelayed(.1f, () =>
+            {
+                if (item != null)
+                {
+                    player.CurrentItem = item;
+                }
+            });
         }
 
         private void SetMaxAmmo(Player pl)
