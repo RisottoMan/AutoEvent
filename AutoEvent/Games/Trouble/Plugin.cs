@@ -83,7 +83,7 @@ namespace AutoEvent.Games.Trouble
 
         protected override bool IsRoundDone()
         {
-            if (Player.GetPlayers().Count(r => r.IsHuman) >= Player.GetPlayers().Count(r => r.IsSCP)
+            if (Player.GetPlayers().Count(r => r.IsHuman) >= Player.GetPlayers().Count(r => r.IsSCP) 
                 && EventTime.TotalMinutes < 3) return false;
             else return true;
         }
