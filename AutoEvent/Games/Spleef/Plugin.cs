@@ -65,9 +65,12 @@ public class Plugin : Event, IEventMap, IEventSound
     private Dictionary<ushort, GameObject> _platforms; 
     private GameObject _lava;
 
+    private bool isFriendlyFire { get; set; }
+
     protected override void RegisterEvents()
     {
         EventHandler = new EventHandler(this);
+
         Servers.TeamRespawn += EventHandler.OnTeamRespawn;
         Servers.SpawnRagdoll += EventHandler.OnSpawnRagdoll;
         Servers.PlaceBullet += EventHandler.OnPlaceBullet;
@@ -77,6 +80,7 @@ public class Plugin : Event, IEventMap, IEventSound
         Players.Shot += EventHandler.OnShot;
         EventManager.RegisterEvents(EventHandler);
 
+        isFriendlyFire = Server.FriendlyFire;
     }
 
     protected override void UnregisterEvents()
@@ -89,11 +93,15 @@ public class Plugin : Event, IEventMap, IEventSound
         Players.DropItem -= EventHandler.OnDropItem;
         Players.DropAmmo -= EventHandler.OnDropAmmo;
         Players.Shot -= EventHandler.OnShot;
+
         EventHandler = null;
+        Server.FriendlyFire = isFriendlyFire;
     }
 
     protected override void OnStart()
     {
+        Server.FriendlyFire = false;
+
         _remaining = TimeSpan.FromSeconds(Config.RoundDurationInSeconds);
         _platforms = new Dictionary<ushort, GameObject>();
         _lava = MapInfo.Map.AttachedBlocks.First(x => x.name == "Lava");

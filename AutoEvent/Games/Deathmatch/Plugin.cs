@@ -35,6 +35,7 @@ namespace AutoEvent.Games.Deathmatch
         public int MtfKills { get; set; }
         public int ChaosKills { get; set; }
         private int _needKills;
+        private bool isFriendlyFire { get; set; }
 
         protected override void RegisterEvents()
         {
@@ -49,6 +50,8 @@ namespace AutoEvent.Games.Deathmatch
             Players.DropAmmo += EventHandler.OnDropAmmo;
             Players.PlayerDying += EventHandler.OnPlayerDying;
             Players.HandCuff += EventHandler.OnHandCuff;
+
+            isFriendlyFire = Server.FriendlyFire;
         }
         protected override void UnregisterEvents()
         {
@@ -63,10 +66,13 @@ namespace AutoEvent.Games.Deathmatch
             Players.HandCuff -= EventHandler.OnHandCuff;
 
             EventHandler = null;
+            Server.FriendlyFire = isFriendlyFire;
         }
 
         protected override void OnStart()
         {
+            Server.FriendlyFire = false;
+
             float scale = 1;
             switch (Player.GetPlayers().Count())
             {
@@ -98,9 +104,7 @@ namespace AutoEvent.Games.Deathmatch
                 count++;
             }
         }
-
         
-
         protected override IEnumerator<float> BroadcastStartCountdown()
         {
             for (int time = 10; time > 0; time--)
