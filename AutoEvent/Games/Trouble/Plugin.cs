@@ -6,25 +6,24 @@ using AutoEvent.Interfaces;
 using UnityEngine;
 using Event = AutoEvent.Interfaces.Event;
 using Player = PluginAPI.Core.Player;
+using MEC;
+using System.Collections.Generic;
 
 namespace AutoEvent.Games.Trouble
 {
-    public class Plugin : Event, IEventMap, IInternalEvent
+    public class Plugin : Event, IEventSound, IEventMap, IInternalEvent
     {
-        public override string Name { get; set; } = AutoEvent.Singleton.Translation.TroubleTranslate.Name;
-        public override string Description { get; set; } = AutoEvent.Singleton.Translation.TroubleTranslate.Description;
+        public override string Name { get; set; } = "Trouble in Terrorist Town <color=purple>[Halloween]</color>";
+        public override string Description { get; set; } = "An impostor appeared in terrorist town.";
         public override string Author { get; set; } = "KoT0XleB";
-        public override string CommandName { get; set; } = AutoEvent.Singleton.Translation.TroubleTranslate.CommandName;
+        public override string CommandName { get; set; } = "trouble";
         public override Version Version { get; set; } = new Version(1, 0, 0);
-        [EventConfig] public TroubleConfig Config { get; set; }
         public MapInfo MapInfo { get; set; } = new MapInfo()
-            { MapName = "AmongUs", Position = new Vector3(115.5f, 1030f, -43.5f), MapRotation = Quaternion.identity };
-
-        //public SoundInfo SoundInfo { get; set; } = new SoundInfo()
-        //    { SoundName = "Zombie.ogg", Volume = 7, Loop = true };
+        { MapName = "AmongUs", Position = new Vector3(115.5f, 1030f, -43.5f), MapRotation = Quaternion.identity };
+        public SoundInfo SoundInfo { get; set; } = new SoundInfo()
+        { SoundName = "Skeleton.ogg", Volume = 5, Loop = true };
         protected override float PostRoundDelay { get; set; } = 10f;
         private EventHandler EventHandler { get; set; }
-        private TroubleTranslate Translation { get; set; } = AutoEvent.Singleton.Translation.TroubleTranslate;
 
         protected override void RegisterEvents()
         {
@@ -56,49 +55,60 @@ namespace AutoEvent.Games.Trouble
 
         protected override void OnStart()
         {
-            // random class - scientist / mtf / guard
             foreach (Player player in Player.GetPlayers())
             {
-                player.GiveLoadout(Config.PlayerLoadouts);
+                Extensions.SetRole(player, PlayerRoles.RoleTypeId.ClassD, PlayerRoles.RoleSpawnFlags.AssignInventory);
                 player.Position = RandomPosition.GetSpawnPosition(MapInfo.Map);
             }
+        }
 
-            Player traitor = Player.GetPlayers().RandomItem();
-            traitor.GiveLoadout(Config.TraitorLoadouts);
-            // change skin to human
+        protected override IEnumerator<float> BroadcastStartCountdown()
+        {
+            for (float time = 15; time > 0; time--)
+            {
+                Extensions.Broadcast($"<color=red>The trailer will appear in <color=yellow>{time}</color> seconds.</color>", 1);
+                yield return Timing.WaitForSeconds(1f);
+            }
+        }
+
+        protected override void CountdownFinished()
+        {
+            for (int i = 0; i < (Player.GetPlayers().Count / 10) + 1; i++)
+            {
+                Player traitor = Player.GetPlayers().RandomItem();
+                Extensions.SetRole(traitor, PlayerRoles.RoleTypeId.Scp3114, PlayerRoles.RoleSpawnFlags.AssignInventory);
+            }
         }
 
         protected override bool IsRoundDone()
         {
-            if (Player.GetPlayers().Count(r => r.IsHuman) > Player.GetPlayers().Count(r => r.IsSCP) 
-                && EventTime.TotalMinutes < 5) return false;
+            if (Player.GetPlayers().Count(r => r.IsHuman) >= Player.GetPlayers().Count(r => r.IsSCP) 
+                && EventTime.TotalMinutes < 3) return false;
             else return true;
         }
 
         protected override void ProcessFrame()
         {
-            // Trouble in Terrorist Town
-            Extensions.Broadcast($"{Name}\n" +
-                $"<color=red>{Player.GetPlayers().Count(r => r.IsSCP)} traitors</color> | " +
-                $"<color=cyan>{Player.GetPlayers().Count(r => r.IsHuman)} guys</color>", 1);
+            Extensions.Broadcast($"<color=red>{Name}\n" +
+                $"{Player.GetPlayers().Count(r => r.IsSCP)} traitors | " +
+                $"<color=#00FFFF>{Player.GetPlayers().Count(r => r.IsHuman)} guys</color></color>", 1);
         }
 
         protected override void OnFinished()
         {
+            var time = $"{EventTime.Minutes:00}:{EventTime.Seconds:00}";
             if (Player.GetPlayers().Count(r => r.IsHuman) > Player.GetPlayers().Count(r => r.IsSCP))
             {
-                Extensions.Broadcast($"{Name}\n" +
-                    $"Humans winning", 1);
+                Extensions.Broadcast($"<color=yellow><color=#D71868><b><i>Humans</i></b></color> Win!</color>\n" +
+                    $"<color=yellow>Elapsed Duration: <color=red>{time}</color></color>", 10);
             }
             else if (Player.GetPlayers().Count(r => r.IsHuman) < Player.GetPlayers().Count(r => r.IsSCP))
             {
-                Extensions.Broadcast($"{Name}\n" +
-                    $"Traitors winning", 1);
+                Extensions.Broadcast($"<color=red>Traitors Win!</color>\n<color=yellow>Elapsed Duration: <color=red>{time}</color></color>", 10);
             }
             else
             {
-                Extensions.Broadcast($"{Name}\n" +
-                    $"Draw | no one won", 1);
+                Extensions.Broadcast($"<color=red>Draw!</color>\n<color=yellow>Elapsed Duration: <color=red>{time}</color></color>", 10);
             }
         }
     }
