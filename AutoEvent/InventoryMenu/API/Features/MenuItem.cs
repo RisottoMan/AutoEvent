@@ -11,6 +11,7 @@
 // -----------------------------------------
 
 using InventoryMenu.API.EventArgs;
+using InventorySystem.Items;
 using PluginAPI.Core;
 
 namespace InventoryMenu.API.Features;
@@ -22,7 +23,7 @@ public sealed class MenuItem
     /// </summary>
     private static int Index { get; set; } = 0;
     
-    public MenuItem(ItemType item, string description, byte position = 255, Action<MenuItemClickedArgs>? onClicked = null, Menu? parent = null)
+    public MenuItem(ItemType item, string description, byte position = 255, Action<MenuItemClickedArgs>? onClicked = null, Menu? parent = null, ItemBase? itemBase = null)
     {
         CachedPosition = position;
         
@@ -30,6 +31,12 @@ public sealed class MenuItem
         Index++;
         
         this.Item = item;
+        Serial = 0;
+        if (itemBase is not null)
+        {
+            ItemBase = itemBase;   
+            Serial = itemBase.ItemSerial;
+        }
         this.Description = description;
         if (onClicked is not null)
         {
@@ -48,6 +55,8 @@ public sealed class MenuItem
     /// The item type of the selection.
     /// </summary>
     public ItemType Item { get; private set; }
+    
+    internal ItemBase? ItemBase { get; set; }
     
     /// <summary>
     /// The serial of the item.

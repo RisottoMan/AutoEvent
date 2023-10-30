@@ -99,11 +99,19 @@ public sealed class Menu
         _items.Add(position, item);
         
         item.CachedPosition = 255;
+        if (item.Serial != 0)
+        {
+            //Log.Debug($"[Menu {this.Id}] Reusing Serial for Item {item.Id} ({item.Item}, {item.Serial})");
+            this._itemBases.Add(item.Serial, item.ItemBase);
+            return true;
+        }
         ushort serial = ItemSerialGenerator.GenerateNext();
         if(InventoryItemLoader.AvailableItems.TryGetValue(item.Item, out var value) && value is not null)
         {
-            this._itemBases.Add(serial, value);
+            //Log.Debug($"[Menu {this.Id}] Generating Serial for Item {item.Id} ({item.Item}, {item.Serial})");
             item.Serial = serial;
+            
+            this._itemBases.Add(serial, value);
             return true;
         }
         // ItemBase itemBase = ply.ReferenceHub.inventory.CreateItemInstance(new ItemIdentifier(item.Info.ItemId, serial), ply.ReferenceHub.inventory.isLocalPlayer);
@@ -174,23 +182,6 @@ public sealed class Menu
             return;
         ply.HideMenu();
         _activePlayers.Add(ply);
-        List<string> broadcast = new List<string>();
-        if (this.Description != "")
-            broadcast.Add(this.Description);
-        for (byte i = 0; i < this._items.Count(); i++)
-        {
-            if (this._items[i].Description != "")
-                broadcast.Add(this._items[i].Description);
-        }
-        if (!broadcast.IsEmpty())
-        {
-            if (broadcast.Count >= 7)
-                BroadcastOverride.SetEvenLineSizes(ply, broadcast.Count() + 1);
-            else
-                BroadcastOverride.SetEvenLineSizes(ply, 7);
-            BroadcastOverride.BroadcastLines(ply, 1, 1500.0f, BroadcastPriority.High, broadcast);
-        }
-
 
         ply.ReferenceHub.inventory.SendItemsNextFrame = true;
     }

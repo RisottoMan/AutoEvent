@@ -85,7 +85,7 @@ namespace AutoEvent.Games.Deathmatch
             var count = 0;
             foreach (Player player in Player.GetPlayers())
             {
-                if (count % 2 == 0)
+                if (UnityEngine.Random.Range(0,2) == 1)
                 {
                     player.GiveLoadout(Config.NTFLoadouts, LoadoutFlags.ForceInfiniteAmmo | LoadoutFlags.IgnoreGodMode | LoadoutFlags.IgnoreWeapons);
                     player.Position = RandomClass.GetRandomPosition(MapInfo.Map);

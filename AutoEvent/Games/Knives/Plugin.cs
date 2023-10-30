@@ -12,6 +12,7 @@ using AutoEvent.Events.Handlers;
 using AutoEvent.Games.Example;
 using AutoEvent.Games.Infection;
 using AutoEvent.Interfaces;
+using InventorySystem.Items.MarshmallowMan;
 using Event = AutoEvent.Interfaces.Event;
 
 namespace AutoEvent.Games.Knives
@@ -68,7 +69,7 @@ namespace AutoEvent.Games.Knives
             var count = 0;
             foreach (Player player in Player.GetPlayers())
             {
-                if (count % 2 == 0)
+                if (UnityEngine.Random.Range(0,2) == 1)
                 {
                     player.GiveLoadout(Config.Team1Loadouts, LoadoutFlags.IgnoreWeapons | LoadoutFlags.IgnoreGodMode);
                     // Extensions.SetRole(player, RoleTypeId.NtfCaptain, RoleSpawnFlags.None);
@@ -82,11 +83,15 @@ namespace AutoEvent.Games.Knives
                 }
                 count++;
 
-                var item = player.AddItem(ItemType.Jailbird);
-                Timing.CallDelayed(0.1f, () =>
+                if (Config.HalloweenMelee)
                 {
-                    player.CurrentItem = item;
-                });
+                    player.EffectsManager.EnableEffect<MarshmallowEffect>();
+                }
+                else
+                {
+                    var item = player.AddItem(ItemType.Jailbird);
+                    Timing.CallDelayed(0.1f, () => { player.CurrentItem = item; });
+                }
             }
         }
 

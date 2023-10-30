@@ -12,6 +12,7 @@ using AutoEvent.Events.Handlers;
 using AutoEvent.Games.Infection;
 using AutoEvent.Interfaces;
 using Hints;
+using InventorySystem.Items.MarshmallowMan;
 using Event = AutoEvent.Interfaces.Event;
 
 namespace AutoEvent.Games.Versus
@@ -85,7 +86,7 @@ namespace AutoEvent.Games.Versus
             var count = 0;
             foreach (Player player in Player.GetPlayers())
             {
-                if (count % 2 == 0)
+                if (UnityEngine.Random.Range(0,2) == 1)
                 {
                     player.GiveLoadout(Config.Team1Loadouts);
                     //Extensions.SetRole(player, RoleTypeId.Scientist, RoleSpawnFlags.None);
@@ -99,11 +100,15 @@ namespace AutoEvent.Games.Versus
                 }
                 count++;
 
-                var item = player.AddItem(ItemType.Jailbird);
-                Timing.CallDelayed(0.2f, () =>
+                if (Config.HalloweenMelee)
                 {
-                    player.CurrentItem = item;
-                });
+                    player.EffectsManager.EnableEffect<MarshmallowEffect>();
+                }
+                else
+                {
+                    var item = player.AddItem(ItemType.Jailbird);
+                    Timing.CallDelayed(0.2f, () => { player.CurrentItem = item; });
+                }
             }
         }
 

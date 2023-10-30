@@ -10,6 +10,7 @@ using System.Linq;
 using AutoEvent.API;
 using AutoEvent.API.Enums;
 using CustomPlayerEffects;
+using InventorySystem.Items.MarshmallowMan;
 using PluginAPI.Core;
 using UnityEngine;
 
@@ -37,8 +38,8 @@ namespace AutoEvent.Games.HideAndSeek
             if (ev.Attacker != null)
             {
                 ev.IsAllowed = false;
-                bool isAttackerTagger = ev.Attacker.Items.Any(r => r.ItemTypeId == _plugin.Config.TaggerWeapon);
-                bool isTargetTagger = ev.Target.Items.Any(r => r.ItemTypeId == _plugin.Config.TaggerWeapon);
+                bool isAttackerTagger = ev.Attacker.Items.Any(r => r.ItemTypeId == _plugin.Config.TaggerWeapon) || ev.Attacker.EffectsManager.GetEffect<MarshmallowEffect>();
+                bool isTargetTagger = ev.Target.Items.Any(r => r.ItemTypeId == _plugin.Config.TaggerWeapon) || ev.Attacker.EffectsManager.GetEffect<MarshmallowEffect>();
                 if (!isAttackerTagger || isTargetTagger)
                 {
                     ev.IsAllowed = false;
@@ -94,6 +95,13 @@ namespace AutoEvent.Games.HideAndSeek
                     
                     ev.Target.GiveLoadout(_plugin.Config.TaggerLoadouts, LoadoutFlags.IgnoreItems | LoadoutFlags.IgnoreWeapons | LoadoutFlags.IgnoreGodMode);
                     ev.Target.ClearInventory();
+                    if (_plugin.Config.HalloweenMelee)
+                    {
+                        ev.Target.EffectsManager.EnableEffect<MarshmallowEffect>();
+                    }
+                    else
+                    {
+                        
                     var weapon = ev.Target.AddItem(_plugin.Config.TaggerWeapon);
                     if(weapon.ItemTypeId is ItemType.GrenadeHE)
                         weapon.ExplodeOnCollision(true);
@@ -106,6 +114,7 @@ namespace AutoEvent.Games.HideAndSeek
                     {
                         ev.Target.CurrentItem = weapon;
                     });
+                    }
                     return;
 
             }

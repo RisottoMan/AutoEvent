@@ -135,11 +135,11 @@ public static class Program
                                         dp.Plugins.AddRange(plugins);
                                     }
                                     buildDependencies.Add(dp);
-                                    Console.WriteLine($"Loaded Assembly {dp.Name}");
+                                    //Console.WriteLine($"Loaded Assembly {dp.Name}");
                                 }
                                 catch (Exception e)
                                 {
-                                    Console.Error.WriteLine($"Could not load assembly for file \"{file}\". Exception: \"{e.Message}\".");
+                                    // Console.Error.WriteLine($"Could not load assembly for file \"{file}\". Exception: \"{e.Message}\".");
                                     try
                                     {
                                         var info = dnlib.DotNet.AssemblyDef.Load(file);
@@ -161,7 +161,7 @@ public static class Program
                                             }
                                         }
                                         buildDependencies.Add(assemblyInfo);
-                                        Console.Error.WriteLine($"Could not load full assembly for {assemblyInfo.Name}. Loading Mini-Info instead.");
+                                        // Console.Error.WriteLine($"Could not load full assembly for {assemblyInfo.Name}. Loading Mini-Info instead.");
                                     }
                                     catch { }
                                 }
@@ -220,7 +220,8 @@ public static class Program
 
         //Console.WriteLine($"Replacing {varsToReplace.Count + replacementTerms.Count} variables");
         File.WriteAllText(fileLoc, text);
-        Console.Write(text);
+        //Console.Write(text);
+        Console.WriteLine("Replaced Text.");
     }
 
     private static bool TryProcessNextArguments(this string[] arguments, int currentTerm, int amountToSearch, out List<string> nextArguments)
