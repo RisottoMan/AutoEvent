@@ -135,17 +135,31 @@ namespace AutoEvent.Games.HideAndSeek
             foreach(Player ply in Config.TaggerCount.GetPlayers(true, playersToChoose))
             {
                 ply.GiveLoadout(Config.TaggerLoadouts);
+                var item = ply.AddItem(Config.TaggerWeapon);
+                if (item.ItemTypeId == ItemType.SCP018)
+                    item.MakeRock(new RockSettings(false, 1f, false, false, true));
+                if (item.ItemTypeId == ItemType.GrenadeHE)
+                    item.ExplodeOnCollision(true);
+                Timing.CallDelayed(0.1f, () =>
+                {
+                    if (item != null)
+                    {
+                        ply.CurrentItem = item;
+                    }
+                });
+                /*
                 if(Config.HalloweenMelee)
                     ply.EffectsManager.EnableEffect<MarshmallowEffect>();
                 else
                 {
-                    var item = ply.AddItem(Config.TaggerWeapon);
-                if(item.ItemTypeId == ItemType.SCP018)
-                    item.MakeRock(new RockSettings(false, 1f, false, false, true));
-                if(item.ItemTypeId == ItemType.GrenadeHE)
-                    item.ExplodeOnCollision(true);
-                Timing.CallDelayed(0.1f, () => { ply.CurrentItem = item; });
+                        var item = ply.AddItem(Config.TaggerWeapon);
+                    if(item.ItemTypeId == ItemType.SCP018)
+                        item.MakeRock(new RockSettings(false, 1f, false, false, true));
+                    if(item.ItemTypeId == ItemType.GrenadeHE)
+                        item.ExplodeOnCollision(true);
+                    Timing.CallDelayed(0.1f, () => { ply.CurrentItem = item; });
                 }
+                */
             }
 
             if (Player.GetPlayers().Count(ply => ply.HasLoadout(Config.PlayerLoadouts)) <= Config.PlayersRequiredForBreachScannerEffect)

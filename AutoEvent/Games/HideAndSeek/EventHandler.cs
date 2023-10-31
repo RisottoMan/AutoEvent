@@ -38,8 +38,8 @@ namespace AutoEvent.Games.HideAndSeek
             if (ev.Attacker != null)
             {
                 ev.IsAllowed = false;
-                bool isAttackerTagger = ev.Attacker.Items.Any(r => r.ItemTypeId == _plugin.Config.TaggerWeapon) || ev.Attacker.EffectsManager.GetEffect<MarshmallowEffect>();
-                bool isTargetTagger = ev.Target.Items.Any(r => r.ItemTypeId == _plugin.Config.TaggerWeapon) || ev.Attacker.EffectsManager.GetEffect<MarshmallowEffect>();
+                bool isAttackerTagger = ev.Attacker.Items.Any(r => r.ItemTypeId == _plugin.Config.TaggerWeapon);// || ev.Attacker.EffectsManager.GetEffect<MarshmallowEffect>();
+                bool isTargetTagger = ev.Target.Items.Any(r => r.ItemTypeId == _plugin.Config.TaggerWeapon);// || ev.Attacker.EffectsManager.GetEffect<MarshmallowEffect>();
                 if (!isAttackerTagger || isTargetTagger)
                 {
                     ev.IsAllowed = false;
@@ -95,27 +95,41 @@ namespace AutoEvent.Games.HideAndSeek
                     
                     ev.Target.GiveLoadout(_plugin.Config.TaggerLoadouts, LoadoutFlags.IgnoreItems | LoadoutFlags.IgnoreWeapons | LoadoutFlags.IgnoreGodMode);
                     ev.Target.ClearInventory();
+
+                    var weapon = ev.Target.AddItem(_plugin.Config.TaggerWeapon);
+                    if (weapon.ItemTypeId is ItemType.GrenadeHE)
+                        weapon.ExplodeOnCollision(true);
+                    if (weapon.ItemTypeId is ItemType.SCP018)
+                        weapon.MakeRock(new RockSettings(false, 1f, false, false, true));
+                    if (isLastPlayers)
+                        ev.Target.GiveEffect(StatusEffect.Scanned, 0, 1f, false);
+
+                    Timing.CallDelayed(0.1f, () =>
+                    {
+                        ev.Target.CurrentItem = weapon;
+                    });
+                /*
                     if (_plugin.Config.HalloweenMelee)
                     {
                         ev.Target.EffectsManager.EnableEffect<MarshmallowEffect>();
                     }
                     else
                     {
-                        
-                    var weapon = ev.Target.AddItem(_plugin.Config.TaggerWeapon);
-                    if(weapon.ItemTypeId is ItemType.GrenadeHE)
-                        weapon.ExplodeOnCollision(true);
-                    if(weapon.ItemTypeId is ItemType.SCP018)
-                        weapon.MakeRock(new RockSettings(false, 1f, false, false, true));
-                    if(isLastPlayers)
-                        ev.Target.GiveEffect(StatusEffect.Scanned, 0, 1f, false);
+                        var weapon = ev.Target.AddItem(_plugin.Config.TaggerWeapon);
+                        if(weapon.ItemTypeId is ItemType.GrenadeHE)
+                            weapon.ExplodeOnCollision(true);
+                        if(weapon.ItemTypeId is ItemType.SCP018)
+                            weapon.MakeRock(new RockSettings(false, 1f, false, false, true));
+                        if(isLastPlayers)
+                            ev.Target.GiveEffect(StatusEffect.Scanned, 0, 1f, false);
                 
-                    Timing.CallDelayed(0.1f, () =>
-                    {
-                        ev.Target.CurrentItem = weapon;
-                    });
+                        Timing.CallDelayed(0.1f, () =>
+                        {
+                            ev.Target.CurrentItem = weapon;
+                        });
                     }
-                    return;
+                */
+                return;
 
             }
         }
