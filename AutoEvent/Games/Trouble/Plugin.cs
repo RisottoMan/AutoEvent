@@ -11,7 +11,7 @@ using System.Collections.Generic;
 
 namespace AutoEvent.Games.Trouble
 {
-    public class Plugin : Event, IEventMap, IInternalEvent
+    public class Plugin : Event, IEventSound, IEventMap, IInternalEvent
     {
         public override string Name { get; set; } = "Trouble in Terrorist Town <color=purple>[Halloween]</color>";
         public override string Description { get; set; } = "An impostor appeared in terrorist town.";
@@ -20,9 +20,8 @@ namespace AutoEvent.Games.Trouble
         public override Version Version { get; set; } = new Version(1, 0, 0);
         public MapInfo MapInfo { get; set; } = new MapInfo()
         { MapName = "AmongUs", Position = new Vector3(115.5f, 1030f, -43.5f), MapRotation = Quaternion.identity };
-
-        //public SoundInfo SoundInfo { get; set; } = new SoundInfo()
-        //    { SoundName = "Zombie.ogg", Volume = 7, Loop = true };
+        public SoundInfo SoundInfo { get; set; } = new SoundInfo()
+        { SoundName = "Skeleton.ogg", Volume = 5, Loop = true };
         protected override float PostRoundDelay { get; set; } = 10f;
         private EventHandler EventHandler { get; set; }
 

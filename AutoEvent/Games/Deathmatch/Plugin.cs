@@ -28,7 +28,7 @@ namespace AutoEvent.Games.Deathmatch
         public MapInfo MapInfo { get; set; } = new MapInfo()
             {MapName = "Shipment", Position = new Vector3(93f, 1020f, -43f), };
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
-            { SoundName = "ClassicMusic.ogg", Volume = 3, Loop = true };
+            { SoundName = "Ultrakill.ogg", Volume = 10, Loop = true };
         protected override float PostRoundDelay { get; set; } = 10f;
         private EventHandler EventHandler { get; set; }
         private DeathmatchTranslate Translation { get; set; } = AutoEvent.Singleton.Translation.DeathmatchTranslate;
@@ -121,9 +121,12 @@ namespace AutoEvent.Games.Deathmatch
                 var item = player.AddItem(Config.AvailableWeapons.RandomItem());
                 player.AddItem(ItemType.ArmorCombat);
 
-                Timing.CallDelayed(0.1f, () =>
+                Timing.CallDelayed(.1f, () =>
                 {
-                    player.CurrentItem = item;
+                    if (item != null)
+                    {
+                        player.CurrentItem = item;
+                    }
                 });
             }
         }

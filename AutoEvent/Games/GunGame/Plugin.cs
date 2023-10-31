@@ -31,7 +31,7 @@ namespace AutoEvent.Games.GunGame
         public MapInfo MapInfo { get; set; } = new MapInfo()
             {MapName = "Shipment", Position = new Vector3(93f, 1020f, -43f), };
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
-            { SoundName = "ClassicMusic.ogg", Volume = 3, Loop = true };
+        { SoundName = "Ultrakill.ogg", Volume = 10, Loop = true };
         protected override float PostRoundDelay { get; set; } = 10f;
         private EventHandler EventHandler { get; set; }
         private GunGameTranslate Translation { get; set; } = AutoEvent.Singleton.Translation.GunGameTranslate;

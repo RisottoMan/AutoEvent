@@ -104,9 +104,12 @@ namespace AutoEvent.Games.Deathmatch
                 ev.Target.RemoveItems(itemType);
             }
             var item = ev.Target.AddItem(_plugin.Config.AvailableWeapons.RandomItem());
-            Timing.CallDelayed(0.1f, () =>
+            Timing.CallDelayed(.1f, () =>
             {
-                ev.Target.CurrentItem = item; // ev.Target.Items.ElementAt(0);
+                if (item != null)
+                {
+                    ev.Target.CurrentItem = item;
+                }
             });
         }
 

@@ -90,6 +90,7 @@
     <Content Include="PlantUMLDocuments\*" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Remove="Games\Trouble\Configs\**" />
     <EmbeddedResource Remove="SchematicApi\**" />
     <EmbeddedResource Remove="SchematicApi\*" />
     <EmbeddedResource Remove="PowerupApi\**" />
@@ -100,6 +101,7 @@
     <EmbeddedResource Remove="InventoryMenu\*" />
   </ItemGroup>
   <ItemGroup>
+    <None Remove="Games\Trouble\Configs\**" />
     <None Remove="SchematicApi\**" />
     <None Remove="SchematicApi\*" />
     <None Remove="PowerupApi\**" />
@@ -110,6 +112,7 @@
     <None Remove="InventoryMenu\*" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Remove="Games\Trouble\Configs\**" />
     <Compile Remove="SchematicApi\**" />
     <Compile Remove="SchematicApi\*" />
     <Compile Remove="PowerupApi\**" />
@@ -118,9 +121,6 @@
     <Compile Remove="ReplaceTextWithVariables\*" />
     <Compile Remove="InventoryMenu\**" />
     <Compile Remove="InventoryMenu\*" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Games\Trouble\Configs\" />
   </ItemGroup>
   <Target Name="RemoveFile" BeforeTargets="ReplaceFile">
     <Exec Command="if exist $(SolutionDir)VersionInfo.cs del $(SolutionDir)VersionInfo.cs" />
