@@ -100,15 +100,8 @@ namespace AutoEvent.Games.Versus
                 }
                 count++;
 
-                if (Config.HalloweenMelee)
-                {
-                    //player.EffectsManager.EnableEffect<MarshmallowEffect>();
-                }
-                else
-                {
-                    var item = player.AddItem(ItemType.Jailbird);
-                    Timing.CallDelayed(0.2f, () => { player.CurrentItem = item; });
-                }
+                var item = player.AddItem(ItemType.Jailbird);
+                Timing.CallDelayed(0.2f, () => { player.CurrentItem = item; });
             }
         }
 
@@ -147,10 +140,6 @@ namespace AutoEvent.Games.Versus
                          (Config.AutoSelectDelayInSeconds != -1 && _countdown.TotalSeconds == 0)))
                     {
                         Scientist = player;
-                        if (Config.HalloweenMelee)
-                        {
-                            Scientist.EffectsManager.EnableEffect<MarshmallowEffect>();
-                        }
                         Scientist.Position = _teleports.ElementAt(0).transform.position;
                         if (ClassD != null)
                             ClassD.Heal(100);
@@ -166,10 +155,6 @@ namespace AutoEvent.Games.Versus
                          (Config.AutoSelectDelayInSeconds != -1 && _countdown.TotalSeconds == 0)))
                     {
                         ClassD = player;
-                        if (Config.HalloweenMelee)
-                        {
-                            ClassD.EffectsManager.EnableEffect<MarshmallowEffect>();
-                        }
                         ClassD.Position = _teleports.ElementAt(1).transform.position;
                         if (Scientist != null)
                             Scientist.Heal(100);
