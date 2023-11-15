@@ -12,7 +12,7 @@ using Exiled.Permissions.Extensions;
 
 namespace AutoEvent.Commands
 {
-    internal class Vote// : ICommand, IUsageProvider, IPermission
+    internal class Vote : ICommand, IUsageProvider, IPermission
     {
         public string Command => nameof(Vote);
         public string Description => "Starts voting for mini-game, 1 argument - the command name of the event";

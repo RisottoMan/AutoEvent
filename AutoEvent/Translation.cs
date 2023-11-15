@@ -5,6 +5,8 @@ using AutoEvent.Games.Boss;
 using AutoEvent.Games.GhostBusters.Configs;
 using AutoEvent.Games.Spleef.Configs;
 using AutoEvent.Games.Trouble;
+using AutoEvent.Games.Lobby;
+using AutoEvent.Games.Vote;
 #if EXILED
 using Exiled.API.Interfaces;
 #endif
@@ -84,5 +86,14 @@ namespace AutoEvent
         
         [Description("Ghost Busters Game Mode")]
         public GhostBustersTranslate GhostBustersTranslate { get; set; } = new GhostBustersTranslate();
+
+        [Description("Trouble in Terrorist Town Game Mode")]
+        public TroubleTranslation TroubleTranslation { get; set; } = new TroubleTranslation();
+
+        [Description("Lobby translation")]
+        public LobbyTranslation LobbyTranslation { get; set; } = new LobbyTranslation();
+
+        [Description("Vote translation")]
+        public VoteTranslation VoteTranslation { get; set; } = new VoteTranslation();
     }
 }

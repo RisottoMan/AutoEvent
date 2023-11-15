@@ -83,15 +83,8 @@ namespace AutoEvent.Games.Knives
                 }
                 count++;
 
-                if (Config.HalloweenMelee)
-                {
-                    player.EffectsManager.EnableEffect<MarshmallowEffect>();
-                }
-                else
-                {
-                    var item = player.AddItem(ItemType.Jailbird);
-                    Timing.CallDelayed(0.1f, () => { player.CurrentItem = item; });
-                }
+                var item = player.AddItem(ItemType.Jailbird);
+                Timing.CallDelayed(0.1f, () => { player.CurrentItem = item; });
             }
         }
 
