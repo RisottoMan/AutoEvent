@@ -19,7 +19,7 @@ using PlayerRoles;
 
 namespace AutoEvent.Games.Infection;
 
-public class DeathmatchConfig : EventConfig
+public class Config : EventConfig
 {
     [Description("How many total kills a team needs to win. Determined per-person at the start of the round. [Default: 3]")]
     public int KillsPerPerson { get; set; } = 3;
