@@ -7,6 +7,8 @@ using AutoEvent.Games.Spleef.Configs;
 using AutoEvent.Games.Trouble;
 using AutoEvent.Games.Lobby;
 using AutoEvent.Games.Vote;
+using AutoEvent.Games.CounterStrike;
+using AutoEvent.Games.AllDeathmatch;
 #if EXILED
 using Exiled.API.Interfaces;
 #endif
@@ -95,5 +97,11 @@ namespace AutoEvent
 
         [Description("Vote translation")]
         public VoteTranslation VoteTranslation { get; set; } = new VoteTranslation();
+
+        [Description("Counter-Strike Mode")]
+        public StrikeTranslation StrikeTranslation { get; set; } = new StrikeTranslation();
+
+        [Description("All Deathmatch Mode")]
+        public AllTranslation AllTranslation { get; set; } = new AllTranslation();
     }
 }
