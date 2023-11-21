@@ -165,7 +165,10 @@ namespace AutoEvent.Games.AllDeathmatch
                         "<color=purple>Ваши убийства <color=red>{count}</color></color>\n" +
                         $"Время игры - <color=#008000>{EventTime.Minutes:00}:{EventTime.Seconds:00}</color></i>";
                 }
-
+                else
+                {
+                     var maxKill = TotalKills.OrderByDescending(x => x.Value).FirstOrDefault();
+                }
                 text = text.Replace("{count}", TotalKills.First(x => x.Key == player).Value.ToString());
 
                 player.ClearBroadcasts();
