@@ -21,7 +21,15 @@ namespace AutoEvent.Games.AllDeathmatch
         [PluginEvent(ServerEventType.PlayerJoined)]
         public void OnJoin(PlayerJoinedEvent ev)
         {
+            _plugin.TotalKills.Add(ev.Player);
             SpawnPlayerAfterDeath(ev.Player);
+        }
+
+
+        [PluginEvent(ServerEventType.PlayerLeft)]
+        public void OnLeft(PlayerJoinedEvent ev)
+        {
+            _plugin.TotalKills.Remove(ev.Player);
         }
 
         [PluginEvent(ServerEventType.PlayerReloadWeapon)]
