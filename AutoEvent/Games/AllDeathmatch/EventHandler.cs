@@ -27,7 +27,7 @@ namespace AutoEvent.Games.AllDeathmatch
 
 
         [PluginEvent(ServerEventType.PlayerLeft)]
-        public void OnLeft(PlayerJoinedEvent ev)
+        public void OnLeft(PlayerLeftEvent ev)
         {
             _plugin.TotalKills.Remove(ev.Player);
         }
