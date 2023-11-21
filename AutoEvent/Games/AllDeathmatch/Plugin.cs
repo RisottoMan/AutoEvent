@@ -112,10 +112,9 @@ namespace AutoEvent.Games.AllDeathmatch
 
         protected override bool IsRoundDone()
         {
-            //return !(Config.TimeMinutesRound >= EventTime.TotalMinutes && 
-            //   Player.GetPlayers().Count(r => r.IsAlive) > 0 && 
-            //   TotalKills.ContainsValue(NeededKills));
-            return false;
+            return !(Config.TimeMinutesRound >= EventTime.TotalMinutes && 
+               Player.GetPlayers().Count(r => r.IsAlive) > 0 && 
+               !TotalKills.ContainsValue(NeededKills));
         }
 
         protected override void ProcessFrame()
