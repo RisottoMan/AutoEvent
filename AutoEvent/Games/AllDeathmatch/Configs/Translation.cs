@@ -1,4 +1,6 @@
 ﻿using Exiled.API.Interfaces;
+using static Exiled.Loader.Features.MultiAdminFeatures;
+using System.Reflection;
 
 namespace AutoEvent.Games.AllDeathmatch
 {
@@ -11,8 +13,9 @@ namespace AutoEvent.Games.AllDeathmatch
         public string AllCommandName { get; set; } = "dm";
         public string AllName { get; set; } = "All Deathmatch";
         public string AllDescription { get; set; } = "Fight against each other in all deathmatch.";
-        public string AllCycle { get; set; } = "<color=#D71868><b><i>{name}</i></b></color>\n<b><color=yellow><color=#42AAFF> {mtftext}> </color> <color=red>|</color> <color=green> <{chaostext}</color></color></b>";
-        public string AllCounterWin { get; set; } = "<color=#D71868><b><i>{name}</i></b></color>\n<color=yellow>WINNERS: <color=green>CHAOS</color></color>";
-        public string AllTerroristWin { get; set; } = "<color=#D71868><b><i>{name}</i></b></color>\n<color=yellow>WINNERS: <color=#42AAFF>MTF</color></color>";
+        public string AllCycle { get; set; } = "<size=30><i><b>{name}</b>\n<color=red>You - {kills}/{needKills} kills</color>\nRound Time: {time}</i></size>";
+        public string AllNoPlayers { get; set; } = "<color=red>The game is over by the admin\nYour kills {count}</color>";
+        public string AllTimeEnd { get; set; } = "<color=red>The game is over in time\nYour kills {count}</color>";
+        public string AllWinnerEnd { get; set; } = "<b><color=red>Winner - <color=yellow>{winner}</color></color></b>\nYour kills <color=red>{count}</color></color>\nGame Time - <color=#008000>{time}</color></i>";
     }
 }

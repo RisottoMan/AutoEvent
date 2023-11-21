@@ -13,7 +13,7 @@ using CustomPlayerEffects;
 
 namespace AutoEvent.Games.CounterStrike
 {
-    public class Plugin : Event, IEventMap, IInternalEvent
+    public class Plugin : Event, IEventMap, IInternalEvent, IHidden
     {
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.StrikeTranslation.StrikeSName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.StrikeTranslation.StrikeDescription;

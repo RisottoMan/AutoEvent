@@ -27,18 +27,19 @@ namespace AutoEvent.Games.AllDeathmatch
         public MapInfo MapInfo { get; set; } = new MapInfo()
         { 
             MapName = "de_dust2",
-            Position = new Vector3(0, 0, 0)
+            Position = new Vector3(0, 0, 30)
         };
 
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
         { 
             SoundName = "ExecDeathmatch.ogg", 
-            Volume = 7,
+            Volume = 10,
             Loop = true 
         };
         public List<GameObject> Spawnpoints { get; set; }
         public int NeededKills { get; set; }
         public Dictionary<Player, int> TotalKills { get; set; }
+        public Player Winner { get; set; }
         protected override void RegisterEvents()
         {
             EventHandler = new EventHandler(this);
@@ -49,6 +50,7 @@ namespace AutoEvent.Games.AllDeathmatch
             Servers.PlaceBullet += EventHandler.OnPlaceBullet;
             Servers.PlaceBlood += EventHandler.OnPlaceBlood;
             Players.DropAmmo += EventHandler.OnDropAmmo;
+            Players.PlayerDying += EventHandler.OnPlayerDying;
         }
         protected override void UnregisterEvents()
         {
@@ -58,12 +60,14 @@ namespace AutoEvent.Games.AllDeathmatch
             Servers.PlaceBullet -= EventHandler.OnPlaceBullet;
             Servers.PlaceBlood -= EventHandler.OnPlaceBlood;
             Players.DropAmmo -= EventHandler.OnDropAmmo;
+            Players.PlayerDying -= EventHandler.OnPlayerDying;
 
             EventHandler = null;
         }
 
         protected override void OnStart()
         {
+            Winner = null;
             NeededKills = 0;
             switch (Player.GetPlayers().Count())
             {
@@ -114,63 +118,78 @@ namespace AutoEvent.Games.AllDeathmatch
         {
             return !(Config.TimeMinutesRound >= EventTime.TotalMinutes && 
                Player.GetPlayers().Count(r => r.IsAlive) > 0 && 
-               !TotalKills.ContainsValue(NeededKills));
+               Winner is null);
         }
 
         protected override void ProcessFrame()
         {
-            double remainTime = Config.TimeMinutesRound - EventTime.TotalSeconds;
-            var time = $"{(int)(remainTime / 60):00}:{(int)(remainTime % 60):00}";
+            double remainTime = Config.TimeMinutesRound - EventTime.TotalMinutes;
+            var time = $"{(int)remainTime:00}:{(int)((remainTime * 60) % 60):00}";
             var sortedDict = TotalKills.OrderByDescending(r => r.Value).ToDictionary(x => x.Key, x => x.Value);
 
+            int playerCount = Player.GetPlayers().Count();
+            //string pos = "20em";
+            //string vset = "10em";
             foreach(Player player in Player.GetPlayers())
             {
-                var text = "<size=30><i>Leaderboard:</i>";
-                if (Player.GetPlayers().Count() >= 3)
+                // LEADERBOARD FEATURE, but it dosnt work :(
+                /*
+                var text = $"<size=30><pos={pos}><voffset={vset}><i>Leaderboard:</i>\n";
+                if (playerCount >= 3)
                 {
-                    text += $"<color=#ffd700>1. {sortedDict.ElementAt(0).Key.Nickname} / {sortedDict.ElementAt(0).Value} kills</color>" +
-                    $"<color=#c0c0c0>2. {sortedDict.ElementAt(1).Key.Nickname} / {sortedDict.ElementAt(1).Value} kills</color>" +
-                    $"<color=#cd7f32>3. {sortedDict.ElementAt(2).Key.Nickname} / {sortedDict.ElementAt(2).Value} kills</color>";
+                    text += $"<voffset={vset}><color=#ffd700>1. {sortedDict.ElementAt(0).Key.Nickname} / {sortedDict.ElementAt(0).Value} kills</color>\n" +
+                    $"<voffset={vset}><color=#c0c0c0>2. {sortedDict.ElementAt(1).Key.Nickname} / {sortedDict.ElementAt(1).Value} kills</color>\n" +
+                    $"<voffset={vset}><color=#cd7f32>3. {sortedDict.ElementAt(2).Key.Nickname} / {sortedDict.ElementAt(2).Value} kills</color>\n";
                 }
 
                 var playerItem = sortedDict.First(x => x.Key == player);
-                text += $"<color=#ff0000>You - {playerItem.Value} kills</color></size>";
+                text += $"<voffset={vset}><color=#ff0000>You - {playerItem.Value} kills</color></size>";
                 player.ReceiveHint(text, 1);
+                */
+
+                if (TotalKills[player] >= NeededKills)
+                {
+                    Winner = player;
+                }
+
+                var playerItem = sortedDict.FirstOrDefault(x => x.Key == player);
+                string text = AutoEvent.Singleton.Translation.AllTranslation.AllCycle.
+                    Replace("{name}", Name).
+                    Replace("{kills}", playerItem.Value.ToString()).
+                    Replace("{needKills}", NeededKills.ToString()).
+                    Replace("{time}", time);
 
                 player.ClearBroadcasts();
-                player.SendBroadcast($"<size=30><i><b>{Name}</b>\n" +
-                    $"<color=red>All players against all</color>\n" +
-                    $"Round Time: {time}</i></size>", 1);
+                player.SendBroadcast(text, 1);
             }
         }
 
         protected override void OnFinished()
         {
+            var time = $"{EventTime.Minutes:00}:{EventTime.Seconds:00}";
             foreach (Player player in Player.GetPlayers())
             {
                 string text = string.Empty;
                 if (Player.GetPlayers().Count(r => r.IsAlive) == 0)
                 {
-                    text = "<color=red>Игра окончена админом\nВаши убийства {count}</color>";
+                    text = Translation.AllNoPlayers;
                 }
                 else if (EventTime.TotalMinutes >= Config.TimeMinutesRound)
                 {
-                    text = "<color=red>Игра окончена по времени\nВаши убийства {count}</color>";
+                    text = Translation.AllTimeEnd;
                 }
-                else if (TotalKills.ContainsValue(NeededKills))
+                else if (Winner != null)
                 {
-                    Player winner = TotalKills.First(r => r.Value == NeededKills).Key;
-                    text = $"<b><color=red>Победитель - <color=yellow>{player.Nickname}</color></color></b>\n" +
-                        $"<i><color=purple>Он первым собрал {NeededKills} убийств</color>\n" +
-                        "<color=purple>Ваши убийства <color=red>{count}</color></color>\n" +
-                        $"Время игры - <color=#008000>{EventTime.Minutes:00}:{EventTime.Seconds:00}</color></i>";
+                    text = Translation.AllWinnerEnd.
+                        Replace("{winner}", Winner.Nickname).
+                        Replace("{time}", time);
                 }
                 else
                 {
-                     var maxKill = TotalKills.OrderByDescending(x => x.Value).FirstOrDefault();
+                     //var maxKill = TotalKills.OrderByDescending(x => x.Value).FirstOrDefault();
                 }
-                text = text.Replace("{count}", TotalKills.First(x => x.Key == player).Value.ToString());
 
+                text = text.Replace("{count}", TotalKills.First(x => x.Key == player).Value.ToString());
                 player.ClearBroadcasts();
                 player.SendBroadcast(text, 10);
             }

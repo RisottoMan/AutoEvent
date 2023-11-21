@@ -1,5 +1,6 @@
 ﻿using AutoEvent.API.Enums;
 using AutoEvent.Events.EventArgs;
+using CustomPlayerEffects;
 using InventorySystem.Configs;
 using MEC;
 using PluginAPI.Core.Attributes;
@@ -21,7 +22,11 @@ namespace AutoEvent.Games.AllDeathmatch
         [PluginEvent(ServerEventType.PlayerJoined)]
         public void OnJoin(PlayerJoinedEvent ev)
         {
-            _plugin.TotalKills.Add(ev.Player);
+            if (!_plugin.TotalKills.ContainsKey(ev.Player))
+            {
+                _plugin.TotalKills.Add(ev.Player, 0);
+            }
+
             SpawnPlayerAfterDeath(ev.Player);
         }
 
@@ -29,7 +34,11 @@ namespace AutoEvent.Games.AllDeathmatch
         [PluginEvent(ServerEventType.PlayerLeft)]
         public void OnLeft(PlayerLeftEvent ev)
         {
-            _plugin.TotalKills.Remove(ev.Player);
+            if (_plugin.TotalKills.ContainsKey(ev.Player))
+            {
+                _plugin.TotalKills.Remove(ev.Player);
+            }
+
         }
 
         [PluginEvent(ServerEventType.PlayerReloadWeapon)]
@@ -54,15 +63,23 @@ namespace AutoEvent.Games.AllDeathmatch
 
         public void OnPlayerDying(PlayerDyingArgs ev)
         {
-            Timing.CallDelayed(5f, () =>
-            {
-                SpawnPlayerAfterDeath(ev.Target);
-            });
+            ev.IsAllowed = false;
+            _plugin.TotalKills[ev.Attacker]++;
+
+            SpawnPlayerAfterDeath(ev.Target);
         }
 
         public void SpawnPlayerAfterDeath(Player player)
         {
-            player.GiveLoadout(_plugin.Config.NTFLoadouts, LoadoutFlags.ForceInfiniteAmmo | LoadoutFlags.IgnoreGodMode | LoadoutFlags.IgnoreWeapons);
+            player.EffectsManager.EnableEffect<Flashed>(0.1f);
+            player.Health = 100;
+            player.ClearInventory();
+
+            if (!player.IsAlive)
+            {
+                player.GiveLoadout(_plugin.Config.NTFLoadouts, LoadoutFlags.ForceInfiniteAmmo | LoadoutFlags.IgnoreGodMode | LoadoutFlags.IgnoreWeapons);
+            }
+
             player.Position = _plugin.Spawnpoints.RandomItem().transform.position;
 
             var item = player.AddItem(_plugin.Config.AvailableWeapons.RandomItem());
