@@ -38,6 +38,9 @@ namespace AutoEvent.Games.CounterStrike
                     _plugin.Winner = ev.Player;
                     _plugin.BombState = BombState.Planted;
                     _plugin.BombSchematic = MER.Api.SpawnSchematic("Bomb", ev.Item.Position, Quartenion.Identity, Vector3.one);
+
+                    _plugin.EventTime = new TimeSpan(0, 0, 35);
+                    Extensions.PlayAudio("BombPlanted", 5, false);
                     ev.Player.ReceiveHint("<color=red>Вы устанавливаете бомбу</color>", 3);
                 }
                 else
