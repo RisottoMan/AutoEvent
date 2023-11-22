@@ -31,6 +31,7 @@ namespace AutoEvent.Games.CounterStrike
             Position = new Vector3(0, 0, 0)
         };
         public BombState BombState { get; set; }
+        public Player Winner { get; set; }
         public double TotalTime { get; set; } = 105;
         protected override void RegisterEvents()
         {
@@ -57,6 +58,7 @@ namespace AutoEvent.Games.CounterStrike
 
         protected override void OnStart()
         {
+            Winner = null;
             BombState = BombState.NoPlanted;
 
             List<GameObject> spawnpoints = RandomClass.GetAllSpawnpoints(MapInfo.Map);
