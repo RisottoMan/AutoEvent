@@ -33,6 +33,7 @@ namespace AutoEvent.Games.CounterStrike
         public BombState BombState { get; set; }
         public Player Winner { get; set; }
         public double TotalTime { get; set; } = 105;
+        SchematicObject bombSchematic { get; set; }
         protected override void RegisterEvents()
         {
             EventHandler = new EventHandler(this);
@@ -167,6 +168,7 @@ namespace AutoEvent.Games.CounterStrike
 
         protected override void OnFinished()
         {
+            bombSchematic.Destroy(); // dont forgot move to cleanup method
             var ctCount = Player.GetPlayers().Count(r => r.IsNTF);
             var tCount = Player.GetPlayers().Count(r => r.IsChaos);
 
