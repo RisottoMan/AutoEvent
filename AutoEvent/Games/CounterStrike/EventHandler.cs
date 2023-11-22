@@ -33,11 +33,13 @@ namespace AutoEvent.Games.CounterStrike
             {
                 if (ev.Player.isChaos)
                 {
-                    // Вы устанавливаете бомбу
+                    _plugin.Winner = ev.Player;
+                    _plugin.BombState = BombState.Planted;
+                    ev.Player.ReceiveHint("<color=red>Вы устанавливаете бомбу</color>", 3);
                 }
                 else
                 {
-                    // Бомба не установлена
+                    ev.Player.ReceiveHint("Бомба не установлена", 3);
                 }
             }
             
@@ -45,11 +47,13 @@ namespace AutoEvent.Games.CounterStrike
             {
                 if (ev.Player.isNtf)
                 {
-                    // Вы дефьюзете бомбу
+                    _plugin.Winner = ev.Player;
+                    _plugin.BombState = BombState.Defused;
+                    ev.Player.ReceiveHint("Вы дефьюзете бомбу", 3);
                 }
                 else
                 {
-                    // Бомба уже установлена
+                    ev.Player.ReceiveHint("Бомба уже установлена", 3,);
                 }
             }  
         }  
