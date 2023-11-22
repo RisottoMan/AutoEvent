@@ -51,7 +51,8 @@ namespace AutoEvent.Games.CounterStrike
                 {
                     // Бомба уже установлена
                 }
-            }    
+            }  
+        }  
 
         [PluginEvent(ServerEventType.PlayerJoined)]
         public void OnJoin(PlayerJoinedEvent ev)
