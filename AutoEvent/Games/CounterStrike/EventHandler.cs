@@ -37,7 +37,7 @@ namespace AutoEvent.Games.CounterStrike
                 }
                 else
                 {
-                    // Вы не можете установить бомбу
+                    // Бомба не установлена
                 }
             }
             
