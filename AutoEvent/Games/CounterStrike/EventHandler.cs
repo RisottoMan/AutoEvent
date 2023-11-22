@@ -26,6 +26,33 @@ namespace AutoEvent.Games.CounterStrike
             }
         }
 
+        public void OnUsingItem(UsingItemEvent ev)
+        {
+            if (ev.Item.Type != ItemType.SCP018) return;
+            if (_plugin.BombState == BombState.NoPlanted)
+            {
+                if (ev.Player.isChaos)
+                {
+                    // Вы устанавливаете бомбу
+                }
+                else
+                {
+                    // Вы не можете установить бомбу
+                }
+            }
+            
+            if (_plugin.BombState == BombState.Planted)
+            {
+                if (ev.Player.isNtf)
+                {
+                    // Вы дефьюзете бомбу
+                }
+                else
+                {
+                    // Бомба уже установлена
+                }
+            }    
+
         [PluginEvent(ServerEventType.PlayerJoined)]
         public void OnJoin(PlayerJoinedEvent ev)
         {
