@@ -146,14 +146,6 @@ namespace AutoEvent.Games.CounterStrike
                     }
                 }
 
-                /*
-                if (BombState == BombState.Planted)
-                {
-                    EventTime = new TimeSpan(0, 0, 35);
-                    Extensions.PlayAudio("BombPlanted", 5, false, "Bomb Planted");
-                }
-                */
-
                 string text = Translation.StrikeCycle.
                     Replace("{name}", Name).
                     Replace("{task}", task).
@@ -168,7 +160,10 @@ namespace AutoEvent.Games.CounterStrike
 
         protected override void OnFinished()
         {
-            bombSchematic.Destroy(); // dont forgot move to cleanup method
+            if (bombSchematic != null) 
+            {
+                bombSchematic.Destroy(); // dont forgot move to cleanup method
+            }
             var ctCount = Player.GetPlayers().Count(r => r.IsNTF);
             var tCount = Player.GetPlayers().Count(r => r.IsChaos);
 
