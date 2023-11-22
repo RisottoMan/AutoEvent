@@ -26,9 +26,11 @@ namespace AutoEvent.Games.CounterStrike
             }
         }
 
-        public void OnUsingItem(UsingItemEvent ev)
+        public void OnPickUpItem(PickUpItemEvent ev)
         {
             if (ev.Item.Type != ItemType.SCP018) return;
+
+            ev.IsAllowed = false;
             if (_plugin.BombState == BombState.NoPlanted)
             {
                 if (ev.Player.isChaos)
@@ -42,8 +44,7 @@ namespace AutoEvent.Games.CounterStrike
                     ev.Player.ReceiveHint("Бомба не установлена", 3);
                 }
             }
-            
-            if (_plugin.BombState == BombState.Planted)
+            else if (_plugin.BombState == BombState.Planted)
             {
                 if (ev.Player.isNtf)
                 {
@@ -53,7 +54,7 @@ namespace AutoEvent.Games.CounterStrike
                 }
                 else
                 {
-                    ev.Player.ReceiveHint("Бомба уже установлена", 3,);
+                    ev.Player.ReceiveHint("Бомба уже установлена", 3);
                 }
             }  
         }  
