@@ -37,6 +37,7 @@ namespace AutoEvent.Games.CounterStrike
                 {
                     _plugin.Winner = ev.Player;
                     _plugin.BombState = BombState.Planted;
+                    _plugin.BombSchematic = MER.Api.SpawnSchematic("Bomb", ev.Item.Position, Quartenion.Identity, Vector3.one);
                     ev.Player.ReceiveHint("<color=red>Вы устанавливаете бомбу</color>", 3);
                 }
                 else
@@ -50,6 +51,7 @@ namespace AutoEvent.Games.CounterStrike
                 {
                     _plugin.Winner = ev.Player;
                     _plugin.BombState = BombState.Defused;
+                    _plugin.BombSchematic.Destroy();
                     ev.Player.ReceiveHint("Вы дефьюзете бомбу", 3);
                 }
                 else
