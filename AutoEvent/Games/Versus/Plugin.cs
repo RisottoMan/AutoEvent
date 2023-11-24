@@ -93,7 +93,7 @@ namespace AutoEvent.Games.Versus
                 }
                 else
                 {
-                   player.GiveLoadout(Config.Team2Loadouts);
+                     player.GiveLoadout(Config.Team2Loadouts);
                     player.Position = RandomClass.GetSpawnPosition(MapInfo.Map, false);
                 }
                 count++;
