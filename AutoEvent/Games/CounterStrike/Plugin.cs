@@ -73,13 +73,13 @@ namespace AutoEvent.Games.CounterStrike
                 {
                     player.GiveLoadout(Config.NTFLoadouts);
                     player.Position = ctSpawn.RandomItem().transform.position;
-                        //+ new Vector3(Random.Range(-1f, 1f), 0, Random.Range(-1f, 1f));
+                        + new Vector3(Random.Range(-1f, 1f), 0, Random.Range(-1f, 1f));
                 }
                 else
                 {
                     player.GiveLoadout(Config.ChaosLoadouts);
                     player.Position = tSpawn.RandomItem().transform.position;
-                        //+ new Vector3(Random.Range(-1f, 1f), 0, Random.Range(-1f, 1f));
+                        + new Vector3(Random.Range(-1f, 1f), 0, Random.Range(-1f, 1f));
                 }
 
                 player.EffectsManager.EnableEffect<Ensnared>();
