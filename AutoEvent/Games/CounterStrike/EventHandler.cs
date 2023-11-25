@@ -1,11 +1,15 @@
 ﻿using AutoEvent.Events.EventArgs;
 using InventorySystem.Configs;
+using MER.Lite;
+using Mirror;
 using PlayerRoles;
 using PluginAPI.Core;
 using PluginAPI.Core.Attributes;
 using PluginAPI.Enums;
 using PluginAPI.Events;
+using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace AutoEvent.Games.CounterStrike
 {
@@ -17,31 +21,42 @@ namespace AutoEvent.Games.CounterStrike
             _plugin = plugin;
         }
 
+        [PluginEvent(ServerEventType.PlayerReloadWeapon)]
+        public void OnReloading(PlayerReloadWeaponEvent ev)
+        {
+            SetMaxAmmo(ev.Player);
+        }
+
         [PluginEvent(ServerEventType.PlayerSpawn)]
         public void OnSpawning(PlayerSpawnEvent ev)
         {
+            SetMaxAmmo(ev.Player);
+        }
+
+        private void SetMaxAmmo(Player pl)
+        {
             foreach (KeyValuePair<ItemType, ushort> AmmoLimit in InventoryLimits.StandardAmmoLimits)
             {
-                ev.Player.SetAmmo(AmmoLimit.Key, AmmoLimit.Value);
+                pl.SetAmmo(AmmoLimit.Key, AmmoLimit.Value);
             }
         }
 
-        public void OnPickUpItem(PickUpItemEvent ev)
+        public void OnPickUpItem(PickUpItemArgs ev)
         {
-            if (ev.Item.Type != ItemType.SCP018) return;
+            if (ev.Item.ItemTypeId != ItemType.SCP018) return;
 
-            ev.IsAllowed = false;
             if (_plugin.BombState == BombState.NoPlanted)
             {
-                if (ev.Player.isChaos)
+                if (ev.Player.IsChaos)
                 {
                     _plugin.Winner = ev.Player;
                     _plugin.BombState = BombState.Planted;
-                    _plugin.BombSchematic = MER.Api.SpawnSchematic("Bomb", ev.Item.Position, Quartenion.Identity, Vector3.one);
+                    _plugin.RoundTime = new TimeSpan(0, 0, 35);
+                    _plugin.BombPoints.ForEach(r => GameObject.Destroy(r));
+                    _plugin.BombSchematic = ObjectSpawner.SpawnSchematic("bomb", ev.Pickup.Position, Quaternion.identity, Vector3.one);
 
-                    _plugin.EventTime = new TimeSpan(0, 0, 35);
-                    Extensions.PlayAudio("BombPlanted", 5, false);
-                    ev.Player.ReceiveHint("<color=red>Вы устанавливаете бомбу</color>", 3);
+                    Extensions.PlayAudio("BombPlanted.ogg", 5, false, "BombPlanted");
+                    ev.Player.ReceiveHint("Вы устанавили бомбу", 3);
                 }
                 else
                 {
@@ -50,18 +65,20 @@ namespace AutoEvent.Games.CounterStrike
             }
             else if (_plugin.BombState == BombState.Planted)
             {
-                if (ev.Player.isNtf)
+                if (ev.Player.IsNTF && Vector3.Distance(ev.Player.Position, _plugin.BombSchematic.Position) < 3)
                 {
                     _plugin.Winner = ev.Player;
                     _plugin.BombState = BombState.Defused;
                     _plugin.BombSchematic.Destroy();
-                    ev.Player.ReceiveHint("Вы дефьюзете бомбу", 3);
+                    ev.Player.ReceiveHint("Вы задефьюзили бомбу", 3);
                 }
                 else
                 {
                     ev.Player.ReceiveHint("Бомба уже установлена", 3);
                 }
-            }  
+            }
+
+            ev.IsAllowed = false;
         }  
 
         [PluginEvent(ServerEventType.PlayerJoined)]

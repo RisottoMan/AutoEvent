@@ -8,8 +8,8 @@ namespace AutoEvent.Games.CounterStrike;
 
 public class Config : EventConfig
 {
-    [Description("How many total kills a team needs to win. Determined per-person at the start of the round. [Default: 3]")]
-    public int KillsPerPerson { get; set; } = 3;
+    [Description("After how many seconds the round will end. [Default: 105]")]
+    public int TotalTimeInSeconds { get; set; } = 105;
     
     [Description("A list of loadouts for team NTF")]
     public List<Loadout> NTFLoadouts = new List<Loadout>()
