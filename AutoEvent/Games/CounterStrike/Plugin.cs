@@ -8,12 +8,14 @@ using AutoEvent.API.Enums;
 using UnityEngine;
 using AutoEvent.Events.Handlers;
 using AutoEvent.Interfaces;
-using Event = AutoEvent.Interfaces.Event;
 using CustomPlayerEffects;
+using MER.Lite.Objects;
+using Random = UnityEngine.Random;
+using Event = AutoEvent.Interfaces.Event;
 
 namespace AutoEvent.Games.CounterStrike
 {
-    public class Plugin : Event, IEventMap, IInternalEvent, IHidden
+    public class Plugin : Event, IEventMap, IEventSound, IInternalEvent
     {
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.StrikeTranslation.StrikeSName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.StrikeTranslation.StrikeDescription;
@@ -28,12 +30,20 @@ namespace AutoEvent.Games.CounterStrike
         public MapInfo MapInfo { get; set; } = new MapInfo()
         { 
             MapName = "de_dust2", 
-            Position = new Vector3(0, 0, 0)
+            Position = new Vector3(0, 0, 100)
+        };
+        public SoundInfo SoundInfo { get; set; } = new SoundInfo()
+        { 
+            SoundName = "Survival.ogg", 
+            Volume = 10,
+            Loop = false
         };
         public BombState BombState { get; set; }
         public Player Winner { get; set; }
-        public double TotalTime { get; set; } = 105;
-        SchematicObject bombSchematic { get; set; }
+        public SchematicObject BombSchematic { get; set; }
+        public TimeSpan RoundTime { get; set; }
+        public List<GameObject> BombPoints { get; set; }
+
         protected override void RegisterEvents()
         {
             EventHandler = new EventHandler(this);
@@ -44,6 +54,7 @@ namespace AutoEvent.Games.CounterStrike
             Servers.PlaceBullet += EventHandler.OnPlaceBullet;
             Servers.PlaceBlood += EventHandler.OnPlaceBlood;
             Players.DropAmmo += EventHandler.OnDropAmmo;
+            Players.PickUpItem += EventHandler.OnPickUpItem;
         }
         protected override void UnregisterEvents()
         {
@@ -53,6 +64,7 @@ namespace AutoEvent.Games.CounterStrike
             Servers.PlaceBullet -= EventHandler.OnPlaceBullet;
             Servers.PlaceBlood -= EventHandler.OnPlaceBlood;
             Players.DropAmmo -= EventHandler.OnDropAmmo;
+            Players.PickUpItem -= EventHandler.OnPickUpItem;
 
             EventHandler = null;
         }
@@ -61,10 +73,20 @@ namespace AutoEvent.Games.CounterStrike
         {
             Winner = null;
             BombState = BombState.NoPlanted;
+            RoundTime = new TimeSpan(0, 0, Config.TotalTimeInSeconds);
 
-            List<GameObject> spawnpoints = RandomClass.GetAllSpawnpoints(MapInfo.Map);
+            List<GameObject> spawnpoints = Functions.GetAllSpawnpoints(MapInfo.Map);
             List<GameObject> ctSpawn = spawnpoints.Where(r => r.name == "Spawnpoint_Counter").ToList();
             List<GameObject> tSpawn = spawnpoints.Where(r => r.name == "Spawnpoint_Terrorist").ToList();
+            BombPoints = spawnpoints.Where(r => r.name.Contains("Spawnpoint_Bomb")).ToList();
+
+            foreach(GameObject gameObject in BombPoints)
+            {
+                Functions.CreatePlantByPoint(
+                    gameObject.transform.position, 
+                    gameObject.transform.rotation, 
+                    gameObject.transform);
+            }
 
             var count = 0;
             foreach (Player player in Player.GetPlayers())
@@ -72,13 +94,13 @@ namespace AutoEvent.Games.CounterStrike
                 if (count % 2 == 0)
                 {
                     player.GiveLoadout(Config.NTFLoadouts);
-                    player.Position = ctSpawn.RandomItem().transform.position;
+                    player.Position = ctSpawn.RandomItem().transform.position
                         + new Vector3(Random.Range(-1f, 1f), 0, Random.Range(-1f, 1f));
                 }
                 else
                 {
                     player.GiveLoadout(Config.ChaosLoadouts);
-                    player.Position = tSpawn.RandomItem().transform.position;
+                    player.Position = tSpawn.RandomItem().transform.position
                         + new Vector3(Random.Range(-1f, 1f), 0, Random.Range(-1f, 1f));
                 }
 
@@ -89,7 +111,7 @@ namespace AutoEvent.Games.CounterStrike
         
         protected override IEnumerator<float> BroadcastStartCountdown()
         {
-            for (int time = 10; time > 0; time--)
+            for (int time = 20; time > 0; time--)
             {
                 Extensions.Broadcast($"<size=100><color=red>{time}</color></size>", 1);
                 yield return Timing.WaitForSeconds(1f);
@@ -108,15 +130,28 @@ namespace AutoEvent.Games.CounterStrike
         {
             var ctCount = Player.GetPlayers().Count(r => r.IsNTF);
             var tCount = Player.GetPlayers().Count(r => r.IsChaos);
-            return !(TotalTime > EventTime.TotalSeconds && ctCount > 0 && tCount > 0);
+            RoundTime -= TimeSpan.FromSeconds(1);
+
+            if (BombState == BombState.Planted)
+            {
+                if (RoundTime.TotalSeconds == 0)
+                {
+                    BombState = BombState.Exploded;
+                }
+            }
+            else if (BombState == BombState.Defused)
+            {
+                RoundTime = new TimeSpan(0, 0, 0);
+            }
+
+            return !((tCount > 0 || BombState == BombState.Planted) && ctCount > 0 && RoundTime.TotalSeconds != 0);
         }
 
         protected override void ProcessFrame()
         {
             var ctCount = Player.GetPlayers().Count(r => r.IsNTF);
             var tCount = Player.GetPlayers().Count(r => r.IsChaos);
-            double remainTime = TotalTime - EventTime.TotalSeconds;
-            var time = $"{(int)(remainTime/60):00}:{(int)(remainTime%60):00}";
+            var time = $"{RoundTime.Minutes:00}:{RoundTime.Seconds:00}";
 
             foreach (Player player in Player.GetPlayers())
             {
@@ -154,42 +189,55 @@ namespace AutoEvent.Games.CounterStrike
                     Replace("{time}", time);
 
                 player.ClearBroadcasts();
-                player.SendBroadcast(Translation.StrikeCycle, 1);
+                player.SendBroadcast(text, 1);
             }
         }
 
         protected override void OnFinished()
         {
-            if (bombSchematic != null) 
-            {
-                bombSchematic.Destroy(); // dont forgot move to cleanup method
-            }
             var ctCount = Player.GetPlayers().Count(r => r.IsNTF);
             var tCount = Player.GetPlayers().Count(r => r.IsChaos);
 
             string text = string.Empty;
-            if (ctCount == 0 && tCount == 0)
+            if (BombState == BombState.Exploded)
             {
-                text = Translation.StrikeDraw;
-            }
-            else if (tCount == 0)
-            {
-                text = Translation.StrikeCounterWin;
-            }
-            else if (ctCount == 0)
-            {
-                text = Translation.StrikeTerroristWin;
-            }
-            else if (BombState == BombState.Exploded)
-            {
+                foreach (Player player in Player.GetPlayers())
+                {
+                    if (player.IsAlive) player.Kill();
+                }
+
                 text = Translation.StrikePlantedWin;
+                Extensions.PlayAudio("TBombWin.ogg", 15, false, "TBombWin");
             }
             else if (BombState == BombState.Defused)
             {
                 text = Translation.StrikeDefusedWin;
+                Extensions.PlayAudio("CTWin.ogg", 10, false, "CTWin");
+            }
+            else if (tCount == 0)
+            {
+                text = Translation.StrikeCounterWin;
+                Extensions.PlayAudio("CTWin.ogg", 10, false, "CTWin");
+            }
+            else if (ctCount == 0)
+            {
+                text = Translation.StrikeTerroristWin;
+                Extensions.PlayAudio("TWin.ogg", 15, false, "TWin");
+            }
+            else if (ctCount == 0 && tCount == 0)
+            {
+                text = Translation.StrikeDraw;
             }
 
             Extensions.Broadcast(text, 10);
+        }
+
+        protected override void OnCleanup()
+        {
+            if (BombSchematic != null)
+            {
+                BombSchematic.Destroy();
+            }
         }
     }
 }
