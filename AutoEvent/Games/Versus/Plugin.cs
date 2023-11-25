@@ -86,16 +86,14 @@ namespace AutoEvent.Games.Versus
             var count = 0;
             foreach (Player player in Player.GetPlayers())
             {
-                if (UnityEngine.Random.Range(0,2) == 1)
-                {
+                if (count % 2 == 0)     
+                {              
                     player.GiveLoadout(Config.Team1Loadouts);
-                    //Extensions.SetRole(player, RoleTypeId.Scientist, RoleSpawnFlags.None);
                     player.Position = RandomClass.GetSpawnPosition(MapInfo.Map, true);
                 }
                 else
                 {
                     player.GiveLoadout(Config.Team2Loadouts);
-                    // Extensions.SetRole(player, RoleTypeId.ClassD, RoleSpawnFlags.None);
                     player.Position = RandomClass.GetSpawnPosition(MapInfo.Map, false);
                 }
                 count++;

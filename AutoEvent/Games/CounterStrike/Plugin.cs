@@ -31,7 +31,9 @@ namespace AutoEvent.Games.CounterStrike
             Position = new Vector3(0, 0, 0)
         };
         public BombState BombState { get; set; }
+        public Player Winner { get; set; }
         public double TotalTime { get; set; } = 105;
+        SchematicObject bombSchematic { get; set; }
         protected override void RegisterEvents()
         {
             EventHandler = new EventHandler(this);
@@ -57,6 +59,7 @@ namespace AutoEvent.Games.CounterStrike
 
         protected override void OnStart()
         {
+            Winner = null;
             BombState = BombState.NoPlanted;
 
             List<GameObject> spawnpoints = RandomClass.GetAllSpawnpoints(MapInfo.Map);
@@ -70,13 +73,13 @@ namespace AutoEvent.Games.CounterStrike
                 {
                     player.GiveLoadout(Config.NTFLoadouts);
                     player.Position = ctSpawn.RandomItem().transform.position;
-                        //+ new Vector3(Random.Range(-1f, 1f), 0, Random.Range(-1f, 1f));
+                        + new Vector3(Random.Range(-1f, 1f), 0, Random.Range(-1f, 1f));
                 }
                 else
                 {
                     player.GiveLoadout(Config.ChaosLoadouts);
                     player.Position = tSpawn.RandomItem().transform.position;
-                        //+ new Vector3(Random.Range(-1f, 1f), 0, Random.Range(-1f, 1f));
+                        + new Vector3(Random.Range(-1f, 1f), 0, Random.Range(-1f, 1f));
                 }
 
                 player.EffectsManager.EnableEffect<Ensnared>();
@@ -143,14 +146,6 @@ namespace AutoEvent.Games.CounterStrike
                     }
                 }
 
-                /*
-                if (BombState == BombState.Planted)
-                {
-                    EventTime = new TimeSpan(0, 0, 35);
-                    Extensions.PlayAudio("BombPlanted", 5, false, "Bomb Planted");
-                }
-                */
-
                 string text = Translation.StrikeCycle.
                     Replace("{name}", Name).
                     Replace("{task}", task).
@@ -165,6 +160,10 @@ namespace AutoEvent.Games.CounterStrike
 
         protected override void OnFinished()
         {
+            if (bombSchematic != null) 
+            {
+                bombSchematic.Destroy(); // dont forgot move to cleanup method
+            }
             var ctCount = Player.GetPlayers().Count(r => r.IsNTF);
             var tCount = Player.GetPlayers().Count(r => r.IsChaos);
 
