@@ -27,15 +27,5 @@ namespace AutoEvent.Games.CounterStrike
 
             return GameMap.AttachedBlocks.Where(x => x.name.Contains("Spawnpoint")).ToList();
         }
-
-        public static ItemPickup CreatePlantByPoint(Vector3 pos, Quaternion rot, Transform parent)
-        {
-            ItemPickup pickup = ItemPickup.Create(ItemType.SCP018, Vector3.zero, Quaternion.identity);
-            pickup.GameObject.transform.parent = parent;
-            pickup.GameObject.transform.localPosition = pos;
-            pickup.GameObject.transform.localRotation = rot;
-
-            return pickup;
-        }
     }
 }

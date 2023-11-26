@@ -8,7 +8,6 @@ using AutoEvent.API.Enums;
 using UnityEngine;
 using AutoEvent.Events.Handlers;
 using AutoEvent.Interfaces;
-using CustomPlayerEffects;
 using MER.Lite.Objects;
 using Random = UnityEngine.Random;
 using Event = AutoEvent.Interfaces.Event;
@@ -30,7 +29,7 @@ namespace AutoEvent.Games.CounterStrike
         public MapInfo MapInfo { get; set; } = new MapInfo()
         { 
             MapName = "de_dust2", 
-            Position = new Vector3(0, 0, 100)
+            Position = new Vector3(0, 0, 30)
         };
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
         { 
@@ -43,6 +42,7 @@ namespace AutoEvent.Games.CounterStrike
         public SchematicObject BombSchematic { get; set; }
         public TimeSpan RoundTime { get; set; }
         public List<GameObject> BombPoints { get; set; }
+        public List<GameObject> Walls { get; set; }
 
         protected override void RegisterEvents()
         {
@@ -54,7 +54,7 @@ namespace AutoEvent.Games.CounterStrike
             Servers.PlaceBullet += EventHandler.OnPlaceBullet;
             Servers.PlaceBlood += EventHandler.OnPlaceBlood;
             Players.DropAmmo += EventHandler.OnDropAmmo;
-            Players.PickUpItem += EventHandler.OnPickUpItem;
+            Players.PlayerNoclip += EventHandler.OnPlayerNoclip;
         }
         protected override void UnregisterEvents()
         {
@@ -64,7 +64,7 @@ namespace AutoEvent.Games.CounterStrike
             Servers.PlaceBullet -= EventHandler.OnPlaceBullet;
             Servers.PlaceBlood -= EventHandler.OnPlaceBlood;
             Players.DropAmmo -= EventHandler.OnDropAmmo;
-            Players.PickUpItem -= EventHandler.OnPickUpItem;
+            Players.PlayerNoclip -= EventHandler.OnPlayerNoclip;
 
             EventHandler = null;
         }
@@ -80,14 +80,6 @@ namespace AutoEvent.Games.CounterStrike
             List<GameObject> tSpawn = spawnpoints.Where(r => r.name == "Spawnpoint_Terrorist").ToList();
             BombPoints = spawnpoints.Where(r => r.name.Contains("Spawnpoint_Bomb")).ToList();
 
-            foreach(GameObject gameObject in BombPoints)
-            {
-                Functions.CreatePlantByPoint(
-                    gameObject.transform.position, 
-                    gameObject.transform.rotation, 
-                    gameObject.transform);
-            }
-
             var count = 0;
             foreach (Player player in Player.GetPlayers())
             {
@@ -95,16 +87,14 @@ namespace AutoEvent.Games.CounterStrike
                 {
                     player.GiveLoadout(Config.NTFLoadouts);
                     player.Position = ctSpawn.RandomItem().transform.position
-                        + new Vector3(Random.Range(-1f, 1f), 0, Random.Range(-1f, 1f));
+                        + new Vector3(Random.Range(-2f, 2f), 0, Random.Range(-2f, 2f));
                 }
                 else
                 {
                     player.GiveLoadout(Config.ChaosLoadouts);
                     player.Position = tSpawn.RandomItem().transform.position
-                        + new Vector3(Random.Range(-1f, 1f), 0, Random.Range(-1f, 1f));
+                        + new Vector3(Random.Range(-2f, 2f), 0, Random.Range(-2f, 2f));
                 }
-
-                player.EffectsManager.EnableEffect<Ensnared>();
                 count++;
             }
         }
@@ -113,17 +103,16 @@ namespace AutoEvent.Games.CounterStrike
         {
             for (int time = 20; time > 0; time--)
             {
-                Extensions.Broadcast($"<size=100><color=red>{time}</color></size>", 1);
+                Extensions.Broadcast($"<size=100><color=red>Get ready: {time}</color></size>", 1);
                 yield return Timing.WaitForSeconds(1f);
             }
         }
 
         protected override void CountdownFinished()
         {
-            foreach(Player player in Player.GetPlayers())
-            {
-                player.EffectsManager.DisableEffect<Ensnared>();
-            }
+            // We are removing the walls so that the players can walk.
+            MapInfo.Map.AttachedBlocks.Where(r => r.name == "Wall").ToList()
+                .ForEach(r => GameObject.Destroy(r));
         }
 
         protected override bool IsRoundDone()
@@ -144,7 +133,9 @@ namespace AutoEvent.Games.CounterStrike
                 RoundTime = new TimeSpan(0, 0, 0);
             }
 
-            return !((tCount > 0 || BombState == BombState.Planted) && ctCount > 0 && RoundTime.TotalSeconds != 0);
+            return !((tCount > 0 || BombState == BombState.Planted) && 
+                ctCount > 0 && 
+                RoundTime.TotalSeconds != 0);
         }
 
         protected override void ProcessFrame()
@@ -155,6 +146,17 @@ namespace AutoEvent.Games.CounterStrike
 
             foreach (Player player in Player.GetPlayers())
             {
+                // Logic stuffs
+                foreach (var point in BombPoints)
+                {
+                    if (Vector3.Distance(point.transform.position, player.Position) < 2)
+                    {
+                        // This is a temporary function that requires major changes.
+                        player.ReceiveHint("<i><color=green>You can interact with plant</color></i>\nUse <color=red>[Alt]</color> button", 1);
+                    }
+                }
+
+                // Translation stuffs
                 string task = string.Empty;
                 if (BombState == BombState.NoPlanted)
                 {

@@ -41,44 +41,41 @@ namespace AutoEvent.Games.CounterStrike
             }
         }
 
-        public void OnPickUpItem(PickUpItemArgs ev)
+        public void OnPlayerNoclip(PlayerNoclipArgs ev)
         {
-            if (ev.Item.ItemTypeId != ItemType.SCP018) return;
+            StrikeTranslation translation = AutoEvent.Singleton.Translation.StrikeTranslation;
 
-            if (_plugin.BombState == BombState.NoPlanted)
+            if (_plugin.BombState == BombState.NoPlanted && ev.Player.IsChaos)
             {
-                if (ev.Player.IsChaos)
+                foreach (var point in _plugin.BombPoints)
                 {
-                    _plugin.Winner = ev.Player;
-                    _plugin.BombState = BombState.Planted;
-                    _plugin.RoundTime = new TimeSpan(0, 0, 35);
-                    _plugin.BombPoints.ForEach(r => GameObject.Destroy(r));
-                    _plugin.BombSchematic = ObjectSpawner.SpawnSchematic("bomb", ev.Pickup.Position, Quaternion.identity, Vector3.one);
+                    if (Vector3.Distance(point.transform.position, ev.Player.Position) < 2)
+                    {
+                        // need add timing
+                        _plugin.Winner = ev.Player;
+                        _plugin.BombState = BombState.Planted;
+                        _plugin.RoundTime = new TimeSpan(0, 0, 35);
+                        _plugin.BombSchematic = ObjectSpawner.SpawnSchematic(
+                            "bomb",
+                            point.transform.position,
+                            Quaternion.Euler(ev.Player.Rotation),
+                            Vector3.one);
 
-                    Extensions.PlayAudio("BombPlanted.ogg", 5, false, "BombPlanted");
-                    ev.Player.ReceiveHint("Вы устанавили бомбу", 3);
-                }
-                else
-                {
-                    ev.Player.ReceiveHint("Бомба не установлена", 3);
+                        Extensions.PlayAudio("BombPlanted.ogg", 5, false, "BombPlanted");
+                        ev.Player.ReceiveHint(translation.StrikeYouPlanted, 3);
+                    }
                 }
             }
-            else if (_plugin.BombState == BombState.Planted)
+            else if (_plugin.BombState == BombState.Planted && ev.Player.IsNTF)
             {
-                if (ev.Player.IsNTF && Vector3.Distance(ev.Player.Position, _plugin.BombSchematic.Position) < 3)
+                if (Vector3.Distance(ev.Player.Position, _plugin.BombSchematic.Position) < 3)
                 {
                     _plugin.Winner = ev.Player;
                     _plugin.BombState = BombState.Defused;
                     _plugin.BombSchematic.Destroy();
-                    ev.Player.ReceiveHint("Вы задефьюзили бомбу", 3);
-                }
-                else
-                {
-                    ev.Player.ReceiveHint("Бомба уже установлена", 3);
+                    ev.Player.ReceiveHint(translation.StrikeYouDefused, 3);
                 }
             }
-
-            ev.IsAllowed = false;
         }  
 
         [PluginEvent(ServerEventType.PlayerJoined)]

@@ -27,7 +27,7 @@ namespace AutoEvent.Games.AllDeathmatch
         public MapInfo MapInfo { get; set; } = new MapInfo()
         { 
             MapName = "de_dust2",
-            Position = new Vector3(0, 0, 100)
+            Position = new Vector3(0, 0, 30)
         };
 
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
@@ -80,7 +80,12 @@ namespace AutoEvent.Games.AllDeathmatch
             }
 
             TotalKills = new();
+
             Spawnpoints = RandomClass.GetAllSpawnpoint(MapInfo.Map);
+            // Walls can be used on all counter-strike maps. For Deathmatch mode, they must be removed earlier.
+            MapInfo.Map.AttachedBlocks.Where(r => r.name == "Wall").ToList()
+                .ForEach(r => GameObject.Destroy(r));
+
             foreach (Player player in Player.GetPlayers())
             {
                 player.GiveLoadout(Config.NTFLoadouts, LoadoutFlags.ForceInfiniteAmmo | LoadoutFlags.IgnoreGodMode | LoadoutFlags.IgnoreWeapons);
