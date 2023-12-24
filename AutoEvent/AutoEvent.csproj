@@ -44,14 +44,14 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="EXILED" Version="8.4.1" />
+    <PackageReference Include="EXILED" Version="8.5.0-beta.1" />
     <PackageReference Include="Fody" Version="6.8.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Lib.Harmony" Version="2.2.2" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-    <PackageReference Include="Northwood.PluginAPI" Version="13.1.1" />
+    <PackageReference Include="Northwood.PluginAPI" Version="13.1.2" />
     <PackageReference Include="NVorbis" Version="0.10.5" />
     <PackageReference Include="YamlDotNet" Version="13.3.1" />
   </ItemGroup>

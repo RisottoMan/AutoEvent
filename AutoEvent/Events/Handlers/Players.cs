@@ -18,6 +18,7 @@ namespace AutoEvent.Events.Handlers
         public static event Action<ChargingJailbirdEventArgs> ChargingJailbird;
         public static event Action<ShotEventArgs> Shot;
         public static event Action<PickUpItemArgs> PickUpItem;
+        public static event Action<SearchPickUpItemArgs> SearchPickUpItem;
         public static void OnDropAmmo(DropAmmoArgs ev) => DropAmmo?.Invoke(ev);
         public static void OnDropItem(DropItemArgs ev) => DropItem?.Invoke(ev);
         public static void OnPlaceTantrum(PlaceTantrumArgs ev) => PlaceTantrum?.Invoke(ev);
@@ -30,5 +31,6 @@ namespace AutoEvent.Events.Handlers
         public static void OnChargingJailbird(ChargingJailbirdEventArgs ev) => ChargingJailbird?.Invoke(ev);
         public static void OnShot(ShotEventArgs ev) => Shot?.Invoke(ev);
         public static void OnPickUpItem(PickUpItemArgs ev) => PickUpItem?.Invoke(ev);
+        public static void OnSearchPickUpItem(SearchPickUpItemArgs ev) => SearchPickUpItem?.Invoke(ev);
     }
 }

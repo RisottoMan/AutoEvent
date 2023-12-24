@@ -9,6 +9,7 @@ using AutoEvent.Games.Lobby;
 using AutoEvent.Games.Vote;
 using AutoEvent.Games.CounterStrike;
 using AutoEvent.Games.AllDeathmatch;
+using AutoEvent.Games.Snowball;
 #if EXILED
 using Exiled.API.Interfaces;
 #endif
@@ -103,5 +104,8 @@ namespace AutoEvent
 
         [Description("All Deathmatch Mode")]
         public AllTranslation AllTranslation { get; set; } = new AllTranslation();
+
+        [Description("Snowball Mode")]
+        public SnowballTranslation SnowballTranslation { get; set; } = new SnowballTranslation();
     }
 }

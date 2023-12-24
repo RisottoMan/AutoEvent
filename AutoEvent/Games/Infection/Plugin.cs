@@ -25,7 +25,7 @@ namespace AutoEvent.Games.Infection
             { MapName = "Zombie", Position = new Vector3(115.5f, 1030f, -43.5f), MapRotation = Quaternion.identity };
 
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
-            { SoundName = "Zombie.ogg", Volume = 7, Loop = true };
+            { SoundName = "Zombie_Run.ogg", Volume = 15, Loop = true };
         protected override float PostRoundDelay { get; set; } = 10f;
         private EventHandler EventHandler { get; set; }
         private InfectTranslate Translation { get; set; } = AutoEvent.Singleton.Translation.InfectTranslate;
@@ -91,7 +91,9 @@ namespace AutoEvent.Games.Infection
 
         protected override void CountdownFinished()
         {
-            Player.GetPlayers().RandomItem().GiveLoadout(Config.ZombieLoadouts);
+            Player player = Player.GetPlayers().RandomItem();
+            player.GiveLoadout(Config.ZombieLoadouts);
+            Extensions.PlayPlayerAudio(player, Config.ZombieScreams.RandomItem(), 15);
         }
 
         protected override bool IsRoundDone()

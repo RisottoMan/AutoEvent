@@ -11,6 +11,7 @@ using AutoEvent.Interfaces;
 using MER.Lite.Objects;
 using Random = UnityEngine.Random;
 using Event = AutoEvent.Interfaces.Event;
+using System.Collections;
 
 namespace AutoEvent.Games.CounterStrike
 {
@@ -43,6 +44,7 @@ namespace AutoEvent.Games.CounterStrike
         public TimeSpan RoundTime { get; set; }
         public List<GameObject> BombPoints { get; set; }
         public List<GameObject> Walls { get; set; }
+        public List<string> Information { get; set; }
 
         protected override void RegisterEvents()
         {
@@ -55,6 +57,8 @@ namespace AutoEvent.Games.CounterStrike
             Servers.PlaceBlood += EventHandler.OnPlaceBlood;
             Players.DropAmmo += EventHandler.OnDropAmmo;
             Players.PlayerNoclip += EventHandler.OnPlayerNoclip;
+            Players.PickUpItem += EventHandler.OnPickupItem;
+            Players.SearchPickUpItem += EventHandler.OnSearchPickUpItem;
         }
         protected override void UnregisterEvents()
         {
@@ -65,6 +69,8 @@ namespace AutoEvent.Games.CounterStrike
             Servers.PlaceBlood -= EventHandler.OnPlaceBlood;
             Players.DropAmmo -= EventHandler.OnDropAmmo;
             Players.PlayerNoclip -= EventHandler.OnPlayerNoclip;
+            Players.PickUpItem -= EventHandler.OnPickupItem;
+            Players.SearchPickUpItem -= EventHandler.OnSearchPickUpItem;
 
             EventHandler = null;
         }
@@ -72,6 +78,7 @@ namespace AutoEvent.Games.CounterStrike
         protected override void OnStart()
         {
             Winner = null;
+            Information = new List<string>();
             BombState = BombState.NoPlanted;
             RoundTime = new TimeSpan(0, 0, Config.TotalTimeInSeconds);
 
@@ -133,9 +140,12 @@ namespace AutoEvent.Games.CounterStrike
                 RoundTime = new TimeSpan(0, 0, 0);
             }
 
+            return false;
+            /*
             return !((tCount > 0 || BombState == BombState.Planted) && 
                 ctCount > 0 && 
                 RoundTime.TotalSeconds != 0);
+            */
         }
 
         protected override void ProcessFrame()
@@ -143,6 +153,18 @@ namespace AutoEvent.Games.CounterStrike
             var ctCount = Player.GetPlayers().Count(r => r.IsNTF);
             var tCount = Player.GetPlayers().Count(r => r.IsChaos);
             var time = $"{RoundTime.Minutes:00}:{RoundTime.Seconds:00}";
+
+            var leaderBoard = $"Killboard:\n";
+            for (int i = 0; i <= 3; i++)
+            {
+                if (i < Information.Count)
+                {
+                    int length = Math.Min(Information.ElementAt(i).Length, 10);
+                    leaderBoard += $"{Information.ElementAt(i).Substring(0, length)}";
+                }
+            }
+            //AutoEvent.Singleton.Translation.StrikeTranslation.StrikeHintCycle
+
 
             foreach (Player player in Player.GetPlayers())
             {

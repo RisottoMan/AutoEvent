@@ -488,6 +488,19 @@ namespace AutoEvent
             audioPlayer.Play(0);
         }
 
+        public static void PlayPlayerAudio(Player player, string audioFile, byte volume)
+        {
+            var path = Path.Combine(AutoEvent.Singleton.Config.MusicDirectoryPath, audioFile);
+
+            var audioPlayer = AudioPlayerBase.Get(player.ReferenceHub);
+            audioPlayer.Enqueue(path, -1);
+            audioPlayer.LogDebug = false;
+            audioPlayer.BroadcastChannel = VoiceChatChannel.Proximity;
+            audioPlayer.Volume = volume * (AutoEvent.Singleton.Config.Volume / 100f);
+            audioPlayer.Loop = false;
+            audioPlayer.Play(0);
+        }
+
         public static void StopAudio()
         {
             if (AudioBot == null) return;

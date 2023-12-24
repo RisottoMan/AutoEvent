@@ -9,6 +9,7 @@ namespace AutoEvent.Games.Infection
 {
     public class InfectConfig : EventConfig
     {
+        /*
         public InfectConfig()
         {
             if (AvailableMaps is null)
@@ -34,6 +35,7 @@ namespace AutoEvent.Games.Infection
             }
             
         }
+        */
         public List<Loadout> PlayerLoadouts { get; set; } = new List<Loadout>()
         {
             new Loadout()
@@ -48,6 +50,12 @@ namespace AutoEvent.Games.Infection
             {
                 Roles = new Dictionary<RoleTypeId, int>() { { RoleTypeId.Scp0492, 100 } }
             }
+        };
+
+        public List<string> ZombieScreams { get; set; } = new List<string>()
+        {
+            "human_death_01.ogg",
+            "human_death_02.ogg"
         };
     }
 }

@@ -31,6 +31,7 @@ namespace AutoEvent.Games.Infection
                 {
                     ev.Target.GiveLoadout(_plugin.Config.ZombieLoadouts);
                     ev.Attacker.ReceiveHitMarker(1f);
+                    Extensions.PlayPlayerAudio(ev.Target, _plugin.Config.ZombieScreams.RandomItem(), 15);
                 }
             }
         }
@@ -42,6 +43,7 @@ namespace AutoEvent.Games.Infection
             {
                 ev.Player.GiveLoadout(_plugin.Config.ZombieLoadouts);
                 ev.Player.Position = RandomPosition.GetSpawnPosition(_plugin.MapInfo.Map);
+                Extensions.PlayPlayerAudio(ev.Player, _plugin.Config.ZombieScreams.RandomItem(), 15);
             }
             else
             {
@@ -57,6 +59,7 @@ namespace AutoEvent.Games.Infection
             {
                 ev.Player.GiveLoadout(_plugin.Config.ZombieLoadouts);
                 ev.Player.Position = RandomPosition.GetSpawnPosition(_plugin.MapInfo.Map);
+                Extensions.PlayPlayerAudio(ev.Player, _plugin.Config.ZombieScreams.RandomItem(), 15);
             });
         }
 

@@ -1,5 +1,6 @@
 ﻿using AutoEvent.Events.EventArgs;
 using InventorySystem.Configs;
+using InventorySystem.Items.Pickups;
 using MER.Lite;
 using Mirror;
 using PlayerRoles;
@@ -38,6 +39,24 @@ namespace AutoEvent.Games.CounterStrike
             foreach (KeyValuePair<ItemType, ushort> AmmoLimit in InventoryLimits.StandardAmmoLimits)
             {
                 pl.SetAmmo(AmmoLimit.Key, AmmoLimit.Value);
+            }
+        }
+
+        public void OnPickupItem(PickUpItemArgs ev)
+        {
+            if (ev.Item.ItemTypeId == ItemType.Medkit)
+            {
+                DebugLogger.LogDebug("Pick up item = false;", LogLevel.Error);
+                ev.IsAllowed = false;
+            }
+        }
+
+        public void OnSearchPickUpItem(SearchPickUpItemArgs ev)
+        {
+            if (ev.Item.ItemTypeId == ItemType.MicroHID)
+            {
+                DebugLogger.LogDebug("Search pick up item = false;", LogLevel.Error);
+                ev.IsAllowed = false;
             }
         }
 
