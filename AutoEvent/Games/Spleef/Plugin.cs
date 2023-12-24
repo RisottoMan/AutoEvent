@@ -33,7 +33,7 @@ using Event = AutoEvent.Interfaces.Event;
 
 namespace AutoEvent.Games.Spleef;
 
-public class Plugin : Event, IEventMap, IEventSound
+public class Plugin : Event, IEventSound, IEventMap, IInternalEvent, IEventTag
 {
     public override string Name { get; set; } = AutoEvent.Singleton.Translation.SpleefTranslate.SpleefName;
     public override string Description { get; set; } = AutoEvent.Singleton.Translation.SpleefTranslate.SpleefDescription;
@@ -46,10 +46,21 @@ public class Plugin : Event, IEventMap, IEventSound
     public SpleefConfig Config { get; set; }
     public EventHandler EventHandler { get; set; }
     public MapInfo MapInfo { get; set; } = new MapInfo()
-        { MapName = "Puzzle", Position = new Vector3(76f, 1026.5f, -43.68f), };
+    { 
+        MapName = "Puzzle", 
+        Position = new Vector3(76f, 1026.5f, -43.68f)
+    };
     public SoundInfo SoundInfo { get; set; } = new SoundInfo()
-        { SoundName = "Puzzle.ogg", Volume = 15, Loop = true };
-
+    {
+        SoundName = "Puzzle.ogg",
+        Volume = 15,
+        Loop = true
+    };
+    public TagInfo TagInfo { get; set; } = new TagInfo()
+    {
+        Name = "Christmas",
+        Color = "#42aaff"
+    };
     /// <summary>
     /// A local list of platforms that changes round to round.
     /// </summary>

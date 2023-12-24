@@ -13,7 +13,7 @@ using Event = AutoEvent.Interfaces.Event;
 
 namespace AutoEvent.Games.Snowball
 {
-    public class Plugin : Event, IEventSound, IEventMap, IInternalEvent
+    public class Plugin : Event, IEventSound, IEventMap, IInternalEvent, IEventTag
     {
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.SnowballTranslation.SnowballName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.SnowballTranslation.SnowballDescription;
@@ -33,6 +33,11 @@ namespace AutoEvent.Games.Snowball
             SoundName = "Fall_Guys_Winter_Fallympics.ogg", 
             Volume = 7, 
             Loop = true
+        };
+        public TagInfo TagInfo { get; set; } = new TagInfo()
+        {
+            Name = "Christmas",
+            Color = "#42aaff"
         };
         private EventHandler EventHandler { get; set; }
         List<GameObject> Walls { get; set; }
