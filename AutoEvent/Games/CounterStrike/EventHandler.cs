@@ -80,7 +80,7 @@ namespace AutoEvent.Games.CounterStrike
                             Quaternion.Euler(ev.Player.Rotation),
                             Vector3.one);
 
-                        Extensions.PlayAudio("BombPlanted.ogg", 5, false, "BombPlanted");
+                        Extensions.PlayAudio("BombPlanted.ogg", 5, false);
                         ev.Player.ReceiveHint(translation.StrikeYouPlanted, 3);
                     }
                 }

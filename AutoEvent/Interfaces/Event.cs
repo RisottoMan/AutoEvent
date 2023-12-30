@@ -223,8 +223,7 @@ namespace AutoEvent.Interfaces
             Extensions.PlayAudio(
                 sound.SoundInfo.SoundName,
                 sound.SoundInfo.Volume,
-                sound.SoundInfo.Loop,
-                Name);
+                sound.SoundInfo.Loop);
         }
     }
 

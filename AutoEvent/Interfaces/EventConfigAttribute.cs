@@ -66,6 +66,9 @@ public class EventConfigAttribute : Attribute
                 //
             }
         }
+
+        // Check version plugin and config
+
         CreateNewConfig(ref conf, type, configPath);
         _isLoaded = true;
         return conf;

@@ -15,7 +15,7 @@ using System.Collections;
 
 namespace AutoEvent.Games.CounterStrike
 {
-    public class Plugin : Event, IEventMap, IEventSound, IInternalEvent
+    public class Plugin : Event, IEventMap, IEventSound, IInternalEvent, IEventTag
     {
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.StrikeTranslation.StrikeSName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.StrikeTranslation.StrikeDescription;
@@ -37,6 +37,11 @@ namespace AutoEvent.Games.CounterStrike
             SoundName = "Survival.ogg", 
             Volume = 10,
             Loop = false
+        };
+        public TagInfo TagInfo { get; set; } = new TagInfo()
+        {
+            Name = "Christmas",
+            Color = "#42aaff"
         };
         public BombState BombState { get; set; }
         public Player Winner { get; set; }
@@ -231,22 +236,22 @@ namespace AutoEvent.Games.CounterStrike
                 }
 
                 text = Translation.StrikePlantedWin;
-                Extensions.PlayAudio("TBombWin.ogg", 15, false, "TBombWin");
+                Extensions.PlayAudio("TBombWin.ogg", 15, false);
             }
             else if (BombState == BombState.Defused)
             {
                 text = Translation.StrikeDefusedWin;
-                Extensions.PlayAudio("CTWin.ogg", 10, false, "CTWin");
+                Extensions.PlayAudio("CTWin.ogg", 10, false);
             }
             else if (tCount == 0)
             {
                 text = Translation.StrikeCounterWin;
-                Extensions.PlayAudio("CTWin.ogg", 10, false, "CTWin");
+                Extensions.PlayAudio("CTWin.ogg", 10, false);
             }
             else if (ctCount == 0)
             {
                 text = Translation.StrikeTerroristWin;
-                Extensions.PlayAudio("TWin.ogg", 15, false, "TWin");
+                Extensions.PlayAudio("TWin.ogg", 15, false);
             }
             else if (ctCount == 0 && tCount == 0)
             {

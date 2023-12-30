@@ -43,10 +43,12 @@ public class EventHandler
         {
             return;
         }
+
         if (ev.Damage <= 0)
         {
             ev.Damage = BodyArmorUtils.ProcessDamage(0, firearm.BaseStats.DamageAtDistance(firearm, ev.Distance), Mathf.RoundToInt(firearm.ArmorPenetration * 100f));
         }
+
         ev.RaycastHit.collider.transform.GetComponentsInParent<FallPlatformComponent>().ForEach(x =>
         {
             var damageHandler = new FirearmDamageHandler(ev.Player.CurrentItem as Firearm, ev.Damage, false);

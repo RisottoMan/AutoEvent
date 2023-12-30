@@ -105,7 +105,7 @@ namespace AutoEvent.Games.ZombieEscape
 
         protected override void CountdownFinished()
         {
-            Extensions.PlayAudio("Zombie2.ogg", 7, false, Name);
+            Extensions.PlayAudio("Zombie2.ogg", 7, false);
 
             foreach (Player ply in  Config.Zombies.GetPlayers(true))
             {
@@ -213,12 +213,12 @@ namespace AutoEvent.Games.ZombieEscape
             if (Player.GetPlayers().Count(r => r.IsHuman) == 0)
             {
                 Extensions.Broadcast(Translation.ZombieEscapeZombieWin, 10);
-                Extensions.PlayAudio("ZombieWin.ogg", 7, false, Name);
+                Extensions.PlayAudio("ZombieWin.ogg", 7, false);
             }
             else
             {
                 Extensions.Broadcast(Translation.ZombieEscapeHumanWin, 10);
-                Extensions.PlayAudio("HumanWin.ogg", 7, false, Name);
+                Extensions.PlayAudio("HumanWin.ogg", 7, false);
             }
         }
         protected override void OnCleanup()

@@ -30,7 +30,7 @@ namespace AutoEvent.Games.Snowball
         };
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
         { 
-            SoundName = "Fall_Guys_Winter_Fallympics.ogg", 
+            SoundName = "Fall_Guys_Winter_Fallympics.ogg",
             Volume = 7, 
             Loop = true
         };
