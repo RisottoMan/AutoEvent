@@ -16,7 +16,7 @@ using Random = UnityEngine.Random;
 
 namespace AutoEvent.Games.DeathParty
 {
-    public class Plugin : Event, IEventMap, IEventSound, IInternalEvent
+    public class Plugin : Event, IEventMap, IEventSound, IEventTag, IInternalEvent
     {
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.DeathTranslate.DeathName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.DeathTranslate.DeathDescription;
@@ -27,6 +27,11 @@ namespace AutoEvent.Games.DeathParty
             {MapName = "DeathParty", Position = new Vector3(10f, 1012f, -40f), };
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
             { SoundName = "DeathParty.ogg", Volume = 5, Loop = true };
+        public TagInfo TagInfo { get; set; } = new TagInfo()
+        {
+            Name = "New Map",
+            Color = "#77dde7"
+        };
 
         [EventConfig]
         public DeathPartyConfig Config { get; set; }

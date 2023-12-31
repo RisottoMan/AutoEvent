@@ -33,22 +33,45 @@ namespace AutoEvent.Games.Infection
                     ev.Attacker.ReceiveHitMarker(1f);
                     Extensions.PlayPlayerAudio(ev.Target, _plugin.Config.ZombieScreams.RandomItem(), 15);
                 }
+                else if (ev.Attacker.Role == RoleTypeId.ZombieFlamingo)
+                {
+                    ev.Target.GiveLoadout(_plugin.Config.ZombieFlamingoLoadouts);
+                    ev.Attacker.ReceiveHitMarker(1f);
+                    Extensions.PlayPlayerAudio(ev.Target, _plugin.Config.ZombieScreams.RandomItem(), 15);
+                }
             }
         }
 
         [PluginEvent(ServerEventType.PlayerJoined)]
         public void OnJoin(PlayerJoinedEvent ev)
         {
-            if (Player.GetPlayers().Count(r => r.Role == RoleTypeId.Scp0492) > 0)
+            if (_plugin.IsFlamingoVariant == true)
             {
-                ev.Player.GiveLoadout(_plugin.Config.ZombieLoadouts);
-                ev.Player.Position = RandomPosition.GetSpawnPosition(_plugin.MapInfo.Map);
-                Extensions.PlayPlayerAudio(ev.Player, _plugin.Config.ZombieScreams.RandomItem(), 15);
+                if (Player.GetPlayers().Count(r => r.Role == RoleTypeId.ZombieFlamingo) > 0)
+                {
+                    ev.Player.GiveLoadout(_plugin.Config.ZombieFlamingoLoadouts);
+                    ev.Player.Position = RandomPosition.GetSpawnPosition(_plugin.MapInfo.Map);
+                    Extensions.PlayPlayerAudio(ev.Player, _plugin.Config.ZombieScreams.RandomItem(), 15);
+                }
+                else
+                {
+                    ev.Player.GiveLoadout(_plugin.Config.FlamingoLoadouts);
+                    ev.Player.Position = RandomPosition.GetSpawnPosition(_plugin.MapInfo.Map);
+                }
             }
             else
             {
-                ev.Player.GiveLoadout(_plugin.Config.PlayerLoadouts);
-                ev.Player.Position = RandomPosition.GetSpawnPosition(_plugin.MapInfo.Map);
+                if (Player.GetPlayers().Count(r => r.Role == RoleTypeId.Scp0492) > 0)
+                {
+                    ev.Player.GiveLoadout(_plugin.Config.ZombieLoadouts);
+                    ev.Player.Position = RandomPosition.GetSpawnPosition(_plugin.MapInfo.Map);
+                    Extensions.PlayPlayerAudio(ev.Player, _plugin.Config.ZombieScreams.RandomItem(), 15);
+                }
+                else
+                {
+                    ev.Player.GiveLoadout(_plugin.Config.PlayerLoadouts);
+                    ev.Player.Position = RandomPosition.GetSpawnPosition(_plugin.MapInfo.Map);
+                }
             }
         }
 
@@ -57,7 +80,11 @@ namespace AutoEvent.Games.Infection
         {
             Timing.CallDelayed(2f, () =>
             {
-                ev.Player.GiveLoadout(_plugin.Config.ZombieLoadouts);
+                if (_plugin.IsFlamingoVariant == true)
+                {
+                    ev.Player.GiveLoadout(_plugin.Config.ZombieFlamingoLoadouts);
+                }
+                else ev.Player.GiveLoadout(_plugin.Config.ZombieLoadouts);
                 ev.Player.Position = RandomPosition.GetSpawnPosition(_plugin.MapInfo.Map);
                 Extensions.PlayPlayerAudio(ev.Player, _plugin.Config.ZombieScreams.RandomItem(), 15);
             });

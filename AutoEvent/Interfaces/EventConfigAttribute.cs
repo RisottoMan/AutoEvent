@@ -38,8 +38,8 @@ public class EventConfigAttribute : Attribute
 
             if (!(conf is null or not EventConfig))
             {
-                _isLoaded = true;
-                return conf;
+                //_isLoaded = true;
+                //return conf;
             }
             DebugLogger.LogDebug("Config was not serialized into an event config. It will be deleted and remade.");
             

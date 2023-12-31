@@ -28,7 +28,7 @@ namespace AutoEvent.Games.AllDeathmatch
         public MapInfo MapInfo { get; set; } = new MapInfo()
         { 
             MapName = "de_dust2",
-            Position = new Vector3(0, 0, 30)
+            Position = new Vector3(-30, 0, 30)
         };
 
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()

@@ -40,6 +40,8 @@ namespace AutoEvent.Commands
                 builder.AppendLine("\"List of events:");
             }
 
+            builder.AppendLine("<size=80><color=#42aaff><b>🎄 MERRY CHRISTMAS 🎄</b></color></size>");
+
             // ReSharper disable once SuspiciousTypeConversion.Global
             Dictionary<string, List<Event>> events = new Dictionary<string, List<Event>>()
             {
@@ -60,7 +62,7 @@ namespace AutoEvent.Commands
                 switch (eventlist.Key)
                 {
                     case "Internal Events":
-                        color = "red";
+                        color = "#42aaff"; // red // 77dde7
                         builder.AppendLine($"{(!IsConsoleCommandSender ? "<color=white>" : "")}[{(!IsConsoleCommandSender ? $"<color={color}>" : "")}==AutoEvent Events=={(!IsConsoleCommandSender ? "<color=white>" : "")}]");
                         break;
 
