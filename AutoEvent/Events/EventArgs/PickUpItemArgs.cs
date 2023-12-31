@@ -4,9 +4,9 @@ using PluginAPI.Core;
 
 namespace AutoEvent.Events.EventArgs
 {
-    public class PickUpItemArgs
+    public class SearchPickUpItemArgs
     {
-        public PickUpItemArgs(Player player, ItemBase item, ItemPickupBase pickup, bool isAllowed = true)
+        public SearchPickUpItemArgs(Player player, ItemBase item, ItemPickupBase pickup, bool isAllowed = true)
         {
             IsAllowed = isAllowed;
             Pickup = pickup;

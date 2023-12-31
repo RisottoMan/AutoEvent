@@ -15,7 +15,7 @@ using Event = AutoEvent.Interfaces.Event;
 
 namespace AutoEvent.Games.Boss
 {
-    public class Plugin : Event, IEventMap, IEventSound, IInternalEvent
+    public class Plugin : Event, IEventMap, IEventSound, IInternalEvent, IEventTag
     {
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.BossTranslate.BossName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.BossTranslate.BossDescription;
@@ -24,10 +24,21 @@ namespace AutoEvent.Games.Boss
         public override Version Version { get; set; } = new Version(1, 0, 0);
 
         public MapInfo MapInfo { get; set; } = new MapInfo() 
-            { MapName = "DeathParty", Position = new Vector3(6f, 1030f, -43.5f) };
-
+        { 
+            MapName = "DeathParty", 
+            Position = new Vector3(6f, 1030f, -43.5f) 
+        };
         public SoundInfo SoundInfo { get; set; } = new SoundInfo() 
-            { SoundName = "Boss.ogg", Loop = true, Volume = 7, StartAutomatically = false };
+        { 
+            SoundName = "Boss.ogg", 
+            Loop = true, Volume = 7, 
+            StartAutomatically = false 
+        };
+        public TagInfo TagInfo { get; set; } = new TagInfo()
+        {
+            Name = "Christmas",
+            Color = "#42aaff"
+        };
 
         [EventConfig] 
         public BossConfig Config { get; set; } 

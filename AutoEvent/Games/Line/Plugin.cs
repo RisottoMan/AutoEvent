@@ -110,7 +110,7 @@ namespace AutoEvent.Games.Line
                 if (_hardCounts == 0)
                 {
                     Extensions.StopAudio();
-                    Extensions.PlayAudio("LineHard.ogg", 10, true, Name);
+                    Extensions.PlayAudio("LineHard.ogg", 10, true);
                 }
 
                 try

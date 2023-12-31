@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using YamlDotNet.Core.Tokens;
 #if EXILED
 using Exiled.Permissions.Extensions;
 #endif
@@ -58,33 +59,37 @@ namespace AutoEvent.Commands
                 string color = "white";
                 switch (eventlist.Key)
                 {
-
                     case "Internal Events":
                         color = "red";
                         builder.AppendLine($"{(!IsConsoleCommandSender ? "<color=white>" : "")}[{(!IsConsoleCommandSender ? $"<color={color}>" : "")}==AutoEvent Events=={(!IsConsoleCommandSender ? "<color=white>" : "")}]");
-                        
                         break;
+
                     case "External Events":
-                        color = "blue";
+                        color = "#00ffff";
                         builder.AppendLine($"{(!IsConsoleCommandSender ? "<color=white>" : "")}[{(!IsConsoleCommandSender ? $"<color={color}>" : "")}==External Events=={(!IsConsoleCommandSender ? "<color=white>" : "")}]");
-                        
                         break;
+
                     default:
                         color = "orange";
-                        
-                        
                         builder.AppendLine($"{(!IsConsoleCommandSender ? "<color=white>" : "")}[{(!IsConsoleCommandSender ? $"<color={color}>" : "")}==Exiled Events=={(!IsConsoleCommandSender ? "<color=white>" : "")}]");
                         break;
                 }
-                
+
                 foreach (Event ev in eventlist.Value)
                 {
                     if (ev is IHidden) continue;
+
+                    string tag = string.Empty;
+                    if (ev is IEventTag itag)
+                    {
+                        tag = $"<color={itag.TagInfo.Color}>[{itag.TagInfo.Name}]</color> ";
+                    }
+
                     if (!IsConsoleCommandSender)
                         builder.AppendLine(
-                            $"<color={color}>{ev.Name}</color> [<color=yellow>{ev.CommandName}</color>]: <color=white>{ev.Description}</color>");
+                            $"<color={color}>{ev.Name}</color> {tag}[<color=yellow>{ev.CommandName}</color>]: <color=white>{ev.Description}</color>");
                     else
-                        builder.AppendLine($"{ev.Name} [{ev.CommandName}]: {ev.Description}");
+                        builder.AppendLine($"{ev.Name} {tag}[{ev.CommandName}]: {ev.Description}");
                 }
             }
 

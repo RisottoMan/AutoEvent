@@ -471,7 +471,7 @@ namespace AutoEvent
             }
         }
 
-        public static void PlayAudio(string audioFile, byte volume, bool loop, string eventName)
+        public static void PlayAudio(string audioFile, byte volume, bool loop)
         {
             if (AudioBot == null) AudioBot = AddDummy();
 
@@ -486,6 +486,43 @@ namespace AutoEvent
             audioPlayer.Volume = volume * (AutoEvent.Singleton.Config.Volume/100f);
             audioPlayer.Loop = loop;
             audioPlayer.Play(0);
+        }
+
+        public static void PlayPlayerAudio(Player player, string audioFile, byte volume)
+        {
+            var path = Path.Combine(AutoEvent.Singleton.Config.MusicDirectoryPath, audioFile);
+
+            var audioPlayer = AudioPlayerBase.Get(player.ReferenceHub);
+            audioPlayer.Enqueue(path, -1);
+            audioPlayer.LogDebug = false;
+            audioPlayer.BroadcastChannel = VoiceChatChannel.Proximity;
+            audioPlayer.Volume = volume * (AutoEvent.Singleton.Config.Volume / 100f);
+            audioPlayer.Loop = false;
+            audioPlayer.Play(0);
+        }
+
+        public static void PauseAudio()
+        {
+            if (AudioBot == null) return;
+
+            var audioPlayer = AudioPlayerBase.Get(AudioBot);
+
+            if (audioPlayer.CurrentPlay != null)
+            {
+                audioPlayer.ShouldPlay = false;
+            }
+        }
+
+        public static void ResumeAudio()
+        {
+            if (AudioBot == null) return;
+
+            var audioPlayer = AudioPlayerBase.Get(AudioBot);
+
+            if (audioPlayer.CurrentPlay != null)
+            {
+                audioPlayer.ShouldPlay = true;
+            }
         }
 
         public static void StopAudio()

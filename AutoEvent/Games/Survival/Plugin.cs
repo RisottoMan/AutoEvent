@@ -87,7 +87,7 @@ namespace AutoEvent.Games.Survival
 
         protected override void CountdownFinished()
         {
-            Extensions.PlayAudio("Zombie2.ogg", 7, true, Name);
+            Extensions.PlayAudio("Zombie2.ogg", 7, true);
 
             List<Player> players = Config.Zombies.GetPlayers(true);
             foreach (Player x in players)
@@ -144,17 +144,17 @@ namespace AutoEvent.Games.Survival
             if (Player.GetPlayers().Count(r => r.IsHuman) == 0)
             {
                 Extensions.Broadcast(Translation.SurvivalZombieWin, 10);
-                Extensions.PlayAudio("ZombieWin.ogg", 7, false, Name);
+                Extensions.PlayAudio("ZombieWin.ogg", 7, false);
             }
             else if (Player.GetPlayers().Count(r => r.IsSCP) == 0)
             {
                 Extensions.Broadcast(Translation.SurvivalHumanWin, 10);
-                Extensions.PlayAudio("HumanWin.ogg", 7, false, Name);
+                Extensions.PlayAudio("HumanWin.ogg", 7, false);
             }
             else
             {
                 Extensions.Broadcast(Translation.SurvivalHumanWinTime, 10);
-                Extensions.PlayAudio("HumanWin.ogg", 7, false, Name);
+                Extensions.PlayAudio("HumanWin.ogg", 7, false);
             }
         }
     }

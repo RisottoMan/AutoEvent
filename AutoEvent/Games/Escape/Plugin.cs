@@ -25,7 +25,7 @@ namespace AutoEvent.Games.Escape
         [EventConfig]
         public EscapeConfig Config { get; set; }
         public SoundInfo SoundInfo { get; set; } =
-            new SoundInfo() { SoundName = "Escape.ogg", Volume = 25, Loop = true};
+            new SoundInfo() { SoundName = "Escape.ogg", Volume = 25, Loop = false};
         protected override float PostRoundDelay { get; set; } = 5f;
         private EventHandler EventHandler { get; set; }
         private EscapeTranslate Translation { get; set; } = AutoEvent.Singleton.Translation.EscapeTranslate;
@@ -71,9 +71,10 @@ namespace AutoEvent.Games.Escape
             }
 
             Warhead.DetonationTime = Config.EscapeDurationInSeconds + 20f;
-            // Warhead.DetonationTime = 120f;
+            //Server.Instance.GetComponent<AlphaWarheadController>(true).ForceTime(120f);
             Warhead.Start();
             Warhead.IsLocked = true;
+            Log.Info(Warhead.DetonationTime.ToString());
         }
 
         protected override void ProcessFrame()
@@ -95,9 +96,6 @@ namespace AutoEvent.Games.Escape
 
         protected override void OnFinished()
         {
-            Warhead.IsLocked = false;
-            Warhead.Stop();
-
             foreach (Player player in Player.GetPlayers())
             {
                 player.EffectsManager.EnableEffect<Flashed>(1);
@@ -110,5 +108,10 @@ namespace AutoEvent.Games.Escape
             Extensions.Broadcast(Translation.EscapeEnd.Replace("{name}", Name).Replace("{players}", Player.GetPlayers().Count(x => x.IsAlive).ToString()), 10);
         }
 
+        protected override void OnCleanup()
+        {
+            Warhead.IsLocked = false;
+            Warhead.Stop();
+        }
     }
 }

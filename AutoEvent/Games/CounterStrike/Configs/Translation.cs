@@ -21,5 +21,8 @@ namespace AutoEvent.Games.CounterStrike
         public string StrikeTerroristWin { get; set; } = "<b><color=green>Terrorists win</color></b>\n<i>All the Counters are dead</i>";
         public string StrikePlantedWin { get; set; } = "<b><color=green>Terrorists win</color></b>\n<i>Bomb exploded</i>";
         public string StrikeDefusedWin { get; set; } = "<b><color=#42AAFF>Counter-Terrorists win</color></b>\n<i>Bomb defused</i>";
+        public string StrikeYouPlanted { get; set; } = "<b><color=#ff4c5b>You planted the bomb</color></b>";
+        public string StrikeYouDefused { get; set; } = "<b><color=#42aaff>You defused the bomb</color></b>";
+        public string StrikeHintCycle { get; set; } = "<size=30><i><b>{name}</b>\n{kills}";
     }
 }

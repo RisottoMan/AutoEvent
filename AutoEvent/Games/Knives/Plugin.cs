@@ -69,7 +69,7 @@ namespace AutoEvent.Games.Knives
             var count = 0;
             foreach (Player player in Player.GetPlayers())
             {
-                if (UnityEngine.Random.Range(0,2) == 1)
+                if (count % 2 == 0)
                 {
                     player.GiveLoadout(Config.Team1Loadouts, LoadoutFlags.IgnoreWeapons | LoadoutFlags.IgnoreGodMode);
                     // Extensions.SetRole(player, RoleTypeId.NtfCaptain, RoleSpawnFlags.None);

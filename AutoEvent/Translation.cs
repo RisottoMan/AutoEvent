@@ -9,6 +9,9 @@ using AutoEvent.Games.Lobby;
 using AutoEvent.Games.Vote;
 using AutoEvent.Games.CounterStrike;
 using AutoEvent.Games.AllDeathmatch;
+using AutoEvent.Games.Snowball;
+using AutoEvent.Games.MusicalChairs;
+using AutoEvent.Games.Light;
 #if EXILED
 using Exiled.API.Interfaces;
 #endif
@@ -103,5 +106,14 @@ namespace AutoEvent
 
         [Description("All Deathmatch Mode")]
         public AllTranslation AllTranslation { get; set; } = new AllTranslation();
+
+        [Description("Snowball Mode")]
+        public SnowballTranslation SnowballTranslation { get; set; } = new SnowballTranslation();
+
+        [Description("Musical Chairs Mode")]
+        public ChairsTranslation ChairsTranslation { get; set; } = new ChairsTranslation();
+
+        [Description("Red Light Green Light Mode")]
+        public LightTranslation LightTranslation { get; set; } = new LightTranslation();
     }
 }

@@ -9,6 +9,7 @@ using UnityEngine;
 using AutoEvent.Events.Handlers;
 using AutoEvent.Interfaces;
 using Event = AutoEvent.Interfaces.Event;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace AutoEvent.Games.AllDeathmatch
 {
@@ -27,7 +28,7 @@ namespace AutoEvent.Games.AllDeathmatch
         public MapInfo MapInfo { get; set; } = new MapInfo()
         { 
             MapName = "de_dust2",
-            Position = new Vector3(0, 0, 100)
+            Position = new Vector3(0, 0, 30)
         };
 
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
@@ -80,7 +81,12 @@ namespace AutoEvent.Games.AllDeathmatch
             }
 
             TotalKills = new();
+
             Spawnpoints = RandomClass.GetAllSpawnpoint(MapInfo.Map);
+            // Walls can be used on all counter-strike maps. For Deathmatch mode, they must be removed earlier.
+            MapInfo.Map.AttachedBlocks.Where(r => r.name == "Wall").ToList()
+                .ForEach(r => GameObject.Destroy(r));
+
             foreach (Player player in Player.GetPlayers())
             {
                 player.GiveLoadout(Config.NTFLoadouts, LoadoutFlags.ForceInfiniteAmmo | LoadoutFlags.IgnoreGodMode | LoadoutFlags.IgnoreWeapons);
@@ -127,32 +133,36 @@ namespace AutoEvent.Games.AllDeathmatch
             var time = $"{(int)remainTime:00}:{(int)((remainTime * 60) % 60):00}";
             var sortedDict = TotalKills.OrderByDescending(r => r.Value).ToDictionary(x => x.Key, x => x.Value);
 
-            int playerCount = Player.GetPlayers().Count();
-            //string pos = "20em";
-            //string vset = "10em";
-            foreach(Player player in Player.GetPlayers())
+            var leaderBoard = $"Leaderboard:\n";
+            for (int i = 0; i <= 3; i++)
             {
-                // LEADERBOARD FEATURE, but it dosnt work :(
-                /*
-                var text = $"<size=30><pos={pos}><voffset={vset}><i>Leaderboard:</i>\n";
-                if (playerCount >= 3)
+                if (i < sortedDict.Count)
                 {
-                    text += $"<voffset={vset}><color=#ffd700>1. {sortedDict.ElementAt(0).Key.Nickname} / {sortedDict.ElementAt(0).Value} kills</color>\n" +
-                    $"<voffset={vset}><color=#c0c0c0>2. {sortedDict.ElementAt(1).Key.Nickname} / {sortedDict.ElementAt(1).Value} kills</color>\n" +
-                    $"<voffset={vset}><color=#cd7f32>3. {sortedDict.ElementAt(2).Key.Nickname} / {sortedDict.ElementAt(2).Value} kills</color>\n";
+                    string color = string.Empty;
+                    switch (i)
+                    {
+                        case 0: color = "#ffd700"; break;
+                        case 1: color = "#c0c0c0"; break;
+                        case 2: color = "#cd7f32"; break;
+                    }
+
+                    int length = Math.Min(sortedDict.ElementAt(i).Key.Nickname.Length, 10);
+                    leaderBoard += $"<color={color}>{i+1}. " +
+                        $"{sortedDict.ElementAt(i).Key.Nickname.Substring(0, length)}" +
+                        $" / {sortedDict.ElementAt(i).Value} kills</color>\n";
                 }
+            }
 
-                var playerItem = sortedDict.First(x => x.Key == player);
-                text += $"<voffset={vset}><color=#ff0000>You - {playerItem.Value} kills</color></size>";
-                player.ReceiveHint(text, 1);
-                */
-
+            foreach (Player player in Player.GetPlayers())
+            {
                 if (TotalKills[player] >= NeededKills)
                 {
                     Winner = player;
                 }
 
                 var playerItem = sortedDict.FirstOrDefault(x => x.Key == player);
+                leaderBoard += $"<color=#ff0000>You - {playerItem.Value}/{NeededKills} kills</color></size>";
+
                 string text = AutoEvent.Singleton.Translation.AllTranslation.AllCycle.
                     Replace("{name}", Name).
                     Replace("{kills}", playerItem.Value.ToString()).
@@ -161,6 +171,7 @@ namespace AutoEvent.Games.AllDeathmatch
 
                 player.ClearBroadcasts();
                 player.SendBroadcast(text, 1);
+                player.ReceiveHint($"<line-height=95%><voffset=25em><align=right><size=30>{leaderBoard}</size></align>", 1);
             }
         }
 
