@@ -467,7 +467,8 @@ namespace AutoEvent.Interfaces
             }
             
             DebugLogger.LogDebug($"Config \"{property.Name}\" found for {Name}", LogLevel.Debug);
-            object config = conf.Load(path, property.Name, property.PropertyType);
+
+            object config = conf.Load(path, property.Name, property.PropertyType, this.Version);
             if (config is not EventConfig evConfig)
             {
                 DebugLogger.LogDebug($"Config was found that does not inherit Event Config. It will be skipped.", LogLevel.Warn, true);

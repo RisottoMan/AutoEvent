@@ -43,7 +43,7 @@ public class EventConfig
     public bool Debug { get; set; }
     
     [Description("DO NOT CHANGE THIS. IT WILL BREAK THINGS. AutoEvent will automatically manage this setting.")]
-    public virtual Version ConfigVersion { get; set; }
+    public virtual string ConfigVersion { get; set; }
 }
 public class MapChance
 {
