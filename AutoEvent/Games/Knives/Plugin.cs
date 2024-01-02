@@ -17,7 +17,7 @@ using Event = AutoEvent.Interfaces.Event;
 
 namespace AutoEvent.Games.Knives
 {
-    public class Plugin : Event, IEventSound, IEventMap, IInternalEvent
+    public class Plugin : Event, IEventSound, IEventMap, IInternalEvent, IEventTag
     {
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.KnivesTranslate.KnivesName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.KnivesTranslate.KnivesDescription;
@@ -30,6 +30,11 @@ namespace AutoEvent.Games.Knives
             {MapName = "35hp_2", Position = new Vector3(5f, 1030f, -45f), };
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
             { SoundName = "Knife.ogg", Volume = 10, Loop = true };
+        public TagInfo TagInfo { get; set; } = new TagInfo()
+        {
+            Name = "New Map",
+            Color = "#77dde7"
+        };
         private EventHandler EventHandler { get; set; }
         private KnivesTranslate Translation { get; set; } = AutoEvent.Singleton.Translation.KnivesTranslate;
 

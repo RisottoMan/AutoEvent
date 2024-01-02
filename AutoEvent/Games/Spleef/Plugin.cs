@@ -40,8 +40,8 @@ public class Plugin : Event, IEventMap, IInternalEvent, IEventTag
     };
     public TagInfo TagInfo { get; set; } = new TagInfo()
     {
-        Name = "Christmas",
-        Color = "#42aaff"
+        Name = "New Map",
+        Color = "#77dde7"
     };
     TimeSpan RoundTime { get; set; }
     GameObject Wall { get; set; }

@@ -14,7 +14,7 @@ using Event = AutoEvent.Interfaces.Event;
 
 namespace AutoEvent.Games.FinishWay
 {
-    public class Plugin : Event, IEventSound, IEventMap, IInternalEvent
+    public class Plugin : Event, IEventSound, IEventMap, IInternalEvent, IEventTag
     {
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.FinishWayTranslate.FinishWayName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.FinishWayTranslate.FinishWayDescription;
@@ -24,9 +24,14 @@ namespace AutoEvent.Games.FinishWay
         [EventConfig]
         public FinishWayConfig Config { get; set; }
         public MapInfo MapInfo { get; set; } = new MapInfo()
-            {MapName = "FinishWay", Position = new Vector3(115.5f, 1030f, -43.5f), };
+            {MapName = "Race", Position = new Vector3(115.5f, 1030f, -43.5f), };
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
             { SoundName = "FinishWay.ogg", Volume = 8, Loop = false, StartAutomatically = false };
+        public TagInfo TagInfo { get; set; } = new TagInfo()
+        {
+            Name = "New Map",
+            Color = "#77dde7"
+        };
         protected override float PostRoundDelay { get; set; } = 10f;
         private EventHandler EventHandler { get; set; }
         private FinishWayTranslate Translation { get; set; } = AutoEvent.Singleton.Translation.FinishWayTranslate;

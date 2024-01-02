@@ -37,7 +37,7 @@ namespace AutoEvent.Games.MusicalChairs
         public TagInfo TagInfo { get; set; } = new TagInfo()
         {
             Name = "Christmas",
-            Color = "#42aaff"
+            Color = "#77dde7"
         };
         private EventHandler EventHandler { get; set; }
         public State EventState { get; set; }

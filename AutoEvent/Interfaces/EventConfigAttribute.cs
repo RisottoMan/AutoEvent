@@ -14,6 +14,7 @@ using System;
 using System.ComponentModel;
 using System.IO;
 using YamlDotNet.Core;
+using Version = System.Version;
 
 namespace AutoEvent.Interfaces;
 
@@ -25,7 +26,7 @@ public class EventConfigAttribute : Attribute
         
     }
     
-    public virtual object Load(string folderPath, string configName, Type type)
+    public virtual object Load(string folderPath, string configName, Type type, Version version)
     {
         string configPath = Path.Combine(folderPath, configName + ".yml");
         object conf = null;
@@ -36,13 +37,16 @@ public class EventConfigAttribute : Attribute
                 conf = Configs.Serialization.Deserializer.Deserialize(File.ReadAllText(configPath), type);
             }
 
-            if (!(conf is null or not EventConfig))
+            if (conf is not null and EventConfig config)
             {
-                _isLoaded = true;
-                return conf;
+                if (config.ConfigVersion == version.ToString())
+                {
+                    _isLoaded = true;
+                    return conf;
+                }
+                else DebugLogger.LogDebug($"The config version and the plugin version are not equal. It will be deleted and remade.");
             }
-            DebugLogger.LogDebug("Config was not serialized into an event config. It will be deleted and remade.");
-            
+            else DebugLogger.LogDebug("Config was not serialized into an event config. It will be deleted and remade.");
         }
         catch (YamlException e)
         {
@@ -61,26 +65,27 @@ public class EventConfigAttribute : Attribute
             {
                 File.Delete(configPath);
             }
-            catch (Exception e)
-            {
-                //
-            }
+            catch (Exception e) { }
         }
 
-        // Check version plugin and config
-
-        CreateNewConfig(ref conf, type, configPath);
+        CreateNewConfig(ref conf, type, configPath, version);
         _isLoaded = true;
         return conf;
     }
 
-    private void CreateNewConfig(ref object conf, Type type, string configPath)
+    private void CreateNewConfig(ref object conf, Type type, string configPath, Version version)
     {
         conf = type.GetConstructor(Type.EmptyTypes)?.Invoke(Array.Empty<object>());
         if (conf is null)
         {
-            DebugLogger.LogDebug("Conefig is null.", LogLevel.Debug);
+            DebugLogger.LogDebug("Config is null.", LogLevel.Debug);
         }
+        
+        if (conf is EventConfig evConf)
+        {
+            evConf.ConfigVersion = version.ToString();
+        }
+
         File.WriteAllText(configPath, Configs.Serialization.Serializer.Serialize(conf));
         _isLoaded = true;
     }

@@ -9,6 +9,14 @@ namespace AutoEvent.Games.Light
 {
     public class EventHandler
     {
+        public void OnDamage(PlayerDamageArgs ev)
+        {
+            if (ev.AttackerHandler is ExplosionDamageHandler explosionDamageHandler)
+            {
+                explosionDamageHandler.Damage = 0;
+            }
+        }
+
         [PluginEvent(ServerEventType.PlayerJoined)]
         public void OnPlayerJoin(PlayerJoinedEvent ev)
         {

@@ -12,10 +12,11 @@ using AutoEvent.Events.Handlers;
 using AutoEvent.Games.Infection;
 using AutoEvent.Interfaces;
 using Event = AutoEvent.Interfaces.Event;
+using AutoEvent.Games.Boss.Features;
 
 namespace AutoEvent.Games.Boss
 {
-    public class Plugin : Event, IEventMap, IEventSound, IInternalEvent, IEventTag
+    public class Plugin : Event, IEventMap, IInternalEvent, IEventTag
     {
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.BossTranslate.BossName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.BossTranslate.BossDescription;
@@ -25,19 +26,19 @@ namespace AutoEvent.Games.Boss
 
         public MapInfo MapInfo { get; set; } = new MapInfo() 
         { 
-            MapName = "DeathParty", 
+            MapName = "Boss_Santa",
             Position = new Vector3(6f, 1030f, -43.5f) 
         };
         public SoundInfo SoundInfo { get; set; } = new SoundInfo() 
         { 
-            SoundName = "Boss.ogg", 
+            SoundName = "SantaMusic.ogg", 
             Loop = true, Volume = 7, 
             StartAutomatically = false 
         };
         public TagInfo TagInfo { get; set; } = new TagInfo()
         {
-            Name = "Christmas",
-            Color = "#42aaff"
+            Name = "🎄 SANTA BOSS FIGHT 🎄",
+            Color = "#77dde7"
         };
 
         [EventConfig] 
@@ -47,7 +48,33 @@ namespace AutoEvent.Games.Boss
         private List<Player> _boss;
         private TimeSpan _elapsedDuration { get; set; }
         private int _maxHp { get; set; }
+        protected override void RegisterEvents()
+        {
+            EventHandler = new EventHandler(this);
+            
+            EventManager.RegisterEvents(EventHandler);
+            Servers.TeamRespawn += EventHandler.OnTeamRespawn;
+            Servers.SpawnRagdoll += EventHandler.OnSpawnRagdoll;
+            Servers.PlaceBullet += EventHandler.OnPlaceBullet;
+            Servers.PlaceBlood += EventHandler.OnPlaceBlood;
+            Players.DropItem += EventHandler.OnDropItem;
+            Players.DropAmmo += EventHandler.OnDropAmmo;
+            Players.PlayerDamage += EventHandler.OnDamage;
+        }
 
+        protected override void UnregisterEvents()
+        {
+            EventManager.UnregisterEvents(EventHandler);
+            Servers.TeamRespawn -= EventHandler.OnTeamRespawn;
+            Servers.SpawnRagdoll -= EventHandler.OnSpawnRagdoll;
+            Servers.PlaceBullet -= EventHandler.OnPlaceBullet;
+            Servers.PlaceBlood -= EventHandler.OnPlaceBlood;
+            Players.DropItem -= EventHandler.OnDropItem;
+            Players.DropAmmo -= EventHandler.OnDropAmmo;
+            Players.PlayerDamage -= EventHandler.OnDamage;
+
+            EventHandler = null;
+        }
         protected override void OnStart()
         {
             _elapsedDuration = TimeSpan.FromSeconds(Config.DurationInSeconds);
@@ -63,33 +90,6 @@ namespace AutoEvent.Games.Boss
             }
 
         }
-        protected override void RegisterEvents()
-        {
-            EventHandler = new EventHandler();
-            
-            EventManager.RegisterEvents(EventHandler);
-            Servers.TeamRespawn += EventHandler.OnTeamRespawn;
-            Servers.SpawnRagdoll += EventHandler.OnSpawnRagdoll;
-            Servers.PlaceBullet += EventHandler.OnPlaceBullet;
-            Servers.PlaceBlood += EventHandler.OnPlaceBlood;
-            Players.DropItem += EventHandler.OnDropItem;
-            Players.DropAmmo += EventHandler.OnDropAmmo;
-        }
-
-        protected override void UnregisterEvents()
-        {
-            EventManager.UnregisterEvents(EventHandler);
-            Servers.TeamRespawn -= EventHandler.OnTeamRespawn;
-            Servers.SpawnRagdoll -= EventHandler.OnSpawnRagdoll;
-            Servers.PlaceBullet -= EventHandler.OnPlaceBullet;
-            Servers.PlaceBlood -= EventHandler.OnPlaceBlood;
-            Players.DropItem -= EventHandler.OnDropItem;
-            Players.DropAmmo -= EventHandler.OnDropAmmo;
-
-            EventHandler = null;
-        }
-
-
         protected override IEnumerator<float> BroadcastStartCountdown()
         {
             for (int time = 15; time > 0; time--)
@@ -117,6 +117,7 @@ namespace AutoEvent.Games.Boss
             {
                 _boss.Add(player);
                 player.GiveLoadout(Config.BossLoadouts);
+                Functions.CreateSchematicBoss(player);
                 player.Position = RandomClass.GetSpawnPosition(MapInfo.Map);
                 player.Health = Player.GetPlayers().Count() * 4000;
                 Timing.CallDelayed(0.1f, () => { player.CurrentItem = player.Items.First(); });
@@ -147,6 +148,8 @@ namespace AutoEvent.Games.Boss
 
         protected override void OnFinished()
         {
+            Functions.RemoveSchematicBosses();
+
             if (Player.GetPlayers().Count(r => r.Team == Team.FoundationForces) == 0)
             {
                 Extensions.Broadcast(Translation.BossWin.Replace("{hp}", $"{(int)_boss.Sum(x => x.Health)}"), 10);

@@ -50,7 +50,7 @@ namespace AutoEvent.Games.Boss
 
         public static Vector3 GetSpawnPosition(SchematicObject GameMap)
         {
-            return GameMap.AttachedBlocks.Where(x => x.name == "Spawnpoint").FirstOrDefault().transform.position;
+            return GameMap.AttachedBlocks.Where(x => x.name == "Spawnpoint").ToList().RandomItem().transform.position;
         }
     }
 }

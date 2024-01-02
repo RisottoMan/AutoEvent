@@ -2,6 +2,7 @@
 using InventorySystem.Configs;
 using InventorySystem.Items.Firearms;
 using PlayerRoles;
+using PlayerStatsSystem;
 using PluginAPI.Core;
 using PluginAPI.Core.Attributes;
 using PluginAPI.Enums;
@@ -13,6 +14,20 @@ namespace AutoEvent.Games.Boss
 {
     public class EventHandler
     {
+        Plugin _plugin;
+        public EventHandler(Plugin plugin)
+        {
+            _plugin = plugin;
+        }
+        public void OnDamage(PlayerDamageArgs ev)
+        {
+            if (ev.Target.Role == RoleTypeId.ChaosConscript)
+            {
+                ev.Attacker.ReceiveHitMarker(1f);
+                //Extensions.PlayPlayerAudio(ev.Target, _plugin.Config.BossScreams.RandomItem(), 15);
+            }
+        }
+
         [PluginEvent(ServerEventType.PlayerJoined)]
         public void OnJoin(PlayerJoinedEvent ev)
         {

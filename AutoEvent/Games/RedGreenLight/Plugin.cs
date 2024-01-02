@@ -8,6 +8,8 @@ using PluginAPI.Events;
 using AutoEvent.Events.Handlers;
 using AutoEvent.Interfaces;
 using Event = AutoEvent.Interfaces.Event;
+using Random = UnityEngine.Random;
+using AutoEvent.Games.MusicalChairs;
 
 namespace AutoEvent.Games.Light
 {
@@ -23,13 +25,13 @@ namespace AutoEvent.Games.Light
         public Config Config { get; set; }
         public MapInfo MapInfo { get; set; } = new MapInfo()
         {
-            MapName = "RedLightGreenLight",
+            MapName = "RedLight",
             Position = new Vector3(0, 0, 30)
         };
         public TagInfo TagInfo { get; set; } = new TagInfo()
         {
             Name = "Christmas",
-            Color = "#42aaff"
+            Color = "#77dde7"
         };
         private EventHandler EventHandler { get; set; }
         GameObject Wall { get; set; }
@@ -47,6 +49,7 @@ namespace AutoEvent.Games.Light
             Servers.PlaceBlood += EventHandler.OnPlaceBlood;
             Players.DropItem += EventHandler.OnDropItem;
             Players.DropAmmo += EventHandler.OnDropAmmo;
+            Players.PlayerDamage += EventHandler.OnDamage;
         }
 
         protected override void UnregisterEvents()
@@ -58,6 +61,7 @@ namespace AutoEvent.Games.Light
             Servers.PlaceBlood -= EventHandler.OnPlaceBlood;
             Players.DropItem -= EventHandler.OnDropItem;
             Players.DropAmmo -= EventHandler.OnDropAmmo;
+            Players.PlayerDamage -= EventHandler.OnDamage;
 
             EventHandler = null;
         }
@@ -75,7 +79,7 @@ namespace AutoEvent.Games.Light
                     case "Spawnpoint": spawnpoints.Add(gameObject); break;
                     case "Wall": Wall = gameObject; break;
                     case "RedLine": RedLine = gameObject; break;
-                    case "Doll": Doll = gameObject; break;
+                    case "Doll": { DebugLogger.LogDebug("Doll найден"); Doll = gameObject; break; }
                 }
             }
 
@@ -100,6 +104,7 @@ namespace AutoEvent.Games.Light
 
         protected override void CountdownFinished()
         {
+            ActiveTime = new TimeSpan(0, 0, 5);
             GameObject.Destroy(Wall);
         }
 
@@ -117,13 +122,18 @@ namespace AutoEvent.Games.Light
         protected override float FrameDelayInSeconds { get; set; } = 0.1f;
         protected override void ProcessFrame()
         {
+            int remainTime = Config.TotalTimeInSeconds - (int)EventTime.TotalSeconds;
+            string text = Translation.LightCycle.
+                Replace("{name}", Name).
+                Replace("{time}", remainTime.ToString());
+
             if (EventState == State.GreenLight)
             {
+                text = text.Replace("{state}", Translation.LightGreenLight);
                 if (ActiveTime == TimeSpan.Zero)
                 {
                     Doll.transform.rotation = Quaternion.identity;
-                    int seconds = UnityEngine.Random.Range(1, 4);
-                    ActiveTime = TimeSpan.FromSeconds(seconds);
+                    ActiveTime = TimeSpan.FromSeconds(Random.Range(3, 10));
                 }
                 else
                 {
@@ -133,6 +143,7 @@ namespace AutoEvent.Games.Light
             }
             else if (EventState == State.RotatingEnable)
             {
+                text = text.Replace("{state}", Translation.LightRedLight);
                 Vector3 rotation = Doll.transform.rotation.eulerAngles;
 
                 if (Mathf.Abs(rotation.y - 180) > 0.01f)
@@ -147,7 +158,8 @@ namespace AutoEvent.Games.Light
             }
             else if (EventState == State.RedLight)
             {
-                foreach(Player player in Player.GetPlayers())
+                text = text.Replace("{state}", Translation.LightRedLight);
+                foreach (Player player in Player.GetPlayers())
                 {
                     if ((int)RedLine.transform.position.z <= (int)player.Position.z)
                     {
@@ -156,9 +168,8 @@ namespace AutoEvent.Games.Light
 
                     if (player.Velocity != Vector3.zero)
                     {
-                        player.Kill();
                         Extensions.GrenadeSpawn(0.1f, player.Position, 0.1f);
-                        //Extensions.PlayAudio("Siren.ogg", 10, false);
+                        player.Kill(Translation.LightRedLose);
                         ActiveTime += TimeSpan.FromSeconds(1f);
                     }
                 }
@@ -167,10 +178,12 @@ namespace AutoEvent.Games.Light
                 {
                     Extensions.PlayAudio("GreenLight.ogg", 10, false);
                     EventState = State.RotatingDisable;
+                    ActiveTime = TimeSpan.FromSeconds(Random.Range(3, 10));
                 }
             }
             else if (EventState == State.RotatingDisable)
             {
+                text = text.Replace("{state}", Translation.LightGreenLight);
                 Vector3 rotation = Doll.transform.rotation.eulerAngles;
 
                 if (Mathf.Abs(rotation.y - 0) > 0.01f)
@@ -184,22 +197,41 @@ namespace AutoEvent.Games.Light
                 }
             }
 
-            Extensions.Broadcast($"{EventState}", 1);
+            Extensions.Broadcast(text, 1);
         }
 
         protected override void OnFinished()
         {
-            var time = $"{EventTime.Minutes:00}:{EventTime.Seconds:00}";
-            /*
-
-            if (classDCount < 1 && sciCount < 1)
+            foreach (Player player in Player.GetPlayers())
             {
-                string text = Translation.SnowballAllDied.
+                if ((int)RedLine.transform.position.z > (int)player.Position.z)
+                {
+                    Extensions.GrenadeSpawn(0.1f, player.Position, 0.1f);
+                    player.Kill(Translation.LightNoTime);
+                }
+            }
+            int count = Player.GetPlayers().Count(r => r.IsAlive);
+            if (count > 1)
+            {
+                string text = Translation.LightMoreWin.
                     Replace("{name}", Name).
-                    Replace("{time}", time);
+                    Replace("{count}", count.ToString());
                 Extensions.Broadcast(text, 10);
             }
-            */
+            else if (count == 1)
+            {
+                Player winner = Player.GetPlayers().Where(r => r.IsAlive).FirstOrDefault();
+                string text = Translation.LightPlayerWin.
+                    Replace("{name}", Name).
+                    Replace("{winner}", winner.Nickname);
+                Extensions.Broadcast(text, 10);
+            }
+            else
+            {
+                string text = Translation.LightAllDied.
+                    Replace("{name}", Name);
+                Extensions.Broadcast(text, 10);
+            }
         }
     }
     public enum State

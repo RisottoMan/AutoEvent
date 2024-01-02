@@ -30,7 +30,7 @@ namespace AutoEvent.Games.CounterStrike
         public MapInfo MapInfo { get; set; } = new MapInfo()
         { 
             MapName = "de_dust2", 
-            Position = new Vector3(0, 0, 30)
+            Position = new Vector3(-30, 0, 30)
         };
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
         { 
@@ -40,8 +40,8 @@ namespace AutoEvent.Games.CounterStrike
         };
         public TagInfo TagInfo { get; set; } = new TagInfo()
         {
-            Name = "Christmas",
-            Color = "#42aaff"
+            Name = "Optimized map",
+            Color = "#77dde7"
         };
         public BombState BombState { get; set; }
         public Player Winner { get; set; }
