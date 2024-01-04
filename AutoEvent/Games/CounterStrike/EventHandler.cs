@@ -95,7 +95,25 @@ namespace AutoEvent.Games.CounterStrike
                     ev.Player.ReceiveHint(translation.StrikeYouDefused, 3);
                 }
             }
-        }  
+        }
+
+        [PluginEvent(ServerEventType.PlayerUsingRadio)]
+        public void OnUsingRadio(PlayerUsingRadioEvent ev)
+        {
+            /*
+            if (ev.Player.Team == Team.FoundationForces)
+            {
+                ev.Radio._rangeId = 3;
+                ev.Radio.
+            }
+            else
+            {
+                ev.Radio._rangeId = 2;
+            }
+
+            ev.Drain = 0;
+            */
+        }
 
         [PluginEvent(ServerEventType.PlayerJoined)]
         public void OnJoin(PlayerJoinedEvent ev)
