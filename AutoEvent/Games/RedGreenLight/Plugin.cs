@@ -9,7 +9,6 @@ using AutoEvent.Events.Handlers;
 using AutoEvent.Interfaces;
 using Event = AutoEvent.Interfaces.Event;
 using Random = UnityEngine.Random;
-using AutoEvent.Games.MusicalChairs;
 
 namespace AutoEvent.Games.Light
 {
@@ -105,6 +104,9 @@ namespace AutoEvent.Games.Light
         protected override void CountdownFinished()
         {
             ActiveTime = new TimeSpan(0, 0, 5);
+            Doll.transform.rotation = Quaternion.identity;
+            ActiveTime = TimeSpan.FromSeconds(Random.Range(1.5f, 4));
+
             GameObject.Destroy(Wall);
         }
 
@@ -130,14 +132,11 @@ namespace AutoEvent.Games.Light
             if (EventState == State.GreenLight)
             {
                 text = text.Replace("{state}", Translation.LightGreenLight);
-                if (ActiveTime == TimeSpan.Zero)
-                {
-                    Doll.transform.rotation = Quaternion.identity;
-                    ActiveTime = TimeSpan.FromSeconds(Random.Range(3, 10));
-                }
-                else
+
+                if (ActiveTime.TotalSeconds <= 0)
                 {
                     Extensions.PlayAudio("RedLight.ogg", 10, false);
+                    ActiveTime = TimeSpan.FromSeconds(Random.Range(4, 8));
                     EventState = State.RotatingEnable;
                 }
             }
@@ -174,11 +173,11 @@ namespace AutoEvent.Games.Light
                     }
                 }
 
-                if (ActiveTime == TimeSpan.Zero)
+                if (ActiveTime.TotalSeconds <= 0)
                 {
                     Extensions.PlayAudio("GreenLight.ogg", 10, false);
                     EventState = State.RotatingDisable;
-                    ActiveTime = TimeSpan.FromSeconds(Random.Range(3, 10));
+                    ActiveTime = TimeSpan.FromSeconds(Random.Range(1.5f, 4));
                 }
             }
             else if (EventState == State.RotatingDisable)

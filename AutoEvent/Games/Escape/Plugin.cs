@@ -12,6 +12,11 @@ using AutoEvent.Games.Infection;
 using AutoEvent.Interfaces;
 using UnityEngine;
 using Event = AutoEvent.Interfaces.Event;
+using YamlDotNet.Core.Tokens;
+using PluginAPI.Core.Doors;
+using Interactables.Interobjects.DoorUtils;
+using static UnityEngine.GraphicsBuffer;
+using Interactables.Interobjects;
 
 namespace AutoEvent.Games.Escape
 {
@@ -21,7 +26,7 @@ namespace AutoEvent.Games.Escape
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.EscapeTranslate.EscapeDescription;
         public override string Author { get; set; } = "KoT0XleB";
         public override string CommandName { get; set; } = AutoEvent.Singleton.Translation.EscapeTranslate.EscapeCommandName;
-        public override Version Version { get; set; } = new Version(1, 0, 0);
+        public override Version Version { get; set; } = new Version(1, 0, 1);
         [EventConfig]
         public EscapeConfig Config { get; set; }
         public SoundInfo SoundInfo { get; set; } =
@@ -52,9 +57,7 @@ namespace AutoEvent.Games.Escape
 
         protected override bool IsRoundDone()
         {
-            // Elapsed Time is smaller than the explosion time &&
-            // At least one player is alive.
-            return !(EventTime.TotalSeconds <= Config.EscapeDurationInSeconds && Player.GetPlayers().Count(r => r.IsAlive) > 0);
+            return !(EventTime.TotalSeconds <= Config.EscapeDurationTime && Player.GetPlayers().Count(r => r.IsAlive) > 0);
         }
 
         protected override void OnStart()
@@ -63,23 +66,21 @@ namespace AutoEvent.Games.Escape
             _startPos.transform.parent = Facility.Rooms.First(r => r.Identifier.Name == RoomName.Lcz173).Transform;
             _startPos.transform.localPosition = new Vector3(16.5f, 13f, 8f);
 
-            foreach(Player player in Player.GetPlayers())
+            foreach (Player player in Player.GetPlayers())
             {
                 Extensions.SetRole(player, RoleTypeId.Scp173, RoleSpawnFlags.None);
                 player.Position = _startPos.transform.position;
                 player.EffectsManager.EnableEffect<Ensnared>(10);
             }
 
-            Warhead.DetonationTime = Config.EscapeDurationInSeconds + 20f;
-            //Server.Instance.GetComponent<AlphaWarheadController>(true).ForceTime(120f);
+            AlphaWarheadController.Singleton.CurScenario.AdditionalTime = Config.EscapeResumeTime;
             Warhead.Start();
             Warhead.IsLocked = true;
-            Log.Info(Warhead.DetonationTime.ToString());
         }
 
         protected override void ProcessFrame()
         {
-            Extensions.Broadcast(Translation.EscapeCycle.Replace("{name}", Name).Replace("{time}", (Config.EscapeDurationInSeconds - EventTime.TotalSeconds).ToString("00")), 1);
+            Extensions.Broadcast(Translation.EscapeCycle.Replace("{name}", Name).Replace("{time}", (Config.EscapeDurationTime - EventTime.TotalSeconds).ToString("00")), 1);
         }
 
         protected override IEnumerator<float> BroadcastStartCountdown()
@@ -91,6 +92,14 @@ namespace AutoEvent.Games.Escape
                 yield return Timing.WaitForSeconds(1f);
             }
 
+            foreach (DoorVariant door in DoorVariant.AllDoors)
+            {
+                if (door is not ElevatorDoor)
+                {
+                    door.NetworkTargetState = true;
+                }
+            }
+            
             yield break;
         }
 

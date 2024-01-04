@@ -7,6 +7,7 @@ using AutoEvent.Games.Spleef.Configs;
 using AutoEvent.Games.Spleef.Features;
 using AutoEvent.Interfaces;
 using MEC;
+using Mirror;
 using PluginAPI.Core;
 using PluginAPI.Events;
 using UnityEngine;
@@ -45,6 +46,7 @@ public class Plugin : Event, IEventMap, IInternalEvent, IEventTag
     };
     TimeSpan RoundTime { get; set; }
     GameObject Wall { get; set; }
+    List<GameObject> Platforms { get; set; }
     List<API.Loadout> PlayerLoadounts { get; set; }
     protected override void RegisterEvents()
     {
@@ -77,16 +79,22 @@ public class Plugin : Event, IEventMap, IInternalEvent, IEventTag
     protected override void OnStart()
     {
         RoundTime = new TimeSpan(0, 0, Config.RoundDurationInSeconds);
-
+        Platforms = new List<GameObject>();
         GameObject spawnpoint = new GameObject();
+
         foreach(GameObject gameObject in MapInfo.Map.AttachedBlocks)
         {
             switch (gameObject.name)
             {
                 case "Lava": gameObject.AddComponent<LavaComponent>(); break;
-                case "Platform": gameObject.AddComponent<FallPlatformComponent>(); break;
                 case "Wall": Wall = gameObject; break;
                 case "Spawnpoint": spawnpoint = gameObject; break;
+                case "Platform":
+                    {
+                        Platforms.Add(gameObject);
+                        gameObject.AddComponent<FallPlatformComponent>();
+                        break;
+                    }
             }
         }
 
@@ -113,12 +121,20 @@ public class Plugin : Event, IEventMap, IInternalEvent, IEventTag
 
     protected override IEnumerator<float> BroadcastStartCountdown()
     {
-        for (int time = 15; time > 0; time--)
+        for (int time = 10; time > 0; time--)
         {
             Extensions.Broadcast($"{Translation.SpleefDescription}\n" +
                 $"{Translation.SpleefStart.Replace("{time}", $"{time}")}", 1);
             yield return Timing.WaitForSeconds(1f);
         }
+
+        /*
+        foreach(GameObject platform in Platforms)
+        {
+            NetworkServer.UnSpawn(platform);
+            NetworkServer.Spawn(platform);
+        }
+        */
     }
     
     protected override void CountdownFinished()

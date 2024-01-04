@@ -12,6 +12,8 @@ using MER.Lite.Objects;
 using Random = UnityEngine.Random;
 using Event = AutoEvent.Interfaces.Event;
 using System.Collections;
+using System.Threading.Tasks;
+using PlayerRoles;
 
 namespace AutoEvent.Games.CounterStrike
 {
@@ -30,7 +32,7 @@ namespace AutoEvent.Games.CounterStrike
         public MapInfo MapInfo { get; set; } = new MapInfo()
         { 
             MapName = "de_dust2", 
-            Position = new Vector3(-30, 0, 30)
+            Position = new Vector3(0, 30, 30)
         };
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
         { 
@@ -145,12 +147,9 @@ namespace AutoEvent.Games.CounterStrike
                 RoundTime = new TimeSpan(0, 0, 0);
             }
 
-            return false;
-            /*
             return !((tCount > 0 || BombState == BombState.Planted) && 
                 ctCount > 0 && 
                 RoundTime.TotalSeconds != 0);
-            */
         }
 
         protected override void ProcessFrame()
@@ -158,6 +157,19 @@ namespace AutoEvent.Games.CounterStrike
             var ctCount = Player.GetPlayers().Count(r => r.IsNTF);
             var tCount = Player.GetPlayers().Count(r => r.IsChaos);
             var time = $"{RoundTime.Minutes:00}:{RoundTime.Seconds:00}";
+
+            string ctTask = string.Empty;
+            string tTask = string.Empty;
+            if (BombState == BombState.NoPlanted)
+            {
+                ctTask = Translation.StrikeNoPlantedCounter;
+                tTask = Translation.StrikeNoPlantedTerror;
+            }
+            else if (BombState == BombState.Planted)
+            {
+                ctTask = Translation.StrikePlantedCounter;
+                tTask = Translation.StrikePlantedTerror;
+            }
 
             var leaderBoard = $"Killboard:\n";
             for (int i = 0; i <= 3; i++)
@@ -168,51 +180,20 @@ namespace AutoEvent.Games.CounterStrike
                     leaderBoard += $"{Information.ElementAt(i).Substring(0, length)}";
                 }
             }
-            //AutoEvent.Singleton.Translation.StrikeTranslation.StrikeHintCycle
-
 
             foreach (Player player in Player.GetPlayers())
             {
-                // Logic stuffs
                 foreach (var point in BombPoints)
                 {
                     if (Vector3.Distance(point.transform.position, player.Position) < 2)
                     {
-                        // This is a temporary function that requires major changes.
                         player.ReceiveHint("<i><color=green>You can interact with plant</color></i>\nUse <color=red>[Alt]</color> button", 1);
-                    }
-                }
-
-                // Translation stuffs
-                string task = string.Empty;
-                if (BombState == BombState.NoPlanted)
-                {
-                    if (player.IsNTF)
-                    {
-                        task = Translation.StrikeNoPlantedCounter;
-                    }
-
-                    if (player.IsChaos)
-                    {
-                        task = Translation.StrikeNoPlantedTerror;
-                    }
-                }
-                else if (BombState == BombState.Planted)
-                {
-                    if (player.IsNTF)
-                    {
-                        task = Translation.StrikePlantedCounter;
-                    }
-
-                    if (player.IsChaos)
-                    {
-                        task = Translation.StrikePlantedTerror;
                     }
                 }
 
                 string text = Translation.StrikeCycle.
                     Replace("{name}", Name).
-                    Replace("{task}", task).
+                    Replace("{task}", player.Team == Team.FoundationForces ? ctTask : tTask).
                     Replace("{ctCount}", ctCount.ToString()).
                     Replace("{tCount}", tCount.ToString()).
                     Replace("{time}", time);
@@ -255,7 +236,7 @@ namespace AutoEvent.Games.CounterStrike
             }
             else if (ctCount == 0 && tCount == 0)
             {
-                text = Translation.StrikeDraw;
+                text = Translation.StrikeTimeEnded;
             }
 
             Extensions.Broadcast(text, 10);

@@ -19,12 +19,18 @@ namespace AutoEvent.Games.MusicalChairs
         {
             _plugin = plugin;
         }
+
         public void OnDamage(PlayerDamageArgs ev)
         {
             if (ev.AttackerHandler is ExplosionDamageHandler explosionDamageHandler)
             {
                 explosionDamageHandler.Damage = 0;
             }
+        }
+
+        public void OnUsingStamina(UsingStaminaArgs ev)
+        {
+            ev.IsAllowed = false;
         }
 
         [PluginEvent(ServerEventType.PlayerDeath)]
