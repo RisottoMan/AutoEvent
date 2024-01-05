@@ -193,7 +193,7 @@ namespace AutoEvent.Games.CounterStrike
 
                 string text = Translation.StrikeCycle.
                     Replace("{name}", Name).
-                    Replace("{task}", player.Team == Team.FoundationForces ? ctTask : tTask).
+                    Replace("{task}", player.Role == RoleTypeId.NtfSpecialist ? ctTask : tTask).
                     Replace("{ctCount}", ctCount.ToString()).
                     Replace("{tCount}", tCount.ToString()).
                     Replace("{time}", time);
@@ -235,6 +235,10 @@ namespace AutoEvent.Games.CounterStrike
                 Extensions.PlayAudio("TWin.ogg", 15, false);
             }
             else if (ctCount == 0 && tCount == 0)
+            {
+                text = Translation.StrikeDraw;
+            }
+            else
             {
                 text = Translation.StrikeTimeEnded;
             }
