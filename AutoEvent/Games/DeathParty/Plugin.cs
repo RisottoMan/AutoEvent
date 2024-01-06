@@ -69,7 +69,8 @@ namespace AutoEvent.Games.DeathParty
             Servers.PlaceBlood -= EventHandler.OnPlaceBlood;
             Players.DropItem -= EventHandler.OnDropItem;
             Players.DropAmmo -= EventHandler.OnDropAmmo;
-            Players.PlayerDying -= EventHandler.OnPlayerDying;
+
+Players.PlayerDamage -= EventHandler.OnPlayerDamage;            Players.PlayerDying -= EventHandler.OnPlayerDying;
 
             EventHandler = null;
         }
