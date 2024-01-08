@@ -102,7 +102,7 @@ namespace AutoEvent.Games.Jail
             try
             {
 
-                if (ev.LockerType == StructureType.StandardLocker)
+                if (ev.LockerType == StructureType.LargeGunLocker)
                 {
                     try
                     {

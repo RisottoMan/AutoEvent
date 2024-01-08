@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using AdminToys;
+using AutoEvent.API;
 using AutoEvent.API.Enums;
 using AutoEvent.Events.Handlers;
 using AutoEvent.Games.Spleef.Configs;
@@ -19,9 +21,9 @@ public class Plugin : Event, IEventMap, IInternalEvent, IEventTag
 {
     public override string Name { get; set; } = AutoEvent.Singleton.Translation.SpleefTranslate.SpleefName;
     public override string Description { get; set; } = AutoEvent.Singleton.Translation.SpleefTranslate.SpleefDescription;
-    public override string Author { get; set; } = "Redforce04 (created logic code) && KoT0XleB (rewrite code and map)";
+    public override string Author { get; set; } = "Redforce04 (created logic code) && KoT0XleB (modified map)";
     public override string CommandName { get; set; } = AutoEvent.Singleton.Translation.SpleefTranslate.SpleefCommandName;
-    public override Version Version { get; set; } = new Version(1, 0, 2);
+    public override Version Version { get; set; } = new Version(1, 0, 3);
     public SpleefTranslation Translation { get; set; } = AutoEvent.Singleton.Translation.SpleefTranslate;
     protected override FriendlyFireSettings ForceEnableFriendlyFire { get; set; } = FriendlyFireSettings.Disable;
 
@@ -30,24 +32,24 @@ public class Plugin : Event, IEventMap, IInternalEvent, IEventTag
     public EventHandler EventHandler { get; set; }
     public MapInfo MapInfo { get; set; } = new MapInfo()
     { 
-        MapName = "Spleef", 
-        Position = new Vector3(0, 0, 30f)
+        MapName = "Spleef",
+        Position = new Vector3(76f, 1026.5f, -43.68f)
     };
     public SoundInfo SoundInfo { get; set; } = new SoundInfo()
     {
-        SoundName = "Puzzle.ogg",
-        Volume = 15,
+        SoundName = "Fall_Guys_Winter_Fallympics.ogg",
+        Volume = 7,
         Loop = true
     };
     public TagInfo TagInfo { get; set; } = new TagInfo()
     {
-        Name = "New Map",
+        Name = "new Update",
         Color = "#77dde7"
     };
-    TimeSpan RoundTime { get; set; }
-    GameObject Wall { get; set; }
-    List<GameObject> Platforms { get; set; }
-    List<API.Loadout> PlayerLoadounts { get; set; }
+    private float _spawnHeight;
+    private TimeSpan _remaining;
+    private Dictionary<ushort, GameObject> _platforms;
+    List<Loadout> _playerLoadounts;
     protected override void RegisterEvents()
     {
         EventHandler = new EventHandler(this);
@@ -78,45 +80,118 @@ public class Plugin : Event, IEventMap, IInternalEvent, IEventTag
 
     protected override void OnStart()
     {
-        RoundTime = new TimeSpan(0, 0, Config.RoundDurationInSeconds);
-        Platforms = new List<GameObject>();
-        GameObject spawnpoint = new GameObject();
+        _remaining = TimeSpan.FromSeconds(Config.RoundDurationInSeconds);
+        _platforms = new Dictionary<ushort, GameObject>();
+        MapInfo.Map.AttachedBlocks.First(x => x.name == "Lava").AddComponent<LavaComponent>();
+        _playerLoadounts = new List<Loadout>();
 
-        foreach(GameObject gameObject in MapInfo.Map.AttachedBlocks)
-        {
-            switch (gameObject.name)
-            {
-                case "Lava": gameObject.AddComponent<LavaComponent>(); break;
-                case "Wall": Wall = gameObject; break;
-                case "Spawnpoint": spawnpoint = gameObject; break;
-                case "Platform":
-                    {
-                        Platforms.Add(gameObject);
-                        gameObject.AddComponent<FallPlatformComponent>();
-                        break;
-                    }
-            }
-        }
+        GeneratePlatforms(Config.PlatformAxisCount);
 
         int plyCount = Player.GetPlayers().Count();
         if (plyCount <= 5)
         {
-            PlayerLoadounts = Config.PlayerLittleLoadouts;
+            _playerLoadounts = Config.PlayerLittleLoadouts;
         }
         else if (plyCount >= 15)
         {
-            PlayerLoadounts = Config.PlayerBigLoadouts;
+            _playerLoadounts = Config.PlayerBigLoadouts;
         }
         else
         {
-            PlayerLoadounts = Config.PlayerNormalLoadouts;
+            _playerLoadounts = Config.PlayerNormalLoadouts;
         }
 
         foreach (Player ply in Player.GetPlayers())
         {
-            ply.GiveLoadout(PlayerLoadounts, LoadoutFlags.IgnoreWeapons);
-            ply.Position = spawnpoint.transform.position;
+            ply.GiveLoadout(_playerLoadounts, LoadoutFlags.IgnoreWeapons);
+            ply.Position = MapInfo.Position + new Vector3(0, Config.LayerCount * 3f + 5, 0);
         }
+    }
+
+    private void GeneratePlatforms(int amountPerAxis = 5)
+    {
+        float areaSizeX = 20f;
+        float areaSizeY = 20f;
+        float sizeX = areaSizeX / amountPerAxis;
+        float sizeY = areaSizeY / amountPerAxis;
+        float startPosX = -(areaSizeX / 2f) + sizeX / 2f;
+        float startPosY = -(areaSizeY / 2f) + sizeY / 2f;
+        float startPosZ = 6f;
+        float breakSize = .2f;
+        float sizeZ = 3f;
+        _spawnHeight = 6f;
+        List<SpleefPlatform> platforms = new List<SpleefPlatform>();
+        for (int z = 0; z < Config.LayerCount; z++)
+        {
+            for (int x = 0; x < amountPerAxis; x++)
+            {
+                for (int y = 0; y < amountPerAxis; y++)
+                {
+                    float posX = startPosX + (sizeX * x);
+                    float posY = startPosY + (sizeY * y);
+                    float posZ = startPosZ + (sizeZ * z);
+
+                    Color color = Color.green;
+                    switch(z)
+                    {
+                        case 0: color = Color.red; break;
+                        case 1: color = Color.magenta; break;
+                        case 2: color = Color.cyan; break;
+                        case 3: color = Color.yellow; break;
+                        case 4: color = Color.blue; break;
+                    }
+
+                    var plat = new SpleefPlatform(sizeX - breakSize, sizeY - breakSize, .3f, posX, posY, posZ, color);
+                    platforms.Add(plat);
+                    if (posZ > _spawnHeight + 2)
+                    {
+                        _spawnHeight = posZ + 2;
+                    }
+                }
+            }
+        }
+
+        var primary = MapInfo.Map.AttachedBlocks.FirstOrDefault(x => x.name == "Parent-Platform");
+        /*foreach (var plat in MapInfo.Map.AttachedBlocks.Where(x => x.name == "Platform"))
+        {
+            if (plat.GetInstanceID() != primary.GetInstanceID())
+                GameObject.Destroy(plat);
+        }*/
+
+        ushort id = 0;
+        foreach (SpleefPlatform platform in platforms)
+        {
+
+            Vector3 position = MapInfo.Map.Position + new Vector3(platform.PositionX, platform.PositionZ, platform.PositionY);
+            var newPlatform = GameObject.Instantiate(primary, position, Quaternion.identity);
+            _platforms.Add(id, newPlatform);
+
+            try
+            {
+                var component = newPlatform.AddComponent<FallPlatformComponent>();
+                component.Init(Config.RegeneratePlatformsAfterXSeconds, Config.PlatformFallDelay, Config.PlatformHealth, 15);
+            }
+            catch (Exception e)
+            {
+                DebugLogger.LogDebug($"Exception \n{e}");
+            }
+
+            var prim = newPlatform.GetComponent<PrimitiveObjectToy>() ?? newPlatform.AddComponent<PrimitiveObjectToy>();
+            prim.NetworkMaterialColor = platform.Color;
+
+            prim.Position = position;
+            prim.NetworkPosition = position;
+            prim.transform.position = position;
+            prim.transform.localPosition = position;
+            prim.Scale = new Vector3(platform.X, platform.Z, platform.Y);
+            prim.NetworkScale = new Vector3(platform.X, platform.Z, platform.Y);
+            prim.PrimitiveType = PrimitiveType.Cube;
+            prim.transform.localScale = new Vector3(platform.X, platform.Z, platform.Y);
+            NetworkServer.UnSpawn(newPlatform);
+            NetworkServer.Spawn(newPlatform);
+            id++;
+        }
+        GameObject.Destroy(primary);
     }
 
     protected override IEnumerator<float> BroadcastStartCountdown()
@@ -127,36 +202,26 @@ public class Plugin : Event, IEventMap, IInternalEvent, IEventTag
                 $"{Translation.SpleefStart.Replace("{time}", $"{time}")}", 1);
             yield return Timing.WaitForSeconds(1f);
         }
-
-        /*
-        foreach(GameObject platform in Platforms)
-        {
-            NetworkServer.UnSpawn(platform);
-            NetworkServer.Spawn(platform);
-        }
-        */
     }
     
     protected override void CountdownFinished()
     {
         foreach (Player ply in Player.GetPlayers())
         {
-            ply.GiveLoadout(PlayerLoadounts, LoadoutFlags.ItemsOnly);
+            ply.GiveLoadout(_playerLoadounts, LoadoutFlags.ItemsOnly);
         }
-
-        GameObject.Destroy(Wall);
     }
 
     protected override bool IsRoundDone()
     {
-        RoundTime -= TimeSpan.FromSeconds(1f);
+        _remaining -= TimeSpan.FromSeconds(FrameDelayInSeconds);
         return !(Player.GetPlayers().Count(ply => ply.IsAlive) > 1) &&
-            RoundTime.TotalSeconds > 0;
+             EventTime.TotalSeconds < Config.RoundDurationInSeconds;
     }
 
     protected override void ProcessFrame()
     {
-        var remaining = $"{RoundTime.Minutes:00}:{RoundTime.Seconds:00}";
+        var remaining = $"{_remaining.Minutes:00}:{_remaining.Seconds:00}";
         int count = Player.GetPlayers().Count(x => x.IsAlive);
         foreach (Player ply in Player.GetPlayers())
         {
@@ -186,5 +251,14 @@ public class Plugin : Event, IEventMap, IInternalEvent, IEventTag
         }
 
         Server.SendBroadcast(text, 10);
+    }
+
+    protected override void OnCleanup()
+    {
+        foreach (var x in this._platforms)
+        {
+            GameObject.Destroy(x.Value);
+        }
+        base.OnCleanup();
     }
 }

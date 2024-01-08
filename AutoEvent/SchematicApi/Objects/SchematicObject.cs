@@ -251,7 +251,7 @@ namespace MER.Lite.Objects
                         {
                             case LockerType.Pedestal: { locker = ObjectHelper.ScpPedestalObject; break; }
                             case LockerType.LargeGun: { locker = ObjectHelper.LargeGunLockerObject; break; }
-                            case LockerType.RifleRack: { locker = ObjectHelper.StandartLockerObject; break; }
+                            case LockerType.RifleRack: { locker = ObjectHelper.RifleRackObject; break; }
                             case LockerType.Misc: { locker = ObjectHelper.StandartLockerObject; break; }
                             case LockerType.Medkit: { locker = ObjectHelper.SmallWallCabinetObject; break; }
                             case LockerType.Adrenaline: { locker = ObjectHelper.SmallWallCabinetObject; break; }

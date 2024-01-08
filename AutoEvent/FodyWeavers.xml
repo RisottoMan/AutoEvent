@@ -2,15 +2,15 @@
   <Costura>
     <IncludeAssemblies>
       Newtonsoft.Json
-      SCPSLAudioApi
       0Harmony
       System.ComponentModel.DataAnnotations
-      YamlDotNet
+      SCPSLAudioApi
       NVorbis
+      System.Memory
+      YamlDotNet
       PowerupApi
       SchematicApi
       InventoryMenu
     </IncludeAssemblies>
   </Costura>
-
 </Weavers>
