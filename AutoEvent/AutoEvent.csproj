@@ -57,8 +57,8 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="CedModV3" HintPath="$(OTHER_REFERENCES)\CedModV3-13-3.dll" />
-	<Reference Include="NWAPIPermissionSystem" HintPath="$(OTHER_REFERENCES)\NWAPIPermissionSystem.dll" />
-	<Reference Include="SCPSLAudioApi" HintPath="$(OTHER_REFERENCES)\SCPSLAudioApi.dll" />
+    <Reference Include="NWAPIPermissionSystem" HintPath="$(OTHER_REFERENCES)\NWAPIPermissionSystem.dll" />
+    <Reference Include="SCPSLAudioApi" HintPath="$(OTHER_REFERENCES)\SCPSLAudioApi.dll" />
     <Reference Include="Assembly-CSharp-Publicized" HintPath="$(SL_REFERENCES)\Assembly-CSharp-Halloween-Publicized.dll" />
     <Reference Include="Mirror" HintPath="$(SL_REFERENCES)\Mirror-Publicized-SL-13.3.dll" />
     <Reference Include="PowerupApi" HintPath="PowerupApi\bin\Release\net48\PowerupApi.dll" />
