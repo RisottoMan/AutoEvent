@@ -10,6 +10,7 @@
 //    Created Date:     10/16/2023 2:48 PM
 // -----------------------------------------
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
@@ -63,5 +64,26 @@ public class RNGGenerator
         }
 
         return newSeed;
+    }
+
+    public static int GetRandomNumber(int minValue, int maxValue)
+    {
+        using (RNGCryptoServiceProvider rng = new RNGCryptoServiceProvider())
+        {
+            byte[] randomNumber = new byte[4];
+            rng.GetBytes(randomNumber);
+
+            int number = BitConverter.ToInt32(randomNumber, 0);
+
+            if (minValue == maxValue)
+            {
+                return minValue;
+            }
+
+            number = Math.Abs(number % (maxValue - minValue + 1));
+            number += minValue;
+
+            return number;
+        }
     }
 }
