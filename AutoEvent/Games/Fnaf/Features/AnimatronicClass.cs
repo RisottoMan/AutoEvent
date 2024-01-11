@@ -3,10 +3,10 @@ using UnityEngine;
 
 namespace AutoEvent.Games.Fnaf.Features;
 
-public class AnimatronicClass
+public class AnimatronicClass<T>
 {
     public int Level { get; set; }
-    public FreddyState State { get; set; }
+    public T State { get; set; }
     public GameObject GameObject { get; set; }
     public List<Vector3> Positions { get; set; }
     public int IndexPosition { get; set; }
