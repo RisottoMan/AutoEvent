@@ -17,7 +17,7 @@ using Event = AutoEvent.Interfaces.Event;
 
 namespace AutoEvent.Games.Spleef;
 
-public class Plugin : Event, IEventMap, IInternalEvent, IEventTag
+public class Plugin : Event, IEventMap, IInternalEvent
 {
     public override string Name { get; set; } = AutoEvent.Singleton.Translation.SpleefTranslate.SpleefName;
     public override string Description { get; set; } = AutoEvent.Singleton.Translation.SpleefTranslate.SpleefDescription;
@@ -40,11 +40,6 @@ public class Plugin : Event, IEventMap, IInternalEvent, IEventTag
         SoundName = "Fall_Guys_Winter_Fallympics.ogg",
         Volume = 7,
         Loop = true
-    };
-    public TagInfo TagInfo { get; set; } = new TagInfo()
-    {
-        Name = "new Update",
-        Color = "#77dde7"
     };
     private float _spawnHeight;
     private TimeSpan _remaining;

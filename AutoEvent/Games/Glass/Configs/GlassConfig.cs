@@ -10,13 +10,29 @@
 //    Created Date:     09/18/2023 4:33 PM
 // -----------------------------------------
 
+using System.Collections.Generic;
 using System.ComponentModel;
 using AutoEvent.Interfaces;
+using UnityEngine;
 
 namespace AutoEvent.Games.Infection;
 
 public class GlassConfig : EventConfig
 {
+    public GlassConfig()
+    {
+        if (AvailableMaps is null)
+        {
+            AvailableMaps = new List<MapChance>();
+        }
+
+        if (AvailableMaps.Count < 1)
+        {
+            AvailableMaps.Add(new MapChance(50, new MapInfo("Glass", new Vector3(76f, 1026.5f, -43.68f))));
+            AvailableMaps.Add(new MapChance(50, new MapInfo("Glass_Xmas2024", new Vector3(76f, 1026.5f, -43.68f))));
+        }
+    }
+
     [Description("Random percent from 40 - 60 will be chosen (ex: 50 percent). 50% of the platforms will be on one side. 50% on the other. This is the Lower Value.")]
     public int MinimumSideOffset { get; set; } = 40;
     [Description("Random percent from 40 - 60 will be chosen (ex: 50 percent). 50% of the platforms will be on one side. 50% on the other. This is the Higher Value.")]

@@ -23,16 +23,16 @@ namespace AutoEvent.Games.Knives
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.KnivesTranslate.KnivesDescription;
         public override string Author { get; set; } = "KoT0XleB";
         public override string CommandName { get; set; } = AutoEvent.Singleton.Translation.KnivesTranslate.KnivesCommandName;
-        public override Version Version { get; set; } = new Version(1, 0, 0);
+        public override Version Version { get; set; } = new Version(1, 0, 1);
         [EventConfig]
         public KnivesConfig Config { get; set; }
         public MapInfo MapInfo { get; set; } = new MapInfo()
-            {MapName = "35hp_2", Position = new Vector3(5f, 1030f, -45f), };
+            { MapName = "35hp_2", Position = new Vector3(5f, 1030f, -45f), };
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
             { SoundName = "Knife.ogg", Volume = 10, Loop = true };
         public TagInfo TagInfo { get; set; } = new TagInfo()
         {
-            Name = "New Map",
+            Name = "Xmas",
             Color = "#77dde7"
         };
         private EventHandler EventHandler { get; set; }

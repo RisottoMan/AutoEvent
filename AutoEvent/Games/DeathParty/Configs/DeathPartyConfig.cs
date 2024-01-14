@@ -16,6 +16,7 @@ using System.ComponentModel;
 using AutoEvent.API;
 using AutoEvent.Interfaces;
 using MEC;
+using UnityEngine;
 using YamlDotNet.Serialization;
 
 namespace AutoEvent.Games.Infection;
@@ -23,6 +24,20 @@ namespace AutoEvent.Games.Infection;
 [Description("Be aware that this plugin can cause lag if not carefully balanaced.")]
 public class DeathPartyConfig : EventConfig
 {
+    public DeathPartyConfig()
+    {
+        if (AvailableMaps is null)
+        {
+            AvailableMaps = new List<MapChance>();
+        }
+
+        if (AvailableMaps.Count < 1)
+        {
+            AvailableMaps.Add(new MapChance(50, new MapInfo("DeathParty", new Vector3(10f, 1012f, -40f))));
+            AvailableMaps.Add(new MapChance(50, new MapInfo("DeathParty_Xmas2024", new Vector3(10f, 1012f, -40f))));
+        }
+    }
+
     [Description("How many grenades will spawn in the round from 1 - 300. [Default: 20 - 110]")]
     public DifficultyItem DifficultyCount { get; set; } = new DifficultyItem(20, 110);
     

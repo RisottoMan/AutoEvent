@@ -29,6 +29,6 @@ public class Config : EventConfig
         }
     };
 
-    [Description("What item should give the players?")]
-    public ItemType ItemType { get; set; } = ItemType.Snowball;
+    //[Description("What item should give the players?")]
+    //public ItemType ItemType { get; set; } = ItemType.Snowball;
 }

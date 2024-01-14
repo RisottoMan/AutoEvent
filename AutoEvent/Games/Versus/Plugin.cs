@@ -20,7 +20,7 @@ namespace AutoEvent.Games.Versus
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.VersusTranslate.VersusDescription;
         public override string Author { get; set; } = "KoT0XleB";
         public override string CommandName { get; set; } = AutoEvent.Singleton.Translation.VersusTranslate.VersusCommandName;
-        public override Version Version { get; set; } = new Version(1, 0, 0);
+        public override Version Version { get; set; } = new Version(1, 0, 1);
         [EventConfig]
         public VersusConfig Config { get; set; }
         public MapInfo MapInfo { get; set; } = new MapInfo()
@@ -29,7 +29,7 @@ namespace AutoEvent.Games.Versus
             { SoundName = "Knife.ogg", Volume = 10, Loop = true };
         public TagInfo TagInfo { get; set; } = new TagInfo()
         {
-            Name = "New Map",
+            Name = "Xmas",
             Color = "#77dde7"
         };
         protected override FriendlyFireSettings ForceEnableFriendlyFire { get; set; } = FriendlyFireSettings.Disable;

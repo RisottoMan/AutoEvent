@@ -40,7 +40,8 @@ namespace AutoEvent.Commands
                 builder.AppendLine("\"List of events:");
             }
 
-            builder.AppendLine("<size=80><color=#42aaff><b>🎄 MERRY CHRISTMAS 🎄</b></color></size>");
+            //builder.AppendLine("<size=80><color=#42aaff><b>🎄 MERRY CHRISTMAS 🎄</b></color></size>");
+            builder.AppendLine("<size=80><color=#42aaff><b>🎄 HAPPY NEW YEAR 🎄</b></color></size>");
 
             // ReSharper disable once SuspiciousTypeConversion.Global
             Dictionary<string, List<Event>> events = new Dictionary<string, List<Event>>()

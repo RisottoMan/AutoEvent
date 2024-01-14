@@ -13,8 +13,9 @@ using Event = AutoEvent.Interfaces.Event;
 
 namespace AutoEvent.Games.Snowball
 {
-    public class Plugin : Event, IEventSound, IEventMap, IInternalEvent, IEventTag
+    public class Plugin : Event, IEventSound, IEventMap, IInternalEvent, IEventTag, IHidden
     {
+        // Christmas Mini-Game
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.SnowballTranslation.SnowballName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.SnowballTranslation.SnowballDescription;
         public override string Author { get; set; } = "KoT0XleB";
@@ -36,7 +37,7 @@ namespace AutoEvent.Games.Snowball
         };
         public TagInfo TagInfo { get; set; } = new TagInfo()
         {
-            Name = "Christmas",
+            Name = "Xmas",
             Color = "#77dde7"
         };
         private EventHandler EventHandler { get; set; }
@@ -164,6 +165,7 @@ namespace AutoEvent.Games.Snowball
                 {
                     if (Vector3.Distance(ball.transform.position, player.Position) < 1.5f)
                     {
+                        /* // Christmas Update
                         ItemBase item = player.Items.FirstOrDefault(r => r.ItemTypeId == ItemType.Snowball);
                         if (item == null)
                         {
@@ -177,6 +179,7 @@ namespace AutoEvent.Games.Snowball
                                 player.CurrentItem = item;
                             }
                         });
+                        */
                     }
                 }
 

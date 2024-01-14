@@ -11,10 +11,11 @@ namespace AutoEvent.Games.Snowball
     {
         public void OnDamage(PlayerDamageArgs ev)
         {
-            if (ev.AttackerHandler is SnowballDamageHandler snowBallDamageHandler)
+            // Christmas Update
+            /*if (ev.AttackerHandler is SnowballDamageHandler snowBallDamageHandler)
             {
                 snowBallDamageHandler.Damage = 50;
-            }
+            }*/
         }
 
         [PluginEvent(ServerEventType.PlayerJoined)]

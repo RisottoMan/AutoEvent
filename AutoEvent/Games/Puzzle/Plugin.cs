@@ -24,19 +24,19 @@ namespace AutoEvent.Games.Puzzle
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.PuzzleTranslate.PuzzleDescription;
         public override string Author { get; set; } = "KoT0XleB";
         public override string CommandName { get; set; } = AutoEvent.Singleton.Translation.PuzzleTranslate.PuzzleCommandName;
-        public override Version Version { get; set; } = new Version(1, 0, 0);
+        public override Version Version { get; set; } = new Version(1, 0, 1);
         [EventConfig]
         public PuzzleConfig Config { get; set; }
 
         [EventConfigPreset] public PuzzleConfig ColorMatch => PuzzleConfigPresets.ColorMatch;
         [EventConfigPreset] public PuzzleConfig Run => PuzzleConfigPresets.Run;
         public MapInfo MapInfo { get; set; } = new MapInfo()
-            {MapName = "Puzzle", Position = new Vector3(76f, 1026.5f, -43.68f), };
+            { MapName = "Puzzle", Position = new Vector3(76f, 1026.5f, -43.68f), };
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
             { SoundName = "ChristmasMusic.ogg", Volume = 7, Loop = true };
         public TagInfo TagInfo { get; set; } = new TagInfo()
         {
-            Name = "New Map",
+            Name = "Xmas",
             Color = "#77dde7"
         };
         protected override float PostRoundDelay { get; set; } = 10f;

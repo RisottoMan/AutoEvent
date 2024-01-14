@@ -7,9 +7,9 @@ using PluginAPI.Core;
 using PluginAPI.Events;
 using AutoEvent.Events.Handlers;
 using AutoEvent.Interfaces;
-using Event = AutoEvent.Interfaces.Event;
 using AdminToys;
 using PlayerRoles.FirstPersonControl;
+using Event = AutoEvent.Interfaces.Event;
 
 namespace AutoEvent.Games.MusicalChairs
 {
@@ -19,7 +19,7 @@ namespace AutoEvent.Games.MusicalChairs
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.ChairsTranslation.ChairsDescription;
         public override string Author { get; set; } = "KoT0XleB";
         public override string CommandName { get; set; } = AutoEvent.Singleton.Translation.ChairsTranslation.ChairsCommandName;
-        public override Version Version { get; set; } = new Version(1, 0, 1);
+        public override Version Version { get; set; } = new Version(1, 0, 3);
         private ChairsTranslation Translation { get; set; } = AutoEvent.Singleton.Translation.ChairsTranslation;
         [EventConfig]
         public Config Config { get; set; }
@@ -36,7 +36,7 @@ namespace AutoEvent.Games.MusicalChairs
         };
         public TagInfo TagInfo { get; set; } = new TagInfo()
         {
-            Name = "Christmas",
+            Name = "Xmas",
             Color = "#77dde7"
         };
         private EventHandler EventHandler { get; set; }
@@ -89,7 +89,7 @@ namespace AutoEvent.Games.MusicalChairs
                 }
             }
 
-            int count = Player.GetPlayers().Count > 20 ? 20 : Player.GetPlayers().Count - 1;
+            int count = Player.GetPlayers().Count > 40 ? 40 : Player.GetPlayers().Count - 1;
             Platforms = Functions.GeneratePlatforms(
                 count,
                 Cylinder, 

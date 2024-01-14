@@ -15,7 +15,7 @@ using AutoEvent.API.RNG;
 
 namespace AutoEvent.Games.Fnaf
 {
-    public class Plugin : Event, IEventMap, IInternalEvent
+    public class Plugin : Event, IEventMap, IInternalEvent, IHidden
     {
         public override string Name { get; set; } = "Five Nights at Freddy's";
         public override string Description { get; set; } = "Survive one night with animatronics";
@@ -31,7 +31,7 @@ namespace AutoEvent.Games.Fnaf
             Position = new Vector3(0, 30, 30)
         };
         private EventHandler _eventHandler;
-        private Dictionary<string, AnimatronicClass> _animDict;
+        //private Dictionary<string, AnimatronicClass> _animDict;
         protected override void RegisterEvents()
         {
             _eventHandler = new EventHandler(this);
@@ -63,7 +63,7 @@ namespace AutoEvent.Games.Fnaf
 
         protected override void OnStart()
         {
-            _animDict = new Dictionary<string, AnimatronicClass>();
+            //_animDict = new Dictionary<string, AnimatronicClass>();
             AddAnimatronicFromPreset(Config.FreddyPreset);
 
             foreach (Player player in Player.GetPlayers())
@@ -92,6 +92,7 @@ namespace AutoEvent.Games.Fnaf
                 }
             }
 
+            /*
             _animDict.Add(preset.Name, new AnimatronicClass()
             {
                 Level = preset.Level,
@@ -103,6 +104,7 @@ namespace AutoEvent.Games.Fnaf
                 Timer = preset.Timer,
                 Counter = preset.Timer
             });
+            */
         }
 
         protected override IEnumerator<float> BroadcastStartCountdown()
@@ -122,14 +124,15 @@ namespace AutoEvent.Games.Fnaf
         protected override float FrameDelayInSeconds { get; set; } = 0.1f;
         protected override void ProcessFrame()
         {
+            /*
             foreach(var item in _animDict)
             {
                 UpdateAnimatronicLogic(item.Value);
             }
-
+            */
             Extensions.Broadcast("Cycle", 1);
         }
-
+        /*
         protected void UpdateAnimatronicLogic(AnimatronicClass anim)
         {
             // Время ожидания аниматроника
@@ -166,7 +169,7 @@ namespace AutoEvent.Games.Fnaf
                     break;
             }
         }
-
+        */
         protected override void OnFinished()
         {
             Extensions.Broadcast("End", 10);

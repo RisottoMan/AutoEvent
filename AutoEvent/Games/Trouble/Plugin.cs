@@ -11,8 +11,9 @@ using System.Collections.Generic;
 
 namespace AutoEvent.Games.Trouble
 {
-    public class Plugin : Event, IEventSound, IEventMap, IInternalEvent
+    public class Plugin : Event, IEventSound, IEventMap, IInternalEvent, IHidden
     {
+        // Haloween Update
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.TroubleTranslation.TroubleName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.TroubleTranslation.TroubleDescription;
         public override string Author { get; set; } = "KoT0XleB";

@@ -26,17 +26,17 @@ namespace AutoEvent.Games.HideAndSeek
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.HideTranslate.HideDescription;
         public override string Author { get; set; } = "KoT0XleB";
         public override string CommandName { get; set; } = AutoEvent.Singleton.Translation.HideTranslate.HideCommandName;
-        public override Version Version { get; set; } = new Version(1, 0, 0);
+        public override Version Version { get; set; } = new Version(1, 0, 1);
 
         [EventConfig]
         public HideAndSeekConfig Config { get; set; }
         public MapInfo MapInfo { get; set; } = new MapInfo()
-            {MapName = "HideAndSeek", Position = new Vector3(5.5f, 1026.5f, -45f), };
+            { MapName = "HideAndSeek", Position = new Vector3(5.5f, 1026.5f, -45f), };
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
             { SoundName = "HideAndSeek.ogg", Volume = 5, Loop = true };
         public TagInfo TagInfo { get; set; } = new TagInfo()
         {
-            Name = "New Map",
+            Name = "Xmas",
             Color = "#77dde7"
         };
         protected override float PostRoundDelay { get; set; } = 10f;

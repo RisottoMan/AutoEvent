@@ -17,7 +17,7 @@ using PlayerRoles;
 
 namespace AutoEvent.Games.CounterStrike
 {
-    public class Plugin : Event, IEventMap, IEventSound, IInternalEvent, IEventTag
+    public class Plugin : Event, IEventMap, IEventSound, IInternalEvent
     {
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.StrikeTranslation.StrikeSName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.StrikeTranslation.StrikeDescription;
@@ -39,11 +39,6 @@ namespace AutoEvent.Games.CounterStrike
             SoundName = "Survival.ogg", 
             Volume = 10,
             Loop = false
-        };
-        public TagInfo TagInfo { get; set; } = new TagInfo()
-        {
-            Name = "Optimized map",
-            Color = "#77dde7"
         };
         public BombState BombState { get; set; }
         public Player Winner { get; set; }

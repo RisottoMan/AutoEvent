@@ -1,48 +1,25 @@
 ﻿using MER.Lite;
 using MER.Lite.Objects;
-using PluginAPI.Core;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 namespace AutoEvent.Games.Boss.Features
 {
     public class Functions
     {
-        public static List<SchematicObject> SantaSchematic { get; set; }
-        public static void CreateSchematicBoss(Player player)
+        private static StateEnum _previousState { get; set; }
+        public static void GetRandomState() //StateEnum
         {
-            if (SantaSchematic == null)
-            {
-                SantaSchematic = new List<SchematicObject>();
-            }
+            // Не должно входить предыдущее состояние
+            // Этим состоянием не должен быть Waiting
 
-            var schematic = ObjectSpawner.SpawnSchematic(
-                "SantaClaus", 
-                player.Position + new Vector3(
-                    0,
-                    -2.244f,
-                    0
-                    ),
-                Quaternion.Euler(player.Rotation),
-                new Vector3(
-                    1f, 
-                    1f, 
-                    1f
-                    ));
-
-            schematic.transform.parent = player.ReferenceHub.transform;
-            SantaSchematic.Add(schematic);
+            //return new List<StateEnum>(Enum.GetValues(typeof(StateEnum)) as IEnumerable<StateEnum>);
         }
 
-        public static void RemoveSchematicBosses()
+        public static SchematicObject CreateSchematicBoss()
         {
-            if (SantaSchematic != null)
-            {
-                foreach (var schematic in SantaSchematic)
-                {
-                    schematic.Destroy();
-                }
-            }
+            return ObjectSpawner.SpawnSchematic("SantaClaus",  new Vector3(0, -2.244f, 0), Quaternion.identity, new Vector3(1f, 1f, 1f));
         }
     }
 }
