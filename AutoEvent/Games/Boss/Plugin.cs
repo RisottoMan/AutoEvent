@@ -11,10 +11,11 @@ using AutoEvent.Games.Infection;
 using AutoEvent.Interfaces;
 using AutoEvent.Games.Boss.Features;
 using Event = AutoEvent.Interfaces.Event;
+using System.Reflection;
 
 namespace AutoEvent.Games.Boss
 {
-    public class Plugin : Event, IEventMap, IInternalEvent, IEventTag, IHidden
+    public class Plugin : Event, IEventMap, IInternalEvent, IEventTag//, IHidden
     {
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.BossTranslate.BossName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.BossTranslate.BossDescription;
@@ -41,7 +42,8 @@ namespace AutoEvent.Games.Boss
             Color = "#77dde7"
         };
         private EventHandler _eventHandler { get; set; }
-        private StateClass<object> _stateClass;
+        private List<Type> _eventStates;
+        private IBossState _curState;
         protected override void RegisterEvents()
         {
             _eventHandler = new EventHandler(this);
@@ -94,22 +96,12 @@ namespace AutoEvent.Games.Boss
 
         protected override bool IsRoundDone()
         {
-            if (_stateClass.Timer.TotalSeconds > 0)
-                _stateClass.Timer -= TimeSpan.FromSeconds(FrameDelayInSeconds);
-
             return !(EventTime.TotalSeconds < Config.DurationInSeconds);
         }
 
         protected override void CountdownFinished()
         {
-            _stateClass = new StateClass<object>()
-            {
-                SantaObject = Functions.CreateSchematicBoss(),
-                CurrentState = StateEnum.Waiting,
-                CurrentValue = new WaitingState(),
-                Timer = new TimeSpan(0, 0, 5)
-            };
-
+            //_eventStates = Assembly.GetExecutingAssembly().GetTypes().Where(t => t.GetInterfaces().Contains(typeof(IBossState)) && !t.IsInterface).ToList();
             StartAudio();
         }
 
@@ -120,43 +112,22 @@ namespace AutoEvent.Games.Boss
             text = text.Replace("{time}", $"{EventTime.Minutes:00}:{EventTime.Seconds:00}");
             Extensions.Broadcast(text, 1);
 
-            switch (_stateClass.CurrentState)
+            if (_curState is null)
             {
-                case StateEnum.Waiting:
-                    HandleWaitingState(Translation, ref text);
-                    break;
-                case StateEnum.Running:
-                    HandleRunningState(Translation, ref text);
-                    break;
-            }
-        }
-
-        protected void HandleWaitingState(BossTranslate trans, ref string text)
-        {
-            // Santa has to come running to the center for the next event
-            if (Vector3.Distance(_stateClass.SantaObject.Position, MapInfo.Position) > 5)
-            {
-                _stateClass.SantaObject.Position = MapInfo.Position;
+                DebugLogger.LogDebug("New state");
+                _curState = new RunningState();
+                _curState.Init(EventTime);
             }
 
-            if (_stateClass.Timer.TotalSeconds <= 0)
-            {
-                //_stateClass.CurrentState = Functions.GetRandomState();
-                return;
-            }
-        }
+            _curState.Update();
 
-        protected void HandleRunningState(BossTranslate trans, ref string text)
-        {
-            if (Vector3.Distance(_stateClass.SantaObject.Position, MapInfo.Position) > 5)
+            if (_curState.Timer.TotalSeconds > 0)
             {
-                _stateClass.SantaObject.Position = MapInfo.Position;
+                _curState.Timer -= TimeSpan.FromSeconds(FrameDelayInSeconds);
             }
-
-            if (_stateClass.Timer.TotalSeconds <= 0)
+            else
             {
-                _stateClass.CurrentState = StateEnum.Waiting;
-                _stateClass.Timer = new TimeSpan(0, 0, 15);
+                _curState = null;
             }
         }
 
