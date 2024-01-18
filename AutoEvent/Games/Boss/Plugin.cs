@@ -113,7 +113,7 @@ namespace AutoEvent.Games.Boss
 
             if (_curState is null)
             {
-                _curState = new RunningState();
+                // Лучше сохранять не WaitingState и проверять его.
                 _curState = _previousState is not WaitingState ? new WaitingState() : Functions.GetRandomState(_previousState);
 
                 DebugLogger.LogDebug($"New state {_curState.Name}");
