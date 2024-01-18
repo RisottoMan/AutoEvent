@@ -5,21 +5,23 @@ namespace AutoEvent.Games.Boss;
 
 public class CatchingUpState : IBossState
 {
-    public Player CatchingPlayer { get; set; }
-    public TimeSpan Timer { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+    private Player? _target { get; set; }
+    public string Name { get; } = "CatchingUp";
+    public string Description { get; } = "The state in which Santa Claus runs after one player and makes him a minion-Santa";
+    public TimeSpan Timer { get; set; }
 
     public void Init()
     {
         
     }
 
-    public void Init(TimeSpan eventTime)
-    {
-        throw new NotImplementedException();
-    }
-
     public void Update()
     {
         
+    }
+
+    public void Deinit()
+    {
+
     }
 }

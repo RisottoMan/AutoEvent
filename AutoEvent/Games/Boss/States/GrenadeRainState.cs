@@ -3,11 +3,10 @@ using UnityEngine;
 
 namespace AutoEvent.Games.Boss;
 
-public class WaitingState : IBossState
+public class GrenadeRainState : IBossState
 {
-    private Vector3 _newPos;
-    public string Name { get; } = "Waiting";
-    public string Description { get; } = "The transitional state between all states";
+    public string Name { get; } = "Grenade Rain";
+    public string Description { get; } = "The state in which Santa creates a rain of grenades";
     public TimeSpan Timer { get; set; }
 
     public void Init()

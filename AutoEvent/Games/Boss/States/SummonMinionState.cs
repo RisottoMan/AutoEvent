@@ -3,11 +3,10 @@ using UnityEngine;
 
 namespace AutoEvent.Games.Boss;
 
-public class WaitingState : IBossState
+public class SummonMinionState : IBossState
 {
-    private Vector3 _newPos;
-    public string Name { get; } = "Waiting";
-    public string Description { get; } = "The transitional state between all states";
+    public string Name { get; } = "Summonning Minions";
+    public string Description { get; } = "The state in which Santa summons evil mini-santa minions";
     public TimeSpan Timer { get; set; }
 
     public void Init()

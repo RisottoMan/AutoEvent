@@ -9,9 +9,8 @@ using UnityEngine;
 using AutoEvent.Events.Handlers;
 using AutoEvent.Games.Infection;
 using AutoEvent.Interfaces;
-using AutoEvent.Games.Boss.Features;
 using Event = AutoEvent.Interfaces.Event;
-using System.Reflection;
+using AutoEvent.Games.Boss.Features;
 
 namespace AutoEvent.Games.Boss
 {
@@ -41,9 +40,10 @@ namespace AutoEvent.Games.Boss
             Name = "Reworked",
             Color = "#77dde7"
         };
-        private EventHandler _eventHandler { get; set; }
+        private EventHandler _eventHandler;
         private List<Type> _eventStates;
         private IBossState _curState;
+        private IBossState _previousState;
         protected override void RegisterEvents()
         {
             _eventHandler = new EventHandler(this);
@@ -101,7 +101,6 @@ namespace AutoEvent.Games.Boss
 
         protected override void CountdownFinished()
         {
-            //_eventStates = Assembly.GetExecutingAssembly().GetTypes().Where(t => t.GetInterfaces().Contains(typeof(IBossState)) && !t.IsInterface).ToList();
             StartAudio();
         }
 
@@ -114,9 +113,12 @@ namespace AutoEvent.Games.Boss
 
             if (_curState is null)
             {
-                DebugLogger.LogDebug("New state");
                 _curState = new RunningState();
-                _curState.Init(EventTime);
+                _curState = _previousState is not WaitingState ? new WaitingState() : Functions.GetRandomState(_previousState);
+
+                DebugLogger.LogDebug($"New state {_curState.Name}");
+
+                _curState.Init();
             }
 
             _curState.Update();
@@ -127,6 +129,8 @@ namespace AutoEvent.Games.Boss
             }
             else
             {
+                _curState.Deinit();
+                _previousState = _curState;
                 _curState = null;
             }
         }

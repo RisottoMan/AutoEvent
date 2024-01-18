@@ -3,18 +3,28 @@ using MER.Lite.Objects;
 using System.Collections.Generic;
 using System;
 using UnityEngine;
+using System.Reflection;
+using System.Linq;
 
 namespace AutoEvent.Games.Boss.Features
 {
     public class Functions
     {
-        private static StateEnum _previousState { get; set; }
-        public static void GetRandomState() //StateEnum
+        public static IBossState GetRandomState(IBossState _prevState)
         {
-            // Не должно входить предыдущее состояние
-            // Этим состоянием не должен быть Waiting
+            List<Type> _eventStates = Assembly.GetExecutingAssembly().GetTypes().Where(t => t.GetInterfaces().Contains(typeof(IBossState)) && !t.IsInterface).ToList();
+            List<IBossState> newList = new List<IBossState>();
+            foreach(Type type in _eventStates)
+            {
+                object activeType = Activator.CreateInstance(type);
+                if (activeType is IBossState bossState)
+                {
+                    if (_prevState != bossState && bossState.Name != "Waiting")
+                        newList.Add(bossState);
+                }
+            }
 
-            //return new List<StateEnum>(Enum.GetValues(typeof(StateEnum)) as IEnumerable<StateEnum>);
+            return newList.RandomItem();
         }
 
         public static SchematicObject CreateSchematicBoss()

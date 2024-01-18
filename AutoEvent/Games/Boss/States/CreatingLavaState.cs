@@ -3,11 +3,10 @@ using UnityEngine;
 
 namespace AutoEvent.Games.Boss;
 
-public class WaitingState : IBossState
+public class CreatingLavaState : IBossState
 {
-    private Vector3 _newPos;
-    public string Name { get; } = "Waiting";
-    public string Description { get; } = "The transitional state between all states";
+    public string Name { get; } = "CreatingLava";
+    public string Description { get; } = "The state in which Santa Claus creates Lava Positions";
     public TimeSpan Timer { get; set; }
 
     public void Init()
