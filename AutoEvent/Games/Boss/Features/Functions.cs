@@ -10,21 +10,30 @@ namespace AutoEvent.Games.Boss.Features
 {
     public class Functions
     {
-        public static IBossState GetRandomState(IBossState _prevState)
+        private static IBossState _previousRandomState = new WaitingState();
+        public static IBossState GetRandomState(int stage)
         {
-            List<Type> _eventStates = Assembly.GetExecutingAssembly().GetTypes().Where(t => t.GetInterfaces().Contains(typeof(IBossState)) && !t.IsInterface).ToList();
-            List<IBossState> newList = new List<IBossState>();
-            foreach(Type type in _eventStates)
+            var newList = new List<IBossState>();
+            var types = Assembly.GetExecutingAssembly().GetTypes();
+            var stateTypes = types.Where(t => t.GetInterfaces().Contains(typeof(IBossState)) && !t.IsInterface);
+
+            foreach(Type type in stateTypes)
             {
                 object activeType = Activator.CreateInstance(type);
-                if (activeType is IBossState bossState)
+                if (activeType is IBossState state)
                 {
-                    if (_prevState != bossState && bossState.Name != "Waiting")
-                        newList.Add(bossState);
+                    if (state.Name != _previousRandomState.Name &&
+                        state.Name != "WaitingState" &&
+                        state.Stage <= stage)
+                        newList.Add(state);
                 }
             }
 
-            return newList.RandomItem();
+            var newItem = newList.RandomItem();
+            DebugLogger.LogDebug($"Last state = {_previousRandomState.Name}; New state = {newItem.Name}");
+            _previousRandomState = newItem;
+
+            return newItem;
         }
 
         public static SchematicObject CreateSchematicBoss()

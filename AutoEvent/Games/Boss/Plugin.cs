@@ -26,7 +26,7 @@ namespace AutoEvent.Games.Boss
         private BossTranslate Translation { get; set; } = AutoEvent.Singleton.Translation.BossTranslate;
         public MapInfo MapInfo { get; set; } = new MapInfo() 
         { 
-            MapName = "Boss_Santa",
+            MapName = "Boss",
             Position = new Vector3(6f, 1030f, -43.5f) 
         };
         public SoundInfo SoundInfo { get; set; } = new SoundInfo() 
@@ -41,9 +41,11 @@ namespace AutoEvent.Games.Boss
             Color = "#77dde7"
         };
         private EventHandler _eventHandler;
-        private List<Type> _eventStates;
         private IBossState _curState;
-        private IBossState _previousState;
+        private IBossState _prevState;
+        private int _stage;
+        public GameObject santaObject;
+        public GameObject radiusArena;
         protected override void RegisterEvents()
         {
             _eventHandler = new EventHandler(this);
@@ -73,19 +75,28 @@ namespace AutoEvent.Games.Boss
         }
         protected override void OnStart()
         {
+            _stage = 0;
+            foreach(GameObject block in MapInfo.Map.AttachedBlocks)
+            {
+                switch (block.name)
+                {
+                    case "SantaClaus": santaObject = block; break;
+                    case "Arena": radiusArena = block; break;
+                }
+            }
+
             foreach (Player player in Player.GetPlayers())
             {
-                player.GiveLoadout(Config.Loadouts);
-                player.Position = RandomClass.GetSpawnPosition(MapInfo.Map);
-                player.Health = 200;
+                //player.GiveLoadout(Config.Loadouts);
+                player.Position = RandomClass.GetRandomSpawnPosition(MapInfo.Map);
+                //player.Health = 200;
 
                 Timing.CallDelayed(0.1f, () => { player.CurrentItem = player.Items.First(); });
             }
-
         }
         protected override IEnumerator<float> BroadcastStartCountdown()
         {
-            for (int time = 10; time > 0; time--)
+            for (int time = 2; time > 0; time--) // 10
             {
                 Extensions.Broadcast(Translation.BossTimeLeft.Replace("{time}", $"{time}"), 5);
                 yield return Timing.WaitForSeconds(1f);
@@ -101,9 +112,10 @@ namespace AutoEvent.Games.Boss
 
         protected override void CountdownFinished()
         {
-            StartAudio();
+            santaObject.transform.position = MapInfo.Map.Position;
+            //StartAudio();
         }
-
+        protected override float FrameDelayInSeconds { get; set; } = 0.1f;
         protected override void ProcessFrame()
         {
             string text = Translation.BossCounter;
@@ -111,14 +123,16 @@ namespace AutoEvent.Games.Boss
             text = text.Replace("{time}", $"{EventTime.Minutes:00}:{EventTime.Seconds:00}");
             Extensions.Broadcast(text, 1);
 
+            StateUpdate();
+        }
+
+        protected void StateUpdate()
+        {
             if (_curState is null)
             {
-                // Лучше сохранять не WaitingState и проверять его.
-                _curState = _previousState is not WaitingState ? new WaitingState() : Functions.GetRandomState(_previousState);
-
-                DebugLogger.LogDebug($"New state {_curState.Name}");
-
-                _curState.Init();
+                _curState = _prevState is not WaitingState ? new WaitingState() : new RunningState();// : new RunningState();// : Functions.GetRandomState(_stage);
+                _curState.Init(this);
+                DebugLogger.LogDebug(_curState.Name);
             }
 
             _curState.Update();
@@ -130,7 +144,7 @@ namespace AutoEvent.Games.Boss
             else
             {
                 _curState.Deinit();
-                _previousState = _curState;
+                _prevState = _curState;
                 _curState = null;
             }
         }
