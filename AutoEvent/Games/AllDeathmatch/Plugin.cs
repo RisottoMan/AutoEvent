@@ -26,11 +26,11 @@ namespace AutoEvent.Games.AllDeathmatch
         [EventConfig]
         public Config Config { get; set; }
         public MapInfo MapInfo { get; set; } = new MapInfo()
-        { 
+        {
             MapName = "de_dust2",
-            Position = new Vector3(-30, 0, 30)
+            Position = new Vector3(0, 30, 30),
+            IsStatic = true,
         };
-
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
         { 
             SoundName = "ExecDeathmatch.ogg", 

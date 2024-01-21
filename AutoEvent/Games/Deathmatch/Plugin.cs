@@ -1,7 +1,4 @@
-﻿using CustomPlayerEffects;
-using MER.Lite.Objects;
-using MEC;
-using PlayerRoles;
+﻿using MEC;
 using PluginAPI.Core;
 using PluginAPI.Events;
 using System;
@@ -24,11 +21,19 @@ namespace AutoEvent.Games.Deathmatch
         public override string CommandName { get; set; } = AutoEvent.Singleton.Translation.DeathmatchTranslate.DeathmatchCommandName;
         public override Version Version { get; set; } = new Version(1, 0, 0);
         [EventConfig]
-        public Infection.Config Config { get; set; }
+        public Config Config { get; set; }
         public MapInfo MapInfo { get; set; } = new MapInfo()
-            {MapName = "Shipment", Position = new Vector3(93f, 1020f, -43f), };
+        {
+            MapName = "Shipment", 
+            Position = new Vector3(93f, 1020f, -43f),
+            IsStatic = true
+        };
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
-            { SoundName = "ClassicMusic.ogg", Volume = 5, Loop = true };
+        { 
+            SoundName = "ClassicMusic.ogg", 
+            Volume = 5, 
+            Loop = true
+        };
         protected override float PostRoundDelay { get; set; } = 10f;
         private EventHandler EventHandler { get; set; }
         private DeathmatchTranslate Translation { get; set; } = AutoEvent.Singleton.Translation.DeathmatchTranslate;

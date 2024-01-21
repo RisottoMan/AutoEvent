@@ -24,7 +24,11 @@ namespace AutoEvent.Games.Versus
         [EventConfig]
         public VersusConfig Config { get; set; }
         public MapInfo MapInfo { get; set; } = new MapInfo()
-            { MapName = "35Hp", Position = new Vector3(6f, 1015f, -5f), };
+        { 
+            MapName = "35Hp", 
+            Position = new Vector3(6f, 1015f, -5f),
+            IsStatic = true
+        };
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
             { SoundName = "Knife.ogg", Volume = 10, Loop = true };
         public TagInfo TagInfo { get; set; } = new TagInfo()

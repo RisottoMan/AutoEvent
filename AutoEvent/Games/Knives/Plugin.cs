@@ -27,7 +27,11 @@ namespace AutoEvent.Games.Knives
         [EventConfig]
         public KnivesConfig Config { get; set; }
         public MapInfo MapInfo { get; set; } = new MapInfo()
-            { MapName = "35hp_2", Position = new Vector3(5f, 1030f, -45f), };
+        { 
+            MapName = "35hp_2", 
+            Position = new Vector3(5f, 1030f, -45f),
+            IsStatic = true
+        };
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
             { SoundName = "Knife.ogg", Volume = 10, Loop = true };
         public TagInfo TagInfo { get; set; } = new TagInfo()

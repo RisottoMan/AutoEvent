@@ -219,8 +219,7 @@ namespace AutoEvent.Interfaces
         if (this is IEventSound sound && !string.IsNullOrEmpty(sound.SoundInfo.SoundName) &&
             (!checkIfAutomatic || sound.SoundInfo.StartAutomatically))
         {
-            // play sound
-            Extensions.PlayAudio(
+            sound.SoundInfo.AudioPlayerBase = Extensions.PlayAudio(
                 sound.SoundInfo.SoundName,
                 sound.SoundInfo.Volume,
                 sound.SoundInfo.Loop);
@@ -257,7 +256,8 @@ namespace AutoEvent.Interfaces
                 map.MapInfo.MapName, 
                 map.MapInfo.Position, 
                 map.MapInfo.MapRotation, 
-                map.MapInfo.Scale);
+                map.MapInfo.Scale,
+                map.MapInfo.IsStatic);
         }
     }
 

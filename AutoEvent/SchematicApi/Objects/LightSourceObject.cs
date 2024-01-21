@@ -1,13 +1,11 @@
-﻿
-namespace MER.Lite.Objects
+﻿namespace MER.Lite.Objects
 {
     using AdminToys;
-    using MapGeneration;
     using Mirror;
     using Serializable;
     using UnityEngine;
 
-    public class LightSourceObjects : MapEditorObject
+    public class LightSourceObject : MapEditorObject
     {
         private Transform _transform;
         private LightSourceToy _lightSourceToy;
@@ -18,17 +16,22 @@ namespace MER.Lite.Objects
             _lightSourceToy = GetComponent<LightSourceToy>();
         }
 
-        public LightSourceObjects Init(LightSourcesSerializable lightSourcesSerializable, bool spawn = true)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LightSourceObject"/> class.
+        /// </summary>
+        /// <param name="lightSourceSerializable">The required <see cref="LightSourceSerializable"/>.</param>
+        /// <param name="spawn">A value indicating whether the component should be spawned.</param>
+        /// <returns>The initialized <see cref="LightSourceObject"/> instance.</returns>
+        public LightSourceObject Init(LightSourcesSerializable lightSourcesSerializable, bool spawn = true)
         {
             Base = lightSourcesSerializable;
-            _lightSourceToy.MovementSmoothing = 60;
 
             UpdateObject();
 
             if (spawn)
                 NetworkServer.Spawn(gameObject);
 
-            _lightSourceToy.enabled = false;
+            IsStatic = false;
 
             return this;
         }
@@ -38,19 +41,36 @@ namespace MER.Lite.Objects
             base.Init(block);
 
             Base = new(block);
-            _lightSourceToy.MovementSmoothing = 60;
 
             UpdateObject();
+            IsStatic = true;
 
             return this;
         }
 
+        /// <summary>
+        /// The base <see cref="LightSourceSerializable"/>.
+        /// </summary>
         public LightSourcesSerializable Base;
 
+        public bool IsStatic
+        {
+            get => _isStatic;
+            set
+            {
+                _lightSourceToy.enabled = !value;
+                _lightSourceToy.NetworkMovementSmoothing = (byte)(value ? 0 : 60);
+                _isStatic = value;
+            }
+        }
+
+        /// <inheritdoc cref="MapEditorObject.IsRotatable"/>
         public override bool IsRotatable => false;
 
+        /// <inheritdoc cref="MapEditorObject.IsScalable"/>
         public override bool IsScalable => false;
 
+        /// <inheritdoc cref="MapEditorObject.UpdateObject()"/>
         public override void UpdateObject()
         {
             _lightSourceToy.Position = _transform.position;
@@ -66,5 +86,7 @@ namespace MER.Lite.Objects
         {
             _lightSourceToy.NetworkPosition = _transform.position;
         }
+
+        private bool _isStatic;
     }
 }

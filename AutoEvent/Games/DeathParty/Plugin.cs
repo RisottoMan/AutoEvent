@@ -24,7 +24,11 @@ namespace AutoEvent.Games.DeathParty
         public override string CommandName { get; set; } = AutoEvent.Singleton.Translation.DeathTranslate.DeathCommandName;
         public override Version Version { get; set; } = new Version(1, 0, 1);
         public MapInfo MapInfo { get; set; } = new MapInfo()
-            { MapName = "DeathParty", Position = new Vector3(10f, 1012f, -40f), };
+        { 
+            MapName = "DeathParty", 
+            Position = new Vector3(10f, 1012f, -40f),
+            IsStatic = true
+        };
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
             { SoundName = "DeathParty.ogg", Volume = 5, Loop = true };
         public TagInfo TagInfo { get; set; } = new TagInfo()

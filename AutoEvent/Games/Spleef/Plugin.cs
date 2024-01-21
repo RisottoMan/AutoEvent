@@ -33,7 +33,8 @@ public class Plugin : Event, IEventMap, IInternalEvent
     public MapInfo MapInfo { get; set; } = new MapInfo()
     { 
         MapName = "Spleef",
-        Position = new Vector3(76f, 1026.5f, -43.68f)
+        Position = new Vector3(76f, 1026.5f, -43.68f),
+        IsStatic = true
     };
     public SoundInfo SoundInfo { get; set; } = new SoundInfo()
     {

@@ -9,11 +9,9 @@ using UnityEngine;
 using AutoEvent.Events.Handlers;
 using AutoEvent.Interfaces;
 using MER.Lite.Objects;
+using PlayerRoles;
 using Random = UnityEngine.Random;
 using Event = AutoEvent.Interfaces.Event;
-using System.Collections;
-using System.Threading.Tasks;
-using PlayerRoles;
 
 namespace AutoEvent.Games.CounterStrike
 {
@@ -32,7 +30,8 @@ namespace AutoEvent.Games.CounterStrike
         public MapInfo MapInfo { get; set; } = new MapInfo()
         { 
             MapName = "de_dust2", 
-            Position = new Vector3(0, 30, 30)
+            Position = new Vector3(0, 30, 30),
+            IsStatic = true,
         };
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
         { 

@@ -173,8 +173,7 @@ namespace AutoEvent.Games.ZombieEscape
                 {
                     _button2.transform.position += Vector3.down * 5;
                     EventTime = new TimeSpan(0, 0, (int)(Config.RoundDurationInSeconds - Config.EscapeDurationInSeconds));
-                    _heli = Extensions.LoadMap("Helicopter_Zombie", MapInfo.Map.Position, Quaternion.identity,
-                        Vector3.one);
+                    _heli = Extensions.LoadMap("Helicopter_Zombie", MapInfo.Map.Position, Quaternion.identity, Vector3.one, false);
                 }
 
                 string text = Translation.ZombieEscapeHelicopter.Replace("{name}", Name)

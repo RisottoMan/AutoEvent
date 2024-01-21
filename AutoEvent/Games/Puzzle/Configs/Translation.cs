@@ -1,6 +1,6 @@
 ﻿using Exiled.API.Interfaces;
 
-namespace AutoEvent.Games.Infection
+namespace AutoEvent.Games.Puzzle
 {
 #if EXILED
     public class PuzzleTranslate : ITranslation 

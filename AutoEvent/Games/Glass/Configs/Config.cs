@@ -15,11 +15,11 @@ using System.ComponentModel;
 using AutoEvent.Interfaces;
 using UnityEngine;
 
-namespace AutoEvent.Games.Infection;
+namespace AutoEvent.Games.Glass;
 
-public class GlassConfig : EventConfig
+public class Config : EventConfig
 {
-    public GlassConfig()
+    public Config()
     {
         if (AvailableMaps is null)
         {
@@ -45,6 +45,9 @@ public class GlassConfig : EventConfig
     
     [Description("How many seconds until the platforms regenerate. Prevents players from sitting around. -1 to disable.")]
     public float BrokenPlatformRegenerateDelayInSeconds { get; set; } = 20;
+
+    [Description("How much time should I give the player in seconds to cool down to use the push?")]
+    public float PushPlayerCooldown { get; set; } = 5;
 }
 
 public enum SeedMethod

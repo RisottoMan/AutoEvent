@@ -12,15 +12,11 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using AutoEvent.API;
 using AutoEvent.API.RNG;
-using AutoEvent.Commands.Debug;
-using AutoEvent.Games.Glass.Features;
-using AutoEvent.Games.Infection;
+using AutoEvent.Games.Glass;
 using HarmonyLib;
 using UnityEngine;
-using UnityEngine.Experimental.Rendering;
 using Random = UnityEngine.Random;
 
 namespace AutoEvent.Games.Puzzle;

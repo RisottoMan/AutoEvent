@@ -10,11 +10,10 @@ using AutoEvent.Events.Handlers;
 using AutoEvent.Games.Infection;
 using AutoEvent.Interfaces;
 using Event = AutoEvent.Interfaces.Event;
-using AutoEvent.Games.Boss.Features;
 
 namespace AutoEvent.Games.Boss
 {
-    public class Plugin : Event, IEventMap, IInternalEvent, IEventTag//, IHidden
+    public class Plugin : Event, IEventMap, IInternalEvent, IEventTag, IHidden
     {
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.BossTranslate.BossName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.BossTranslate.BossDescription;
@@ -27,13 +26,14 @@ namespace AutoEvent.Games.Boss
         public MapInfo MapInfo { get; set; } = new MapInfo() 
         { 
             MapName = "Boss",
-            Position = new Vector3(6f, 1030f, -43.5f) 
+            Position = new Vector3(6f, 1030f, -43.5f)
         };
         public SoundInfo SoundInfo { get; set; } = new SoundInfo() 
         { 
-            SoundName = "SantaMusic.ogg", 
-            Loop = true, Volume = 7, 
-            StartAutomatically = false 
+            SoundName = "SantaBegin.ogg", 
+            Loop = false,
+            Volume = 7, 
+            StartAutomatically = true
         };
         public TagInfo TagInfo { get; set; } = new TagInfo()
         {
@@ -84,7 +84,7 @@ namespace AutoEvent.Games.Boss
                     case "Arena": radiusArena = block; break;
                 }
             }
-
+            
             foreach (Player player in Player.GetPlayers())
             {
                 //player.GiveLoadout(Config.Loadouts);
@@ -96,24 +96,32 @@ namespace AutoEvent.Games.Boss
         }
         protected override IEnumerator<float> BroadcastStartCountdown()
         {
-            for (int time = 2; time > 0; time--) // 10
+            //StartAudio(true);
+            // Санта летит на санях и падает в центр карты анимацией, "охохохо я вижу плохих игроков"
+            /*
+            while (SoundInfo.AudioPlayerBase.isActiveAndEnabled)
             {
-                Extensions.Broadcast(Translation.BossTimeLeft.Replace("{time}", $"{time}"), 5);
+                DebugLogger.LogDebug("cycle isActiveAndEnabled");
+                // Extensions.Broadcast(Translation.BossTimeLeft.Replace("{time}", $"{time}"), 5);
                 yield return Timing.WaitForSeconds(1f);
             }
+            yield return Timing.WaitForSeconds(1f);
+            */
+            // После этого начинается бесконечный цикл и пока санта не скажет от 5 до 0 игра не начнется "Five Four Three Two One"
+            // В момент, когда санта скажет 5, всем игрокам выдастся оружие в руки.
+            //while (SoundInfo.IsEnded)
 
             yield break;
         }
-
+        protected override void CountdownFinished()
+        {
+            // Санте выдаем первичное состояние, он прождет 15 секунд, после чего начнет двигаться?
+            santaObject.transform.position = MapInfo.Map.Position;
+            //StartAudio();
+        }
         protected override bool IsRoundDone()
         {
             return !(EventTime.TotalSeconds < Config.DurationInSeconds);
-        }
-
-        protected override void CountdownFinished()
-        {
-            santaObject.transform.position = MapInfo.Map.Position;
-            //StartAudio();
         }
         protected override float FrameDelayInSeconds { get; set; } = 0.1f;
         protected override void ProcessFrame()
@@ -130,7 +138,7 @@ namespace AutoEvent.Games.Boss
         {
             if (_curState is null)
             {
-                _curState = _prevState is not WaitingState ? new WaitingState() : new RunningState();// : new RunningState();// : Functions.GetRandomState(_stage);
+                _curState = _prevState is not WaitingState ? new WaitingState() : new FunnyMessageState();// : new RunningState();// : Functions.GetRandomState(_stage);
                 _curState.Init(this);
                 DebugLogger.LogDebug(_curState.Name);
             }

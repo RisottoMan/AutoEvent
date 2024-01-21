@@ -22,7 +22,11 @@ namespace AutoEvent.Games.Trouble
         [EventConfig]
         public TroubleConfig Config { get; set; }
         public MapInfo MapInfo { get; set; } = new MapInfo()
-        { MapName = "AmongUs", Position = new Vector3(115.5f, 1030f, -43.5f), MapRotation = Quaternion.identity };
+        { 
+            MapName = "AmongUs", 
+            Position = new Vector3(115.5f, 1030f, -43.5f), 
+            IsStatic = true
+        };
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
         { SoundName = "Skeleton.ogg", Volume = 5, Loop = true };
         protected override float PostRoundDelay { get; set; } = 10f;

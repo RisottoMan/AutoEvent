@@ -10,6 +10,7 @@
 //    Created Date:     09/06/2023 5:04 PM
 // -----------------------------------------
 
+using SCPSLAudioApi.AudioCore;
 using System.ComponentModel;
 using YamlDotNet.Serialization;
 
@@ -18,11 +19,12 @@ namespace AutoEvent.Interfaces;
 public class SoundInfo
 {
     public SoundInfo() { }
-    public SoundInfo(string name, byte volume = 10, bool loop = true)
+    public SoundInfo(string name, byte volume = 10, bool loop = true, AudioPlayerBase audioPlayerBase = null)
     {
         SoundName = name;
         Volume = volume;
         Loop = loop;
+        AudioPlayerBase = audioPlayerBase;
     }
     [Description("The name of the sound.")]
     public string SoundName { get; set; }
@@ -32,7 +34,10 @@ public class SoundInfo
     
     [Description("Should the sound loop or not.")]
     public bool Loop { get; set; } = true;
-    
+
+    [Description("The object that plays music.")]
+    public AudioPlayerBase AudioPlayerBase { get; set; }
+
     [YamlIgnore]
     public bool StartAutomatically { get; set; } = true;
 }

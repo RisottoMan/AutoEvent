@@ -1,5 +1,5 @@
-using AutoEvent.Games.Infection;
 using System.ComponentModel;
+using AutoEvent.Games.Infection;
 using AutoEvent.Games.Battle;
 using AutoEvent.Games.Boss;
 using AutoEvent.Games.GhostBusters.Configs;
@@ -12,6 +12,7 @@ using AutoEvent.Games.AllDeathmatch;
 using AutoEvent.Games.Snowball;
 using AutoEvent.Games.MusicalChairs;
 using AutoEvent.Games.Light;
+using AutoEvent.Games.Puzzle;
 #if EXILED
 using Exiled.API.Interfaces;
 #endif

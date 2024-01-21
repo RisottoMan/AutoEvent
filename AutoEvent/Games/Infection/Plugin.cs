@@ -21,7 +21,11 @@ namespace AutoEvent.Games.Infection
         public override Version Version { get; set; } = new Version(1, 0, 1);
         [EventConfig] public InfectConfig Config { get; set; }
         public MapInfo MapInfo { get; set; } = new MapInfo()
-            { MapName = "Zombie", Position = new Vector3(115.5f, 1030f, -43.5f) };
+        {
+            MapName = "Zombie", 
+            Position = new Vector3(115.5f, 1030f, -43.5f),
+            IsStatic = true
+        };
 
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
             { SoundName = "Zombie_Run.ogg", Volume = 15, Loop = true };

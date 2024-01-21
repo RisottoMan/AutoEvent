@@ -35,10 +35,11 @@ namespace AutoEvent.Games.Boss.Features
 
             return newItem;
         }
-
+        /*
         public static SchematicObject CreateSchematicBoss()
         {
             return ObjectSpawner.SpawnSchematic("SantaClaus",  new Vector3(0, -2.244f, 0), Quaternion.identity, new Vector3(1f, 1f, 1f));
         }
+        */
     }
 }

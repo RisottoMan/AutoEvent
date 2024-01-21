@@ -78,7 +78,8 @@ namespace AutoEvent.Games.CounterStrike
                             "bomb",
                             point.transform.position,
                             Quaternion.Euler(ev.Player.Rotation),
-                            Vector3.one);
+                            Vector3.one,
+                            false);
 
                         Extensions.PlayAudio("BombPlanted.ogg", 5, false);
                         ev.Player.ReceiveHint(translation.StrikeYouPlanted, 3);

@@ -31,7 +31,11 @@ namespace AutoEvent.Games.HideAndSeek
         [EventConfig]
         public HideAndSeekConfig Config { get; set; }
         public MapInfo MapInfo { get; set; } = new MapInfo()
-            { MapName = "HideAndSeek", Position = new Vector3(5.5f, 1026.5f, -45f), };
+        { 
+            MapName = "HideAndSeek", 
+            Position = new Vector3(5.5f, 1026.5f, -45f),
+            IsStatic = true
+        };
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
             { SoundName = "HideAndSeek.ogg", Volume = 5, Loop = true };
         public TagInfo TagInfo { get; set; } = new TagInfo()

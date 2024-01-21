@@ -41,13 +41,13 @@ namespace AutoEvent.Games.Light
             if (target == null || ev.Player == target)
                 return;
 
-            if (!_plugin._pushCooldown.ContainsKey(ev.Player))
-                _plugin._pushCooldown.Add(ev.Player, 0);
+            if (!_plugin.pushCooldown.ContainsKey(ev.Player))
+                _plugin.pushCooldown.Add(ev.Player, 0);
 
-            if (_plugin._pushCooldown[ev.Player] > 0)
+            if (_plugin.pushCooldown[ev.Player] > 0)
                 return;
 
-            _plugin._pushCooldown[ev.Player] = 3;
+            _plugin.pushCooldown[ev.Player] = 3;
             Timing.RunCoroutine(PushPlayer(ev.Player, target));
         }
 

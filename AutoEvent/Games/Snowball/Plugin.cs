@@ -27,7 +27,8 @@ namespace AutoEvent.Games.Snowball
         public MapInfo MapInfo { get; set; } = new MapInfo()
         {
             MapName = "Snowball",
-            Position = new Vector3(0, 0, 30)
+            Position = new Vector3(0, 0, 30),
+            IsStatic = true
         };
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
         { 

@@ -13,10 +13,11 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using AutoEvent.API;
+using AutoEvent.Games.Glass;
 using AutoEvent.Interfaces;
 using UnityEngine;
 
-namespace AutoEvent.Games.Infection;
+namespace AutoEvent.Games.Puzzle;
 
 public class PuzzleConfig : EventConfig
 {

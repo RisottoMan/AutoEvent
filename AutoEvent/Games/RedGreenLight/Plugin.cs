@@ -38,7 +38,7 @@ namespace AutoEvent.Games.Light
         GameObject RedLine { get; set; }
         TimeSpan ActiveTime { get; set; }
         State EventState { get; set; }
-        public Dictionary<Player, float> _pushCooldown;
+        public Dictionary<Player, float> pushCooldown;
         protected override void RegisterEvents()
         {
             EventHandler = new EventHandler(this);
@@ -72,7 +72,7 @@ namespace AutoEvent.Games.Light
         {
             RedLine = null;
             EventState = State.GreenLight;
-            _pushCooldown = new Dictionary<Player, float>();
+            pushCooldown = new Dictionary<Player, float>();
             List<GameObject> spawnpoints = new List<GameObject>();
 
             foreach (GameObject gameObject in MapInfo.Map.AttachedBlocks)
@@ -123,10 +123,10 @@ namespace AutoEvent.Games.Light
             }
             else ActiveTime = TimeSpan.Zero;
 
-            foreach (var key in _pushCooldown.Keys.ToList())
+            foreach (var key in pushCooldown.Keys.ToList())
             {
-                if (_pushCooldown[key] > 0)
-                    _pushCooldown[key] -= FrameDelayInSeconds;
+                if (pushCooldown[key] > 0)
+                    pushCooldown[key] -= FrameDelayInSeconds;
             }
 
             return !(EventTime.TotalSeconds < Config.TotalTimeInSeconds && 

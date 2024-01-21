@@ -17,7 +17,7 @@ using AutoEvent.API.Enums;
 using AutoEvent.Interfaces;
 using PlayerRoles;
 
-namespace AutoEvent.Games.Infection;
+namespace AutoEvent.Games.Deathmatch;
 
 public class Config : EventConfig
 {

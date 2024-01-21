@@ -2,19 +2,30 @@
 
 namespace MER.Lite
 {
-    using MapGeneration;
     using Serializable;
     using UnityEngine;
-    using System.Linq;
+    using System;
 
     public static class ObjectSpawner
     {
+        [Obsolete]
         public static SchematicObject SpawnSchematic(string schematicName, Vector3 position, Quaternion? rotation = null, Vector3? scale = null, SchematicObjectDataList data = null)
         {
-            return SpawnSchematic(new SchematicSerializable(schematicName), position, rotation, scale, data);
+            return SpawnSchematic(new SchematicSerializable(schematicName), position, rotation, scale, false, data);
         }
 
+        public static SchematicObject SpawnSchematic(string schematicName, Vector3 position, Quaternion? rotation = null, Vector3? scale = null, bool isStatic = false, SchematicObjectDataList data = null)
+        {
+            return SpawnSchematic(new SchematicSerializable(schematicName), position, rotation, scale, isStatic, data);
+        }
+
+        [Obsolete]
         public static SchematicObject SpawnSchematic(SchematicSerializable schematicObject, Vector3? forcedPosition = null, Quaternion? forcedRotation = null, Vector3? forcedScale = null, SchematicObjectDataList data = null)
+        {
+            return SpawnSchematic(schematicObject, forcedPosition, forcedRotation, forcedScale, false, data);
+        }
+
+        public static SchematicObject SpawnSchematic(SchematicSerializable schematicObject, Vector3? forcedPosition = null, Quaternion? forcedRotation = null, Vector3? forcedScale = null, bool isStatic = false, SchematicObjectDataList data = null)
         {
             if (data == null)
             {
@@ -22,13 +33,6 @@ namespace MER.Lite
 
                 if (data == null)
                     return null;
-            }
-
-            RoomIdentifier room = null;
-
-            if (schematicObject.RoomType != RoomName.Unnamed)
-            {
-                room = RoomIdentifier.AllRoomIdentifiers.First(r => r.Name == RoomName.Outside);
             }
 
             GameObject gameObject = new($"CustomAutoEventSchematic-{schematicObject.SchematicName}")
@@ -40,8 +44,11 @@ namespace MER.Lite
                 },
             };
 
-            SchematicObject schematicObjectComponent = gameObject.AddComponent<SchematicObject>().Init(schematicObject, data);
+            SchematicObject schematicObjectComponent = gameObject.AddComponent<SchematicObject>().Init(schematicObject, data, isStatic);
             gameObject.transform.localScale = forcedScale ?? schematicObject.Scale;
+            if (schematicObjectComponent.IsStatic)
+                schematicObjectComponent.UpdateObject();
+
             return schematicObjectComponent;
         }
     }

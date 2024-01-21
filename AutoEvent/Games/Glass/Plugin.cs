@@ -1,21 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
 using MEC;
 using PlayerRoles;
 using UnityEngine;
 using AutoEvent.Games.Glass.Features;
 using Mirror;
-using CustomPlayerEffects;
 using PluginAPI.Core;
 using PluginAPI.Events;
-using MER.Lite.Objects;
 using AutoEvent.Events.Handlers;
 using AutoEvent.Games.Infection;
 using AutoEvent.Interfaces;
-using HarmonyLib;
 using Object = UnityEngine.Object;
 using Event = AutoEvent.Interfaces.Event;
 using Random = UnityEngine.Random;
@@ -28,49 +23,61 @@ namespace AutoEvent.Games.Glass
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.GlassTranslate.GlassDescription;
         public override string Author { get; set; } = "KoT0XleB";
         public override string CommandName { get; set; } =  AutoEvent.Singleton.Translation.GlassTranslate.GlassCommandName;
-        public override Version Version { get; set; } = new Version(1, 0, 1);
-        [EventConfig] public GlassConfig Config { get; set; }
+        public override Version Version { get; set; } = new Version(1, 0, 2);
+        [EventConfig] public Config Config { get; set; }
+        private GlassTranslate Translation { get; set; } = AutoEvent.Singleton.Translation.GlassTranslate;
         public MapInfo MapInfo { get; set; } = new MapInfo()
-            { MapName = "Glass", Position = new Vector3(76f, 1026.5f, -43.68f) };
+        { 
+            MapName = "Glass", 
+            Position = new Vector3(76f, 1026.5f, -43.68f),
+            IsStatic = true
+        };
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
-            { SoundName = "CrabGame.ogg", Volume = 15, Loop = true };
+        { 
+            SoundName = "CrabGame.ogg", 
+            Volume = 15, 
+            Loop = true 
+        };
         public TagInfo TagInfo { get; set; } = new TagInfo()
         {
             Name = "Xmas",
             Color = "#77dde7"
         };
         protected override float PostRoundDelay { get; set; } = 10f;
-        private EventHandler EventHandler { get; set; }
-        private GlassTranslate Translation { get; set; } = AutoEvent.Singleton.Translation.GlassTranslate;
+        private EventHandler _eventHandler { get; set; }
         private List<GameObject> _platforms;
         private GameObject _lava;
         private GameObject _finish;
         private int _matchTimeInSeconds;
         private TimeSpan _remaining;
-
+        public Dictionary<Player, float> pushCooldown;
         protected override void RegisterEvents()
         {
-            EventHandler = new EventHandler();
-            EventManager.RegisterEvents(EventHandler);
-            Servers.TeamRespawn += EventHandler.OnTeamRespawn;
-            Servers.SpawnRagdoll += EventHandler.OnSpawnRagdoll;
-            Players.DropItem += EventHandler.OnDropItem;
+            _eventHandler = new EventHandler(this);
+            EventManager.RegisterEvents(_eventHandler);
+            Servers.TeamRespawn += _eventHandler.OnTeamRespawn;
+            Servers.SpawnRagdoll += _eventHandler.OnSpawnRagdoll;
+            Players.DropItem += _eventHandler.OnDropItem;
+            Players.PlayerNoclip += _eventHandler.OnPlayerNoclip;
         }
 
         protected override void UnregisterEvents()
         {
-            EventManager.UnregisterEvents(EventHandler);
-            Servers.TeamRespawn -= EventHandler.OnTeamRespawn;
-            Servers.SpawnRagdoll -= EventHandler.OnSpawnRagdoll;
-            Players.DropItem -= EventHandler.OnDropItem;
+            EventManager.UnregisterEvents(_eventHandler);
+            Servers.TeamRespawn -= _eventHandler.OnTeamRespawn;
+            Servers.SpawnRagdoll -= _eventHandler.OnSpawnRagdoll;
+            Players.DropItem -= _eventHandler.OnDropItem;
+            Players.PlayerNoclip -= _eventHandler.OnPlayerNoclip;
 
-            EventHandler = null;
+            _eventHandler = null;
         }
 
         protected override void OnStart()
         {
+            pushCooldown = new Dictionary<Player, float>();
             _lava = MapInfo.Map.AttachedBlocks.First(x => x.name == "Lava");
             _lava.AddComponent<LavaComponent>();
+
             int platformCount;
             int playerCount = Player.GetPlayers().Count(r => r.IsAlive);
             if (playerCount <= 5)
@@ -147,8 +154,6 @@ namespace AutoEvent.Games.Glass
             {
                 Extensions.SetRole(player, RoleTypeId.ClassD, RoleSpawnFlags.None);
                 player.Position = RandomClass.GetSpawnPosition(MapInfo.Map);
-                // player.EffectsManager.EnableEffect<MovementBoost>(0, false);
-                // player.EffectsManager.Eff<MovementBoost>;
             }
         }
 
@@ -191,7 +196,18 @@ namespace AutoEvent.Games.Glass
             text = text.Replace("{plyAlive}", Player.GetPlayers().Count(r => r.IsAlive).ToString());
             text = text.Replace("{time}", $"{_remaining.Minutes:00}:{_remaining.Seconds:00}");
 
-            Extensions.Broadcast(text, 1);
+            foreach (var key in pushCooldown.Keys.ToList())
+            {
+                if (pushCooldown[key] > 0)
+                    pushCooldown[key] -= FrameDelayInSeconds;
+            }
+
+            foreach(Player player in Player.GetPlayers())
+            {
+                player.ReceiveHint("<color=green>Press <color=yellow>[Alt]</color> to push the player</color>", 1);
+                player.ClearBroadcasts();
+                player.SendBroadcast(text, 1);
+            }
         }
 
         protected override void OnFinished()
