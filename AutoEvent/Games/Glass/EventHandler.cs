@@ -39,7 +39,7 @@ namespace AutoEvent.Games.Glass
 
         private IEnumerator<float> PushPlayer(Player player, Player target)
         {
-            Vector3 pushed = player.Camera.transform.forward * 2.5f;
+            Vector3 pushed = player.Camera.transform.forward * 1.7f;
             Vector3 endPos = target.Position + new Vector3(pushed.x, 0, pushed.z);
             int layerAsLayerMask = 0;
 
@@ -48,7 +48,7 @@ namespace AutoEvent.Games.Glass
 
             for (int i = 1; i < 15; i++)
             {
-                float movementAmount = 2.5f / 15;
+                float movementAmount = 1.7f / 15;
                 Vector3 newPos = Vector3.MoveTowards(target.Position, endPos, movementAmount);
 
                 if (Physics.Linecast(target.Position, newPos, layerAsLayerMask))

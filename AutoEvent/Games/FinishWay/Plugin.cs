@@ -1,5 +1,4 @@
-﻿using MER.Lite.Objects;
-using AutoEvent.Events.Handlers;
+﻿using AutoEvent.Events.Handlers;
 using MEC;
 using PlayerRoles;
 using PluginAPI.Core;

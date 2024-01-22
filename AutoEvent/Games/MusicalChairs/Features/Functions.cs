@@ -1,4 +1,5 @@
-﻿using Mirror;
+﻿using AdminToys;
+using Mirror;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -23,6 +24,28 @@ namespace AutoEvent.Games.MusicalChairs
                 Vector3 pos = new Vector3(x, parent.transform.position.y, z);
 
                 GameObject child = GameObject.Instantiate(parent, pos, Quaternion.identity);
+                
+                if (child.TryGetComponent(out PrimitiveObjectToy toy))
+                {
+                    if (child.TryGetComponent(out Collider collider))
+                    {
+                        collider.enabled = false;
+                        DebugLogger.LogDebug("Collider");
+                    }
+
+                    if (child.TryGetComponent(out SphereCollider sphere))
+                    {
+                        sphere.enabled = false;
+                        DebugLogger.LogDebug("Sphere Collider");
+                    }
+
+                    if (child.TryGetComponent(out CapsuleCollider capsule))
+                    {
+                        capsule.enabled = false;
+                        DebugLogger.LogDebug("Capsule Collider");
+                    }
+                }
+
                 NetworkServer.Spawn(child);
                 platformes.Add(child);
             }

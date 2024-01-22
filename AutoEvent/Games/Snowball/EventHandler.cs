@@ -1,21 +1,58 @@
 ﻿using AutoEvent.Events.EventArgs;
+using Exiled.Events.EventArgs.Player;
+using Mirror;
 using PlayerRoles;
 using PlayerStatsSystem;
+using PluginAPI.Core;
 using PluginAPI.Core.Attributes;
 using PluginAPI.Enums;
 using PluginAPI.Events;
+using UnityEngine;
 
 namespace AutoEvent.Games.Snowball
 {
     public class EventHandler
     {
+        Plugin _plugin;
+        public EventHandler(Plugin plugin)
+        {
+            _plugin = plugin;
+        }
+
         public void OnDamage(PlayerDamageArgs ev)
         {
-            // Christmas Update
-            /*if (ev.AttackerHandler is SnowballDamageHandler snowBallDamageHandler)
+            if (ev.AttackerHandler is Scp018DamageHandler ballDamagehandler)
             {
-                snowBallDamageHandler.Damage = 50;
-            }*/
+                ballDamagehandler.Damage = 50;
+            }
+        }
+
+        public void OnScp018Bounce(Scp018BounceArgs ev)
+        {
+            foreach(Player player in Player.GetPlayers())
+            {
+                if (ev.Player.Equals(player))
+                    continue;
+
+                if (Vector3.Distance(ev.Pickup.Position, player.Position) < 5)
+                {
+                    player.Damage(50, $"<color=red>{player.Nickname} kill you!</color>");
+                    ev.Pickup.DestroySelf();
+                }
+            }
+
+            if (ev.IsBounced is true)
+            {
+                ev.Pickup.DestroySelf();
+            }
+        }
+
+        [PluginEvent(ServerEventType.PlayerThrowProjectile)]
+        public void OnPlayerThrowProjectile(PlayerThrowProjectileEvent ev)
+        {
+            //NetworkServer.UnSpawn(ev.Item.gameObject);
+            //ev.Item.gameObject.transform.localScale *= 5;
+            //NetworkServer.Spawn(ev.Item.gameObject);
         }
 
         [PluginEvent(ServerEventType.PlayerJoined)]

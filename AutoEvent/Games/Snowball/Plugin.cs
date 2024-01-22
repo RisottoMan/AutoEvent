@@ -10,12 +10,12 @@ using AutoEvent.Interfaces;
 using PlayerRoles;
 using InventorySystem.Items;
 using Event = AutoEvent.Interfaces.Event;
+using InventorySystem.Items.ThrowableProjectiles;
 
 namespace AutoEvent.Games.Snowball
 {
-    public class Plugin : Event, IEventSound, IEventMap, IInternalEvent, IEventTag, IHidden
+    public class Plugin : Event, IEventMap, IInternalEvent, IEventTag//,IEventSound, IHidden
     {
-        // Christmas Mini-Game
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.SnowballTranslation.SnowballName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.SnowballTranslation.SnowballDescription;
         public override string Author { get; set; } = "KoT0XleB";
@@ -48,9 +48,10 @@ namespace AutoEvent.Games.Snowball
         List<GameObject> ScientistSpawn { get; set; }
         GameObject RedLine { get; set; }
         TimeSpan RoundTime { get; set; }
+        public GameObject snowballObject;
         protected override void RegisterEvents()
         {
-            EventHandler = new EventHandler();
+            EventHandler = new EventHandler(this);
             EventManager.RegisterEvents(EventHandler);
             Servers.TeamRespawn += EventHandler.OnTeamRespawn;
             Servers.SpawnRagdoll += EventHandler.OnSpawnRagdoll;
@@ -59,6 +60,7 @@ namespace AutoEvent.Games.Snowball
             Players.DropItem += EventHandler.OnDropItem;
             Players.DropAmmo += EventHandler.OnDropAmmo;
             Players.PlayerDamage += EventHandler.OnDamage;
+            Servers.Scp018Bounce += EventHandler.OnScp018Bounce;
         }
 
         protected override void UnregisterEvents()
@@ -71,6 +73,7 @@ namespace AutoEvent.Games.Snowball
             Players.DropItem -= EventHandler.OnDropItem;
             Players.DropAmmo -= EventHandler.OnDropAmmo;
             Players.PlayerDamage -= EventHandler.OnDamage;
+            Servers.Scp018Bounce -= EventHandler.OnScp018Bounce;
 
             EventHandler = null;
         }
@@ -93,6 +96,7 @@ namespace AutoEvent.Games.Snowball
                     case "Wall": Walls.Add(gameObject); break;
                     case "Snowball_Item": SnowballItems.Add(gameObject); break;
                     case "RedLine": RedLine = gameObject; break;
+                    case "Snowball_Object": snowballObject = gameObject; break;
                 }
             }
 
@@ -109,6 +113,7 @@ namespace AutoEvent.Games.Snowball
                     player.GiveLoadout(Config.ScientistLoadouts);
                     player.Position = ScientistSpawn.RandomItem().transform.position;
                 }
+
                 count++;
             }
         }
@@ -134,9 +139,10 @@ namespace AutoEvent.Games.Snowball
         protected override bool IsRoundDone()
         {
             RoundTime -= TimeSpan.FromSeconds(0.1f);
-            return !(RoundTime.TotalSeconds > 0 && 
-                Player.GetPlayers().Count(r => r.Role == RoleTypeId.ClassD) > 0 &&
-                Player.GetPlayers().Count(r => r.Role == RoleTypeId.Scientist) > 0);
+            //return !(RoundTime.TotalSeconds > 0 && 
+            //   Player.GetPlayers().Count(r => r.Role == RoleTypeId.ClassD) > 0 &&
+            //   Player.GetPlayers().Count(r => r.Role == RoleTypeId.Scientist) > 0);
+            return false;
         }
         protected override float FrameDelayInSeconds { get; set; } = 0.1f;
         protected override void ProcessFrame()
@@ -166,11 +172,10 @@ namespace AutoEvent.Games.Snowball
                 {
                     if (Vector3.Distance(ball.transform.position, player.Position) < 1.5f)
                     {
-                        /* // Christmas Update
-                        ItemBase item = player.Items.FirstOrDefault(r => r.ItemTypeId == ItemType.Snowball);
+                        ItemBase item = player.Items.FirstOrDefault(r => r.ItemTypeId == ItemType.SCP018);
                         if (item == null)
                         {
-                            item = player.AddItem(Config.ItemType);
+                            item = player.AddItem(ItemType.SCP018); //Config.ItemType
                         }
 
                         Timing.CallDelayed(.1f, () =>
@@ -180,7 +185,6 @@ namespace AutoEvent.Games.Snowball
                                 player.CurrentItem = item;
                             }
                         });
-                        */
                     }
                 }
 

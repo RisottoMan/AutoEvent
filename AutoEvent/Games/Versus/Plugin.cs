@@ -193,7 +193,7 @@ namespace AutoEvent.Games.Versus
                         .Replace("{classd}", ClassD.Nickname), 1);
             }
 
-            _countdown = _countdown.Subtract(new TimeSpan(0, 0, 1));
+            _countdown = _countdown.TotalSeconds > 0 ? _countdown.Subtract(new TimeSpan(0, 0, 1)) : TimeSpan.Zero;
         }
 
         protected override void OnFinished()

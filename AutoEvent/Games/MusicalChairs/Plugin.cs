@@ -26,13 +26,14 @@ namespace AutoEvent.Games.MusicalChairs
         public MapInfo MapInfo { get; set; } = new MapInfo()
         {
             MapName = "MusicalChairs",
-            Position = new Vector3(0, 0, 30)
+            Position = new Vector3(0, 0, 30),
+            IsStatic = false
         };
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
         { 
             SoundName = "MusicalChairs.ogg",
             Volume = 10,
-            Loop = true
+            Loop = false
         };
         public TagInfo TagInfo { get; set; } = new TagInfo()
         {

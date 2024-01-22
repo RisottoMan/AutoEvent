@@ -57,9 +57,7 @@ namespace AutoEvent.Games.CounterStrike
             Servers.PlaceBullet += EventHandler.OnPlaceBullet;
             Servers.PlaceBlood += EventHandler.OnPlaceBlood;
             Players.DropAmmo += EventHandler.OnDropAmmo;
-            Players.PlayerNoclip += EventHandler.OnPlayerNoclip;
-            Players.PickUpItem += EventHandler.OnPickupItem;
-            Players.SearchPickUpItem += EventHandler.OnSearchPickUpItem;
+            Players.PickUpItem += EventHandler.OnPickUpItem;
         }
         protected override void UnregisterEvents()
         {
@@ -69,9 +67,7 @@ namespace AutoEvent.Games.CounterStrike
             Servers.PlaceBullet -= EventHandler.OnPlaceBullet;
             Servers.PlaceBlood -= EventHandler.OnPlaceBlood;
             Players.DropAmmo -= EventHandler.OnDropAmmo;
-            Players.PlayerNoclip -= EventHandler.OnPlayerNoclip;
-            Players.PickUpItem -= EventHandler.OnPickupItem;
-            Players.SearchPickUpItem -= EventHandler.OnSearchPickUpItem;
+            Players.PickUpItem -= EventHandler.OnPickUpItem;
 
             EventHandler = null;
         }

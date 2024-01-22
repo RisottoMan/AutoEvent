@@ -29,6 +29,7 @@ namespace AutoEvent
             SchematicsDirectoryPath = Path.Combine(basePath, "Schematics");
             MusicDirectoryPath = Path.Combine(basePath, "Music");
         }
+
         [Description("Enable/Disable AutoEvent.")]
         public bool IsEnabled { get; set; } = true;
 
@@ -37,9 +38,6 @@ namespace AutoEvent
         
         [Description("Enables / Disables Auto-Logging to a debug output file. Enabled by default on debug releases.")]
         public bool AutoLogDebug { get; set; } = AutoEvent.BetaRelease;
-
-        [Description("If you have donaters, then you can disable the admin panel for them during mini-games.")]
-        public bool IsDisableDonators { get; set; } = true;
         
 #if !EXILED
         [Description("A list of admins who can run mini-games. Specify the GroupName from the config_remoteadmin")]
@@ -49,13 +47,7 @@ namespace AutoEvent
             "admin",
             "moderator"
         };
-        [Description("List of donaters. Specify the GroupName from the config_remoteadmin")]
-        public List<string> DonatorList { get; set; } = new List<string>()
-        {
-            "donate1"
-        };
 #endif
-
         [Description("The global volume of plugins (0 - 200, 100 is normal)")]
         public float Volume { get; set; } = 100;
         
