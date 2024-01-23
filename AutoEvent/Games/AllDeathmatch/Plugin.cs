@@ -9,7 +9,6 @@ using UnityEngine;
 using AutoEvent.Events.Handlers;
 using AutoEvent.Interfaces;
 using Event = AutoEvent.Interfaces.Event;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace AutoEvent.Games.AllDeathmatch
 {

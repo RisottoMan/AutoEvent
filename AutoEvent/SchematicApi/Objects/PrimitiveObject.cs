@@ -81,8 +81,9 @@
         public override void UpdateObject()
         {
             UpdateTransformProperties();
-            _primitiveObjectToy.NetworkPrimitiveType = Base.PrimitiveType;
-            _primitiveObjectToy.NetworkMaterialColor = GetColorFromString(Base.Color);
+            _primitiveObjectToy.PrimitiveType = Base.PrimitiveType;
+            _primitiveObjectToy.MaterialColor = GetColorFromString(Base.Color);
+            // Network shit break musical chairs for no reason... maybe its primitiveType
 
             if (IsSchematicBlock && _prevScale == transform.localScale)
                 return;

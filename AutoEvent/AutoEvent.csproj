@@ -120,6 +120,7 @@
     <Compile Remove="InventoryMenu\*" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="API\Season\" />
     <Folder Include="Games\Gmod\Configs\" />
   </ItemGroup>
   <Target Name="RemoveFile" BeforeTargets="ReplaceFile">

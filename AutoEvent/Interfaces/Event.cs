@@ -13,6 +13,7 @@ using MEC;
 using UnityEngine;
 using YamlDotNet.Core;
 using Version = System.Version;
+using System.Xml.Linq;
 
 namespace AutoEvent.Interfaces
 {
@@ -54,7 +55,7 @@ namespace AutoEvent.Interfaces
                     {
                         ev.VerifyEventInfo();
                         ev.LoadConfigs();
-                        ev.LoadTranslation();
+                        //ev.LoadTranslation();
                         ev.InstantiateEvent();
                     }
                     catch (Exception e)
@@ -379,245 +380,277 @@ namespace AutoEvent.Interfaces
         protected virtual void OnCleanup() { }
     #endregion
     #region Internal Event Methods // Methods that are for the internal use by the event system to call or modify other abstracted properties or methods.
+        private string CreateConfigFolder()
+        {
+            string path = GetConfigFolder();
+            AutoEvent.CreateDirectoryIfNotExists(path);
+            AutoEvent.CreateDirectoryIfNotExists(Path.Combine(path, "Presets"));
+            return path;
+        }
 
-    private string CreateConfigFolder()
-    {
-        string path = Path.Combine(AutoEvent.Singleton.Config.EventConfigsDirectoryPath, this.Name);
-        AutoEvent.CreateDirectoryIfNotExists(path);
-        AutoEvent.CreateDirectoryIfNotExists(Path.Combine(path, "Presets"));
-        return path;
-    }
+        private string GetConfigFolder() => Path.Combine(AutoEvent.Singleton.Config.EventConfigsDirectoryPath, this.Name);
 
-    /// <summary>
-    /// A list of available config presets. WIP
-    /// </summary>
-    public List<EventConfig> ConfigPresets { get; set; } = new List<EventConfig>();
+        /// <summary>
+        /// A list of available config presets. WIP
+        /// </summary>
+        public List<EventConfig> ConfigPresets { get; set; } = new List<EventConfig>();
 
-    private List<Type> _confTypes { get; set; } = new List<Type>();
+        private List<Type> _confTypes { get; set; } = new List<Type>();
     
-    /// <summary>
-    /// Ensures that information such as the command name is valid.
-    /// </summary>
-    internal void VerifyEventInfo()
-    {
-        this.CommandName = CommandName.ToCamelCase(true);
-    }
+        /// <summary>
+        /// Ensures that information such as the command name is valid.
+        /// </summary>
+        internal void VerifyEventInfo()
+        {
+            this.CommandName = CommandName.ToCamelCase(true);
+        }
     
-    /// <summary>
-    /// Validates and loads any configs and presets for the given event.
-    /// </summary>
-    internal void LoadConfigs()
-    {
-        if (this.ConfigPresets is not null)
-            this.ConfigPresets.Clear();
-        else
-            this.ConfigPresets = new List<EventConfig>();
-        
-        int loadedConfigs = 0;
-        var path = CreateConfigFolder();
-        try
+        /// <summary>
+        /// Validates and loads any configs and presets for the given event.
+        /// </summary>
+        internal void LoadConfigs()
         {
-            loadedConfigs = _loadValidConfigs(path);
-        }
-        catch (Exception e)
-        {
-            DebugLogger.LogDebug($"[EventLoader] LoadConfigs()->_loadValidConfigs(path) has caught an exception while loading configs for the plugin {Name}", LogLevel.Warn, true);
-            DebugLogger.LogDebug($"{e}", LogLevel.Debug);
-        }
-
-        try
-        {
-            _createPresets(Path.Combine(path, "Presets"));
-        }
-        catch (Exception e)
-        {
-            DebugLogger.LogDebug($"[EventLoader] LoadConfigs()->_createPresets(path) has caught an exception while loading configs for the plugin {Name}", LogLevel.Warn, true);
-            DebugLogger.LogDebug($"{e}", LogLevel.Debug);
-        }
-
-        try
-        {
-            _loadPresets(Path.Combine(path, "Presets"));
-        }
-        catch (Exception e)
-        {
-            DebugLogger.LogDebug($"[EventLoader] LoadConfigs()->_loadPresets(path) has caught an exception while loading configs for the plugin {Name}", LogLevel.Warn, true);
-            DebugLogger.LogDebug($"{e}", LogLevel.Debug);
-        }
-        // DebugLogger.LogDebug($"[EventLoader] Loaded {loadedConfigs} Configs, and {ConfigPresets.Count} Config Presets, for plugin {Name}", LogLevel.Info);
-    }
-    
-    /// <summary>
-    /// Loads any configs.
-    /// </summary>
-    /// <param name="path">The base event path.</param>
-    private int _loadValidConfigs(string path)
-    {
-        int i = 0;
-        foreach (var property in this.GetType().GetProperties())
-        {
-            var conf = property.GetCustomAttribute<EventConfigAttribute>();
-            if (conf is EventConfigPresetAttribute)
-            {
-                continue;
-            }
-            if (conf is null)
-            {
-                continue;
-            }
-            
-            DebugLogger.LogDebug($"Config \"{property.Name}\" found for {Name}", LogLevel.Debug);
-
-            object config = conf.Load(path, property.Name, property.PropertyType, this.Version);
-            if (config is not EventConfig evConfig)
-            {
-                DebugLogger.LogDebug($"Config was found that does not inherit Event Config. It will be skipped.", LogLevel.Warn, true);
-                DebugLogger.LogDebug($"(Event {this.Name}) Config: {property.Name}.", LogLevel.Debug);
-                continue;
-            }
-
-            if (ConfigPresets.Count > 0)
-                evConfig.PresetName = $"Default-{ConfigPresets.Count - 1}";
+            if (this.ConfigPresets is not null)
+                this.ConfigPresets.Clear();
             else
-                evConfig.PresetName = "Default";
-            _setRandomMap(evConfig);
-            _setRandomSound(evConfig);
-            
-            property.SetValue(this, config);
-            ConfigPresets.Add((EventConfig)config);
-            _confTypes.Add(config.GetType());
-
-            i++;
-        }
-
-        return i;
-    }
-
-    /// <summary>
-    /// Assigns a random map.
-    /// </summary>
-    /// <param name="conf"></param>
-    private void _setRandomMap(EventConfig conf)
-    {
-        if (this is IEventMap map && conf.AvailableMaps is not null && conf.AvailableMaps.Count > 0)
-        {
-            bool spawnAutomatically = map.MapInfo.SpawnAutomatically;
-            if (conf.AvailableMaps.Count == 1)
+                this.ConfigPresets = new List<EventConfig>();
+        
+            int loadedConfigs = 0;
+            var path = CreateConfigFolder();
+            try
             {
-                map.MapInfo = conf.AvailableMaps[0].Map;
-                map.MapInfo.SpawnAutomatically = spawnAutomatically;
-                goto Message;
+                loadedConfigs = _loadValidConfigs(path);
+            }
+            catch (Exception e)
+            {
+                DebugLogger.LogDebug($"[EventLoader] LoadConfigs()->_loadValidConfigs(path) has caught an exception while loading configs for the plugin {Name}", LogLevel.Warn, true);
+                DebugLogger.LogDebug($"{e}", LogLevel.Debug);
             }
 
-            foreach (var mapItem in conf.AvailableMaps.Where(x => x.Chance <= 0))
-                mapItem.Chance = 1;
-            
-            float totalChance = conf.AvailableMaps.Sum(x => x.Chance);
-            
-            for (int i = 0; i < conf.AvailableMaps.Count - 1; i++)
+            try
             {
-                if (UnityEngine.Random.Range(0, totalChance) <= conf.AvailableMaps[i].Chance)
+                _createPresets(Path.Combine(path, "Presets"));
+            }
+            catch (Exception e)
+            {
+                DebugLogger.LogDebug($"[EventLoader] LoadConfigs()->_createPresets(path) has caught an exception while loading configs for the plugin {Name}", LogLevel.Warn, true);
+                DebugLogger.LogDebug($"{e}", LogLevel.Debug);
+            }
+
+            try
+            {
+                _loadPresets(Path.Combine(path, "Presets"));
+            }
+            catch (Exception e)
+            {
+                DebugLogger.LogDebug($"[EventLoader] LoadConfigs()->_loadPresets(path) has caught an exception while loading configs for the plugin {Name}", LogLevel.Warn, true);
+                DebugLogger.LogDebug($"{e}", LogLevel.Debug);
+            }
+        }
+    
+        /// <summary>
+        /// Loads any configs.
+        /// </summary>
+        /// <param name="path">The base event path.</param>
+        private int _loadValidConfigs(string path)
+        {
+            int i = 0;
+            foreach (var property in this.GetType().GetProperties())
+            {
+                var conf = property.GetCustomAttribute<EventConfigAttribute>();
+                if (conf is EventConfigPresetAttribute)
                 {
-                    map.MapInfo = conf.AvailableMaps[i].Map;
+                    continue;
+                }
+                if (conf is null)
+                {
+                    continue;
+                }
+            
+                DebugLogger.LogDebug($"Config \"{property.Name}\" found for {Name}", LogLevel.Debug);
+
+                object config = conf.Load(path, property.Name, property.PropertyType, this.Version);
+                if (config is not EventConfig evConfig)
+                {
+                    DebugLogger.LogDebug($"Config was found that does not inherit Event Config. It will be skipped.", LogLevel.Warn, true);
+                    DebugLogger.LogDebug($"(Event {this.Name}) Config: {property.Name}.", LogLevel.Debug);
+                    continue;
+                }
+
+                if (ConfigPresets.Count > 0)
+                    evConfig.PresetName = $"Default-{ConfigPresets.Count - 1}";
+                else
+                    evConfig.PresetName = "Default";
+                _setRandomMap(evConfig);
+                _setRandomSound(evConfig);
+            
+                property.SetValue(this, config);
+                ConfigPresets.Add((EventConfig)config);
+                _confTypes.Add(config.GetType());
+
+                i++;
+            }
+
+            return i;
+        }
+
+        /// <summary>
+        /// Assigns a random map.
+        /// </summary>
+        /// <param name="conf"></param>
+        private void _setRandomMap(EventConfig conf)
+        {
+            if (this is IEventMap map && conf.AvailableMaps is not null && conf.AvailableMaps.Count > 0)
+            {
+                bool spawnAutomatically = map.MapInfo.SpawnAutomatically;
+                if (conf.AvailableMaps.Count == 1)
+                {
+                    map.MapInfo = conf.AvailableMaps[0].Map;
                     map.MapInfo.SpawnAutomatically = spawnAutomatically;
                     goto Message;
                 }
-            }
-            map.MapInfo = conf.AvailableMaps[conf.AvailableMaps.Count - 1].Map;
-            map.MapInfo.SpawnAutomatically = spawnAutomatically;
-            Message:
-            DebugLogger.LogDebug($"[{this.Name}] Map {map.MapInfo.MapName} selected.", LogLevel.Debug);
-        }
-        
-    }
-    /// <summary>
-    /// Assigns a random sound.
-    /// </summary>
-    /// <param name="conf"></param>
-    private void _setRandomSound(EventConfig conf)
-    {
-        if (this is IEventSound sound && conf.AvailableSounds is not null && conf.AvailableSounds.Count > 0)
-        {
-            bool startAutomatically = sound.SoundInfo.StartAutomatically;
-            if (conf.AvailableSounds.Count == 1)
-            {
-                sound.SoundInfo = conf.AvailableSounds[0].Sound;
-                sound.SoundInfo.StartAutomatically = startAutomatically;
-                goto Message;
-            }
 
-            foreach (var soundItem in conf.AvailableSounds.Where(x => x.Chance <= 0))
-                soundItem.Chance = 1;
+                foreach (var mapItem in conf.AvailableMaps.Where(x => x.Chance <= 0))
+                    mapItem.Chance = 1;
             
-            float totalChance = conf.AvailableSounds.Sum(x => x.Chance);
+                float totalChance = conf.AvailableMaps.Sum(x => x.Chance);
             
-            for (int i = 0; i < conf.AvailableSounds.Count - 1; i++)
-            {
-                if (UnityEngine.Random.Range(0, totalChance) <= conf.AvailableSounds[i].Chance)
+                for (int i = 0; i < conf.AvailableMaps.Count - 1; i++)
                 {
-                    sound.SoundInfo = conf.AvailableSounds[i].Sound;
+                    if (UnityEngine.Random.Range(0, totalChance) <= conf.AvailableMaps[i].Chance)
+                    {
+                        map.MapInfo = conf.AvailableMaps[i].Map;
+                        map.MapInfo.SpawnAutomatically = spawnAutomatically;
+                        goto Message;
+                    }
+                }
+                map.MapInfo = conf.AvailableMaps[conf.AvailableMaps.Count - 1].Map;
+                map.MapInfo.SpawnAutomatically = spawnAutomatically;
+                Message:
+                DebugLogger.LogDebug($"[{this.Name}] Map {map.MapInfo.MapName} selected.", LogLevel.Debug);
+            }
+        
+        }
+        /// <summary>
+        /// Assigns a random sound.
+        /// </summary>
+        /// <param name="conf"></param>
+        private void _setRandomSound(EventConfig conf)
+        {
+            if (this is IEventSound sound && conf.AvailableSounds is not null && conf.AvailableSounds.Count > 0)
+            {
+                bool startAutomatically = sound.SoundInfo.StartAutomatically;
+                if (conf.AvailableSounds.Count == 1)
+                {
+                    sound.SoundInfo = conf.AvailableSounds[0].Sound;
                     sound.SoundInfo.StartAutomatically = startAutomatically;
                     goto Message;
                 }
-            }
-            sound.SoundInfo = conf.AvailableSounds[conf.AvailableSounds.Count - 1].Sound;
-            sound.SoundInfo.StartAutomatically = startAutomatically;
-            Message:
-            DebugLogger.LogDebug($"[{this.Name}] Sound {sound.SoundInfo.SoundName} selected.", LogLevel.Debug);
-        }
-    }
-    /// <summary>
-    /// Creates a preset.yml file for each preset found.
-    /// </summary>
-    /// <param name="path">The base event path.</param>
-    private void _createPresets(string path)
-    {
-        foreach (var property in this.GetType().GetProperties())
-        {
-            var conf = property.GetCustomAttribute<EventConfigPresetAttribute>();
-            if (conf is null || conf.IsLoaded)
-            {
-                continue;
-            }
-            // DebugLogger.LogDebug($"Embedded Config Preset \"{property.Name}\" found for {Name}", LogLevel.Debug);
 
-            conf.Load(path, property, property.GetValue(this));
-        }
-    }
-
-    /// <summary>
-    /// Loads all config presets to the preset List.
-    /// </summary>
-    /// <param name="path">The base event path.</param>
-    private void _loadPresets(string path)
-    {
-        foreach (string file in Directory.GetFiles(path, "*.yml"))
-        {
-            string fileName = Path.GetFileNameWithoutExtension(file);
+                foreach (var soundItem in conf.AvailableSounds.Where(x => x.Chance <= 0))
+                    soundItem.Chance = 1;
             
-            object conf = Configs.Serialization.Deserializer.Deserialize(File.ReadAllText(file), _confTypes.FirstOrDefault() ?? typeof(EventConfig));
-            if (conf is not EventConfig)
-            {
-                DebugLogger.LogDebug("Not Event Config.");
-                continue;
+                float totalChance = conf.AvailableSounds.Sum(x => x.Chance);
+            
+                for (int i = 0; i < conf.AvailableSounds.Count - 1; i++)
+                {
+                    if (UnityEngine.Random.Range(0, totalChance) <= conf.AvailableSounds[i].Chance)
+                    {
+                        sound.SoundInfo = conf.AvailableSounds[i].Sound;
+                        sound.SoundInfo.StartAutomatically = startAutomatically;
+                        goto Message;
+                    }
+                }
+                sound.SoundInfo = conf.AvailableSounds[conf.AvailableSounds.Count - 1].Sound;
+                sound.SoundInfo.StartAutomatically = startAutomatically;
+                Message:
+                DebugLogger.LogDebug($"[{this.Name}] Sound {sound.SoundInfo.SoundName} selected.", LogLevel.Debug);
             }
-            // DebugLogger.LogDebug($"Config Preset \"{file}\" loaded for {Name}", LogLevel.Debug);
-            ((EventConfig)conf).PresetName = fileName;
-            ConfigPresets.Add((EventConfig)conf);
-            DebugLogger.LogDebug($"Config Preset: {conf.GetType().Name}, BaseType: {conf.GetType().BaseType?.Name}");
         }
-    }
+        /// <summary>
+        /// Creates a preset.yml file for each preset found.
+        /// </summary>
+        /// <param name="path">The base event path.</param>
+        private void _createPresets(string path)
+        {
+            foreach (var property in this.GetType().GetProperties())
+            {
+                var conf = property.GetCustomAttribute<EventConfigPresetAttribute>();
+                if (conf is null || conf.IsLoaded)
+                {
+                    continue;
+                }
+                // DebugLogger.LogDebug($"Embedded Config Preset \"{property.Name}\" found for {Name}", LogLevel.Debug);
+
+                conf.Load(path, property, property.GetValue(this));
+            }
+        }
+
+        /// <summary>
+        /// Loads all config presets to the preset List.
+        /// </summary>
+        /// <param name="path">The base event path.</param>
+        private void _loadPresets(string path)
+        {
+            foreach (string file in Directory.GetFiles(path, "*.yml"))
+            {
+                string fileName = Path.GetFileNameWithoutExtension(file);
+            
+                object conf = Configs.Serialization.Deserializer.Deserialize(File.ReadAllText(file), _confTypes.FirstOrDefault() ?? typeof(EventConfig));
+                if (conf is not EventConfig)
+                {
+                    DebugLogger.LogDebug("Not Event Config.");
+                    continue;
+                }
+                // DebugLogger.LogDebug($"Config Preset \"{file}\" loaded for {Name}", LogLevel.Debug);
+                ((EventConfig)conf).PresetName = fileName;
+                ConfigPresets.Add((EventConfig)conf);
+                DebugLogger.LogDebug($"Config Preset: {conf.GetType().Name}, BaseType: {conf.GetType().BaseType?.Name}");
+            }
+        }
     
-    /// <summary>
-    /// Loads any translations present
-    /// </summary>
-    internal void LoadTranslation()
-    {
-        /*if (this is ITranslation)
+        /// <summary>
+        /// Loads any translations present
+        /// </summary>
+        internal void LoadTranslation()
         {
-            
-        }*/
-    }
+            try
+            {
+                _loadValidTranslations(GetConfigFolder());
+            }
+            catch (Exception e)
+            {
+                DebugLogger.LogDebug($"[EventLoader] LoadTranslation()->_loadValidConfigs(path) has caught an exception while loading configs for the plugin {Name}", LogLevel.Warn, true);
+                DebugLogger.LogDebug($"{e}", LogLevel.Debug);
+            }
+        }
+
+        /// <summary>
+        /// Loads translations.
+        /// </summary>
+        /// <param name="path">The base event path.</param>
+        private void _loadValidTranslations(string path)
+        {
+            foreach (var property in this.GetType().GetProperties())
+            {
+                var trans = property.GetCustomAttribute<EventTranslationAttribute>();
+                if (trans is null)
+                {
+                    continue;
+                }
+
+                DebugLogger.LogDebug($"Translation \"{property.Name}\" found for {Name}", LogLevel.Debug);
+                
+                object translation = trans.Load(path, property.PropertyType, this.Version);
+                if (translation is not EventTranslation evTranslation)
+                {
+                    DebugLogger.LogDebug($"Translation was found that does not inherit Event Translation. It will be skipped.", LogLevel.Warn, true);
+                    DebugLogger.LogDebug($"(Event {this.Name}) Translation: {property.Name}.", LogLevel.Debug);
+                    continue;
+                }
+            }
+        }
+
         /// <summary>
         /// Triggers internal actions to stop an event.
         /// </summary>
