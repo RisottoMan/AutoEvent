@@ -18,27 +18,22 @@ using Event = AutoEvent.Interfaces.Event;
 
 namespace AutoEvent.Games.Puzzle
 {
-    public class Plugin : Event, IEventSound, IEventMap, IInternalEvent, IEventTag
+    public class Plugin : Event, IEventSound, IEventMap, IInternalEvent
     { //todo: add some configs for a platform choose speed, and platform fall delay. Maybe make this a scale from 1 - 10 or something.
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.PuzzleTranslate.PuzzleName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.PuzzleTranslate.PuzzleDescription;
         public override string Author { get; set; } = "KoT0XleB";
         public override string CommandName { get; set; } = AutoEvent.Singleton.Translation.PuzzleTranslate.PuzzleCommandName;
-        public override Version Version { get; set; } = new Version(1, 0, 0);
+        public override Version Version { get; set; } = new Version(1, 0, 1);
         [EventConfig]
         public PuzzleConfig Config { get; set; }
 
         [EventConfigPreset] public PuzzleConfig ColorMatch => PuzzleConfigPresets.ColorMatch;
         [EventConfigPreset] public PuzzleConfig Run => PuzzleConfigPresets.Run;
         public MapInfo MapInfo { get; set; } = new MapInfo()
-            {MapName = "Puzzle", Position = new Vector3(76f, 1026.5f, -43.68f), };
+            { MapName = "Puzzle", Position = new Vector3(76f, 1026.5f, -43.68f), };
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
             { SoundName = "ChristmasMusic.ogg", Volume = 7, Loop = true };
-        public TagInfo TagInfo { get; set; } = new TagInfo()
-        {
-            Name = "New Map",
-            Color = "#77dde7"
-        };
         protected override float PostRoundDelay { get; set; } = 10f;
         private EventHandler EventHandler { get; set; }
         private GridSelector GridSelector { get; set; }

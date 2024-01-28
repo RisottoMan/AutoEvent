@@ -11,8 +11,9 @@ using System.Collections.Generic;
 
 namespace AutoEvent.Games.Trouble
 {
-    public class Plugin : Event, IEventSound, IEventMap, IInternalEvent
+    public class Plugin : Event, IEventSound, IEventMap, IInternalEvent, IHidden
     {
+        // Haloween Update
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.TroubleTranslation.TroubleName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.TroubleTranslation.TroubleDescription;
         public override string Author { get; set; } = "KoT0XleB";
@@ -21,7 +22,11 @@ namespace AutoEvent.Games.Trouble
         [EventConfig]
         public TroubleConfig Config { get; set; }
         public MapInfo MapInfo { get; set; } = new MapInfo()
-        { MapName = "AmongUs", Position = new Vector3(115.5f, 1030f, -43.5f), MapRotation = Quaternion.identity };
+        { 
+            MapName = "AmongUs", 
+            Position = new Vector3(115.5f, 1030f, -43.5f), 
+            IsStatic = true
+        };
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
         { SoundName = "Skeleton.ogg", Volume = 5, Loop = true };
         protected override float PostRoundDelay { get; set; } = 10f;

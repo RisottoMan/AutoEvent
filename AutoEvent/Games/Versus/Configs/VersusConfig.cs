@@ -15,11 +15,26 @@ using System.ComponentModel;
 using AutoEvent.API;
 using AutoEvent.Interfaces;
 using PlayerRoles;
+using UnityEngine;
 
 namespace AutoEvent.Games.Versus;
 
 public class VersusConfig : EventConfig
 {
+    public VersusConfig()
+    {
+        if (AvailableMaps is null)
+        {
+            AvailableMaps = new List<MapChance>();
+        }
+
+        if (AvailableMaps.Count < 1)
+        {
+            AvailableMaps.Add(new MapChance(50, new MapInfo("35Hp", new Vector3(6f, 1015f, -5f))));
+            AvailableMaps.Add(new MapChance(50, new MapInfo("35Hp_Xmas2024", new Vector3(6f, 1015f, -5f))));
+        }
+    }
+
     [Description("Can be used to disable the jailbird charging attack.")]
     public bool JailbirdCanCharge { get; set; } = false;
     

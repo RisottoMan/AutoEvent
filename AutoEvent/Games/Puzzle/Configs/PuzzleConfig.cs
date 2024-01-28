@@ -10,14 +10,31 @@
 //    Created Date:     09/19/2023 9:42 PM
 // -----------------------------------------
 
+using System.Collections.Generic;
 using System.ComponentModel;
 using AutoEvent.API;
+using AutoEvent.Games.Glass;
 using AutoEvent.Interfaces;
+using UnityEngine;
 
-namespace AutoEvent.Games.Infection;
+namespace AutoEvent.Games.Puzzle;
 
 public class PuzzleConfig : EventConfig
 {
+    public PuzzleConfig()
+    {
+        if (AvailableMaps is null)
+        {
+            AvailableMaps = new List<MapChance>();
+        }
+
+        if (AvailableMaps.Count < 1)
+        {
+            AvailableMaps.Add(new MapChance(50, new MapInfo("Puzzle", new Vector3(76f, 1026.5f, -43.68f))));
+            AvailableMaps.Add(new MapChance(50, new MapInfo("Puzzle_Xmas2024", new Vector3(76f, 1026.5f, -43.68f))));
+        }
+    }
+
     [Description("The number of rounds in the match.")]
     public int Rounds { get; set; } = 10;
 

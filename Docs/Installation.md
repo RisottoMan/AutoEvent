@@ -51,8 +51,6 @@ ev.*  /   - Main Permission for all AutoEvent commands.
       - ev.reload.translations  - Reload all translations.
       
   - ev.debug - Main permission for all debug commands.
-  
-  - ev.donator - Main permission for donator features.
 ```
 
 # NWApi
@@ -81,7 +79,6 @@ music_directory_path: /home/container/.config/SCP Secret Laboratory/PluginAPI/pl
 ## 2. Permission :gem:
 ### *Give permission to your role in ``PluginAPI/plugins/global/AutoEvent-NWApi/configs/autoevent.yml``:*
 
-
 ```
 # A list of admins who can run mini-games. Specify the GroupName from the config_remoteadmin
 permission_list:
@@ -108,6 +105,4 @@ ev.*  /   - Main Permission for all AutoEvent commands.
       - ev.reload.translations  - Reload all translations.
       
   - ev.debug - Main permission for all debug commands.
-  
-  - ev.donator - Main permission for donator features.
 ```

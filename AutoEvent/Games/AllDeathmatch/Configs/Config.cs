@@ -42,7 +42,6 @@ public class Config : EventConfig
     public List<ItemType> AvailableWeapons = new List<ItemType>()
     {
         ItemType.GunAK,
-        ItemType.GunA7,
         ItemType.GunCrossvec,
         ItemType.GunShotgun,
         ItemType.GunE11SR

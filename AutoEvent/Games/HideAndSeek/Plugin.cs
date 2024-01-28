@@ -20,25 +20,24 @@ using Player = PluginAPI.Core.Player;
 
 namespace AutoEvent.Games.HideAndSeek
 {
-    public class Plugin : Event, IEventSound, IEventMap, IInternalEvent, IEventTag
+    public class Plugin : Event, IEventSound, IEventMap, IInternalEvent
     {
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.HideTranslate.HideName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.HideTranslate.HideDescription;
         public override string Author { get; set; } = "KoT0XleB";
         public override string CommandName { get; set; } = AutoEvent.Singleton.Translation.HideTranslate.HideCommandName;
-        public override Version Version { get; set; } = new Version(1, 0, 0);
+        public override Version Version { get; set; } = new Version(1, 0, 1);
 
         [EventConfig]
         public HideAndSeekConfig Config { get; set; }
         public MapInfo MapInfo { get; set; } = new MapInfo()
-            {MapName = "HideAndSeek", Position = new Vector3(5.5f, 1026.5f, -45f), };
+        { 
+            MapName = "HideAndSeek", 
+            Position = new Vector3(5.5f, 1026.5f, -45f),
+            IsStatic = true
+        };
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
             { SoundName = "HideAndSeek.ogg", Volume = 5, Loop = true };
-        public TagInfo TagInfo { get; set; } = new TagInfo()
-        {
-            Name = "New Map",
-            Color = "#77dde7"
-        };
         protected override float PostRoundDelay { get; set; } = 10f;
         private EventHandler EventHandler { get; set; }
         private HideTranslate Translation { get; set; } = AutoEvent.Singleton.Translation.HideTranslate;

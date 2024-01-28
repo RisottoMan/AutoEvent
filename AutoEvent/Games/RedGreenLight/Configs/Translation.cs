@@ -20,5 +20,8 @@ namespace AutoEvent.Games.Light
         public string LightGreenLight { get; set; } = "<color=green>Run</color>";
         public string LightRedLose { get; set; } = "<color=red>You run a red light</color>";
         public string LightNoTime { get; set; } = "<color=red>You didnt make it to the finish line!</color>";
+        //public string LightHint { get; set; } = "<color=green>Press <color=yellow>[Alt]</color> to push the player</color>";
+        //public string LightHintWait { get; set; } = "<color=red>Wait few seconds</color>";
+        //public string LightHintReady { get; set; } = "<color=green>Ready</color>";
     }
 }

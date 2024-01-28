@@ -5,13 +5,10 @@ using AutoEvent.Interfaces;
 using UnityEngine;
 using System.Linq;
 using CommandSystem;
-using Event = AutoEvent.Interfaces.Event;
-using Player = PluginAPI.Core.Player;
 using PluginAPI.Core;
 using MEC;
-using AutoEvent.Games.Trouble;
-using AutoEvent.Games.ZombieEscape;
-using AutoEvent.Games.Infection;
+using Event = AutoEvent.Interfaces.Event;
+using Player = PluginAPI.Core.Player;
 
 namespace AutoEvent.Games.Lobby
 {
@@ -22,10 +19,18 @@ namespace AutoEvent.Games.Lobby
         public override string Author { get; set; } = "KoT0XleB";
         public override string CommandName { get; set; } = AutoEvent.Singleton.Translation.LobbyTranslation.LobbyCommandName;
         public override Version Version { get; set; } = new Version(1, 0, 0);
-        public SoundInfo SoundInfo { get; set; } = new SoundInfo()
-            { SoundName = "FireSale.ogg", Volume = 10, Loop = false };
         public MapInfo MapInfo { get; set; } = new MapInfo()
-        { MapName = "Lobby", Position = new Vector3(76f, 1026.5f, -43.68f), };
+        { 
+            MapName = "Lobby", 
+            Position = new Vector3(76f, 1026.5f, -43.68f), 
+            IsStatic = true
+        };
+        public SoundInfo SoundInfo { get; set; } = new SoundInfo()
+        { 
+            SoundName = "FireSale.ogg", 
+            Volume = 10, 
+            Loop = false 
+        };
 
         [EventConfig]
         public LobbyConfig Config { get; set; }

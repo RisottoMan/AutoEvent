@@ -1,4 +1,9 @@
-﻿using Mirror;
+﻿using AdminToys;
+using MER.Lite;
+using MER.Lite.Objects;
+using MER.Lite.Serializable;
+using Mirror;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -22,9 +27,18 @@ namespace AutoEvent.Games.MusicalChairs
                 float z = position.z + radius * Mathf.Sin(radians);
                 Vector3 pos = new Vector3(x, parent.transform.position.y, z);
 
-                GameObject child = GameObject.Instantiate(parent, pos, Quaternion.identity);
-                NetworkServer.Spawn(child);
-                platformes.Add(child);
+                PrimitiveObject obj = ObjectSpawner.SpawnPrimitive(new PrimitiveSerializable()
+                {
+                    PrimitiveType = PrimitiveType.Cylinder,
+                    Position = parent.transform.position,
+                    Color = "yellow"
+                },
+                pos, 
+                parent.transform.rotation, 
+                parent.transform.localScale);
+
+                NetworkServer.Spawn(obj.gameObject);
+                platformes.Add(obj.gameObject);
             }
 
             return platformes;
@@ -32,6 +46,9 @@ namespace AutoEvent.Games.MusicalChairs
 
         public static List<GameObject> RearrangePlatforms(int playerCount, List<GameObject> platforms, Vector3 position)
         {
+            if (platforms.Count == 0)
+                return new List<GameObject>();
+
             for (int i = playerCount; i <= platforms.Count;)
             {
                 GameObject.Destroy(platforms.Last());

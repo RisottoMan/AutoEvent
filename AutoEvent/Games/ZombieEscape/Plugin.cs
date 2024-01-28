@@ -2,18 +2,14 @@ using MER.Lite.Objects;
 using AutoEvent.Events.Handlers;
 using CustomPlayerEffects;
 using MEC;
-using PlayerRoles;
 using PluginAPI.Core;
 using PluginAPI.Events;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using AutoEvent.Games.Infection;
 using AutoEvent.Interfaces;
-using PluginAPI.Roles;
 using UnityEngine;
-using Debug = UnityEngine.Debug;
 using Event = AutoEvent.Interfaces.Event;
 
 namespace AutoEvent.Games.ZombieEscape
@@ -42,7 +38,6 @@ namespace AutoEvent.Games.ZombieEscape
         private GameObject _button2;
         private GameObject _wall;
         private Vector3 _finishPosition;
-        
 
         protected override void RegisterEvents()
         {
@@ -173,8 +168,7 @@ namespace AutoEvent.Games.ZombieEscape
                 {
                     _button2.transform.position += Vector3.down * 5;
                     EventTime = new TimeSpan(0, 0, (int)(Config.RoundDurationInSeconds - Config.EscapeDurationInSeconds));
-                    _heli = Extensions.LoadMap("Helicopter_Zombie", MapInfo.Map.Position, Quaternion.identity,
-                        Vector3.one);
+                    _heli = Extensions.LoadMap("Helicopter_Zombie", MapInfo.Map.Position, Quaternion.identity, Vector3.one, false);
                 }
 
                 string text = Translation.ZombieEscapeHelicopter.Replace("{name}", Name)

@@ -40,20 +40,20 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Costura.Fody" Version="5.7.0">
+    <PackageReference Include="Costura.Fody" Version="5.8.0-alpha0098">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="EXILED" Version="8.5.0-beta.1" />
+    <PackageReference Include="EXILED" Version="8.7.0" />
     <PackageReference Include="Fody" Version="6.8.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Lib.Harmony" Version="2.2.2" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="Northwood.PluginAPI" Version="13.1.2" />
     <PackageReference Include="NVorbis" Version="0.10.5" />
-    <PackageReference Include="YamlDotNet" Version="13.3.1" />
+    <PackageReference Include="YamlDotNet" Version="13.7.1" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="CedModV3" HintPath="$(OTHER_REFERENCES)\CedModV3-13-3.dll" />
@@ -120,7 +120,7 @@
     <Compile Remove="InventoryMenu\*" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Games\Gmod\Configs\" />
+    <Folder Include="Games\Dodgeball\Features\" />
   </ItemGroup>
   <Target Name="RemoveFile" BeforeTargets="ReplaceFile">
     <Exec Command="if exist $(SolutionDir)VersionInfo.cs del $(SolutionDir)VersionInfo.cs" />

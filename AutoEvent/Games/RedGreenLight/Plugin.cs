@@ -12,25 +12,20 @@ using Random = UnityEngine.Random;
 
 namespace AutoEvent.Games.Light
 {
-    public class Plugin : Event, IEventMap, IInternalEvent, IEventTag
+    public class Plugin : Event, IEventMap, IInternalEvent
     {
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.LightTranslation.LightName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.LightTranslation.LightDescription;
         public override string Author { get; set; } = "KoT0XleB";
         public override string CommandName { get; set; } = AutoEvent.Singleton.Translation.LightTranslation.LightCommandName;
-        public override Version Version { get; set; } = new Version(1, 0, 0);
+        public override Version Version { get; set; } = new Version(1, 0, 1);
         private LightTranslation Translation { get; set; } = AutoEvent.Singleton.Translation.LightTranslation;
         [EventConfig]
         public Config Config { get; set; }
         public MapInfo MapInfo { get; set; } = new MapInfo()
         {
             MapName = "RedLight",
-            Position = new Vector3(0, 0, 30)
-        };
-        public TagInfo TagInfo { get; set; } = new TagInfo()
-        {
-            Name = "Christmas",
-            Color = "#77dde7"
+            Position = new Vector3(0f, 1030f, -43.5f)
         };
         private EventHandler EventHandler { get; set; }
         GameObject Wall { get; set; }
@@ -38,29 +33,32 @@ namespace AutoEvent.Games.Light
         GameObject RedLine { get; set; }
         TimeSpan ActiveTime { get; set; }
         State EventState { get; set; }
+        public Dictionary<Player, float> pushCooldown;
         protected override void RegisterEvents()
         {
-            EventHandler = new EventHandler();
+            EventHandler = new EventHandler(this);
+
             EventManager.RegisterEvents(EventHandler);
             Servers.TeamRespawn += EventHandler.OnTeamRespawn;
-            Servers.SpawnRagdoll += EventHandler.OnSpawnRagdoll;
             Servers.PlaceBullet += EventHandler.OnPlaceBullet;
             Servers.PlaceBlood += EventHandler.OnPlaceBlood;
             Players.DropItem += EventHandler.OnDropItem;
             Players.DropAmmo += EventHandler.OnDropAmmo;
             Players.PlayerDamage += EventHandler.OnDamage;
+            Players.PlayerNoclip += EventHandler.OnPlayerNoclip;
         }
 
         protected override void UnregisterEvents()
         {
             EventManager.UnregisterEvents(EventHandler);
+
             Servers.TeamRespawn -= EventHandler.OnTeamRespawn;
-            Servers.SpawnRagdoll -= EventHandler.OnSpawnRagdoll;
             Servers.PlaceBullet -= EventHandler.OnPlaceBullet;
             Servers.PlaceBlood -= EventHandler.OnPlaceBlood;
             Players.DropItem -= EventHandler.OnDropItem;
             Players.DropAmmo -= EventHandler.OnDropAmmo;
             Players.PlayerDamage -= EventHandler.OnDamage;
+            Players.PlayerNoclip -= EventHandler.OnPlayerNoclip;
 
             EventHandler = null;
         }
@@ -69,6 +67,7 @@ namespace AutoEvent.Games.Light
         {
             RedLine = null;
             EventState = State.GreenLight;
+            pushCooldown = new Dictionary<Player, float>();
             List<GameObject> spawnpoints = new List<GameObject>();
 
             foreach (GameObject gameObject in MapInfo.Map.AttachedBlocks)
@@ -86,6 +85,7 @@ namespace AutoEvent.Games.Light
             {
                 player.GiveLoadout(Config.PlayerLoadout);
                 player.Position = spawnpoints.RandomItem().transform.position;
+                player.ReceiveHint("<color=green>Press <color=yellow>[Alt]</color> to push the player</color>", Config.TotalTimeInSeconds);
             }
         }
 
@@ -118,10 +118,17 @@ namespace AutoEvent.Games.Light
             }
             else ActiveTime = TimeSpan.Zero;
 
+            foreach (var key in pushCooldown.Keys.ToList())
+            {
+                if (pushCooldown[key] > 0)
+                    pushCooldown[key] -= FrameDelayInSeconds;
+            }
+
             return !(EventTime.TotalSeconds < Config.TotalTimeInSeconds && 
                 Player.GetPlayers().Count(r => r.IsAlive) > 0);
         }
         protected override float FrameDelayInSeconds { get; set; } = 0.1f;
+        protected Dictionary<Player, Quaternion> _playerRotation;
         protected override void ProcessFrame()
         {
             int remainTime = Config.TotalTimeInSeconds - (int)EventTime.TotalSeconds;
@@ -152,6 +159,12 @@ namespace AutoEvent.Games.Light
                 }
                 else
                 {
+                    _playerRotation = new Dictionary<Player, Quaternion>();
+                    Player.GetPlayers().ForEach(r => 
+                    {
+                        _playerRotation.Add(r, r.Camera.rotation);
+                    });
+
                     EventState = State.RedLight;
                 }
             }
@@ -161,16 +174,25 @@ namespace AutoEvent.Games.Light
                 foreach (Player player in Player.GetPlayers())
                 {
                     if ((int)RedLine.transform.position.z <= (int)player.Position.z)
-                    {
                         continue;
-                    }
 
-                    if (player.Velocity != Vector3.zero)
-                    {
-                        Extensions.GrenadeSpawn(0.1f, player.Position, 0.1f);
-                        player.Kill(Translation.LightRedLose);
-                        ActiveTime += TimeSpan.FromSeconds(1f);
-                    }
+                    Vector3 camera = Doll.transform.position + new Vector3(0, 10, 0);
+                    Vector3 distance = player.Position - camera;
+                    Physics.Raycast(camera, distance.normalized, out RaycastHit raycastHit, distance.magnitude);
+
+                    if (raycastHit.collider.gameObject.layer != 13)
+                        continue;
+
+                    if (!_playerRotation.ContainsKey(player))
+                        continue;
+
+                    if (player.Velocity == Vector3.zero && 
+                        Quaternion.Angle(_playerRotation[player], player.Camera.rotation) < 10)
+                        continue;
+
+                    Extensions.GrenadeSpawn(0.1f, player.Position, 0.1f);
+                    player.Kill(Translation.LightRedLose);
+                    ActiveTime += TimeSpan.FromSeconds(1f);
                 }
 
                 if (ActiveTime.TotalSeconds <= 0)
@@ -192,10 +214,11 @@ namespace AutoEvent.Games.Light
                 }
                 else
                 {
+                    _playerRotation.Clear();
                     EventState = State.GreenLight;
                 }
             }
-
+            
             Extensions.Broadcast(text, 1);
         }
 

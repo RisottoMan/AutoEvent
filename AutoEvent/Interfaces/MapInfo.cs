@@ -21,12 +21,13 @@ public class MapInfo
 {
     public MapInfo() { }
 
-    public MapInfo(string mapName, Vector3 position, Vector3? rotation = null, Vector3? scale = null)
+    public MapInfo(string mapName, Vector3 position, Vector3? rotation = null, Vector3? scale = null, bool? isStatic = false)
     {
         MapName = mapName;
         Position = position;
         Scale = scale ?? Vector3.one;
         Rotation = rotation ?? Vector3.zero;
+        IsStatic = isStatic ?? false;
     }
     [Description("The name of the map schematic.")]
     public string MapName { get; set; }
@@ -43,9 +44,13 @@ public class MapInfo
         get => Quaternion.Euler(Rotation);
         set => Rotation = value.eulerAngles;
     } 
+
     [Description("The scale of the map.")]
     public Vector3 Scale { get; set; } = Vector3.one;
-    
+
+    [Description("Whether the object needs to be optimized.")]
+    public bool IsStatic { get; set; } = false;
+
     [YamlIgnore]
     public SchematicObject Map { get; set; }
     

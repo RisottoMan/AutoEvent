@@ -14,24 +14,23 @@ using Event = AutoEvent.Interfaces.Event;
 
 namespace AutoEvent.Games.Versus
 {
-    public class Plugin : Event, IEventSound, IEventMap, IInternalEvent, IEventTag
+    public class Plugin : Event, IEventSound, IEventMap, IInternalEvent
     {
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.VersusTranslate.VersusName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.VersusTranslate.VersusDescription;
         public override string Author { get; set; } = "KoT0XleB";
         public override string CommandName { get; set; } = AutoEvent.Singleton.Translation.VersusTranslate.VersusCommandName;
-        public override Version Version { get; set; } = new Version(1, 0, 0);
+        public override Version Version { get; set; } = new Version(1, 0, 1);
         [EventConfig]
         public VersusConfig Config { get; set; }
         public MapInfo MapInfo { get; set; } = new MapInfo()
-            { MapName = "35Hp", Position = new Vector3(6f, 1015f, -5f), };
+        { 
+            MapName = "35Hp", 
+            Position = new Vector3(6f, 1015f, -5f),
+            IsStatic = true
+        };
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
             { SoundName = "Knife.ogg", Volume = 10, Loop = true };
-        public TagInfo TagInfo { get; set; } = new TagInfo()
-        {
-            Name = "New Map",
-            Color = "#77dde7"
-        };
         protected override FriendlyFireSettings ForceEnableFriendlyFire { get; set; } = FriendlyFireSettings.Disable;
         private EventHandler EventHandler { get; set; }
         private VersusTranslate Translation { get; set; } = AutoEvent.Singleton.Translation.VersusTranslate;
@@ -189,7 +188,7 @@ namespace AutoEvent.Games.Versus
                         .Replace("{classd}", ClassD.Nickname), 1);
             }
 
-            _countdown = _countdown.Subtract(new TimeSpan(0, 0, 1));
+            _countdown = _countdown.TotalSeconds > 0 ? _countdown.Subtract(new TimeSpan(0, 0, 1)) : TimeSpan.Zero;
         }
 
         protected override void OnFinished()

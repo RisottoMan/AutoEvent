@@ -17,7 +17,7 @@ using Event = AutoEvent.Interfaces.Event;
 
 namespace AutoEvent.Games.Spleef;
 
-public class Plugin : Event, IEventMap, IInternalEvent, IEventTag
+public class Plugin : Event, IEventMap, IInternalEvent
 {
     public override string Name { get; set; } = AutoEvent.Singleton.Translation.SpleefTranslate.SpleefName;
     public override string Description { get; set; } = AutoEvent.Singleton.Translation.SpleefTranslate.SpleefDescription;
@@ -33,18 +33,14 @@ public class Plugin : Event, IEventMap, IInternalEvent, IEventTag
     public MapInfo MapInfo { get; set; } = new MapInfo()
     { 
         MapName = "Spleef",
-        Position = new Vector3(76f, 1026.5f, -43.68f)
+        Position = new Vector3(76f, 1026.5f, -43.68f),
+        IsStatic = true
     };
     public SoundInfo SoundInfo { get; set; } = new SoundInfo()
     {
         SoundName = "Fall_Guys_Winter_Fallympics.ogg",
         Volume = 7,
         Loop = true
-    };
-    public TagInfo TagInfo { get; set; } = new TagInfo()
-    {
-        Name = "new Update",
-        Color = "#77dde7"
     };
     private float _spawnHeight;
     private TimeSpan _remaining;

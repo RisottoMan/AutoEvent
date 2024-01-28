@@ -16,11 +16,26 @@ using AutoEvent.API;
 using AutoEvent.API.Enums;
 using AutoEvent.Interfaces;
 using PlayerRoles;
+using UnityEngine;
 
 namespace AutoEvent.Games.Infection;
 
 public class HideAndSeekConfig : EventConfig
 {
+    public HideAndSeekConfig()
+    {
+        if (AvailableMaps is null)
+        {
+            AvailableMaps = new List<MapChance>();
+        }
+
+        if (AvailableMaps.Count < 1)
+        {
+            AvailableMaps.Add(new MapChance(50, new MapInfo("HideAndSeek", new Vector3(5.5f, 1026.5f, -45f))));
+            AvailableMaps.Add(new MapChance(50, new MapInfo("HideAndSeek_Xmas2024", new Vector3(5.5f, 1026.5f, -45f))));
+        }
+    }
+
     [Description("The item that the tagged player should get. Do not do Scp018 or Grenades for now. - They will break the event. (working on it - redforce)")]
     public ItemType TaggerWeapon { get; set; } = ItemType.Jailbird;
     [Description("Enables the marshmello effect instead.")]

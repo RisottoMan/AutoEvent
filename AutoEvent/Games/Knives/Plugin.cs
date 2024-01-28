@@ -1,5 +1,4 @@
-﻿using MER.Lite.Objects;
-using MEC;
+﻿using MEC;
 using PlayerRoles;
 using PluginAPI.Core;
 using PluginAPI.Events;
@@ -9,81 +8,74 @@ using System.Linq;
 using AutoEvent.API.Enums;
 using UnityEngine;
 using AutoEvent.Events.Handlers;
-using AutoEvent.Games.Example;
 using AutoEvent.Games.Infection;
 using AutoEvent.Interfaces;
-using InventorySystem.Items.MarshmallowMan;
 using Event = AutoEvent.Interfaces.Event;
 
 namespace AutoEvent.Games.Knives
 {
-    public class Plugin : Event, IEventSound, IEventMap, IInternalEvent, IEventTag
+    public class Plugin : Event, IEventSound, IEventMap, IInternalEvent
     {
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.KnivesTranslate.KnivesName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.KnivesTranslate.KnivesDescription;
         public override string Author { get; set; } = "KoT0XleB";
         public override string CommandName { get; set; } = AutoEvent.Singleton.Translation.KnivesTranslate.KnivesCommandName;
-        public override Version Version { get; set; } = new Version(1, 0, 0);
+        public override Version Version { get; set; } = new Version(1, 0, 1);
         [EventConfig]
         public KnivesConfig Config { get; set; }
         public MapInfo MapInfo { get; set; } = new MapInfo()
-            {MapName = "35hp_2", Position = new Vector3(5f, 1030f, -45f), };
+        { 
+            MapName = "35hp_2", 
+            Position = new Vector3(5f, 1030f, -45f),
+            IsStatic = true
+        };
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
             { SoundName = "Knife.ogg", Volume = 10, Loop = true };
-        public TagInfo TagInfo { get; set; } = new TagInfo()
-        {
-            Name = "New Map",
-            Color = "#77dde7"
-        };
-        private EventHandler EventHandler { get; set; }
+        private EventHandler _eventHandler { get; set; }
         private KnivesTranslate Translation { get; set; } = AutoEvent.Singleton.Translation.KnivesTranslate;
-
+        protected override FriendlyFireSettings ForceEnableFriendlyFire { get; set; } = FriendlyFireSettings.Disable;
         protected override void RegisterEvents()
         {
+            _eventHandler = new EventHandler();
 
-            EventHandler = new EventHandler();
-            EventManager.RegisterEvents(EventHandler);
-            Servers.TeamRespawn += EventHandler.OnTeamRespawn;
-            Servers.SpawnRagdoll += EventHandler.OnSpawnRagdoll;
-            Servers.PlaceBullet += EventHandler.OnPlaceBullet;
-            Servers.PlaceBlood += EventHandler.OnPlaceBlood;
-            Players.DropItem += EventHandler.OnDropItem;
-            Players.DropAmmo += EventHandler.OnDropAmmo;
-            Players.PlayerDamage += EventHandler.OnPlayerDamage;
+            EventManager.RegisterEvents(_eventHandler);
+            Servers.TeamRespawn += _eventHandler.OnTeamRespawn;
+            Servers.SpawnRagdoll += _eventHandler.OnSpawnRagdoll;
+            Servers.PlaceBullet += _eventHandler.OnPlaceBullet;
+            Servers.PlaceBlood += _eventHandler.OnPlaceBlood;
+            Players.DropItem += _eventHandler.OnDropItem;
+            Players.DropAmmo += _eventHandler.OnDropAmmo;
+            Players.PlayerDamage += _eventHandler.OnPlayerDamage;
 
         }
 
         protected override void UnregisterEvents()
         {
-            EventManager.UnregisterEvents(EventHandler);
-            Servers.TeamRespawn -= EventHandler.OnTeamRespawn;
-            Servers.SpawnRagdoll -= EventHandler.OnSpawnRagdoll;
-            Servers.PlaceBullet -= EventHandler.OnPlaceBullet;
-            Servers.PlaceBlood -= EventHandler.OnPlaceBlood;
-            Players.DropItem -= EventHandler.OnDropItem;
-            Players.DropAmmo -= EventHandler.OnDropAmmo;
-            Players.PlayerDamage -= EventHandler.OnPlayerDamage;
+            EventManager.UnregisterEvents(_eventHandler);
+            Servers.TeamRespawn -= _eventHandler.OnTeamRespawn;
+            Servers.SpawnRagdoll -= _eventHandler.OnSpawnRagdoll;
+            Servers.PlaceBullet -= _eventHandler.OnPlaceBullet;
+            Servers.PlaceBlood -= _eventHandler.OnPlaceBlood;
+            Players.DropItem -= _eventHandler.OnDropItem;
+            Players.DropAmmo -= _eventHandler.OnDropAmmo;
+            Players.PlayerDamage -= _eventHandler.OnPlayerDamage;
 
-            EventHandler = null;
+            _eventHandler = null;
         }
 
         protected override void OnStart()
         {
-            Server.FriendlyFire = false;
-
             var count = 0;
             foreach (Player player in Player.GetPlayers())
             {
                 if (count % 2 == 0)
                 {
                     player.GiveLoadout(Config.Team1Loadouts, LoadoutFlags.IgnoreWeapons | LoadoutFlags.IgnoreGodMode);
-                    // Extensions.SetRole(player, RoleTypeId.NtfCaptain, RoleSpawnFlags.None);
                     player.Position = RandomClass.GetSpawnPosition(MapInfo.Map, true);
                 }
                 else
                 {
                     player.GiveLoadout(Config.Team2Loadouts, LoadoutFlags.IgnoreWeapons | LoadoutFlags.IgnoreGodMode);
-                    // Extensions.SetRole(player, RoleTypeId.ChaosRepressor, RoleSpawnFlags.None);
                     player.Position = RandomClass.GetSpawnPosition(MapInfo.Map, false);
                 }
                 count++;
@@ -111,9 +103,7 @@ namespace AutoEvent.Games.Knives
         }
 
         protected override bool IsRoundDone()
-        {
-            // At least one NTF is alive &&
-            // At least one Chaos is alive            
+        {   
             return !(Player.GetPlayers().Count(r => r.Team == Team.FoundationForces) > 0 &&
                    Player.GetPlayers().Count(r => r.Team == Team.ChaosInsurgency) > 0);
         }

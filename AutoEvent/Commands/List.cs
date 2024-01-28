@@ -1,11 +1,10 @@
-﻿using AutoEvent.Interfaces;
+﻿using AutoEvent.API.Season;
+using AutoEvent.Interfaces;
 using CommandSystem;
-using PluginAPI.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using YamlDotNet.Core.Tokens;
 #if EXILED
 using Exiled.Permissions.Extensions;
 #endif
@@ -40,7 +39,9 @@ namespace AutoEvent.Commands
                 builder.AppendLine("\"List of events:");
             }
 
-            builder.AppendLine("<size=80><color=#42aaff><b>🎄 MERRY CHRISTMAS 🎄</b></color></size>");
+            SeasonStyle style = Methods.GetSeasonStyle();
+            if (style.Text != null)
+                builder.AppendLine(style.Text);
 
             // ReSharper disable once SuspiciousTypeConversion.Global
             Dictionary<string, List<Event>> events = new Dictionary<string, List<Event>>()
@@ -59,10 +60,11 @@ namespace AutoEvent.Commands
             foreach (KeyValuePair<string, List<Event>> eventlist in events)
             {
                 string color = "white";
+
                 switch (eventlist.Key)
                 {
                     case "Internal Events":
-                        color = "#42aaff"; // red // 77dde7
+                        color = style.PrimaryColor;
                         builder.AppendLine($"{(!IsConsoleCommandSender ? "<color=white>" : "")}[{(!IsConsoleCommandSender ? $"<color={color}>" : "")}==AutoEvent Events=={(!IsConsoleCommandSender ? "<color=white>" : "")}]");
                         break;
 

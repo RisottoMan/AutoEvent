@@ -15,11 +15,26 @@ using System.ComponentModel;
 using AutoEvent.API;
 using AutoEvent.Interfaces;
 using PlayerRoles;
+using UnityEngine;
 
 namespace AutoEvent.Games.Infection;
 
 public class KnivesConfig : EventConfig
 {
+    public KnivesConfig()
+    {
+        if (AvailableMaps is null)
+        {
+            AvailableMaps = new List<MapChance>();
+        }
+
+        if (AvailableMaps.Count < 1)
+        {
+            AvailableMaps.Add(new MapChance(50, new MapInfo("35hp_2", new Vector3(5f, 1030f, -45f))));
+            AvailableMaps.Add(new MapChance(50, new MapInfo("35hp_2_Xmas2024", new Vector3(5f, 1030f, -45f))));
+        }
+    }
+
     [Description("Enables the halloween effect melee instead of jailbird.")]
     public bool HalloweenMelee { get; set; } = true;
     
