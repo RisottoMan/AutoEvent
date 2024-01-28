@@ -20,7 +20,7 @@ using Event = AutoEvent.Interfaces.Event;
 
 namespace AutoEvent.Games.Lava
 {
-    public class Plugin : Event, IEventSound, IEventMap, IInternalEvent, IEventTag
+    public class Plugin : Event, IEventSound, IEventMap, IInternalEvent
     {
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.LavaTranslate.LavaName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.LavaTranslate.LavaDescription;
@@ -29,17 +29,11 @@ namespace AutoEvent.Games.Lava
         public override Version Version { get; set; } = new Version(1, 0, 1);
         [EventConfig]
         public LavaConfig Config { get; set; }
-
         [EventConfigPreset] public LavaConfig OriginalLavaMap => LavaConfigPreset.Original;
         public MapInfo MapInfo { get; set; } = new MapInfo()
             { MapName = "Lava", Position = new Vector3(120f, 1020f, -43.5f), };
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
             { SoundName = "Lava.ogg", Volume = 8, Loop = false };
-        public TagInfo TagInfo { get; set; } = new TagInfo()
-        {
-            Name = "Xmas",
-            Color = "#77dde7"
-        };
         private EventHandler EventHandler { get; set; }
         private LavaTranslate Translation { get; set; } = AutoEvent.Singleton.Translation.LavaTranslate;
         private GameObject _lava;

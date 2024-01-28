@@ -2,7 +2,7 @@
 using System.Linq;
 using UnityEngine;
 
-namespace AutoEvent.Games.FinishWay
+namespace AutoEvent.Games.Race
 {
     internal class RandomPosition
     {

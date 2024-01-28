@@ -120,8 +120,7 @@
     <Compile Remove="InventoryMenu\*" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="API\Season\" />
-    <Folder Include="Games\Gmod\Configs\" />
+    <Folder Include="Games\Dodgeball\Features\" />
   </ItemGroup>
   <Target Name="RemoveFile" BeforeTargets="ReplaceFile">
     <Exec Command="if exist $(SolutionDir)VersionInfo.cs del $(SolutionDir)VersionInfo.cs" />

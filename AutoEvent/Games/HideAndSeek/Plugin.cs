@@ -20,7 +20,7 @@ using Player = PluginAPI.Core.Player;
 
 namespace AutoEvent.Games.HideAndSeek
 {
-    public class Plugin : Event, IEventSound, IEventMap, IInternalEvent, IEventTag
+    public class Plugin : Event, IEventSound, IEventMap, IInternalEvent
     {
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.HideTranslate.HideName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.HideTranslate.HideDescription;
@@ -38,11 +38,6 @@ namespace AutoEvent.Games.HideAndSeek
         };
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
             { SoundName = "HideAndSeek.ogg", Volume = 5, Loop = true };
-        public TagInfo TagInfo { get; set; } = new TagInfo()
-        {
-            Name = "Xmas",
-            Color = "#77dde7"
-        };
         protected override float PostRoundDelay { get; set; } = 10f;
         private EventHandler EventHandler { get; set; }
         private HideTranslate Translation { get; set; } = AutoEvent.Singleton.Translation.HideTranslate;

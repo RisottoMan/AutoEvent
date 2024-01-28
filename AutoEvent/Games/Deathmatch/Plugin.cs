@@ -34,49 +34,47 @@ namespace AutoEvent.Games.Deathmatch
             Volume = 5, 
             Loop = true
         };
-        protected override float PostRoundDelay { get; set; } = 10f;
-        private EventHandler EventHandler { get; set; }
         private DeathmatchTranslate Translation { get; set; } = AutoEvent.Singleton.Translation.DeathmatchTranslate;
-        public int MtfKills { get; set; }
-        public int ChaosKills { get; set; }
+        protected override FriendlyFireSettings ForceEnableFriendlyFire { get; set; } = FriendlyFireSettings.Disable;
+        protected override float PostRoundDelay { get; set; } = 10f;
+        private EventHandler _eventHandler { get; set; }
+        internal int MtfKills { get; set; }
+        internal int ChaosKills { get; set; }
         private int _needKills;
-        private bool isFriendlyFire { get; set; }
-
         protected override void RegisterEvents()
         {
-            EventHandler = new EventHandler(this);
+            _eventHandler = new EventHandler(this);
 
-            EventManager.RegisterEvents(EventHandler);
-            Servers.TeamRespawn += EventHandler.OnTeamRespawn;
-            Servers.SpawnRagdoll += EventHandler.OnSpawnRagdoll;
-            Servers.PlaceBullet += EventHandler.OnPlaceBullet;
-            Servers.PlaceBlood += EventHandler.OnPlaceBlood;
-            Players.DropItem += EventHandler.OnDropItem;
-            Players.DropAmmo += EventHandler.OnDropAmmo;
-            Players.PlayerDying += EventHandler.OnPlayerDying;
-            Players.HandCuff += EventHandler.OnHandCuff;
-
-            isFriendlyFire = Server.FriendlyFire;
+            EventManager.RegisterEvents(_eventHandler);
+            Servers.TeamRespawn += _eventHandler.OnTeamRespawn;
+            Servers.SpawnRagdoll += _eventHandler.OnSpawnRagdoll;
+            Servers.PlaceBullet += _eventHandler.OnPlaceBullet;
+            Servers.PlaceBlood += _eventHandler.OnPlaceBlood;
+            Players.DropItem += _eventHandler.OnDropItem;
+            Players.DropAmmo += _eventHandler.OnDropAmmo;
+            Players.PlayerDying += _eventHandler.OnPlayerDying;
+            Players.HandCuff += _eventHandler.OnHandCuff;
         }
         protected override void UnregisterEvents()
         {
-            EventManager.UnregisterEvents(EventHandler);
-            Servers.TeamRespawn -= EventHandler.OnTeamRespawn;
-            Servers.SpawnRagdoll -= EventHandler.OnSpawnRagdoll;
-            Servers.PlaceBullet -= EventHandler.OnPlaceBullet;
-            Servers.PlaceBlood -= EventHandler.OnPlaceBlood;
-            Players.DropItem -= EventHandler.OnDropItem;
-            Players.DropAmmo -= EventHandler.OnDropAmmo;
-            Players.PlayerDying -= EventHandler.OnPlayerDying;
-            Players.HandCuff -= EventHandler.OnHandCuff;
+            EventManager.UnregisterEvents(_eventHandler);
+            Servers.TeamRespawn -= _eventHandler.OnTeamRespawn;
+            Servers.SpawnRagdoll -= _eventHandler.OnSpawnRagdoll;
+            Servers.PlaceBullet -= _eventHandler.OnPlaceBullet;
+            Servers.PlaceBlood -= _eventHandler.OnPlaceBlood;
+            Players.DropItem -= _eventHandler.OnDropItem;
+            Players.DropAmmo -= _eventHandler.OnDropAmmo;
+            Players.PlayerDying -= _eventHandler.OnPlayerDying;
+            Players.HandCuff -= _eventHandler.OnHandCuff;
 
-            EventHandler = null;
-            Server.FriendlyFire = isFriendlyFire;
+            _eventHandler = null;
         }
 
         protected override void OnStart()
         {
-            Server.FriendlyFire = false;
+            MtfKills = 0;
+            ChaosKills = 0;
+            _needKills = Config.KillsPerPerson * Player.GetPlayers().Count;
 
             float scale = 1;
             switch (Player.GetPlayers().Count())
@@ -86,17 +84,10 @@ namespace AutoEvent.Games.Deathmatch
                 case int n when (n > 35): scale = 1.3f; break;
             }
 
-
-            MtfKills = 0;
-            ChaosKills = 0;
-
-
-            _needKills = Config.KillsPerPerson * Player.GetPlayers().Count;
-
             var count = 0;
             foreach (Player player in Player.GetPlayers())
             {
-                if (UnityEngine.Random.Range(0,2) == 1)
+                if (count % 2 == 0)
                 {
                     player.GiveLoadout(Config.NTFLoadouts, LoadoutFlags.ForceInfiniteAmmo | LoadoutFlags.IgnoreGodMode | LoadoutFlags.IgnoreWeapons);
                     player.Position = RandomClass.GetRandomPosition(MapInfo.Map);
@@ -138,21 +129,13 @@ namespace AutoEvent.Games.Deathmatch
 
         protected override bool IsRoundDone()
         {
-            // Mtf team doesnt have enough kills (NeedKills) &&
-            // Chaos team doesnt have enough kills (NeedKills) &&
-            // Both teams have at least one player
-            return !(MtfKills < _needKills && ChaosKills < _needKills && Player.GetPlayers().Count(r => r.IsNTF) > 0 &&
-                   Player.GetPlayers().Count(r => r.IsChaos) > 0);
+            return !(MtfKills < _needKills && ChaosKills < _needKills && 
+                Player.GetPlayers().Count(r => r.IsNTF) > 0 &&
+                Player.GetPlayers().Count(r => r.IsChaos) > 0);
         }
 
         protected override void ProcessFrame()
         {
-            //string mtfString = string.Empty;
-            //string chaosString = string.Empty;
-            
-            // This wont crash the server because its not possible to enumerate into 0.
-            // These colors allow us to change the color of the mtf percent bar without
-            // affecting the index offset to compensate for the spare characters.
             string mtfColor = "<color=#42AAFF>";
             string chaosColor = "<color=green>";
             string whiteColor = "<color=white>";
@@ -160,19 +143,6 @@ namespace AutoEvent.Games.Deathmatch
             int chaosIndex = whiteColor.Length + 20 - (int)((float)ChaosKills / _needKills * 20f);
             string mtfString = $"{mtfColor}||||||||||||||||||||{mtfColor}".Insert(mtfIndex, whiteColor);
             string chaosString = $"{whiteColor}||||||||||||||||||||".Insert(chaosIndex, chaosColor);
-            
-            /*for (int i = 0; i < neededKills; i += (int)(_needKills / 5))
-            {
-                if (MtfKills >= i) 
-                    mtfString += "■";
-                else 
-                    mtfString += "□";
-
-                if (ChaosKills >= i) 
-                    chaosString = "■" + chaosString;
-                else 
-                    chaosString = "□" + chaosString;
-            }*/
 
             Extensions.Broadcast(
                 Translation.DeathmatchCycle.Replace("{name}", Name).Replace("{mtftext}", $"{MtfKills} {mtfString}")

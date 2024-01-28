@@ -12,7 +12,7 @@ using Player = PluginAPI.Core.Player;
 
 namespace AutoEvent.Games.Infection
 {
-    public class Plugin : Event, IEventSound, IEventMap, IInternalEvent, IEventTag
+    public class Plugin : Event, IEventSound, IEventMap, IInternalEvent
     {
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.InfectTranslate.ZombieName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.InfectTranslate.ZombieDescription;
@@ -29,11 +29,6 @@ namespace AutoEvent.Games.Infection
 
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
             { SoundName = "Zombie_Run.ogg", Volume = 15, Loop = true };
-        public TagInfo TagInfo { get; set; } = new TagInfo()
-        {
-            Name = "Xmas",
-            Color = "#77dde7"
-        };
         protected override float PostRoundDelay { get; set; } = 10f;
         private EventHandler EventHandler { get; set; }
         private InfectTranslate Translation { get; set; } = AutoEvent.Singleton.Translation.InfectTranslate;

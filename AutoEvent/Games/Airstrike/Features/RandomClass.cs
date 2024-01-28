@@ -2,9 +2,9 @@
 using System.Linq;
 using UnityEngine;
 
-namespace AutoEvent.Games.Gmod
+namespace AutoEvent.Games.Airstrike
 {
-    internal class RandomPosition
+    public class RandomClass
     {
         public static Vector3 GetSpawnPosition(SchematicObject GameMap)
         {

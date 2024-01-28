@@ -6,29 +6,28 @@ using PluginAPI.Events;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using AutoEvent.Games.Infection;
 using AutoEvent.Interfaces;
 using UnityEngine;
 using Event = AutoEvent.Interfaces.Event;
 
-namespace AutoEvent.Games.FinishWay
+namespace AutoEvent.Games.Race
 {
     public class Plugin : Event, IEventSound, IEventMap, IInternalEvent
     {
-        public override string Name { get; set; } = AutoEvent.Singleton.Translation.FinishWayTranslate.FinishWayName;
-        public override string Description { get; set; } = AutoEvent.Singleton.Translation.FinishWayTranslate.FinishWayDescription;
+        public override string Name { get; set; } = AutoEvent.Singleton.Translation.RaceTranslation.FinishWayName;
+        public override string Description { get; set; } = AutoEvent.Singleton.Translation.RaceTranslation.FinishWayDescription;
         public override string Author { get; set; } = "KoT0XleB";
-        public override string CommandName { get; set; } = AutoEvent.Singleton.Translation.FinishWayTranslate.FinishWayCommandName;
-        public override Version Version { get; set; } = new Version(1, 0, 0);
+        public override string CommandName { get; set; } = AutoEvent.Singleton.Translation.RaceTranslation.FinishWayCommandName;
+        public override Version Version { get; set; } = new Version(1, 0, 1);
         [EventConfig]
-        public FinishWayConfig Config { get; set; }
+        public Config Config { get; set; }
         public MapInfo MapInfo { get; set; } = new MapInfo()
             {MapName = "Race", Position = new Vector3(115.5f, 1030f, -43.5f), };
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
             { SoundName = "FinishWay.ogg", Volume = 8, Loop = false, StartAutomatically = false };
         protected override float PostRoundDelay { get; set; } = 10f;
         private EventHandler EventHandler { get; set; }
-        private FinishWayTranslate Translation { get; set; } = AutoEvent.Singleton.Translation.FinishWayTranslate;
+        private RaceTranslation Translation { get; set; } = AutoEvent.Singleton.Translation.RaceTranslation;
         private TimeSpan _remainingTime;
         private GameObject _point;
 

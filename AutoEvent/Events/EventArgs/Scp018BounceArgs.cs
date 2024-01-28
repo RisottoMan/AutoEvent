@@ -6,18 +6,16 @@ namespace AutoEvent.Events.EventArgs
 {
     public class Scp018BounceArgs
     {
-        public Scp018BounceArgs(Player player, ItemPickupBase pickup, ThrownProjectile proj, bool isBounced, bool isAllowed = true)
+        public Scp018BounceArgs(ReferenceHub hub, ItemPickupBase pickup, ThrownProjectile proj, bool isAllowed = true)
         {
-            Player = player;
+            Player = Player.Get(hub);
             Pickup = pickup;
             Projectile = proj;
-            IsBounced = isBounced;
             IsAllowed = isAllowed;
         }
         public Player Player { get; }
         public ItemPickupBase Pickup { get; }
         public ThrownProjectile Projectile { get; }
-        public bool IsBounced { get; }
         public bool IsAllowed { get; set; }
     }
 }

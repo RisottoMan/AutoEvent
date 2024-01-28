@@ -12,7 +12,7 @@ using Random = UnityEngine.Random;
 
 namespace AutoEvent.Games.Light
 {
-    public class Plugin : Event, IEventMap, IInternalEvent, IEventTag
+    public class Plugin : Event, IEventMap, IInternalEvent
     {
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.LightTranslation.LightName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.LightTranslation.LightDescription;
@@ -26,11 +26,6 @@ namespace AutoEvent.Games.Light
         {
             MapName = "RedLight",
             Position = new Vector3(0f, 1030f, -43.5f)
-        };
-        public TagInfo TagInfo { get; set; } = new TagInfo()
-        {
-            Name = "Xmas",
-            Color = "#ffff00"
         };
         private EventHandler EventHandler { get; set; }
         GameObject Wall { get; set; }

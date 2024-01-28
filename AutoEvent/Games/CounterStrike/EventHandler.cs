@@ -1,12 +1,16 @@
 ﻿using AutoEvent.Events.EventArgs;
 using InventorySystem.Configs;
-using MER.Lite;
+using InventorySystem.Items;
+using MEC;
 using PlayerRoles;
+using PluginAPI.Core;
 using PluginAPI.Core.Attributes;
+using PluginAPI.Core.Items;
 using PluginAPI.Enums;
 using PluginAPI.Events;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace AutoEvent.Games.CounterStrike
@@ -21,9 +25,10 @@ namespace AutoEvent.Games.CounterStrike
 
         public void OnPickUpItem(PickUpItemArgs ev)
         {
-            if (ev.Item.ItemTypeId != ItemType.SCP018) return;
+            if (ev.Item.ItemTypeId != ItemType.SCP018)
+                return;
 
-            StrikeTranslation translation = AutoEvent.Singleton.Translation.StrikeTranslation;
+            var trans = AutoEvent.Singleton.Translation.StrikeTranslation;
 
             if (_plugin.BombState == BombState.NoPlanted)
             {
@@ -32,33 +37,47 @@ namespace AutoEvent.Games.CounterStrike
                     _plugin.Winner = ev.Player;
                     _plugin.BombState = BombState.Planted;
                     _plugin.RoundTime = new TimeSpan(0, 0, 35);
-                    _plugin.BombPoints.ForEach(r => GameObject.Destroy(r));
-                    _plugin.BombSchematic = ObjectSpawner.SpawnSchematic("bomb", ev.Pickup.Position, Quaternion.identity, Vector3.one, false);
+
+                    _plugin.BombObject.transform.position = ev.Pickup.Position;
+                    _plugin.Buttons.ForEach(r => GameObject.Destroy(r));
 
                     Extensions.PlayAudio("BombPlanted.ogg", 5, false);
-                    ev.Player.ReceiveHint("Вы устанавили бомбу", 3); // translation.StrikeYouPlanted
-                }
-                else
-                {
-                    ev.Player.ReceiveHint("Бомба не установлена", 3);
+                    ev.Player.ReceiveHint(trans.StrikeYouPlanted, 3);
                 }
             }
             else if (_plugin.BombState == BombState.Planted)
             {
-                if (ev.Player.IsNTF && Vector3.Distance(ev.Player.Position, _plugin.BombSchematic.Position) < 3)
+                if (ev.Player.IsNTF && Vector3.Distance(ev.Player.Position, _plugin.BombObject.transform.position) < 3)
                 {
                     _plugin.Winner = ev.Player;
                     _plugin.BombState = BombState.Defused;
-                    _plugin.BombSchematic.Destroy();
-                    ev.Player.ReceiveHint("Вы задефьюзили бомбу", 3); // translation.StrikeYouDefused
-                }
-                else
-                {
-                    ev.Player.ReceiveHint("Бомба уже установлена", 3);
+                    //GameObject.Destroy(_plugin.BombObject);
+                    ev.Player.ReceiveHint(trans.StrikeYouDefused, 3);
                 }
             }
 
-            ev.IsAllowed = false;
+            ReturnButton(ev.Player, ev.Item, ev.Pickup.transform);
+        }
+
+        public void ReturnButton(Player player, ItemBase item, Transform transform)
+        {
+            // Create a new item.
+            ItemPickup pickup = ItemPickup.Create(item.ItemTypeId, transform.position, transform.rotation);
+            pickup.Transform.localScale = transform.localScale;
+
+            Rigidbody rg = pickup.GameObject.GetComponent<Rigidbody>();
+            rg.mass = 100;
+            rg.drag = 0;
+            rg.useGravity = false;
+            rg.isKinematic = true;
+
+            pickup.Spawn();
+
+            // Removing an item from the player's inventory
+            Timing.CallDelayed(0.2f, () =>
+            {
+                player.RemoveItems(ItemType.SCP018);
+            });
         }
 
         [PluginEvent(ServerEventType.PlayerReloadWeapon)]

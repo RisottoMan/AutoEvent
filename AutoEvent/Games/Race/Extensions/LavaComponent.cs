@@ -1,7 +1,7 @@
 ﻿using PluginAPI.Core;
 using UnityEngine;
 
-namespace AutoEvent.Games.FinishWay
+namespace AutoEvent.Games.Race
 {
     public class LavaComponent : MonoBehaviour
     {

@@ -18,7 +18,7 @@ using Event = AutoEvent.Interfaces.Event;
 
 namespace AutoEvent.Games.Puzzle
 {
-    public class Plugin : Event, IEventSound, IEventMap, IInternalEvent, IEventTag
+    public class Plugin : Event, IEventSound, IEventMap, IInternalEvent
     { //todo: add some configs for a platform choose speed, and platform fall delay. Maybe make this a scale from 1 - 10 or something.
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.PuzzleTranslate.PuzzleName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.PuzzleTranslate.PuzzleDescription;
@@ -34,11 +34,6 @@ namespace AutoEvent.Games.Puzzle
             { MapName = "Puzzle", Position = new Vector3(76f, 1026.5f, -43.68f), };
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
             { SoundName = "ChristmasMusic.ogg", Volume = 7, Loop = true };
-        public TagInfo TagInfo { get; set; } = new TagInfo()
-        {
-            Name = "Xmas",
-            Color = "#77dde7"
-        };
         protected override float PostRoundDelay { get; set; } = 10f;
         private EventHandler EventHandler { get; set; }
         private GridSelector GridSelector { get; set; }

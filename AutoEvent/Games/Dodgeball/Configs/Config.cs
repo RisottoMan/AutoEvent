@@ -3,11 +3,25 @@ using System.ComponentModel;
 using AutoEvent.API;
 using AutoEvent.Interfaces;
 using PlayerRoles;
+using UnityEngine;
 
-namespace AutoEvent.Games.Snowball;
+namespace AutoEvent.Games.Dodgeball;
 
 public class Config : EventConfig
 {
+    public Config()
+    {
+        if (AvailableMaps is null)
+        {
+            AvailableMaps = new List<MapChance>();
+        }
+
+        if (AvailableMaps.Count < 1)
+        {
+            AvailableMaps.Add(new MapChance(50, new MapInfo("Snowball", new Vector3(0, 0, 30))));
+            AvailableMaps.Add(new MapChance(50, new MapInfo("Dodgeball", new Vector3(0, 0, 30))));
+        }
+    }
     [Description("After how many seconds the round will end. [Default: 180]")]
     public int TotalTimeInSeconds { get; set; } = 180;
 
@@ -28,7 +42,4 @@ public class Config : EventConfig
             Roles = new Dictionary<RoleTypeId, int>(){ { RoleTypeId.Scientist, 100 } }
         }
     };
-
-    //[Description("What item should give the players?")]
-    //public ItemType ItemType { get; set; } = ItemType.Snowball;
 }

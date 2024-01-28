@@ -72,6 +72,7 @@ namespace AutoEvent.Games.AllDeathmatch
         public void SpawnPlayerAfterDeath(Player player)
         {
             player.EffectsManager.EnableEffect<Flashed>(0.1f);
+            player.IsGodModeEnabled = true;
             player.Health = 100;
             player.ClearInventory();
 
@@ -80,11 +81,12 @@ namespace AutoEvent.Games.AllDeathmatch
                 player.GiveLoadout(_plugin.Config.NTFLoadouts, LoadoutFlags.ForceInfiniteAmmo | LoadoutFlags.IgnoreGodMode | LoadoutFlags.IgnoreWeapons);
             }
 
-            player.Position = _plugin.Spawnpoints.RandomItem().transform.position;
+            player.Position = _plugin.Points.RandomItem().transform.position;
 
             var item = player.AddItem(_plugin.Config.AvailableWeapons.RandomItem());
             Timing.CallDelayed(.1f, () =>
             {
+                player.IsGodModeEnabled = false;
                 if (item != null)
                 {
                     player.CurrentItem = item;

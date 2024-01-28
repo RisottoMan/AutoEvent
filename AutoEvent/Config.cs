@@ -80,6 +80,5 @@ namespace AutoEvent
         
         [Description("Where the music directory is located. By default it is located in the AutoEvent folder.")]
         public string MusicDirectoryPath { get; set; }
-        
     }
 }

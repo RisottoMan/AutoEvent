@@ -1,13 +1,21 @@
-﻿using MER.Lite.Objects;
-
-namespace MER.Lite
+﻿namespace MER.Lite
 {
     using Serializable;
     using UnityEngine;
     using System;
+    using MER.Lite.Objects;
+    using Object = UnityEngine.Object;
 
     public static class ObjectSpawner
     {
+        public static PrimitiveObject SpawnPrimitive(PrimitiveSerializable primitiveObject, Vector3? forcedPosition = null, Quaternion? forcedRotation = null, Vector3? forcedScale = null)
+        {
+            GameObject gameObject = Object.Instantiate(ObjectHelper.PrimitiveBaseObject.gameObject, forcedPosition ?? Vector3.zero, forcedRotation ?? Quaternion.identity);
+            gameObject.transform.localScale = forcedScale ?? primitiveObject.Scale;
+
+            return gameObject.AddComponent<PrimitiveObject>().Init(primitiveObject);
+        }
+
         [Obsolete]
         public static SchematicObject SpawnSchematic(string schematicName, Vector3 position, Quaternion? rotation = null, Vector3? scale = null, SchematicObjectDataList data = null)
         {

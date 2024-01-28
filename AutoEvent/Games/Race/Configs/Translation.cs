@@ -1,11 +1,11 @@
 ﻿using Exiled.API.Interfaces;
 
-namespace AutoEvent.Games.Infection
+namespace AutoEvent.Games.Race
 {
 #if EXILED
-    public class FinishWayTranslate : ITranslation 
+    public class RaceTranslation : ITranslation 
 #else
-    public class FinishWayTranslate
+    public class RaceTranslation
 #endif
 
     {

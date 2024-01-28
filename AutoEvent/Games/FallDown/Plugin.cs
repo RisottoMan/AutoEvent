@@ -15,7 +15,7 @@ using Event = AutoEvent.Interfaces.Event;
 
 namespace AutoEvent.Games.FallDown
 {
-    public class Plugin : Event, IEventSound, IEventMap, IInternalEvent, IEventTag
+    public class Plugin : Event, IEventSound, IEventMap, IInternalEvent
     {
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.FallTranslate.FallName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.FallTranslate.FallDescription;
@@ -28,11 +28,6 @@ namespace AutoEvent.Games.FallDown
             { MapName = "FallDown", Position = new Vector3(10f, 1020f, -43.68f) };
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
             { SoundName = "ChristmasMusic.ogg", Volume = 7, Loop = true };
-        public TagInfo TagInfo { get; set; } = new TagInfo()
-        {
-            Name = "Xmas",
-            Color = "#77dde7"
-        };
         protected override float FrameDelayInSeconds { get; set; } = 0.9f;
         protected override float PostRoundDelay { get; set; } = 10f;
         private EventHandler EventHandler { get; set; }

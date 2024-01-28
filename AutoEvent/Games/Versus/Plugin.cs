@@ -14,7 +14,7 @@ using Event = AutoEvent.Interfaces.Event;
 
 namespace AutoEvent.Games.Versus
 {
-    public class Plugin : Event, IEventSound, IEventMap, IInternalEvent, IEventTag
+    public class Plugin : Event, IEventSound, IEventMap, IInternalEvent
     {
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.VersusTranslate.VersusName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.VersusTranslate.VersusDescription;
@@ -31,11 +31,6 @@ namespace AutoEvent.Games.Versus
         };
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
             { SoundName = "Knife.ogg", Volume = 10, Loop = true };
-        public TagInfo TagInfo { get; set; } = new TagInfo()
-        {
-            Name = "Xmas",
-            Color = "#77dde7"
-        };
         protected override FriendlyFireSettings ForceEnableFriendlyFire { get; set; } = FriendlyFireSettings.Disable;
         private EventHandler EventHandler { get; set; }
         private VersusTranslate Translation { get; set; } = AutoEvent.Singleton.Translation.VersusTranslate;

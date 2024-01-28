@@ -10,7 +10,6 @@
     public class PrimitiveObject : MapEditorObject
     {
         private Transform _transform;
-        private Rigidbody _rigidbody;
         private PrimitiveObjectToy _primitiveObjectToy;
 
         private void Awake()
@@ -50,21 +49,7 @@
         /// <summary>
         /// The base <see cref="PrimitiveSerializable"/>.
         /// </summary>
-        public PrimitiveSerializable Base;
-
-        public Rigidbody Rigidbody
-        {
-            get
-            {
-                if (_rigidbody is not null)
-                    return _rigidbody;
-
-                if (TryGetComponent(out _rigidbody))
-                    return _rigidbody!;
-
-                return _rigidbody = gameObject.AddComponent<Rigidbody>();
-            }
-        }
+        public PrimitiveSerializable Base { get; private set; }
 
         public bool IsStatic
         {
@@ -81,9 +66,8 @@
         public override void UpdateObject()
         {
             UpdateTransformProperties();
-            _primitiveObjectToy.PrimitiveType = Base.PrimitiveType;
-            _primitiveObjectToy.MaterialColor = GetColorFromString(Base.Color);
-            // Network shit break musical chairs for no reason... maybe its primitiveType
+            _primitiveObjectToy.NetworkPrimitiveType = Base.PrimitiveType;
+            _primitiveObjectToy.NetworkMaterialColor = GetColorFromString(Base.Color);
 
             if (IsSchematicBlock && _prevScale == transform.localScale)
                 return;

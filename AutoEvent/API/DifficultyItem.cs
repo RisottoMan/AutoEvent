@@ -11,7 +11,6 @@
 // -----------------------------------------
 
 using System.ComponentModel;
-using AutoEvent.Games.Infection;
 using UnityEngine;
 
 namespace AutoEvent.API;
@@ -87,5 +86,12 @@ public class DifficultyItem
     {
         return 0;
         /**/
+    }
+
+    public enum Filter
+    {
+        Linear,
+        //Quadratic,
+        //Exponential,
     }
 }

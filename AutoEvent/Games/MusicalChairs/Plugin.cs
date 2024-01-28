@@ -8,12 +8,11 @@ using PluginAPI.Events;
 using AutoEvent.Events.Handlers;
 using AutoEvent.Interfaces;
 using AdminToys;
-using PlayerRoles.FirstPersonControl;
 using Event = AutoEvent.Interfaces.Event;
 
 namespace AutoEvent.Games.MusicalChairs
 {
-    public class Plugin : Event, IEventSound, IEventMap, IInternalEvent, IEventTag
+    public class Plugin : Event, IEventSound, IEventMap, IInternalEvent
     {
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.ChairsTranslation.ChairsName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.ChairsTranslation.ChairsDescription;
@@ -35,50 +34,45 @@ namespace AutoEvent.Games.MusicalChairs
             Volume = 10,
             Loop = false
         };
-        public TagInfo TagInfo { get; set; } = new TagInfo()
-        {
-            Name = "Xmas",
-            Color = "#77dde7"
-        };
-        private EventHandler EventHandler { get; set; }
-        public State EventState { get; set; }
-        public List<GameObject> Platforms { get; set; }
-        Dictionary<GameObject, Player> PlatfomByPlayer { get; set; }
-        GameObject Cylinder { get; set; }
-        TimeSpan StageTime { get; set; }
+        private EventHandler _eventHandler;
+        private State _eventState;
+        private GameObject _parentPlatform;
+        public List<GameObject> Platforms;
+        private Dictionary<Player, PlayerClass> _playerDict;
+        private TimeSpan _stageTime;
         protected override void RegisterEvents()
         {
-            EventHandler = new EventHandler(this);
-            EventManager.RegisterEvents(EventHandler);
-            Servers.TeamRespawn += EventHandler.OnTeamRespawn;
-            Servers.SpawnRagdoll += EventHandler.OnSpawnRagdoll;
-            Servers.PlaceBullet += EventHandler.OnPlaceBullet;
-            Servers.PlaceBlood += EventHandler.OnPlaceBlood;
-            Players.DropItem += EventHandler.OnDropItem;
-            Players.DropAmmo += EventHandler.OnDropAmmo;
-            Players.PlayerDamage += EventHandler.OnDamage;
-            Players.UsingStamina += EventHandler.OnUsingStamina;
+            _eventHandler = new EventHandler(this);
+            EventManager.RegisterEvents(_eventHandler);
+            Servers.TeamRespawn += _eventHandler.OnTeamRespawn;
+            Servers.SpawnRagdoll += _eventHandler.OnSpawnRagdoll;
+            Servers.PlaceBullet += _eventHandler.OnPlaceBullet;
+            Servers.PlaceBlood += _eventHandler.OnPlaceBlood;
+            Players.DropItem += _eventHandler.OnDropItem;
+            Players.DropAmmo += _eventHandler.OnDropAmmo;
+            Players.PlayerDamage += _eventHandler.OnDamage;
+            Players.UsingStamina += _eventHandler.OnUsingStamina;
         }
 
         protected override void UnregisterEvents()
         {
-            EventManager.UnregisterEvents(EventHandler);
-            Servers.TeamRespawn -= EventHandler.OnTeamRespawn;
-            Servers.SpawnRagdoll -= EventHandler.OnSpawnRagdoll;
-            Servers.PlaceBullet -= EventHandler.OnPlaceBullet;
-            Servers.PlaceBlood -= EventHandler.OnPlaceBlood;
-            Players.DropItem -= EventHandler.OnDropItem;
-            Players.DropAmmo -= EventHandler.OnDropAmmo;
-            Players.PlayerDamage -= EventHandler.OnDamage;
-            Players.UsingStamina -= EventHandler.OnUsingStamina;
+            EventManager.UnregisterEvents(_eventHandler);
+            Servers.TeamRespawn -= _eventHandler.OnTeamRespawn;
+            Servers.SpawnRagdoll -= _eventHandler.OnSpawnRagdoll;
+            Servers.PlaceBullet -= _eventHandler.OnPlaceBullet;
+            Servers.PlaceBlood -= _eventHandler.OnPlaceBlood;
+            Players.DropItem -= _eventHandler.OnDropItem;
+            Players.DropAmmo -= _eventHandler.OnDropAmmo;
+            Players.PlayerDamage -= _eventHandler.OnDamage;
+            Players.UsingStamina -= _eventHandler.OnUsingStamina;
 
-            EventHandler = null;
+            _eventHandler = null;
         }
 
         protected override void OnStart()
         {
-            EventState = State.Starting;
-            StageTime = new TimeSpan();
+            _eventState = State.Starting;
+            _stageTime = new TimeSpan();
             List<GameObject> spawnpoints = new List<GameObject>();
 
             foreach (GameObject gameObject in MapInfo.Map.AttachedBlocks)
@@ -86,14 +80,14 @@ namespace AutoEvent.Games.MusicalChairs
                 switch(gameObject.name)
                 {
                     case "Spawnpoint": spawnpoints.Add(gameObject); break;
-                    case "Cylinder-Parent": Cylinder = gameObject; break;
+                    case "Cylinder-Parent": _parentPlatform = gameObject; break;
                 }
             }
 
             int count = Player.GetPlayers().Count > 40 ? 40 : Player.GetPlayers().Count - 1;
             Platforms = Functions.GeneratePlatforms(
                 count,
-                Cylinder, 
+                _parentPlatform, 
                 MapInfo.Position);
 
             foreach (Player player in Player.GetPlayers())
@@ -112,13 +106,13 @@ namespace AutoEvent.Games.MusicalChairs
                 yield return Timing.WaitForSeconds(1f);
             }
 
-            StageTime = new TimeSpan(0, 0, 5);
+            _stageTime = new TimeSpan(0, 0, 5);
         }
 
         protected override bool IsRoundDone()
         {
-            if (StageTime.TotalSeconds > 0) 
-                StageTime -= TimeSpan.FromSeconds(FrameDelayInSeconds);
+            if (_stageTime.TotalSeconds > 0)
+                _stageTime -= TimeSpan.FromSeconds(FrameDelayInSeconds);
 
             return !(Player.GetPlayers().Count(r => r.IsAlive) > 1);
         }
@@ -130,7 +124,7 @@ namespace AutoEvent.Games.MusicalChairs
                 Replace("{name}", Name).
                 Replace("{count}", Player.GetPlayers().Count(r => r.IsAlive).ToString());
 
-            if (EventState == State.Starting)
+            if (_eventState == State.Starting)
             {
                 text = text.Replace("{state}", trans.ChairsRunDontTouch);
 
@@ -139,33 +133,46 @@ namespace AutoEvent.Games.MusicalChairs
                     platform.GetComponent<PrimitiveObjectToy>().NetworkMaterialColor = Color.yellow;
                 }
 
-                if (StageTime.TotalSeconds <= 0)
+                if (_stageTime.TotalSeconds <= 0)
                 {
-                    PlatfomByPlayer = new Dictionary<GameObject, Player>();
-                    StageTime = new TimeSpan(0, 0, UnityEngine.Random.Range(2, 10));
-                    EventState = State.Playing;
+                    _playerDict = new();
+                    foreach (Player player in Player.GetPlayers())
+                    {
+                        _playerDict.Add(player, new PlayerClass()
+                        {
+                            Angle = 0,
+                            Platform = null
+                        });
+                    }
+                    _stageTime = new TimeSpan(0, 0, UnityEngine.Random.Range(2, 10));
+                    _eventState = State.Playing;
                 }
             }
-            else if (EventState == State.Playing)
+            else if (_eventState == State.Playing)
             {
                 text = text.Replace("{state}", trans.ChairsRunDontTouch);
 
-                foreach (GameObject platform in Platforms)
+                foreach (Player player in Player.GetPlayers())
                 {
-                    foreach (Player player in Player.GetPlayers())
-                    {
-                        if (player.ReferenceHub.roleManager.CurrentRole is IFpcRole fpc)
-                        {
-                            if (fpc.FpcModule.CurrentMovementState != PlayerMovementState.Sprinting)
-                            {
-                                Extensions.GrenadeSpawn(0.1f, player.Position, 0.1f);
-                                player.Kill(trans.ChairsStopRunning);
-                            }
-                        }
+                    // check the difference between the current angle and the remembered one
+                    float curAngle = 180f + Mathf.Rad2Deg * (Mathf.Atan2(player.Position.z - MapInfo.Position.z, player.Position.x - MapInfo.Position.x));
 
+                    if (_playerDict[player].Angle == curAngle)
+                    {
+                        Extensions.GrenadeSpawn(0.1f, player.Position, 0.1f);
+                        player.Kill(trans.ChairsStopRunning);
+                    }
+                    else
+                    {
+                        _playerDict[player].Angle = curAngle;
+                    }
+
+                    // Player touched platform
+                    foreach(GameObject platform in Platforms)
+                    {
                         if (Vector3.Distance(player.Position, platform.transform.position) < 1.5f)
                         {
-                            if (StageTime.TotalSeconds > 0)
+                            if (_stageTime.TotalSeconds > 0)
                             {
                                 Extensions.GrenadeSpawn(0.1f, player.Position, 0.1f);
                                 player.Kill(trans.ChairsTouchAhead);
@@ -174,7 +181,7 @@ namespace AutoEvent.Games.MusicalChairs
                     }
                 }
 
-                if (StageTime.TotalSeconds <= 0)
+                if (_stageTime.TotalSeconds <= 0)
                 {
                     foreach (var platform in Platforms)
                     {
@@ -182,11 +189,11 @@ namespace AutoEvent.Games.MusicalChairs
                     }
 
                     Extensions.PauseAudio();
-                    StageTime = new TimeSpan(0, 0, 3);
-                    EventState = State.Stopping;
+                    _stageTime = new TimeSpan(0, 0, 3);
+                    _eventState = State.Stopping;
                 }
             }
-            else if (EventState == State.Stopping)
+            else if (_eventState == State.Stopping)
             {
                 text = text.Replace("{state}", trans.ChairsStandFree);
 
@@ -194,41 +201,42 @@ namespace AutoEvent.Games.MusicalChairs
                 {
                     foreach (Player player in Player.GetPlayers())
                     {
-                        if (PlatfomByPlayer.ContainsKey(platform) || PlatfomByPlayer.ContainsValue(player))
+                        // If the player's platform is included in the list, then skip
+                        if (_playerDict.Any(kvPair => kvPair.Value.Platform == platform))
                             continue;
 
                         if (Vector3.Distance(player.Position, platform.transform.position) < 1.5f)
                         {
                             platform.GetComponent<PrimitiveObjectToy>().NetworkMaterialColor = Color.red;
-                            PlatfomByPlayer.Add(platform, player);
+                            _playerDict[player].Platform = platform;
                         }
                     }
                 }
-
-                if (StageTime.TotalSeconds <= 0)
+                
+                if (_stageTime.TotalSeconds <= 0)
                 {
-                    StageTime = new TimeSpan(0, 0, 3);
-                    EventState = State.Ending;
+                    _stageTime = new TimeSpan(0, 0, 3);
+                    _eventState = State.Ending;
                 }
             }
-            else if (EventState == State.Ending)
+            else if (_eventState == State.Ending)
             {
                 text = text.Replace("{state}", trans.ChairsStandFree);
 
                 foreach (Player player in Player.GetPlayers())
                 {
-                    if (!PlatfomByPlayer.ContainsValue(player))
+                    if (_playerDict[player].Platform is null)
                     {
                         Extensions.GrenadeSpawn(0.1f, player.Position, 0.1f);
                         player.Kill(trans.ChairsNoTime);
                     }
                 }
-
-                if (StageTime.TotalSeconds <= 0)
+                
+                if (_stageTime.TotalSeconds <= 0)
                 {
                     Extensions.ResumeAudio();
-                    StageTime = new TimeSpan(0, 0, 3);
-                    EventState = State.Starting;
+                    _stageTime = new TimeSpan(0, 0, 3);
+                    _eventState = State.Starting;
                 }
             }
 
@@ -264,12 +272,5 @@ namespace AutoEvent.Games.MusicalChairs
                 GameObject.Destroy(platform);
             }
         }
-    }
-    public enum State
-    {
-        Starting,
-        Playing,
-        Stopping,
-        Ending
     }
 }

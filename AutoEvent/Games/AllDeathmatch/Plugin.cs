@@ -9,6 +9,7 @@ using UnityEngine;
 using AutoEvent.Events.Handlers;
 using AutoEvent.Interfaces;
 using Event = AutoEvent.Interfaces.Event;
+using System.Text;
 
 namespace AutoEvent.Games.AllDeathmatch
 {
@@ -19,8 +20,7 @@ namespace AutoEvent.Games.AllDeathmatch
         public override string Author { get; set; } = "KoT0XleB";
         public override string CommandName { get; set; } = AutoEvent.Singleton.Translation.AllTranslation.AllCommandName;
         private AllTranslation Translation { get; set; } = AutoEvent.Singleton.Translation.AllTranslation;
-        public override Version Version { get; set; } = new Version(1, 0, 0);
-        private EventHandler EventHandler { get; set; }
+        public override Version Version { get; set; } = new Version(1, 0, 1);
         protected override FriendlyFireSettings ForceEnableFriendlyFire { get; set; } = FriendlyFireSettings.Enable;
         [EventConfig]
         public Config Config { get; set; }
@@ -36,52 +36,53 @@ namespace AutoEvent.Games.AllDeathmatch
             Volume = 10,
             Loop = true 
         };
-        public List<GameObject> Spawnpoints { get; set; }
-        public int NeededKills { get; set; }
-        public Dictionary<Player, int> TotalKills { get; set; }
-        public Player Winner { get; set; }
+        private EventHandler _eventHandler { get; set; }
+        internal List<GameObject> Points { get; set; }
+        private int _needKills { get; set; }
+        internal Dictionary<Player, int> TotalKills { get; set; }
+        private Player _winner { get; set; }
         protected override void RegisterEvents()
         {
-            EventHandler = new EventHandler(this);
+            _eventHandler = new EventHandler(this);
 
-            EventManager.RegisterEvents(EventHandler);
-            Servers.TeamRespawn += EventHandler.OnTeamRespawn;
-            Servers.SpawnRagdoll += EventHandler.OnSpawnRagdoll;
-            Servers.PlaceBullet += EventHandler.OnPlaceBullet;
-            Servers.PlaceBlood += EventHandler.OnPlaceBlood;
-            Players.DropAmmo += EventHandler.OnDropAmmo;
-            Players.PlayerDying += EventHandler.OnPlayerDying;
+            EventManager.RegisterEvents(_eventHandler);
+            Servers.TeamRespawn += _eventHandler.OnTeamRespawn;
+            Servers.SpawnRagdoll += _eventHandler.OnSpawnRagdoll;
+            Servers.PlaceBullet += _eventHandler.OnPlaceBullet;
+            Servers.PlaceBlood += _eventHandler.OnPlaceBlood;
+            Players.DropAmmo += _eventHandler.OnDropAmmo;
+            Players.PlayerDying += _eventHandler.OnPlayerDying;
         }
         protected override void UnregisterEvents()
         {
-            EventManager.UnregisterEvents(EventHandler);
-            Servers.TeamRespawn -= EventHandler.OnTeamRespawn;
-            Servers.SpawnRagdoll -= EventHandler.OnSpawnRagdoll;
-            Servers.PlaceBullet -= EventHandler.OnPlaceBullet;
-            Servers.PlaceBlood -= EventHandler.OnPlaceBlood;
-            Players.DropAmmo -= EventHandler.OnDropAmmo;
-            Players.PlayerDying -= EventHandler.OnPlayerDying;
+            EventManager.UnregisterEvents(_eventHandler);
+            Servers.TeamRespawn -= _eventHandler.OnTeamRespawn;
+            Servers.SpawnRagdoll -= _eventHandler.OnSpawnRagdoll;
+            Servers.PlaceBullet -= _eventHandler.OnPlaceBullet;
+            Servers.PlaceBlood -= _eventHandler.OnPlaceBlood;
+            Players.DropAmmo -= _eventHandler.OnDropAmmo;
+            Players.PlayerDying -= _eventHandler.OnPlayerDying;
 
-            EventHandler = null;
+            _eventHandler = null;
         }
 
         protected override void OnStart()
         {
-            Winner = null;
-            NeededKills = 0;
-            switch (Player.GetPlayers().Count())
-            {
-                case int n when (n > 0 && n <= 5): NeededKills = 5; break;
-                case int n when (n > 5 && n <= 10): NeededKills = 15; break;
-                case int n when (n > 10 && n <= 20): NeededKills = 25; break;
-                case int n when (n > 20 && n <= 25): NeededKills = 50; break;
-                case int n when (n > 25 && n <= 35): NeededKills = 75; break;
-                case int n when (n > 35): NeededKills = 100; break;
-            }
-
+            _winner = null;
+            _needKills = 0;
             TotalKills = new();
 
-            Spawnpoints = RandomClass.GetAllSpawnpoint(MapInfo.Map);
+            switch (Player.GetPlayers().Count())
+            {
+                case int n when (n > 0 && n <= 5): _needKills = 10; break;
+                case int n when (n > 5 && n <= 10): _needKills = 15; break;
+                case int n when (n > 10 && n <= 20): _needKills = 25; break;
+                case int n when (n > 20 && n <= 25): _needKills = 50; break;
+                case int n when (n > 25 && n <= 35): _needKills = 75; break;
+                case int n when (n > 35): _needKills = 100; break;
+            }
+
+            Points = RandomClass.GetAllSpawnpoint(MapInfo.Map);
             // Walls can be used on all counter-strike maps. For Deathmatch mode, they must be removed earlier.
             MapInfo.Map.AttachedBlocks.Where(r => r.name == "Wall").ToList()
                 .ForEach(r => GameObject.Destroy(r));
@@ -89,7 +90,7 @@ namespace AutoEvent.Games.AllDeathmatch
             foreach (Player player in Player.GetPlayers())
             {
                 player.GiveLoadout(Config.NTFLoadouts, LoadoutFlags.ForceInfiniteAmmo | LoadoutFlags.IgnoreGodMode | LoadoutFlags.IgnoreWeapons);
-                player.Position = Spawnpoints.RandomItem().transform.position;
+                player.Position = Points.RandomItem().transform.position;
 
                 TotalKills.Add(player, 0);
             }
@@ -122,8 +123,8 @@ namespace AutoEvent.Games.AllDeathmatch
         protected override bool IsRoundDone()
         {
             return !(Config.TimeMinutesRound >= EventTime.TotalMinutes && 
-               Player.GetPlayers().Count(r => r.IsAlive) > 0 && 
-               Winner is null);
+               Player.GetPlayers().Count(r => r.IsAlive) > 1 && 
+               _winner is null);
         }
 
         protected override void ProcessFrame()
@@ -132,8 +133,8 @@ namespace AutoEvent.Games.AllDeathmatch
             var time = $"{(int)remainTime:00}:{(int)((remainTime * 60) % 60):00}";
             var sortedDict = TotalKills.OrderByDescending(r => r.Value).ToDictionary(x => x.Key, x => x.Value);
 
-            var leaderBoard = $"Leaderboard:\n";
-            for (int i = 0; i <= 3; i++)
+            StringBuilder leaderboard = new StringBuilder("Leaderboard:\n");
+            for (int i = 0; i < 3; i++)
             {
                 if (i < sortedDict.Count)
                 {
@@ -146,31 +147,33 @@ namespace AutoEvent.Games.AllDeathmatch
                     }
 
                     int length = Math.Min(sortedDict.ElementAt(i).Key.Nickname.Length, 10);
-                    leaderBoard += $"<color={color}>{i+1}. " +
-                        $"{sortedDict.ElementAt(i).Key.Nickname.Substring(0, length)}" +
-                        $" / {sortedDict.ElementAt(i).Value} kills</color>\n";
+                    leaderboard.Append($"<color={color}>{i + 1}. ");
+                    leaderboard.Append($"{sortedDict.ElementAt(i).Key.Nickname.Substring(0, length)} ");
+                    leaderboard.Append($"/ {sortedDict.ElementAt(i).Value} kills</color>\n");
                 }
             }
 
             foreach (Player player in Player.GetPlayers())
             {
-                if (TotalKills[player] >= NeededKills)
+                string playerText = string.Empty;
+
+                if (TotalKills[player] >= _needKills)
                 {
-                    Winner = player;
+                    _winner = player;
                 }
 
                 var playerItem = sortedDict.FirstOrDefault(x => x.Key == player);
-                leaderBoard += $"<color=#ff0000>You - {playerItem.Value}/{NeededKills} kills</color></size>";
+                playerText = leaderboard + $"<color=#ff0000>You - {playerItem.Value}/{_needKills} kills</color></size>";
 
                 string text = AutoEvent.Singleton.Translation.AllTranslation.AllCycle.
                     Replace("{name}", Name).
                     Replace("{kills}", playerItem.Value.ToString()).
-                    Replace("{needKills}", NeededKills.ToString()).
+                    Replace("{needKills}", _needKills.ToString()).
                     Replace("{time}", time);
 
+                player.ReceiveHint($"<line-height=95%><voffset=25em><align=right><size=30>{playerText}</size></align>", 1);
                 player.ClearBroadcasts();
                 player.SendBroadcast(text, 1);
-                player.ReceiveHint($"<line-height=95%><voffset=25em><align=right><size=30>{leaderBoard}</size></align>", 1);
             }
         }
 
@@ -188,15 +191,11 @@ namespace AutoEvent.Games.AllDeathmatch
                 {
                     text = Translation.AllTimeEnd;
                 }
-                else if (Winner != null)
+                else if (_winner != null)
                 {
                     text = Translation.AllWinnerEnd.
-                        Replace("{winner}", Winner.Nickname).
+                        Replace("{winner}", _winner.Nickname).
                         Replace("{time}", time);
-                }
-                else
-                {
-                     //var maxKill = TotalKills.OrderByDescending(x => x.Value).FirstOrDefault();
                 }
 
                 text = text.Replace("{count}", TotalKills.First(x => x.Key == player).Value.ToString());

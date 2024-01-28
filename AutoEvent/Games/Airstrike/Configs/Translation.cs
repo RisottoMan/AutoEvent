@@ -1,6 +1,6 @@
 ﻿using Exiled.API.Interfaces;
 
-namespace AutoEvent.Games.Infection
+namespace AutoEvent.Games.Airstrike
 {
 #if EXILED
     public class DeathTranslate : ITranslation 

@@ -4,7 +4,7 @@ using PluginAPI.Core.Attributes;
 using PluginAPI.Enums;
 using PluginAPI.Events;
 
-namespace AutoEvent.Games.FinishWay
+namespace AutoEvent.Games.Race
 {
     public class EventHandler
     {

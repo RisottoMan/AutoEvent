@@ -8,21 +8,19 @@ using PlayerRoles;
 using PluginAPI.Core;
 using PluginAPI.Events;
 using AutoEvent.Events.Handlers;
-using AutoEvent.Games.Infection;
 using AutoEvent.Interfaces;
-using Mirror;
 using Event = AutoEvent.Interfaces.Event;
 using Random = UnityEngine.Random;
 
-namespace AutoEvent.Games.DeathParty
+namespace AutoEvent.Games.Airstrike
 {
-    public class Plugin : Event, IEventMap, IEventSound, IEventTag, IInternalEvent
+    public class Plugin : Event, IEventMap, IEventSound, IInternalEvent
     {
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.DeathTranslate.DeathName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.DeathTranslate.DeathDescription;
         public override string Author { get; set; } = "KoT0XleB";
         public override string CommandName { get; set; } = AutoEvent.Singleton.Translation.DeathTranslate.DeathCommandName;
-        public override Version Version { get; set; } = new Version(1, 0, 1);
+        public override Version Version { get; set; } = new Version(1, 0, 2);
         public MapInfo MapInfo { get; set; } = new MapInfo()
         { 
             MapName = "DeathParty", 
@@ -31,18 +29,12 @@ namespace AutoEvent.Games.DeathParty
         };
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
             { SoundName = "DeathParty.ogg", Volume = 5, Loop = true };
-        public TagInfo TagInfo { get; set; } = new TagInfo()
-        {
-            Name = "Xmas",
-            Color = "#77dde7"
-        };
 
         [EventConfig]
-        public DeathPartyConfig Config { get; set; }
+        public Config Config { get; set; }
         protected override float PostRoundDelay { get; set; } = 5f;
         protected override FriendlyFireSettings ForceEnableFriendlyFire { get; set; } = FriendlyFireSettings.Enable;
         protected override FriendlyFireSettings ForceEnableFriendlyFireAutoban { get; set; } = FriendlyFireSettings.Disable;
-        
         private EventHandler EventHandler { get; set; }
         private DeathTranslate Translation { get; set; } = AutoEvent.Singleton.Translation.DeathTranslate;
         private bool RespawnWithGrenades => Config.RespawnPlayersWithGrenades;
@@ -123,9 +115,9 @@ namespace AutoEvent.Games.DeathParty
 
         protected override bool IsRoundDone()
         {
-            // At least one player is alive &&
-            // Stage hasn't yet hit the max stage.
-            return !(Player.GetPlayers().Count(r => r.IsAlive && r.Role != RoleTypeId.ChaosConscript) > (Config.LastPlayerAliveWins ? 1 : 0) && Stage <= Config.Rounds);
+            int playerCount = Player.GetPlayers().Count(r => r.IsAlive && r.Role != RoleTypeId.ChaosConscript);
+            return !(playerCount > (Config.LastPlayerAliveWins ? 1 : 0) 
+                && Stage <= Config.Rounds);
         }
 
         public IEnumerator<float> GrenadeCoroutine()
@@ -144,12 +136,7 @@ namespace AutoEvent.Games.DeathParty
                 {
                     yield break;
                 }
-                radius = Config.DifficultySpawnRadius.GetValue(Stage, Config.Rounds -1, 0.1f, 75);
-                scale = Config.DifficultyScale.GetValue(Stage, Config.Rounds -1, 0.1f, 75);
-                count = (int) Config.DifficultyCount.GetValue(Stage, Config.Rounds -1, 1, 300);
-                timing = Config.DifficultySpeed.GetValue(Stage, Config.Rounds -1, 0, 5);
-                height = Config.DifficultyHeight.GetValue(Stage, Config.Rounds -1, 0,  30);
-                fuse = Config.DifficultyFuseTime.GetValue(Stage, Config.Rounds -1, 2, 10);
+
                 DebugLogger.LogDebug($"Stage: {Stage}/{Config.Rounds}. Radius: {radius}, Scale: {scale}, Count: {count}, Timing: {timing}, Height: {height}, Fuse: {fuse}, Target: {Config.TargetPlayers}");
                 
                 // Not the last round.
@@ -192,7 +179,6 @@ namespace AutoEvent.Games.DeathParty
                 yield return Timing.WaitForSeconds(15f);
                 Stage++;
 
-                /* This was moved earlier intentionally
                 // Defaults: 
                 count += 30;     //20,  50,  80,  110, [ignored last round] 1
                 timing -= 0.3f;  //1.0, 0.7, 0.4, 0.1, [ignored last round] 10
@@ -200,13 +186,6 @@ namespace AutoEvent.Games.DeathParty
                 fuse -= 2f;      //10,  8,   6,   4,   [ignored last round] 10
                 scale -= 1;      //4,   3,   2,   1,   [ignored last round] 75
                 radius += 7f;    //4,   11,  18,  25   [ignored last round] 10
-                radius = Config.DifficultySpawnRadius.GetValue(Stage, Config.Rounds -1, 0.1f, 75);
-                scale = Config.DifficultyScale.GetValue(Stage, Config.Rounds -1, 0.1f, 75);
-                count = (int) Config.DifficultyCount.GetValue(Stage, Config.Rounds -1, 1, 300);
-                timing = Config.DifficultySpeed.GetValue(Stage, Config.Rounds -1, 0, 5);
-                height = Config.DifficultyHeight.GetValue(Stage, Config.Rounds -1, 0,  30);
-                fuse = Config.DifficultyFuseTime.GetValue(Stage, Config.Rounds -1, 2, 10);
-                */
             }
 
             Log.Debug("Finished Grenade Coroutine.");

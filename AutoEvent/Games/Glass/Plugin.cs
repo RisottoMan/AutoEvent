@@ -17,7 +17,7 @@ using Random = UnityEngine.Random;
 
 namespace AutoEvent.Games.Glass
 {
-    public class Plugin : Event, IEventSound, IEventMap, IInternalEvent, IEventTag
+    public class Plugin : Event, IEventSound, IEventMap, IInternalEvent
     {
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.GlassTranslate.GlassName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.GlassTranslate.GlassDescription;
@@ -37,11 +37,6 @@ namespace AutoEvent.Games.Glass
             SoundName = "CrabGame.ogg", 
             Volume = 15, 
             Loop = true 
-        };
-        public TagInfo TagInfo { get; set; } = new TagInfo()
-        {
-            Name = "Xmas",
-            Color = "#77dde7"
         };
         protected override float PostRoundDelay { get; set; } = 10f;
         private EventHandler _eventHandler { get; set; }

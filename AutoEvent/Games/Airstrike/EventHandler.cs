@@ -8,9 +8,8 @@ using PluginAPI.Core;
 using PluginAPI.Core.Attributes;
 using PluginAPI.Enums;
 using PluginAPI.Events;
-using UnityEngine.Assertions.Must;
 
-namespace AutoEvent.Games.DeathParty
+namespace AutoEvent.Games.Airstrike
 {
     public class EventHandler
     {
