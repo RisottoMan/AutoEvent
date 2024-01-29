@@ -28,26 +28,5 @@ namespace AutoEvent
 
             DecontaminationController.Singleton.NetworkDecontaminationOverride = DecontaminationController.DecontaminationStatus.Disabled;
         }
-
-        public void OnRemoteAdmin(RemoteAdminArgs ev)
-        {
-            var config = AutoEvent.Singleton.Config;
-            
-            if (AutoEvent.ActiveEvent == null || !config.IsDisableDonators)
-                return;
-
-#if !EXILED
-            Player player = Player.Get(ev.CommandSender);
-            if (player == null || !config.DonatorList.Contains(ServerStatic.PermissionsHandler._members[player.UserId])) 
-                return;
-#else
-            if (!Exiled.API.Features.Player.Get(ev.CommandSender).CheckPermission("ev.donator"))
-                return;
-#endif
-            return;
-            ev.CommandSender.RaReply($"AutoEvent#A mini-game is currently underway, access denied!", false, true, string.Empty);
-            ev.IsAllowed = false;
-            ev.IsSuccess = false;
-        }
     }
 }

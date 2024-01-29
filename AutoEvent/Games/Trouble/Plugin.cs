@@ -11,19 +11,27 @@ using System.Collections.Generic;
 
 namespace AutoEvent.Games.Trouble
 {
-    public class Plugin : Event, IEventSound, IEventMap, IInternalEvent
+    public class Plugin : Event, IEventSound, IEventMap, IInternalEvent, IHidden
     {
-        public override string Name { get; set; } = "Trouble in Terrorist Town <color=purple>[Halloween]</color>";
-        public override string Description { get; set; } = "An impostor appeared in terrorist town.";
+        // Haloween Update
+        public override string Name { get; set; } = AutoEvent.Singleton.Translation.TroubleTranslation.TroubleName;
+        public override string Description { get; set; } = AutoEvent.Singleton.Translation.TroubleTranslation.TroubleDescription;
         public override string Author { get; set; } = "KoT0XleB";
-        public override string CommandName { get; set; } = "trouble";
+        public override string CommandName { get; set; } = AutoEvent.Singleton.Translation.TroubleTranslation.TroubleCommandName;
         public override Version Version { get; set; } = new Version(1, 0, 0);
+        [EventConfig]
+        public TroubleConfig Config { get; set; }
         public MapInfo MapInfo { get; set; } = new MapInfo()
-        { MapName = "AmongUs", Position = new Vector3(115.5f, 1030f, -43.5f), MapRotation = Quaternion.identity };
+        { 
+            MapName = "AmongUs", 
+            Position = new Vector3(115.5f, 1030f, -43.5f), 
+            IsStatic = true
+        };
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
         { SoundName = "Skeleton.ogg", Volume = 5, Loop = true };
         protected override float PostRoundDelay { get; set; } = 10f;
         private EventHandler EventHandler { get; set; }
+        private TroubleTranslation Translation { get; set; } = AutoEvent.Singleton.Translation.TroubleTranslation;
 
         protected override void RegisterEvents()
         {
@@ -57,7 +65,7 @@ namespace AutoEvent.Games.Trouble
         {
             foreach (Player player in Player.GetPlayers())
             {
-                Extensions.SetRole(player, PlayerRoles.RoleTypeId.ClassD, PlayerRoles.RoleSpawnFlags.AssignInventory);
+                player.GiveLoadout(Config.PlayerLoadouts);
                 player.Position = RandomPosition.GetSpawnPosition(MapInfo.Map);
             }
         }
@@ -66,7 +74,7 @@ namespace AutoEvent.Games.Trouble
         {
             for (float time = 15; time > 0; time--)
             {
-                Extensions.Broadcast($"<color=red>The trailer will appear in <color=yellow>{time}</color> seconds.</color>", 1);
+                Extensions.Broadcast(Translation.TroubleBeforeStart.Replace("{time}", time.ToString()), 1);
                 yield return Timing.WaitForSeconds(1f);
             }
         }
@@ -89,9 +97,14 @@ namespace AutoEvent.Games.Trouble
 
         protected override void ProcessFrame()
         {
-            Extensions.Broadcast($"<color=red>{Name}\n" +
-                $"{Player.GetPlayers().Count(r => r.IsSCP)} traitors | " +
-                $"<color=#00FFFF>{Player.GetPlayers().Count(r => r.IsHuman)} guys</color></color>", 1);
+            var scpCount = Player.GetPlayers().Count(r => r.IsSCP);
+            var humanCount = Player.GetPlayers().Count(r => r.IsHuman);
+            var text = Translation.TroubleCycle
+                .Replace("{name}", Name)
+                .Replace("{scp}", scpCount.ToString())
+                .Replace("{human}", humanCount.ToString());
+
+            Extensions.Broadcast(text, 1);
         }
 
         protected override void OnFinished()
@@ -99,16 +112,15 @@ namespace AutoEvent.Games.Trouble
             var time = $"{EventTime.Minutes:00}:{EventTime.Seconds:00}";
             if (Player.GetPlayers().Count(r => r.IsHuman) > Player.GetPlayers().Count(r => r.IsSCP))
             {
-                Extensions.Broadcast($"<color=yellow><color=#D71868><b><i>Humans</i></b></color> Win!</color>\n" +
-                    $"<color=yellow>Elapsed Duration: <color=red>{time}</color></color>", 10);
+                Extensions.Broadcast(Translation.TroubleHumanWin.Replace("{time}", time), 10);
             }
             else if (Player.GetPlayers().Count(r => r.IsHuman) < Player.GetPlayers().Count(r => r.IsSCP))
             {
-                Extensions.Broadcast($"<color=red>Traitors Win!</color>\n<color=yellow>Elapsed Duration: <color=red>{time}</color></color>", 10);
+                Extensions.Broadcast(Translation.TroubleTraitorWin.Replace("{time}", time), 10);
             }
             else
             {
-                Extensions.Broadcast($"<color=red>Draw!</color>\n<color=yellow>Elapsed Duration: <color=red>{time}</color></color>", 10);
+                Extensions.Broadcast(Translation.TroubleEveryoneDied.Replace("{time}", time), 10);
             }
         }
     }

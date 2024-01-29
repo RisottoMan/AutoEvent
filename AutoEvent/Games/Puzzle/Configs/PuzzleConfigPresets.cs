@@ -10,7 +10,7 @@
 //    Created Date:     10/16/2023 11:14 PM
 // -----------------------------------------
 
-namespace AutoEvent.Games.Infection;
+namespace AutoEvent.Games.Puzzle;
 
 public static class PuzzleConfigPresets
 {

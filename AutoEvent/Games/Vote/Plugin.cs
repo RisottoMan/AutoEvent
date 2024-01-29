@@ -1,5 +1,4 @@
 ﻿using System;
-using PlayerRoles;
 using PluginAPI.Events;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,13 +14,16 @@ namespace AutoEvent.Games.Vote
 {
     public class Plugin : Event, IEventSound, IInternalEvent, IHiddenCommand
     {
-        public override string Name { get; set; } = "Vote";
-        public override string Description { get; set; } = "Start voting for the mini-game.";
+        public override string Name { get; set; } = AutoEvent.Singleton.Translation.VoteTranslation.VoteName;
+        public override string Description { get; set; } = AutoEvent.Singleton.Translation.VoteTranslation.VoteDescription;
         public override string Author { get; set; } = "KoT0XleB";
-        public override string CommandName { get; set; } = "vote";
+        public override string CommandName { get; set; } = AutoEvent.Singleton.Translation.VoteTranslation.VoteCommandName;
         public override Version Version { get; set; } = new Version(1, 0, 0);
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
             { SoundName = "FireSale.ogg", Volume = 10, Loop = false };
+        [EventConfig]
+        public VoteConfig Config { get; set; }
+        private VoteTranslation Translation { get; set; } = AutoEvent.Singleton.Translation.VoteTranslation;
         private EventHandler EventHandler { get; set; }
         public Dictionary<Player, bool> _voteList { get; set; }
         private int _voteTime = 30;
@@ -48,6 +50,7 @@ namespace AutoEvent.Games.Vote
 
             foreach (Player player in Player.GetPlayers())
             {
+                player.GiveLoadout(Config.PlayerLoadouts);
                 _voteList.Add(player, false);
             }
         }
@@ -57,15 +60,16 @@ namespace AutoEvent.Games.Vote
             if (EventTime.Seconds != _voteTime) return false;
             else return true;
         }
-        
+
         protected override void ProcessFrame()
         {
-            var count = Player.GetPlayers().Count(r => r.Role == RoleTypeId.ClassD);
-            var time = $"{(_voteTime - EventTime.Seconds):00}";
+            var text = Translation.VoteCycle
+                .Replace("{trueCount}", $"{_voteList.Count(r => r.Value == true)}")
+                .Replace("{allCount}", $"{_voteList.Count}")
+                .Replace("{newName}", NewEvent?.Name)
+                .Replace("{time}", $"{(_voteTime - EventTime.Seconds):00}");
 
-            Extensions.Broadcast($"Vote: Press [Alt] Pros or [Alt]x2 Cons\n" +
-                $"{_voteList.Count(r => r.Value == true)} of {_voteList.Count} players for {NewEvent.Name}\n" +
-                $"{time} seconds left!", 1);
+            Extensions.Broadcast(text, 1);
         }
 
         protected override void OnFinished()
@@ -73,7 +77,7 @@ namespace AutoEvent.Games.Vote
             string results;
             if (_voteList.Count(r => r.Value == true) > _voteList.Count(r => r.Value == false))
             {
-                results = $"{NewEvent.Name} will start soon.";
+                results = Translation.VoteMinigameStart.Replace("{newName}", NewEvent.Name);
 
                 // There is no way to change PostRoundDelay time to 5 second
                 Timing.CallDelayed(10.1f, () =>
@@ -83,12 +87,14 @@ namespace AutoEvent.Games.Vote
             }
             else
             {
-                results = $"{NewEvent.Name} will not start.";
+                results = Translation.VoteMinigameNotStart.Replace("{newName}", NewEvent.Name);
             }
 
-            Extensions.Broadcast($"Vote: End of voting\n" +
-                $"{_voteList.Count(r => r.Value == true)} of {_voteList.Count} players\n" +
-                $"{results}", 10);
+            var text = Translation.VoteEnd
+                .Replace("{trueCount}", _voteList.Count(r => r.Value == true).ToString())
+                .Replace("{allCount}", _voteList.Count.ToString())
+                .Replace("{result}", results);
+            Extensions.Broadcast(text, 10);
         }
     }
 }

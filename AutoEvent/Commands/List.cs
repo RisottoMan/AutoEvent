@@ -1,6 +1,6 @@
-﻿using AutoEvent.Interfaces;
+﻿using AutoEvent.API.Season;
+using AutoEvent.Interfaces;
 using CommandSystem;
-using PluginAPI.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,6 +39,10 @@ namespace AutoEvent.Commands
                 builder.AppendLine("\"List of events:");
             }
 
+            SeasonStyle style = Methods.GetSeasonStyle();
+            if (style.Text != null)
+                builder.AppendLine(style.Text);
+
             // ReSharper disable once SuspiciousTypeConversion.Global
             Dictionary<string, List<Event>> events = new Dictionary<string, List<Event>>()
             {
@@ -56,35 +60,40 @@ namespace AutoEvent.Commands
             foreach (KeyValuePair<string, List<Event>> eventlist in events)
             {
                 string color = "white";
+
                 switch (eventlist.Key)
                 {
-
                     case "Internal Events":
-                        color = "red";
+                        color = style.PrimaryColor;
                         builder.AppendLine($"{(!IsConsoleCommandSender ? "<color=white>" : "")}[{(!IsConsoleCommandSender ? $"<color={color}>" : "")}==AutoEvent Events=={(!IsConsoleCommandSender ? "<color=white>" : "")}]");
-                        
                         break;
+
                     case "External Events":
-                        color = "blue";
+                        color = "#00ffff";
                         builder.AppendLine($"{(!IsConsoleCommandSender ? "<color=white>" : "")}[{(!IsConsoleCommandSender ? $"<color={color}>" : "")}==External Events=={(!IsConsoleCommandSender ? "<color=white>" : "")}]");
-                        
                         break;
+
                     default:
                         color = "orange";
-                        
-                        
                         builder.AppendLine($"{(!IsConsoleCommandSender ? "<color=white>" : "")}[{(!IsConsoleCommandSender ? $"<color={color}>" : "")}==Exiled Events=={(!IsConsoleCommandSender ? "<color=white>" : "")}]");
                         break;
                 }
-                
+
                 foreach (Event ev in eventlist.Value)
                 {
                     if (ev is IHidden) continue;
+
+                    string tag = string.Empty;
+                    if (ev is IEventTag itag)
+                    {
+                        tag = $"<color={itag.TagInfo.Color}>[{itag.TagInfo.Name}]</color> ";
+                    }
+
                     if (!IsConsoleCommandSender)
                         builder.AppendLine(
-                            $"<color={color}>{ev.Name}</color> [<color=yellow>{ev.CommandName}</color>]: <color=white>{ev.Description}</color>");
+                            $"<color={color}>{ev.Name}</color> {tag}[<color=yellow>{ev.CommandName}</color>]: <color=white>{ev.Description}</color>");
                     else
-                        builder.AppendLine($"{ev.Name} [{ev.CommandName}]: {ev.Description}");
+                        builder.AppendLine($"{ev.Name} {tag}[{ev.CommandName}]: {ev.Description}");
                 }
             }
 

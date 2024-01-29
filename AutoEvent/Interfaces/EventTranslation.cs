@@ -1,18 +1,14 @@
-﻿// <copyright file="Log.cs" company="Redforce04#4091">
-// Copyright (c) Redforce04. All rights reserved.
-// </copyright>
-// -----------------------------------------
-//    Solution:         AutoEvent
-//    Project:          AutoEvent
-//    FileName:         EventTranslation.cs
-//    Author:           Redforce04#4091
-//    Revision Date:    09/13/2023 12:39 PM
-//    Created Date:     09/13/2023 12:39 PM
-// -----------------------------------------
+﻿using System.ComponentModel;
 
 namespace AutoEvent.Interfaces;
 
-/*public class EventTranslation
+public class EventTranslation
 {
-    
-}*/
+    public EventTranslation()
+    {
+
+    }
+
+    [Description("DO NOT CHANGE THIS. IT WILL BREAK THINGS. AutoEvent will automatically manage this setting.")]
+    public virtual string TranslationVersion { get; set; }
+}

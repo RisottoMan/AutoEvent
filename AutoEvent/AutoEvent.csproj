@@ -40,30 +40,30 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Costura.Fody" Version="5.7.0">
+    <PackageReference Include="Costura.Fody" Version="5.8.0-alpha0098">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="EXILED" Version="8.3.2" />
+    <PackageReference Include="EXILED" Version="8.7.0" />
     <PackageReference Include="Fody" Version="6.8.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Lib.Harmony" Version="2.2.2" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-    <PackageReference Include="Northwood.PluginAPI" Version="13.1.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="Northwood.PluginAPI" Version="13.1.2" />
     <PackageReference Include="NVorbis" Version="0.10.5" />
-    <PackageReference Include="YamlDotNet" Version="13.3.1" />
+    <PackageReference Include="YamlDotNet" Version="13.7.1" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="CedModV3" HintPath="$(OTHER_REFERENCES)\CedModV3-13-3.dll" />
+    <Reference Include="NWAPIPermissionSystem" HintPath="$(OTHER_REFERENCES)\NWAPIPermissionSystem.dll" />
+    <Reference Include="SCPSLAudioApi" HintPath="$(OTHER_REFERENCES)\SCPSLAudioApi.dll" />
     <Reference Include="Assembly-CSharp-Publicized" HintPath="$(SL_REFERENCES)\Assembly-CSharp-Halloween-Publicized.dll" />
     <Reference Include="Mirror" HintPath="$(SL_REFERENCES)\Mirror-Publicized-SL-13.3.dll" />
     <Reference Include="PowerupApi" HintPath="PowerupApi\bin\Release\net48\PowerupApi.dll" />
     <Reference Include="SchematicApi" HintPath="SchematicApi\bin\Release\net48\SchematicApi.dll" />
     <Reference Include="InventoryMenu" HintPath="InventoryMenu\bin\Debug\net48\InventoryMenu.dll" />
-    <Reference Include="SCPSLAudioApi" HintPath="$(OTHER_REFERENCES)\SCPSLAudioApi.dll" />
-    <Reference Include="NWAPIPermissionSystem" HintPath="$(OTHER_REFERENCES)\NWAPIPermissionSystem-New.dll" />
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" HintPath="$(SL_REFERENCES)\System.ComponentModel.DataAnnotations.dll" />
     <Reference Include="UnityEngine" HintPath="$(SL_REFERENCES)\UnityEngine.dll" />
@@ -90,7 +90,6 @@
     <Content Include="PlantUMLDocuments\*" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Remove="Games\Trouble\Configs\**" />
     <EmbeddedResource Remove="SchematicApi\**" />
     <EmbeddedResource Remove="SchematicApi\*" />
     <EmbeddedResource Remove="PowerupApi\**" />
@@ -101,7 +100,6 @@
     <EmbeddedResource Remove="InventoryMenu\*" />
   </ItemGroup>
   <ItemGroup>
-    <None Remove="Games\Trouble\Configs\**" />
     <None Remove="SchematicApi\**" />
     <None Remove="SchematicApi\*" />
     <None Remove="PowerupApi\**" />
@@ -112,7 +110,6 @@
     <None Remove="InventoryMenu\*" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Remove="Games\Trouble\Configs\**" />
     <Compile Remove="SchematicApi\**" />
     <Compile Remove="SchematicApi\*" />
     <Compile Remove="PowerupApi\**" />
@@ -121,6 +118,9 @@
     <Compile Remove="ReplaceTextWithVariables\*" />
     <Compile Remove="InventoryMenu\**" />
     <Compile Remove="InventoryMenu\*" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Games\Dodgeball\Features\" />
   </ItemGroup>
   <Target Name="RemoveFile" BeforeTargets="ReplaceFile">
     <Exec Command="if exist $(SolutionDir)VersionInfo.cs del $(SolutionDir)VersionInfo.cs" />

@@ -1,10 +1,20 @@
-using AutoEvent.Games.Infection;
 using System.ComponentModel;
+using AutoEvent.Games.Infection;
 using AutoEvent.Games.Battle;
 using AutoEvent.Games.Boss;
 using AutoEvent.Games.GhostBusters.Configs;
 using AutoEvent.Games.Spleef.Configs;
 using AutoEvent.Games.Trouble;
+using AutoEvent.Games.Lobby;
+using AutoEvent.Games.Vote;
+using AutoEvent.Games.CounterStrike;
+using AutoEvent.Games.AllDeathmatch;
+using AutoEvent.Games.MusicalChairs;
+using AutoEvent.Games.Light;
+using AutoEvent.Games.Puzzle;
+using AutoEvent.Games.Airstrike;
+using AutoEvent.Games.Race;
+using AutoEvent.Games.Dodgeball;
 #if EXILED
 using Exiled.API.Interfaces;
 #endif
@@ -71,7 +81,7 @@ namespace AutoEvent
         public DeathTranslate DeathTranslate { get; set; } = new DeathTranslate();
 
         [Description("FinishWay Game Mode")]
-        public FinishWayTranslate FinishWayTranslate { get; set; } = new FinishWayTranslate();
+        public RaceTranslation RaceTranslation { get; set; } = new RaceTranslation();
 
         [Description("Zombie Escape Game Mode")]
         public ZombieEscapeTranslate ZombieEscapeTranslate { get; set; } = new ZombieEscapeTranslate();
@@ -84,5 +94,29 @@ namespace AutoEvent
         
         [Description("Ghost Busters Game Mode")]
         public GhostBustersTranslate GhostBustersTranslate { get; set; } = new GhostBustersTranslate();
+
+        [Description("Trouble in Terrorist Town Game Mode")]
+        public TroubleTranslation TroubleTranslation { get; set; } = new TroubleTranslation();
+
+        [Description("Lobby translation")]
+        public LobbyTranslation LobbyTranslation { get; set; } = new LobbyTranslation();
+
+        [Description("Vote translation")]
+        public VoteTranslation VoteTranslation { get; set; } = new VoteTranslation();
+
+        [Description("Counter-Strike Mode")]
+        public StrikeTranslation StrikeTranslation { get; set; } = new StrikeTranslation();
+
+        [Description("All Deathmatch Mode")]
+        public AllTranslation AllTranslation { get; set; } = new AllTranslation();
+
+        [Description("Dodgeball Mode")]
+        public DodgeballTranslation DodgeballTranslation { get; set; } = new DodgeballTranslation();
+
+        [Description("Musical Chairs Mode")]
+        public ChairsTranslation ChairsTranslation { get; set; } = new ChairsTranslation();
+
+        [Description("Red Light Green Light Mode")]
+        public LightTranslation LightTranslation { get; set; } = new LightTranslation();
     }
 }

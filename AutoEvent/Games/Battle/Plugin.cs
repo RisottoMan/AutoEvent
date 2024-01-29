@@ -27,7 +27,11 @@ namespace AutoEvent.Games.Battle
         // Map Info can be inherited as long as the event inherits IEventMap.
         // MapInfo.Map is the Schematic Object for the map.
         public MapInfo MapInfo { get; set; } = new MapInfo()
-            { MapName = "Battle", Position = new Vector3(6f, 1030f, -43.5f) };
+        { 
+            MapName = "Battle", 
+            Position = new Vector3(6f, 1030f, -43.5f),
+            IsStatic = true
+        };
 
         // Sound Info can be inherited as long as the event inherits IEventSound.
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()

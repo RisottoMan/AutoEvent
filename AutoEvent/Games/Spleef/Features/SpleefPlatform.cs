@@ -16,7 +16,7 @@ namespace AutoEvent.Games.Spleef;
 
 public class SpleefPlatform
 {
-    public SpleefPlatform(float sizeX, float sizeY, float sizeZ, float positionX, float positionY, float positionZ)
+    public SpleefPlatform(float sizeX, float sizeY, float sizeZ, float positionX, float positionY, float positionZ, Color color)
     {
         X = sizeX;
         Y = sizeY;
@@ -24,6 +24,7 @@ public class SpleefPlatform
         PositionX = positionX;
         PositionY = positionY;
         PositionZ = positionZ;
+        Color = color;
     }
 
     public GameObject GameObject { get; set; }
@@ -34,4 +35,5 @@ public class SpleefPlatform
     public float PositionX { get; set; }
     public float PositionY { get; set; }
     public float PositionZ { get; set; }
+    public Color Color { get; set; }
 }

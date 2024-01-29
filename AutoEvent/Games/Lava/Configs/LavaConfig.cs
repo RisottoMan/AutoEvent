@@ -16,11 +16,25 @@ using AutoEvent.API;
 using AutoEvent.API.Enums;
 using AutoEvent.Interfaces;
 using PlayerRoles;
+using UnityEngine;
 
 namespace AutoEvent.Games.Infection;
 
 public class LavaConfig : EventConfig
 {
+    public LavaConfig()
+    {
+        if (AvailableMaps is null)
+        {
+            AvailableMaps = new List<MapChance>();
+        }
+
+        if (AvailableMaps.Count < 1)
+        {
+            AvailableMaps.Add(new MapChance(50, new MapInfo("Lava", new Vector3(120f, 1020f, -43.5f))));
+            AvailableMaps.Add(new MapChance(50, new MapInfo("Lava_Xmas2024", new Vector3(120f, 1020f, -43.5f))));
+        }
+    }
 
     [Description("Can players drop guns.")]
     public bool PlayersCanDropGuns { get; set; } = true;

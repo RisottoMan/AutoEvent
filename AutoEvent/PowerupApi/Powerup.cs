@@ -95,7 +95,7 @@ public abstract class Powerup
         
         if(API.Debug)
             Log.Debug($"Spawning Powerup {this.Name} at ({position.x}, {position.y}, {position.z}), ({SchematicScale.x * scaleModifer}x{SchematicScale.y* scaleModifer}x{SchematicScale.z* scaleModifer})");
-        var schematic = ObjectSpawner.SpawnSchematic(this.SchematicName, position, Quaternion.Euler(Vector3.zero), this.SchematicScale* scaleModifer);
+        var schematic = ObjectSpawner.SpawnSchematic(this.SchematicName, position, Quaternion.Euler(Vector3.zero), this.SchematicScale* scaleModifer, false);
         if (schematic is null)
         {
             if(API.Debug)

@@ -139,7 +139,6 @@ namespace AutoEvent
                 EventManager.RegisterEvents(this);
                 SCPSLAudioApi.Startup.SetupDependencies();
 
-                Servers.RemoteAdmin += eventHandler.OnRemoteAdmin;
                 try
                 {
                     DebugLogger.LogDebug($"Base Conf Path: {BaseConfigPath}");
@@ -208,7 +207,6 @@ namespace AutoEvent
         public override void OnDisabled()
 #endif
         {
-            Servers.RemoteAdmin -= eventHandler.OnRemoteAdmin;
             eventHandler = null;
 
             EventManager.UnregisterEvents(this);

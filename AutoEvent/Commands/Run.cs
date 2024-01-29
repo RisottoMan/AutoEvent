@@ -27,6 +27,7 @@ namespace AutoEvent.Commands
                 response = "<color=red>You do not have permission to use this command!</color>";
                 return false;
             }
+
             if (AutoEvent.ActiveEvent != null)
             {
                 response = $"The mini-game {AutoEvent.ActiveEvent.Name} is already running!";

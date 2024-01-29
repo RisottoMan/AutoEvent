@@ -32,11 +32,8 @@ namespace AutoEvent.Games.Spleef.Features
         {
             collider = gameObject.AddComponent<BoxCollider>();
             collider.isTrigger = false;
-            var val = gameObject.GetComponent<PrimitiveObjectToy>().NetworkScale + new Vector3(0.2f, 4f, 0.2f);// * Scale;
+            var val = gameObject.GetComponent<PrimitiveObjectToy>().NetworkScale + new Vector3(0.2f, 4f, 0.2f);
             collider.size = val;
-            
-            //DebugLogger.LogDebug($"Size: {val}");
-                // new Vector3(1, 10, 1);
         }
         void OnTriggerEnter(Collider other)
         {
@@ -48,7 +45,7 @@ namespace AutoEvent.Games.Spleef.Features
                 if (isDestroyed)
                     return;
                 this.GetComponent<PrimitiveObjectToy>().NetworkMaterialColor = Color.red;
-                //Destroy(gameObject);
+
                 Timing.CallDelayed(FallDelay, () => { DestroyThis(); });
             }
         }
@@ -101,28 +98,5 @@ namespace AutoEvent.Games.Spleef.Features
         public float Health { get; private set; }
         private float DefaultHealth { get; set; }
         public event Action<DamagingPrimitiveArgs> DamagingPrimitive;
-
-        /*
-          public bool Damage(float damage, DamageHandlerBase handler, Vector3 exactHitPos)
-    {
-        var ev = new DamagingPrimitiveArgs(damage, handler, exactHitPos);
-        DamagingPrimitive?.Invoke(ev);
-        if (!ev.IsAllowed)
-        {
-            return false;
-        }
-
-        Health -= ev.Damage;
-        if (Health <= 0)
-        {
-            
-            var prim = gameObject.GetComponent<PrimitiveObjectToy>();
-            NetworkServer.UnSpawn(base.gameObject);
-            Destroy(gameObject);
-        }
-
-        return true;
-    }
-         */
     }
 }

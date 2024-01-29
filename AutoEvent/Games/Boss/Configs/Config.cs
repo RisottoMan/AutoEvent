@@ -68,9 +68,9 @@ namespace AutoEvent.Games.Infection
         {
             new Loadout()
             {
-                Roles = new Dictionary<RoleTypeId, int>() { { RoleTypeId.ChaosConscript, 100 } },
-                Size = new Vector3(5, 5, 5),
-                Items = new List<ItemType>() { ItemType.GunLogicer, ItemType.Ammo556x45 }
+                Roles = new Dictionary<RoleTypeId, int>() { { RoleTypeId.Scp3114, 100 } },
+                Size = new Vector3(0.5f, 0.5f, 0.5f),
+                //Items = new List<ItemType>() { ItemType.GunLogicer, ItemType.Ammo556x45 }
             },
             
         };
@@ -85,5 +85,11 @@ namespace AutoEvent.Games.Infection
 
         [Description("How long the event should last in seconds. [Default: 120]")]
         public int DurationInSeconds { get; set; } = 120;
+
+        public List<string> BossScreams { get; set; } = new List<string>()
+        {
+            "zombi_hurt_01.ogg",
+            "zombi_hurt_02.ogg"
+        };
     }
 }

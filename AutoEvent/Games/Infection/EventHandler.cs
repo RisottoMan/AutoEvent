@@ -31,7 +31,16 @@ namespace AutoEvent.Games.Infection
                 {
                     ev.Target.GiveLoadout(_plugin.Config.ZombieLoadouts);
                     ev.Attacker.ReceiveHitMarker(1f);
+                    Extensions.PlayPlayerAudio(ev.Target, _plugin.Config.ZombieScreams.RandomItem(), 15);
                 }
+                /* // Christmas Update
+                else if (ev.Attacker.Role == RoleTypeId.ZombieFlamingo)
+                {
+                    ev.Target.GiveLoadout(_plugin.Config.ZombieFlamingoLoadouts);
+                    ev.Attacker.ReceiveHitMarker(1f);
+                    Extensions.PlayPlayerAudio(ev.Target, _plugin.Config.ZombieScreams.RandomItem(), 15);
+                }
+                */
             }
         }
 
@@ -42,12 +51,30 @@ namespace AutoEvent.Games.Infection
             {
                 ev.Player.GiveLoadout(_plugin.Config.ZombieLoadouts);
                 ev.Player.Position = RandomPosition.GetSpawnPosition(_plugin.MapInfo.Map);
+                Extensions.PlayPlayerAudio(ev.Player, _plugin.Config.ZombieScreams.RandomItem(), 15);
             }
             else
             {
                 ev.Player.GiveLoadout(_plugin.Config.PlayerLoadouts);
                 ev.Player.Position = RandomPosition.GetSpawnPosition(_plugin.MapInfo.Map);
             }
+
+            /* // Christmas Update
+            if (_plugin.IsFlamingoVariant == true)
+            {
+                if (Player.GetPlayers().Count(r => r.Role == RoleTypeId.ZombieFlamingo) > 0)
+                {
+                    ev.Player.GiveLoadout(_plugin.Config.ZombieFlamingoLoadouts);
+                    ev.Player.Position = RandomPosition.GetSpawnPosition(_plugin.MapInfo.Map);
+                    Extensions.PlayPlayerAudio(ev.Player, _plugin.Config.ZombieScreams.RandomItem(), 15);
+                }
+                else
+                {
+                    ev.Player.GiveLoadout(_plugin.Config.FlamingoLoadouts);
+                    ev.Player.Position = RandomPosition.GetSpawnPosition(_plugin.MapInfo.Map);
+                }
+            }
+            */
         }
 
         [PluginEvent(ServerEventType.PlayerDeath)]
@@ -55,8 +82,15 @@ namespace AutoEvent.Games.Infection
         {
             Timing.CallDelayed(2f, () =>
             {
+                /* // Christmas Update
+                if (_plugin.IsFlamingoVariant == true)
+                {
+                    ev.Player.GiveLoadout(_plugin.Config.ZombieFlamingoLoadouts);
+                }
+                */
                 ev.Player.GiveLoadout(_plugin.Config.ZombieLoadouts);
                 ev.Player.Position = RandomPosition.GetSpawnPosition(_plugin.MapInfo.Map);
+                Extensions.PlayPlayerAudio(ev.Player, _plugin.Config.ZombieScreams.RandomItem(), 15);
             });
         }
 

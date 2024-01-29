@@ -1,5 +1,4 @@
-﻿using MER.Lite.Objects;
-using AutoEvent.Events.Handlers;
+﻿using AutoEvent.Events.Handlers;
 using MEC;
 using PlayerRoles;
 using PluginAPI.Events;
@@ -19,17 +18,22 @@ namespace AutoEvent.Games.Infection
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.InfectTranslate.ZombieDescription;
         public override string Author { get; set; } = "KoT0XleB";
         public override string CommandName { get; set; } = AutoEvent.Singleton.Translation.InfectTranslate.ZombieCommandName;
-        public override Version Version { get; set; } = new Version(1, 0, 0);
+        public override Version Version { get; set; } = new Version(1, 0, 1);
         [EventConfig] public InfectConfig Config { get; set; }
         public MapInfo MapInfo { get; set; } = new MapInfo()
-            { MapName = "Zombie", Position = new Vector3(115.5f, 1030f, -43.5f), MapRotation = Quaternion.identity };
+        {
+            MapName = "Zombie", 
+            Position = new Vector3(115.5f, 1030f, -43.5f),
+            IsStatic = true
+        };
 
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
-            { SoundName = "Zombie.ogg", Volume = 7, Loop = true };
+            { SoundName = "Zombie_Run.ogg", Volume = 15, Loop = true };
         protected override float PostRoundDelay { get; set; } = 10f;
         private EventHandler EventHandler { get; set; }
         private InfectTranslate Translation { get; set; } = AutoEvent.Singleton.Translation.InfectTranslate;
         private int _overtime = 30;
+        // public bool IsFlamingoVariant { get; set; } // Christmas Update
 
         protected override void RegisterEvents()
         {
@@ -62,9 +66,16 @@ namespace AutoEvent.Games.Infection
         protected override void OnStart()
         {
             _overtime = 30;
+            // IsFlamingoVariant = Random.Range(0, 2) == 1 ? true : false; // Christmas Update
 
             foreach (Player player in Player.GetPlayers())
             {
+                /* // Christmas Update
+                if (IsFlamingoVariant == true)
+                {
+                    player.GiveLoadout(Config.FlamingoLoadouts);
+                }
+                */
                 player.GiveLoadout(Config.PlayerLoadouts);
                 player.Position = RandomPosition.GetSpawnPosition(MapInfo.Map);
             }
@@ -91,18 +102,45 @@ namespace AutoEvent.Games.Infection
 
         protected override void CountdownFinished()
         {
-            Player.GetPlayers().RandomItem().GiveLoadout(Config.ZombieLoadouts);
+            Player player = Player.GetPlayers().RandomItem();
+            /* // ChristmasUpdate
+            if (IsFlamingoVariant == true)
+            {
+                player.GiveLoadout(Config.ZombieFlamingoLoadouts);
+            }
+            */
+            player.GiveLoadout(Config.ZombieLoadouts);
+            Extensions.PlayPlayerAudio(player, Config.ZombieScreams.RandomItem(), 15);
         }
 
         protected override bool IsRoundDone()
         {
+            /* // Christmas Update
+            if (IsFlamingoVariant == true)
+            {
+                if (Player.GetPlayers().Count(r => 
+                r.Role == RoleTypeId.Flamingo || 
+                r.Role == RoleTypeId.AlphaFlamingo) > 0
+                && _overtime > 0) return false;
+                else return true;
+            }
+            */
             if (Player.GetPlayers().Count(r => r.Role == RoleTypeId.ClassD) > 0 && _overtime > 0) return false;
             else return true;
         }
         
         protected override void ProcessFrame()
         {
-            var count = Player.GetPlayers().Count(r => r.Role == RoleTypeId.ClassD);
+            int count = 0;
+            count = Player.GetPlayers().Count(r => r.Role == RoleTypeId.ClassD);
+            /* // Christmas Update
+            if (IsFlamingoVariant == true)
+            {
+                count = Player.GetPlayers().Count(r =>
+                r.Role == RoleTypeId.Flamingo ||
+                r.Role == RoleTypeId.AlphaFlamingo);
+            }
+            */
             var time = $"{EventTime.Minutes:00}:{EventTime.Seconds:00}";
 
             if (count > 1)
@@ -121,6 +159,22 @@ namespace AutoEvent.Games.Infection
 
         protected override void OnFinished()
         {
+            /* // Christmas Update
+            if (IsFlamingoVariant == true)
+            {
+                if (Player.GetPlayers().Count(r => 
+                r.Role == RoleTypeId.Flamingo ||
+                r.Role == RoleTypeId.AlphaFlamingo) == 0)
+                {
+                    Extensions.Broadcast(Translation.ZombieWin
+                        .Replace("{time}", $"{EventTime.Minutes:00}:{EventTime.Seconds:00}"), 10);
+                }
+                else
+                {
+                    Extensions.Broadcast(Translation.ZombieLose
+                        .Replace("{time}", $"{EventTime.Minutes:00}:{EventTime.Seconds:00}"), 10);
+                }
+            }*/
             if (Player.GetPlayers().Count(r => r.Role == RoleTypeId.ClassD) == 0)
             {
                 Extensions.Broadcast(Translation.ZombieWin

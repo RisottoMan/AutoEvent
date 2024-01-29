@@ -25,7 +25,11 @@ namespace AutoEvent.Games.Survival
         [EventConfig]
         public SurvivalConfig Config { get; set; }
         public MapInfo MapInfo { get; set; } = new MapInfo()
-            { MapName = "Survival", Position = new Vector3(15f, 1030f, -43.68f), MapRotation = Quaternion.identity };
+        { 
+            MapName = "Survival", 
+            Position = new Vector3(15f, 1030f, -43.68f),
+            IsStatic = true
+        };
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
             { SoundName = "Survival.ogg", Volume = 10, Loop = false };
         protected override float PostRoundDelay { get; set; } = 10f;
@@ -87,7 +91,7 @@ namespace AutoEvent.Games.Survival
 
         protected override void CountdownFinished()
         {
-            Extensions.PlayAudio("Zombie2.ogg", 7, true, Name);
+            Extensions.PlayAudio("Zombie2.ogg", 7, true);
 
             List<Player> players = Config.Zombies.GetPlayers(true);
             foreach (Player x in players)
@@ -144,17 +148,17 @@ namespace AutoEvent.Games.Survival
             if (Player.GetPlayers().Count(r => r.IsHuman) == 0)
             {
                 Extensions.Broadcast(Translation.SurvivalZombieWin, 10);
-                Extensions.PlayAudio("ZombieWin.ogg", 7, false, Name);
+                Extensions.PlayAudio("ZombieWin.ogg", 7, false);
             }
             else if (Player.GetPlayers().Count(r => r.IsSCP) == 0)
             {
                 Extensions.Broadcast(Translation.SurvivalHumanWin, 10);
-                Extensions.PlayAudio("HumanWin.ogg", 7, false, Name);
+                Extensions.PlayAudio("HumanWin.ogg", 7, false);
             }
             else
             {
                 Extensions.Broadcast(Translation.SurvivalHumanWinTime, 10);
-                Extensions.PlayAudio("HumanWin.ogg", 7, false, Name);
+                Extensions.PlayAudio("HumanWin.ogg", 7, false);
             }
         }
     }

@@ -4,15 +4,12 @@ using System.Linq;
 using AutoEvent.API.Enums;
 using MEC;
 using PlayerRoles;
-using MER.Lite.Objects;
 using UnityEngine;
 using PluginAPI.Core;
 using PluginAPI.Events;
 using AutoEvent.Events.Handlers;
 using AutoEvent.Games.Infection;
 using AutoEvent.Interfaces;
-using Hints;
-using InventorySystem.Items.MarshmallowMan;
 using Event = AutoEvent.Interfaces.Event;
 
 namespace AutoEvent.Games.Versus
@@ -23,11 +20,15 @@ namespace AutoEvent.Games.Versus
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.VersusTranslate.VersusDescription;
         public override string Author { get; set; } = "KoT0XleB";
         public override string CommandName { get; set; } = AutoEvent.Singleton.Translation.VersusTranslate.VersusCommandName;
-        public override Version Version { get; set; } = new Version(1, 0, 0);
+        public override Version Version { get; set; } = new Version(1, 0, 1);
         [EventConfig]
         public VersusConfig Config { get; set; }
         public MapInfo MapInfo { get; set; } = new MapInfo()
-            {MapName = "35Hp", Position = new Vector3(6f, 1015f, -5f), };
+        { 
+            MapName = "35Hp", 
+            Position = new Vector3(6f, 1015f, -5f),
+            IsStatic = true
+        };
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
             { SoundName = "Knife.ogg", Volume = 10, Loop = true };
         protected override FriendlyFireSettings ForceEnableFriendlyFire { get; set; } = FriendlyFireSettings.Disable;
@@ -86,29 +87,20 @@ namespace AutoEvent.Games.Versus
             var count = 0;
             foreach (Player player in Player.GetPlayers())
             {
-                if (UnityEngine.Random.Range(0,2) == 1)
-                {
+                if (count % 2 == 0)     
+                {              
                     player.GiveLoadout(Config.Team1Loadouts);
-                    //Extensions.SetRole(player, RoleTypeId.Scientist, RoleSpawnFlags.None);
                     player.Position = RandomClass.GetSpawnPosition(MapInfo.Map, true);
                 }
                 else
                 {
                     player.GiveLoadout(Config.Team2Loadouts);
-                    // Extensions.SetRole(player, RoleTypeId.ClassD, RoleSpawnFlags.None);
                     player.Position = RandomClass.GetSpawnPosition(MapInfo.Map, false);
                 }
                 count++;
 
-                if (Config.HalloweenMelee)
-                {
-                    //nothing
-                }
-                else
-                {
-                    var item = player.AddItem(ItemType.Jailbird);
-                    Timing.CallDelayed(0.2f, () => { player.CurrentItem = item; });
-                }
+                var item = player.AddItem(ItemType.Jailbird);
+                Timing.CallDelayed(0.2f, () => { player.CurrentItem = item; });
             }
         }
 
@@ -203,7 +195,7 @@ if (Config.HalloweenMelee)
                         .Replace("{classd}", ClassD.Nickname), 1);
             }
 
-            _countdown = _countdown.Subtract(new TimeSpan(0, 0, 1));
+            _countdown = _countdown.TotalSeconds > 0 ? _countdown.Subtract(new TimeSpan(0, 0, 1)) : TimeSpan.Zero;
         }
 
         protected override void OnFinished()

@@ -2,6 +2,7 @@
 using InventorySystem.Items.Firearms.Attachments;
 using MapGeneration.Distributors;
 using Mirror;
+using PluginAPI.Core;
 using UnityEngine;
 
 namespace MER.Lite
@@ -21,6 +22,8 @@ namespace MER.Lite
         private static Locker scpPedestalObject;
 
         private static Locker smallWallCabinetObject;
+
+        private static Locker rifleRackObject;
 
         public static PrimitiveObjectToy PrimitiveBaseObject
         {
@@ -171,6 +174,30 @@ namespace MER.Lite
                 }
 
                 return smallWallCabinetObject;
+            }
+        }
+
+        public static Locker RifleRackObject
+        {
+            get
+            {
+                if ((object)rifleRackObject == null)
+                {
+                    foreach (GameObject value in NetworkClient.prefabs.Values)
+                    {
+                        if (value.TryGetComponent<Locker>(out var component))
+                        {
+                            if (component.StructureType == StructureType.LargeGunLocker && 
+                                component.name.Contains("RifleRackStructure"))
+                            {
+                                rifleRackObject = component;
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                return rifleRackObject;
             }
         }
     }

@@ -110,12 +110,12 @@ namespace AutoEvent.Games.Line
                 if (_hardCounts == 0)
                 {
                     Extensions.StopAudio();
-                    Extensions.PlayAudio("LineHard.ogg", 10, true, Name);
+                    Extensions.PlayAudio("LineHard.ogg", 10, true);
                 }
 
                 try
                 {
-                    var map_hard = Extensions.LoadMap("HardLine", new Vector3(76f, 1026.5f, -43.68f), Quaternion.Euler(Vector3.zero), Vector3.one);
+                    var map_hard = Extensions.LoadMap("HardLine", new Vector3(76f, 1026.5f, -43.68f), Quaternion.Euler(Vector3.zero), Vector3.one, false);
                     _hardGameMap.Add(_hardCounts, map_hard);
                 }
                 catch(Exception ex)

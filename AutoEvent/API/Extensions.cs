@@ -12,17 +12,11 @@ using MER.Lite;
 using PluginAPI.Core;
 using InventorySystem.Items.Pickups;
 using PlayerStatsSystem;
-using PluginAPI.Helpers;
 using System.Reflection;
 using AutoEvent.API;
 using AutoEvent.API.Enums;
-using AutoEvent.Commands.Debug;
 using AutoEvent.Events.EventArgs;
-using AutoEvent.Games.Battle;
-using AutoEvent.Games.Line;
-using AutoEvent.Patches;
 using CustomPlayerEffects;
-using Exiled.API.Features.Items;
 using Footprinting;
 using InventorySystem.Configs;
 using InventorySystem.Items.ThrowableProjectiles;
@@ -32,8 +26,6 @@ using InventorySystem.Items.Keycards;
 using InventorySystem.Items.Usables.Scp244.Hypothermia;
 using JetBrains.Annotations;
 using PlayerRoles.Ragdolls;
-using PluginAPI.Core.Items;
-using Debug = AutoEvent.Commands.Debug.Debug;
 using Item = PluginAPI.Core.Items.Item;
 using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
@@ -61,7 +53,6 @@ namespace AutoEvent
             HasRole,
             HasSomeItems,
             HasAllItems,
-            
         }
 
         public static List<Player> GetAllPlayersWithLoadout(this List<Loadout> loadout, LoadoutCheckMethods checkMethod = LoadoutCheckMethods.HasRole, [CanBeNull] List<Player> players = null)
@@ -471,7 +462,7 @@ namespace AutoEvent
             }
         }
 
-        public static void PlayAudio(string audioFile, byte volume, bool loop, string eventName)
+        public static AudioPlayerBase PlayAudio(string audioFile, byte volume, bool loop)
         {
             if (AudioBot == null) AudioBot = AddDummy();
 
@@ -479,13 +470,52 @@ namespace AutoEvent
 
             var path = Path.Combine(AutoEvent.Singleton.Config.MusicDirectoryPath, audioFile);
 
-            var audioPlayer = AudioPlayerBase.Get(AudioBot);
+            AudioPlayerBase audioPlayer = AudioPlayerBase.Get(AudioBot);
             audioPlayer.Enqueue(path, -1);
             audioPlayer.LogDebug = false;
             audioPlayer.BroadcastChannel = VoiceChatChannel.Intercom;
             audioPlayer.Volume = volume * (AutoEvent.Singleton.Config.Volume/100f);
             audioPlayer.Loop = loop;
             audioPlayer.Play(0);
+
+            return audioPlayer;
+        }
+
+        public static void PlayPlayerAudio(Player player, string audioFile, byte volume)
+        {
+            var path = Path.Combine(AutoEvent.Singleton.Config.MusicDirectoryPath, audioFile);
+
+            var audioPlayer = AudioPlayerBase.Get(player.ReferenceHub);
+            audioPlayer.Enqueue(path, -1);
+            audioPlayer.LogDebug = false;
+            audioPlayer.BroadcastChannel = VoiceChatChannel.Proximity;
+            audioPlayer.Volume = volume * (AutoEvent.Singleton.Config.Volume / 100f);
+            audioPlayer.Loop = false;
+            audioPlayer.Play(0);
+        }
+
+        public static void PauseAudio()
+        {
+            if (AudioBot == null) return;
+
+            var audioPlayer = AudioPlayerBase.Get(AudioBot);
+
+            if (audioPlayer.CurrentPlay != null)
+            {
+                audioPlayer.ShouldPlay = false;
+            }
+        }
+
+        public static void ResumeAudio()
+        {
+            if (AudioBot == null) return;
+
+            var audioPlayer = AudioPlayerBase.Get(AudioBot);
+
+            if (audioPlayer.CurrentPlay != null)
+            {
+                audioPlayer.ShouldPlay = true;
+            }
         }
 
         public static void StopAudio()
@@ -557,9 +587,9 @@ namespace AutoEvent
             return false;
         }
 
-        public static SchematicObject LoadMap(string nameSchematic, Vector3 pos, Quaternion rot, Vector3 scale)
+        public static SchematicObject LoadMap(string nameSchematic, Vector3 pos, Quaternion rot, Vector3 scale, bool isStatic)
         {
-            return ObjectSpawner.SpawnSchematic(nameSchematic, pos, rot, scale);
+            return ObjectSpawner.SpawnSchematic(nameSchematic, pos, rot, scale, isStatic);
         }
 
         public static void UnLoadMap(SchematicObject scheme)

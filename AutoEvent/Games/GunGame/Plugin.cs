@@ -26,12 +26,15 @@ namespace AutoEvent.Games.GunGame
 
         [EventConfig]
         public GunGameConfig Config { get; set; }
-
         [EventConfigPreset] public GunGameConfig EasyGunsFirst => GunGameConfigPresets.EasyGunsFirst;
         public MapInfo MapInfo { get; set; } = new MapInfo()
-            {MapName = "Shipment", Position = new Vector3(93f, 1020f, -43f), };
+        {
+            MapName = "Shipment", 
+            Position = new Vector3(93f, 1020f, -43f),
+            IsStatic = true
+        };
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
-        { SoundName = "Ultrakill.ogg", Volume = 10, Loop = true };
+        { SoundName = "ClassicMusic.ogg", Volume = 5, Loop = true };
         protected override float PostRoundDelay { get; set; } = 10f;
         private EventHandler EventHandler { get; set; }
         private GunGameTranslate Translation { get; set; } = AutoEvent.Singleton.Translation.GunGameTranslate;

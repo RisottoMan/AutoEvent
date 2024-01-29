@@ -21,13 +21,13 @@ namespace AutoEvent.Games.FallDown
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.FallTranslate.FallDescription;
         public override string Author { get; set; } = "KoT0XleB";
         public override string CommandName { get; set; } = AutoEvent.Singleton.Translation.FallTranslate.FallCommandName;
-        public override Version Version { get; set; } = new Version(1, 0, 0);
+        public override Version Version { get; set; } = new Version(1, 0, 1);
         [EventConfig] public FallDownConfig Config { get; set; } = null;
         [EventConfigPreset] public FallDownConfig Warning => FallDownConfigPresets.PlatformWarning;
         public MapInfo MapInfo { get; set; } = new MapInfo()
-            {MapName = "FallDown", Position = new Vector3(10f, 1020f, -43.68f) };
+            { MapName = "FallDown", Position = new Vector3(10f, 1020f, -43.68f) };
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
-            { SoundName = "Puzzle.ogg", Volume = 15, Loop = true };
+            { SoundName = "ChristmasMusic.ogg", Volume = 7, Loop = true };
         protected override float FrameDelayInSeconds { get; set; } = 0.9f;
         protected override float PostRoundDelay { get; set; } = 10f;
         private EventHandler EventHandler { get; set; }

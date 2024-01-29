@@ -41,7 +41,7 @@ using Event = AutoEvent.Interfaces.Event;
 
 namespace AutoEvent.Games.GhostBusters;
 
-public class Plugin : Event, IInternalEvent//, IEventSound
+public class Plugin : Event, IInternalEvent, IHidden//, IEventSound
     {
         public override string Name { get; set; } = AutoEvent.Singleton.Translation.GhostBustersTranslate.GhostBustersName;
         public override string Description { get; set; } = AutoEvent.Singleton.Translation.GhostBustersTranslate.GhostBustersDescription;

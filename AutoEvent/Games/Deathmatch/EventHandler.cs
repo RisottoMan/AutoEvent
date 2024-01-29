@@ -23,30 +23,25 @@ namespace AutoEvent.Games.Deathmatch
         [PluginEvent(ServerEventType.PlayerJoined)]
         public void OnJoin(PlayerJoinedEvent ev)
         {
-            if (Player.GetPlayers().Count(r => r.Team == Team.FoundationForces) > Player.GetPlayers().Count(r => r.Team == Team.ChaosInsurgency))
+            int mtfCount = Player.GetPlayers().Count(r => r.Team == Team.FoundationForces);
+            int chaosCount = Player.GetPlayers().Count(r => r.Team == Team.ChaosInsurgency);
+            if (mtfCount > chaosCount)
             {
-                //Extensions.SetRole(ev.Player, RoleTypeId.ChaosRifleman, RoleSpawnFlags.None);
                 ev.Player.GiveLoadout(_plugin.Config.ChaosLoadouts);
             }
             else
             {
                 ev.Player.GiveLoadout(_plugin.Config.NTFLoadouts);
-                // Extensions.SetRole(ev.Player, RoleTypeId.NtfSergeant, RoleSpawnFlags.None);
             }
-            /*var item = ev.Player.AddItem();
-            ev.Player.AddItem(ItemType.ArmorCombat);
-
-            ev.Player.EffectsManager.EnableEffect<Scp1853>(150);
-            ev.Player.EffectsManager.ChangeState<Scp1853>(255);
-            ev.Player.EffectsManager.EnableEffect<MovementBoost>(150);
-            ev.Player.EffectsManager.ChangeState<MovementBoost>(10);
-            */
             
             ev.Player.Position = RandomClass.GetRandomPosition(_plugin.MapInfo.Map);
 
-            Timing.CallDelayed(0.1f, () =>
+            Timing.CallDelayed(.1f, () =>
             {
-                ev.Player.CurrentItem = ev.Player.Items.First();
+                if (ev.Player.Items.First() != null)
+                {
+                    ev.Player.CurrentItem = ev.Player.Items.First();
+                }
             });
         }
 
@@ -83,11 +78,9 @@ namespace AutoEvent.Games.Deathmatch
                 _plugin.MtfKills++;
             }
 
-            // bool isChaos = _plugin.Config.ChaosLoadouts.Any(loadout => loadout.Roles.Any(role => role.Key == ev.Target.Role));
-            //ev.Target.GiveLoadout(isChaos ? _plugin.Config.ChaosLoadouts : _plugin.Config.NTFLoadouts);
-
             ev.Target.EffectsManager.EnableEffect<Flashed>(0.1f);
             ev.Target.Position = RandomClass.GetRandomPosition(_plugin.MapInfo.Map);
+            ev.Target.IsGodModeEnabled = true;
             ev.Target.Health = 100;
 
             List<ItemType> itemsToDrop = new List<ItemType>();
@@ -106,6 +99,7 @@ namespace AutoEvent.Games.Deathmatch
             var item = ev.Target.AddItem(_plugin.Config.AvailableWeapons.RandomItem());
             Timing.CallDelayed(.1f, () =>
             {
+                ev.Target.IsGodModeEnabled = false;
                 if (item != null)
                 {
                     ev.Target.CurrentItem = item;

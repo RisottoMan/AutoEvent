@@ -22,7 +22,7 @@ public class GhostBustersTranslate : ITranslation
 #endif
 {
     public string GhostBustersCommandName { get; set; } = "ghosts"; // Soccer in america - football everywhere else 🦅🦅🦅🇺🇸🇺🇸🇺🇸 <- (USA Flag doesnt render in rider...)
-    public string GhostBustersName { get; set; } = "Ghost Busters <color=purple>[Halloween]</color>"; // Soccer in america - football everywhere else 🦅🦅🦅🇺🇸🇺🇸🇺🇸 <- (USA Flag doesnt render in rider...)
+    public string GhostBustersName { get; set; } = "Ghost Busters"; // Soccer in america - football everywhere else 🦅🦅🦅🇺🇸🇺🇸🇺🇸 <- (USA Flag doesnt render in rider...)
     public string GhostBustersDescription { get; set; } = "Ghostbusters vs ghosts. The clock is ticking, will the ghost-busters be able to kill all ghosts before midnight hits?";
     public string GhostBustersStartGhostMessage { get; set; } = "<color=#D71868>You're a <b><color=#a9a9a9>Ghost!</color></b>\n<color=#ff4500><b>Run</b></color> and <color=#6495ed><b>Hide</b></color> from the <color=#cc0000><b>Ghost Busters!</color></b> They will try and <color=red>take you out!</color>\n<color=#ff8c00>Select a role via your <b>inventory menu.</b></color> \n<color=#ff8c00>You will be given a <b>powerup</b> that can be accessed in you <b>inventory menu.</b></color>";
     public string GhostBustersStartHunterMessage { get; set; } = "You're a <color=#cc0000><b>Ghost-Buster!</color></b>\nFind all the <b><color=#a9a9a9>ghosts</color></b> before it is too late!\nYou can select a role in your <b>inventory menu.</b> ";

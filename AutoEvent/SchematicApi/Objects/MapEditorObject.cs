@@ -1,10 +1,7 @@
 ﻿namespace MER.Lite.Objects
 {
     using System;
-    using System.Linq;
-    using MapGeneration;
     using Mirror;
-    using PluginAPI.Core;
     using Serializable;
     using UnityEngine;
 
@@ -79,47 +76,7 @@
             }
         }
 
-        public RoomIdentifier CurrentRoom { get; private set; }
-
         public bool IsSchematicBlock { get; internal set; }
-
-        public Vector3 RelativePosition
-        {
-            get
-            {
-                if (CurrentRoom == null)
-                    CurrentRoom = FindRoom();
-
-                return Vector3.zero;
-            }
-        }
-
-        public Vector3 RelativeRotation
-        {
-            get
-            {
-                if (CurrentRoom == null)
-                    CurrentRoom = FindRoom();
-
-                return Vector3.zero;
-            }
-        }
-
-        public RoomName RoomType
-        {
-            get
-            {
-                if (CurrentRoom == null)
-                    CurrentRoom = FindRoom();
-
-                return CurrentRoom.Name;
-            }
-        }
-
-        public RoomIdentifier FindRoom()
-        {
-            return RoomIdentifier.AllRoomIdentifiers.First(r => r.Name == RoomName.Outside);
-        }
 
         public static Color GetColorFromString(string colorText)
         {
@@ -152,7 +109,5 @@
         public void Destroy() => Destroy(gameObject);
 
         public override string ToString() => $"{name} {Position} {Rotation.eulerAngles} {Scale}";
-
-        internal Player prevOwner;
     }
 }
