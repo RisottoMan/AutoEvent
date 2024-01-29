@@ -138,8 +138,11 @@ namespace AutoEvent.Games.Versus
                         (Vector3.Distance(player.Position, _triggers.ElementAt(0).transform.position) <= 1f ||
                          (Config.AutoSelectDelayInSeconds != -1 && _countdown.TotalSeconds == 0)))
                     {
-                        Scientist = player;
-                        Scientist.Position = _teleports.ElementAt(0).transform.position;
+                        Scientist = player;                    if (Config.HalloweenMelee)
+                {
+                    player.EffectsManager.EnableEffect<MarshmallowEffect>();
+                };
+Scientist.Position = _teleports.ElementAt(0).transform.position;
                         if (ClassD != null)
                             ClassD.Heal(100);
 
@@ -154,6 +157,10 @@ namespace AutoEvent.Games.Versus
                          (Config.AutoSelectDelayInSeconds != -1 && _countdown.TotalSeconds == 0)))
                     {
                         ClassD = player;
+if (Config.HalloweenMelee)
+                {
+                    player.EffectsManager.EnableEffect<MarshmallowEffect>();
+                };
                         ClassD.Position = _teleports.ElementAt(1).transform.position;
                         if (Scientist != null)
                             Scientist.Heal(100);
