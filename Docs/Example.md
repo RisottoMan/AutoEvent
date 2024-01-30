@@ -2,14 +2,14 @@
 ### If you want to learn how to write your own mini-games, then you should study the structure of mini-games.
 ### The basic structure:
 
-#### Use the ***Event*** interface to inherit all the important methods and variables for the mini-game to work.
+##### Use the ***Event*** interface to inherit all the important methods and variables for the mini-game to work.
 ```csharp
- public class Plugin : Event
+public class Plugin : Event
 {
 }
 ```   
 
-#### Also inherit ***IEventMap*** to launch schematic maps and ***IEventSound*** to launch music (See the detailed description below).
+##### Also inherit ***IEventMap*** to launch schematic maps and ***IEventSound*** to launch music (See the detailed description below).
 
 #### Event Information:
 Information about the event that users can see.
@@ -86,8 +86,22 @@ protected virtual void OnCleanup() { }
 ```
 
 #### Event maps and music
+##### Use IEventMap and IEventSound to inherit important variables.
 ```csharp
-// Used to register events for plugins.
-protected override void RegisterEvents() { }
+public class Plugin : Event, IEventSound, IEventMap
+{
+    public MapInfo MapInfo { get; set; } = new MapInfo()
+    { 
+        MapName = "SchematicName", // Enter the name of your schematic
+        Position = new Vector3(0, 0, 0), // A position for your schematics
+        IsStatic = true // Always use true to optimize tps
+    };
+    public SoundInfo SoundInfo { get; set; } = new SoundInfo()
+    { 
+        SoundName = "MusicName.ogg",  // Enter the name of your music
+        Volume = 10, // It is recommended to set the value for music from 5 to 10.
+        Loop = true // It make music endless
+    };
+}
 ```
 ### In Exiled and NWApi there is a difference in creating mini-games. If the entire toolkit has already been created in Exiled, and the plugin just makes it convenient to create mini-games, but NWApi had to create its own toolkit. You can use the implemented cancellable events in the code for yourself.
