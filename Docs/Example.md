@@ -119,6 +119,9 @@ public class Plugin : Event, IEventSound, IEventMap
 
 #### Loader Custom Mini-Games
 ##### Creating mini-games is not so difficult if you are using a loader of custom mini-games:
+You can use the loader of custom mini-games (for more information at the very end), 
+Start a project in Visual Studio with a class library .NetFramework 4.8
+Paste the compiled dll mini-game into the folder:
 ###### Exiled -> ``EXILED\Configs\AutoEvent\Events`` 
 ###### NWApi -> ``PluginAPI\plugins\global\AutoEvent\Events``
 ##### Do not forget to set ``IsDebug = true`` in the config and check the launch of your mini-game.
