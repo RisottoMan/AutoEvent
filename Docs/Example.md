@@ -2,6 +2,9 @@
 ### If you want to learn how to write your own mini-games, then you should study the structure of mini-games.
 ### The basic structure:
 
+#### Use the ***Event*** interface to inherit all the important methods and variables for the mini-game to work.
+#### Also inherit IEventMap to launch schematic maps and IEventSound to launch music (See the detailed description below).
+
 #### Event Information:
 Information about the event that users can see.
 ```csharp
@@ -74,5 +77,11 @@ protected override void OnStop() { }
 
 // The overridable class for after and event is finished / stopped and cleanup is occuring.
 protected virtual void OnCleanup() { }
+```
+
+#### Event maps and music
+```csharp
+// Used to register events for plugins.
+protected override void RegisterEvents() { }
 ```
 ### In Exiled and NWApi there is a difference in creating mini-games. If the entire toolkit has already been created in Exiled, and the plugin just makes it convenient to create mini-games, but NWApi had to create its own toolkit. You can use the implemented cancellable events in the code for yourself.
