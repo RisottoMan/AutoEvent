@@ -116,4 +116,11 @@ public class Plugin : Event, IEventSound, IEventMap
     };
 }
 ```
-### In Exiled and NWApi there is a difference in creating mini-games. If the entire toolkit has already been created in Exiled, and the plugin just makes it convenient to create mini-games, but NWApi had to create its own toolkit. You can use the implemented cancellable events in the code for yourself.
+
+#### Loader Custom Mini-Games
+Creating mini-games is not so difficult if you are using a loader of custom mini-games:
+Exiled -> ``EXILED\Configs\AutoEvent\Events``
+NWApi -> ``PluginAPI\plugins\global\AutoEvent\Events``
+Do not forget to set ``IsDebug = true`` in the config and check the launch of your mini-game.
+
+
