@@ -2,13 +2,12 @@
 ### If you want to learn how to write your own mini-games, then you should study the structure of mini-games.
 ### The basic structure:
 
-##### Use the ***Event*** interface to inherit all the important methods and variables for the mini-game to work.
+Use the ***Event*** interface to inherit all the important methods and variables for the mini-game to work.
 ```csharp
 public class Plugin : Event
 {
 }
 ```   
-
 ##### Also inherit ***IEventMap*** to launch schematic maps and ***IEventSound*** to launch music (See the detailed description below).
 
 #### Event Information:
@@ -18,7 +17,19 @@ public override string Name { get; set; } = "Example";
 public override string Description { get; set; } = "An example event based on the battle event.";
 public override string Author { get; set; } = "KoT0XleB";
 public override string CommandName { get; set; } = "example";
+public override Version Version { get; set; } = new Version(1, 0, 0);
 ```        
+
+#### Event Configs:
+Settings you have access to that will change functionality of the event.
+```csharp
+// Enter your config here, which is located in the folder with your mini-game
+[EventConfig]
+public Config Config { get; set; }
+
+// Custom translations have not been made yet.
+public Translate Translate { get; set; } = AutoEvent.Singleton.Translation.Translate;
+```
 
 #### Event Settings:
 Settings you have access to that will change functionality of the event.
@@ -47,11 +58,12 @@ protected override CoroutineHandle GameCoroutine { get; set; }
 // The DateTime (UTC) that the plugin started at. 
 public override DateTime StartTime { get; protected set; }
         
-// The elapsed time since the plugin started.
+// The elapsed time since the plugin started. (Default)
 public override TimeSpan EventTime { get; protected set; }
 ```
 
 #### Event API Methods
+All the necessary methods for work are presented here. Combine them as you like.
 ```csharp
 // Used to register events for plugins.
 protected override void RegisterEvents() { }
@@ -86,7 +98,7 @@ protected virtual void OnCleanup() { }
 ```
 
 #### Event maps and music
-##### Use IEventMap and IEventSound to inherit important variables.
+Use IEventMap and IEventSound to inherit important variables.
 ```csharp
 public class Plugin : Event, IEventSound, IEventMap
 {
