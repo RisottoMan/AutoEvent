@@ -3,7 +3,7 @@
 ### The basic structure:
 
 #### Use the ***Event*** interface to inherit all the important methods and variables for the mini-game to work.
-#### Also inherit IEventMap to launch schematic maps and IEventSound to launch music (See the detailed description below).
+#### Also inherit ***IEventMap*** to launch schematic maps and ***IEventSound*** to launch music (See the detailed description below).
 
 #### Event Information:
 Information about the event that users can see.
