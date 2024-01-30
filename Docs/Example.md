@@ -44,6 +44,35 @@ public override TimeSpan EventTime { get; protected set; }
 
 #### Event API Methods
 ```csharp
+// Used to register events for plugins.
+protected override void RegisterEvents() { }
 
+// Used to unregister events for plugins.
+protected override void UnregisterEvents() { }
+
+// Called when the event is started.
+protected override void OnStart();
+
+// Called after start in a coroutine. Can be used as a countdown coroutine.
+protected override IEnumerator<float> BroadcastStartCountdown()
+
+// Called after BroadcastStartCountdown is finished. Can be used to remove walls, or give players items.
+protected override void CountdownFinished()
+
+// Used to determine whether the event should end or not. 
+// Returns true if the round is finished. False if the round should continue running.
+protected abstract bool IsRoundDone();
+
+// It is called as many times per second as is set in the FrameDelayInSeconds.
+protected override void ProcessFrame() { }
+
+// Called when the event is finished. If the event is stopped via OnStop, this won't be called, as the event never truly finishes properly.
+protected abstract void OnFinished();
+
+// Called if the event is forcibly stopped. If this is called, OnFinished won't be called.
+protected override void OnStop() { }
+
+// The overridable class for after and event is finished / stopped and cleanup is occuring.
+protected virtual void OnCleanup() { }
 ```
 ### In Exiled and NWApi there is a difference in creating mini-games. If the entire toolkit has already been created in Exiled, and the plugin just makes it convenient to create mini-games, but NWApi had to create its own toolkit. You can use the implemented cancellable events in the code for yourself.
