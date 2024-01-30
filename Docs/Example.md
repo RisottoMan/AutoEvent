@@ -118,9 +118,9 @@ public class Plugin : Event, IEventSound, IEventMap
 ```
 
 #### Loader Custom Mini-Games
-Creating mini-games is not so difficult if you are using a loader of custom mini-games:
+##### Creating mini-games is not so difficult if you are using a loader of custom mini-games:
 Exiled -> ``EXILED\Configs\AutoEvent\Events``
 NWApi -> ``PluginAPI\plugins\global\AutoEvent\Events``
-Do not forget to set ``IsDebug = true`` in the config and check the launch of your mini-game.
+##### Do not forget to set ``IsDebug = true`` in the config and check the launch of your mini-game.
 
 
