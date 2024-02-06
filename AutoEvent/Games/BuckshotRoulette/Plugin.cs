@@ -183,12 +183,13 @@ namespace AutoEvent.Games.BuckshotRoulette
         protected Player UpdateChoosePlayerState(ref string text, bool isClassD)
         {
             // Since we use the same method to select two states, we need these variables
-            int value = 0;
+            ushort value = 1;
             RoleTypeId role = RoleTypeId.ClassD;
+            Player chosenPlayer;
 
             if (isClassD is not true)
             {
-                value = 1;
+                value = 0;
                 role = RoleTypeId.Scientist;
             }
 
@@ -201,7 +202,8 @@ namespace AutoEvent.Games.BuckshotRoulette
                 // If the player is near the door, then we will teleport him
                 if (Vector3.Distance(player.Position, _triggers.ElementAt(value).transform.position) <= 1f)
                 {
-                    return TeleportChoosedPlayer(player, value);
+                    chosenPlayer = player;
+                    goto End;
                 }
             }
 
@@ -210,18 +212,14 @@ namespace AutoEvent.Games.BuckshotRoulette
                 return null;
 
             // Teleporting a random player
-            return TeleportChoosedPlayer(Player.GetPlayers().Where(r => r.Role == role).ToList().RandomItem(), value);
-        }
+            chosenPlayer = Player.GetPlayers().Where(r => r.Role == role).ToList().RandomItem();
+            goto End;
 
-        /// <summary>
-        /// Teleports the player inside the room
-        /// </summary>
-        protected Player TeleportChoosedPlayer(Player player, int value)
-        {
-            player.Position = _teleports.ElementAt(value).transform.position;
+        End:
+            chosenPlayer.Position = _teleports.ElementAt(value).transform.position;
             _countdown = new TimeSpan(0, 0, 5);
             _eventState = EventState.Waiting;
-            return player;
+            return chosenPlayer;
         }
 
         /// <summary>
@@ -287,6 +285,7 @@ namespace AutoEvent.Games.BuckshotRoulette
             if (_animator.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
             {
                 _eventState = EventState.Finishing;
+                _countdown = new TimeSpan(0, 0, 5);
             }
         }
 
@@ -295,6 +294,9 @@ namespace AutoEvent.Games.BuckshotRoulette
         /// </summary>
         protected void UpdateFinishingState(ref string text)
         {
+            if (_countdown.TotalSeconds > 0)
+                return;
+
             _isClassDMove = _classD.IsAlive ? true : false;
             _eventState = EventState.Waiting;
             _gunState = ShotgunState.None;
