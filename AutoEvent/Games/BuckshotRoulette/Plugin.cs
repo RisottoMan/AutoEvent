@@ -235,14 +235,12 @@ namespace AutoEvent.Games.BuckshotRoulette
                 case ShotgunState.ShootEnemy:
                     {
                         _animator.Play("Kill");
-                        _eventState = EventState.Shooting;
-                        return;
+                        goto End;
                     }
                 case ShotgunState.Suicide:
                     {
                         _animator.Play("Suicide");
-                        _eventState = EventState.Shooting;
-                        return;
+                        goto End;
                     }
             }
 
@@ -251,7 +249,12 @@ namespace AutoEvent.Games.BuckshotRoulette
                 return;
 
             // We forcibly take a shot
+            _animator.Play("Suicide");
+            goto End;
+
+        End:
             _eventState = EventState.Shooting;
+            return;
         }
 
         /// <summary>
