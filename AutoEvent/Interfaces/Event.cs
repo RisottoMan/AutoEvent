@@ -55,7 +55,7 @@ namespace AutoEvent.Interfaces
                     {
                         ev.VerifyEventInfo();
                         ev.LoadConfigs();
-                        //ev.LoadTranslation();
+                        ev.LoadTranslation();
                         ev.InstantiateEvent();
                     }
                     catch (Exception e)
@@ -295,6 +295,23 @@ namespace AutoEvent.Interfaces
         return eventConfigs;
     }
     
+    public List<EventTranslation> GetCurrentTranslationsValues()
+    {
+        List<EventTranslation> eventConfigs = new List<EventTranslation>();
+        foreach (PropertyInfo propertyInfo in this.GetType().GetProperties())
+        {
+            var attr = propertyInfo.GetCustomAttribute<EventTranslationAttribute>();
+            if (attr is null)
+                continue;
+            object value = propertyInfo.GetValue(this);
+            if(value is not EventTranslation conf)
+                continue;
+            eventConfigs.Add(conf);
+        }
+
+        return eventConfigs;
+    }
+
     /// <summary>
     /// Used to start the event safely.
     /// </summary>
@@ -641,13 +658,15 @@ namespace AutoEvent.Interfaces
 
                 DebugLogger.LogDebug($"Translation \"{property.Name}\" found for {Name}", LogLevel.Debug);
                 
-                object translation = trans.Load(path, property.PropertyType, this.Version);
+                object translation = trans.Load(path, property.PropertyType);
                 if (translation is not EventTranslation evTranslation)
                 {
                     DebugLogger.LogDebug($"Translation was found that does not inherit Event Translation. It will be skipped.", LogLevel.Warn, true);
                     DebugLogger.LogDebug($"(Event {this.Name}) Translation: {property.Name}.", LogLevel.Debug);
                     continue;
                 }
+
+                this.Name = evTranslation.
             }
         }
 

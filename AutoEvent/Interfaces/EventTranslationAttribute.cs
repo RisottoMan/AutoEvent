@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using YamlDotNet.Core;
-using Version = System.Version;
 
 namespace AutoEvent.Interfaces;
 
@@ -13,7 +12,7 @@ public class EventTranslationAttribute : Attribute
         
     }
     
-    public virtual object Load(string folderPath, Type type, Version version)
+    public virtual object Load(string folderPath, Type type)
     {
         string configPath = Path.Combine(folderPath, "Translation.yml");
         object conf = null;
@@ -23,6 +22,8 @@ public class EventTranslationAttribute : Attribute
             {
                 conf = Configs.Serialization.Deserializer.Deserialize(File.ReadAllText(configPath), type);
             }
+
+            DebugLogger.LogDebug(configPath, LogLevel.Error);
 
             if (conf is not null and EventTranslation translation)
             {
@@ -63,7 +64,7 @@ public class EventTranslationAttribute : Attribute
         conf = type.GetConstructor(Type.EmptyTypes)?.Invoke(Array.Empty<object>());
         if (conf is null)
         {
-            DebugLogger.LogDebug("Config is null.", LogLevel.Debug);
+            DebugLogger.LogDebug("Translation is null.", LogLevel.Debug);
         }
 
         File.WriteAllText(configPath, Configs.Serialization.Serializer.Serialize(conf));

@@ -77,9 +77,6 @@ namespace AutoEvent
         [Description("Hide And Seek Game Mode")]
         public HideTranslate HideTranslate { get; set; } = new HideTranslate();
 
-        [Description("Death Party Game Mode")]
-        public DeathTranslate DeathTranslate { get; set; } = new DeathTranslate();
-
         [Description("FinishWay Game Mode")]
         public RaceTranslation RaceTranslation { get; set; } = new RaceTranslation();
 
