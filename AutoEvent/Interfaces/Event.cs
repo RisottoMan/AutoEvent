@@ -658,7 +658,7 @@ namespace AutoEvent.Interfaces
 
                 DebugLogger.LogDebug($"Translation \"{property.Name}\" found for {Name}", LogLevel.Debug);
                 
-                object translation = trans.Load(path, property.PropertyType);
+                object translation = trans.Load(path, property.PropertyType, this.Version);
                 if (translation is not EventTranslation evTranslation)
                 {
                     DebugLogger.LogDebug($"Translation was found that does not inherit Event Translation. It will be skipped.", LogLevel.Warn, true);
@@ -668,7 +668,7 @@ namespace AutoEvent.Interfaces
 
                 property.SetValue(this, evTranslation);
 
-                // Replace all the main lines of the mini-game.
+                // Replace all the main strings of the mini-game.
                 this.Name = evTranslation.Name;
                 this.Description = evTranslation.Description;
                 this.CommandName = evTranslation.CommandName;
@@ -916,6 +916,7 @@ namespace AutoEvent.Interfaces
             try
             {
                 EventConfig conf = this.GetCurrentConfigsValues().FirstOrDefault();
+                EventTranslation trans = this.GetCurrentTranslationsValues().FirstOrDefault();
                 if (conf is not null)
                 {
                     this._setRandomMap(conf); 

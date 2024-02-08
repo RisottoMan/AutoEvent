@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using YamlDotNet.Core;
+using Version = System.Version;
 
 namespace AutoEvent.Interfaces;
 
@@ -12,7 +13,7 @@ public class EventTranslationAttribute : Attribute
         
     }
     
-    public virtual object Load(string folderPath, Type type)
+    public virtual object Load(string folderPath, Type type, Version version)
     {
         string configPath = Path.Combine(folderPath, "Translation.yml");
         object conf = null;
@@ -23,12 +24,14 @@ public class EventTranslationAttribute : Attribute
                 conf = Configs.Serialization.Deserializer.Deserialize(File.ReadAllText(configPath), type);
             }
 
-            DebugLogger.LogDebug(configPath, LogLevel.Error);
-
             if (conf is not null and EventTranslation translation)
             {
-                _isLoaded = true;
-                return conf;
+                if (translation.TranslationVersion == version.ToString())
+                {
+                    _isLoaded = true;
+                    return conf;
+                }
+                else DebugLogger.LogDebug($"The translation version and the plugin version are not equal. It will be deleted and remade.");
             }
             else
             {
@@ -54,17 +57,22 @@ public class EventTranslationAttribute : Attribute
             catch (Exception e) { }
         }
 
-        CreateNewTranslation(ref conf, type, configPath);
+        CreateNewTranslation(ref conf, type, configPath, version);
         _isLoaded = true;
         return conf;
     }
 
-    private void CreateNewTranslation(ref object conf, Type type, string configPath)
+    private void CreateNewTranslation(ref object conf, Type type, string configPath, Version version)
     {
         conf = type.GetConstructor(Type.EmptyTypes)?.Invoke(Array.Empty<object>());
         if (conf is null)
         {
             DebugLogger.LogDebug("Translation is null.", LogLevel.Debug);
+        }
+
+        if (conf is EventTranslation evTrans)
+        {
+            evTrans.TranslationVersion = version.ToString();
         }
 
         File.WriteAllText(configPath, Configs.Serialization.Serializer.Serialize(conf));
@@ -74,5 +82,4 @@ public class EventTranslationAttribute : Attribute
     public bool IsLoaded => _isLoaded;
 
     protected bool _isLoaded = false;
-
 }
