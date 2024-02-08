@@ -4,10 +4,8 @@ using AutoEvent.API;
 using AutoEvent.Games.Fnaf.Features;
 using AutoEvent.Interfaces;
 using PlayerRoles;
-using YamlDotNet.Serialization;
 
 namespace AutoEvent.Games.Fnaf;
-
 public class Config : EventConfig
 {
     [Description("A loadout for players")]

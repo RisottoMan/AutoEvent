@@ -18,9 +18,9 @@ using AutoEvent.Games.GhostBusters.Features;
 using AutoEvent.Interfaces;
 using PlayerRoles;
 
-namespace AutoEvent.Games.GhostBusters.Configs;
+namespace AutoEvent.Games.GhostBusters;
 
-public class GhostBustersConfig : EventConfig
+public class Config : EventConfig
 {
     [Description("How much time the hunters have to kill the ghosts until ghosts can kill them.")]
     public int TimeUntilMidnightInSeconds { get; set; } = 260;

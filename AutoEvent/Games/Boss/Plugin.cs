@@ -7,7 +7,6 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using AutoEvent.Events.Handlers;
-using AutoEvent.Games.Infection;
 using AutoEvent.Interfaces;
 using Event = AutoEvent.Interfaces.Event;
 
@@ -15,14 +14,15 @@ namespace AutoEvent.Games.Boss
 {
     public class Plugin : Event, IEventMap, IInternalEvent, IEventTag, IHidden
     {
-        public override string Name { get; set; } = AutoEvent.Singleton.Translation.BossTranslate.BossName;
-        public override string Description { get; set; } = AutoEvent.Singleton.Translation.BossTranslate.BossDescription;
+        public override string Name { get; set; } = "Boss Battle";
+        public override string Description { get; set; } = "Kill the Boss to win";
         public override string Author { get; set; } = "KoT0XleB";
-        public override string CommandName { get; set; } = AutoEvent.Singleton.Translation.BossTranslate.BossCommandName;
+        public override string CommandName { get; set; } = "boss";
         public override Version Version { get; set; } = new Version(1, 0, 0);
         [EventConfig]
-        public BossConfig Config { get; set; }
-        private BossTranslate Translation { get; set; } = AutoEvent.Singleton.Translation.BossTranslate;
+        public Config Config { get; set; }
+        [EventTranslation]
+        public Translation Translation { get; set; }
         public MapInfo MapInfo { get; set; } = new MapInfo() 
         { 
             MapName = "Boss",
@@ -126,7 +126,7 @@ namespace AutoEvent.Games.Boss
         protected override float FrameDelayInSeconds { get; set; } = 0.1f;
         protected override void ProcessFrame()
         {
-            string text = Translation.BossCounter;
+            string text = Translation.Counter;
             text = text.Replace("{count}", $"{Player.GetPlayers().Count(r => r.IsNTF)}");
             text = text.Replace("{time}", $"{EventTime.Minutes:00}:{EventTime.Seconds:00}");
             Extensions.Broadcast(text, 1);
@@ -165,7 +165,7 @@ namespace AutoEvent.Games.Boss
             }
             else if (Player.GetPlayers().Count(r => r.Team == Team.ChaosInsurgency) == 0)
             {
-                Extensions.Broadcast(Translation.BossHumansWin.Replace("{count}", $"{Player.GetPlayers().Count(r => r.IsNTF)}"), 10);
+                Extensions.Broadcast(Translation.HumansWin.Replace("{count}", $"{Player.GetPlayers().Count(r => r.IsNTF)}"), 10);
             }
         }
     }

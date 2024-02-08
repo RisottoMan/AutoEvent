@@ -1,22 +1,9 @@
-﻿// <copyright file="Log.cs" company="Redforce04#4091">
-// Copyright (c) Redforce04. All rights reserved.
-// </copyright>
-// -----------------------------------------
-//    Solution:         AutoEvent
-//    Project:          AutoEvent
-//    FileName:         FootballConfig.cs
-//    Author:           Redforce04#4091
-//    Revision Date:    09/18/2023 4:18 PM
-//    Created Date:     09/18/2023 4:18 PM
-// -----------------------------------------
-
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using AutoEvent.Interfaces;
 using UnityEngine;
 
-namespace AutoEvent.Games.Infection;
-
-public class FootballConfig : EventConfig
+namespace AutoEvent.Games.Football;
+public class Config : EventConfig
 {
     [Description("How many points a team needs to get to win. [Default: 3]")]
     public int PointsToWin { get; set; } = 3;

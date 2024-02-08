@@ -1,13 +1,10 @@
 ﻿using MER.Lite.Objects;
 using AutoEvent.Events.Handlers;
 using MEC;
-using PlayerRoles;
-using PluginAPI.Core;
 using PluginAPI.Events;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using AutoEvent.Games.Infection;
 using AutoEvent.Interfaces;
 using UnityEngine;
 using Event = AutoEvent.Interfaces.Event;
@@ -17,20 +14,21 @@ namespace AutoEvent.Games.Line
 {
     public class Plugin : Event, IEventSound, IEventMap, IInternalEvent
     {
-        public override string Name { get; set; } = AutoEvent.Singleton.Translation.LineTranslate.LineName;
-        public override string Description { get; set; } = AutoEvent.Singleton.Translation.LineTranslate.LineDescription;
+        public override string Name { get; set; } = "Death Line";
+        public override string Description { get; set; } = "Avoid the spinning platform to survive";
         public override string Author { get; set; } = "Logic_Gun";
-        public override string CommandName { get; set; } = AutoEvent.Singleton.Translation.LineTranslate.LineCommandName;
+        public override string CommandName { get; set; } = "line";
         public override Version Version { get; set; } = new Version(1, 0, 0);
         [EventConfig]
-        public LineConfig Config { get; set; }
+        public Config Config { get; set; }
+        [EventTranslation]
+        public Translation Translation { get; set; }
         public MapInfo MapInfo { get; set; } = new MapInfo()
             {MapName = "Line", Position = new Vector3(76f, 1026.5f, -43.68f), };
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
             { SoundName = "LineLite.ogg", Volume = 10, Loop = true };
         protected override float PostRoundDelay { get; set; } = 10f;
-        private EventHandler EventHandler { get; set; }
-        private LineTranslate Translation { get; set; } = AutoEvent.Singleton.Translation.LineTranslate;
+        private EventHandler _eventHandler { get; set; }
         private readonly int _hardCountsLimit = 8;
         private Dictionary<int, SchematicObject> _hardGameMap;
         private TimeSpan _timeRemaining;
@@ -39,27 +37,26 @@ namespace AutoEvent.Games.Line
 
         protected override void RegisterEvents()
         {
-            EventHandler = new EventHandler();
-            EventManager.RegisterEvents(EventHandler);
-            Servers.TeamRespawn += EventHandler.OnTeamRespawn;
-            Servers.SpawnRagdoll += EventHandler.OnSpawnRagdoll;
-            Servers.PlaceBullet += EventHandler.OnPlaceBullet;
-            Servers.PlaceBlood += EventHandler.OnPlaceBlood;
-            Players.DropItem += EventHandler.OnDropItem;
-            Players.DropAmmo += EventHandler.OnDropAmmo; 
+            _eventHandler = new EventHandler();
+            EventManager.RegisterEvents(_eventHandler);
+            Servers.TeamRespawn += _eventHandler.OnTeamRespawn;
+            Servers.SpawnRagdoll += _eventHandler.OnSpawnRagdoll;
+            Servers.PlaceBullet += _eventHandler.OnPlaceBullet;
+            Servers.PlaceBlood += _eventHandler.OnPlaceBlood;
+            Players.DropItem += _eventHandler.OnDropItem;
+            Players.DropAmmo += _eventHandler.OnDropAmmo; 
         }
 
         protected override void UnregisterEvents()
         {
-            EventManager.UnregisterEvents(EventHandler);
-            Servers.TeamRespawn -= EventHandler.OnTeamRespawn;
-            Servers.SpawnRagdoll -= EventHandler.OnSpawnRagdoll;
-            Servers.PlaceBullet -= EventHandler.OnPlaceBullet;
-            Servers.PlaceBlood -= EventHandler.OnPlaceBlood;
-            Players.DropItem -= EventHandler.OnDropItem;
-            Players.DropAmmo -= EventHandler.OnDropAmmo;
-
-            EventHandler = null;
+            EventManager.UnregisterEvents(_eventHandler);
+            Servers.TeamRespawn -= _eventHandler.OnTeamRespawn;
+            Servers.SpawnRagdoll -= _eventHandler.OnSpawnRagdoll;
+            Servers.PlaceBullet -= _eventHandler.OnPlaceBullet;
+            Servers.PlaceBlood -= _eventHandler.OnPlaceBlood;
+            Players.DropItem -= _eventHandler.OnDropItem;
+            Players.DropAmmo -= _eventHandler.OnDropAmmo;
+            _eventHandler = null;
         }
 
         protected override void OnStart()
@@ -101,7 +98,7 @@ namespace AutoEvent.Games.Line
 
         protected override void ProcessFrame()
         {
-            Extensions.Broadcast(Translation.LineCycle.Replace("{name}", Name).
+            Extensions.Broadcast(Translation.Cycle.Replace("{name}", Name).
                 Replace("{time}", $"{_timeRemaining.Minutes:00}:{_timeRemaining.Seconds:00}").
                 Replace("{count}", $"{Player.GetPlayers().Count(r => r.HasLoadout(Config.Loadouts))}"), 10);
 
@@ -141,19 +138,19 @@ namespace AutoEvent.Games.Line
         {
             if (Player.GetPlayers().Count(r => r.Role != AutoEvent.Singleton.Config.LobbyRole) > 1)
             {
-                Extensions.Broadcast(Translation.LineMorePlayers.
+                Extensions.Broadcast(Translation.MorePlayers.
                     Replace("{name}", Name).
                     Replace("{count}", $"{Player.GetPlayers().Count(r => r.HasLoadout(Config.Loadouts))}"), 10);
             }
             else if (Player.GetPlayers().Count(r => r.Role != AutoEvent.Singleton.Config.LobbyRole) == 1)
             {
-                Extensions.Broadcast(Translation.LineWinner.
+                Extensions.Broadcast(Translation.Winner.
                     Replace("{name}", Name).
                     Replace("{winner}", Player.GetPlayers().First(r => r.HasLoadout(Config.Loadouts)).Nickname), 10);
             }
             else
             {
-                Extensions.Broadcast(Translation.LineAllDied, 10);
+                Extensions.Broadcast(Translation.AllDied, 10);
             }
         }
 

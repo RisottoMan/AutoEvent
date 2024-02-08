@@ -1,26 +1,13 @@
-﻿// <copyright file="Log.cs" company="Redforce04#4091">
-// Copyright (c) Redforce04. All rights reserved.
-// </copyright>
-// -----------------------------------------
-//    Solution:         AutoEvent
-//    Project:          AutoEvent
-//    FileName:         FallDownConfig.cs
-//    Author:           Redforce04#4091
-//    Revision Date:    09/18/2023 2:45 PM
-//    Created Date:     09/18/2023 2:45 PM
-// -----------------------------------------
-
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
 using AutoEvent.API;
 using AutoEvent.Interfaces;
 using UnityEngine;
 
-namespace AutoEvent.Games.Infection;
-
-public class FallDownConfig : EventConfig
+namespace AutoEvent.Games.FallDown;
+public class Config : EventConfig
 {
-    public FallDownConfig()
+    public Config()
     {
         if (AvailableMaps is null)
         {
@@ -42,5 +29,4 @@ public class FallDownConfig : EventConfig
     
     [Description("Should platforms have a color warning for when they are about to fall.")]
     public bool PlatformsHaveColorWarning { get; set; } = false;
-
 }

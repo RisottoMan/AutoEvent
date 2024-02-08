@@ -7,7 +7,6 @@ using PluginAPI.Events;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using AutoEvent.Games.Infection;
 using AutoEvent.Interfaces;
 using UnityEngine;
 using Event = AutoEvent.Interfaces.Event;
@@ -23,7 +22,7 @@ namespace AutoEvent.Games.ZombieEscape
         public override string CommandName { get; set; } = AutoEvent.Singleton.Translation.ZombieEscapeTranslate.ZombieEscapeCommandName;
         public override Version Version { get; set; } = new Version(1, 0, 0);
         [EventConfig]
-        public ZombieEscapeConfig Config { get; set; }
+        public Config Config { get; set; }
         public MapInfo MapInfo { get; set; } = new MapInfo()
             { MapName = "zm_osprey", Position = new Vector3(-15f, 1020f, -80f), MapRotation = Quaternion.identity };
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()

@@ -6,7 +6,6 @@ using AutoEvent.Interfaces;
 using PlayerRoles;
 
 namespace AutoEvent.Games.AllDeathmatch;
-
 public class Config : EventConfig
 {
     [Description("How many minutes should we wait for the end of the round.")]

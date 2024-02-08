@@ -1,6 +1,7 @@
 ﻿using AutoEvent.Interfaces;
 using UnityEngine;
 
+namespace AutoEvent.Games.Football;
 public class BallComponent : MonoBehaviour
 {
     private SphereCollider sphere;

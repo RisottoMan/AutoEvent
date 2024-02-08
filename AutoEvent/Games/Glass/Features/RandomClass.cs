@@ -2,13 +2,11 @@
 using System.Linq;
 using UnityEngine;
 
-namespace AutoEvent.Games.Glass.Features
+namespace AutoEvent.Games.Glass.Features;
+internal class RandomClass
 {
-    internal class RandomClass
+    public static Vector3 GetSpawnPosition(SchematicObject GameMap)
     {
-        public static Vector3 GetSpawnPosition(SchematicObject GameMap)
-        {
-           return GameMap.AttachedBlocks.Where(x => x.name == "Spawnpoint").FirstOrDefault().transform.position;
-        }
+       return GameMap.AttachedBlocks.Where(x => x.name == "Spawnpoint").FirstOrDefault().transform.position;
     }
 }

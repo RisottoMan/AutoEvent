@@ -26,7 +26,7 @@ using Exiled.API.Features;
 namespace AutoEvent
 {
 #if EXILED
-    public class AutoEvent : Plugin<Config, Translation>
+    public class AutoEvent : Plugin<Config>
     {
         public override System.Version Version => System.Version.Parse(DebugLogger.Version);
         public override string Name => "AutoEvent";
@@ -38,9 +38,6 @@ namespace AutoEvent
     {
         [PluginConfig("Configs/autoevent.yml")]
         public Config Config;
-
-        [PluginConfig("Configs/translation.yml")]
-        public Translation Translation;
 #endif
         public const bool BetaRelease = false; // todo set beta to false before main release
         /// <summary>

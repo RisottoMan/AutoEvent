@@ -8,7 +8,6 @@ using System.Linq;
 using AutoEvent.API.Enums;
 using UnityEngine;
 using AutoEvent.Events.Handlers;
-using AutoEvent.Games.Infection;
 using AutoEvent.Interfaces;
 using Event = AutoEvent.Interfaces.Event;
 
@@ -16,28 +15,31 @@ namespace AutoEvent.Games.Knives
 {
     public class Plugin : Event, IEventSound, IEventMap, IInternalEvent
     {
-        public override string Name { get; set; } = AutoEvent.Singleton.Translation.KnivesTranslate.KnivesName;
-        public override string Description { get; set; } = AutoEvent.Singleton.Translation.KnivesTranslate.KnivesDescription;
+        public override string Name { get; set; } = "Knives of Death";
+        public override string Description { get; set; } = "Knife players against each other on a 35hp map from cs 1.6";
         public override string Author { get; set; } = "KoT0XleB";
-        public override string CommandName { get; set; } = AutoEvent.Singleton.Translation.KnivesTranslate.KnivesCommandName;
+        public override string CommandName { get; set; } = "knives";
         public override Version Version { get; set; } = new Version(1, 0, 1);
         [EventConfig]
         public KnivesConfig Config { get; set; }
+        [EventTranslation]
+        public Translation Translation { get; set; }
         public MapInfo MapInfo { get; set; } = new MapInfo()
         { 
             MapName = "35hp_2", 
-            Position = new Vector3(5f, 1030f, -45f),
-            IsStatic = true
+            Position = new Vector3(5f, 1030f, -45f)
         };
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
-            { SoundName = "Knife.ogg", Volume = 10, Loop = true };
-        private EventHandler _eventHandler { get; set; }
-        private KnivesTranslate Translation { get; set; } = AutoEvent.Singleton.Translation.KnivesTranslate;
+        { 
+            SoundName = "Knife.ogg", 
+            Volume = 10, 
+            Loop = true
+        };
         protected override FriendlyFireSettings ForceEnableFriendlyFire { get; set; } = FriendlyFireSettings.Disable;
+        private EventHandler _eventHandler { get; set; }
         protected override void RegisterEvents()
         {
             _eventHandler = new EventHandler();
-
             EventManager.RegisterEvents(_eventHandler);
             Servers.TeamRespawn += _eventHandler.OnTeamRespawn;
             Servers.SpawnRagdoll += _eventHandler.OnSpawnRagdoll;
@@ -59,7 +61,6 @@ namespace AutoEvent.Games.Knives
             Players.DropItem -= _eventHandler.OnDropItem;
             Players.DropAmmo -= _eventHandler.OnDropAmmo;
             Players.PlayerDamage -= _eventHandler.OnPlayerDamage;
-
             _eventHandler = null;
         }
 
@@ -112,7 +113,7 @@ namespace AutoEvent.Games.Knives
         {
             string mtfCount = Player.GetPlayers().Count(r => r.Team == Team.FoundationForces).ToString();
             string chaosCount = Player.GetPlayers().Count(r => r.Team == Team.ChaosInsurgency).ToString();
-            Extensions.Broadcast(Translation.KnivesCycle.
+            Extensions.Broadcast(Translation.Cycle.
                 Replace("{name}", Name).
                 Replace("{mtfcount}", mtfCount).
                 Replace("{chaoscount}", chaosCount), 1);
@@ -122,11 +123,11 @@ namespace AutoEvent.Games.Knives
         {
             if (Player.GetPlayers().Count(r => r.Team == Team.FoundationForces) == 0)
             {
-                Extensions.Broadcast(Translation.KnivesChaosWin.Replace("{name}", Name), 10);
+                Extensions.Broadcast(Translation.ChaosWin.Replace("{name}", Name), 10);
             }
             else if (Player.GetPlayers().Count(r => r.Team == Team.ChaosInsurgency) == 0)
             {
-                Extensions.Broadcast(Translation.KnivesMtfWin.Replace("{name}", Name), 10);
+                Extensions.Broadcast(Translation.MtfWin.Replace("{name}", Name), 10);
             }
         }
     }

@@ -22,8 +22,8 @@ namespace AutoEvent.Games.Vote
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
             { SoundName = "FireSale.ogg", Volume = 10, Loop = false };
         [EventConfig]
-        public VoteConfig Config { get; set; }
-        private VoteTranslation Translation { get; set; } = AutoEvent.Singleton.Translation.VoteTranslation;
+        public Config Config { get; set; }
+        private Translation Translation { get; set; } = AutoEvent.Singleton.Translation.VoteTranslation;
         private EventHandler EventHandler { get; set; }
         public Dictionary<Player, bool> _voteList { get; set; }
         private int _voteTime = 30;

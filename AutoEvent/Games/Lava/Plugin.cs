@@ -1,7 +1,6 @@
 ﻿using MER.Lite.Objects;
 using AutoEvent.Events.Handlers;
 using MEC;
-using PlayerRoles;
 using PluginAPI.Core;
 using PluginAPI.Events;
 using System;
@@ -9,11 +8,8 @@ using System.Collections.Generic;
 using System.Linq;
 using AutoEvent.API;
 using AutoEvent.API.Enums;
-using AutoEvent.Games.Infection;
 using AutoEvent.Interfaces;
-using CommandSystem.Commands.RemoteAdmin;
 using InventorySystem.Items.Pickups;
-using Mirror;
 using PluginAPI.Core.Items;
 using UnityEngine;
 using Event = AutoEvent.Interfaces.Event;
@@ -22,48 +18,55 @@ namespace AutoEvent.Games.Lava
 {
     public class Plugin : Event, IEventSound, IEventMap, IInternalEvent
     {
-        public override string Name { get; set; } = AutoEvent.Singleton.Translation.LavaTranslate.LavaName;
-        public override string Description { get; set; } = AutoEvent.Singleton.Translation.LavaTranslate.LavaDescription;
+        public override string Name { get; set; } = "The floor is LAVA";
+        public override string Description { get; set; } = "Survival, in which you need to avoid lava and shoot at others";
         public override string Author { get; set; } = "KoT0XleB";
-        public override string CommandName { get; set; } = AutoEvent.Singleton.Translation.LavaTranslate.LavaCommandName;
+        public override string CommandName { get; set; } = "lava";
         public override Version Version { get; set; } = new Version(1, 0, 1);
         [EventConfig]
-        public LavaConfig Config { get; set; }
-        [EventConfigPreset] public LavaConfig OriginalLavaMap => LavaConfigPreset.Original;
+        public Config Config { get; set; }
+        [EventConfigPreset] 
+        public Config OriginalLavaMap => Preset.Original;
+        [EventTranslation]
+        public Translation Translation { get; set; }
         public MapInfo MapInfo { get; set; } = new MapInfo()
-            { MapName = "Lava", Position = new Vector3(120f, 1020f, -43.5f), };
+        { 
+            MapName = "Lava", 
+            Position = new Vector3(120f, 1020f, -43.5f)
+        };
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
-            { SoundName = "Lava.ogg", Volume = 8, Loop = false };
-        private EventHandler EventHandler { get; set; }
-        private LavaTranslate Translation { get; set; } = AutoEvent.Singleton.Translation.LavaTranslate;
+        { 
+            SoundName = "Lava.ogg", 
+            Volume = 8, 
+            Loop = false
+        };
+        private EventHandler _eventHandler { get; set; }
         private GameObject _lava;
 
         protected override void RegisterEvents()
         {
-            
-            EventHandler = new EventHandler(this);
-            EventManager.RegisterEvents(EventHandler);
-            Servers.TeamRespawn += EventHandler.OnTeamRespawn;
-            Servers.SpawnRagdoll += EventHandler.OnSpawnRagdoll;
-            Servers.PlaceBullet += EventHandler.OnPlaceBullet;
-            Servers.PlaceBlood += EventHandler.OnPlaceBlood;
-            Players.DropItem += EventHandler.OnDropItem;
-            Players.DropAmmo += EventHandler.OnDropAmmo;
-            Players.PlayerDamage += EventHandler.OnPlayerDamage;
+            _eventHandler = new EventHandler(this);
+            EventManager.RegisterEvents(_eventHandler);
+            Servers.TeamRespawn += _eventHandler.OnTeamRespawn;
+            Servers.SpawnRagdoll += _eventHandler.OnSpawnRagdoll;
+            Servers.PlaceBullet += _eventHandler.OnPlaceBullet;
+            Servers.PlaceBlood += _eventHandler.OnPlaceBlood;
+            Players.DropItem += _eventHandler.OnDropItem;
+            Players.DropAmmo += _eventHandler.OnDropAmmo;
+            Players.PlayerDamage += _eventHandler.OnPlayerDamage;
         }
 
         protected override void UnregisterEvents()
         {
-            EventManager.UnregisterEvents(EventHandler);
-            Servers.TeamRespawn -= EventHandler.OnTeamRespawn;
-            Servers.SpawnRagdoll -= EventHandler.OnSpawnRagdoll;
-            Servers.PlaceBullet -= EventHandler.OnPlaceBullet;
-            Servers.PlaceBlood -= EventHandler.OnPlaceBlood;
-            Players.DropItem -= EventHandler.OnDropItem;
-            Players.DropAmmo -= EventHandler.OnDropAmmo;
-            Players.PlayerDamage -= EventHandler.OnPlayerDamage;
-
-            EventHandler = null;
+            EventManager.UnregisterEvents(_eventHandler);
+            Servers.TeamRespawn -= _eventHandler.OnTeamRespawn;
+            Servers.SpawnRagdoll -= _eventHandler.OnSpawnRagdoll;
+            Servers.PlaceBullet -= _eventHandler.OnPlaceBullet;
+            Servers.PlaceBlood -= _eventHandler.OnPlaceBlood;
+            Players.DropItem -= _eventHandler.OnDropItem;
+            Players.DropAmmo -= _eventHandler.OnDropAmmo;
+            Players.PlayerDamage -= _eventHandler.OnPlayerDamage;
+            _eventHandler = null;
         }
 
         private ItemType _getItemByChance()
@@ -117,7 +120,6 @@ namespace AutoEvent.Games.Lava
             foreach (var player in Player.GetPlayers())
             {
                 player.GiveLoadout(Config.Loadouts, LoadoutFlags.IgnoreGodMode);
-                // Extensions.SetRole(player, RoleTypeId.ClassD, RoleSpawnFlags.None);
                 player.Position = RandomClass.GetSpawnPosition(MapInfo.Map);
             }
         }
@@ -126,7 +128,7 @@ namespace AutoEvent.Games.Lava
         {
             for (int time = 10; time > 0; time--)
             {
-                Extensions.Broadcast(Translation.LavaBeforeStart.Replace("{time}", $"{time}"), 1);
+                Extensions.Broadcast(Translation.Start.Replace("{time}", $"{time}"), 1);
                 yield return Timing.WaitForSeconds(1f);
             }   
         }
@@ -160,7 +162,7 @@ namespace AutoEvent.Games.Lava
                 text = "<size=90><color=red><b>!</b></color></size>\n";
             }
 
-            Extensions.Broadcast(text + Translation.LavaCycle.Replace("{count}", $"{Player.GetPlayers().Count(r => r.IsAlive)}"), 1);
+            Extensions.Broadcast(text + Translation.Cycle.Replace("{count}", $"{Player.GetPlayers().Count(r => r.IsAlive)}"), 1);
             _lava.transform.position += new Vector3(0, 0.08f, 0);
         }
 
@@ -168,11 +170,11 @@ namespace AutoEvent.Games.Lava
         {
             if (Player.GetPlayers().Count(r => r.IsAlive) == 1)
             {
-                Extensions.Broadcast(Translation.LavaWin.Replace("{winner}", Player.GetPlayers().First(r => r.IsAlive).Nickname), 10);
+                Extensions.Broadcast(Translation.Win.Replace("{winner}", Player.GetPlayers().First(r => r.IsAlive).Nickname), 10);
             }
             else
             {
-                Extensions.Broadcast(Translation.LavaAllDead, 10);
+                Extensions.Broadcast(Translation.AllDead, 10);
             }
         }
 

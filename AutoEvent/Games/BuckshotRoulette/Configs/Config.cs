@@ -3,10 +3,8 @@ using System.ComponentModel;
 using AutoEvent.API;
 using AutoEvent.Interfaces;
 using PlayerRoles;
-using UnityEngine;
 
 namespace AutoEvent.Games.BuckshotRoulette;
-
 public class Config : EventConfig
 {
     [Description("How long to wait before forcefully selecting a random player. Set to -1 to disable.")]

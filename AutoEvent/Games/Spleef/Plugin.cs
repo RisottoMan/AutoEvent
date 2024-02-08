@@ -5,7 +5,6 @@ using AdminToys;
 using AutoEvent.API;
 using AutoEvent.API.Enums;
 using AutoEvent.Events.Handlers;
-using AutoEvent.Games.Spleef.Configs;
 using AutoEvent.Games.Spleef.Features;
 using AutoEvent.Interfaces;
 using MEC;
@@ -24,11 +23,11 @@ public class Plugin : Event, IEventMap, IInternalEvent
     public override string Author { get; set; } = "Redforce04 (created logic code) && KoT0XleB (modified map)";
     public override string CommandName { get; set; } = AutoEvent.Singleton.Translation.SpleefTranslate.SpleefCommandName;
     public override Version Version { get; set; } = new Version(1, 0, 3);
-    public SpleefTranslation Translation { get; set; } = AutoEvent.Singleton.Translation.SpleefTranslate;
+    public Translation Translation { get; set; } = AutoEvent.Singleton.Translation.SpleefTranslate;
     protected override FriendlyFireSettings ForceEnableFriendlyFire { get; set; } = FriendlyFireSettings.Disable;
 
     [EventConfig]
-    public SpleefConfig Config { get; set; }
+    public Configs.Config Config { get; set; }
     public EventHandler EventHandler { get; set; }
     public MapInfo MapInfo { get; set; } = new MapInfo()
     { 

@@ -10,9 +10,7 @@ using System.Linq;
 using AutoEvent.API;
 using AutoEvent.API.Enums;
 using CustomPlayerEffects;
-using InventorySystem.Items.MarshmallowMan;
 using PluginAPI.Core;
-using UnityEngine;
 
 namespace AutoEvent.Games.HideAndSeek
 {

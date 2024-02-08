@@ -1,22 +1,9 @@
-﻿// <copyright file="Log.cs" company="Redforce04#4091">
-// Copyright (c) Redforce04. All rights reserved.
-// </copyright>
-// -----------------------------------------
-//    Solution:         AutoEvent
-//    Project:          AutoEvent
-//    FileName:         GunGameConfigPresets.cs
-//    Author:           Redforce04#4091
-//    Revision Date:    09/26/2023 9:02 PM
-//    Created Date:     09/26/2023 9:02 PM
-// -----------------------------------------
+﻿using System.Collections.Generic;
 
-using System.Collections.Generic;
-
-namespace AutoEvent.Games.Infection;
-
-public static class GunGameConfigPresets
+namespace AutoEvent.Games.GunGame;
+public static class Preset
 {
-    public static GunGameConfig EasyGunsFirst => new GunGameConfig()
+    public static Config EasyGunsFirst => new Config()
     {
         Guns = new List<GunRole>()
         {

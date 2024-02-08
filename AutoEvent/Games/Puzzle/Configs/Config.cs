@@ -1,16 +1,4 @@
-﻿// <copyright file="Log.cs" company="Redforce04#4091">
-// Copyright (c) Redforce04. All rights reserved.
-// </copyright>
-// -----------------------------------------
-//    Solution:         AutoEvent
-//    Project:          AutoEvent
-//    FileName:         PuzzleConfig.cs
-//    Author:           Redforce04#4091
-//    Revision Date:    09/19/2023 9:42 PM
-//    Created Date:     09/19/2023 9:42 PM
-// -----------------------------------------
-
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
 using AutoEvent.API;
 using AutoEvent.Games.Glass;
@@ -19,9 +7,9 @@ using UnityEngine;
 
 namespace AutoEvent.Games.Puzzle;
 
-public class PuzzleConfig : EventConfig
+public class Config : EventConfig
 {
-    public PuzzleConfig()
+    public Config()
     {
         if (AvailableMaps is null)
         {

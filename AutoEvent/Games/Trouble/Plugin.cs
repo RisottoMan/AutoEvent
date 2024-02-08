@@ -31,7 +31,7 @@ namespace AutoEvent.Games.Trouble
         { SoundName = "Skeleton.ogg", Volume = 5, Loop = true };
         protected override float PostRoundDelay { get; set; } = 10f;
         private EventHandler EventHandler { get; set; }
-        private TroubleTranslation Translation { get; set; } = AutoEvent.Singleton.Translation.TroubleTranslation;
+        private Translation Translation { get; set; } = AutoEvent.Singleton.Translation.TroubleTranslation;
 
         protected override void RegisterEvents()
         {

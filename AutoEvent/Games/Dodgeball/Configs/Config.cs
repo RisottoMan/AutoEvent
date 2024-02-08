@@ -6,7 +6,6 @@ using PlayerRoles;
 using UnityEngine;
 
 namespace AutoEvent.Games.Dodgeball;
-
 public class Config : EventConfig
 {
     public Config()

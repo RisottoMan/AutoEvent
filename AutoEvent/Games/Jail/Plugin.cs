@@ -12,66 +12,68 @@ using AutoEvent.Events.Handlers;
 using AutoEvent.Games.Infection;
 using AutoEvent.Interfaces;
 using MapGeneration.Distributors;
+using AutoEvent.Games.Football;
 using Event = AutoEvent.Interfaces.Event;
 
 namespace AutoEvent.Games.Jail
 {
     public class Plugin : Event, IEventMap, IInternalEvent
     {
-        public override string Name { get; set; } = AutoEvent.Singleton.Translation.JailTranslate.JailName;
-        public override string Description { get; set; } = AutoEvent.Singleton.Translation.JailTranslate.JailDescription;
+        public override string Name { get; set; } = "Simon's Prison";
+        public override string Description { get; set; } = "Jail mode from CS 1.6, in which you need to hold events [VERY HARD]";
         public override string Author { get; set; } = "KoT0XleB";
-        public override string CommandName { get; set; } = AutoEvent.Singleton.Translation.JailTranslate.JailCommandName;
+        public override string CommandName { get; set; } = "jail";
         public override Version Version { get; set; } = new Version(1, 0, 0);
         [EventConfig]
-        public JailConfig Config { get; set; }
-        [EventConfigPreset] public JailConfig AdminEvent => JailConfigPresets.AdminEvent;
-        [EventConfigPreset] public JailConfig StandaloneEvent => JailConfigPresets.PublicServerEvent;
+        public Config Config { get; set; }
+        [EventConfigPreset] 
+        public Config AdminEvent => Preset.AdminEvent;
+        [EventConfigPreset] 
+        public Config StandaloneEvent => Preset.PublicServerEvent;
+        [EventTranslation]
+        public Translation Translation { get; set; }
         public MapInfo MapInfo { get; set; } = new MapInfo()
-            {MapName = "Jail", Position = new Vector3(90f, 1030f, -43.5f), };
+        {
+            MapName = "Jail", 
+            Position = new Vector3(90f, 1030f, -43.5f)
+        };
+        protected override FriendlyFireSettings ForceEnableFriendlyFire { get; set; } = FriendlyFireSettings.Enable;
         protected override float FrameDelayInSeconds { get; set; } = 0.5f;
         protected override float PostRoundDelay { get; set; } = 10f;
-        private EventHandler EventHandler { get; set; }
-        private JailTranslate Translation { get; set; } = AutoEvent.Singleton.Translation.JailTranslate;
+        private EventHandler _eventHandler { get; set; }
         internal GameObject Button { get; private set; }
         internal GameObject PrisonerDoors { get; private set; }
         internal Locker WeaponLocker { get; private set; }
         internal Locker Medical { get; private set; }
         internal Locker Adrenaline { get; private set; }
         internal Dictionary<Player, int> Deaths { get; set; } 
-
         internal JailLockdownSystem JailLockdownSystem { get; set; }
-
         private List<GameObject> _doors;
         private GameObject _ball;
-        
 
         protected override void RegisterEvents()
         {
-            EventHandler = new EventHandler(this);
+            _eventHandler = new EventHandler(this);
             JailLockdownSystem = new JailLockdownSystem(this);
-            EventManager.RegisterEvents(EventHandler);
-            Players.PlayerDying += EventHandler.OnPlayerDying;
-            Servers.TeamRespawn += EventHandler.OnTeamRespawn;
-            Players.LockerInteract += EventHandler.OnLockerInteract;
+            EventManager.RegisterEvents(_eventHandler);
+            Players.PlayerDying += _eventHandler.OnPlayerDying;
+            Servers.TeamRespawn += _eventHandler.OnTeamRespawn;
+            Players.LockerInteract += _eventHandler.OnLockerInteract;
         }
 
         protected override void UnregisterEvents()
         {
-            EventManager.UnregisterEvents(EventHandler);
-            Servers.TeamRespawn -= EventHandler.OnTeamRespawn;
-            Players.LockerInteract -= EventHandler.OnLockerInteract;
-            Players.PlayerDying -= EventHandler.OnPlayerDying;
-
-            EventHandler = null;
+            EventManager.UnregisterEvents(_eventHandler);
+            Servers.TeamRespawn -= _eventHandler.OnTeamRespawn;
+            Players.LockerInteract -= _eventHandler.OnLockerInteract;
+            Players.PlayerDying -= _eventHandler.OnPlayerDying;
+            _eventHandler = null;
             JailLockdownSystem = null;
         }
 
         protected override void OnStart()
         {
             Deaths = new Dictionary<Player, int>();
-            Server.FriendlyFire = true;
-
             _doors = new List<GameObject>();
 
             foreach (var obj in MapInfo.Map.AttachedBlocks)

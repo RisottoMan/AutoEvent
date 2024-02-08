@@ -22,7 +22,7 @@ namespace AutoEvent.Games.Versus
         public override string CommandName { get; set; } = AutoEvent.Singleton.Translation.VersusTranslate.VersusCommandName;
         public override Version Version { get; set; } = new Version(1, 0, 1);
         [EventConfig]
-        public VersusConfig Config { get; set; }
+        public Config Config { get; set; }
         public MapInfo MapInfo { get; set; } = new MapInfo()
         { 
             MapName = "35Hp", 
@@ -45,7 +45,7 @@ namespace AutoEvent.Games.Versus
             if(Config.Team1Loadouts.Any(loadout => loadout.Roles.Any(role => Config.Team2Loadouts.Any(loadout2 => loadout2.Roles.Any(role2 => role.Key == role2.Key)))))
             {
                 DebugLogger.LogDebug($"{Name} has two enemy team roles that are the same role. This will break the event if it is run. To prevent this, default configs will be used for loadouts.");
-                var newConf = new VersusConfig();
+                var newConf = new Config();
                 Config.Team1Loadouts = newConf.Team1Loadouts;
                 Config.Team2Loadouts = newConf.Team2Loadouts;
             }

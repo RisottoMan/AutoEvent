@@ -1,25 +1,12 @@
-﻿// <copyright file="Log.cs" company="Redforce04#4091">
-// Copyright (c) Redforce04. All rights reserved.
-// </copyright>
-// -----------------------------------------
-//    Solution:         AutoEvent
-//    Project:          AutoEvent
-//    FileName:         JailConfig.cs
-//    Author:           Redforce04#4091
-//    Revision Date:    09/19/2023 1:45 PM
-//    Created Date:     09/19/2023 1:45 PM
-// -----------------------------------------
-
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
 using AutoEvent.API;
 using AutoEvent.Interfaces;
 using PlayerRoles;
 using YamlDotNet.Serialization;
 
-namespace AutoEvent.Games.Infection;
-
-public class JailConfig : EventConfig
+namespace AutoEvent.Games.Jail;
+public class Config : EventConfig
 {
     [Description("How many lives each prisoner gets.")]
     public int PrisonerLives { get; set; } = 3;

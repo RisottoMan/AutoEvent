@@ -1,25 +1,11 @@
-﻿// <copyright file="Log.cs" company="Redforce04#4091">
-// Copyright (c) Redforce04. All rights reserved.
-// </copyright>
-// -----------------------------------------
-//    Solution:         AutoEvent
-//    Project:          AutoEvent
-//    FileName:         GunGameConfig.cs
-//    Author:           Redforce04#4091
-//    Revision Date:    09/18/2023 9:06 PM
-//    Created Date:     09/18/2023 9:06 PM
-// -----------------------------------------
-
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
 using AutoEvent.API;
 using AutoEvent.Interfaces;
-using CommandSystem.Commands.RemoteAdmin;
 using PlayerRoles;
 
-namespace AutoEvent.Games.Infection;
-
-public class GunGameConfig : EventConfig
+namespace AutoEvent.Games.GunGame;
+public class Config : EventConfig
 {
     [Description("A list of guns a player can get.")]
     public List<GunRole> Guns { get; set; } = new List<GunRole>()
@@ -61,7 +47,6 @@ public class GunGameConfig : EventConfig
             }
         }
     };
-
 }
 
 public class GunRole
@@ -76,11 +61,10 @@ public class GunRole
         Item = item;
         KillsRequired = killsRequired;
     }
+
     [Description("The weapon that the player will recieve once they get to this role.")]
     public ItemType Item { get; set; } = ItemType.GunCOM15;
     
     [Description("Total kills needed to get this gun. [Default: 1]")]
     public int KillsRequired { get; set; } = 1;
-
-    
 }

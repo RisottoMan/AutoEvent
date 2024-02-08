@@ -1,7 +1,6 @@
 ﻿using AutoEvent.Interfaces;
 
 namespace AutoEvent.Games.Airstrike;
-
 public class Translation : EventTranslation
 {
     public override string Name { get; set; } = "Airstrike Party";

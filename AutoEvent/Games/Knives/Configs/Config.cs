@@ -1,24 +1,11 @@
-﻿// <copyright file="Log.cs" company="Redforce04#4091">
-// Copyright (c) Redforce04. All rights reserved.
-// </copyright>
-// -----------------------------------------
-//    Solution:         AutoEvent
-//    Project:          AutoEvent
-//    FileName:         KnivesConfig.cs
-//    Author:           Redforce04#4091
-//    Revision Date:    09/19/2023 6:03 PM
-//    Created Date:     09/19/2023 6:03 PM
-// -----------------------------------------
-
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
 using AutoEvent.API;
 using AutoEvent.Interfaces;
 using PlayerRoles;
 using UnityEngine;
 
-namespace AutoEvent.Games.Infection;
-
+namespace AutoEvent.Games.Knives;
 public class KnivesConfig : EventConfig
 {
     public KnivesConfig()
@@ -56,6 +43,5 @@ public class KnivesConfig : EventConfig
             Roles = new Dictionary<RoleTypeId, int>() { { RoleTypeId.ChaosRepressor, 100 } },
             
         }
-
     };
 }

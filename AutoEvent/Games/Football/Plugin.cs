@@ -3,11 +3,9 @@ using System.Collections.Generic;
 using PlayerRoles;
 using System.Linq;
 using UnityEngine;
-using AutoEvent.Games.Football.Features;
 using PluginAPI.Events;
 using PluginAPI.Core;
 using AutoEvent.Events.Handlers;
-using AutoEvent.Games.Infection;
 using AutoEvent.Interfaces;
 using Event = AutoEvent.Interfaces.Event;
 
@@ -15,20 +13,29 @@ namespace AutoEvent.Games.Football
 {
     public class Plugin : Event, IEventSound, IEventMap, IInternalEvent
     {
-        public override string Name { get; set; } = AutoEvent.Singleton.Translation.FootballTranslate.FootballName;
-        public override string Description { get; set; } = AutoEvent.Singleton.Translation.FootballTranslate.FootballDescription;
+        public override string Name { get; set; } = "Football";
+        public override string Description { get; set; } = "Score 3 goals to win";
         public override string Author { get; set; } = "KoT0XleB";
-        public override string CommandName { get; set; } = AutoEvent.Singleton.Translation.FootballTranslate.FootballCommandName;
+        public override string CommandName { get; set; } = "football";
         public override Version Version { get; set; } = new Version(1, 0, 0);
-        [EventConfig] public FootballConfig Config { get; set; }
+        [EventConfig] 
+        public Config Config { get; set; }
+        [EventTranslation]
+        public Translation Translation { get; set; }
         public MapInfo MapInfo { get; set; } = new MapInfo()
-            {MapName = "Football", Position = new Vector3(76f, 1026.5f, -43.68f), };
+        {
+            MapName = "Football", 
+            Position = new Vector3(76f, 1026.5f, -43.68f)
+        };
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
-            { SoundName = "Football.ogg", Volume = 5, Loop = true };
+        { 
+            SoundName = "Football.ogg", 
+            Volume = 5,
+            Loop = true
+        };
         protected override float PostRoundDelay { get; set; } = 10f;
         protected override float FrameDelayInSeconds { get; set; } = 0.3f;
         private EventHandler EventHandler { get; set; }
-        private FootballTranslate Translation { get; set; } = AutoEvent.Singleton.Translation.FootballTranslate;
         private TimeSpan _remainingTime;
         private int _bluePoints;
         private int _redPoints;
@@ -108,15 +115,15 @@ namespace AutoEvent.Games.Football
 
                     if (player.Team == Team.FoundationForces)
                     {
-                        text += Translation.FootballBlueTeam;
+                        text += Translation.BlueTeam;
                     }
                     else
                     {
-                        text += Translation.FootballRedTeam;
+                        text += Translation.RedTeam;
                     }
 
                     player.ClearBroadcasts();
-                    player.SendBroadcast(text + Translation.FootballTimeLeft.
+                    player.SendBroadcast(text + Translation.TimeLeft.
                         Replace("{BluePnt}", $"{_bluePoints}").
                         Replace("{RedPnt}", $"{_redPoints}").
                         Replace("{time}", time), 1);
@@ -149,15 +156,15 @@ namespace AutoEvent.Games.Football
         {
             if (_bluePoints > _redPoints)
             {
-                Extensions.Broadcast($"{Translation.FootballBlueWins}", 10);
+                Extensions.Broadcast($"{Translation.BlueWins}", 10);
             }
             else if (_redPoints > _bluePoints)
             {
-                Extensions.Broadcast($"{Translation.FootballRedWins}", 10);
+                Extensions.Broadcast($"{Translation.RedWins}", 10);
             }
             else
             {
-                Extensions.Broadcast($"{Translation.FootballDraw.Replace("{BluePnt}", $"{_bluePoints}").Replace("{RedPnt}", $"{_redPoints}")}", 3);
+                Extensions.Broadcast($"{Translation.Draw.Replace("{BluePnt}", $"{_bluePoints}").Replace("{RedPnt}", $"{_redPoints}")}", 3);
             }
         }
     }

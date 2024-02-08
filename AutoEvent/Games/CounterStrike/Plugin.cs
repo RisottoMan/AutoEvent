@@ -16,20 +16,20 @@ namespace AutoEvent.Games.CounterStrike
 {
     public class Plugin : Event, IEventMap, IEventSound, IInternalEvent
     {
-        public override string Name { get; set; } = AutoEvent.Singleton.Translation.StrikeTranslation.StrikeSName;
-        public override string Description { get; set; } = AutoEvent.Singleton.Translation.StrikeTranslation.StrikeDescription;
+        public override string Name { get; set; } = "Counter-Strike";
+        public override string Description { get; set; } = "Fight between terrorists and counter-terrorists";
         public override string Author { get; set; } = "KoT0XleB";
-        public override string CommandName { get; set; } = AutoEvent.Singleton.Translation.StrikeTranslation.StrikeCommandName;
-        private StrikeTranslation Translation { get; set; } = AutoEvent.Singleton.Translation.StrikeTranslation;
+        public override string CommandName { get; set; } = "cs";
         public override Version Version { get; set; } = new Version(1, 0, 0);
         protected override FriendlyFireSettings ForceEnableFriendlyFire { get; set; } = FriendlyFireSettings.Disable;
         [EventConfig]
         public Config Config { get; set; }
+        [EventTranslation]
+        public Translation Translation { get; set; }
         public MapInfo MapInfo { get; set; } = new MapInfo()
         { 
             MapName = "de_dust2", 
-            Position = new Vector3(0, 30, 30),
-            IsStatic = true,
+            Position = new Vector3(0, 30, 30)
         };
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
         { 
@@ -37,7 +37,6 @@ namespace AutoEvent.Games.CounterStrike
             Volume = 10,
             Loop = false
         };
-
         private EventHandler _eventHandler;
         private List<GameObject> _walls;
         internal BombState BombState;
@@ -47,7 +46,6 @@ namespace AutoEvent.Games.CounterStrike
         internal List<GameObject> BombPoints;
         internal List<string> KillInfo;
         internal List<GameObject> Buttons;
-
         protected override void RegisterEvents()
         {
             _eventHandler = new EventHandler(this);
@@ -160,19 +158,19 @@ namespace AutoEvent.Games.CounterStrike
             string tTask = string.Empty;
             if (BombState == BombState.NoPlanted)
             {
-                ctTask = Translation.StrikeNoPlantedCounter;
-                tTask = Translation.StrikeNoPlantedTerror;
+                ctTask = Translation.NoPlantedCounter;
+                tTask = Translation.NoPlantedTerror;
             }
             else if (BombState == BombState.Planted)
             {
-                ctTask = Translation.StrikePlantedCounter;
-                tTask = Translation.StrikePlantedTerror;
+                ctTask = Translation.PlantedCounter;
+                tTask = Translation.PlantedTerror;
             }
 
             // Output of missions to broadcast and killboard to hints
             foreach (Player player in Player.GetPlayers())
             {
-                string text = Translation.StrikeCycle.
+                string text = Translation.Cycle.
                     Replace("{name}", Name).
                     Replace("{task}", player.Role == RoleTypeId.NtfSpecialist ? ctTask : tTask).
                     Replace("{ctCount}", ctCount.ToString()).
@@ -230,31 +228,31 @@ namespace AutoEvent.Games.CounterStrike
                         player.Kill();
                 }
 
-                text = Translation.StrikePlantedWin;
+                text = Translation.PlantedWin;
                 Extensions.PlayAudio("TBombWin.ogg", 15, false);
             }
             else if (BombState == BombState.Defused)
             {
-                text = Translation.StrikeDefusedWin;
+                text = Translation.DefusedWin;
                 Extensions.PlayAudio("CTWin.ogg", 10, false);
             }
             else if (tCount == 0)
             {
-                text = Translation.StrikeCounterWin;
+                text = Translation.CounterWin;
                 Extensions.PlayAudio("CTWin.ogg", 10, false);
             }
             else if (ctCount == 0)
             {
-                text = Translation.StrikeTerroristWin;
+                text = Translation.TerroristWin;
                 Extensions.PlayAudio("TWin.ogg", 15, false);
             }
             else if (ctCount == 0 && tCount == 0)
             {
-                text = Translation.StrikeDraw;
+                text = Translation.Draw;
             }
             else
             {
-                text = Translation.StrikeTimeEnded;
+                text = Translation.TimeEnded;
             }
 
             Extensions.Broadcast(text, 10);

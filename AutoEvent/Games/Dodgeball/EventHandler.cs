@@ -1,15 +1,8 @@
 ﻿using AutoEvent.Events.EventArgs;
-using MER.Lite.Objects;
-using MER.Lite.Serializable;
-using MER.Lite;
 using PlayerRoles;
 using PluginAPI.Core.Attributes;
 using PluginAPI.Enums;
 using PluginAPI.Events;
-using UnityEngine;
-using InventorySystem.Items.ThrowableProjectiles;
-using AutoEvent.API;
-using InventorySystem.Items;
 using PlayerStatsSystem;
 
 namespace AutoEvent.Games.Dodgeball

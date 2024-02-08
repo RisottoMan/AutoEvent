@@ -15,14 +15,15 @@ namespace AutoEvent.Games.Dodgeball
 {
     public class Plugin : Event, IEventMap, IInternalEvent, IEventSound, IHidden
     {
-        public override string Name { get; set; } = AutoEvent.Singleton.Translation.DodgeballTranslation.DodgeballName;
-        public override string Description { get; set; } = AutoEvent.Singleton.Translation.DodgeballTranslation.DodgeballDescription;
+        public override string Name { get; set; } = "Dodgeball";
+        public override string Description { get; set; } = "Defeat the enemy with balls.";
         public override string Author { get; set; } = "KoT0XleB";
-        public override string CommandName { get; set; } = AutoEvent.Singleton.Translation.DodgeballTranslation.DodgeballCommandName;
+        public override string CommandName { get; set; } = "dodge";
         public override Version Version { get; set; } = new Version(1, 0, 0);
-        private DodgeballTranslation Translation { get; set; } = AutoEvent.Singleton.Translation.DodgeballTranslation;
         [EventConfig]
         public Config Config { get; set; }
+        [EventTranslation]
+        public Translation Translation { get; set; }
         public MapInfo MapInfo { get; set; } = new MapInfo()
         {
             MapName = "Dodgeball",

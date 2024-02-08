@@ -2,7 +2,7 @@
 
 namespace AutoEvent.Interfaces;
 
-public abstract class EventTranslation : ITranslate
+public abstract class EventTranslation : IEventTranslation
 {
     public EventTranslation()
     {

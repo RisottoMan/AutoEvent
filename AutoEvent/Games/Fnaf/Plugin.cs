@@ -8,10 +8,7 @@ using AutoEvent.Events.Handlers;
 using AutoEvent.Interfaces;
 using AutoEvent.Games.Fnaf.Features;
 using Event = AutoEvent.Interfaces.Event;
-using Random = UnityEngine.Random;
 using Player = PluginAPI.Core.Player;
-using PluginAPI.Core.Interfaces;
-using AutoEvent.API.RNG;
 
 namespace AutoEvent.Games.Fnaf
 {
@@ -22,16 +19,16 @@ namespace AutoEvent.Games.Fnaf
         public override string Author { get; set; } = "KoT0XleB";
         public override string CommandName { get; set; } = "fnaf";
         public override Version Version { get; set; } = new Version(1, 0, 1);
-        //private ChairsTranslation Translation { get; set; } = AutoEvent.Singleton.Translation.ChairsTranslation;
         [EventConfig]
         public Config Config { get; set; }
+        [EventTranslation]
+        public Translation Translation { get; set; }
         public MapInfo MapInfo { get; set; } = new MapInfo()
         {
             MapName = "Fnaf",
             Position = new Vector3(0, 30, 30)
         };
         private EventHandler _eventHandler;
-        //private Dictionary<string, AnimatronicClass> _animDict;
         protected override void RegisterEvents()
         {
             _eventHandler = new EventHandler(this);

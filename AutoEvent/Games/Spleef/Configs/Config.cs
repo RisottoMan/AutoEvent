@@ -1,24 +1,12 @@
-﻿// <copyright file="Log.cs" company="Redforce04#4091">
-// Copyright (c) Redforce04. All rights reserved.
-// </copyright>
-// -----------------------------------------
-//    Solution:         AutoEvent
-//    Project:          AutoEvent
-//    FileName:         SpleefConfig.cs
-//    Author:           Redforce04#4091
-//    Revision Date:    10/17/2023 6:20 PM
-//    Created Date:     10/17/2023 6:20 PM
-// -----------------------------------------
-
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
 using AutoEvent.API;
 using AutoEvent.Interfaces;
 using PlayerRoles;
 
-namespace AutoEvent.Games.Spleef.Configs;
+namespace AutoEvent.Games.Spleef;
 
-public class SpleefConfig : EventConfig
+public class Config : EventConfig
 {
     [Description("How long the round should last.")]
     public int RoundDurationInSeconds { get; set; } = 300;
@@ -53,6 +41,7 @@ public class SpleefConfig : EventConfig
             InfiniteAmmo = AmmoMode.InfiniteAmmo
         }
     };
+
     [Description("A list of loadouts for spleef if a normal count of players.")]
     public List<Loadout> PlayerNormalLoadouts { get; set; } = new List<Loadout>()
     {
@@ -69,6 +58,7 @@ public class SpleefConfig : EventConfig
             InfiniteAmmo = AmmoMode.InfiniteAmmo
         }
     };
+
     [Description("A list of loadouts for spleef if a big count of players.")]
     public List<Loadout> PlayerBigLoadouts { get; set; } = new List<Loadout>()
     {

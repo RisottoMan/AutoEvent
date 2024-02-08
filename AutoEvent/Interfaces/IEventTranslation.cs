@@ -1,6 +1,6 @@
 ﻿namespace AutoEvent.Interfaces;
 
-public interface ITranslate
+public interface IEventTranslation
 {
     string Name { get; set; }
     string Description { get; set; }

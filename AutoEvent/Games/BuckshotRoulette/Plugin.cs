@@ -23,16 +23,20 @@ namespace AutoEvent.Games.BuckshotRoulette
         public override Version Version { get; set; } = new Version(1, 0, 1);
         [EventConfig]
         public Config Config { get; set; }
+        [EventTranslation]
+        public Translation Translation { get; set; }
         public MapInfo MapInfo { get; set; } = new MapInfo()
         { 
             MapName = "Buckshot",
-            Position = new Vector3(0, 30, 30),
-            IsStatic = true
+            Position = new Vector3(0, 30, 30)
         };
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
-            { SoundName = "Knife.ogg", Volume = 10, Loop = true };
+        { 
+            SoundName = "Knife.ogg", 
+            Volume = 10, 
+            Loop = true 
+        };
         protected override FriendlyFireSettings ForceEnableFriendlyFire { get; set; } = FriendlyFireSettings.Disable;
-        //private VersusTranslate Translation { get; set; } = AutoEvent.Singleton.Translation.VersusTranslate;
         private EventHandler _eventHandler;
         private Player _scientist;
         private Player _classD;

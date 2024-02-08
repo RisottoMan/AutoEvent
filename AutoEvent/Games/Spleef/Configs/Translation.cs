@@ -1,14 +1,14 @@
 ﻿using AutoEvent.Interfaces;
 
-namespace AutoEvent.Games.Puzzle;
+namespace AutoEvent.Games.Spleef;
 
-public class PuzzleTranslate : EventTranslation
+public class Translation : EventTranslation
 {
-    public override string Name { get; set; } = "Puzzle";
-    public override string Description { get; set; } = "Get up the fastest on the right color";
-    public override string CommandName { get; set; } = "puzzle";
+    public override string Name { get; set; } = "Spleef";
+    public override string Description { get; set; } = "Shoot at the platforms and don't fall into the void";
+    public override string CommandName { get; set; } = "spleef";
     public string Start { get; set; } = "<color=red>Starts in: </color>{time}";
-    public string Stage { get; set; } = "<color=red>Stage: </color>{stageNum}<color=red> / </color>{stageFinal}\n<color=yellow>Remaining players:</color> {plyCount}";
+    public string Running { get; set; } = "Players Alive: {players}\nTime remaining: {remaining}";
     public string AllDied { get; set; } = "<color=red>All players died</color>\nMini-game ended";
     public string SomeSurvived { get; set; } = "<color=red>Several people survived</color>\nMini-game ended";
     public string Winner { get; set; } = "<color=red>Winner: {winner}</color>\nMini-game ended";

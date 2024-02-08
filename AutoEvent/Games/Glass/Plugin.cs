@@ -9,7 +9,6 @@ using Mirror;
 using PluginAPI.Core;
 using PluginAPI.Events;
 using AutoEvent.Events.Handlers;
-using AutoEvent.Games.Infection;
 using AutoEvent.Interfaces;
 using Object = UnityEngine.Object;
 using Event = AutoEvent.Interfaces.Event;
@@ -19,13 +18,15 @@ namespace AutoEvent.Games.Glass
 {
     public class Plugin : Event, IEventSound, IEventMap, IInternalEvent
     {
-        public override string Name { get; set; } = AutoEvent.Singleton.Translation.GlassTranslate.GlassName;
-        public override string Description { get; set; } = AutoEvent.Singleton.Translation.GlassTranslate.GlassDescription;
+        public override string Name { get; set; } = "Dead Jump";
+        public override string Description { get; set; } = "Jump on fragile platforms";
         public override string Author { get; set; } = "KoT0XleB";
-        public override string CommandName { get; set; } =  AutoEvent.Singleton.Translation.GlassTranslate.GlassCommandName;
+        public override string CommandName { get; set; } = "glass";
         public override Version Version { get; set; } = new Version(1, 0, 2);
-        [EventConfig] public Config Config { get; set; }
-        private GlassTranslate Translation { get; set; } = AutoEvent.Singleton.Translation.GlassTranslate;
+        [EventConfig]
+        public Config Config { get; set; }
+        [EventTranslation]
+        public Translation Translation { get; set; }
         public MapInfo MapInfo { get; set; } = new MapInfo()
         { 
             MapName = "Glass", 
@@ -187,7 +188,7 @@ namespace AutoEvent.Games.Glass
         protected override void ProcessFrame()
         {
             _remaining -= TimeSpan.FromSeconds(FrameDelayInSeconds);
-            var text = Translation.GlassStart;
+            var text = Translation.Start;
             text = text.Replace("{plyAlive}", Player.GetPlayers().Count(r => r.IsAlive).ToString());
             text = text.Replace("{time}", $"{_remaining.Minutes:00}:{_remaining.Seconds:00}");
 
@@ -211,21 +212,21 @@ namespace AutoEvent.Games.Glass
             {
                 if (Vector3.Distance(player.Position, _finish.transform.position) >= 10)
                 {
-                    player.Damage(500, Translation.GlassDied);
+                    player.Damage(500, Translation.Died);
                 }
             }
             
             if (Player.GetPlayers().Count(r => r.IsAlive) > 1)
             {
-                Extensions.Broadcast(Translation.GlassWinSurvived.Replace("{plyAlive}", Player.GetPlayers().Count(r => r.IsAlive).ToString()), 3);
+                Extensions.Broadcast(Translation.WinSurvived.Replace("{plyAlive}", Player.GetPlayers().Count(r => r.IsAlive).ToString()), 3);
             }
             else if (Player.GetPlayers().Count(r => r.IsAlive) == 1)
             {
-                Extensions.Broadcast(Translation.GlassWinner.Replace("{winner}", Player.GetPlayers().First(r =>r.IsAlive).Nickname), 10);
+                Extensions.Broadcast(Translation.Winner.Replace("{winner}", Player.GetPlayers().First(r =>r.IsAlive).Nickname), 10);
             }
             else if (Player.GetPlayers().Count(r => r.IsAlive) < 1)
             {
-                Extensions.Broadcast(Translation.GlassFail, 10);
+                Extensions.Broadcast(Translation.Fail, 10);
             }
         }
 

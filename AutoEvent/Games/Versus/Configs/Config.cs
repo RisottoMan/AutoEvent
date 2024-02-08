@@ -1,16 +1,4 @@
-﻿// <copyright file="Log.cs" company="Redforce04#4091">
-// Copyright (c) Redforce04. All rights reserved.
-// </copyright>
-// -----------------------------------------
-//    Solution:         AutoEvent
-//    Project:          AutoEvent
-//    FileName:         VersusConfig.cs
-//    Author:           Redforce04#4091
-//    Revision Date:    09/22/2023 2:13 PM
-//    Created Date:     09/22/2023 2:13 PM
-// -----------------------------------------
-
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
 using AutoEvent.API;
 using AutoEvent.Interfaces;
@@ -19,9 +7,9 @@ using UnityEngine;
 
 namespace AutoEvent.Games.Versus;
 
-public class VersusConfig : EventConfig
+public class Config : EventConfig
 {
-    public VersusConfig()
+    public Config()
     {
         if (AvailableMaps is null)
         {

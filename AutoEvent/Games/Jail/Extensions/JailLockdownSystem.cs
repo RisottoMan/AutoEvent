@@ -24,7 +24,7 @@ public class JailLockdownSystem
     }
 
     private Plugin _plugin;
-    private JailConfig Config => _plugin.Config;
+    private Infection.Config Config => _plugin.Config;
     private GameObject PrisonerDoors => _plugin.PrisonerDoors;
     internal bool LockDownActive => !_plugin.PrisonerDoors.GetComponent<JailerComponent>().IsOpen;
     internal float LockDownCooldown { get; set; }

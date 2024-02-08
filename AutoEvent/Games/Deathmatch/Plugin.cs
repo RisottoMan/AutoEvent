@@ -7,7 +7,6 @@ using System.Linq;
 using AutoEvent.API.Enums;
 using UnityEngine;
 using AutoEvent.Events.Handlers;
-using AutoEvent.Games.Infection;
 using AutoEvent.Interfaces;
 using Event = AutoEvent.Interfaces.Event;
 
@@ -15,18 +14,19 @@ namespace AutoEvent.Games.Deathmatch
 {
     public class Plugin : Event, IEventMap, IEventSound, IInternalEvent
     {
-        public override string Name { get; set; } = AutoEvent.Singleton.Translation.DeathmatchTranslate.DeathmatchName;
-        public override string Description { get; set; } = AutoEvent.Singleton.Translation.DeathmatchTranslate.DeathmatchDescription;
+        public override string Name { get; set; } = "Team Death-Match";
+        public override string Description { get; set; } = "Team Death-Match on the Shipment map from MW19";
         public override string Author { get; set; } = "KoT0XleB";
-        public override string CommandName { get; set; } = AutoEvent.Singleton.Translation.DeathmatchTranslate.DeathmatchCommandName;
+        public override string CommandName { get; set; } = "tdm";
         public override Version Version { get; set; } = new Version(1, 0, 0);
         [EventConfig]
         public Config Config { get; set; }
+        [EventTranslation]
+        public Translation Translation { get; set; }
         public MapInfo MapInfo { get; set; } = new MapInfo()
         {
             MapName = "Shipment", 
-            Position = new Vector3(93f, 1020f, -43f),
-            IsStatic = true
+            Position = new Vector3(93f, 1020f, -43f)
         };
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
         { 
@@ -34,7 +34,6 @@ namespace AutoEvent.Games.Deathmatch
             Volume = 5, 
             Loop = true
         };
-        private DeathmatchTranslate Translation { get; set; } = AutoEvent.Singleton.Translation.DeathmatchTranslate;
         protected override FriendlyFireSettings ForceEnableFriendlyFire { get; set; } = FriendlyFireSettings.Disable;
         protected override float PostRoundDelay { get; set; } = 10f;
         private EventHandler _eventHandler { get; set; }
@@ -44,7 +43,6 @@ namespace AutoEvent.Games.Deathmatch
         protected override void RegisterEvents()
         {
             _eventHandler = new EventHandler(this);
-
             EventManager.RegisterEvents(_eventHandler);
             Servers.TeamRespawn += _eventHandler.OnTeamRespawn;
             Servers.SpawnRagdoll += _eventHandler.OnSpawnRagdoll;
@@ -66,7 +64,6 @@ namespace AutoEvent.Games.Deathmatch
             Players.DropAmmo -= _eventHandler.OnDropAmmo;
             Players.PlayerDying -= _eventHandler.OnPlayerDying;
             Players.HandCuff -= _eventHandler.OnHandCuff;
-
             _eventHandler = null;
         }
 
@@ -145,7 +142,7 @@ namespace AutoEvent.Games.Deathmatch
             string chaosString = $"{whiteColor}||||||||||||||||||||".Insert(chaosIndex, chaosColor);
 
             Extensions.Broadcast(
-                Translation.DeathmatchCycle.Replace("{name}", Name).Replace("{mtftext}", $"{MtfKills} {mtfString}")
+                Translation.Cycle.Replace("{name}", Name).Replace("{mtftext}", $"{MtfKills} {mtfString}")
                     .Replace("{chaostext}", $"{chaosString} {ChaosKills}"), 1);
 
         }
@@ -154,11 +151,11 @@ namespace AutoEvent.Games.Deathmatch
         {
             if (MtfKills == _needKills)
             {
-                Extensions.Broadcast(Translation.DeathmatchMtfWin.Replace("{name}", Name), 10);
+                Extensions.Broadcast(Translation.MtfWin.Replace("{name}", Name), 10);
             }
             else
             {
-                Extensions.Broadcast(Translation.DeathmatchChaosWin.Replace("{name}", Name), 10);
+                Extensions.Broadcast(Translation.ChaosWin.Replace("{name}", Name), 10);
             }        
         }
 

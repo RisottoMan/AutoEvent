@@ -33,8 +33,8 @@ namespace AutoEvent.Games.Lobby
         };
 
         [EventConfig]
-        public LobbyConfig Config { get; set; }
-        private LobbyTranslation Translation { get; set; } = AutoEvent.Singleton.Translation.LobbyTranslation;
+        public Config Config { get; set; }
+        private Translation Translation { get; set; } = AutoEvent.Singleton.Translation.LobbyTranslation;
         private EventHandler EventHandler { get; set; }
         LobbyState _state { get; set; }
         Player _chooser { get; set; }

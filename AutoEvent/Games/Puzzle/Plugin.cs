@@ -26,10 +26,10 @@ namespace AutoEvent.Games.Puzzle
         public override string CommandName { get; set; } = AutoEvent.Singleton.Translation.PuzzleTranslate.PuzzleCommandName;
         public override Version Version { get; set; } = new Version(1, 0, 1);
         [EventConfig]
-        public PuzzleConfig Config { get; set; }
+        public Config Config { get; set; }
 
-        [EventConfigPreset] public PuzzleConfig ColorMatch => PuzzleConfigPresets.ColorMatch;
-        [EventConfigPreset] public PuzzleConfig Run => PuzzleConfigPresets.Run;
+        [EventConfigPreset] public Config ColorMatch => Preset.ColorMatch;
+        [EventConfigPreset] public Config Run => Preset.Run;
         public MapInfo MapInfo { get; set; } = new MapInfo()
             { MapName = "Puzzle", Position = new Vector3(76f, 1026.5f, -43.68f), };
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()

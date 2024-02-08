@@ -1,16 +1,4 @@
-﻿// <copyright file="Log.cs" company="Redforce04#4091">
-// Copyright (c) Redforce04. All rights reserved.
-// </copyright>
-// -----------------------------------------
-//    Solution:         AutoEvent
-//    Project:          AutoEvent
-//    FileName:         LavaConfig.cs
-//    Author:           Redforce04#4091
-//    Revision Date:    09/19/2023 9:25 PM
-//    Created Date:     09/19/2023 9:25 PM
-// -----------------------------------------
-
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
 using AutoEvent.API;
 using AutoEvent.API.Enums;
@@ -18,11 +6,10 @@ using AutoEvent.Interfaces;
 using PlayerRoles;
 using UnityEngine;
 
-namespace AutoEvent.Games.Infection;
-
-public class LavaConfig : EventConfig
+namespace AutoEvent.Games.Lava;
+public class Config : EventConfig
 {
-    public LavaConfig()
+    public Config()
     {
         if (AvailableMaps is null)
         {

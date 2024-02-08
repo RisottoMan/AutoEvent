@@ -1,7 +1,5 @@
-﻿using CustomPlayerEffects;
-using MER.Lite.Objects;
+﻿using MER.Lite.Objects;
 using MEC;
-using PlayerRoles;
 using PluginAPI.Core;
 using PluginAPI.Events;
 using System;
@@ -9,7 +7,6 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using AutoEvent.Events.Handlers;
-using AutoEvent.Games.Infection;
 using AutoEvent.Interfaces;
 using Event = AutoEvent.Interfaces.Event;
 
@@ -23,7 +20,7 @@ namespace AutoEvent.Games.Survival
         public override string CommandName { get; set; } = AutoEvent.Singleton.Translation.SurvivalTranslate.SurvivalCommandName;
         public override Version Version { get; set; } = new Version(1, 0, 0);
         [EventConfig]
-        public SurvivalConfig Config { get; set; }
+        public Config Config { get; set; }
         public MapInfo MapInfo { get; set; } = new MapInfo()
         { 
             MapName = "Survival", 

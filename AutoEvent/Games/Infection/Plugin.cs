@@ -14,24 +14,28 @@ namespace AutoEvent.Games.Infection
 {
     public class Plugin : Event, IEventSound, IEventMap, IInternalEvent
     {
-        public override string Name { get; set; } = AutoEvent.Singleton.Translation.InfectTranslate.ZombieName;
-        public override string Description { get; set; } = AutoEvent.Singleton.Translation.InfectTranslate.ZombieDescription;
+        public override string Name { get; set; } = "Zombie Infection";
+        public override string Description { get; set; } = "Zombie mode, the purpose of which is to infect all players";
         public override string Author { get; set; } = "KoT0XleB";
-        public override string CommandName { get; set; } = AutoEvent.Singleton.Translation.InfectTranslate.ZombieCommandName;
+        public override string CommandName { get; set; } = "zombie";
         public override Version Version { get; set; } = new Version(1, 0, 1);
-        [EventConfig] public InfectConfig Config { get; set; }
+        [EventConfig] 
+        public Config Config { get; set; }
+        [EventTranslation]
+        public Translation Translation { get; set; }
         public MapInfo MapInfo { get; set; } = new MapInfo()
         {
             MapName = "Zombie", 
-            Position = new Vector3(115.5f, 1030f, -43.5f),
-            IsStatic = true
+            Position = new Vector3(115.5f, 1030f, -43.5f)
         };
-
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
-            { SoundName = "Zombie_Run.ogg", Volume = 15, Loop = true };
+        { 
+            SoundName = "Zombie_Run.ogg", 
+            Volume = 15, 
+            Loop = true
+        };
         protected override float PostRoundDelay { get; set; } = 10f;
         private EventHandler EventHandler { get; set; }
-        private InfectTranslate Translation { get; set; } = AutoEvent.Singleton.Translation.InfectTranslate;
         private int _overtime = 30;
         // public bool IsFlamingoVariant { get; set; } // Christmas Update
 
@@ -39,7 +43,6 @@ namespace AutoEvent.Games.Infection
         {
             EventHandler = new EventHandler(this);
             EventManager.RegisterEvents(EventHandler);
-
             Servers.TeamRespawn += EventHandler.OnTeamRespawn;
             Servers.SpawnRagdoll += EventHandler.OnSpawnRagdoll;
             Servers.PlaceBullet += EventHandler.OnPlaceBullet;
@@ -52,7 +55,6 @@ namespace AutoEvent.Games.Infection
         protected override void UnregisterEvents()
         {
             EventManager.UnregisterEvents(EventHandler);
-
             Servers.TeamRespawn -= EventHandler.OnTeamRespawn;
             Servers.SpawnRagdoll -= EventHandler.OnSpawnRagdoll;
             Servers.PlaceBullet -= EventHandler.OnPlaceBullet;
@@ -95,7 +97,7 @@ namespace AutoEvent.Games.Infection
         {
             for (float time = 15; time > 0; time--)
             {
-                Extensions.Broadcast(Translation.ZombieBeforeStart.Replace("{name}", Name).Replace("{time}", time.ToString("00")), 1);
+                Extensions.Broadcast(Translation.Start.Replace("{name}", Name).Replace("{time}", time.ToString("00")), 1);
                 yield return Timing.WaitForSeconds(1f);
             }
         }
@@ -145,13 +147,13 @@ namespace AutoEvent.Games.Infection
 
             if (count > 1)
             {
-                Extensions.Broadcast(Translation.ZombieCycle.Replace("{name}", Name).Replace("{count}", count.ToString()).Replace("{time}", time), 1);
+                Extensions.Broadcast(Translation.Cycle.Replace("{name}", Name).Replace("{count}", count.ToString()).Replace("{time}", time), 1);
             }
             else if (count == 1)
             {
                 _overtime--;
                 Extensions.Broadcast(
-                    Translation.ZombieExtraTime
+                    Translation.ExtraTime
                         .Replace("{extratime}", _overtime.ToString("00"))
                         .Replace("{time}", $"{EventTime.Minutes:00}:{EventTime.Seconds:00}"), 1);
             }
@@ -177,12 +179,12 @@ namespace AutoEvent.Games.Infection
             }*/
             if (Player.GetPlayers().Count(r => r.Role == RoleTypeId.ClassD) == 0)
             {
-                Extensions.Broadcast(Translation.ZombieWin
+                Extensions.Broadcast(Translation.Win
                     .Replace("{time}", $"{EventTime.Minutes:00}:{EventTime.Seconds:00}"), 10);
             }
             else
             {
-                Extensions.Broadcast(Translation.ZombieLose
+                Extensions.Broadcast(Translation.Lose
                     .Replace("{time}", $"{EventTime.Minutes:00}:{EventTime.Seconds:00}"), 10);
             }
         }

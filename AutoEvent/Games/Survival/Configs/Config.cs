@@ -1,16 +1,4 @@
-﻿// <copyright file="Log.cs" company="Redforce04#4091">
-// Copyright (c) Redforce04. All rights reserved.
-// </copyright>
-// -----------------------------------------
-//    Solution:         AutoEvent
-//    Project:          AutoEvent
-//    FileName:         SurvivalConfig.cs
-//    Author:           Redforce04#4091
-//    Revision Date:    09/22/2023 2:13 PM
-//    Created Date:     09/22/2023 2:13 PM
-// -----------------------------------------
-
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
 using AutoEvent.API;
 using AutoEvent.API.Enums;
@@ -19,7 +7,7 @@ using PlayerRoles;
 
 namespace AutoEvent.Games.Survival;
 
-public class SurvivalConfig : EventConfig
+public class Config : EventConfig
 {
     [Description("How long the round should last in seconds.")]
     public int RoundDurationInSeconds { get; set; } = 300;
