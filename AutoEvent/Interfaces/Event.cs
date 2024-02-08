@@ -666,7 +666,12 @@ namespace AutoEvent.Interfaces
                     continue;
                 }
 
-                this.Name = evTranslation.
+                property.SetValue(this, evTranslation);
+
+                // Replace all the main lines of the mini-game.
+                this.Name = evTranslation.Name;
+                this.Description = evTranslation.Description;
+                this.CommandName = evTranslation.CommandName;
             }
         }
 
