@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using AutoEvent.API;
+using AutoEvent.API.Season.Enum;
 using AutoEvent.Games.Glass;
 using AutoEvent.Interfaces;
 using UnityEngine;
@@ -18,7 +19,8 @@ public class Config : EventConfig
         if (AvailableMaps.Count < 1)
         {
             AvailableMaps.Add(new MapChance(50, new MapInfo("Puzzle", new Vector3(76f, 1026.5f, -43.68f))));
-            AvailableMaps.Add(new MapChance(50, new MapInfo("Puzzle_Xmas2024", new Vector3(76f, 1026.5f, -43.68f))));
+            AvailableMaps.Add(new MapChance(50, new MapInfo("Puzzle_Xmas2024", new Vector3(76f, 1026.5f, -43.68f)), SeasonFlag.Christmas));
+            AvailableMaps.Add(new MapChance(50, new MapInfo("Puzzle_Xmas2024", new Vector3(76f, 1026.5f, -43.68f)), SeasonFlag.NewYear));
         }
     }
 

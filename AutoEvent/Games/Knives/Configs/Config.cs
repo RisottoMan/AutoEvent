@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using AutoEvent.API;
+using AutoEvent.API.Season.Enum;
 using AutoEvent.Interfaces;
 using PlayerRoles;
 using UnityEngine;
@@ -18,7 +19,8 @@ public class KnivesConfig : EventConfig
         if (AvailableMaps.Count < 1)
         {
             AvailableMaps.Add(new MapChance(50, new MapInfo("35hp_2", new Vector3(5f, 1030f, -45f))));
-            AvailableMaps.Add(new MapChance(50, new MapInfo("35hp_2_Xmas2024", new Vector3(5f, 1030f, -45f))));
+            AvailableMaps.Add(new MapChance(50, new MapInfo("35hp_2_Xmas2024", new Vector3(5f, 1030f, -45f)), SeasonFlag.Christmas));
+            AvailableMaps.Add(new MapChance(50, new MapInfo("35hp_2_Xmas2024", new Vector3(5f, 1030f, -45f)), SeasonFlag.NewYear));
         }
     }
 
@@ -30,8 +32,7 @@ public class KnivesConfig : EventConfig
     {
         new Loadout()
         {
-            Roles = new Dictionary<RoleTypeId, int>() { { RoleTypeId.NtfCaptain, 100 } },
-            
+            Roles = new Dictionary<RoleTypeId, int>() { { RoleTypeId.NtfCaptain, 100 } }
         }
     };
 
@@ -40,8 +41,7 @@ public class KnivesConfig : EventConfig
     {
         new Loadout()
         {
-            Roles = new Dictionary<RoleTypeId, int>() { { RoleTypeId.ChaosRepressor, 100 } },
-            
+            Roles = new Dictionary<RoleTypeId, int>() { { RoleTypeId.ChaosRepressor, 100 } }
         }
     };
 }

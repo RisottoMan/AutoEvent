@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using AutoEvent.API;
+using AutoEvent.API.Season.Enum;
 using AutoEvent.Interfaces;
 using PlayerRoles;
 using UnityEngine;
@@ -23,8 +24,10 @@ public class Config : EventConfig
         {
             AvailableMaps.Add(new MapChance(50, new MapInfo("Zombie", new Vector3(115.5f, 1030f, -43.5f) )));
             AvailableMaps.Add(new MapChance(50, new MapInfo("ZombieRework", new Vector3(115.5f, 1030f, -43.5f))));
-            AvailableMaps.Add(new MapChance(50, new MapInfo("Zombie_Xmas2024", new Vector3(115.5f, 1030f, -43.5f))));
-            AvailableMaps.Add(new MapChance(50, new MapInfo("ZombieRework_Xmas2024", new Vector3(115.5f, 1030f, -43.5f))));
+            AvailableMaps.Add(new MapChance(50, new MapInfo("Zombie_Xmas2024", new Vector3(115.5f, 1030f, -43.5f)), SeasonFlag.Christmas));
+            AvailableMaps.Add(new MapChance(50, new MapInfo("ZombieRework_Xmas2024", new Vector3(115.5f, 1030f, -43.5f)), SeasonFlag.Christmas));
+            AvailableMaps.Add(new MapChance(50, new MapInfo("Zombie_Xmas2024", new Vector3(115.5f, 1030f, -43.5f)), SeasonFlag.NewYear));
+            AvailableMaps.Add(new MapChance(50, new MapInfo("ZombieRework_Xmas2024", new Vector3(115.5f, 1030f, -43.5f)), SeasonFlag.NewYear));
         }
 
         if (AvailableSounds.Count < 1)

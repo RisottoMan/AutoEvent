@@ -27,7 +27,6 @@ public class Config : EventConfig
 
     [Description("How much time the ghosts have to kill the hunters, after midnight hits.")]
     public int MidnightDurationInSeconds { get; set; } = 120;
-
     public float MicroRechargePercentPerSecond { get; set; } = 10;
     public float MicroRechargeDelayOffset { get; set; } = 5;
 

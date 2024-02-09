@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using AutoEvent.API;
+using AutoEvent.API.Season.Enum;
 using AutoEvent.Interfaces;
 using PlayerRoles;
 using UnityEngine;
@@ -19,7 +20,8 @@ public class Config : EventConfig
         if (AvailableMaps.Count < 1)
         {
             AvailableMaps.Add(new MapChance(50, new MapInfo("RedLight", new Vector3(0f, 1030f, -43.5f))));
-            AvailableMaps.Add(new MapChance(50, new MapInfo("RedLight_Xmas2024", new Vector3(0f, 1030f, -43.5f))));
+            AvailableMaps.Add(new MapChance(50, new MapInfo("RedLight_Xmas2024", new Vector3(0f, 1030f, -43.5f)), SeasonFlag.Christmas));
+            AvailableMaps.Add(new MapChance(50, new MapInfo("RedLight_Xmas2024", new Vector3(0f, 1030f, -43.5f)), SeasonFlag.NewYear));
         }
     }
 

@@ -128,7 +128,4 @@
   <Target Name="ReplaceFile" BeforeTargets="ReplaceVars">
     <Exec Command="copy $(SolutionDir)BlankVersionInfo.txt $(SolutionDir)VersionInfo.cs" />
   </Target>
-  <Target Name="ReplaceVars" BeforeTargets="PreBuildEvent">
-    <Exec Command="dotnet run --project &quot;ReplaceTextWithVariables&quot; -- $(SolutionDir)VersionInfo.cs -bd $(SolutionDir)../bin/Release/Exiled/net48/ {BUILD_DEPENDENCIES} -d {BUILD_DATE_TIME} -cmd &quot;git describe --tags --abbrev=0&quot; {CI_COMMIT_VERSION_TAG} -cmd &quot;git config --get user.name&quot; {BUILD_USER} -cmd &quot;git describe --long --always --exclude=* --abbrev=8&quot; {CI_COMMIT_SHORT_SHA} -cmd &quot;git branch --show-current&quot; {CI_COMMIT_BRANCH}" />
-  </Target>
 </Project>

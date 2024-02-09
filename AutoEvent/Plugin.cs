@@ -174,6 +174,9 @@ namespace AutoEvent
                 Loader.LoadEvents();
                 Event.Events.AddRange(Loader.Events);
 
+                // Checking today's date
+                SeasonMethod.GetSeasonStyle();
+
                 DebugLogger.LogDebug(
                     Loader.Events.Count > 0
                         ? $"[ExternalEventLoader] Loaded {Loader.Events.Count} external event{(Loader.Events.Count > 1 ? "s" : "")}."

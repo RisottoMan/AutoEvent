@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using AutoEvent.API;
 using AutoEvent.API.Enums;
+using AutoEvent.API.Season.Enum;
 using AutoEvent.Interfaces;
 using PlayerRoles;
 using UnityEngine;
@@ -19,7 +20,8 @@ public class Config : EventConfig
         if (AvailableMaps.Count < 1)
         {
             AvailableMaps.Add(new MapChance(50, new MapInfo("Lava", new Vector3(120f, 1020f, -43.5f))));
-            AvailableMaps.Add(new MapChance(50, new MapInfo("Lava_Xmas2024", new Vector3(120f, 1020f, -43.5f))));
+            AvailableMaps.Add(new MapChance(50, new MapInfo("Lava_Xmas2024", new Vector3(120f, 1020f, -43.5f)), SeasonFlag.Christmas));
+            AvailableMaps.Add(new MapChance(50, new MapInfo("Lava_Xmas2024", new Vector3(120f, 1020f, -43.5f)), SeasonFlag.NewYear));
         }
     }
 

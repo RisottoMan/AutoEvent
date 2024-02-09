@@ -14,6 +14,8 @@ using UnityEngine;
 using YamlDotNet.Core;
 using Version = System.Version;
 using System.Xml.Linq;
+using AutoEvent.API.Season;
+using AutoEvent.API.Season.Enum;
 
 namespace AutoEvent.Interfaces
 {
@@ -517,34 +519,50 @@ namespace AutoEvent.Interfaces
         /// <param name="conf"></param>
         private void _setRandomMap(EventConfig conf)
         {
-            if (this is IEventMap map && conf.AvailableMaps is not null && conf.AvailableMaps.Count > 0)
+            if (conf.AvailableMaps is null && conf.AvailableMaps.Count == 0)
+                return;
+
+            // We get the current style and check the maps by their style
+            SeasonStyle _curSeason = SeasonMethod.GetSeasonStyle();
+
+            List<MapChance> maps = new();
+            foreach (var map in conf.AvailableMaps)
             {
-                bool spawnAutomatically = map.MapInfo.SpawnAutomatically;
-                if (conf.AvailableMaps.Count == 1)
+                if (map.SeasonFlag is SeasonFlag.None || map.SeasonFlag == _curSeason.SeasonFlag)
                 {
-                    map.MapInfo = conf.AvailableMaps[0].Map;
-                    map.MapInfo.SpawnAutomatically = spawnAutomatically;
+                    maps.Add(map);
+                }
+            }
+
+            if (this is IEventMap eventMap)
+            {
+                bool spawnAutomatically = eventMap.MapInfo.SpawnAutomatically;
+                if (maps.Count == 1)
+                {
+                    eventMap.MapInfo = maps[0].Map;
+                    eventMap.MapInfo.SpawnAutomatically = spawnAutomatically;
                     goto Message;
                 }
 
-                foreach (var mapItem in conf.AvailableMaps.Where(x => x.Chance <= 0))
+                foreach (var mapItem in maps.Where(x => x.Chance <= 0))
                     mapItem.Chance = 1;
             
-                float totalChance = conf.AvailableMaps.Sum(x => x.Chance);
+                float totalChance = maps.Sum(x => x.Chance);
             
-                for (int i = 0; i < conf.AvailableMaps.Count - 1; i++)
+                for (int i = 0; i < maps.Count - 1; i++)
                 {
-                    if (UnityEngine.Random.Range(0, totalChance) <= conf.AvailableMaps[i].Chance)
+                    if (UnityEngine.Random.Range(0, totalChance) <= maps[i].Chance)
                     {
-                        map.MapInfo = conf.AvailableMaps[i].Map;
-                        map.MapInfo.SpawnAutomatically = spawnAutomatically;
+                        eventMap.MapInfo = maps[i].Map;
+                        eventMap.MapInfo.SpawnAutomatically = spawnAutomatically;
                         goto Message;
                     }
                 }
-                map.MapInfo = conf.AvailableMaps[conf.AvailableMaps.Count - 1].Map;
-                map.MapInfo.SpawnAutomatically = spawnAutomatically;
+                eventMap.MapInfo = maps[maps.Count - 1].Map;
+                eventMap.MapInfo.SpawnAutomatically = spawnAutomatically;
+
                 Message:
-                DebugLogger.LogDebug($"[{this.Name}] Map {map.MapInfo.MapName} selected.", LogLevel.Debug);
+                DebugLogger.LogDebug($"[{this.Name}] Map {eventMap.MapInfo.MapName} selected.", LogLevel.Debug);
             }
         
         }
