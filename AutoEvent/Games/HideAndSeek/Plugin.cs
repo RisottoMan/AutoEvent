@@ -1,6 +1,5 @@
 ﻿using MER.Lite.Objects;
 using MEC;
-using PluginAPI.Core;
 using PluginAPI.Events;
 using System;
 using System.Collections.Generic;
@@ -34,8 +33,7 @@ namespace AutoEvent.Games.HideAndSeek
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
         { 
             SoundName = "HideAndSeek.ogg", 
-            Volume = 5, 
-            Loop = true
+            Volume = 5
         };
         protected override FriendlyFireSettings ForceEnableFriendlyFire { get; set; } = FriendlyFireSettings.Enable;
         protected override float PostRoundDelay { get; set; } = 10f;

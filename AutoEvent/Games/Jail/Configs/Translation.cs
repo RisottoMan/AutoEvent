@@ -1,7 +1,7 @@
 ﻿using AutoEvent.Interfaces;
 
 namespace AutoEvent.Games.Jail;
-public class JailTranslate : EventTranslation
+public class Translation : EventTranslation
 {
     public override string Name { get; set; } = "Simon's Prison";
     public override string Description { get; set; } = "Jail mode from CS 1.6, in which you need to hold events [VERY HARD].";

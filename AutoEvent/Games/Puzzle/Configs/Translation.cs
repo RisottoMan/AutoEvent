@@ -1,8 +1,7 @@
 ﻿using AutoEvent.Interfaces;
 
 namespace AutoEvent.Games.Puzzle;
-
-public class PuzzleTranslate : EventTranslation
+public class Translation : EventTranslation
 {
     public override string Name { get; set; } = "Puzzle";
     public override string Description { get; set; } = "Get up the fastest on the right color";
@@ -13,4 +12,5 @@ public class PuzzleTranslate : EventTranslation
     public string SomeSurvived { get; set; } = "<color=red>Several people survived</color>\nMini-game ended";
     public string Winner { get; set; } = "<color=red>Winner: {winner}</color>\nMini-game ended";
     public string Died { get; set; } = "<color=red>Burned in Lava</color>";
+    public string MainMessage { get; set; } = "<color=#F59F00>P</color><color=#F68523>u</color><color=#F76B46>z</color><color=#F85169>z</color><color=#F9378C>l</color><color=#FA1DAF>e</color>";
 }

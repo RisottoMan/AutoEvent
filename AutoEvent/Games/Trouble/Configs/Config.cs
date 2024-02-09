@@ -5,7 +5,6 @@ using AutoEvent.Interfaces;
 using PlayerRoles;
 
 namespace AutoEvent.Games.Trouble;
-
 public class Config : EventConfig
 {
     [Description("The loadouts that players can get.")]

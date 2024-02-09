@@ -14,58 +14,64 @@ namespace AutoEvent.Games.Race
 {
     public class Plugin : Event, IEventSound, IEventMap, IInternalEvent
     {
-        public override string Name { get; set; } = AutoEvent.Singleton.Translation.RaceTranslation.FinishWayName;
-        public override string Description { get; set; } = AutoEvent.Singleton.Translation.RaceTranslation.FinishWayDescription;
+        public override string Name { get; set; } = "Race";
+        public override string Description { get; set; } = "Get to the end of the map to win";
         public override string Author { get; set; } = "KoT0XleB";
-        public override string CommandName { get; set; } = AutoEvent.Singleton.Translation.RaceTranslation.FinishWayCommandName;
+        public override string CommandName { get; set; } = "race";
         public override Version Version { get; set; } = new Version(1, 0, 1);
         [EventConfig]
         public Config Config { get; set; }
+        [EventTranslation]
+        public Translation Translation { get; set; }
         public MapInfo MapInfo { get; set; } = new MapInfo()
-            {MapName = "Race", Position = new Vector3(115.5f, 1030f, -43.5f), };
+        {
+            MapName = "Race", 
+            Position = new Vector3(115.5f, 1030f, -43.5f)
+        };
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
-            { SoundName = "FinishWay.ogg", Volume = 8, Loop = false, StartAutomatically = false };
+        { 
+            SoundName = "FinishWay.ogg", 
+            Volume = 8, 
+            Loop = false, 
+            StartAutomatically = false
+        };
         protected override float PostRoundDelay { get; set; } = 10f;
-        private EventHandler EventHandler { get; set; }
-        private RaceTranslation Translation { get; set; } = AutoEvent.Singleton.Translation.RaceTranslation;
+        private EventHandler _eventHandler { get; set; }
         private TimeSpan _remainingTime;
         private GameObject _point;
 
         protected override void RegisterEvents()
-        { EventHandler = new EventHandler();
-            EventManager.RegisterEvents(EventHandler);
-            Servers.TeamRespawn += EventHandler.OnTeamRespawn;
-            Servers.SpawnRagdoll += EventHandler.OnSpawnRagdoll;
-            Servers.PlaceBullet += EventHandler.OnPlaceBullet;
-            Servers.PlaceBlood += EventHandler.OnPlaceBlood;
-            Players.DropItem += EventHandler.OnDropItem;
-            Players.DropAmmo += EventHandler.OnDropAmmo;
+        {
+            _eventHandler = new EventHandler();
+            EventManager.RegisterEvents(_eventHandler);
+            Servers.TeamRespawn += _eventHandler.OnTeamRespawn;
+            Servers.SpawnRagdoll += _eventHandler.OnSpawnRagdoll;
+            Servers.PlaceBullet += _eventHandler.OnPlaceBullet;
+            Servers.PlaceBlood += _eventHandler.OnPlaceBlood;
+            Players.DropItem += _eventHandler.OnDropItem;
+            Players.DropAmmo += _eventHandler.OnDropAmmo;
         }
 
         protected override void UnregisterEvents()
         {
-            EventManager.UnregisterEvents(EventHandler);
-            Servers.TeamRespawn -= EventHandler.OnTeamRespawn;
-            Servers.SpawnRagdoll -= EventHandler.OnSpawnRagdoll;
-            Servers.PlaceBullet -= EventHandler.OnPlaceBullet;
-            Servers.PlaceBlood -= EventHandler.OnPlaceBlood;
-            Players.DropItem -= EventHandler.OnDropItem;
-            Players.DropAmmo -= EventHandler.OnDropAmmo;
-
-            EventHandler = null;
+            EventManager.UnregisterEvents(_eventHandler);
+            Servers.TeamRespawn -= _eventHandler.OnTeamRespawn;
+            Servers.SpawnRagdoll -= _eventHandler.OnSpawnRagdoll;
+            Servers.PlaceBullet -= _eventHandler.OnPlaceBullet;
+            Servers.PlaceBlood -= _eventHandler.OnPlaceBlood;
+            Players.DropItem -= _eventHandler.OnDropItem;
+            Players.DropAmmo -= _eventHandler.OnDropAmmo;
+            _eventHandler = null;
         }
 
         protected override void OnStart()
         {
             foreach (Player player in Player.GetPlayers())
             {
-                //Extensions.SetRole(player, RoleTypeId.ClassD, RoleSpawnFlags.None);
                 player.GiveLoadout(Config.Loadouts);
                 player.Position = RandomPosition.GetSpawnPosition(MapInfo.Map);
             }
-
         }
-
 
         protected override IEnumerator<float> BroadcastStartCountdown()
         {
@@ -75,6 +81,7 @@ namespace AutoEvent.Games.Race
                 yield return Timing.WaitForSeconds(1f);
             }
         }
+
         protected override void CountdownFinished()
         {
             _remainingTime = new TimeSpan(0, 0, Config.EventDurationInSeconds);
@@ -104,7 +111,7 @@ namespace AutoEvent.Games.Race
             var count = Player.GetPlayers().Count(r => r.Role == RoleTypeId.ClassD);
             var time = $"{_remainingTime.Minutes:00}:{_remainingTime.Seconds:00}";
 
-            Extensions.Broadcast(Translation.FinishWayCycle.Replace("{name}", Name).Replace("{time}", time), 1);
+            Extensions.Broadcast(Translation.Cycle.Replace("{name}", Name).Replace("{time}", time), 1);
             _remainingTime -= TimeSpan.FromSeconds(FrameDelayInSeconds);
         }
 
@@ -114,21 +121,21 @@ namespace AutoEvent.Games.Race
             {
                 if (Vector3.Distance(player.Position, _point.transform.position) > 10)
                 {
-                    player.Kill(Translation.FinishWayDied);
+                    player.Kill(Translation.Died);
                 }
             }
 
             if (Player.GetPlayers().Count(r => r.IsAlive) > 1)
             {
-                Extensions.Broadcast(Translation.FinishWaySeveralSurvivors.Replace("{count}", Player.GetPlayers().Count(r => r.IsAlive).ToString()), 10);
+                Extensions.Broadcast(Translation.PlayersSurvived.Replace("{count}", Player.GetPlayers().Count(r => r.IsAlive).ToString()), 10);
             }
             else if (Player.GetPlayers().Count(r => r.IsAlive) == 1)
             {
-                Extensions.Broadcast(Translation.FinishWayOneSurvived.Replace("{player}", Player.GetPlayers().First(r => r.IsAlive).Nickname), 10);
+                Extensions.Broadcast(Translation.OneSurvived.Replace("{player}", Player.GetPlayers().First(r => r.IsAlive).Nickname), 10);
             }
             else
             {
-                Extensions.Broadcast(Translation.FinishWayNoSurvivors, 10);
+                Extensions.Broadcast(Translation.NoSurvivors, 10);
             }
         }
     }

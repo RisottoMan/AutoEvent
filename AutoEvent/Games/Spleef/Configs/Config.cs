@@ -5,7 +5,6 @@ using AutoEvent.Interfaces;
 using PlayerRoles;
 
 namespace AutoEvent.Games.Spleef;
-
 public class Config : EventConfig
 {
     [Description("How long the round should last.")]

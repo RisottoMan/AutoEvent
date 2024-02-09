@@ -1,8 +1,7 @@
 ﻿using AutoEvent.Interfaces;
 
 namespace AutoEvent.Games.Survival;
-
-public class SurvivalTranslate : EventTranslation
+public class Translation : EventTranslation
 {
     public override string Name { get; set; } = "Zombie Survival";
     public override string Description { get; set; } = "Humans surviving from zombies";

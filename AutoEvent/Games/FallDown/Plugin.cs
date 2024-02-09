@@ -35,8 +35,7 @@ namespace AutoEvent.Games.FallDown
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
         { 
             SoundName = "ChristmasMusic.ogg", 
-            Volume = 7, 
-            Loop = true
+            Volume = 7
         };
         protected override float FrameDelayInSeconds { get; set; } = 0.9f;
         protected override float PostRoundDelay { get; set; } = 10f;

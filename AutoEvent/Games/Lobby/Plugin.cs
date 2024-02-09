@@ -14,16 +14,15 @@ namespace AutoEvent.Games.Lobby
 {
     public class Plugin : Event, IEventMap, IEventSound, IInternalEvent, IHiddenCommand
     {
-        public override string Name { get; set; } = AutoEvent.Singleton.Translation.LobbyTranslation.LobbyName;
-        public override string Description { get; set; } = AutoEvent.Singleton.Translation.LobbyTranslation.LobbyDescription;
+        public override string Name { get; set; } = "Lobby";
+        public override string Description { get; set; } = "A lobby in which one quick player chooses a mini-game.";
         public override string Author { get; set; } = "KoT0XleB";
-        public override string CommandName { get; set; } = AutoEvent.Singleton.Translation.LobbyTranslation.LobbyCommandName;
+        public override string CommandName { get; set; } = "lobby";
         public override Version Version { get; set; } = new Version(1, 0, 0);
         public MapInfo MapInfo { get; set; } = new MapInfo()
         { 
             MapName = "Lobby", 
-            Position = new Vector3(76f, 1026.5f, -43.68f), 
-            IsStatic = true
+            Position = new Vector3(76f, 1026.5f, -43.68f)
         };
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
         { 
@@ -31,11 +30,11 @@ namespace AutoEvent.Games.Lobby
             Volume = 10, 
             Loop = false 
         };
-
         [EventConfig]
         public Config Config { get; set; }
-        private Translation Translation { get; set; } = AutoEvent.Singleton.Translation.LobbyTranslation;
-        private EventHandler EventHandler { get; set; }
+        [EventTranslation]
+        public Translation Translation { get; set; }
+        private EventHandler _eventHandler { get; set; }
         LobbyState _state { get; set; }
         Player _chooser { get; set; }
         List<GameObject> _spawnpoints { get; set; }
@@ -46,14 +45,14 @@ namespace AutoEvent.Games.Lobby
 
         protected override void RegisterEvents()
         {
-            EventHandler = new EventHandler(this);
-            EventManager.RegisterEvents(EventHandler);
+            _eventHandler = new EventHandler(this);
+            EventManager.RegisterEvents(_eventHandler);
         }
 
         protected override void UnregisterEvents()
         {
-            EventManager.UnregisterEvents(EventHandler);
-            EventHandler = null;
+            EventManager.UnregisterEvents(_eventHandler);
+            _eventHandler = null;
         }
 
         protected override void OnStart()
@@ -96,23 +95,17 @@ namespace AutoEvent.Games.Lobby
 
         protected override bool IsRoundDone()
         {
-            DebugLogger.LogDebug($"Lobby state is {_state} and {(NewEvent is null ? "null" : NewEvent.Name)}");
+            DebugLogger.LogDebug($"Lobby state is {_state} and {(NewEvent is null ? "null" : NewEvent.Name)}", LogLevel.Debug);
 
-            if (_state == LobbyState.Waiting)
+            if (_state != LobbyState.Ending)
                 return false;
-            if (_state == LobbyState.Running)
-                return false;
-            if (_state == LobbyState.Choosing)
-                return false;
-            if (_state == LobbyState.Ending)
-                return true;
 
             return true;
         }
         
         protected override void ProcessFrame()
         {
-            string message = Translation.LobbyGetReady;
+            string message = Translation.GetReady;
 
             if (_state == LobbyState.Waiting && EventTime.TotalSeconds >= 5)
             {
@@ -123,7 +116,7 @@ namespace AutoEvent.Games.Lobby
 
             if (_state == LobbyState.Running)
             {
-                message = Translation.LobbyRun;
+                message = Translation.Run;
                 if (EventTime.TotalSeconds <= 10)
                 {
                     foreach (Player player in Player.GetPlayers())
@@ -148,7 +141,7 @@ namespace AutoEvent.Games.Lobby
 
             if (_state == LobbyState.Choosing)
             {
-                message = Translation.LobbyChoosing.Replace("{nickName}", _chooser.Nickname);
+                message = Translation.Choosing.Replace("{nickName}", _chooser.Nickname);
                 if (EventTime.TotalSeconds <= 15)
                 {
                     foreach (var platform in _platformes)
@@ -167,7 +160,7 @@ namespace AutoEvent.Games.Lobby
                 }
             }
 
-            var text = Translation.LobbyGlobalMessage
+            var text = Translation.GlobalMessage
                 .Replace("{message}", message)
                 .Replace("{count}", Player.GetPlayers().Count().ToString());
             Extensions.Broadcast(text, 1);
@@ -177,7 +170,7 @@ namespace AutoEvent.Games.Lobby
         {
             DebugLogger.LogDebug($"Lobby is finished");
 
-            var text = Translation.LobbyFinishMessage
+            var text = Translation.FinishMessage
                 .Replace("{nickName}", _chooser.Nickname)
                 .Replace("{newName}", NewEvent.Name)
                 .Replace("{count}", Player.GetPlayers().Count().ToString());

@@ -33,8 +33,7 @@ namespace AutoEvent.Games.AllDeathmatch
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
         { 
             SoundName = "ExecDeathmatch.ogg", 
-            Volume = 10,
-            Loop = true 
+            Volume = 10
         };
         private EventHandler _eventHandler { get; set; }
         internal List<GameObject> Points { get; set; }

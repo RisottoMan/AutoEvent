@@ -33,8 +33,7 @@ namespace AutoEvent.Games.BuckshotRoulette
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
         { 
             SoundName = "Knife.ogg", 
-            Volume = 10, 
-            Loop = true 
+            Volume = 10
         };
         protected override FriendlyFireSettings ForceEnableFriendlyFire { get; set; } = FriendlyFireSettings.Disable;
         private EventHandler _eventHandler;

@@ -6,7 +6,6 @@ using AutoEvent.Interfaces;
 using UnityEngine;
 
 namespace AutoEvent.Games.Puzzle;
-
 public class Config : EventConfig
 {
     public Config()

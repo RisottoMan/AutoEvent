@@ -18,28 +18,27 @@ namespace AutoEvent.Games.Spleef;
 
 public class Plugin : Event, IEventMap, IInternalEvent
 {
-    public override string Name { get; set; } = AutoEvent.Singleton.Translation.SpleefTranslate.SpleefName;
-    public override string Description { get; set; } = AutoEvent.Singleton.Translation.SpleefTranslate.SpleefDescription;
+    public override string Name { get; set; } = "Spleef";
+    public override string Description { get; set; } = "Shoot at the platforms and don't fall into the void";
     public override string Author { get; set; } = "Redforce04 (created logic code) && KoT0XleB (modified map)";
-    public override string CommandName { get; set; } = AutoEvent.Singleton.Translation.SpleefTranslate.SpleefCommandName;
+    public override string CommandName { get; set; } = "spleef";
     public override Version Version { get; set; } = new Version(1, 0, 3);
-    public Translation Translation { get; set; } = AutoEvent.Singleton.Translation.SpleefTranslate;
     protected override FriendlyFireSettings ForceEnableFriendlyFire { get; set; } = FriendlyFireSettings.Disable;
 
     [EventConfig]
-    public Configs.Config Config { get; set; }
-    public EventHandler EventHandler { get; set; }
+    public Config Config { get; set; }
+    [EventTranslation]
+    public Translation Translation { get; set; }
+    public EventHandler _eventHandler { get; set; }
     public MapInfo MapInfo { get; set; } = new MapInfo()
     { 
         MapName = "Spleef",
-        Position = new Vector3(76f, 1026.5f, -43.68f),
-        IsStatic = true
+        Position = new Vector3(76f, 1026.5f, -43.68f)
     };
     public SoundInfo SoundInfo { get; set; } = new SoundInfo()
     {
         SoundName = "Fall_Guys_Winter_Fallympics.ogg",
-        Volume = 7,
-        Loop = true
+        Volume = 7
     };
     private float _spawnHeight;
     private TimeSpan _remaining;
@@ -47,30 +46,28 @@ public class Plugin : Event, IEventMap, IInternalEvent
     List<Loadout> _playerLoadounts;
     protected override void RegisterEvents()
     {
-        EventHandler = new EventHandler(this);
-
-        Servers.TeamRespawn += EventHandler.OnTeamRespawn;
-        Servers.SpawnRagdoll += EventHandler.OnSpawnRagdoll;
-        Servers.PlaceBullet += EventHandler.OnPlaceBullet;
-        Servers.PlaceBlood += EventHandler.OnPlaceBlood;
-        Players.DropItem += EventHandler.OnDropItem;
-        Players.DropAmmo += EventHandler.OnDropAmmo;
-        Players.Shot += EventHandler.OnShot;
-        EventManager.RegisterEvents(EventHandler);
+        _eventHandler = new EventHandler(this);
+        Servers.TeamRespawn += _eventHandler.OnTeamRespawn;
+        Servers.SpawnRagdoll += _eventHandler.OnSpawnRagdoll;
+        Servers.PlaceBullet += _eventHandler.OnPlaceBullet;
+        Servers.PlaceBlood += _eventHandler.OnPlaceBlood;
+        Players.DropItem += _eventHandler.OnDropItem;
+        Players.DropAmmo += _eventHandler.OnDropAmmo;
+        Players.Shot += _eventHandler.OnShot;
+        EventManager.RegisterEvents(_eventHandler);
     }
 
     protected override void UnregisterEvents()
     {
-        EventManager.UnregisterEvents(EventHandler);
-        Servers.TeamRespawn -= EventHandler.OnTeamRespawn;
-        Servers.SpawnRagdoll -= EventHandler.OnSpawnRagdoll;
-        Servers.PlaceBullet -= EventHandler.OnPlaceBullet;
-        Servers.PlaceBlood -= EventHandler.OnPlaceBlood;
-        Players.DropItem -= EventHandler.OnDropItem;
-        Players.DropAmmo -= EventHandler.OnDropAmmo;
-        Players.Shot -= EventHandler.OnShot;
-
-        EventHandler = null;
+        EventManager.UnregisterEvents(_eventHandler);
+        Servers.TeamRespawn -= _eventHandler.OnTeamRespawn;
+        Servers.SpawnRagdoll -= _eventHandler.OnSpawnRagdoll;
+        Servers.PlaceBullet -= _eventHandler.OnPlaceBullet;
+        Servers.PlaceBlood -= _eventHandler.OnPlaceBlood;
+        Players.DropItem -= _eventHandler.OnDropItem;
+        Players.DropAmmo -= _eventHandler.OnDropAmmo;
+        Players.Shot -= _eventHandler.OnShot;
+        _eventHandler = null;
     }
 
     protected override void OnStart()
@@ -193,8 +190,8 @@ public class Plugin : Event, IEventMap, IInternalEvent
     {
         for (int time = 10; time > 0; time--)
         {
-            Extensions.Broadcast($"{Translation.SpleefDescription}\n" +
-                $"{Translation.SpleefStart.Replace("{time}", $"{time}")}", 1);
+            Extensions.Broadcast($"{Translation.Description}\n" +
+                $"{Translation.Start.Replace("{time}", $"{time}")}", 1);
             yield return Timing.WaitForSeconds(1f);
         }
     }
@@ -220,7 +217,7 @@ public class Plugin : Event, IEventMap, IInternalEvent
         int count = Player.GetPlayers().Count(x => x.IsAlive);
         foreach (Player ply in Player.GetPlayers())
         {
-            ply.SendBroadcast(Translation.SpleefRunning.
+            ply.SendBroadcast(Translation.Running.
                 Replace("{players}", count.ToString()).
                 Replace("{remaining}", $"{remaining}"), (ushort)this.FrameDelayInSeconds);
         }
@@ -233,19 +230,18 @@ public class Plugin : Event, IEventMap, IInternalEvent
 
         if (count > 1)
         {
-            text = Translation.SpleefSeveralSurvivors;
+            text = Translation.SomeSurvived;
         }
         else if (count == 1)
         {
-            text = Translation.SpleefWinner.
-                Replace("{winner}", Player.GetPlayers().First(x => x.IsAlive).Nickname);
+            text = Translation.Winner.Replace("{winner}", Player.GetPlayers().First(x => x.IsAlive).Nickname);
         }
         else
         {
-            text = Translation.SpleefAllDied;
+            text = Translation.AllDied;
         }
 
-        Server.SendBroadcast(text, 10);
+        Extensions.Broadcast(text, 10);
     }
 
     protected override void OnCleanup()

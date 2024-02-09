@@ -1,7 +1,6 @@
 ﻿using AutoEvent.Interfaces;
 
 namespace AutoEvent.Games.Trouble;
-
 public class Translation : EventTranslation
 {
     public override string Name { get; set; } = "Trouble in Terrorist Town";

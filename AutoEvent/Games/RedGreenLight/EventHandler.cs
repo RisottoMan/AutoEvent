@@ -10,7 +10,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace AutoEvent.Games.Light;
-
 public class EventHandler
 {
     private Plugin _plugin;
@@ -41,13 +40,13 @@ public class EventHandler
         if (target == null || ev.Player == target)
             return;
 
-        if (!_plugin.pushCooldown.ContainsKey(ev.Player))
-            _plugin.pushCooldown.Add(ev.Player, 0);
+        if (!_plugin.PushCooldown.ContainsKey(ev.Player))
+            _plugin.PushCooldown.Add(ev.Player, 0);
 
-        if (_plugin.pushCooldown[ev.Player] > 0)
+        if (_plugin.PushCooldown[ev.Player] > 0)
             return;
 
-        _plugin.pushCooldown[ev.Player] = 3;
+        _plugin.PushCooldown[ev.Player] = 3;
         Timing.RunCoroutine(PushPlayer(ev.Player, target));
     }
 

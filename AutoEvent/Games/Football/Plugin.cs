@@ -30,12 +30,11 @@ namespace AutoEvent.Games.Football
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
         { 
             SoundName = "Football.ogg", 
-            Volume = 5,
-            Loop = true
+            Volume = 5
         };
         protected override float PostRoundDelay { get; set; } = 10f;
         protected override float FrameDelayInSeconds { get; set; } = 0.3f;
-        private EventHandler EventHandler { get; set; }
+        private EventHandler _eventHandler { get; set; }
         private TimeSpan _remainingTime;
         private int _bluePoints;
         private int _redPoints;
@@ -43,19 +42,18 @@ namespace AutoEvent.Games.Football
         private List<GameObject> _triggers;
         protected override void RegisterEvents()
         {
-            EventHandler = new EventHandler();
-            EventManager.RegisterEvents(EventHandler);
-            Servers.TeamRespawn += EventHandler.OnTeamRespawn;
-            Players.DropItem += EventHandler.OnDropItem;
+            _eventHandler = new EventHandler();
+            EventManager.RegisterEvents(_eventHandler);
+            Servers.TeamRespawn += _eventHandler.OnTeamRespawn;
+            Players.DropItem += _eventHandler.OnDropItem;
         }
 
         protected override void UnregisterEvents()
         {
-            EventManager.UnregisterEvents(EventHandler);
-            Servers.TeamRespawn -= EventHandler.OnTeamRespawn;
-            Players.DropItem -= EventHandler.OnDropItem;
-
-            EventHandler = null;
+            EventManager.UnregisterEvents(_eventHandler);
+            Servers.TeamRespawn -= _eventHandler.OnTeamRespawn;
+            Players.DropItem -= _eventHandler.OnDropItem;
+            _eventHandler = null;
         }
 
         protected override void OnStart()

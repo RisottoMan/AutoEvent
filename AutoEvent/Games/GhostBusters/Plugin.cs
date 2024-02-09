@@ -14,26 +14,19 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using AutoEvent.Events.Handlers;
-using AutoEvent.Games.GhostBusters.Configs;
 using AutoEvent.Games.GhostBusters.Features;
-using AutoEvent.Games.Infection;
 using AutoEvent.Interfaces;
-using CustomPlayerEffects;
 using HarmonyLib;
 using Interactables.Interobjects;
 using Interactables.Interobjects.DoorUtils;
 using InventoryMenu.API;
 using InventoryMenu.API.EventArgs;
 using InventoryMenu.API.Features;
-using InventorySystem;
-using InventorySystem.Items;
-using InventorySystem.Items.Firearms;
 using InventorySystem.Items.MicroHID;
 using MapGeneration;
 using MEC;
 using PlayerRoles;
 using PluginAPI.Core;
-using PluginAPI.Core.Doors;
 using PluginAPI.Events;
 using Powerups.Extensions;
 using UnityEngine;
@@ -43,6 +36,7 @@ namespace AutoEvent.Games.GhostBusters;
 
 public class Plugin : Event, IInternalEvent, IEventSound, IHidden
 {
+    // Removed Mini-Game for Haloween Update
     public override string Name { get; set; } = "Ghost Busters";
     public override string Description { get; set; } = "Ghostbusters vs ghosts. The clock is ticking, will the ghost-busters be able to kill all ghosts before midnight hits?";
     public override string Author { get; set; } = "Redforce04 and Riptide";
@@ -55,8 +49,7 @@ public class Plugin : Event, IInternalEvent, IEventSound, IHidden
     public SoundInfo SoundInfo { get; set; } = new SoundInfo()
     { 
         SoundName = "Ghostbusters.ogg", 
-        Volume = 5, 
-        Loop = true
+        Volume = 5
     };
     protected override float PostRoundDelay { get; set; } = 10f;
     protected override float FrameDelayInSeconds { get; set; } = 1f;

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using MEC;
 using PlayerRoles;
@@ -10,7 +9,6 @@ using PluginAPI.Core;
 using PluginAPI.Events;
 using AdminToys;
 using AutoEvent.Events.Handlers;
-using AutoEvent.Games.Infection;
 using AutoEvent.Interfaces;
 using Mirror;
 using Random = UnityEngine.Random;
@@ -20,25 +18,32 @@ namespace AutoEvent.Games.Puzzle
 {
     public class Plugin : Event, IEventSound, IEventMap, IInternalEvent
     { //todo: add some configs for a platform choose speed, and platform fall delay. Maybe make this a scale from 1 - 10 or something.
-        public override string Name { get; set; } = AutoEvent.Singleton.Translation.PuzzleTranslate.PuzzleName;
-        public override string Description { get; set; } = AutoEvent.Singleton.Translation.PuzzleTranslate.PuzzleDescription;
+        public override string Name { get; set; } = "Puzzle";
+        public override string Description { get; set; } = "Get up the fastest on the right color";
         public override string Author { get; set; } = "KoT0XleB";
-        public override string CommandName { get; set; } = AutoEvent.Singleton.Translation.PuzzleTranslate.PuzzleCommandName;
+        public override string CommandName { get; set; } = "puzzle";
         public override Version Version { get; set; } = new Version(1, 0, 1);
         [EventConfig]
         public Config Config { get; set; }
-
-        [EventConfigPreset] public Config ColorMatch => Preset.ColorMatch;
-        [EventConfigPreset] public Config Run => Preset.Run;
+        [EventConfigPreset] 
+        public Config ColorMatch => Preset.ColorMatch;
+        [EventConfigPreset] 
+        public Config Run => Preset.Run;
+        [EventTranslation]
+        public Translation Translation { get; set; }
         public MapInfo MapInfo { get; set; } = new MapInfo()
-            { MapName = "Puzzle", Position = new Vector3(76f, 1026.5f, -43.68f), };
+        { 
+            MapName = "Puzzle", 
+            Position = new Vector3(76f, 1026.5f, -43.68f)
+        };
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
-            { SoundName = "ChristmasMusic.ogg", Volume = 7, Loop = true };
+        { 
+            SoundName = "ChristmasMusic.ogg", 
+            Volume = 7
+        };
         protected override float PostRoundDelay { get; set; } = 10f;
-        private EventHandler EventHandler { get; set; }
+        private EventHandler _eventHandler { get; set; }
         private GridSelector GridSelector { get; set; }
-        private PuzzleTranslate Translation { get; set; } = AutoEvent.Singleton.Translation.PuzzleTranslate;
-        private readonly string _broadcastName = "<color=#F59F00>P</color><color=#F68523>u</color><color=#F76B46>z</color><color=#F85169>z</color><color=#F9378C>l</color><color=#FA1DAF>e</color>";
         /// <summary>
         /// A local list of platforms that changes round to round.
         /// </summary>
@@ -56,30 +61,28 @@ namespace AutoEvent.Games.Puzzle
         private float _speed = 5;
         private float _timeDelay = 0.5f;
         private string _stageText;
-
         protected override void RegisterEvents()
         {
-            EventHandler = new EventHandler();
-            EventManager.RegisterEvents(EventHandler);
-            Servers.TeamRespawn += EventHandler.OnTeamRespawn;
-            Servers.SpawnRagdoll += EventHandler.OnSpawnRagdoll;
-            Servers.PlaceBullet += EventHandler.OnPlaceBullet;
-            Servers.PlaceBlood += EventHandler.OnPlaceBlood;
-            Players.DropItem += EventHandler.OnDropItem;
-            Players.DropAmmo += EventHandler.OnDropAmmo;
+            _eventHandler = new EventHandler();
+            EventManager.RegisterEvents(_eventHandler);
+            Servers.TeamRespawn += _eventHandler.OnTeamRespawn;
+            Servers.SpawnRagdoll += _eventHandler.OnSpawnRagdoll;
+            Servers.PlaceBullet += _eventHandler.OnPlaceBullet;
+            Servers.PlaceBlood += _eventHandler.OnPlaceBlood;
+            Players.DropItem += _eventHandler.OnDropItem;
+            Players.DropAmmo += _eventHandler.OnDropAmmo;
         }
 
         protected override void UnregisterEvents()
         {
-            EventManager.UnregisterEvents(EventHandler);
-            Servers.TeamRespawn -= EventHandler.OnTeamRespawn;
-            Servers.SpawnRagdoll -= EventHandler.OnSpawnRagdoll;
-            Servers.PlaceBullet -= EventHandler.OnPlaceBullet;
-            Servers.PlaceBlood -= EventHandler.OnPlaceBlood;
-            Players.DropItem -= EventHandler.OnDropItem;
-            Players.DropAmmo -= EventHandler.OnDropAmmo;
-
-            EventHandler = null;
+            EventManager.UnregisterEvents(_eventHandler);
+            Servers.TeamRespawn -= _eventHandler.OnTeamRespawn;
+            Servers.SpawnRagdoll -= _eventHandler.OnSpawnRagdoll;
+            Servers.PlaceBullet -= _eventHandler.OnPlaceBullet;
+            Servers.PlaceBlood -= _eventHandler.OnPlaceBlood;
+            Players.DropItem -= _eventHandler.OnDropItem;
+            Players.DropAmmo -= _eventHandler.OnDropAmmo;
+            _eventHandler = null;
         }
 
         protected override void OnStart()
@@ -100,7 +103,6 @@ namespace AutoEvent.Games.Puzzle
 
         private void GeneratePlatforms(int amountPerAxis = 5)
         {
-            
             float areaSizeX = 20f;
             float areaSizeY = 20f;
             float sizeX = areaSizeX / amountPerAxis;
@@ -150,7 +152,7 @@ namespace AutoEvent.Games.Puzzle
         {
             for (int time = 15; time > 0; time--)
             {
-                Extensions.Broadcast($"{_broadcastName}\n{Translation.PuzzleStart.Replace("{time}", $"{time}")}", 1);
+                Extensions.Broadcast($"{Translation.MainMessage}\n{Translation.Start.Replace("{time}", $"{time}")}", 1);
                 yield return Timing.WaitForSeconds(1f);
             }
         }
@@ -191,7 +193,7 @@ namespace AutoEvent.Games.Puzzle
         {
             float selectionDelay = Config.SelectionTime.GetValue(_stage, 10,0,10);
             float fallDelay = Config.FallDelay.GetValue(_stage, 10, .3f,8);
-            _stageText = Translation.PuzzleStage
+            _stageText = Translation.Stage
                 .Replace("{stageNum}", $"{_stage}")
                 .Replace("{stageFinal}", $"{_finaleStage}")
                 .Replace("{plyCount}", $"{Player.GetPlayers().Count(r => r.IsAlive)}");
@@ -280,7 +282,7 @@ namespace AutoEvent.Games.Puzzle
                 
             
             // Delay before fall.
-            Extensions.Broadcast($"<b>{_broadcastName}</b>\n{_stageText}", (ushort)(fallDelay + 1));
+            Extensions.Broadcast($"<b>{Translation.MainMessage}</b>\n{_stageText}", (ushort)(fallDelay + 1));
             yield return Timing.WaitForSeconds(fallDelay);
 
             // Platforms Fall.
@@ -293,7 +295,7 @@ namespace AutoEvent.Games.Puzzle
             }
                
             // Wait for platforms to return.
-            Extensions.Broadcast($"<b>{_broadcastName}</b>\n{_stageText}", (ushort)(fallDelay + 1));
+            Extensions.Broadcast($"<b>{Translation.MainMessage}</b>\n{_stageText}", (ushort)(fallDelay + 1));
             yield return Timing.WaitForSeconds(fallDelay);
                 
             // Platforms Return.
@@ -304,7 +306,7 @@ namespace AutoEvent.Games.Puzzle
                     platform.transform.position += Vector3.up * 5;
                 }
             }
-            Extensions.Broadcast($"<b>{_broadcastName}</b>\n{_stageText}", (ushort)(_speed + 1.5f));
+            Extensions.Broadcast($"<b>{Translation.MainMessage}</b>\n{_stageText}", (ushort)(_speed + 1.5f));
             yield return Timing.WaitForSeconds(_speed);
 
             _speed -= 0.39f;
@@ -316,16 +318,16 @@ namespace AutoEvent.Games.Puzzle
         {
             if (Player.GetPlayers().Count(r => r.IsAlive) < 1)
             {
-                Extensions.Broadcast($"<b>{_broadcastName}</b>\n{Translation.PuzzleAllDied}", 10);
+                Extensions.Broadcast($"<b>{Translation.MainMessage}</b>\n{Translation.AllDied}", 10);
             }
             else if (Player.GetPlayers().Count(r => r.IsAlive) == 1)
             {
                 var player = Player.GetPlayers().First(r => r.IsAlive).DisplayNickname;
-                Extensions.Broadcast($"<b>{_broadcastName}</b>\n{Translation.PuzzleWinner.Replace("{winner}", $"{player}")}", 10);
+                Extensions.Broadcast($"<b>{Translation.MainMessage}</b>\n{Translation.Winner.Replace("{winner}", $"{player}")}", 10);
             }
             else
             {
-                Extensions.Broadcast($"<b>{_broadcastName}</b>\n{Translation.PuzzleSeveralSurvivors}", 10);
+                Extensions.Broadcast($"<b>{Translation.MainMessage}</b>\n{Translation.SomeSurvived}", 10);
             }
         }
 
@@ -342,7 +344,8 @@ namespace AutoEvent.Games.Puzzle
 
 public class Platform
 {
-    public Platform(float sizeX, float sizeY, float positionX, float positionY){
+    public Platform(float sizeX, float sizeY, float positionX, float positionY)
+    {
         X = sizeX;
         Y = sizeY;
         PositionX = positionX;

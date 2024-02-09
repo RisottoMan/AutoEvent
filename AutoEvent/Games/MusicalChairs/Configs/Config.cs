@@ -6,7 +6,6 @@ using PlayerRoles;
 using UnityEngine;
 
 namespace AutoEvent.Games.MusicalChairs;
-
 public class Config : EventConfig
 {
     public Config()

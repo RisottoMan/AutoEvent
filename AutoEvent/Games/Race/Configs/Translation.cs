@@ -1,8 +1,7 @@
 ﻿using AutoEvent.Interfaces;
 
 namespace AutoEvent.Games.Race;
-
-public class RaceTranslation : EventTranslation
+public class Translation : EventTranslation
 {
     public override string Name { get; set; } = "Race";
     public override string Description { get; set; } = "Get to the end of the map to win";

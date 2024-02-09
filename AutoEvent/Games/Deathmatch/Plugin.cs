@@ -31,8 +31,7 @@ namespace AutoEvent.Games.Deathmatch
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
         { 
             SoundName = "ClassicMusic.ogg", 
-            Volume = 5, 
-            Loop = true
+            Volume = 5
         };
         protected override FriendlyFireSettings ForceEnableFriendlyFire { get; set; } = FriendlyFireSettings.Disable;
         protected override float PostRoundDelay { get; set; } = 10f;

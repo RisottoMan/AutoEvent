@@ -14,60 +14,58 @@ namespace AutoEvent.Games.Light
 {
     public class Plugin : Event, IEventMap, IInternalEvent
     {
-        public override string Name { get; set; } = AutoEvent.Singleton.Translation.LightTranslation.LightName;
-        public override string Description { get; set; } = AutoEvent.Singleton.Translation.LightTranslation.LightDescription;
+        public override string Name { get; set; } = "Red Light Green Light";
+        public override string Description { get; set; } = "Reach the end of the finish line";
         public override string Author { get; set; } = "KoT0XleB";
-        public override string CommandName { get; set; } = AutoEvent.Singleton.Translation.LightTranslation.LightCommandName;
+        public override string CommandName { get; set; } = "light";
         public override Version Version { get; set; } = new Version(1, 0, 1);
-        private LightTranslation Translation { get; set; } = AutoEvent.Singleton.Translation.LightTranslation;
         [EventConfig]
         public Config Config { get; set; }
+        [EventTranslation]
+        public Translation Translation { get; set; }
         public MapInfo MapInfo { get; set; } = new MapInfo()
         {
             MapName = "RedLight",
             Position = new Vector3(0f, 1030f, -43.5f)
         };
-        private EventHandler EventHandler { get; set; }
+        private EventHandler _eventHandler { get; set; }
         GameObject Wall { get; set; }
         GameObject Doll { get; set; }
         GameObject RedLine { get; set; }
         TimeSpan ActiveTime { get; set; }
         State EventState { get; set; }
-        public Dictionary<Player, float> pushCooldown;
+        public Dictionary<Player, float> PushCooldown;
         protected override void RegisterEvents()
         {
-            EventHandler = new EventHandler(this);
-
-            EventManager.RegisterEvents(EventHandler);
-            Servers.TeamRespawn += EventHandler.OnTeamRespawn;
-            Servers.PlaceBullet += EventHandler.OnPlaceBullet;
-            Servers.PlaceBlood += EventHandler.OnPlaceBlood;
-            Players.DropItem += EventHandler.OnDropItem;
-            Players.DropAmmo += EventHandler.OnDropAmmo;
-            Players.PlayerDamage += EventHandler.OnDamage;
-            Players.PlayerNoclip += EventHandler.OnPlayerNoclip;
+            _eventHandler = new EventHandler(this);
+            EventManager.RegisterEvents(_eventHandler);
+            Servers.TeamRespawn += _eventHandler.OnTeamRespawn;
+            Servers.PlaceBullet += _eventHandler.OnPlaceBullet;
+            Servers.PlaceBlood += _eventHandler.OnPlaceBlood;
+            Players.DropItem += _eventHandler.OnDropItem;
+            Players.DropAmmo += _eventHandler.OnDropAmmo;
+            Players.PlayerDamage += _eventHandler.OnDamage;
+            Players.PlayerNoclip += _eventHandler.OnPlayerNoclip;
         }
 
         protected override void UnregisterEvents()
         {
-            EventManager.UnregisterEvents(EventHandler);
-
-            Servers.TeamRespawn -= EventHandler.OnTeamRespawn;
-            Servers.PlaceBullet -= EventHandler.OnPlaceBullet;
-            Servers.PlaceBlood -= EventHandler.OnPlaceBlood;
-            Players.DropItem -= EventHandler.OnDropItem;
-            Players.DropAmmo -= EventHandler.OnDropAmmo;
-            Players.PlayerDamage -= EventHandler.OnDamage;
-            Players.PlayerNoclip -= EventHandler.OnPlayerNoclip;
-
-            EventHandler = null;
+            EventManager.UnregisterEvents(_eventHandler);
+            Servers.TeamRespawn -= _eventHandler.OnTeamRespawn;
+            Servers.PlaceBullet -= _eventHandler.OnPlaceBullet;
+            Servers.PlaceBlood -= _eventHandler.OnPlaceBlood;
+            Players.DropItem -= _eventHandler.OnDropItem;
+            Players.DropAmmo -= _eventHandler.OnDropAmmo;
+            Players.PlayerDamage -= _eventHandler.OnDamage;
+            Players.PlayerNoclip -= _eventHandler.OnPlayerNoclip;
+            _eventHandler = null;
         }
 
         protected override void OnStart()
         {
             RedLine = null;
             EventState = State.GreenLight;
-            pushCooldown = new Dictionary<Player, float>();
+            PushCooldown = new Dictionary<Player, float>();
             List<GameObject> spawnpoints = new List<GameObject>();
 
             foreach (GameObject gameObject in MapInfo.Map.AttachedBlocks)
@@ -93,7 +91,7 @@ namespace AutoEvent.Games.Light
         {
             for (int time = 10; time > 0; time--)
             {
-                string text = Translation.LightStart.Replace("{time}", time.ToString());
+                string text = Translation.Start.Replace("{time}", time.ToString());
                 Extensions.Broadcast(text, 1);
                 yield return Timing.WaitForSeconds(1f);
             }
@@ -118,10 +116,10 @@ namespace AutoEvent.Games.Light
             }
             else ActiveTime = TimeSpan.Zero;
 
-            foreach (var key in pushCooldown.Keys.ToList())
+            foreach (var key in PushCooldown.Keys.ToList())
             {
-                if (pushCooldown[key] > 0)
-                    pushCooldown[key] -= FrameDelayInSeconds;
+                if (PushCooldown[key] > 0)
+                    PushCooldown[key] -= FrameDelayInSeconds;
             }
 
             return !(EventTime.TotalSeconds < Config.TotalTimeInSeconds && 
@@ -132,13 +130,13 @@ namespace AutoEvent.Games.Light
         protected override void ProcessFrame()
         {
             int remainTime = Config.TotalTimeInSeconds - (int)EventTime.TotalSeconds;
-            string text = Translation.LightCycle.
+            string text = Translation.Cycle.
                 Replace("{name}", Name).
                 Replace("{time}", remainTime.ToString());
 
             if (EventState == State.GreenLight)
             {
-                text = text.Replace("{state}", Translation.LightGreenLight);
+                text = text.Replace("{state}", Translation.GreenLight);
 
                 if (ActiveTime.TotalSeconds <= 0)
                 {
@@ -149,7 +147,7 @@ namespace AutoEvent.Games.Light
             }
             else if (EventState == State.RotatingEnable)
             {
-                text = text.Replace("{state}", Translation.LightRedLight);
+                text = text.Replace("{state}", Translation.RedLight);
                 Vector3 rotation = Doll.transform.rotation.eulerAngles;
 
                 if (Mathf.Abs(rotation.y - 180) > 0.01f)
@@ -170,7 +168,7 @@ namespace AutoEvent.Games.Light
             }
             else if (EventState == State.RedLight)
             {
-                text = text.Replace("{state}", Translation.LightRedLight);
+                text = text.Replace("{state}", Translation.RedLight);
                 foreach (Player player in Player.GetPlayers())
                 {
                     if ((int)RedLine.transform.position.z <= (int)player.Position.z)
@@ -191,7 +189,7 @@ namespace AutoEvent.Games.Light
                         continue;
 
                     Extensions.GrenadeSpawn(0.1f, player.Position, 0.1f);
-                    player.Kill(Translation.LightRedLose);
+                    player.Kill(Translation.RedLose);
                     ActiveTime += TimeSpan.FromSeconds(1f);
                 }
 
@@ -204,7 +202,7 @@ namespace AutoEvent.Games.Light
             }
             else if (EventState == State.RotatingDisable)
             {
-                text = text.Replace("{state}", Translation.LightGreenLight);
+                text = text.Replace("{state}", Translation.GreenLight);
                 Vector3 rotation = Doll.transform.rotation.eulerAngles;
 
                 if (Mathf.Abs(rotation.y - 0) > 0.01f)
@@ -229,33 +227,31 @@ namespace AutoEvent.Games.Light
                 if ((int)RedLine.transform.position.z > (int)player.Position.z)
                 {
                     Extensions.GrenadeSpawn(0.1f, player.Position, 0.1f);
-                    player.Kill(Translation.LightNoTime);
+                    player.Kill(Translation.NoTime);
                 }
             }
+
+            string text = string.Empty;
             int count = Player.GetPlayers().Count(r => r.IsAlive);
+
             if (count > 1)
             {
-                string text = Translation.LightMoreWin.
-                    Replace("{name}", Name).
-                    Replace("{count}", count.ToString());
-                Extensions.Broadcast(text, 10);
+                text = Translation.MoreWin.Replace("{name}", Name).Replace("{count}", count.ToString());
             }
             else if (count == 1)
             {
                 Player winner = Player.GetPlayers().Where(r => r.IsAlive).FirstOrDefault();
-                string text = Translation.LightPlayerWin.
-                    Replace("{name}", Name).
-                    Replace("{winner}", winner.Nickname);
-                Extensions.Broadcast(text, 10);
+                text = Translation.PlayerWin.Replace("{name}", Name).Replace("{winner}", winner.Nickname);
             }
             else
             {
-                string text = Translation.LightAllDied.
-                    Replace("{name}", Name);
-                Extensions.Broadcast(text, 10);
+                text = Translation.AllDied.Replace("{name}", Name);
             }
+
+            Extensions.Broadcast(text, 10);
         }
     }
+
     public enum State
     {
         GreenLight,

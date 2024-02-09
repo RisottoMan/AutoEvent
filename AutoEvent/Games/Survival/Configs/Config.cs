@@ -6,7 +6,6 @@ using AutoEvent.Interfaces;
 using PlayerRoles;
 
 namespace AutoEvent.Games.Survival;
-
 public class Config : EventConfig
 {
     [Description("How long the round should last in seconds.")]

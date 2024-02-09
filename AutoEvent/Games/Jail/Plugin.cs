@@ -9,11 +9,10 @@ using UnityEngine;
 using PluginAPI.Core;
 using PluginAPI.Events;
 using AutoEvent.Events.Handlers;
-using AutoEvent.Games.Infection;
 using AutoEvent.Interfaces;
 using MapGeneration.Distributors;
-using AutoEvent.Games.Football;
 using Event = AutoEvent.Interfaces.Event;
+using AutoEvent.Games.Football;
 
 namespace AutoEvent.Games.Jail
 {
@@ -80,7 +79,6 @@ namespace AutoEvent.Games.Jail
             {
                 try
                 {
-
                     switch (obj.name)
                     {
                         case "Button":
@@ -188,7 +186,7 @@ namespace AutoEvent.Games.Jail
             }
             for (int time = 15; time > 0; time--)
             {
-                Extensions.Broadcast(Translation.JailBeforeStartPrisoners.Replace("{name}", Name).Replace("{time}", time.ToString("00")), 1);
+                Extensions.Broadcast(Translation.StartPrisoners.Replace("{name}", Name).Replace("{time}", time.ToString("00")), 1);
                 foreach (Player ply in jailors)
                 {
                     if (ply is null)
@@ -197,7 +195,7 @@ namespace AutoEvent.Games.Jail
                         continue;
                     }
                     ply.ClearBroadcasts();
-                    ply.SendBroadcast(Translation.JailBeforeStart.Replace("{name}", Name).Replace("{time}", time.ToString("00")), 1);
+                    ply.SendBroadcast(Translation.Start.Replace("{name}", Name).Replace("{time}", time.ToString("00")), 1);
                 }
                 yield return Timing.WaitForSeconds(1f);
                 //JailLockdownSystem.ProcessTick(true);
@@ -228,7 +226,7 @@ namespace AutoEvent.Games.Jail
 
                 player.ClearBroadcasts();
                 player.SendBroadcast(
-                    Translation.JailCycle.Replace("{name}", Name).Replace("{dclasscount}", dClassCount)
+                    Translation.Cycle.Replace("{name}", Name).Replace("{dclasscount}", dClassCount)
                         .Replace("{mtfcount}", mtfCount).Replace("{time}", time), 1);
             }
             
@@ -257,12 +255,12 @@ namespace AutoEvent.Games.Jail
         {
             if (Player.GetPlayers().Count(r => r.Team == Team.FoundationForces) == 0)
             {
-                Extensions.Broadcast(Translation.JailPrisonersWin.Replace("{time}", $"{EventTime.Minutes:00}:{EventTime.Seconds:00}"), 10);
+                Extensions.Broadcast(Translation.PrisonersWin.Replace("{time}", $"{EventTime.Minutes:00}:{EventTime.Seconds:00}"), 10);
             }
 
             if (Player.GetPlayers().Count(r => r.Role == RoleTypeId.ClassD) == 0)
             {
-                Extensions.Broadcast(Translation.JailJailersWin.Replace("{time}", $"{EventTime.Minutes:00}:{EventTime.Seconds:00}"), 10);
+                Extensions.Broadcast(Translation.JailersWin.Replace("{time}", $"{EventTime.Minutes:00}:{EventTime.Seconds:00}"), 10);
             }   
         }
     }

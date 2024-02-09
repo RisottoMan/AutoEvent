@@ -1,5 +1,4 @@
 ﻿namespace AutoEvent.Games.Puzzle;
-
 public static class Preset
 {
     public static Config ColorMatch { get; set; } = new Config()

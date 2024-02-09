@@ -4,7 +4,6 @@ using AutoEvent.API;
 using AutoEvent.Interfaces;
 
 namespace AutoEvent.Games.Vote;
-
 public class Config : EventConfig
 {
     [Description("The loadouts that players can get.")]

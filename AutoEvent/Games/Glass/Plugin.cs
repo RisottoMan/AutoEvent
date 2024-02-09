@@ -36,8 +36,7 @@ namespace AutoEvent.Games.Glass
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
         { 
             SoundName = "CrabGame.ogg", 
-            Volume = 15, 
-            Loop = true 
+            Volume = 15
         };
         protected override float PostRoundDelay { get; set; } = 10f;
         private EventHandler _eventHandler { get; set; }
@@ -235,6 +234,4 @@ namespace AutoEvent.Games.Glass
             _platforms.ForEach(Object.Destroy);
         }
     }
-
-    
 }

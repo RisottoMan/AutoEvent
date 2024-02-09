@@ -14,14 +14,15 @@ namespace AutoEvent.Games.MusicalChairs
 {
     public class Plugin : Event, IEventSound, IEventMap, IInternalEvent
     {
-        public override string Name { get; set; } = AutoEvent.Singleton.Translation.ChairsTranslation.ChairsName;
-        public override string Description { get; set; } = AutoEvent.Singleton.Translation.ChairsTranslation.ChairsDescription;
+        public override string Name { get; set; } = "Musical Chairs";
+        public override string Description { get; set; } = "Competition with other players for free chairs to funny music";
         public override string Author { get; set; } = "KoT0XleB";
-        public override string CommandName { get; set; } = AutoEvent.Singleton.Translation.ChairsTranslation.ChairsCommandName;
+        public override string CommandName { get; set; } = "chair";
         public override Version Version { get; set; } = new Version(1, 0, 3);
-        private ChairsTranslation Translation { get; set; } = AutoEvent.Singleton.Translation.ChairsTranslation;
         [EventConfig]
         public Config Config { get; set; }
+        [EventTranslation]
+        public Translation Translation { get; set; }
         public MapInfo MapInfo { get; set; } = new MapInfo()
         {
             MapName = "MusicalChairs",
@@ -101,7 +102,7 @@ namespace AutoEvent.Games.MusicalChairs
         {
             for (int time = 10; time > 0; time--)
             {
-                string text = Translation.ChairsStart.Replace("{time}", time.ToString());
+                string text = Translation.Start.Replace("{time}", time.ToString());
                 Extensions.Broadcast(text, 1);
                 yield return Timing.WaitForSeconds(1f);
             }
@@ -119,14 +120,13 @@ namespace AutoEvent.Games.MusicalChairs
         protected override float FrameDelayInSeconds { get; set; } = 0.1f;
         protected override void ProcessFrame()
         {
-            ChairsTranslation trans = Translation;
-            string text = trans.ChairsCycle.
+            string text = Translation.Cycle.
                 Replace("{name}", Name).
                 Replace("{count}", Player.GetPlayers().Count(r => r.IsAlive).ToString());
 
             if (_eventState == State.Starting)
             {
-                text = text.Replace("{state}", trans.ChairsRunDontTouch);
+                text = text.Replace("{state}", Translation.RunDontTouch);
 
                 foreach (var platform in Platforms)
                 {
@@ -150,7 +150,7 @@ namespace AutoEvent.Games.MusicalChairs
             }
             else if (_eventState == State.Playing)
             {
-                text = text.Replace("{state}", trans.ChairsRunDontTouch);
+                text = text.Replace("{state}", Translation.RunDontTouch);
 
                 foreach (Player player in Player.GetPlayers())
                 {
@@ -160,7 +160,7 @@ namespace AutoEvent.Games.MusicalChairs
                     if (_playerDict[player].Angle == curAngle)
                     {
                         Extensions.GrenadeSpawn(0.1f, player.Position, 0.1f);
-                        player.Kill(trans.ChairsStopRunning);
+                        player.Kill(Translation.StopRunning);
                     }
                     else
                     {
@@ -175,7 +175,7 @@ namespace AutoEvent.Games.MusicalChairs
                             if (_stageTime.TotalSeconds > 0)
                             {
                                 Extensions.GrenadeSpawn(0.1f, player.Position, 0.1f);
-                                player.Kill(trans.ChairsTouchAhead);
+                                player.Kill(Translation.TouchAhead);
                             }
                         }
                     }
@@ -195,7 +195,7 @@ namespace AutoEvent.Games.MusicalChairs
             }
             else if (_eventState == State.Stopping)
             {
-                text = text.Replace("{state}", trans.ChairsStandFree);
+                text = text.Replace("{state}", Translation.StandFree);
 
                 foreach (GameObject platform in Platforms)
                 {
@@ -221,14 +221,14 @@ namespace AutoEvent.Games.MusicalChairs
             }
             else if (_eventState == State.Ending)
             {
-                text = text.Replace("{state}", trans.ChairsStandFree);
+                text = text.Replace("{state}", Translation.StandFree);
 
                 foreach (Player player in Player.GetPlayers())
                 {
                     if (_playerDict[player].Platform is null)
                     {
                         Extensions.GrenadeSpawn(0.1f, player.Position, 0.1f);
-                        player.Kill(trans.ChairsNoTime);
+                        player.Kill(Translation.NoTime);
                     }
                 }
                 
@@ -245,27 +245,24 @@ namespace AutoEvent.Games.MusicalChairs
 
         protected override void OnFinished()
         {
+            string text = string.Empty;
             int count = Player.GetPlayers().Count(r => r.IsAlive);
+
             if (count > 1)
             {
-                string text = Translation.ChairsMorePlayers.
-                    Replace("{name}", Name);
-                Extensions.Broadcast(text, 10);
+                text = Translation.MorePlayers.Replace("{name}", Name);
             }
             else if (count == 1)
             {
                 Player winner = Player.GetPlayers().Where(r => r.IsAlive).FirstOrDefault();
-                string text = Translation.ChairsWinner.
-                    Replace("{name}", Name).
-                    Replace("{winner}", winner.Nickname);
-                Extensions.Broadcast(text, 10);
+                text = Translation.Winner.Replace("{name}", Name).Replace("{winner}", winner.Nickname);
             }
             else
             {
-                string text = Translation.ChairsAllDied.
-                    Replace("{name}", Name);
-                Extensions.Broadcast(text, 10);
+                text = Translation.AllDied.Replace("{name}", Name);
             }
+
+            Extensions.Broadcast(text, 10);
 
             foreach (GameObject platform in Platforms)
             {

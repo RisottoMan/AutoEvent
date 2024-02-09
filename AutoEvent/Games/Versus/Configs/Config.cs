@@ -6,7 +6,6 @@ using PlayerRoles;
 using UnityEngine;
 
 namespace AutoEvent.Games.Versus;
-
 public class Config : EventConfig
 {
     public Config()

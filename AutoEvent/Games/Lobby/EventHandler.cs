@@ -2,7 +2,6 @@
 using PluginAPI.Events;
 
 namespace AutoEvent.Games.Lobby;
-
 public class EventHandler
 {
     Plugin _plugin;

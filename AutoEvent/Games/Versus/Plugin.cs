@@ -8,7 +8,6 @@ using UnityEngine;
 using PluginAPI.Core;
 using PluginAPI.Events;
 using AutoEvent.Events.Handlers;
-using AutoEvent.Games.Infection;
 using AutoEvent.Interfaces;
 using Event = AutoEvent.Interfaces.Event;
 
@@ -16,26 +15,29 @@ namespace AutoEvent.Games.Versus
 {
     public class Plugin : Event, IEventSound, IEventMap, IInternalEvent
     {
-        public override string Name { get; set; } = AutoEvent.Singleton.Translation.VersusTranslate.VersusName;
-        public override string Description { get; set; } = AutoEvent.Singleton.Translation.VersusTranslate.VersusDescription;
+        public override string Name { get; set; } = "Cock Fights";
+        public override string Description { get; set; } = "Duel of players on the 35hp map from cs 1.6";
         public override string Author { get; set; } = "KoT0XleB";
-        public override string CommandName { get; set; } = AutoEvent.Singleton.Translation.VersusTranslate.VersusCommandName;
+        public override string CommandName { get; set; } = "versus";
         public override Version Version { get; set; } = new Version(1, 0, 1);
         [EventConfig]
         public Config Config { get; set; }
+        [EventTranslation]
+        public Translation Translation { get; set; }
         public MapInfo MapInfo { get; set; } = new MapInfo()
         { 
             MapName = "35Hp", 
-            Position = new Vector3(6f, 1015f, -5f),
-            IsStatic = true
+            Position = new Vector3(6f, 1015f, -5f)
         };
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
-            { SoundName = "Knife.ogg", Volume = 10, Loop = true };
+        { 
+            SoundName = "Knife.ogg",
+            Volume = 10
+        };
         protected override FriendlyFireSettings ForceEnableFriendlyFire { get; set; } = FriendlyFireSettings.Disable;
-        private EventHandler EventHandler { get; set; }
-        private VersusTranslate Translation { get; set; } = AutoEvent.Singleton.Translation.VersusTranslate;
-        public Player Scientist { get; set; }
-        public Player ClassD { get; set; }
+        private EventHandler _eventHandler { get; set; }
+        internal Player Scientist { get; set; }
+        internal Player ClassD { get; set; }
         private List<GameObject> _triggers;
         private List<GameObject> _teleports;
         private TimeSpan _countdown;
@@ -53,30 +55,29 @@ namespace AutoEvent.Games.Versus
 
         protected override void RegisterEvents()
         {
-
-            EventHandler = new EventHandler(this);
-            EventManager.RegisterEvents(EventHandler);
-            Servers.TeamRespawn += EventHandler.OnTeamRespawn;
-            Servers.SpawnRagdoll += EventHandler.OnSpawnRagdoll;
-            Servers.PlaceBullet += EventHandler.OnPlaceBullet;
-            Servers.PlaceBlood += EventHandler.OnPlaceBlood;
-            Players.DropItem += EventHandler.OnDropItem;
-            Players.DropAmmo += EventHandler.OnDropAmmo;
-            Players.ChargingJailbird += EventHandler.OnJailbirdCharge;
+            _eventHandler = new EventHandler(this);
+            EventManager.RegisterEvents(_eventHandler);
+            Servers.TeamRespawn += _eventHandler.OnTeamRespawn;
+            Servers.SpawnRagdoll += _eventHandler.OnSpawnRagdoll;
+            Servers.PlaceBullet += _eventHandler.OnPlaceBullet;
+            Servers.PlaceBlood += _eventHandler.OnPlaceBlood;
+            Players.DropItem += _eventHandler.OnDropItem;
+            Players.DropAmmo += _eventHandler.OnDropAmmo;
+            Players.ChargingJailbird += _eventHandler.OnJailbirdCharge;
         }
 
         protected override void UnregisterEvents()
         {
-            EventManager.UnregisterEvents(EventHandler);
-            Servers.TeamRespawn -= EventHandler.OnTeamRespawn;
-            Servers.SpawnRagdoll -= EventHandler.OnSpawnRagdoll;
-            Servers.PlaceBullet -= EventHandler.OnPlaceBullet;
-            Servers.PlaceBlood -= EventHandler.OnPlaceBlood;
-            Players.DropItem -= EventHandler.OnDropItem;
-            Players.DropAmmo -= EventHandler.OnDropAmmo;
-            Players.ChargingJailbird -= EventHandler.OnJailbirdCharge;
+            EventManager.UnregisterEvents(_eventHandler);
+            Servers.TeamRespawn -= _eventHandler.OnTeamRespawn;
+            Servers.SpawnRagdoll -= _eventHandler.OnSpawnRagdoll;
+            Servers.PlaceBullet -= _eventHandler.OnPlaceBullet;
+            Servers.PlaceBlood -= _eventHandler.OnPlaceBlood;
+            Players.DropItem -= _eventHandler.OnDropItem;
+            Players.DropAmmo -= _eventHandler.OnDropAmmo;
+            Players.ChargingJailbird -= _eventHandler.OnJailbirdCharge;
 
-            EventHandler = null;
+            _eventHandler = null;
         }
 
         protected override void OnStart()
@@ -166,25 +167,25 @@ namespace AutoEvent.Games.Versus
             if (ClassD == null && Scientist == null)
             {
                 Extensions.Broadcast(
-                    Translation.VersusPlayersNull.Replace("{name}", Name)
+                    Translation.PlayersNull.Replace("{name}", Name)
                         .Replace("{remain}", $"{_countdown.TotalSeconds}"), 1);
             }
             else if (ClassD == null)
             {
                 Extensions.Broadcast(
-                    Translation.VersusClassDNull.Replace("{name}", Name).Replace("{scientist}", Scientist.Nickname)
+                    Translation.ClassDNull.Replace("{name}", Name).Replace("{scientist}", Scientist.Nickname)
                         .Replace("{remain}", $"{_countdown.TotalSeconds}"), 1);
             }
             else if (Scientist == null)
             {
                 Extensions.Broadcast(
-                    Translation.VersusScientistNull.Replace("{name}", Name).Replace("{classd}", ClassD.Nickname)
+                    Translation.ScientistNull.Replace("{name}", Name).Replace("{classd}", ClassD.Nickname)
                         .Replace("{remain}", $"{_countdown.TotalSeconds}"), 1);
             }
             else
             {
                 Extensions.Broadcast(
-                    Translation.VersusPlayersDuel.Replace("{name}", Name).Replace("{scientist}", Scientist.Nickname)
+                    Translation.PlayersDuel.Replace("{name}", Name).Replace("{scientist}", Scientist.Nickname)
                         .Replace("{classd}", ClassD.Nickname), 1);
             }
 
@@ -195,11 +196,11 @@ namespace AutoEvent.Games.Versus
         {
             if (Player.GetPlayers().Count(r => r.Role == RoleTypeId.Scientist) == 0)
             {
-                Extensions.Broadcast(Translation.VersusClassDWin.Replace("{name}", Name), 10);
+                Extensions.Broadcast(Translation.ClassDWin.Replace("{name}", Name), 10);
             }
             else if (Player.GetPlayers().Count(r => r.Role == RoleTypeId.ClassD) == 0)
             {
-                Extensions.Broadcast(Translation.VersusScientistWin.Replace("{name}", Name), 10);
+                Extensions.Broadcast(Translation.ScientistWin.Replace("{name}", Name), 10);
             }
         }
         

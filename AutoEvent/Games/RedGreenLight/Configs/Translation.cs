@@ -1,7 +1,6 @@
 ﻿using AutoEvent.Interfaces;
 
 namespace AutoEvent.Games.Light;
-
 public class Translation : EventTranslation
 {
     public override string Name { get; set; } = "Red Light Green Light";
@@ -16,7 +15,7 @@ public class Translation : EventTranslation
     public string GreenLight { get; set; } = "<color=green>Run</color>";
     public string RedLose { get; set; } = "<color=red>You run a red light</color>";
     public string NoTime { get; set; } = "<color=red>You didnt make it to the finish line!</color>";
-    //public string Hint { get; set; } = "<color=green>Press <color=yellow>[Alt]</color> to push the player</color>";
-    //public string HintWait { get; set; } = "<color=red>Wait few seconds</color>";
-    //public string HintReady { get; set; } = "<color=green>Ready</color>";
+    public string Hint { get; set; } = "<color=green>Press <color=yellow>[Alt]</color> to push the player</color>";
+    public string HintWait { get; set; } = "<color=red>Wait few seconds</color>";
+    public string HintReady { get; set; } = "<color=green>Ready</color>";
 }

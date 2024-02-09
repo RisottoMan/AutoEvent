@@ -29,8 +29,7 @@ namespace AutoEvent.Games.Airstrike
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
         { 
             SoundName = "DeathParty.ogg", 
-            Volume = 5, 
-            Loop = true 
+            Volume = 5
         };
         [EventConfig]
         public Config Config { get; set; }

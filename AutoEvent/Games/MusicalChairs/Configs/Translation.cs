@@ -1,8 +1,7 @@
 ﻿using AutoEvent.Interfaces;
 
 namespace AutoEvent.Games.MusicalChairs;
-
-public class ChairsTranslation : EventTranslation
+public class Translation : EventTranslation
 {
     public override string Name { get; set; } = "Musical Chairs";
     public override string Description { get; set; } = "Competition with other players for free chairs to funny music";
@@ -16,5 +15,5 @@ public class ChairsTranslation : EventTranslation
     public string NoTime { get; set; } = "<color=red>You didnt stand on a free platform in time</color>";
     public string MorePlayers { get; set; } = "<b><color=#42aaff>{name}</color></b>\n<color=red>The admin canceled the game</color>";
     public string Winner { get; set; } = "<b><color=#42aaff>{name}</color></b>\n<color=red>Winner: {winner}</color>";
-    public string CAllDied { get; set; } = "<b><color=#42aaff>{name}</color></b>\n<color=red>All players died</color>";
+    public string AllDied { get; set; } = "<b><color=#42aaff>{name}</color></b>\n<color=red>All players died</color>";
 }

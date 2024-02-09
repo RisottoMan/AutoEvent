@@ -1,7 +1,6 @@
 ﻿using AutoEvent.Interfaces;
 
 namespace AutoEvent.Games.Spleef;
-
 public class Translation : EventTranslation
 {
     public override string Name { get; set; } = "Spleef";

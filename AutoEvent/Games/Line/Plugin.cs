@@ -24,9 +24,15 @@ namespace AutoEvent.Games.Line
         [EventTranslation]
         public Translation Translation { get; set; }
         public MapInfo MapInfo { get; set; } = new MapInfo()
-            {MapName = "Line", Position = new Vector3(76f, 1026.5f, -43.68f), };
+        {
+            MapName = "Line", 
+            Position = new Vector3(76f, 1026.5f, -43.68f)
+        };
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
-            { SoundName = "LineLite.ogg", Volume = 10, Loop = true };
+        { 
+            SoundName = "LineLite.ogg", 
+            Volume = 10
+        };
         protected override float PostRoundDelay { get; set; } = 10f;
         private EventHandler _eventHandler { get; set; }
         private readonly int _hardCountsLimit = 8;
@@ -70,7 +76,6 @@ namespace AutoEvent.Games.Line
                 player.GiveLoadout(Config.Loadouts);
                 player.Position = MapInfo.Map.AttachedBlocks.First(x => x.name == "SpawnPoint").transform.position;
             }
-
         }
 
         protected override IEnumerator<float> BroadcastStartCountdown()
@@ -159,6 +164,5 @@ namespace AutoEvent.Games.Line
             foreach (var map in _hardGameMap.Values)
                 Extensions.UnLoadMap(map);
         }
-        
     }
 }

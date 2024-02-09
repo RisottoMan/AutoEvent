@@ -5,7 +5,6 @@ using PluginAPI.Enums;
 using PluginAPI.Events;
 
 namespace AutoEvent.Games.Puzzle;
-
 public class EventHandler
 {
     [PluginEvent(ServerEventType.PlayerJoined)]

@@ -10,6 +10,7 @@ using AutoEvent.Interfaces;
 using PlayerRoles;
 using InventorySystem.Items;
 using Event = AutoEvent.Interfaces.Event;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace AutoEvent.Games.Dodgeball
 {
@@ -27,14 +28,12 @@ namespace AutoEvent.Games.Dodgeball
         public MapInfo MapInfo { get; set; } = new MapInfo()
         {
             MapName = "Dodgeball",
-            Position = new Vector3(0, 0, 30),
-            IsStatic = true
+            Position = new Vector3(0, 0, 30)
         };
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
         { 
             SoundName = "Fall_Guys_Winter_Fallympics.ogg",
-            Volume = 7, 
-            Loop = true
+            Volume = 7
         };
         private EventHandler _eventHandler;
         private List<GameObject> _walls;
@@ -115,9 +114,9 @@ namespace AutoEvent.Games.Dodgeball
 
         protected override IEnumerator<float> BroadcastStartCountdown()
         {
-            for (int time = 1; time > 0; time--) // 10
+            for (int time = 10; time > 0; time--)
             {
-                string text = Translation.DodgeballStart.Replace("{time}", time.ToString());
+                string text = Translation.Start.Replace("{time}", time.ToString());
                 Extensions.Broadcast(text, 1);
                 yield return Timing.WaitForSeconds(1f);
             }
@@ -134,18 +133,15 @@ namespace AutoEvent.Games.Dodgeball
         protected override bool IsRoundDone()
         {
             _roundTime -= TimeSpan.FromSeconds(0.1f);
-            //return !(_roundTime.TotalSeconds > 0 && 
-            //   Player.GetPlayers().Count(r => r.Role == RoleTypeId.ClassD) > 0 &&
-            //   Player.GetPlayers().Count(r => r.Role == RoleTypeId.Scientist) > 0);
-            return false;
+            return !(_roundTime.TotalSeconds > 0 && 
+               Player.GetPlayers().Count(r => r.Role == RoleTypeId.ClassD) > 0 &&
+               Player.GetPlayers().Count(r => r.Role == RoleTypeId.Scientist) > 0);
         }
         protected override float FrameDelayInSeconds { get; set; } = 0.1f;
         protected override void ProcessFrame()
         {
-            var time = $"{_roundTime.Minutes:00}:{_roundTime.Seconds:00}";
-            string text = Translation.DodgeballCycle.
-                Replace("{name}", Name).
-                Replace("{time}", time);
+            string time = $"{_roundTime.Minutes:00}:{_roundTime.Seconds:00}";
+            string text = Translation.Cycle.Replace("{name}", Name).Replace("{time}", time);
 
             foreach (Player player in Player.GetPlayers())
             {
@@ -169,7 +165,7 @@ namespace AutoEvent.Games.Dodgeball
                         player.Position = _sciPoint.RandomItem().transform.position;
                     }
 
-                    player.Damage(40, Translation.DodgeballRedline);
+                    player.Damage(40, Translation.Redline);
                 }
 
                 foreach(GameObject ball in _ballItems)
@@ -200,39 +196,30 @@ namespace AutoEvent.Games.Dodgeball
         protected override void OnFinished()
         {
             TimeSpan totalTime = TimeSpan.FromSeconds(Config.TotalTimeInSeconds) - _roundTime;
-            var time = $"{totalTime.Minutes:00}:{totalTime.Seconds:00}";
+            string time = $"{totalTime.Minutes:00}:{totalTime.Seconds:00}";
 
             int classDCount = Player.GetPlayers().Count(r => r.Role == RoleTypeId.ClassD);
             int sciCount = Player.GetPlayers().Count(r => r.Role == RoleTypeId.Scientist);
+            string text = string.Empty;
 
             if (classDCount < 1 && sciCount < 1)
             {
-                string text = Translation.DodgeballAllDied.
-                    Replace("{name}", Name).
-                    Replace("{time}", time);
-                Extensions.Broadcast(text, 10);
+                text = Translation.AllDied.Replace("{name}", Name).Replace("{time}", time);
             }
             else if (classDCount < 1)
             {
-                string text = Translation.DodgeballScientistWin.
-                    Replace("{name}", Name).
-                    Replace("{time}", time);
-                Extensions.Broadcast(text, 10);
+                text = Translation.ScientistWin.Replace("{name}", Name).Replace("{time}", time);
             }
             else if (sciCount < 1)
             {
-                string text = Translation.DodgeballClassDWin.
-                    Replace("{name}", Name).
-                    Replace("{time}", time);
-                Extensions.Broadcast(text, 10);
+                text = Translation.ClassDWin.Replace("{name}", Name).Replace("{time}", time);
             }
             else if (_roundTime.TotalSeconds <= 0)
             {
-                string text = Translation.DodgeballDraw.
-                    Replace("{name}", Name).
-                    Replace("{time}", time);
-                Extensions.Broadcast(text, 10);
+                text = Translation.Draw.Replace("{name}", Name).Replace("{time}", time);
             }
+
+            Extensions.Broadcast(text, 10);
         }
     }
 }

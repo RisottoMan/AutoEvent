@@ -6,7 +6,6 @@ using AutoEvent.Interfaces;
 using PlayerRoles;
 
 namespace AutoEvent.Games.ZombieEscape;
-
 public class Config : EventConfig
 {
     [Description("How long until the helicopter leaves.")]
