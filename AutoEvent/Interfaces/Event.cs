@@ -69,7 +69,7 @@ namespace AutoEvent.Interfaces
                         confs += $"{conf.PresetName}, ";
                     }
                     Events.Add(ev);
-                    DebugLogger.LogDebug($"[EventLoader] {ev.Name} has been registered. Presets: {(confs + ",").Replace(", ,", "")}", LogLevel.Info, true);
+                    DebugLogger.LogDebug($"[EventLoader] {ev.Name} has been registered. Presets: {(confs + ",").Replace(", ,", "")}", LogLevel.Info); // , true);
                 }
                 catch (MissingMethodException) { }
                 catch (Exception ex)

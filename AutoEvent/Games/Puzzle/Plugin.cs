@@ -13,6 +13,7 @@ using AutoEvent.Interfaces;
 using Mirror;
 using Random = UnityEngine.Random;
 using Event = AutoEvent.Interfaces.Event;
+using Version = System.Version;
 
 namespace AutoEvent.Games.Puzzle
 {
@@ -91,7 +92,7 @@ namespace AutoEvent.Games.Puzzle
             // _platforms = MapInfo.Map.AttachedBlocks.Where(x => x.name == "Platform").ToList();
             _platforms = new Dictionary<ushort, GameObject>();
             _lava = MapInfo.Map.AttachedBlocks.First(x => x.name == "Lava");
-            _lava.AddComponent<LavaComponent>();
+            _lava.AddComponent<LavaComponent>().StartComponent(this);
             _colorIndicators = MapInfo.Map.AttachedBlocks.Where(x => x.name == "Cube").ToList();
             GeneratePlatforms(Config.PlatformsOnEachAxis);
             foreach (Player player in Player.GetPlayers())

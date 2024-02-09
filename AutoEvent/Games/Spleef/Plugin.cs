@@ -13,6 +13,7 @@ using PluginAPI.Core;
 using PluginAPI.Events;
 using UnityEngine;
 using Event = AutoEvent.Interfaces.Event;
+using Version = System.Version;
 
 namespace AutoEvent.Games.Spleef;
 
@@ -74,8 +75,10 @@ public class Plugin : Event, IEventMap, IInternalEvent
     {
         _remaining = TimeSpan.FromSeconds(Config.RoundDurationInSeconds);
         _platforms = new Dictionary<ushort, GameObject>();
-        MapInfo.Map.AttachedBlocks.First(x => x.name == "Lava").AddComponent<LavaComponent>();
         _playerLoadounts = new List<Loadout>();
+
+        GameObject lava = MapInfo.Map.AttachedBlocks.First(x => x.name == "Lava");
+        lava.AddComponent<LavaComponent>().StartComponent(this);
 
         GeneratePlatforms(Config.PlatformAxisCount);
 

@@ -1,8 +1,7 @@
 ﻿using System;
 
 namespace AutoEvent.API.Season;
-
-public class Methods
+public class SeasonMethods
 {
     private static SeasonStyle _curStyle { get; set; }
     public static SeasonStyle GetSeasonStyle()

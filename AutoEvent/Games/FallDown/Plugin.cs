@@ -79,7 +79,7 @@ namespace AutoEvent.Games.FallDown
             }
 
             _lava = MapInfo.Map.AttachedBlocks.First(x => x.name == "Lava");
-            _lava.AddComponent<LavaComponent>();
+            _lava.AddComponent<LavaComponent>().StartComponent(this);
         }
 
         protected override IEnumerator<float> BroadcastStartCountdown()

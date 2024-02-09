@@ -5,7 +5,6 @@ using MEC;
 using PlayerRoles;
 using UnityEngine;
 using AutoEvent.Games.Glass.Features;
-using Mirror;
 using PluginAPI.Core;
 using PluginAPI.Events;
 using AutoEvent.Events.Handlers;
@@ -13,6 +12,8 @@ using AutoEvent.Interfaces;
 using Object = UnityEngine.Object;
 using Event = AutoEvent.Interfaces.Event;
 using Random = UnityEngine.Random;
+using Mirror;
+using Version = System.Version;
 
 namespace AutoEvent.Games.Glass
 {

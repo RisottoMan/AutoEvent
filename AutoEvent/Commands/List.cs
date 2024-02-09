@@ -39,7 +39,7 @@ namespace AutoEvent.Commands
                 builder.AppendLine("\"List of events:");
             }
 
-            SeasonStyle style = Methods.GetSeasonStyle();
+            SeasonStyle style = SeasonMethods.GetSeasonStyle();
             if (style.Text != null)
                 builder.AppendLine(style.Text);
 

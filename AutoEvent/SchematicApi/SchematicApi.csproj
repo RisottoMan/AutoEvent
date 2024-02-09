@@ -45,7 +45,7 @@
     <ItemGroup>
         <Reference Include="CedModV3" HintPath="$(OTHER_REFERENCES)\CedModV3-13-3.dll" />
         <Reference Include="Assembly-CSharp-Publicized" HintPath="$(SL_REFERENCES)\Assembly-CSharp-Halloween-Publicized.dll" />
-        <Reference Include="Mirror" HintPath="$(SL_REFERENCES)\Mirror-Publicized-SL-13.3.dll" />
+        <Reference Include="Mirror" HintPath="$(SL_REFERENCES)\Mirror.dll" />
         <Reference Include="SCPSLAudioApi" HintPath="$(OTHER_REFERENCES)\SCPSLAudioApi.dll" />
         <Reference Include="SCPSLAudioApi" HintPath="$(OTHER_REFERENCES)\NWAPIPermissionSystem-New.dll" />
         <Reference Include="System" />

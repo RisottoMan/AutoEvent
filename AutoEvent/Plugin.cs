@@ -19,6 +19,7 @@ using Map = PluginAPI.Core.Map;
 using Paths = PluginAPI.Helpers.Paths;
 using Player = PluginAPI.Core.Player;
 using Server = PluginAPI.Core.Server;
+using AutoEvent.API.Season;
 #if EXILED
 using Exiled.API.Features;
 
@@ -55,8 +56,7 @@ namespace AutoEvent
         public override void OnEnabled()
 #else
         [PluginPriority(LoadPriority.Low)]
-        [PluginEntryPoint("AutoEvent", DebugLogger.Version, "An event manager plugin that allows you to run mini-games.",
-            "KoT0XleB and Redforce04")]
+        [PluginEntryPoint("AutoEvent", DebugLogger.Version, "An event manager plugin that allows you to run mini-games.", "KoT0XleB and Redforce04")]
         void OnEnabled()
 #endif
         {
@@ -95,7 +95,7 @@ namespace AutoEvent
                     DebugLogger.LogDebug($"[InventorySystem] {msg}", (LogLevel)level,
                         level != InventoryMenu.API.Log.LogLevel.Debug);
                 };
-                #if EXILED
+#if EXILED
                 Exiled.Events.Handlers.Player.Shot += (Exiled.Events.EventArgs.Player.ShotEventArgs ev) =>
                 {
                     var args = new ShotEventArgs(Player.Get(ev.Player.ReferenceHub), ev.RaycastHit, ev.Hitbox, ev.Damage);
@@ -103,7 +103,7 @@ namespace AutoEvent
                     ev.Damage = args.Damage;
                     ev.CanHurt = args.CanHurt;
                 };
-                #endif
+#endif
                 
                 if (Config.IgnoredRoles.Contains(Config.LobbyRole))
                 {
@@ -156,6 +156,19 @@ namespace AutoEvent
                     DebugLogger.LogDebug($"{e}");
                 }
 
+#if !EXILED
+                string path = Path.Combine(Config.EventConfigsDirectoryPath, "translation.yml");
+                if (File.Exists(path))
+                {
+                    DebugLogger.LogDebug($"Translations in the {path} are no longer supported.", LogLevel.Warn, true);
+                }
+#else
+                string path = Path.Combine(Exiled.API.Features.Paths.Configs, $"{Exiled.API.Features.Server.Port}-translations.yml");
+                if (File.Exists(path))
+                {
+                    DebugLogger.LogDebug($"Translations in the {path} are no longer supported.", LogLevel.Warn, true);
+                }
+#endif
 
                 Event.RegisterInternalEvents();
                 Loader.LoadEvents();
@@ -165,6 +178,8 @@ namespace AutoEvent
                     Loader.Events.Count > 0
                         ? $"[ExternalEventLoader] Loaded {Loader.Events.Count} external event{(Loader.Events.Count > 1 ? "s" : "")}."
                         : "No external events were found.", LogLevel.Info, true);
+
+                DebugLogger.LogDebug($"The mini-games are loaded:\n{SeasonLoader.LoaderText}", LogLevel.Info, true);
             }
             catch (Exception e)
             {

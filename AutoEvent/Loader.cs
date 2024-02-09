@@ -130,7 +130,7 @@ public class Loader
                         }
                         catch (Exception e)
                         {
-                            DebugLogger.LogDebug($"[EventLoader] {eventPlugin.Name} encountered an error while registering.",LogLevel.Warn, true);
+                            DebugLogger.LogDebug($"[EventLoader] {eventPlugin.Name} encountered an error while registering.", LogLevel.Warn, true);
                             DebugLogger.LogDebug(e.ToString(),LogLevel.Debug);
                         }
                         Events.Add(eventPlugin);

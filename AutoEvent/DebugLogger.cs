@@ -49,7 +49,6 @@ public class DebugLogger
 
         try
         {
-
             _filePath = Path.Combine(AutoEvent.BaseConfigPath, "debug-output.log");
             if (WriteDirectly)
             {
