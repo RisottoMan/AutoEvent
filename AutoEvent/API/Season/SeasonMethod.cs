@@ -112,7 +112,7 @@ public class SeasonMethod
         {
             Text = "<size=80><color=#FF0000><b>🔥 Black Friday 🔥</b></color></size>",
             PrimaryColor = "#FF0000",
-            SeasonFlag = SeasonFlag.Halloween,
+            SeasonFlag = SeasonFlag.BlackFriday,
             FirstDate = new DateTime(0, 11, 25),
             LastDate = new DateTime(0, 11, 30)
         },
@@ -120,7 +120,7 @@ public class SeasonMethod
         {
             Text = "<size=70><color=#42aaff><b>New year is coming...</b></color></size>",
             PrimaryColor = "#77dde7",
-            SeasonFlag = SeasonFlag.Halloween,
+            SeasonFlag = SeasonFlag.NewYear,
             FirstDate = new DateTime(0, 12, 25),
             LastDate = new DateTime(0, 12, 31)
         }
