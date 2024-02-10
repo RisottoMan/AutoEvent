@@ -13,7 +13,7 @@ public class EventTranslationAttribute : Attribute
         
     }
     
-    public virtual object Load(string folderPath, Type type, Version version)
+    public virtual object Load(string folderPath, Type type, bool isCorrectVersion)
     {
         string configPath = Path.Combine(folderPath, "Translation.yml");
         object conf = null;
@@ -26,7 +26,7 @@ public class EventTranslationAttribute : Attribute
 
             if (conf is not null and EventTranslation translation)
             {
-                if (translation.TranslationVersion == version.ToString())
+                if (isCorrectVersion is true)
                 {
                     _isLoaded = true;
                     return conf;
@@ -68,11 +68,6 @@ public class EventTranslationAttribute : Attribute
         if (conf is null)
         {
             DebugLogger.LogDebug("Translation is null.", LogLevel.Debug);
-        }
-
-        if (conf is EventTranslation evTrans)
-        {
-            evTrans.TranslationVersion = version.ToString();
         }
 
         File.WriteAllText(configPath, Configs.Serialization.Serializer.Serialize(conf));
