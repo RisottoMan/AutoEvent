@@ -47,7 +47,6 @@ namespace AutoEvent.Games.BuckshotRoulette
         private bool _isClassDMove;
         private ShotgunState _gunState;
         private Animator _animator;
-
         protected override void RegisterEvents()
         {
             _eventHandler = new EventHandler();
