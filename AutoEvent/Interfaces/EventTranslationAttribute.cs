@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using YamlDotNet.Core;
-using Version = System.Version;
 
 namespace AutoEvent.Interfaces;
 
@@ -13,7 +12,7 @@ public class EventTranslationAttribute : Attribute
         
     }
     
-    public virtual object Load(string folderPath, Type type, bool isCorrectVersion)
+    public virtual object Load(string folderPath, Type type, bool isCorrected)
     {
         string configPath = Path.Combine(folderPath, "Translation.yml");
         object conf = null;
@@ -26,12 +25,12 @@ public class EventTranslationAttribute : Attribute
 
             if (conf is not null and EventTranslation translation)
             {
-                if (isCorrectVersion is true)
+                if (isCorrected is true)
                 {
                     _isLoaded = true;
                     return conf;
                 }
-                else DebugLogger.LogDebug($"The translation version and the plugin version are not equal. It will be deleted and remade.");
+                else DebugLogger.LogDebug($"The translation version or language is not equal to the version or language of the plugin. It will be deleted and remade.");
             }
             else
             {
@@ -57,12 +56,12 @@ public class EventTranslationAttribute : Attribute
             catch (Exception e) { }
         }
 
-        CreateNewTranslation(ref conf, type, configPath, version);
+        CreateNewTranslation(ref conf, type, configPath);
         _isLoaded = true;
         return conf;
     }
 
-    private void CreateNewTranslation(ref object conf, Type type, string configPath, Version version)
+    private void CreateNewTranslation(ref object conf, Type type, string configPath)
     {
         conf = type.GetConstructor(Type.EmptyTypes)?.Invoke(Array.Empty<object>());
         if (conf is null)

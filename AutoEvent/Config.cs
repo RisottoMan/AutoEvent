@@ -80,5 +80,7 @@ namespace AutoEvent
         
         [Description("Where the music directory is located. By default it is located in the AutoEvent folder.")]
         public string MusicDirectoryPath { get; set; }
+        [Description("It is used for automatic downloading of translations. [Default: EN]")]
+        public string Language { get; set; } = "EN";
     }
 }

@@ -42,6 +42,7 @@ public class EventConfigAttribute : Attribute
                 if (config.ConfigVersion == version.ToString())
                 {
                     _isLoaded = true;
+                    _isCorrected = true;
                     return conf;
                 }
                 else DebugLogger.LogDebug($"The config version and the plugin version are not equal. It will be deleted and remade.");
@@ -90,8 +91,11 @@ public class EventConfigAttribute : Attribute
         _isLoaded = true;
     }
 
+    // Is the config version correct?
+    public bool IsCorrected => _isCorrected;
+    protected bool _isCorrected = false;
+
+    // Is the config loaded?
     public bool IsLoaded => _isLoaded;
-
     protected bool _isLoaded = false;
-
 }
