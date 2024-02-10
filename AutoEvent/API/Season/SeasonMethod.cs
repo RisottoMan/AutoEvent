@@ -16,11 +16,11 @@ public class SeasonMethod
         SeasonStyle style = null;
         DateTime curDate = new DateTime(2024, DateTime.Now.Month, DateTime.Now.Day);
 
-        foreach (var season in _styles)
+        foreach (SeasonStyle item in _styles)
         {
-            if (season.FirstDate <= curDate && curDate <= season.LastDate)
+            if (item.FirstDate <= curDate && curDate <= item.LastDate)
             {
-                style = season;
+                style = item;
             }
         }
 

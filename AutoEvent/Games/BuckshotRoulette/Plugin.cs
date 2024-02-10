@@ -14,7 +14,7 @@ using Random = UnityEngine.Random;
 
 namespace AutoEvent.Games.BuckshotRoulette
 {
-    public class Plugin : Event, IEventSound, IEventMap, IInternalEvent
+    public class Plugin : Event, IEventSound, IEventMap, IInternalEvent, IHidden
     {
         public override string Name { get; set; } = "Buckshot Roulette";
         public override string Description { get; set; } = "One-on-one battle in Russian roulette with shotguns";
@@ -68,7 +68,6 @@ namespace AutoEvent.Games.BuckshotRoulette
             Servers.PlaceBlood -= _eventHandler.OnPlaceBlood;
             Players.DropItem -= _eventHandler.OnDropItem;
             Players.DropAmmo -= _eventHandler.OnDropAmmo;
-
             _eventHandler = null;
         }
 
@@ -131,7 +130,6 @@ namespace AutoEvent.Games.BuckshotRoulette
 
         protected override bool IsRoundDone()
         {
-            // We decrease the counter all the time
             _countdown = _countdown.TotalSeconds > 0 ? _countdown.Subtract(new TimeSpan(0, 0, 1)) : TimeSpan.Zero;
 
             return !(Player.GetPlayers().Where(r => r.Role == RoleTypeId.ClassD).Count() > 0 && 

@@ -10,7 +10,7 @@ using Event = AutoEvent.Interfaces.Event;
 
 namespace AutoEvent.Games.AmongUs
 {
-    public class Plugin : Event, IEventMap, IInternalEvent
+    public class Plugin : Event, IEventMap, IInternalEvent, IHidden
     {
         public override string Name { get; set; } = "Among Us";
         public override string Description { get; set; } = "You have to survive on a spaceship against the importers";
