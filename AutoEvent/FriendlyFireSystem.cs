@@ -33,11 +33,11 @@ public class FriendlyFireSystem
     {
         if (AppDomain.CurrentDomain.GetAssemblies().Any(x => x.FullName.ToLower().Contains("cedmod")))
         {
-            DebugLogger.LogDebug("CedMod has been detected.");
+            DebugLogger.LogDebug("CedMod has been detected.", LogLevel.Debug, false);
             CedModIsPresent = true;
         }
         else
-            DebugLogger.LogDebug("CedMod has not been detected.");
+            DebugLogger.LogDebug("CedMod has not been detected.", LogLevel.Debug, false);
     } 
 
     public static bool FriendlyFireDetectorIsDisabled {
@@ -82,7 +82,7 @@ public class FriendlyFireSystem
 
     public static void EnableFriendlyFireDetector()
     {
-        Log.Debug("Enabling Friendly Fire Detector.");
+        DebugLogger.LogDebug("Enabling Friendly Fire Detector.", LogLevel.Debug, false);
         try
         {
             FriendlyFireConfig.PauseDetector = false;
@@ -92,17 +92,14 @@ public class FriendlyFireSystem
                 _cedmodFFEnable();
             }
         }
-        catch
-        {
-            //
-        }
+        catch { }
     }
 
     public static void DisableFriendlyFireDetector()
     {
         try
         {
-            Log.Debug("Disabling Friendly Fire Detector.");
+            DebugLogger.LogDebug("Disabling Friendly Fire Detector.", LogLevel.Debug, false);
             FriendlyFireConfig.PauseDetector = true;
 
             if (CedModIsPresent)
@@ -110,10 +107,7 @@ public class FriendlyFireSystem
                 _cedmodFFDisable();
             }
         }
-        catch
-        {
-            //
-        }
+        catch { }
     }
 
     public static void EnableFriendlyFire(/*bool shouldAutobanTeamKills = false*/)
@@ -128,13 +122,13 @@ public class FriendlyFireSystem
             DisableFriendlyFireDetector();
         }*/
 
-        DebugLogger.LogDebug("Enabling Friendly Fire.");
+        DebugLogger.LogDebug("Enabling Friendly Fire.", LogLevel.Debug, false);
         Server.FriendlyFire = true;
     }
 
     public static void DisableFriendlyFire()
     {
-        DebugLogger.LogDebug("Disabling Friendly Fire.");
+        DebugLogger.LogDebug("Disabling Friendly Fire.", LogLevel.Debug, false);
         
         Server.FriendlyFire = false;
         // EnableFriendlyFireDetector();
