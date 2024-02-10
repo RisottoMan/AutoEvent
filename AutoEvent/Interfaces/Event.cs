@@ -140,6 +140,9 @@ namespace AutoEvent.Interfaces
         /// </summary> 
         public abstract string CommandName { get; set; }
 
+        /// <summary>
+        /// A version of the mini-game.
+        /// </summary>
         public abstract Version Version { get; set; }
     #endregion
     #region Event Settings // Settings that event authors can define to modify the abstracted implementations
@@ -415,7 +418,10 @@ namespace AutoEvent.Interfaces
         public List<EventConfig> ConfigPresets { get; set; } = new List<EventConfig>();
 
         private List<Type> _confTypes { get; set; } = new List<Type>();
-    
+        
+        // It is necessary to update translations without a version
+        private bool _isCorrectVersion { get; set; }
+
         /// <summary>
         /// Ensures that information such as the command name is valid.
         /// </summary>
@@ -495,6 +501,9 @@ namespace AutoEvent.Interfaces
                     DebugLogger.LogDebug($"(Event {this.Name}) Config: {property.Name}.", LogLevel.Debug);
                     continue;
                 }
+
+                // It is necessary to update translations without a version
+                _isCorrectVersion = evConfig.isCorrectVersion;         
 
                 if (ConfigPresets.Count > 0)
                     evConfig.PresetName = $"Default-{ConfigPresets.Count - 1}";
@@ -676,7 +685,7 @@ namespace AutoEvent.Interfaces
 
                 DebugLogger.LogDebug($"Translation \"{property.Name}\" found for {Name}", LogLevel.Debug);
                 
-                object translation = trans.Load(path, property.PropertyType, this.Version);
+                object translation = trans.Load(path, property.PropertyType, this._isCorrectVersion);
                 if (translation is not EventTranslation evTranslation)
                 {
                     DebugLogger.LogDebug($"Translation was found that does not inherit Event Translation. It will be skipped.", LogLevel.Warn, true);
