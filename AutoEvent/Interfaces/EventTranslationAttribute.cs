@@ -1,6 +1,8 @@
-﻿using System;
+﻿using GameCore;
+using System;
 using System.IO;
 using YamlDotNet.Core;
+using Version = System.Version;
 
 namespace AutoEvent.Interfaces;
 
@@ -12,7 +14,7 @@ public class EventTranslationAttribute : Attribute
         
     }
     
-    public virtual object Load(string folderPath, Type type, bool isCorrected)
+    public virtual object Load(string folderPath, Type type, Version version)
     {
         string configPath = Path.Combine(folderPath, "Translation.yml");
         object conf = null;
@@ -25,7 +27,7 @@ public class EventTranslationAttribute : Attribute
 
             if (conf is not null and EventTranslation translation)
             {
-                if (isCorrected is true)
+                if (translation.Version == version.ToString())
                 {
                     _isLoaded = true;
                     return conf;
@@ -56,17 +58,22 @@ public class EventTranslationAttribute : Attribute
             catch (Exception e) { }
         }
 
-        CreateNewTranslation(ref conf, type, configPath);
+        CreateNewTranslation(ref conf, type, configPath, version);
         _isLoaded = true;
         return conf;
     }
 
-    private void CreateNewTranslation(ref object conf, Type type, string configPath)
+    private void CreateNewTranslation(ref object conf, Type type, string configPath, Version version)
     {
         conf = type.GetConstructor(Type.EmptyTypes)?.Invoke(Array.Empty<object>());
         if (conf is null)
         {
             DebugLogger.LogDebug("Translation is null.", LogLevel.Debug);
+        }
+
+        if (conf is EventTranslation evTrans)
+        {
+            evTrans.Version = version.ToString();
         }
 
         File.WriteAllText(configPath, Configs.Serialization.Serializer.Serialize(conf));

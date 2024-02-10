@@ -50,7 +50,6 @@ namespace AutoEvent
 #endif
         [Description("The global volume of plugins (0 - 200, 100 is normal)")]
         public float Volume { get; set; } = 100;
-        
 
         [Description("Roles that should be ignored during events.")]
         public List<RoleTypeId> IgnoredRoles { get; set; } = new List<RoleTypeId>()
@@ -80,7 +79,10 @@ namespace AutoEvent
         
         [Description("Where the music directory is located. By default it is located in the AutoEvent folder.")]
         public string MusicDirectoryPath { get; set; }
+        [Description("Is it necessary to leave a stupid text when starting the server?")]
+        public bool IsStartupText { get; set; } = true;
         [Description("It is used for automatic downloading of translations. [Default: EN]")]
         public string Language { get; set; } = "EN";
+
     }
 }

@@ -173,16 +173,15 @@ namespace AutoEvent
                 Event.RegisterInternalEvents();
                 Loader.LoadEvents();
                 Event.Events.AddRange(Loader.Events);
-
-                // Checking today's date
                 SeasonMethod.GetSeasonStyle();
 
                 DebugLogger.LogDebug(
                     Loader.Events.Count > 0
                         ? $"[ExternalEventLoader] Loaded {Loader.Events.Count} external event{(Loader.Events.Count > 1 ? "s" : "")}."
-                        : "No external events were found.", LogLevel.Info, true);
+                        : "No external events were found.", LogLevel.Info);
 
-                DebugLogger.LogDebug($"The mini-games are loaded:\n{SeasonLoader.LoaderText}", LogLevel.Info, true);
+                string text = Config.IsStartupText ? $"\n{SeasonLoader.LoaderText}" : " :( the text has been removed";
+                DebugLogger.LogDebug($"The mini-games are loaded:{text}", LogLevel.Info, true);
             }
             catch (Exception e)
             {

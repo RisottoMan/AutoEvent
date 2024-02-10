@@ -418,9 +418,6 @@ namespace AutoEvent.Interfaces
         public List<EventConfig> ConfigPresets { get; set; } = new List<EventConfig>();
 
         private List<Type> _confTypes { get; set; } = new List<Type>();
-        
-        // It is necessary to update translations without a version
-        private bool _isCorrected { get; set; }
 
         /// <summary>
         /// Ensures that information such as the command name is valid.
@@ -502,12 +499,6 @@ namespace AutoEvent.Interfaces
                     continue;
                 }
 
-                // It is necessary to update translations without a version
-                if (config is EventConfigAttribute attribute)
-                {
-                    _isCorrected = attribute.IsCorrected;
-                }
-
                 if (ConfigPresets.Count > 0)
                     evConfig.PresetName = $"Default-{ConfigPresets.Count - 1}";
                 else
@@ -531,7 +522,7 @@ namespace AutoEvent.Interfaces
         /// <param name="conf"></param>
         private void _setRandomMap(EventConfig conf)
         {
-            if (conf.AvailableMaps is null && conf.AvailableMaps.Count == 0)
+            if (conf.AvailableMaps is null || conf.AvailableMaps.Count == 0)
                 return;
 
             // We get the current style and check the maps by their style
@@ -688,7 +679,7 @@ namespace AutoEvent.Interfaces
 
                 DebugLogger.LogDebug($"Translation \"{property.Name}\" found for {Name}", LogLevel.Debug);
                 
-                object translation = trans.Load(path, property.PropertyType, this._isCorrected);
+                object translation = trans.Load(path, property.PropertyType, this.Version);
                 if (translation is not EventTranslation evTranslation)
                 {
                     DebugLogger.LogDebug($"Translation was found that does not inherit Event Translation. It will be skipped.", LogLevel.Warn, true);

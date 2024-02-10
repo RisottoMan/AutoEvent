@@ -1,10 +1,9 @@
 ﻿<Weavers xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="FodyWeavers.xsd">
   <Costura>
     <IncludeAssemblies>
+	  SCPSLAudioApi
       Newtonsoft.Json
       0Harmony
-      System.ComponentModel.DataAnnotations
-      SCPSLAudioApi
       NVorbis
       System.Memory
       YamlDotNet
