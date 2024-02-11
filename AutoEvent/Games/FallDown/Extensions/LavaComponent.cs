@@ -23,7 +23,6 @@ public class LavaComponent : MonoBehaviour
         if (Player.Get(other.gameObject) is Player)
         {
             var pl = Player.Get(other.gameObject);
-            Translation translation = new Translation();
             pl.Damage(500f, _plugin.Translation.Died);
         }
     }

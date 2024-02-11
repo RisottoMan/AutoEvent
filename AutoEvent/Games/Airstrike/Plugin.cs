@@ -20,7 +20,7 @@ namespace AutoEvent.Games.Airstrike
         public override string Description { get; set; } = "Survive as aistrikes rain down from above.";
         public override string Author { get; set; } = "KoT0XleB";
         public override string CommandName { get; set; } = "airstrike";
-        public override Version Version { get; set; } = new Version(1, 0, 2);
+        public override Version Version { get; set; } = new Version(1, 0, 3);
         public MapInfo MapInfo { get; set; } = new MapInfo()
         { 
             MapName = "DeathParty", 

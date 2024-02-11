@@ -18,7 +18,7 @@ namespace AutoEvent.Games.Infection
         public override string Description { get; set; } = "Zombie mode, the purpose of which is to infect all players";
         public override string Author { get; set; } = "KoT0XleB";
         public override string CommandName { get; set; } = "zombie";
-        public override Version Version { get; set; } = new Version(1, 0, 1);
+        public override Version Version { get; set; } = new Version(1, 0, 2);
         [EventConfig] 
         public Config Config { get; set; }
         [EventTranslation]

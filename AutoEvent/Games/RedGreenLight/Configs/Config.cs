@@ -27,6 +27,11 @@ public class Config : EventConfig
 
     [Description("After how many seconds the round will end. [Default: 70]")]
     public int TotalTimeInSeconds { get; set; } = 70;
+    [Description("The players will push each other for fun. Default: true.")]
+    public bool IsEnablePush { get; set; } = true;
+
+    [Description("How much time should I give the player in seconds to cool down to use the push?")]
+    public float PushPlayerCooldown { get; set; } = 5;
 
     [Description("A list of loadouts for team ClassD")]
     public List<Loadout> PlayerLoadout = new List<Loadout>()

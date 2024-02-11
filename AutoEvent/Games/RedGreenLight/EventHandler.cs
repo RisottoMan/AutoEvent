@@ -28,7 +28,8 @@ public class EventHandler
 
     public void OnPlayerNoclip(PlayerNoclipArgs ev)
     {
-        ev.IsAllowed = false;
+        if (!_plugin.Config.IsEnablePush)
+            return;
 
         Transform transform = ev.Player.Camera.transform;
         var ray = new Ray(transform.position + (transform.forward * 0.1f), transform.forward);
@@ -46,7 +47,7 @@ public class EventHandler
         if (_plugin.PushCooldown[ev.Player] > 0)
             return;
 
-        _plugin.PushCooldown[ev.Player] = 3;
+        _plugin.PushCooldown[ev.Player] = _plugin.Config.PushPlayerCooldown;
         Timing.RunCoroutine(PushPlayer(ev.Player, target));
     }
 

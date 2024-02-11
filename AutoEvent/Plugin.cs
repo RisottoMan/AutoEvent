@@ -180,8 +180,7 @@ namespace AutoEvent
                         ? $"[ExternalEventLoader] Loaded {Loader.Events.Count} external event{(Loader.Events.Count > 1 ? "s" : "")}."
                         : "No external events were found.", LogLevel.Info);
 
-                string text = Config.IsStartupText ? $"\n{SeasonLoader.LoaderText}" : " :( the text has been removed";
-                DebugLogger.LogDebug($"The mini-games are loaded:{text}", LogLevel.Info, true);
+                DebugLogger.LogDebug($"The mini-games are loaded.", LogLevel.Info, true);
             }
             catch (Exception e)
             {

@@ -23,7 +23,7 @@ namespace AutoEvent.Games.Puzzle
         public override string Description { get; set; } = "Get up the fastest on the right color";
         public override string Author { get; set; } = "KoT0XleB";
         public override string CommandName { get; set; } = "puzzle";
-        public override Version Version { get; set; } = new Version(1, 0, 1);
+        public override Version Version { get; set; } = new Version(1, 0, 2);
         [EventConfig]
         public Config Config { get; set; }
         [EventConfigPreset] 

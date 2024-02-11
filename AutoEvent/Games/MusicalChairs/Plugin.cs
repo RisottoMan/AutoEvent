@@ -18,7 +18,7 @@ namespace AutoEvent.Games.MusicalChairs
         public override string Description { get; set; } = "Competition with other players for free chairs to funny music";
         public override string Author { get; set; } = "KoT0XleB";
         public override string CommandName { get; set; } = "chair";
-        public override Version Version { get; set; } = new Version(1, 0, 3);
+        public override Version Version { get; set; } = new Version(1, 0, 4);
         [EventConfig]
         public Config Config { get; set; }
         [EventTranslation]

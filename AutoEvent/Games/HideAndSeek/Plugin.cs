@@ -1,5 +1,4 @@
-﻿using MER.Lite.Objects;
-using MEC;
+﻿using MEC;
 using PluginAPI.Events;
 using System;
 using System.Collections.Generic;
@@ -20,7 +19,7 @@ namespace AutoEvent.Games.HideAndSeek
         public override string Description { get; set; } = "We need to catch up with all the players on the map";
         public override string Author { get; set; } = "KoT0XleB";
         public override string CommandName { get; set; } = "tag";
-        public override Version Version { get; set; } = new Version(1, 0, 1);
+        public override Version Version { get; set; } = new Version(1, 0, 2);
         [EventConfig]
         public Config Config { get; set; }
         [EventTranslation]

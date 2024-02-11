@@ -92,7 +92,7 @@ namespace AutoEvent.Games.Race
                 switch (gameObject.name)
                 {
                     case "Wall": { GameObject.Destroy(gameObject); } break;
-                    case "Lava": { gameObject.AddComponent<LavaComponent>(); } break;
+                    case "Lava": { gameObject.AddComponent<LavaComponent>().StartComponent(this); } break;
                     case "FinishTrigger": { _point = gameObject; } break;
                 }
             }

@@ -22,7 +22,7 @@ namespace AutoEvent.Games.Lava
         public override string Description { get; set; } = "Survival, in which you need to avoid lava and shoot at others";
         public override string Author { get; set; } = "KoT0XleB";
         public override string CommandName { get; set; } = "lava";
-        public override Version Version { get; set; } = new Version(1, 0, 1);
+        public override Version Version { get; set; } = new Version(1, 0, 2);
         [EventConfig]
         public Config Config { get; set; }
         [EventConfigPreset] 
@@ -78,7 +78,7 @@ namespace AutoEvent.Games.Lava
                     return Config.ItemsAndWeaponsToSpawn.FirstOrDefault().Key;
                 }
 
-                List<KeyValuePair<ItemType, float>> list = Config.ItemsAndWeaponsToSpawn.ToList<KeyValuePair<ItemType, float>>();
+                List<KeyValuePair<ItemType, float>> list = Config.ItemsAndWeaponsToSpawn.ToList();
                 float roleTotalChance = list.Sum(x => x.Value);
                 for (int i = 0; i < list.Count - 1; i++)
                 {
@@ -136,7 +136,7 @@ namespace AutoEvent.Games.Lava
         protected override void CountdownFinished()
         {
             _lava = MapInfo.Map.AttachedBlocks.First(x => x.name == "LavaObject");
-            _lava.AddComponent<LavaComponent>();
+            _lava.AddComponent<LavaComponent>().StartComponent(this);
             foreach (var player in Player.GetPlayers())
             {
                 player.GiveInfiniteAmmo(AmmoMode.InfiniteAmmo);

@@ -23,7 +23,7 @@ public class Plugin : Event, IEventMap, IInternalEvent
     public override string Description { get; set; } = "Shoot at the platforms and don't fall into the void";
     public override string Author { get; set; } = "Redforce04 (created logic code) && KoT0XleB (modified map)";
     public override string CommandName { get; set; } = "spleef";
-    public override Version Version { get; set; } = new Version(1, 0, 3);
+    public override Version Version { get; set; } = new Version(1, 0, 4);
     protected override FriendlyFireSettings ForceEnableFriendlyFire { get; set; } = FriendlyFireSettings.Disable;
 
     [EventConfig]

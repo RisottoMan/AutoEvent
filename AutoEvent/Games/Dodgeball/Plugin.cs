@@ -10,7 +10,6 @@ using AutoEvent.Interfaces;
 using PlayerRoles;
 using InventorySystem.Items;
 using Event = AutoEvent.Interfaces.Event;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace AutoEvent.Games.Dodgeball
 {
@@ -20,7 +19,7 @@ namespace AutoEvent.Games.Dodgeball
         public override string Description { get; set; } = "Defeat the enemy with balls.";
         public override string Author { get; set; } = "KoT0XleB";
         public override string CommandName { get; set; } = "dodge";
-        public override Version Version { get; set; } = new Version(1, 0, 0);
+        public override Version Version { get; set; } = new Version(1, 0, 1);
         [EventConfig]
         public Config Config { get; set; }
         [EventTranslation]

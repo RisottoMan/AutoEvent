@@ -19,6 +19,9 @@ public class EventHandler
 
     public void OnPlayerNoclip(PlayerNoclipArgs ev)
     {
+        if (!_plugin.Config.IsEnablePush)
+            return;
+
         Transform transform = ev.Player.Camera.transform;
         var ray = new Ray(transform.position + (transform.forward * 0.1f), transform.forward);
 
@@ -29,10 +32,10 @@ public class EventHandler
         if (target == null || ev.Player == target)
             return;
 
-        if (!_plugin.pushCooldown.ContainsKey(ev.Player))
-            _plugin.pushCooldown.Add(ev.Player, 0);
+        if (!_plugin.PushCooldown.ContainsKey(ev.Player))
+            _plugin.PushCooldown.Add(ev.Player, 0);
 
-        _plugin.pushCooldown[ev.Player] = _plugin.Config.PushPlayerCooldown;
+        _plugin.PushCooldown[ev.Player] = _plugin.Config.PushPlayerCooldown;
         Timing.RunCoroutine(PushPlayer(ev.Player, target));
     }
 

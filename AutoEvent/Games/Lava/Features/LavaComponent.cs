@@ -9,7 +9,11 @@ public class LavaComponent : MonoBehaviour
     private BoxCollider collider;
     private float damageCooldown = 3f;
     private float elapsedTime = 0f;
-
+    private Plugin _plugin;
+    public void StartComponent(Plugin plugin)
+    {
+        _plugin = plugin;
+    }
     private void Start()
     {
         collider = gameObject.AddComponent<BoxCollider>();
@@ -32,8 +36,7 @@ public class LavaComponent : MonoBehaviour
             if (Player.Get(other.gameObject) is Player)
             {
                 var pl = Player.Get(other.gameObject);
-                //pl.Damage(30, "<color=red>Burned in Lava</color>");
-                pl.Damage(new CustomReasonDamageHandler("<color=red>Burned in Lava</color>", 30));
+                pl.Damage(new CustomReasonDamageHandler(_plugin.Translation.Died, 30));
             }
         }
     }

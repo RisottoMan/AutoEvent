@@ -18,7 +18,7 @@ namespace AutoEvent.Games.Light
         public override string Description { get; set; } = "Reach the end of the finish line";
         public override string Author { get; set; } = "KoT0XleB";
         public override string CommandName { get; set; } = "light";
-        public override Version Version { get; set; } = new Version(1, 0, 1);
+        public override Version Version { get; set; } = new Version(1, 0, 3);
         [EventConfig]
         public Config Config { get; set; }
         [EventTranslation]
@@ -83,7 +83,9 @@ namespace AutoEvent.Games.Light
             {
                 player.GiveLoadout(Config.PlayerLoadout);
                 player.Position = spawnpoints.RandomItem().transform.position;
-                player.ReceiveHint("<color=green>Press <color=yellow>[Alt]</color> to push the player</color>", Config.TotalTimeInSeconds);
+
+                if (Config.IsEnablePush)
+                    player.ReceiveHint(Translation.Hint, Config.TotalTimeInSeconds);
             }
         }
 

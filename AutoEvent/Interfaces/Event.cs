@@ -1,5 +1,4 @@
 ﻿using AutoEvent.API.Attributes;
-using PluginAPI.Core;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -7,15 +6,10 @@ using System.Linq;
 using System.Reflection;
 using AutoEvent.API.Enums;
 using AutoEvent.API;
-using AutoEvent.Configs;
-using HarmonyLib;
 using MEC;
-using UnityEngine;
-using YamlDotNet.Core;
-using Version = System.Version;
-using System.Xml.Linq;
 using AutoEvent.API.Season;
 using AutoEvent.API.Season.Enum;
+using Version = System.Version;
 
 namespace AutoEvent.Interfaces
 {
@@ -52,6 +46,13 @@ namespace AutoEvent.Interfaces
 
                     if (!ev.AutoLoad)
                         continue;
+
+                    if (ev is IHidden)
+                    {
+                        DebugLogger.LogDebug($"Skip registration \"{ev.Name}\" mini-game. The game is hidden", LogLevel.Debug);
+                        continue;
+                    }
+
                     ev.Id = Events.Count;
                     try
                     {
@@ -488,7 +489,7 @@ namespace AutoEvent.Interfaces
                 {
                     continue;
                 }
-            
+
                 DebugLogger.LogDebug($"Config \"{property.Name}\" found for {Name}", LogLevel.Debug);
 
                 object config = conf.Load(path, property.Name, property.PropertyType, this.Version);
