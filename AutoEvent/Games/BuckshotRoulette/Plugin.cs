@@ -14,20 +14,20 @@ using Random = UnityEngine.Random;
 
 namespace AutoEvent.Games.BuckshotRoulette
 {
-    public class Plugin : Event, IEventSound, IEventMap, IInternalEvent, IHidden
+    public class Plugin : Event, IEventMap, IInternalEvent
     {
         public override string Name { get; set; } = "Buckshot Roulette";
         public override string Description { get; set; } = "One-on-one battle in Russian roulette with shotguns";
         public override string Author { get; set; } = "KoT0XleB";
-        public override string CommandName { get; set; } = "shotgun";
-        public override Version Version { get; set; } = new Version(1, 0, 1);
+        public override string CommandName { get; set; } = "versus2";
+        public override Version Version { get; set; } = new Version(1, 0, 0);
         [EventConfig]
         public Config Config { get; set; }
         [EventTranslation]
         public Translation Translation { get; set; }
         public MapInfo MapInfo { get; set; } = new MapInfo()
         { 
-            MapName = "Buckshot",
+            MapName = "buck", // Buckshot
             Position = new Vector3(0, 30, 30)
         };
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
@@ -108,12 +108,12 @@ namespace AutoEvent.Games.BuckshotRoulette
                 if (count % 2 == 0)     
                 {              
                     player.GiveLoadout(Config.Team1Loadouts);
-                    player.Position = RandomClass.GetSpawnPosition(MapInfo.Map, true);
+                    player.Position = _teleports.ElementAt(0).transform.position;
                 }
                 else
                 {
                     player.GiveLoadout(Config.Team2Loadouts);
-                    player.Position = RandomClass.GetSpawnPosition(MapInfo.Map, false);
+                    player.Position = _teleports.ElementAt(1).transform.position;
                 }
                 count++;
             }
