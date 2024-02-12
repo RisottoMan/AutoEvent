@@ -87,7 +87,6 @@
     <Content Include="..\Docs\Translations\*" Link="Docs\Translations\*" />
     <Content Include="..\README.md" Link="README.md" />
     <Content Include="FodyWeavers.xml" />
-    <Content Include="PlantUMLDocuments\*" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Remove="Games\Dodgeball\Features\**" />

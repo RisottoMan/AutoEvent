@@ -1,25 +1,20 @@
 ﻿using System;
 using System.IO;
 using AutoEvent.Commands;
-using AutoEvent.Events.EventArgs;
 using AutoEvent.Interfaces;
 using HarmonyLib;
 using PluginAPI.Core.Attributes;
 using PluginAPI.Enums;
 using PluginAPI.Events;
-using AutoEvent.Events.Handlers;
-using Exiled.Loader;
-using GameCore;
 using MEC;
-using PluginAPI.Core;
-using Powerups;
+using AutoEvent.API.Season;
 using Event = AutoEvent.Interfaces.Event;
 using Log = PluginAPI.Core.Log;
 using Map = PluginAPI.Core.Map;
 using Paths = PluginAPI.Helpers.Paths;
 using Player = PluginAPI.Core.Player;
 using Server = PluginAPI.Core.Server;
-using AutoEvent.API.Season;
+using AutoEvent.API;
 #if EXILED
 using Exiled.API.Features;
 
@@ -87,14 +82,7 @@ namespace AutoEvent
             {
                 Singleton = this;
                 MER.Lite.API.Initialize(AutoEvent.Singleton.Config.SchematicsDirectoryPath, Config.Debug);
-                Powerups.API.Initialize();
                 SCPSLAudioApi.Startup.SetupDependencies();
-                InventoryMenu.API.MenuManager.Init();
-                InventoryMenu.API.Log.OnLog += (msg, level) =>
-                {
-                    DebugLogger.LogDebug($"[InventorySystem] {msg}", (LogLevel)level,
-                        level != InventoryMenu.API.Log.LogLevel.Debug);
-                };
 #if EXILED
                 Exiled.Events.Handlers.Player.Shot += (Exiled.Events.EventArgs.Player.ShotEventArgs ev) =>
                 {

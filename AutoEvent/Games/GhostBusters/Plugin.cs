@@ -1,34 +1,17 @@
-﻿// <copyright file="Log.cs" company="Redforce04#4091">
-// Copyright (c) Redforce04. All rights reserved.
-// </copyright>
-// -----------------------------------------
-//    Solution:         AutoEvent
-//    Project:          AutoEvent
-//    FileName:         Plugin.cs
-//    Author:           Redforce04#4091
-//    Revision Date:    10/28/2023 1:50 AM
-//    Created Date:     10/28/2023 1:50 AM
-// -----------------------------------------
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using AutoEvent.Events.Handlers;
 using AutoEvent.Games.GhostBusters.Features;
 using AutoEvent.Interfaces;
-using HarmonyLib;
 using Interactables.Interobjects;
 using Interactables.Interobjects.DoorUtils;
-using InventoryMenu.API;
-using InventoryMenu.API.EventArgs;
-using InventoryMenu.API.Features;
 using InventorySystem.Items.MicroHID;
 using MapGeneration;
 using MEC;
 using PlayerRoles;
 using PluginAPI.Core;
 using PluginAPI.Events;
-using Powerups.Extensions;
 using UnityEngine;
 using Event = AutoEvent.Interfaces.Event;
 
@@ -37,6 +20,7 @@ namespace AutoEvent.Games.GhostBusters;
 public class Plugin : Event, IInternalEvent, IEventSound, IHidden
 {
     // Removed Mini-Game for Haloween Update
+    // Powerup and InventoryMenu has been deleted
     public override string Name { get; set; } = "Ghost Busters";
     public override string Description { get; set; } = "Ghostbusters vs ghosts. The clock is ticking, will the ghost-busters be able to kill all ghosts before midnight hits?";
     public override string Author { get; set; } = "Redforce04 and Riptide";
@@ -58,9 +42,9 @@ public class Plugin : Event, IInternalEvent, IEventSound, IHidden
     public  Dictionary<Player, GhostBusterClass> Classes; 
     public Loadouts Loadouts { get; set; }
     public List<Ability> Abilities { get; set; }
-    internal Menu HunterRoleMenu { get; set; }
-    internal Menu GhostRoleMenu { get; set; }
-    internal Menu GhostPowerupMenu { get; set; }
+    //internal Menu HunterRoleMenu { get; set; }
+    //internal Menu GhostRoleMenu { get; set; }
+    //internal Menu GhostPowerupMenu { get; set; }
     public List<Player> Hunters { get; set; }
     public Dictionary<ushort, float> HIDCache { get; set; }
 
@@ -146,6 +130,7 @@ public class Plugin : Event, IInternalEvent, IEventSound, IHidden
             
         Classes = new Dictionary<Player, GhostBusterClass>();
         Extensions.JailbirdIsInvincible = true;
+        /*&
         HunterRoleMenu = new Menu("Available Roles. Right click to view more details, left click to select the role.", false);
         HunterRoleMenu.AddItem(new MenuItem(ItemType.MicroHID, "Tank Loadout", 0, Loadouts.HuntersSelectLoadout));
         HunterRoleMenu.AddItem(new MenuItem(ItemType.ParticleDisruptor, "Sniper Loadout", 1, Loadouts.HuntersSelectLoadout));
@@ -174,7 +159,7 @@ public class Plugin : Event, IInternalEvent, IEventSound, IHidden
             else
                 SetGhost(ply);
         }
-            
+            */
     }
 
     private void SetHunter(Player ply)
@@ -187,7 +172,7 @@ public class Plugin : Event, IInternalEvent, IEventSound, IHidden
         {
             ply.SetRole(RoleTypeId.ChaosConscript, RoleChangeReason.Respawn, RoleSpawnFlags.None);
         });
-        ply.ShowMenu(HunterRoleMenu);
+        //ply.ShowMenu(HunterRoleMenu);
     }
 
     private void SetGhost(Player ply)
@@ -198,7 +183,7 @@ public class Plugin : Event, IInternalEvent, IEventSound, IHidden
         ply.SetRole(RoleTypeId.ClassD, RoleChangeReason.Respawn, RoleSpawnFlags.UseSpawnpoint);
         ply.SetRole(RoleTypeId.Scientist, RoleChangeReason.Respawn, RoleSpawnFlags.None);
         ply.GiveLoadout(Config.GhostLoadouts);
-        ply.ShowMenu(GhostRoleMenu);
+        //ply.ShowMenu(GhostRoleMenu);
     }
 
     protected override IEnumerator<float> BroadcastStartCountdown()
@@ -231,7 +216,7 @@ public class Plugin : Event, IInternalEvent, IEventSound, IHidden
     {
         foreach (Player ply in Player.GetPlayers())
         {
-            ply.HideMenu();
+            //ply.HideMenu();
             if (ply.IsAlive && this.IsHunter(ply))
             {
                 continue;
@@ -379,7 +364,7 @@ public class Plugin : Event, IInternalEvent, IEventSound, IHidden
         base.OnCleanup();
         foreach (Player ply in Player.GetPlayers())
         {
-            ply.HideMenu();
+            //ply.HideMenu();
         }
     }
 

@@ -7,10 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoEvent", "AutoEvent.cspr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SchematicApi", "SchematicApi\SchematicApi.csproj", "{580DFED2-B2D7-4B89-B245-D60246BCFB79}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PowerupApi", "PowerupApi\PowerupApi.csproj", "{1B07FE64-A112-499D-8A55-67EE912B1CB7}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InventoryMenu", "InventoryMenu\InventoryMenu.csproj", "{1F7DA672-31F6-45A7-B57E-3CC1A0D8DB2E}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Release Exiled|Any CPU = Release Exiled|Any CPU
@@ -25,14 +21,6 @@ Global
 		{580DFED2-B2D7-4B89-B245-D60246BCFB79}.Release Exiled|Any CPU.Build.0 = Release|Any CPU
 		{580DFED2-B2D7-4B89-B245-D60246BCFB79}.Release NWApi|Any CPU.ActiveCfg = Release|Any CPU
 		{580DFED2-B2D7-4B89-B245-D60246BCFB79}.Release NWApi|Any CPU.Build.0 = Release|Any CPU
-		{1B07FE64-A112-499D-8A55-67EE912B1CB7}.Release Exiled|Any CPU.ActiveCfg = Release|Any CPU
-		{1B07FE64-A112-499D-8A55-67EE912B1CB7}.Release Exiled|Any CPU.Build.0 = Release|Any CPU
-		{1B07FE64-A112-499D-8A55-67EE912B1CB7}.Release NWApi|Any CPU.ActiveCfg = Release|Any CPU
-		{1B07FE64-A112-499D-8A55-67EE912B1CB7}.Release NWApi|Any CPU.Build.0 = Release|Any CPU
-		{1F7DA672-31F6-45A7-B57E-3CC1A0D8DB2E}.Release Exiled|Any CPU.ActiveCfg = Debug|Any CPU
-		{1F7DA672-31F6-45A7-B57E-3CC1A0D8DB2E}.Release Exiled|Any CPU.Build.0 = Debug|Any CPU
-		{1F7DA672-31F6-45A7-B57E-3CC1A0D8DB2E}.Release NWApi|Any CPU.ActiveCfg = Debug|Any CPU
-		{1F7DA672-31F6-45A7-B57E-3CC1A0D8DB2E}.Release NWApi|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

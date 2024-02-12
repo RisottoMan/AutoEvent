@@ -16,7 +16,7 @@ using System.Reflection;
 using CedMod;
 using PluginAPI.Core;
 
-namespace AutoEvent;
+namespace AutoEvent.API;
 
 public class FriendlyFireSystem
 {
@@ -38,9 +38,10 @@ public class FriendlyFireSystem
         }
         else
             DebugLogger.LogDebug("CedMod has not been detected.", LogLevel.Debug, false);
-    } 
+    }
 
-    public static bool FriendlyFireDetectorIsDisabled {
+    public static bool FriendlyFireDetectorIsDisabled
+    {
         get
         {
             try
@@ -129,7 +130,7 @@ public class FriendlyFireSystem
     public static void DisableFriendlyFire()
     {
         DebugLogger.LogDebug("Disabling Friendly Fire.", LogLevel.Debug, false);
-        
+
         Server.FriendlyFire = false;
         // EnableFriendlyFireDetector();
     }
