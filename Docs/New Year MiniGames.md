@@ -1,103 +1,67 @@
-## I'll introduce you to 20 mini-games I've made:
+# Mini Games               
+### Race
+#### You have to pass a short test to win.
+![SCP_Secret_Laboratory_Screenshot_2023 12 31_-_18 17 19 37-1](https://github.com/Tert122/-/assets/158254093/81c0e383-e334-4b05-a328-5675a55b10f2) 
 
-### Zombie Infection [zombie]
-##### Zombie mode, the purpose of which is to infect all players. 
-##### It's a pretty nice map, where it's nice to run away from zombies, but it's easy to get infected if you're careless.
-![](https://github.com/swdmeow/AutoEvent-Exiled/blob/main/Photos/Zombie.png)
+### Airstrike
+#### Grenades begin to spawn on the map.
+#### Survive to win.
+![SCP_Secret_Laboratory_Screenshot_2023 12 31_-_18 08 09 81](https://github.com/Tert122/-/assets/158254093/98ea550c-295e-4b9d-bfa5-1242c8ec6d98)
 
-### Atomic Escape [escape]
-##### Escape from the facility behind SCP-173 at supersonic speed!
-##### We need to escape from the complex behind SCP-173 before it explodes. There is music in the background that adds to the anxiety.
-![](https://github.com/swdmeow/AutoEvent-Exiled/blob/main/Photos/Escape.png)
+### Boss
+#### A boss appears on the map and wants to kill everyone.
+#### Kill him to win.
+![SCP_Secret_Laboratory_Screenshot_2023 12 31_-_18 09 47 85](https://github.com/Tert122/-/assets/158254093/288b0204-b939-4a2d-b5aa-894665b66905)
 
-### Cock Fights [versus]
-##### The players are divided into teams. There is a box on the map in which members of different teams duel.
-##### To participate, you need to go through the door.
-![](https://github.com/swdmeow/AutoEvent-Exiled/blob/main/Photos/Duel.png)
+### SnowBall
+#### Both teams have balls.
+#### Your task is to kill the opposite team, the team that stays alive wins.
+![вышибалы](https://github.com/Tert122/-/assets/158254093/abdccb02-36fb-4d90-abf2-092946cd139c)
 
-### Knives of Death [knife]
-##### The battle of the teams on knives.
-##### It's very simple! The team that remains last survives.
-![](https://github.com/swdmeow/AutoEvent-Exiled/blob/main/Photos/Knife.png)
+### Lava
+#### The lava begins to rise, climb one of the towers to confront other players.
+#### Weapons will be scattered around the map.
+![голодные игры](https://github.com/Tert122/-/assets/158254093/163644c8-aa90-40dd-999e-62a5286dbde9)
 
-### Simon's Prison [jail]
-##### You play as a Jailer and have to conduct games for Prisoners, for example, get into parkour or Simon says.
-##### This mini-game requires an understanding of how to conduct the Jail mode, which is why I find it difficult.
-![](https://github.com/swdmeow/AutoEvent-Exiled/blob/main/Photos/Jail.png)
+### Hot potato
+#### Run and hide from the players, otherwise you yourself will become caught up.
+#### To survive, pass the bat to another player.
+![горячая картошка](https://github.com/Tert122/-/assets/158254093/b810d0ef-79f5-4074-bc4e-e658ffc14ac5)
 
-### Territory of Death or Deathmatch [deathmatch]
-##### Players are divided into teams and they need to kill players to become a winner.
-##### A small closed map with a lot of spawns on it, so the gameplay is cheerful.
-![](https://github.com/swdmeow/AutoEvent-Exiled/blob/main/Photos/Deathmatch.png)
+### Zombie Infection.
+#### Zombie infestation. the goal of which is to infect all players.
+![зомби заражение](https://github.com/Tert122/-/assets/158254093/5354f791-ffd5-4a68-ab7f-5e13ec033b2b)
 
-### Quick Hands or GunGame [gungame]
-##### Every man for himself. Each player starts with a pistol and gradually finishes with big guns. In the end, you have to kill the players with a bat.
-##### A small closed map with a lot of spawns on it, so the gameplay is cheerful.
-![](https://github.com/swdmeow/AutoEvent-Exiled/blob/main/Photos/GunGame.png)
+### Red Light Green Light 
+#### Red light, Green light. the goal is to run behind Santa Claus, who will simultaneously turn around and watch so that you don’t move.
+#### When Santa Claus is looking at you you can’t walk, when he’s not looking at you you can.
+![SCP_Secret_Laboratory_Screenshot_2023 12 31_-_18 25 24 44](https://github.com/Tert122/-/assets/158254093/6a8b9fbf-734a-4ae9-945e-706792954ca7)
 
-### Dead Jump [glass]
-##### You need to reach the end of the map through obstacles. Don't forget that you don't have much time.
-##### The more players - the more difficult.
-![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/Glass1.png)
+### Knives
+#### Knife fight between two teams.
+#### It's simple! the team that stays alive wins.
+![мог против пх на палках](https://github.com/Tert122/-/assets/158254093/a4da7873-0024-40cd-8565-3608bbb8d9a2)
 
-### Zombie Survival [zombie2]
-##### You have come to an object where a dangerous T-Virus has leaked. Stop the threat or become a zombie.
-##### There are a lot of secret positions on the map where you need to survive against zombies.
-![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/Survival1.png)
+### Musical Chairs 
+#### Move to the music and don't stop.
+![image](https://github.com/Tert122/-/assets/158254093/cae3b294-f2ef-488f-a7c3-dd2a23414443)
 
-### The floor is LAVA [lava]
-##### The lava begins to rise. You have to climb one of the tops of the towers to survive against the rest of the players.
-##### A small map for survival.
-![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/Lava2.png)
+### Fall
+#### The map is destroyed. Survive on the remaining blocks.
+#### The last player standing is the winner.
+![падающие панельки](https://github.com/Tert122/-/assets/158254093/de235555-e7ac-48dd-942c-054646620d75)
 
-### Football [ball]
-##### Players are divided into teams to score each other a goal.
-##### A small map in which you need to score 3 goals for one team to win.
-![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/Football1.png)
+### Versus
+#### Players are divided into teams. in the center of the map there is a room in which the competition will take place.
+#### To take part you need to go through the door.
+![питушиные бои](https://github.com/Tert122/-/assets/158254093/862e36e6-8e1b-4823-80c0-254b98e8a136)
 
-### Fall Down [fall]
-##### The map starts to break. You have to survive from the lava.
-##### The last player becomes the winner.
-![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/FallDown.png)
+### Glass
+#### Select the correct panel to reach the finish line.
+![стеклянная дорожка](https://github.com/Tert122/-/assets/158254093/1a095896-94a7-49bc-b52d-963c82e5aa41)
 
-### Hide And Seek [hns]
-##### Run away and hide from the players, otherwise you will become a catch-up yourself.
-##### It is necessary to pass the bat to the player in order to survive.
-![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/HideAndSeek.png)
+### Puzzle
+#### Players appear on the map with colorful platforms that change color.
+#### Find a suitable platform based on the color indicated on the walls to survive.
+![SCP_Secret_Laboratory_Screenshot_2023 12 31_-_18 13 38 38-1](https://github.com/Tert122/-/assets/158254093/440bda2c-609d-409e-bf58-6d2b2e7fa3e2)
 
-### Death Line [line]
-##### You get to the map on which the mechanism is spinning.
-##### Avoid it to survive.
-![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/Line1.png)
-
-### Zombie Escape [zombie3]
-##### The T-Virus has taken over an entire island. You have to fly away from this place to survive from the zombies.
-##### A very large map to complete from start to finish.
-![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/Zombie%20Escape.png)
-
-### Battle [battle]
-##### Players are divided into two teams and must kill each other.
-##### The map is symmetrical, the speed and reaction of the players wins.
-![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/Battle2.png)
-
-### Puzzle [puzzle]
-##### Players appear on the map with different platforms that change their color.
-##### Find the right platform by the right color to survive.
-![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/Puzzle1.png)
-
-### Finish Way [finish]
-##### You have to pass the test and reach the finish line to win.
-##### An easy mini-game that just makes players relax.
-![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/FinishWay.png)
-
-### Death Party [death]
-##### Grenades begin to appear on the map. 
-##### You have to dodge them to win.
-![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/DeathParty1.png)
-
-### Boss Battle [boss]
-##### The boss appeared on the map. He wants to kill everyone.
-##### Kill him faster before he does it for you.
-![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/Boss.png)
-
-[![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/Back.png)](https://github.com/KoT0XleB/AutoEvent)
