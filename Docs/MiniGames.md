@@ -2,7 +2,7 @@
 
 ### Winter Mini-Games
 ##### Here are all the maps and mini-games that were changed in the New Year update.
-![https://github.com/KoT0XleB/AutoEvent/blob/main/Docs/NewYearMiniGames.md](https://github.com/KoT0XleB/AutoEvent/blob/main/Docs/NewYearMiniGames.md)
+![https://github.com/KoT0XleB/AutoEvent/blob/main/Docs/NewYearMiniGames.md](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/MiniGames%20Winter(mini).png)
 
 ### Zombie Infection [zombie]
 ##### Zombie mode, the purpose of which is to infect all players. 
