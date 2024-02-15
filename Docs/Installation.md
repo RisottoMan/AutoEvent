@@ -1,4 +1,5 @@
 # Installation
+### Select the installation on the framework that you are using.
 # Exiled
 ## 1. Download and Setup :moyai:
 ### *You need to download the latest release:*
