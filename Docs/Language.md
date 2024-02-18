@@ -11,9 +11,9 @@
 ### If you want to set the Russian language, then replace the current translations.
 
 ----
-## > English [``Click Me``](https://github.com/KoT0XleB/AutoEvent/tree/main/Docs/Translations/EN)
+## > English [``View``](https://github.com/KoT0XleB/AutoEvent/tree/main/Docs/Translations/EN) [``Archive EN``](https://github.com/KoT0XleB/AutoEvent/blob/main/Docs/Translations/EN.7z)
 ### This is a default language that can be easily changed.
-## > Russian [``Press Me``](https://github.com/KoT0XleB/AutoEvent/tree/main/Docs/Translations/RU)
+## > Russian [``View``](https://github.com/KoT0XleB/AutoEvent/tree/main/Docs/Translations/RU) [``Archive RU``](https://github.com/KoT0XleB/AutoEvent/blob/main/Docs/Translations/RU.7z)
 ### This language must be set manually.
 ## > Chinese [``The Chinese don't want to make translations (sorry)``]()
 ### This language must be set manually.
