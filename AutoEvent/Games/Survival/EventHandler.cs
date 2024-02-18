@@ -4,7 +4,6 @@ using InventorySystem.Configs;
 using System.Collections.Generic;
 using CustomPlayerEffects;
 using System.Linq;
-using AutoEvent.API.Enums;
 using AutoEvent.Events.EventArgs;
 using PluginAPI.Core.Attributes;
 using PluginAPI.Enums;

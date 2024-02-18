@@ -11,7 +11,6 @@
 // -----------------------------------------
 
 using System;
-using System.ComponentModel;
 using System.IO;
 using YamlDotNet.Core;
 using Version = System.Version;
@@ -91,7 +90,5 @@ public class EventConfigAttribute : Attribute
     }
 
     public bool IsLoaded => _isLoaded;
-
     protected bool _isLoaded = false;
-
 }

@@ -14,6 +14,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using AutoEvent.API.Enums;
+using AutoEvent.API.Season.Enum;
 using YamlDotNet.Serialization;
 
 namespace AutoEvent.Interfaces;
@@ -49,16 +50,20 @@ public class MapChance
 {
     public MapChance() { }
 
-    public MapChance(float chance, MapInfo map)
+    public MapChance(float chance, MapInfo map, SeasonFlag? flag = SeasonFlag.None)
     {
         Chance = chance;
         Map = map;
+        SeasonFlag = flag ?? SeasonFlag.None;
     }
     [Description("The chance of getting this map.")]
     public float Chance { get; set; } = 1f;
     
     [Description("The map and information.")]
     public MapInfo Map { get; set; }
+
+    [Description("Style of this map.")]
+    public SeasonFlag SeasonFlag { get; set; } = SeasonFlag.None;
 }
 
 public class SoundChance

@@ -1,23 +1,29 @@
 ﻿using PluginAPI.Core;
 using UnityEngine;
 
-namespace AutoEvent.Games.FallDown
+namespace AutoEvent.Games.FallDown;
+public class LavaComponent : MonoBehaviour
 {
-    public class LavaComponent : MonoBehaviour
+    private BoxCollider _collider;
+    private Plugin _plugin;
+
+    public void StartComponent(Plugin plugin)
     {
-        private BoxCollider collider;
-        private void Start()
+        _plugin = plugin;
+    }
+
+    private void Start()
+    {
+        _collider = gameObject.AddComponent<BoxCollider>();
+        _collider.isTrigger = true;
+    }
+
+    void OnTriggerStay(Collider other)
+    {
+        if (Player.Get(other.gameObject) is Player)
         {
-            collider = gameObject.AddComponent<BoxCollider>();
-            collider.isTrigger = true;
-        }
-        void OnTriggerStay(Collider other)
-        {
-            if (Player.Get(other.gameObject) is Player)
-            {
-                var pl = Player.Get(other.gameObject);
-                pl.Damage(500f, AutoEvent.Singleton.Translation.PuzzleTranslate.PuzzleDied);
-            }
+            var pl = Player.Get(other.gameObject);
+            pl.Damage(500f, _plugin.Translation.Died);
         }
     }
 }

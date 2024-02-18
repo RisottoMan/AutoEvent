@@ -5,7 +5,6 @@ using AutoEvent.Interfaces;
 using PlayerRoles;
 
 namespace AutoEvent.Games.Race;
-
 public class Config : EventConfig
 {
     [Description("How long the event should last in seconds. [Default: 60]")]

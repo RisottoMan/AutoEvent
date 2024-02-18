@@ -1,0 +1,21 @@
+name: 'Сплиф'
+description: 'Стреляй в платформы и не упадите в лаву!'
+command_name: 'spleef'
+start: '<color=red>Начало через: </color>{time}'
+cycle: |-
+  <color=red>{name}</color>
+  <color=yellow>Игроков в живых:</color> {players}
+  <color=#42aaff>Осталось времени:</color> {remaining}
+all_died: |-
+  <color=red>Все игроки умерли</color>
+  Мини-игра окончена
+some_survived: |-
+  <color=red>Несколько людей выжило</color>
+  Мини-игра окончена
+winner: |-
+  <color=red>Победитель: {winner}</color>
+  Мини-игра окончена
+died: '<color=red>Сгорел в лаве</color>'
+# DO NOT CHANGE THIS. IT WILL BREAK THINGS. AutoEvent will automatically manage these settings.
+version: '1.0.5'
+language: 'RU'

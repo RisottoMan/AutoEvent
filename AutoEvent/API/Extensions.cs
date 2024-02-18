@@ -280,16 +280,16 @@ namespace AutoEvent
         }
 
         public static Dictionary<ushort, bool> ExplodeOnCollisionList = new Dictionary<ushort, bool>();
-        public static Dictionary<ushort, RockSettings> RockList = new Dictionary<ushort,RockSettings>();
+        //public static Dictionary<ushort, RockSettings> RockList = new Dictionary<ushort,RockSettings>();
 
 
-        public static void MakeRock(this Item rock, RockSettings settings) => MakeRock(rock.Serial, settings);
-        public static void MakeRock(this ItemBase rock, RockSettings settings) => MakeRock(rock.ItemSerial, settings);
-
+        //public static void MakeRock(this Item rock, RockSettings settings) => MakeRock(rock.Serial, settings);
+        //public static void MakeRock(this ItemBase rock, RockSettings settings) => MakeRock(rock.ItemSerial, settings);
+        /*
         public static void MakeRock(ushort serial, RockSettings settings)
         {
             RockList.Add(serial, settings);
-        }
+        }*/
 
         
         /// <summary>

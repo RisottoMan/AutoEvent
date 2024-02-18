@@ -97,7 +97,7 @@ namespace AutoEvent.Games.GunGame
             
             if (_plugin.Config.Guns is null)
             {
-                GunGameConfig conf = new GunGameConfig();
+                Config conf = new Config();
                 _plugin.Config.Guns = conf.Guns;
                 DebugLogger.LogDebug("GetWeapon - Gun By Level is null. Setting new Defaults.");
                 //return;

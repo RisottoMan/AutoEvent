@@ -1,19 +1,6 @@
-﻿// <copyright file="Log.cs" company="Redforce04#4091">
-// Copyright (c) Redforce04. All rights reserved.
-// </copyright>
-// -----------------------------------------
-//    Solution:         AutoEvent
-//    Project:          AutoEvent
-//    FileName:         SpleefPlatform.cs
-//    Author:           Redforce04#4091
-//    Revision Date:    10/17/2023 6:38 PM
-//    Created Date:     10/17/2023 6:38 PM
-// -----------------------------------------
-
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace AutoEvent.Games.Spleef;
-
 public class SpleefPlatform
 {
     public SpleefPlatform(float sizeX, float sizeY, float sizeZ, float positionX, float positionY, float positionZ, Color color)

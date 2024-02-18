@@ -1,0 +1,19 @@
+name: 'Линия смерти'
+description: 'Избегай крутящейся платформы чтобы выживания.'
+command_name: 'line'
+cycle: |-
+  <color=#FF4242>{name}</color>
+  <color=#14AAF5>Осталось времени: {time}
+  <color=yellow>Осталось игроков: {count}</color>
+more_players: |-
+  <color=#FF4242>{name}</color>
+  <color=yellow>{count} игроков осталось</color>
+  <color=red>Поздравляем!</color>
+winner: |-
+  <color=#FF4242>{name}</color>
+  <color=yellow>Победитель: {winner}</color>
+  <color=red>Поздравляем!</color>
+all_died: '<color=red>Все игроки погибли</color>'
+# DO NOT CHANGE THIS. IT WILL BREAK THINGS. AutoEvent will automatically manage these settings.
+version: '1.0.0'
+language: 'RU'

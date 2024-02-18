@@ -54,8 +54,6 @@
             bool animated = AddAnimators();
             bool value = !animated && isStatic;
             IsStatic = value;
-            if (value)
-                Log.Debug($"Schematic {Name} has no animators, making it static...");
 
             UpdateObject();
 

@@ -1,87 +1,76 @@
-﻿using CustomPlayerEffects;
-using MER.Lite.Objects;
-using MEC;
-using PlayerRoles;
-using PluginAPI.Core;
+﻿using MEC;
 using PluginAPI.Events;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using AutoEvent.API;
 using AutoEvent.API.Enums;
 using UnityEngine;
 using AutoEvent.Events.Handlers;
-using AutoEvent.Games.Infection;
 using AutoEvent.Interfaces;
-using InventorySystem.Items.MarshmallowMan;
-using InventorySystem.Items.ThrowableProjectiles;
 using Event = AutoEvent.Interfaces.Event;
 using Player = PluginAPI.Core.Player;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace AutoEvent.Games.HideAndSeek
 {
     public class Plugin : Event, IEventSound, IEventMap, IInternalEvent
     {
-        public override string Name { get; set; } = AutoEvent.Singleton.Translation.HideTranslate.HideName;
-        public override string Description { get; set; } = AutoEvent.Singleton.Translation.HideTranslate.HideDescription;
+        public override string Name { get; set; } = "Tag";
+        public override string Description { get; set; } = "We need to catch up with all the players on the map";
         public override string Author { get; set; } = "KoT0XleB";
-        public override string CommandName { get; set; } = AutoEvent.Singleton.Translation.HideTranslate.HideCommandName;
-        public override Version Version { get; set; } = new Version(1, 0, 1);
-
+        public override string CommandName { get; set; } = "tag";
+        public override Version Version { get; set; } = new Version(1, 0, 2);
         [EventConfig]
-        public HideAndSeekConfig Config { get; set; }
+        public Config Config { get; set; }
+        [EventTranslation]
+        public Translation Translation { get; set; }
+        protected override FriendlyFireSettings ForceEnableFriendlyFire { get; set; } = FriendlyFireSettings.Enable;
         public MapInfo MapInfo { get; set; } = new MapInfo()
         { 
             MapName = "HideAndSeek", 
-            Position = new Vector3(5.5f, 1026.5f, -45f),
-            IsStatic = true
+            Position = new Vector3(5.5f, 1026.5f, -45f)
         };
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
-            { SoundName = "HideAndSeek.ogg", Volume = 5, Loop = true };
-        protected override float PostRoundDelay { get; set; } = 10f;
-        private EventHandler EventHandler { get; set; }
-        private HideTranslate Translation { get; set; } = AutoEvent.Singleton.Translation.HideTranslate;
-
+        { 
+            SoundName = "HideAndSeek.ogg", 
+            Volume = 5
+        };
+        private EventHandler _eventHandler;
+        private TimeSpan _countdown;
+        private EventState _eventState;
         protected override void RegisterEvents()
         {
-            EventHandler = new EventHandler(this);
-
-            EventManager.RegisterEvents(EventHandler);
-            Servers.TeamRespawn += EventHandler.OnTeamRespawn;
-            Servers.SpawnRagdoll += EventHandler.OnSpawnRagdoll;
-            Servers.PlaceBullet += EventHandler.OnPlaceBullet;
-            Servers.PlaceBlood += EventHandler.OnPlaceBlood;
-            Players.DropItem += EventHandler.OnDropItem;
-            Players.DropAmmo += EventHandler.OnDropAmmo;
-            Players.PlayerDamage += EventHandler.OnPlayerDamage;
+            _eventHandler = new EventHandler(this);
+            EventManager.RegisterEvents(_eventHandler);
+            Servers.TeamRespawn += _eventHandler.OnTeamRespawn;
+            Servers.SpawnRagdoll += _eventHandler.OnSpawnRagdoll;
+            Servers.PlaceBullet += _eventHandler.OnPlaceBullet;
+            Servers.PlaceBlood += _eventHandler.OnPlaceBlood;
+            Players.DropItem += _eventHandler.OnDropItem;
+            Players.DropAmmo += _eventHandler.OnDropAmmo;
+            Players.PlayerDamage += _eventHandler.OnPlayerDamage;
         }
-
         protected override void UnregisterEvents()
         {
-            EventManager.UnregisterEvents(EventHandler);
-            Servers.TeamRespawn -= EventHandler.OnTeamRespawn;
-            Servers.SpawnRagdoll -= EventHandler.OnSpawnRagdoll;
-            Servers.PlaceBullet -= EventHandler.OnPlaceBullet;
-            Servers.PlaceBlood -= EventHandler.OnPlaceBlood;
-            Players.DropItem -= EventHandler.OnDropItem;
-            Players.DropAmmo -= EventHandler.OnDropAmmo;
-            Players.PlayerDamage -= EventHandler.OnPlayerDamage;
-
-            EventHandler = null;
+            EventManager.UnregisterEvents(_eventHandler);
+            Servers.TeamRespawn -= _eventHandler.OnTeamRespawn;
+            Servers.SpawnRagdoll -= _eventHandler.OnSpawnRagdoll;
+            Servers.PlaceBullet -= _eventHandler.OnPlaceBullet;
+            Servers.PlaceBlood -= _eventHandler.OnPlaceBlood;
+            Players.DropItem -= _eventHandler.OnDropItem;
+            Players.DropAmmo -= _eventHandler.OnDropAmmo;
+            Players.PlayerDamage -= _eventHandler.OnPlayerDamage;
+            _eventHandler = null;
         }
 
         protected override void OnStart()
         {
-            Server.FriendlyFire = true;
-
+            _eventState = 0;
+            List<GameObject> spawnpoints = MapInfo.Map.AttachedBlocks.Where(x => x.name == "Spawnpoint").ToList();
             foreach (Player player in Player.GetPlayers())
             {
-                //Extensions.SetRole(player, RoleTypeId.ClassD, RoleSpawnFlags.None);
                 player.GiveLoadout(Config.PlayerLoadouts);
-                player.Position = RandomClass.GetSpawnPosition(MapInfo.Map);
-
-                // player.EffectsManager.EnableEffect<MovementBoost>();
-                // player.EffectsManager.ChangeState<MovementBoost>(50);
+                player.Position = spawnpoints.RandomItem().transform.position;
             }
         }
 
@@ -89,7 +78,7 @@ namespace AutoEvent.Games.HideAndSeek
         {
             for (float _time = 15; _time > 0; _time--)
             {
-                Extensions.Broadcast(Translation.HideBroadcast.Replace("{time}", $"{_time}"), 1);
+                Extensions.Broadcast(Translation.Broadcast.Replace("{time}", $"{_time}"), 1);
 
                 yield return Timing.WaitForSeconds(1f);
                 EventTime += TimeSpan.FromSeconds(1f);
@@ -98,52 +87,35 @@ namespace AutoEvent.Games.HideAndSeek
 
         protected override bool IsRoundDone()
         {
-            return false;
+            _countdown = _countdown.TotalSeconds > 0 ? _countdown.Subtract(new TimeSpan(0, 0, 1)) : TimeSpan.Zero;
+            return !(Player.GetPlayers().Count(ply => ply.IsAlive) > 1);
         }
 
-
-        private IEnumerator<float> PlayerBreak()
+        protected override void ProcessFrame()
         {
-            if (Config.BreakDuration < 1)
+            string text = string.Empty;
+            switch (_eventState)
             {
-                yield break;
+                case EventState.SelectPlayers: SelectPlayers(ref text); break;
+                case EventState.TagPeriod: UpdateTagPeriod(ref text); break;
+                case EventState.KillTaggers: KillTaggers(ref text); break;
+                case EventState.PlayerBreak: UpdatePlayerBreak(ref text); break;
             }
-            // Wait for 15 seconds before choosing next batch.
-            for (float _time = Config.BreakDuration; _time > 0; _time--)
-            {
-                Extensions.Broadcast(Translation.HideBroadcast.Replace("{time}", $"{_time}"), 1);
 
-                yield return Timing.WaitForSeconds(1f);
-                EventTime += TimeSpan.FromSeconds(1f);
-            }
+            Extensions.Broadcast(text, 1);
         }
 
-        private IEnumerator<float> TagPeriod()
+        /// <summary>
+        /// Choosing the player(s) who will catch up with other players
+        /// </summary>
+        protected void SelectPlayers(ref string text)
         {
-            if (Config.TagDuration < 1)
-            {
-                yield break;
-            }
-            for (int time = Config.TagDuration; time > 0; time--)
-            {
-                Extensions.Broadcast(Translation.HideCycle.Replace("{time}", $"{time}"), 1);
-
-                yield return Timing.WaitForSeconds(1f);
-                EventTime += TimeSpan.FromSeconds(1f);
-            }
-        }
-
-        private void SelectPlayers()
-        {
+            text = Translation.Broadcast.Replace("{time}", $"{_countdown.TotalSeconds}");
             List<Player> playersToChoose = Player.GetPlayers().Where(x => x.IsAlive).ToList();
-            foreach(Player ply in Config.TaggerCount.GetPlayers(true, playersToChoose))
+            foreach (Player ply in Config.TaggerCount.GetPlayers(true, playersToChoose))
             {
                 ply.GiveLoadout(Config.TaggerLoadouts);
                 var item = ply.AddItem(Config.TaggerWeapon);
-                if (item.ItemTypeId == ItemType.SCP018)
-                    item.MakeRock(new RockSettings(false, 1f, false, false, true));
-                if (item.ItemTypeId == ItemType.GrenadeHE)
-                    item.ExplodeOnCollision(true);
                 Timing.CallDelayed(0.1f, () =>
                 {
                     if (item != null)
@@ -155,62 +127,74 @@ namespace AutoEvent.Games.HideAndSeek
 
             if (Player.GetPlayers().Count(ply => ply.HasLoadout(Config.PlayerLoadouts)) <= Config.PlayersRequiredForBreachScannerEffect)
             {
-                foreach(Player ply in Player.GetPlayers().Where(ply => ply.HasLoadout(Config.PlayerLoadouts)))
+                foreach (Player ply in Player.GetPlayers().Where(ply => ply.HasLoadout(Config.PlayerLoadouts)))
                 {
                     ply.GiveEffect(StatusEffect.Scanned, 255, 0f, false);
                 }
             }
-        }
-        protected override IEnumerator<float> RunGameCoroutine()
-        {
-            int playersAlive = Player.GetPlayers().Count(ply => ply.IsAlive && ply.HasLoadout(Config.PlayerLoadouts));
-            while (DebugLogger.AntiEnd || playersAlive > 1)
-            {
-                SelectPlayers();
-                
-                yield return Timing.WaitUntilDone(Timing.RunCoroutine(TagPeriod(), "TagPeriod"));
 
-                // Kill players who are taggers.
-                foreach (Player player in Player.GetPlayers())
+            _countdown = new TimeSpan(0, 0, Config.TagDuration);
+            _eventState++;
+        }
+
+        /// <summary>
+        /// Just waiting N seconds until the time runs out
+        /// </summary>
+        protected void UpdateTagPeriod(ref string text)
+        {
+            text = Translation.Cycle.Replace("{time}", $"{_countdown.TotalSeconds}");
+
+            if (_countdown.TotalSeconds <= 0)
+                _eventState++;
+        }
+
+        /// <summary>
+        /// Kill players who are taggers.
+        /// </summary>
+        protected void KillTaggers(ref string text)
+        {
+            text = Translation.Cycle.Replace("{time}", $"{_countdown.TotalSeconds}");
+
+            foreach (Player player in Player.GetPlayers())
+            {
+                if (player.Items.Any(r => r.ItemTypeId == Config.TaggerWeapon))
                 {
-                    if (player.Items.Any(r => r.ItemTypeId == Config.TaggerWeapon))
-                    {
-                        player.ClearInventory();
-                        player.Damage(200, Translation.HideHurt);
-                    }
+                    player.ClearInventory();
+                    player.Damage(200, Translation.Hurt);
                 }
-                playersAlive = Player.GetPlayers().Count(ply => ply.IsAlive && ply.HasLoadout(Config.PlayerLoadouts));
-                DebugLogger.LogDebug($"Players Alive: {playersAlive}");
-                if (playersAlive <= 1)
-                    break;
-                
-                yield return Timing.WaitUntilDone(Timing.RunCoroutine(PlayerBreak(), "PlayerBreak"));
             }
 
-            yield break;
+            _countdown = new TimeSpan(0, 0, Config.BreakDuration);
+            _eventState++;
+        }
+
+        /// <summary>
+        /// Wait for N seconds before choosing next batch.
+        /// </summary>
+        protected void UpdatePlayerBreak(ref string text)
+        {
+            text = Translation.Broadcast.Replace("{time}", $"{_countdown.TotalSeconds}");
+
+            if (_countdown.TotalSeconds <= 0)
+                _eventState = 0;
         }
 
         protected override void OnFinished()
         {
-            var translation = AutoEvent.Singleton.Translation.HideTranslate;
-
-            /*if (Player.GetPlayers().Count(r => r.IsAlive) > 1)
+            string text = string.Empty;
+            if (Player.GetPlayers().Count(r => r.IsAlive) >= 1)
             {
-                Extensions.Broadcast(translation.HideMorePlayer.Replace("%time%", $"{EventTime.Minutes:00}:{EventTime.Seconds:00}"), 10);
-            }*/
-             if (Player.GetPlayers().Count(r => r.IsAlive) >= 1)
-            {
-                var text = translation.HideOnePlayer;
-                text = text.Replace("{winner}", Player.GetPlayers().First(r => r.IsAlive).Nickname);
-                text = text.Replace("{time}", $"{EventTime.Minutes:00}:{EventTime.Seconds:00}");
-
-                Extensions.Broadcast(text, 10);
+                text = Translation.OnePlayer
+                    .Replace("{winner}", Player.GetPlayers().First(r => r.IsAlive).Nickname)
+                    .Replace("{time}", $"{EventTime.Minutes:00}:{EventTime.Seconds:00}");
             }
             else
             {
-                Extensions.Broadcast(translation.HideAllDie.Replace("{time}", $"{EventTime.Minutes:00}:{EventTime.Seconds:00}"), 10);
+                text = Translation.AllDie
+                    .Replace("{time}", $"{EventTime.Minutes:00}:{EventTime.Seconds:00}");
             }
 
+            Extensions.Broadcast(text, 10);
         }
     }
 }

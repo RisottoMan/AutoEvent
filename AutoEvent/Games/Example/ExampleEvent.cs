@@ -1,16 +1,4 @@
-﻿// <copyright file="Log.cs" company="Redforce04#4091">
-// Copyright (c) Redforce04. All rights reserved.
-// </copyright>
-// -----------------------------------------
-//    Solution:         AutoEvent
-//    Project:          AutoEvent
-//    FileName:         ExampleEvent.cs
-//    Author:           Redforce04#4091
-//    Revision Date:    09/13/2023 11:44 AM
-//    Created Date:     09/13/2023 11:44 AM
-// -----------------------------------------
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using AutoEvent.API;
@@ -28,9 +16,8 @@ namespace AutoEvent.Games.Example
 {
     // Do not use IInternalEvent on your events.
     // It is only for the main events that are included with AutoEvent.
-    public class ExampleEvent : Event, IEventMap, IEventSound, IInternalEvent
+    public class ExampleEvent : Event, IEventMap, IEventSound, IInternalEvent, IHidden // IHidden to hide a mini game in the list of mini games
     {
-
         // Set the info for the event.
         public override string Name { get; set; } = "Example"; // It is recommended to use a translation for everything but author.
         public override string Description { get; set; } = "An example event based on the battle event.";
@@ -54,29 +41,35 @@ namespace AutoEvent.Games.Example
         [EventConfig]
         public ExampleConfig Config { get; set; }
 
+        [EventTranslation]
+        public ExampleTranslation Translation { get; set; }
+
         // Map Info can be inherited as long as the event inherits IEventMap.
         // MapInfo.Map is the Schematic Object for the map.
         public MapInfo MapInfo { get; set; } = new MapInfo()
-            { MapName = "Battle", 
-                Position = new Vector3(6f, 1030f, -43.5f), 
-                MapRotation = new Quaternion(), 
-                Scale = new Vector3(1,1,1), 
-                // If this is set to false, you can manually spawn the map via base.SpawnMap();
-                SpawnAutomatically = true};
+        {
+            MapName = "Battle",
+            Position = new Vector3(6f, 1030f, -43.5f), 
+            MapRotation = new Quaternion(),
+            Scale = new Vector3(1, 1, 1), 
+            // If this is set to false, you can manually spawn the map via base.SpawnMap();
+            SpawnAutomatically = true,
+            IsStatic = true
+        };
 
         // Sound Info can be inherited as long as the event inherits IEventSound.
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
-            { SoundName = "MetalGearSolid.ogg", 
-                Volume = 10, 
-                Loop = false, 
-                // If this is set to false, you can manually start the audio the map via base.StartAudio();
-                StartAutomatically = true
-            };
+        {
+            SoundName = "MetalGearSolid.ogg", 
+            Volume = 10, 
+            Loop = false, 
+            // If this is set to false, you can manually start the audio the map via base.StartAudio();
+            StartAutomatically = true
+        };
         
         // Define the fields/properties here. Make sure to set them, in OnStart() or OnRegisteringEvents()
         // Define the properties that may be used by this event, or by its handler class.
         private EventHandler EventHandler { get; set; }
-        private ExampleTranslate Translation { get; set; }
         
         // Define the fields that will only be used inside this event class.
         private List<GameObject> _workstations;
@@ -143,7 +136,7 @@ namespace AutoEvent.Games.Example
             // Count down the time until start. we use a 20 second timer for this.
             for (int time = 20; time > 0; time--)
             {
-                Extensions.Broadcast(Translation.BattleTimeLeft.Replace("{time}", $"{time}"), 5);
+                Extensions.Broadcast($"{time}", 5);
                 yield return Timing.WaitForSeconds(1f);
             }
 
@@ -211,10 +204,13 @@ namespace AutoEvent.Games.Example
         {
             // While the round isn't done, this will be called once a second. You can make the call duration faster / slower by changing FrameDelayInSeconds.
             // While the round is still going, broadcast the current round stats.
-            var text = Translation.BattleCounter;
+            
+            var text = Translation.AnyText;
+            /*
             text = text.Replace("{FoundationForces}", $"{Player.GetPlayers().Count(r => r.Team == Team.FoundationForces)}");
             text = text.Replace("{ChaosForces}", $"{Player.GetPlayers().Count(r => r.Team == Team.ChaosInsurgency)}");
             text = text.Replace("{time}", $"{EventTime.Minutes:00}:{EventTime.Seconds:00}");
+            */
 
             Extensions.Broadcast(text, 1);
         }
@@ -226,11 +222,11 @@ namespace AutoEvent.Games.Example
             // If the round is stopped, this wont be called. Instead use OnStop to broadcast either winners, or that nobody wins because the round was stopped.
             if (Player.GetPlayers().Count(r => r.Team == Team.FoundationForces) == 0)
             {
-                Extensions.Broadcast(Translation.BattleCiWin.Replace("{time}", $"{EventTime.Minutes:00}:{EventTime.Seconds:00}"), 3);
+                //Extensions.Broadcast(Translation.BattleCiWin.Replace("{time}", $"{EventTime.Minutes:00}:{EventTime.Seconds:00}"), 3);
             }
             else // if (Player.GetPlayers().Count(r => r.Team == Team.ChaosInsurgency) == 0)
             {
-                Extensions.Broadcast(Translation.BattleMtfWin.Replace("{time}", $"{EventTime.Minutes:00}:{EventTime.Seconds:00}"), 10);
+                //Extensions.Broadcast(Translation.BattleMtfWin.Replace("{time}", $"{EventTime.Minutes:00}:{EventTime.Seconds:00}"), 10);
             }        
         }
 
@@ -254,7 +250,5 @@ namespace AutoEvent.Games.Example
             foreach (var bench in _workstations)
                 GameObject.Destroy(bench);
         }
-
-
     }
 }

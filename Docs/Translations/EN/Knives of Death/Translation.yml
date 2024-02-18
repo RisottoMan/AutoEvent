@@ -1,0 +1,15 @@
+name: 'Knives of Death'
+description: 'Knife players against each other on a 35hp map from cs 1.6'
+command_name: 'knives'
+cycle: |-
+  <color=#D71868><b><i>{name}</i></b></color>
+  <color=yellow><color=blue>{mtfcount} MTF</color> <color=red>VS</color> <color=green>{chaoscount} CHAOS</color></color>
+chaos_win: |-
+  <color=#D71868><b><i>{name}</i></b></color>
+  <color=yellow>WINNERS: <color=green>CHAOS</color></color>
+mtf_win: |-
+  <color=#D71868><b><i>{name}</i></b></color>
+  <color=yellow>WINNERS: <color=#42AAFF>MTF</color></color>
+# DO NOT CHANGE THIS. IT WILL BREAK THINGS. AutoEvent will automatically manage these settings.
+version: '1.0.2'
+language: 'EN'

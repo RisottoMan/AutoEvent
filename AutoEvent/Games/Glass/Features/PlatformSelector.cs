@@ -1,25 +1,9 @@
-﻿// <copyright file="Log.cs" company="Redforce04#4091">
-// Copyright (c) Redforce04. All rights reserved.
-// </copyright>
-// -----------------------------------------
-//    Solution:         AutoEvent
-//    Project:          AutoEvent
-//    FileName:         PlatformSelector.cs
-//    Author:           Redforce04#4091
-//    Revision Date:    10/16/2023 2:50 PM
-//    Created Date:     10/16/2023 2:50 PM
-// -----------------------------------------
-
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using AutoEvent.API.RNG;
-using AutoEvent.Games.Infection;
 using HarmonyLib;
-using UnityEngine;
-using Random = UnityEngine.Random;
 
 namespace AutoEvent.Games.Glass.Features;
-
 public class PlatformSelector
 {
     public int PlatformCount { get; set; }

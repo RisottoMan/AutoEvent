@@ -5,7 +5,6 @@ using AutoEvent.Interfaces;
 using PlayerRoles;
 
 namespace AutoEvent.Games.CounterStrike;
-
 public class Config : EventConfig
 {
     [Description("After how many seconds the round will end. [Default: 105]")]

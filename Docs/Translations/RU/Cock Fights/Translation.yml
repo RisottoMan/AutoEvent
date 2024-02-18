@@ -1,0 +1,27 @@
+name: 'Петушиные бои'
+description: 'Дуэль на карте 35hp из CS 1.6'
+command_name: 'versus'
+players_null: |-
+  <color=#D71868><b><i>{name}</i></b></color>
+  Зайдите на арену для начала боя!
+  Осталось <color=red>{remain}</color> секунд
+class_d_null: |-
+  <color=#D71868><b><i>{name}</i></b></color>
+  Игрок на арене <color=yellow>{scientist}</color>
+  Зайди на арену в течении <color=orange>{remain}</color> секунд
+scientist_null: |-
+  <color=#D71868><b><i>{name}</i></b></color>
+  Игрок на арене <color=orange>{classd}</color>
+  Зайди на арену в течении <color=yellow>{remain}</color> секунд
+players_duel: |-
+  <color=#D71868><b><i>{name}</i></b></color>
+  <color=yellow><color=yellow>{scientist}</color> <color=red>VS</color> <color=orange>{classd}</color></color>
+class_d_win: |-
+  <color=#D71868><b><i>{name}</i></b></color>
+  <color=yellow>Победители: <color=red>Класс Д</color></color>
+scientist_win: |-
+  <color=#D71868><b><i>{name}</i></b></color>
+  <color=yellow>Победители: <color=red>Ученые</color></color>
+# DO NOT CHANGE THIS. IT WILL BREAK THINGS. AutoEvent will automatically manage these settings.
+version: '1.0.2'
+language: 'RU'

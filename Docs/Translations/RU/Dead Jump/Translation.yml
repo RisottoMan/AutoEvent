@@ -1,0 +1,20 @@
+name: 'Прыжок смерти'
+description: 'Прыгайте по хрупким плафтормам'
+command_name: 'glass'
+start: |-
+  <size=50>Прыжок смерти
+  Дойдите до финиша</size>
+  <size=20>Осталось: {plyAlive} игроков
+  До конца: {time}</size>
+died: 'Сгорел в лаве'
+win_survived: '<color=yellow>Победа людей! Выжило {plyAlive} игроков</color>'
+winner: |-
+  <color=red>Прыжок смерти</color>
+  <color=yellow>Победил: {winner}</color>
+fail: |-
+  <color=red>Прыжок смерти</color>
+  <color=yellow>Все игроки погибли</color>
+push: '<color=green>Нажмите <color=yellow>[Alt]</color>, чтобы толкнуть</color>'
+# DO NOT CHANGE THIS. IT WILL BREAK THINGS. AutoEvent will automatically manage these settings.
+version: '1.0.5'
+language: 'RU'

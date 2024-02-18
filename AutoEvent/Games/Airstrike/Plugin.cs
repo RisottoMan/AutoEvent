@@ -16,59 +16,59 @@ namespace AutoEvent.Games.Airstrike
 {
     public class Plugin : Event, IEventMap, IEventSound, IInternalEvent
     {
-        public override string Name { get; set; } = AutoEvent.Singleton.Translation.DeathTranslate.DeathName;
-        public override string Description { get; set; } = AutoEvent.Singleton.Translation.DeathTranslate.DeathDescription;
+        public override string Name { get; set; } = "Airstrike Party";
+        public override string Description { get; set; } = "Survive as aistrikes rain down from above.";
         public override string Author { get; set; } = "KoT0XleB";
-        public override string CommandName { get; set; } = AutoEvent.Singleton.Translation.DeathTranslate.DeathCommandName;
-        public override Version Version { get; set; } = new Version(1, 0, 2);
+        public override string CommandName { get; set; } = "airstrike";
+        public override Version Version { get; set; } = new Version(1, 0, 3);
         public MapInfo MapInfo { get; set; } = new MapInfo()
         { 
             MapName = "DeathParty", 
-            Position = new Vector3(10f, 1012f, -40f),
-            IsStatic = true
+            Position = new Vector3(10f, 1012f, -40f)
         };
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
-            { SoundName = "DeathParty.ogg", Volume = 5, Loop = true };
-
+        { 
+            SoundName = "DeathParty.ogg", 
+            Volume = 5
+        };
         [EventConfig]
         public Config Config { get; set; }
+        [EventTranslation]
+        public Translation Translation { get; set; }
         protected override float PostRoundDelay { get; set; } = 5f;
         protected override FriendlyFireSettings ForceEnableFriendlyFire { get; set; } = FriendlyFireSettings.Enable;
         protected override FriendlyFireSettings ForceEnableFriendlyFireAutoban { get; set; } = FriendlyFireSettings.Disable;
-        private EventHandler EventHandler { get; set; }
-        private DeathTranslate Translation { get; set; } = AutoEvent.Singleton.Translation.DeathTranslate;
+        private EventHandler _eventHandler { get; set; }
         private bool RespawnWithGrenades => Config.RespawnPlayersWithGrenades;
         public int Stage { get; private set; }
         private CoroutineHandle _grenadeCoroutineHandle;
 
         protected override void RegisterEvents()
         {
-            EventHandler = new EventHandler(this);
-
-            EventManager.RegisterEvents(EventHandler);
-            Servers.TeamRespawn += EventHandler.OnTeamRespawn;
-            Servers.SpawnRagdoll += EventHandler.OnSpawnRagdoll;
-            Servers.PlaceBullet += EventHandler.OnPlaceBullet;
-            Servers.PlaceBlood += EventHandler.OnPlaceBlood;
-            Players.DropItem += EventHandler.OnDropItem;
-            Players.DropAmmo += EventHandler.OnDropAmmo;
-            Players.PlayerDamage += EventHandler.OnPlayerDamage;
-            Players.PlayerDying += EventHandler.OnPlayerDying;
+            _eventHandler = new EventHandler(this);
+            EventManager.RegisterEvents(_eventHandler);
+            Servers.TeamRespawn += _eventHandler.OnTeamRespawn;
+            Servers.SpawnRagdoll += _eventHandler.OnSpawnRagdoll;
+            Servers.PlaceBullet += _eventHandler.OnPlaceBullet;
+            Servers.PlaceBlood += _eventHandler.OnPlaceBlood;
+            Players.DropItem += _eventHandler.OnDropItem;
+            Players.DropAmmo += _eventHandler.OnDropAmmo;
+            Players.PlayerDamage += _eventHandler.OnPlayerDamage;
+            Players.PlayerDying += _eventHandler.OnPlayerDying;
         }
         
         protected override void UnregisterEvents()
         {
-            EventManager.UnregisterEvents(EventHandler);
-            Servers.TeamRespawn -= EventHandler.OnTeamRespawn;
-            Servers.SpawnRagdoll -= EventHandler.OnSpawnRagdoll;
-            Servers.PlaceBullet -= EventHandler.OnPlaceBullet;
-            Servers.PlaceBlood -= EventHandler.OnPlaceBlood;
-            Players.DropItem -= EventHandler.OnDropItem;
-            Players.DropAmmo -= EventHandler.OnDropAmmo;
-            Players.PlayerDamage -= EventHandler.OnPlayerDamage;
-            Players.PlayerDying -= EventHandler.OnPlayerDying;
-
-            EventHandler = null;
+            EventManager.UnregisterEvents(_eventHandler);
+            Servers.TeamRespawn -= _eventHandler.OnTeamRespawn;
+            Servers.SpawnRagdoll -= _eventHandler.OnSpawnRagdoll;
+            Servers.PlaceBullet -= _eventHandler.OnPlaceBullet;
+            Servers.PlaceBlood -= _eventHandler.OnPlaceBlood;
+            Players.DropItem -= _eventHandler.OnDropItem;
+            Players.DropAmmo -= _eventHandler.OnDropAmmo;
+            Players.PlayerDamage -= _eventHandler.OnPlayerDamage;
+            Players.PlayerDying -= _eventHandler.OnPlayerDying;
+            _eventHandler = null;
         }
 
         protected override void OnStart()
@@ -110,7 +110,7 @@ namespace AutoEvent.Games.Airstrike
         {
             var count = Player.GetPlayers().Count(r => r.IsAlive && r.Role != RoleTypeId.ChaosConscript).ToString();
             var cycleTime = $"{EventTime.Minutes:00}:{EventTime.Seconds:00}";
-            Extensions.Broadcast(Translation.DeathCycle.Replace("{count}", count).Replace("{time}", cycleTime), 1);
+            Extensions.Broadcast(Translation.Cycle.Replace("{count}", count).Replace("{time}", cycleTime), 1);
         }
 
         protected override bool IsRoundDone()
@@ -207,17 +207,17 @@ namespace AutoEvent.Games.Airstrike
             var time = $"{EventTime.Minutes:00}:{EventTime.Seconds:00}";
             if (Player.GetPlayers().Count(r => r.Role != RoleTypeId.ChaosConscript) > 1)
             {
-                Extensions.Broadcast(Translation.DeathMorePlayer.Replace("{count}", $"{Player.GetPlayers().Count(r => r.Role != RoleTypeId.ChaosConscript)}").Replace("{time}", time), 10);
+                Extensions.Broadcast(Translation.MorePlayer.Replace("{count}", $"{Player.GetPlayers().Count(r => r.Role != RoleTypeId.ChaosConscript)}").Replace("{time}", time), 10);
             }
             else if (Player.GetPlayers().Count(r => r.IsAlive && r.Role != RoleTypeId.ChaosConscript) == 1)
             {
                 var player = Player.GetPlayers().First(r => r.IsAlive && r.Role != RoleTypeId.ChaosConscript);
                 player.Health = 1000;
-                Extensions.Broadcast(Translation.DeathOnePlayer.Replace("{winner}", player.Nickname).Replace("{time}", time), 10);
+                Extensions.Broadcast(Translation.OnePlayer.Replace("{winner}", player.Nickname).Replace("{time}", time), 10);
             }
             else
             {
-                Extensions.Broadcast(Translation.DeathAllDie.Replace("{time}", time), 10);
+                Extensions.Broadcast(Translation.AllDie.Replace("{time}", time), 10);
             }
         }
     }

@@ -1,0 +1,15 @@
+name: 'Ножи смерти'
+description: 'Деритесь на карте 35hp из CS 1.6'
+command_name: 'knives'
+cycle: |-
+  <color=#D71868><b><i>{name}</i></b></color>
+  <color=yellow><color=blue>{mtfcount} МОГ</color> <color=red>VS</color> <color=green>{chaoscount} ПХ</color></color>
+chaos_win: |-
+  <color=#D71868><b><i>{name}</i></b></color>
+  <color=yellow>Победители: <color=green>ПХ</color></color>
+mtf_win: |-
+  <color=#D71868><b><i>{name}</i></b></color>
+  <color=yellow>Победители: <color=#42AAFF>МОГ</color></color>
+# DO NOT CHANGE THIS. IT WILL BREAK THINGS. AutoEvent will automatically manage these settings.
+version: '1.0.2'
+language: 'RU'

@@ -15,7 +15,6 @@ using AutoEvent.API;
 using AutoEvent.API.Enums;
 using CustomPlayerEffects;
 using Footprinting;
-using InventoryMenu.API;
 using InventorySystem.Items;
 using InventorySystem.Items.Pickups;
 using InventorySystem.Items.ThrowableProjectiles;
@@ -142,8 +141,8 @@ public class AbilityImplementations
     private static void _triggerBall(Player ply)
     {
         var itemBase = ply.AddItem(ItemType.SCP018);
-        ply.HideMenu();
-        ply.RefreshInventory();
+        //ply.HideMenu();
+        //ply.RefreshInventory();
         Timing.CallDelayed(0.1f, () =>
         {
             ply.CurrentItem = itemBase;
@@ -153,7 +152,7 @@ public class AbilityImplementations
             Vector3 startTorque = projectileSettings.FullThrowSettings.StartTorque;
             Vector3 limitedVelocity = ThrowableNetworkHandler.GetLimitedVelocity(ply.Velocity);
             projectileSettings.ServerThrow((float)startVelocity * 3, (float)upwardsFactor, startTorque * 3, limitedVelocity);
-            Timing.CallDelayed(1f, () => ply.ShowMenu(_plugin.GhostPowerupMenu));
+            //Timing.CallDelayed(1f, () => ply.ShowMenu(_plugin.GhostPowerupMenu));
             
         });
     } 
@@ -169,8 +168,8 @@ public class AbilityImplementations
     private static void _trigger2176(Player ply)
     {
         var itemBase = ply.AddItem(ItemType.SCP2176);
-        ply.HideMenu();
-        ply.RefreshInventory();
+        //ply.HideMenu();
+        //ply.RefreshInventory();
         Timing.CallDelayed(0.1f, () =>
         {
             ply.CurrentItem = itemBase;
@@ -181,7 +180,7 @@ public class AbilityImplementations
             Vector3 limitedVelocity = ThrowableNetworkHandler.GetLimitedVelocity(ply.Velocity);
             projectileSettings.ServerThrow((float)startVelocity * 3, (float)upwardsFactor, startTorque * 3, limitedVelocity);
             projectileSettings.gameObject.TryGetComponent<Scp2176Projectile>(out var comp);
-            Timing.CallDelayed(1f, () => ply.ShowMenu(_plugin.GhostPowerupMenu));
+            //Timing.CallDelayed(1f, () => ply.ShowMenu(_plugin.GhostPowerupMenu));
             
         });
     }

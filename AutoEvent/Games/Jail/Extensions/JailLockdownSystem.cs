@@ -10,7 +10,6 @@
 //    Created Date:     09/24/2023 1:22 PM
 // -----------------------------------------
 
-using AutoEvent.Games.Infection;
 using UnityEngine;
 
 namespace AutoEvent.Games.Jail;
@@ -24,7 +23,7 @@ public class JailLockdownSystem
     }
 
     private Plugin _plugin;
-    private JailConfig Config => _plugin.Config;
+    private Config Config => _plugin.Config;
     private GameObject PrisonerDoors => _plugin.PrisonerDoors;
     internal bool LockDownActive => !_plugin.PrisonerDoors.GetComponent<JailerComponent>().IsOpen;
     internal float LockDownCooldown { get; set; }

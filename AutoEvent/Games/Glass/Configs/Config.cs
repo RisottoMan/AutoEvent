@@ -1,17 +1,6 @@
-﻿// <copyright file="Log.cs" company="Redforce04#4091">
-// Copyright (c) Redforce04. All rights reserved.
-// </copyright>
-// -----------------------------------------
-//    Solution:         AutoEvent
-//    Project:          AutoEvent
-//    FileName:         GlassConfig.cs
-//    Author:           Redforce04#4091
-//    Revision Date:    09/18/2023 4:33 PM
-//    Created Date:     09/18/2023 4:33 PM
-// -----------------------------------------
-
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
+using AutoEvent.API.Season.Enum;
 using AutoEvent.Interfaces;
 using UnityEngine;
 
@@ -28,8 +17,9 @@ public class Config : EventConfig
 
         if (AvailableMaps.Count < 1)
         {
-            AvailableMaps.Add(new MapChance(50, new MapInfo("Glass", new Vector3(76f, 1026.5f, -43.68f))));
-            AvailableMaps.Add(new MapChance(50, new MapInfo("Glass_Xmas2024", new Vector3(76f, 1026.5f, -43.68f))));
+            AvailableMaps.Add(new MapChance(50, new MapInfo("Glass", new Vector3(76f, 1026.5f, -43.68f), null, null, false)));
+            AvailableMaps.Add(new MapChance(50, new MapInfo("Glass_Xmas2024", new Vector3(76f, 1026.5f, -43.68f), null, null, false), SeasonFlag.Christmas));
+            AvailableMaps.Add(new MapChance(50, new MapInfo("Glass_Xmas2024", new Vector3(76f, 1026.5f, -43.68f), null, null, false), SeasonFlag.NewYear));
         }
     }
 
@@ -45,6 +35,8 @@ public class Config : EventConfig
     
     [Description("How many seconds until the platforms regenerate. Prevents players from sitting around. -1 to disable.")]
     public float BrokenPlatformRegenerateDelayInSeconds { get; set; } = 20;
+    [Description("The players will push each other for fun. Default: false.")]
+    public bool IsEnablePush { get; set; } = false;
 
     [Description("How much time should I give the player in seconds to cool down to use the push?")]
     public float PushPlayerCooldown { get; set; } = 5;

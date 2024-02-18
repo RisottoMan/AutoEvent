@@ -1,18 +1,14 @@
 ﻿using System;
 using System.IO;
 using AutoEvent.Commands;
-using AutoEvent.Events.EventArgs;
 using AutoEvent.Interfaces;
 using HarmonyLib;
 using PluginAPI.Core.Attributes;
 using PluginAPI.Enums;
 using PluginAPI.Events;
-using AutoEvent.Events.Handlers;
-using Exiled.Loader;
-using GameCore;
 using MEC;
-using PluginAPI.Core;
-using Powerups;
+using AutoEvent.API;
+using AutoEvent.API.Season;
 using Event = AutoEvent.Interfaces.Event;
 using Log = PluginAPI.Core.Log;
 using Map = PluginAPI.Core.Map;
@@ -26,9 +22,9 @@ using Exiled.API.Features;
 namespace AutoEvent
 {
 #if EXILED
-    public class AutoEvent : Plugin<Config, Translation>
+    public class AutoEvent : Plugin<Config>
     {
-        public override System.Version Version => System.Version.Parse(DebugLogger.Version);
+        public override System.Version Version => System.Version.Parse(Version);
         public override string Name => "AutoEvent";
         public override string Author => "Created by KoT0XleB, extended by swd and sky, Co-Maintained by Redforce04";
         public static bool IsPlayedGames;
@@ -38,10 +34,8 @@ namespace AutoEvent
     {
         [PluginConfig("Configs/autoevent.yml")]
         public Config Config;
-
-        [PluginConfig("Configs/translation.yml")]
-        public Translation Translation;
 #endif
+        public const string Version = "9.6.0";
         public const bool BetaRelease = false; // todo set beta to false before main release
         /// <summary>
         /// The location of the AutoEvent folder for schematics, music, external events and event config / translations.
@@ -58,8 +52,7 @@ namespace AutoEvent
         public override void OnEnabled()
 #else
         [PluginPriority(LoadPriority.Low)]
-        [PluginEntryPoint("AutoEvent", DebugLogger.Version, "An event manager plugin that allows you to run mini-games.",
-            "KoT0XleB and Redforce04")]
+        [PluginEntryPoint("AutoEvent", Version, "An event manager plugin that allows you to run mini-games.", "KoT0XleB and Redforce04")]
         void OnEnabled()
 #endif
         {
@@ -90,15 +83,8 @@ namespace AutoEvent
             {
                 Singleton = this;
                 MER.Lite.API.Initialize(AutoEvent.Singleton.Config.SchematicsDirectoryPath, Config.Debug);
-                Powerups.API.Initialize();
                 SCPSLAudioApi.Startup.SetupDependencies();
-                InventoryMenu.API.MenuManager.Init();
-                InventoryMenu.API.Log.OnLog += (msg, level) =>
-                {
-                    DebugLogger.LogDebug($"[InventorySystem] {msg}", (LogLevel)level,
-                        level != InventoryMenu.API.Log.LogLevel.Debug);
-                };
-                #if EXILED
+#if EXILED
                 Exiled.Events.Handlers.Player.Shot += (Exiled.Events.EventArgs.Player.ShotEventArgs ev) =>
                 {
                     var args = new ShotEventArgs(Player.Get(ev.Player.ReferenceHub), ev.RaycastHit, ev.Hitbox, ev.Damage);
@@ -106,7 +92,7 @@ namespace AutoEvent
                     ev.Damage = args.Damage;
                     ev.CanHurt = args.CanHurt;
                 };
-                #endif
+#endif
                 
                 if (Config.IgnoredRoles.Contains(Config.LobbyRole))
                 {
@@ -159,15 +145,31 @@ namespace AutoEvent
                     DebugLogger.LogDebug($"{e}");
                 }
 
+#if !EXILED
+                string path = Path.Combine(Config.EventConfigsDirectoryPath, "translation.yml");
+                if (File.Exists(path))
+                {
+                    DebugLogger.LogDebug($"Translations in the {path} are no longer supported.", LogLevel.Warn, true);
+                }
+#else
+                string path = Path.Combine(Exiled.API.Features.Paths.Configs, $"{Exiled.API.Features.Server.Port}-translations.yml");
+                if (File.Exists(path))
+                {
+                    DebugLogger.LogDebug($"Translations in the {path} are no longer supported.", LogLevel.Warn, true);
+                }
+#endif
 
                 Event.RegisterInternalEvents();
                 Loader.LoadEvents();
                 Event.Events.AddRange(Loader.Events);
+                SeasonMethod.GetSeasonStyle();
 
                 DebugLogger.LogDebug(
                     Loader.Events.Count > 0
                         ? $"[ExternalEventLoader] Loaded {Loader.Events.Count} external event{(Loader.Events.Count > 1 ? "s" : "")}."
-                        : "No external events were found.", LogLevel.Info, true);
+                        : "No external events were found.", LogLevel.Info);
+
+                DebugLogger.LogDebug($"The mini-games are loaded.", LogLevel.Info, true);
             }
             catch (Exception e)
             {

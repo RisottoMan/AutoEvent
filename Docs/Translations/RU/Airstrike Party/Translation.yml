@@ -1,0 +1,22 @@
+name: 'Смертельная вечеринка'
+description: 'Выживание при гранатном дожде'
+command_name: 'airstrike'
+cycle: |-
+  <color=yellow>Избегай гранат!</color>
+  <color=green>Прошло {time} секунд</color>
+  <color=red>Осталось {count} игроков</color>
+more_player: |-
+  <color=red>Смертельная вечеринка</color>
+  <color=yellow>Выжило <color=red>{count}</color>игроков</color>
+  <color=#ffc0cb>{time}</color>
+one_player: |-
+  <color=red>Смертельная вечеринка</color>
+  <color=yellow>Победитель - <color=red>{winner}</color></color>
+  <color=#ffc0cb>{time}</color>
+all_die: |-
+  <color=red>Смертельная вечеринка</color>
+  <color=yellow>Все игроки погибли.(((</color>
+  <color=#ffc0cb>{time}</color>
+# DO NOT CHANGE THIS. IT WILL BREAK THINGS. AutoEvent will automatically manage these settings.
+version: '1.0.3'
+language: 'RU'

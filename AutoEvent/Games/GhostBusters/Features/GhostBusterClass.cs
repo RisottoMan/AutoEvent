@@ -11,7 +11,6 @@
 // -----------------------------------------
 
 using System.Linq;
-using AutoEvent.Games.GhostBusters.Configs;
 using PluginAPI.Core;
 
 namespace AutoEvent.Games.GhostBusters.Features;

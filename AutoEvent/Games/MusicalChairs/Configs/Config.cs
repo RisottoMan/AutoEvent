@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using AutoEvent.API;
+using AutoEvent.API.Season.Enum;
 using AutoEvent.Interfaces;
 using PlayerRoles;
 using UnityEngine;
 
 namespace AutoEvent.Games.MusicalChairs;
-
 public class Config : EventConfig
 {
     public Config()
@@ -19,7 +19,8 @@ public class Config : EventConfig
         if (AvailableMaps.Count < 1)
         {
             AvailableMaps.Add(new MapChance(50, new MapInfo("MusicalChairs", new Vector3(115.5f, 1030f, -43.5f))));
-            AvailableMaps.Add(new MapChance(50, new MapInfo("MusicalChairs_Xmas2024", new Vector3(115.5f, 1030f, -43.5f))));
+            AvailableMaps.Add(new MapChance(50, new MapInfo("MusicalChairs_Xmas2024", new Vector3(115.5f, 1030f, -43.5f)), SeasonFlag.Christmas));
+            AvailableMaps.Add(new MapChance(50, new MapInfo("MusicalChairs_Xmas2024", new Vector3(115.5f, 1030f, -43.5f)), SeasonFlag.NewYear));
         }
     }
 
