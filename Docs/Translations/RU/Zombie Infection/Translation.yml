@@ -1,0 +1,23 @@
+name: 'Зомби заражение'
+description: 'Зомби должны заразить всех людей'
+command_name: 'zombie'
+start: |-
+  <color=#D71868><b><i>{name}</i></b></color>
+  <color=#ABF000>До начала игры осталось: <color=red>{time}</color></color>
+cycle: |-
+  <color=#D71868><b><i>{name}</i></b></color>
+  <color=yellow>Осталось людей: <color=green>{count}</color></color>
+  <color=yellow>Время <color=red>{time}</color></color>
+extra_time: |-
+  Дополнительное время: {extratime}
+  <color=yellow><b><i>Последний</i></b> выживший!</color>
+  <color=yellow>Время <color=red>{time}</color></color>
+win: |-
+  <color=red>Победа Зомби!</color>
+  <color=yellow>Время <color=red>{time}</color></color>
+lose: |-
+  <color=yellow><color=#D71868><b><i>Люди</i></b></color> выиграли!</color>
+  <color=yellow>Время <color=red>{time}</color></color>
+# DO NOT CHANGE THIS. IT WILL BREAK THINGS. AutoEvent will automatically manage these settings.
+version: '1.0.2'
+language: 'RU'

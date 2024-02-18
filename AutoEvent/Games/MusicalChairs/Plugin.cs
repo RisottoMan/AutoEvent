@@ -27,7 +27,6 @@ namespace AutoEvent.Games.MusicalChairs
         {
             MapName = "MusicalChairs",
             Position = new Vector3(0, 0, 30),
-            IsStatic = false
         };
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
         { 
@@ -36,11 +35,11 @@ namespace AutoEvent.Games.MusicalChairs
             Loop = false
         };
         private EventHandler _eventHandler;
-        private State _eventState;
+        private EventState _eventState;
         private GameObject _parentPlatform;
-        public List<GameObject> Platforms;
+        internal List<GameObject> Platforms;
         private Dictionary<Player, PlayerClass> _playerDict;
-        private TimeSpan _stageTime;
+        private TimeSpan _countdown;
         protected override void RegisterEvents()
         {
             _eventHandler = new EventHandler(this);
@@ -66,14 +65,13 @@ namespace AutoEvent.Games.MusicalChairs
             Players.DropAmmo -= _eventHandler.OnDropAmmo;
             Players.PlayerDamage -= _eventHandler.OnDamage;
             Players.UsingStamina -= _eventHandler.OnUsingStamina;
-
             _eventHandler = null;
         }
 
         protected override void OnStart()
         {
-            _eventState = State.Starting;
-            _stageTime = new TimeSpan();
+            _eventState = 0;
+            _countdown = new TimeSpan(0, 0, 5);
             List<GameObject> spawnpoints = new List<GameObject>();
 
             foreach (GameObject gameObject in MapInfo.Map.AttachedBlocks)
@@ -86,10 +84,7 @@ namespace AutoEvent.Games.MusicalChairs
             }
 
             int count = Player.GetPlayers().Count > 40 ? 40 : Player.GetPlayers().Count - 1;
-            Platforms = Functions.GeneratePlatforms(
-                count,
-                _parentPlatform, 
-                MapInfo.Position);
+            Platforms = Functions.GeneratePlatforms(count, _parentPlatform, MapInfo.Position);
 
             foreach (Player player in Player.GetPlayers())
             {
@@ -106,141 +101,146 @@ namespace AutoEvent.Games.MusicalChairs
                 Extensions.Broadcast(text, 1);
                 yield return Timing.WaitForSeconds(1f);
             }
-
-            _stageTime = new TimeSpan(0, 0, 5);
         }
 
         protected override bool IsRoundDone()
         {
-            if (_stageTime.TotalSeconds > 0)
-                _stageTime -= TimeSpan.FromSeconds(FrameDelayInSeconds);
-
+            _countdown = _countdown.TotalSeconds > 0 ? _countdown.Subtract(new TimeSpan(0, 0, 1)) : TimeSpan.Zero;
             return !(Player.GetPlayers().Count(r => r.IsAlive) > 1);
         }
-        protected override float FrameDelayInSeconds { get; set; } = 0.1f;
+        protected override float FrameDelayInSeconds { get; set; } = 1f;
         protected override void ProcessFrame()
         {
-            string text = Translation.Cycle.
+            string text = string.Empty;
+            switch (_eventState)
+            {
+                case EventState.Waiting: UpdateWaitingState(ref text); break;
+                case EventState.Playing: UpdatePlayingState(ref text); break;
+                case EventState.Stopping: UpdateStoppingState(ref text); break;
+                case EventState.Ending: UpdateEndingState(ref text); break;
+            }
+
+            Extensions.Broadcast(Translation.Cycle.
                 Replace("{name}", Name).
-                Replace("{count}", Player.GetPlayers().Count(r => r.IsAlive).ToString());
+                Replace("{state}", text).
+                Replace("{count}", $"{Player.GetPlayers().Count(r => r.IsAlive)}"), 1);
+        }
 
-            if (_eventState == State.Starting)
+        protected void UpdateWaitingState(ref string text)
+        {
+            text = Translation.RunDontTouch;
+
+            if (_countdown.TotalSeconds > 0)
+                return;
+
+            _playerDict = new();
+            foreach (Player player in Player.GetPlayers())
             {
-                text = text.Replace("{state}", Translation.RunDontTouch);
-
-                foreach (var platform in Platforms)
+                _playerDict.Add(player, new PlayerClass()
                 {
-                    platform.GetComponent<PrimitiveObjectToy>().NetworkMaterialColor = Color.yellow;
-                }
-
-                if (_stageTime.TotalSeconds <= 0)
-                {
-                    _playerDict = new();
-                    foreach (Player player in Player.GetPlayers())
-                    {
-                        _playerDict.Add(player, new PlayerClass()
-                        {
-                            Angle = 0,
-                            Platform = null
-                        });
-                    }
-                    _stageTime = new TimeSpan(0, 0, UnityEngine.Random.Range(2, 10));
-                    _eventState = State.Playing;
-                }
+                    Angle = 0,
+                    Platform = null
+                });
             }
-            else if (_eventState == State.Playing)
+
+            _countdown = new TimeSpan(0, 0, UnityEngine.Random.Range(2, 10));
+            _eventState++;
+        }
+
+        protected void UpdatePlayingState(ref string text)
+        {
+            text = Translation.RunDontTouch;
+
+            foreach (Player player in Player.GetPlayers())
             {
-                text = text.Replace("{state}", Translation.RunDontTouch);
+                float curAngle = 180f + Mathf.Rad2Deg * (Mathf.Atan2(player.Position.z - MapInfo.Position.z, player.Position.x - MapInfo.Position.x));
 
-                foreach (Player player in Player.GetPlayers())
+                if (_playerDict[player].Angle == curAngle)
                 {
-                    // check the difference between the current angle and the remembered one
-                    float curAngle = 180f + Mathf.Rad2Deg * (Mathf.Atan2(player.Position.z - MapInfo.Position.z, player.Position.x - MapInfo.Position.x));
-
-                    if (_playerDict[player].Angle == curAngle)
-                    {
-                        Extensions.GrenadeSpawn(0.1f, player.Position, 0.1f);
-                        player.Kill(Translation.StopRunning);
-                    }
-                    else
-                    {
-                        _playerDict[player].Angle = curAngle;
-                    }
-
-                    // Player touched platform
-                    foreach(GameObject platform in Platforms)
-                    {
-                        if (Vector3.Distance(player.Position, platform.transform.position) < 1.5f)
-                        {
-                            if (_stageTime.TotalSeconds > 0)
-                            {
-                                Extensions.GrenadeSpawn(0.1f, player.Position, 0.1f);
-                                player.Kill(Translation.TouchAhead);
-                            }
-                        }
-                    }
+                    Extensions.GrenadeSpawn(0.1f, player.Position, 0.1f);
+                    player.Kill(Translation.StopRunning);
                 }
-
-                if (_stageTime.TotalSeconds <= 0)
+                else
                 {
-                    foreach (var platform in Platforms)
-                    {
-                        platform.GetComponent<PrimitiveObjectToy>().NetworkMaterialColor = Color.black;
-                    }
-
-                    Extensions.PauseAudio();
-                    _stageTime = new TimeSpan(0, 0, 3);
-                    _eventState = State.Stopping;
+                    _playerDict[player].Angle = curAngle;
                 }
-            }
-            else if (_eventState == State.Stopping)
-            {
-                text = text.Replace("{state}", Translation.StandFree);
 
                 foreach (GameObject platform in Platforms)
                 {
-                    foreach (Player player in Player.GetPlayers())
+                    if (Vector3.Distance(player.Position, platform.transform.position) < 1.5f)
                     {
-                        // If the player's platform is included in the list, then skip
-                        if (_playerDict.Any(kvPair => kvPair.Value.Platform == platform))
-                            continue;
-
-                        if (Vector3.Distance(player.Position, platform.transform.position) < 1.5f)
+                        if (_countdown.TotalSeconds > 0)
                         {
-                            platform.GetComponent<PrimitiveObjectToy>().NetworkMaterialColor = Color.red;
-                            _playerDict[player].Platform = platform;
+                            Extensions.GrenadeSpawn(0.1f, player.Position, 0.1f);
+                            player.Kill(Translation.TouchAhead);
                         }
                     }
                 }
-                
-                if (_stageTime.TotalSeconds <= 0)
-                {
-                    _stageTime = new TimeSpan(0, 0, 3);
-                    _eventState = State.Ending;
-                }
             }
-            else if (_eventState == State.Ending)
-            {
-                text = text.Replace("{state}", Translation.StandFree);
 
+            if (_countdown.TotalSeconds > 0)
+                return;
+
+            foreach (var platform in Platforms)
+            {
+                platform.GetComponent<PrimitiveObjectToy>().NetworkMaterialColor = Color.black;
+            }
+
+            Extensions.PauseAudio();
+            _countdown = new TimeSpan(0, 0, 3);
+            _eventState++;
+        }
+
+        protected void UpdateStoppingState(ref string text)
+        {
+            text = Translation.StandFree;
+
+            foreach (GameObject platform in Platforms)
+            {
                 foreach (Player player in Player.GetPlayers())
                 {
-                    if (_playerDict[player].Platform is null)
+                    if (_playerDict.Any(kvPair => kvPair.Value.Platform == platform))
+                        continue;
+
+                    if (Vector3.Distance(player.Position, platform.transform.position) < 1.5f)
                     {
-                        Extensions.GrenadeSpawn(0.1f, player.Position, 0.1f);
-                        player.Kill(Translation.NoTime);
+                        platform.GetComponent<PrimitiveObjectToy>().NetworkMaterialColor = Color.red;
+                        _playerDict[player].Platform = platform;
                     }
-                }
-                
-                if (_stageTime.TotalSeconds <= 0)
-                {
-                    Extensions.ResumeAudio();
-                    _stageTime = new TimeSpan(0, 0, 3);
-                    _eventState = State.Starting;
                 }
             }
 
-            Extensions.Broadcast(text, 1);
+            if (_countdown.TotalSeconds > 0)
+                return;
+
+            _countdown = new TimeSpan(0, 0, 3);
+            _eventState++;
+        }
+
+        protected void UpdateEndingState(ref string text)
+        {
+            text = Translation.StandFree;
+
+            foreach (Player player in Player.GetPlayers())
+            {
+                if (_playerDict[player].Platform is null)
+                {
+                    Extensions.GrenadeSpawn(0.1f, player.Position, 0.1f);
+                    player.Kill(Translation.NoTime);
+                }
+            }
+
+            if (_countdown.TotalSeconds > 0)
+                return;
+
+            Extensions.ResumeAudio();
+            _countdown = new TimeSpan(0, 0, 3);
+            _eventState = 0;
+
+            foreach (var platform in Platforms)
+            {
+                platform.GetComponent<PrimitiveObjectToy>().NetworkMaterialColor = Color.yellow;
+            }
         }
 
         protected override void OnFinished()
@@ -263,7 +263,10 @@ namespace AutoEvent.Games.MusicalChairs
             }
 
             Extensions.Broadcast(text, 10);
+        }
 
+        protected override void OnCleanup()
+        {
             foreach (GameObject platform in Platforms)
             {
                 GameObject.Destroy(platform);

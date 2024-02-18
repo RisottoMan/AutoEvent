@@ -1,5 +1,4 @@
-﻿using MER.Lite.Objects;
-using AutoEvent.Events.Handlers;
+﻿using AutoEvent.Events.Handlers;
 using MEC;
 using PluginAPI.Core;
 using PluginAPI.Events;
@@ -22,7 +21,7 @@ namespace AutoEvent.Games.Lava
         public override string Description { get; set; } = "Survival, in which you need to avoid lava and shoot at others";
         public override string Author { get; set; } = "KoT0XleB";
         public override string CommandName { get; set; } = "lava";
-        public override Version Version { get; set; } = new Version(1, 0, 2);
+        public override Version Version { get; set; } = new Version(1, 0, 3);
         [EventConfig]
         public Config Config { get; set; }
         [EventConfigPreset] 
@@ -32,7 +31,8 @@ namespace AutoEvent.Games.Lava
         public MapInfo MapInfo { get; set; } = new MapInfo()
         { 
             MapName = "Lava", 
-            Position = new Vector3(120f, 1020f, -43.5f)
+            Position = new Vector3(120f, 1020f, -43.5f),
+            IsStatic = false
         };
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
         { 

@@ -51,6 +51,7 @@ namespace AutoEvent.Games.Glass
         private GameObject _wall;
         private int _matchTimeInSeconds;
         private TimeSpan _remaining;
+        private bool isPlayerFinished;
         internal Dictionary<Player, float> PushCooldown;
         protected override void RegisterEvents()
         {
@@ -75,11 +76,11 @@ namespace AutoEvent.Games.Glass
         protected override void OnStart()
         {
             PushCooldown = new Dictionary<Player, float>();
-            _remaining = TimeSpan.FromSeconds(_matchTimeInSeconds);
             _platforms = new List<GameObject>();
             _finish = new GameObject();
             _lava = new GameObject();
             _wall = new GameObject();
+            isPlayerFinished = false;
 
             int platformCount = 0;
             switch (Player.GetPlayers().Count())
@@ -90,6 +91,8 @@ namespace AutoEvent.Games.Glass
                 case int n when (n > 25 && n <= 30): platformCount = 12; _matchTimeInSeconds = 120; break;
                 case int n when (n > 30): platformCount = 15; _matchTimeInSeconds = 150; break;
             }
+
+            _remaining = TimeSpan.FromSeconds(_matchTimeInSeconds);
 
             GameObject platform = new();
             GameObject platform1 = new();
@@ -195,7 +198,8 @@ namespace AutoEvent.Games.Glass
                     break;
                 }
             }
-            return !(EventTime.TotalSeconds < _matchTimeInSeconds && Player.GetPlayers().Count(r => r.IsAlive) > 0 && playerNotOnPlatform);
+            return !(EventTime.TotalSeconds < _matchTimeInSeconds &&
+                Player.GetPlayers().Count(r => r.IsAlive) > 0 && playerNotOnPlatform);
         }
 
         protected override void ProcessFrame()
@@ -211,14 +215,13 @@ namespace AutoEvent.Games.Glass
                     PushCooldown[key] -= FrameDelayInSeconds;
             }
 
-            if (Config.IsEnablePush)
+            foreach (Player player in Player.GetPlayers())
             {
-                foreach (Player player in Player.GetPlayers())
-                {
+                if (Config.IsEnablePush)
                     player.ReceiveHint(Translation.Push, 1);
-                    player.ClearBroadcasts();
-                    player.SendBroadcast(text, 1);
-                }
+
+                player.ClearBroadcasts();
+                player.SendBroadcast(text, 1);
             }
         }
 

@@ -1,0 +1,12 @@
+name: 'FallDown'
+description: 'All platforms are destroyed. It is necessary to survive'
+command_name: 'fall'
+broadcast: |-
+  {name}
+  {time}
+  <color=yellow>Remaining: </color>{count}<color=yellow> players</color>
+winner: '<color=red>Winner:</color> {winner}'
+died: '<color=red>All players died</color>'
+# DO NOT CHANGE THIS. IT WILL BREAK THINGS. AutoEvent will automatically manage these settings.
+version: '1.0.2'
+language: 'EN'

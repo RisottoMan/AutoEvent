@@ -119,7 +119,7 @@ namespace AutoEvent.Games.CounterStrike
         {
             for (int time = 20; time > 0; time--)
             {
-                Extensions.Broadcast($"<size=100><color=red>Get ready: {time}</color></size>", 1);
+                Extensions.Broadcast($"<size=100><color=red>{time}</color></size>", 1);
                 yield return Timing.WaitForSeconds(1f);
             }
         }

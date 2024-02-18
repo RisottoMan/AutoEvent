@@ -1,0 +1,21 @@
+name: 'Puzzle'
+description: 'Get up the fastest on the right color'
+command_name: 'puzzle'
+start: '<color=red>Starts in: </color>{time}'
+stage: |-
+  <color=red>Stage: </color>{stageNum}<color=red> / </color>{stageFinal}
+  <color=yellow>Remaining players:</color> {plyCount}
+all_died: |-
+  <color=red>All players died</color>
+  Mini-game ended
+some_survived: |-
+  <color=red>Several people survived</color>
+  Mini-game ended
+winner: |-
+  <color=red>Winner: {winner}</color>
+  Mini-game ended
+died: '<color=red>Burned in Lava</color>'
+main_message: '<color=#F59F00>P</color><color=#F68523>u</color><color=#F76B46>z</color><color=#F85169>z</color><color=#F9378C>l</color><color=#FA1DAF>e</color>'
+# DO NOT CHANGE THIS. IT WILL BREAK THINGS. AutoEvent will automatically manage these settings.
+version: '1.0.2'
+language: 'EN'

@@ -7,6 +7,7 @@ using PluginAPI.Core.Attributes;
 using PluginAPI.Enums;
 using PluginAPI.Events;
 using MEC;
+using AutoEvent.API;
 using AutoEvent.API.Season;
 using Event = AutoEvent.Interfaces.Event;
 using Log = PluginAPI.Core.Log;
@@ -14,7 +15,6 @@ using Map = PluginAPI.Core.Map;
 using Paths = PluginAPI.Helpers.Paths;
 using Player = PluginAPI.Core.Player;
 using Server = PluginAPI.Core.Server;
-using AutoEvent.API;
 #if EXILED
 using Exiled.API.Features;
 
@@ -24,7 +24,7 @@ namespace AutoEvent
 #if EXILED
     public class AutoEvent : Plugin<Config>
     {
-        public override System.Version Version => System.Version.Parse(DebugLogger.Version);
+        public override System.Version Version => System.Version.Parse(Version);
         public override string Name => "AutoEvent";
         public override string Author => "Created by KoT0XleB, extended by swd and sky, Co-Maintained by Redforce04";
         public static bool IsPlayedGames;
@@ -35,6 +35,7 @@ namespace AutoEvent
         [PluginConfig("Configs/autoevent.yml")]
         public Config Config;
 #endif
+        public const string Version = "9.6.0";
         public const bool BetaRelease = false; // todo set beta to false before main release
         /// <summary>
         /// The location of the AutoEvent folder for schematics, music, external events and event config / translations.
@@ -51,7 +52,7 @@ namespace AutoEvent
         public override void OnEnabled()
 #else
         [PluginPriority(LoadPriority.Low)]
-        [PluginEntryPoint("AutoEvent", DebugLogger.Version, "An event manager plugin that allows you to run mini-games.", "KoT0XleB and Redforce04")]
+        [PluginEntryPoint("AutoEvent", Version, "An event manager plugin that allows you to run mini-games.", "KoT0XleB and Redforce04")]
         void OnEnabled()
 #endif
         {

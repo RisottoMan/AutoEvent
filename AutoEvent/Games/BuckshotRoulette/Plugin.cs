@@ -14,20 +14,20 @@ using Random = UnityEngine.Random;
 
 namespace AutoEvent.Games.BuckshotRoulette
 {
-    public class Plugin : Event, IEventMap, IInternalEvent, IHidden
+    public class Plugin : Event, IEventMap, IInternalEvent
     {
         public override string Name { get; set; } = "Buckshot Roulette";
         public override string Description { get; set; } = "One-on-one battle in Russian roulette with shotguns";
         public override string Author { get; set; } = "KoT0XleB";
         public override string CommandName { get; set; } = "versus2";
-        public override Version Version { get; set; } = new Version(1, 0, 0);
+        public override Version Version { get; set; } = new Version(1, 0, 2);
         [EventConfig]
         public Config Config { get; set; }
         [EventTranslation]
         public Translation Translation { get; set; }
         public MapInfo MapInfo { get; set; } = new MapInfo()
         { 
-            MapName = "buck", // Buckshot
+            MapName = "Buckshot",
             Position = new Vector3(0, 30, 30)
         };
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
@@ -41,6 +41,7 @@ namespace AutoEvent.Games.BuckshotRoulette
         private Player _classD;
         private List<GameObject> _triggers;
         private List<GameObject> _teleports;
+        private List<GameObject> _spawnpoints;
         private GameObject _shotgunObject;
         private TimeSpan _countdown;
         private EventState _eventState;
@@ -77,6 +78,7 @@ namespace AutoEvent.Games.BuckshotRoulette
             _classD = null;
             _triggers = new();
             _teleports = new();
+            _spawnpoints = new();
             _shotgunObject = new();
             _eventState = 0;
             _gunState = 0;
@@ -84,7 +86,7 @@ namespace AutoEvent.Games.BuckshotRoulette
 
             if (Config.Team1Loadouts == Config.Team2Loadouts)
             {
-                DebugLogger.LogDebug("Warning: Teams should not have the same roles.", LogLevel.Warn);
+                DebugLogger.LogDebug("Warning: Teams should not have the same roles.", LogLevel.Warn, true);
             }
 
             foreach (GameObject block in MapInfo.Map.AttachedBlocks)
@@ -93,6 +95,7 @@ namespace AutoEvent.Games.BuckshotRoulette
                 {
                     case "Trigger": _triggers.Add(block); break;
                     case "Teleport": _teleports.Add(block); break;
+                    case "Spawnpoint": _spawnpoints.Add(block); break;
                     case "Shotgun":
                     {
                         _shotgunObject = block;
@@ -108,12 +111,12 @@ namespace AutoEvent.Games.BuckshotRoulette
                 if (count % 2 == 0)     
                 {              
                     player.GiveLoadout(Config.Team1Loadouts);
-                    player.Position = _teleports.ElementAt(0).transform.position;
+                    player.Position = _spawnpoints.ElementAt(0).transform.position;
                 }
                 else
                 {
                     player.GiveLoadout(Config.Team2Loadouts);
-                    player.Position = _teleports.ElementAt(1).transform.position;
+                    player.Position = _spawnpoints.ElementAt(1).transform.position;
                 }
                 count++;
             }
@@ -126,12 +129,13 @@ namespace AutoEvent.Games.BuckshotRoulette
                 Extensions.Broadcast($"<size=100><color=red>{time}</color></size>", 1);
                 yield return Timing.WaitForSeconds(1f);
             }
+
+            DebugLogger.LogDebug("BroadcastStartCountdown", LogLevel.Debug, true);
         }
 
         protected override bool IsRoundDone()
         {
             _countdown = _countdown.TotalSeconds > 0 ? _countdown.Subtract(new TimeSpan(0, 0, 1)) : TimeSpan.Zero;
-
             return !(Player.GetPlayers().Where(r => r.Role == RoleTypeId.ClassD).Count() > 0 && 
                 Player.GetPlayers().Where(r => r.Role == RoleTypeId.Scientist).Count() > 0);
         }
@@ -157,19 +161,20 @@ namespace AutoEvent.Games.BuckshotRoulette
         /// </summary>
         protected void UpdateWaitingState(ref string text)
         {
+            DebugLogger.LogDebug("UpdateWaitingState", LogLevel.Debug, true);
             _countdown = new TimeSpan(0, 0, 5);
-
-            // Until ClassD is found, the game will not start
-            if (_classD is null)
-            {
-                _eventState = EventState.ChooseClassD;
-                return;
-            }
 
             // Until Scientist is found, the game will not start
             if (_scientist is null)
             {
                 _eventState = EventState.ChooseScientist;
+                return;
+            }
+
+            // Until ClassD is found, the game will not start
+            if (_classD is null)
+            {
+                _eventState = EventState.ChooseClassD;
                 return;
             }
 
@@ -180,17 +185,18 @@ namespace AutoEvent.Games.BuckshotRoulette
         /// <summary>
         /// Choosing a new player
         /// </summary>
-        protected Player UpdateChoosePlayerState(ref string text, bool isClassD)
+        protected Player UpdateChoosePlayerState(ref string text, bool isScientist)
         {
+            DebugLogger.LogDebug($"UpdateChoosePlayerState {isScientist}", LogLevel.Debug, true);
             // Since we use the same method to select two states, we need these variables
-            ushort value = 1;
-            RoleTypeId role = RoleTypeId.ClassD;
+            ushort value = 0;
+            RoleTypeId role = RoleTypeId.Scientist;
             Player chosenPlayer;
 
-            if (isClassD is not true)
+            if (isScientist is not true)
             {
-                value = 0;
-                role = RoleTypeId.Scientist;
+                value = 1;
+                role = RoleTypeId.ClassD;
             }
 
             // We do a check for all players, weeding out unnecessary ones by roles
@@ -227,6 +233,7 @@ namespace AutoEvent.Games.BuckshotRoulette
         /// </summary>
         protected void UpdatePlayingState(ref string text)
         {
+            DebugLogger.LogDebug($"UpdatePlayingState", LogLevel.Debug, true);
             // If the player has pressed the button, then proceed to the next state
             switch (_gunState)
             {
@@ -260,6 +267,7 @@ namespace AutoEvent.Games.BuckshotRoulette
         /// </summary>
         protected void UpdateShootingState(ref string text)
         {
+            DebugLogger.LogDebug($"UpdateShootingState", LogLevel.Debug, true);
             float keyFrame = 10;
             if (_gunState is ShotgunState.Suicide)
             {
@@ -294,6 +302,7 @@ namespace AutoEvent.Games.BuckshotRoulette
         /// </summary>
         protected void UpdateFinishingState(ref string text)
         {
+            DebugLogger.LogDebug($"UpdateFinishingState", LogLevel.Debug, true);
             if (_countdown.TotalSeconds > 0)
                 return;
 

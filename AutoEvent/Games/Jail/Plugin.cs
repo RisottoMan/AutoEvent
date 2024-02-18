@@ -34,7 +34,8 @@ namespace AutoEvent.Games.Jail
         public MapInfo MapInfo { get; set; } = new MapInfo()
         {
             MapName = "Jail", 
-            Position = new Vector3(90f, 1030f, -43.5f)
+            Position = new Vector3(90f, 1030f, -43.5f),
+            IsStatic = false
         };
         protected override FriendlyFireSettings ForceEnableFriendlyFire { get; set; } = FriendlyFireSettings.Enable;
         protected override float FrameDelayInSeconds { get; set; } = 0.5f;

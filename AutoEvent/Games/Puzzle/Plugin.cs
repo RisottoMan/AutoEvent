@@ -11,6 +11,8 @@ using AdminToys;
 using AutoEvent.Events.Handlers;
 using AutoEvent.Interfaces;
 using Mirror;
+using MER.Lite.Serializable;
+using MER.Lite;
 using Random = UnityEngine.Random;
 using Event = AutoEvent.Interfaces.Event;
 using Version = System.Version;
@@ -133,16 +135,18 @@ namespace AutoEvent.Games.Puzzle
             foreach (Platform platform in platforms)
             {
                 Vector3 position = MapInfo.Map.Position + new Vector3(platform.PositionX, 5.42f ,platform.PositionY);
-                var newPlatform = GameObject.Instantiate(primary, position, Quaternion.identity);
-                _platforms.Add(id, newPlatform);
-                var prim = newPlatform.GetComponent<PrimitiveObjectToy>() ?? newPlatform.AddComponent<PrimitiveObjectToy>();
-                
-                NetworkServer.UnSpawn(newPlatform);
-                prim.Scale = new Vector3(platform.X , 5f, platform.Y);
-                prim.NetworkScale = new Vector3(platform.X , 5f, platform.Y);
-                prim.PrimitiveType = PrimitiveType.Cube;
-                prim.transform.localScale = new Vector3(platform.X, 5f, platform.Y);
-                NetworkServer.Spawn(newPlatform);
+                PrimitiveObject obj = ObjectSpawner.SpawnPrimitive(new PrimitiveSerializable()
+                {
+                    PrimitiveType = PrimitiveType.Cube,
+                    Position = position,
+                    Color = "green"
+                },
+                position,
+                Quaternion.identity,
+                new Vector3(platform.X, 5f, platform.Y));
+
+                NetworkServer.Spawn(obj.gameObject);
+                _platforms.Add(id, obj.gameObject);
                 id++;
             }
 

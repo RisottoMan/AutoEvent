@@ -1,0 +1,20 @@
+name: 'Football'
+description: 'Score 3 goals to win'
+command_name: 'football'
+red_team: |-
+  <color=red>Your Team: Red Team
+  </color>
+blue_team: |-
+  <color=#14AAF5>You Team: Blue Team
+  </color>
+time_left: |-
+  <color=#14AAF5>{BluePnt}</color> : <color=red>{RedPnt}</color>
+  Time Remaining: {time}
+red_wins: '<color=red>Red Team Wins</color>'
+blue_wins: '<color=#14AAF5>Blue Team Wins</color>'
+draw: |-
+  Draw
+  <color=#14AAF5>{BluePnt}</color> vs <color=red>{RedPnt}</color>
+# DO NOT CHANGE THIS. IT WILL BREAK THINGS. AutoEvent will automatically manage these settings.
+version: '1.0.0'
+language: 'EN'

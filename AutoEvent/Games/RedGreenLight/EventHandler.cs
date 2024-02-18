@@ -20,9 +20,9 @@ public class EventHandler
 
     public void OnDamage(PlayerDamageArgs ev)
     {
-        if (ev.AttackerHandler is ExplosionDamageHandler explosionDamageHandler)
+        if (ev.AttackerHandler is ExplosionDamageHandler damageHandler)
         {
-            explosionDamageHandler.Damage = 0;
+            damageHandler.Damage = 0;
         }
     }
 

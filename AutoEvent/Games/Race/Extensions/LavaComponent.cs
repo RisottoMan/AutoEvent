@@ -23,7 +23,7 @@ public class LavaComponent : MonoBehaviour
         if (Player.Get(other.gameObject) is Player)
         {
             var pl = Player.Get(other.gameObject);
-            pl.Damage(500f, _plugin.Translation.Died);
+            pl.Position = _plugin.Spawnpoint.transform.position;
         }
     }
 }

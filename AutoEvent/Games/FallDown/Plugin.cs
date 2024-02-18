@@ -39,8 +39,8 @@ namespace AutoEvent.Games.FallDown
         };
         protected override float FrameDelayInSeconds { get; set; } = 0.9f;
         protected override float PostRoundDelay { get; set; } = 10f;
-        private EventHandler _eventHandler { get; set; }
-        private int _platformId { get; set; }
+        private EventHandler _eventHandler;
+        private int _platformId;
         private List<GameObject> _platforms;
         private GameObject _lava;
         private bool _noPlatformsRemainingWarning;
@@ -118,7 +118,7 @@ namespace AutoEvent.Games.FallDown
 
             var count = Player.GetPlayers().Count(r => r.IsAlive);
             var time = $"{EventTime.Minutes:00}:{EventTime.Seconds:00}";
-            Extensions.Broadcast(Translation.Broadcast.Replace("{name}", Name).Replace("{time}", time).Replace("{count}", $"{count}"), (ushort)FrameDelayInSeconds);
+            Extensions.Broadcast(Translation.Broadcast.Replace("{name}", Name).Replace("{time}", time).Replace("{count}", $"{count}"), 1);
             
             if (_platforms.Count < 1)
             {

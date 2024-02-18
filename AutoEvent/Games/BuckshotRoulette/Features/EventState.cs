@@ -1,13 +1,10 @@
 ﻿namespace AutoEvent.Games.BuckshotRoulette;
-
 enum EventState
 {
     Waiting,
-    ChooseClassD,
     ChooseScientist,
+    ChooseClassD,
     Playing,
     Shooting,
     Finishing
 }
-
-

@@ -25,7 +25,8 @@ namespace AutoEvent.Games.Football
         public MapInfo MapInfo { get; set; } = new MapInfo()
         {
             MapName = "Football", 
-            Position = new Vector3(76f, 1026.5f, -43.68f)
+            Position = new Vector3(76f, 1026.5f, -43.68f),
+            IsStatic = false
         };
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
         { 
