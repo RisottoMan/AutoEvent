@@ -161,7 +161,6 @@ namespace AutoEvent.Games.BuckshotRoulette
         /// </summary>
         protected void UpdateWaitingState(ref string text)
         {
-            DebugLogger.LogDebug("UpdateWaitingState", LogLevel.Debug, true);
             _countdown = new TimeSpan(0, 0, 5);
 
             // Until Scientist is found, the game will not start
@@ -308,22 +307,22 @@ namespace AutoEvent.Games.BuckshotRoulette
             {
                 if (!_classD.IsAlive)
                 {
-                    text = "Игрок {_classD} застрелился\nИгрок {_scientist} остался в живых";
+                    text = "{Name}\nИгрок {_classD} застрелился\nИгрок {_scientist} остался в живых";
                 }
                 else
                 {
-                    text = "Игрок {_classD} застрелил {_scientist}\nИгрок {_classD} остался в живых";
+                    text = "{Name}\nИгрок {_classD} застрелил {_scientist}\nИгрок {_classD} остался в живых";
                 }
             }
             else
             {
                 if (!_scientist.IsAlive)
                 {
-                    text = "Игрок {_scientist} застрелился\nИгрок {_classD} остался в живых";
+                    text = "{Name}\nИгрок {_scientist} застрелился\nИгрок {_classD} остался в живых";
                 }
                 else
                 {
-                    text = "Игрок {_scientist} застрелил {_classD}\nИгрок {_scientist} остался в живых";
+                    text = "{Name}\nИгрок {_scientist} застрелил {_classD}\nИгрок {_scientist} остался в живых";
                 }
             }
 
@@ -337,6 +336,7 @@ namespace AutoEvent.Games.BuckshotRoulette
 
         protected override void OnFinished()
         {
+            
         }
     }
 }
