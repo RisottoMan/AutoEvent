@@ -268,10 +268,10 @@ namespace AutoEvent.Games.BuckshotRoulette
         protected void UpdateShootingState(ref string text)
         {
             DebugLogger.LogDebug($"UpdateShootingState", LogLevel.Debug, true);
-            float keyFrame = 10;
+            float keyFrame = 0.5f;
             if (_gunState is ShotgunState.Suicide)
             {
-                keyFrame = 5;
+                keyFrame = 0.3f;
             }
 
             // Проверяем фрейм анимации, при котором нужно убить игрока
