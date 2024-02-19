@@ -187,7 +187,7 @@ namespace AutoEvent.Games.BuckshotRoulette
         /// </summary>
         protected Player UpdateChoosePlayerState(ref string text, bool isScientist)
         {
-            DebugLogger.LogDebug($"UpdateChoosePlayerState {isScientist}", LogLevel.Debug, true);
+            text = "{Name}\nИгроки из команды Ученых зайдите на арену\nУ вас осталось {_countdown.TotalSeconds} секунд";
             // Since we use the same method to select two states, we need these variables
             ushort value = 0;
             RoleTypeId role = RoleTypeId.Scientist;
@@ -195,6 +195,7 @@ namespace AutoEvent.Games.BuckshotRoulette
 
             if (isScientist is not true)
             {
+            text = "{Name}\nИгроки из команды Д-Класс зайдите на арену\nУ вас осталось {_countdown.TotalSeconds} секунд";
                 value = 1;
                 role = RoleTypeId.ClassD;
             }
@@ -233,7 +234,7 @@ namespace AutoEvent.Games.BuckshotRoulette
         /// </summary>
         protected void UpdatePlayingState(ref string text)
         {
-            DebugLogger.LogDebug($"UpdatePlayingState", LogLevel.Debug, true);
+            text = $"{Name}\n{_scientist} VS {_classD}\nНажмите на кнопку для выбора в течении {_countdown.TotalSeconds} секунд";
             // If the player has pressed the button, then proceed to the next state
             switch (_gunState)
             {
@@ -267,10 +268,11 @@ namespace AutoEvent.Games.BuckshotRoulette
         /// </summary>
         protected void UpdateShootingState(ref string text)
         {
-            DebugLogger.LogDebug($"UpdateShootingState", LogLevel.Debug, true);
+            text = $"{Name}\n{_scientist} VS {_classD}\nИгрок выбрал выстрелить в противника";
             float keyFrame = 0.5f;
             if (_gunState is ShotgunState.Suicide)
             {
+            text = $"{Name}\n{_scientist} VS {_classD}\nИгрок выбрал выстрелить в себя";
                 keyFrame = 0.3f;
             }
 
@@ -302,7 +304,29 @@ namespace AutoEvent.Games.BuckshotRoulette
         /// </summary>
         protected void UpdateFinishingState(ref string text)
         {
-            DebugLogger.LogDebug($"UpdateFinishingState", LogLevel.Debug, true);
+            if (_isClassDMove is true) 
+            {
+                if (!_classD.IsAlive)
+                {
+                    text = "Игрок {_classD} застрелился\nИгрок {_scientist} остался в живых";
+                }
+                else
+                {
+                    text = "Игрок {_classD} застрелил {_scientist}\nИгрок {_classD} остался в живых";
+                }
+            }
+            else
+            {
+                if (!_scientist.IsAlive)
+                {
+                    text = "Игрок {_scientist} застрелился\nИгрок {_classD} остался в живых";
+                }
+                else
+                {
+                    text = "Игрок {_scientist} застрелил {_classD}\nИгрок {_scientist} остался в живых";
+                }
+            }
+
             if (_countdown.TotalSeconds > 0)
                 return;
 
