@@ -336,7 +336,18 @@ namespace AutoEvent.Games.BuckshotRoulette
 
         protected override void OnFinished()
         {
-            
+            string text = string.Empty;
+
+            if (Player.GetPlayers().Count(r => r.Role == RoleTypeId.Scientist) == 0)
+            {
+                text = Translation.ClassDWin.Replace("{name}", Name);
+            }
+            else if (Player.GetPlayers().Count(r => r.Role == RoleTypeId.ClassD) == 0)
+            {
+                text = Translation.ScientistWin.Replace("{name}", Name);
+            }
+
+            Extensions.Broadcast(text, 10);
         }
     }
 }
