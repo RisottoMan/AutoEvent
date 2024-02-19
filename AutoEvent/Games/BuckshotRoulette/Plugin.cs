@@ -126,7 +126,7 @@ namespace AutoEvent.Games.BuckshotRoulette
         {
             for (int time = 10; time > 0; time--)
             {
-                Extensions.Broadcast($"<size=100><color=red>{time}</color></size>", 1);
+                Extensions.Broadcast($"{Name}\nИгроки приготовьтесь зайти на арену\nРусская рулетка начнется через {time} секунд", 1);
                 yield return Timing.WaitForSeconds(1f);
             }
 
@@ -186,7 +186,7 @@ namespace AutoEvent.Games.BuckshotRoulette
         /// </summary>
         protected Player UpdateChoosePlayerState(ref string text, bool isScientist)
         {
-            text = "{Name}\nИгроки из команды Ученых зайдите на арену\nУ вас осталось {_countdown.TotalSeconds} секунд";
+            text = $"{Name}\nИгроки из команды Ученых зайдите на арену\nУ вас осталось {_countdown.TotalSeconds} секунд";
             // Since we use the same method to select two states, we need these variables
             ushort value = 0;
             RoleTypeId role = RoleTypeId.Scientist;
@@ -194,7 +194,7 @@ namespace AutoEvent.Games.BuckshotRoulette
 
             if (isScientist is not true)
             {
-            text = "{Name}\nИгроки из команды Д-Класс зайдите на арену\nУ вас осталось {_countdown.TotalSeconds} секунд";
+            text = $"{Name}\nИгроки из команды Д-Класс зайдите на арену\nУ вас осталось {_countdown.TotalSeconds} секунд";
                 value = 1;
                 role = RoleTypeId.ClassD;
             }
@@ -307,22 +307,22 @@ namespace AutoEvent.Games.BuckshotRoulette
             {
                 if (!_classD.IsAlive)
                 {
-                    text = "{Name}\nИгрок {_classD} застрелился\nИгрок {_scientist} остался в живых";
+                    text = $"{Name}\nИгрок {_classD} застрелился\nИгрок {_scientist} остался в живых";
                 }
                 else
                 {
-                    text = "{Name}\nИгрок {_classD} застрелил {_scientist}\nИгрок {_classD} остался в живых";
+                    text = $"{Name}\nИгрок {_classD} застрелил {_scientist}\nИгрок {_classD} остался в живых";
                 }
             }
             else
             {
                 if (!_scientist.IsAlive)
                 {
-                    text = "{Name}\nИгрок {_scientist} застрелился\nИгрок {_classD} остался в живых";
+                    text = $"{Name}\nИгрок {_scientist} застрелился\nИгрок {_classD} остался в живых";
                 }
                 else
                 {
-                    text = "{Name}\nИгрок {_scientist} застрелил {_classD}\nИгрок {_scientist} остался в живых";
+                    text = $"{Name}\nИгрок {_scientist} застрелил {_classD}\nИгрок {_scientist} остался в живых";
                 }
             }
 
@@ -340,11 +340,15 @@ namespace AutoEvent.Games.BuckshotRoulette
 
             if (Player.GetPlayers().Count(r => r.Role == RoleTypeId.Scientist) == 0)
             {
-                text = Translation.ClassDWin.Replace("{name}", Name);
+                text = $"{Name}\nКоманда Д-Класс победила Ученых";
             }
             else if (Player.GetPlayers().Count(r => r.Role == RoleTypeId.ClassD) == 0)
             {
-                text = Translation.ScientistWin.Replace("{name}", Name);
+                text = $"{Name}\nКоманда Ученых победила Д-Класс";
+            }
+            else
+            {
+                text = $"{Name}\nНичья\nКак можно было так проиграть?!";
             }
 
             Extensions.Broadcast(text, 10);
