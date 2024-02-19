@@ -268,15 +268,15 @@ namespace AutoEvent.Games.BuckshotRoulette
         protected void UpdateShootingState(ref string text)
         {
             text = $"{Name}\n{_scientist} VS {_classD}\nИгрок выбрал выстрелить в противника";
-            float keyFrame = 0.5f;
+            float framePercent = 0.5f;
             if (_gunState is ShotgunState.Suicide)
             {
             text = $"{Name}\n{_scientist} VS {_classD}\nИгрок выбрал выстрелить в себя";
-                keyFrame = 0.3f;
+                framePercent = 0.3f;
             }
 
             // Проверяем фрейм анимации, при котором нужно убить игрока
-            if (_animator.GetCurrentAnimatorStateInfo(0).normalizedTime == keyFrame)
+            if (_animator.GetCurrentAnimatorStateInfo(0).normalizedTime == framePercent)
             {
                 bool rand = Random.Range(0, 2) == 1;
                 if (rand is true)
