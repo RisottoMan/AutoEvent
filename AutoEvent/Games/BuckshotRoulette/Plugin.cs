@@ -334,7 +334,7 @@ namespace AutoEvent.Games.BuckshotRoulette
             if (_countdown.TotalSeconds > 0)
                 return;
 
-            _isClassDMove = _classD.IsAlive ? true : false;
+            _playerMove = _classD.IsAlive ? _classD : _scientist;
             _eventState = EventState.Waiting;
             _gunState = ShotgunState.None;
         }
