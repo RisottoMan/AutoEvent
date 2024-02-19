@@ -45,7 +45,7 @@ namespace AutoEvent.Games.BuckshotRoulette
         private GameObject _shotgunObject;
         private TimeSpan _countdown;
         private EventState _eventState;
-        private bool _isClassDMove;
+        private Player _playerMove;
         private ShotgunState _gunState;
         private Animator _animator;
         protected override void RegisterEvents()
@@ -82,7 +82,7 @@ namespace AutoEvent.Games.BuckshotRoulette
             _shotgunObject = new();
             _eventState = 0;
             _gunState = 0;
-            _isClassDMove = true;
+            _playerMove = null;
 
             if (Config.Team1Loadouts == Config.Team2Loadouts)
             {
@@ -178,6 +178,10 @@ namespace AutoEvent.Games.BuckshotRoulette
             }
 
             // The game is starting
+            if (_playerMove is null) 
+            {
+                 _playerMove = Random.Range(0, 2) == 1 ? _scientist : _classD;
+            }
             _eventState = EventState.Playing;
         }
 
@@ -233,7 +237,7 @@ namespace AutoEvent.Games.BuckshotRoulette
         /// </summary>
         protected void UpdatePlayingState(ref string text)
         {
-            text = $"{Name}\n{_scientist} VS {_classD}\nНажмите на кнопку для выбора в течении {_countdown.TotalSeconds} секунд";
+            text = $"{Name}\n{_scientist} VS {_classD}\n{playerMove.Nickname} нажмите на кнопку для выбора в течении {_countdown.TotalSeconds} секунд";
             // If the player has pressed the button, then proceed to the next state
             switch (_gunState)
             {
@@ -304,7 +308,7 @@ namespace AutoEvent.Games.BuckshotRoulette
         /// </summary>
         protected void UpdateFinishingState(ref string text)
         {
-            if (_isClassDMove is true) 
+            if (_playerMove is _clasdD) 
             {
                 if (!_classD.IsAlive)
                 {
