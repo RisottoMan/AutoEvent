@@ -268,10 +268,11 @@ namespace AutoEvent.Games.BuckshotRoulette
         protected void UpdateShootingState(ref string text)
         {
             text = $"{Name}\n{_scientist} VS {_classD}\nИгрок выбрал выстрелить в противника";
+
             float framePercent = 0.5f;
             if (_gunState is ShotgunState.Suicide)
             {
-            text = $"{Name}\n{_scientist} VS {_classD}\nИгрок выбрал выстрелить в себя";
+                text = $"{Name}\n{_scientist} VS {_classD}\nИгрок выбрал выстрелить в себя";
                 framePercent = 0.3f;
             }
 
