@@ -143,17 +143,30 @@ namespace AutoEvent.Games.BuckshotRoulette
         protected override void ProcessFrame()
         {
             string text = string.Empty;
+            string choserText = string.Empty;
+            string targetText = string.Empty;
+
             switch (_eventState)
             {
                 case EventState.Waiting: UpdateWaitingState(ref text); break;
                 case EventState.ChooseClassD: _classD = UpdateChoosePlayerState(ref text, true); break;
                 case EventState.ChooseScientist: _scientist = UpdateChoosePlayerState(ref text, false); break;
-                case EventState.Playing: UpdatePlayingState(ref text); break;
-                case EventState.Shooting: UpdateShootingState(ref text); break;
-                case EventState.Finishing: UpdateFinishingState(ref text); break;
+                case EventState.Playing: UpdatePlayingState(ref text, ref choserText, ref targetText); break;
+                case EventState.Shooting: UpdateShootingState(ref text, ref choserText, ref targetText); break;
+                case EventState.Finishing: UpdateFinishingState(ref text, ref choserText); break;
             }
+            
+            foreach(Player player in Player.GetPlayers())
+            {
+                if (player is _playerMove)
+                    text += choserText;
 
-            Extensions.Broadcast(text, 1);
+                if (player is target) //????
+                    text += targetText;
+
+                player.ClearBroadcast();
+                player.ReceiceBroadcast(text, 1);
+            }
         }
 
         /// <summary>
