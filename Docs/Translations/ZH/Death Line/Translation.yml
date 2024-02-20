@@ -1,0 +1,19 @@
+name: '死亡线'
+description: '避开旋转的平台以生存'
+command_name: 'line'
+cycle: |-
+  <color=#FF4242>{name}</color>
+  <color=#14AAF5>剩余时间：{time}
+  <color=yellow>剩余玩家：{count}</color>
+more_players: |-
+  <color=#FF4242>{name}</color>
+  <color=yellow>{count} 名玩家幸存</color>
+  <color=red>恭喜！</color>
+winner: |-
+  <color=#FF4242>{name}</color>
+  <color=yellow>胜利者：{winner}</color>
+  <color=red>恭喜！</color>
+all_died: '<color=red>所有玩家都死了</color>'
+# 不要修改这里。这会导致错误。AutoEvent 会自动管理这些设置。
+version: '1.0.0'
+language: 'ZH'

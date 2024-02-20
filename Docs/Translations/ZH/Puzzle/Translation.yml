@@ -1,0 +1,21 @@
+name: '色盲派对'
+description: '最快地跳到正确的颜色上'
+command_name: 'puzzle'
+start: '<color=red>开始倒计时: </color>{time}'
+stage: |-
+  <color=red>阶段: </color>{stageNum}<color=red> / </color>{stageFinal}
+  <color=yellow>剩余玩家:</color> {plyCount}
+all_died: |-
+  <color=red>所有玩家都死了</color>
+  小游戏结束
+some_survived: |-
+  <color=red>有几个人幸存了</color>
+  小游戏结束
+winner: |-
+  <color=red>胜利者: {winner}</color>
+  小游戏结束
+died: '<color=red>被岩浆烧死了</color>'
+main_message: '<color=#F59F00>P</color><color=#F68523>u</color><color=#F76B46>z</color><color=#F85169>z</color><color=#F9378C>l</color><color=#FA1DAF>e</color>'
+# 不要修改这里。这会导致错误。AutoEvent 会自动管理这些设置。
+version: '1.0.2'
+language: 'ZH'
