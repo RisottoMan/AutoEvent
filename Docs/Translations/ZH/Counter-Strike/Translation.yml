@@ -1,0 +1,38 @@
+name: '反恐精英'
+description: '恐怖分子和反恐精英之间的战斗。'
+command_name: 'cs'
+cycle: |-
+  <size=60>{name}</size>
+  <size=25><i>{task}</i>
+  <i><color=#42AAFF>{ctCount} 反恐精英</color> <b>/</b> <color=green>{tCount} 恐怖分子</color></i>
+  <i>回合时间：{time}</i></size>
+no_planted_counter: '保护 A 和 B 炸点免受恐怖分子的攻击'
+no_planted_terror: '在 A 或 B 炸点安放炸弹'
+planted_counter: '<color=red>在炸弹爆炸前拆除炸弹</color>'
+planted_terror: '<color=red>保护炸弹直到爆炸</color>'
+draw: |-
+  <b><color=#808080>平局</color></b>
+  <i>所有人都死了</i>
+time_ended: |-
+  <b><color=#808080>平局</color></b>
+  <i>时间到了。</i>
+counter_win: |-
+  <b><color=#42AAFF>反恐精英胜利</color></b>
+  <i>所有的恐怖分子都死了</i>
+terrorist_win: |-
+  <b><color=green>恐怖分子胜利</color></b>
+  <i>所有的反恐精英都死了</i>
+planted_win: |-
+  <b><color=green>恐怖分子胜利</color></b>
+  <i>炸弹爆炸了</i>
+defused_win: |-
+  <b><color=#42AAFF>反恐精英胜利</color></b>
+  <i>炸弹被拆除了</i>
+you_planted: '<b><color=#ff4c5b>你安放了炸弹</color></b>'
+you_defused: '<b><color=#42aaff>你拆除了炸弹</color></b>'
+hint_cycle: |-
+  <size=30><i><b>{name}</b>
+  {kills}
+# 不要修改这里。这会导致错误。AutoEvent 会自动管理这些设置。
+version: '1.0.0'
+language: 'ZH'
