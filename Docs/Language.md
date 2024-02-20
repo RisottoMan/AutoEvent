@@ -16,3 +16,4 @@
 ## > Russian [``View``](https://github.com/KoT0XleB/AutoEvent/tree/main/Docs/Translations/RU) [``Archive``](https://github.com/KoT0XleB/AutoEvent/blob/main/Docs/Translations/RU.7z)
 ### This language must be set manually.
 ## > Chinese [``View``](https://github.com/KoT0XleB/AutoEvent/tree/main/Docs/Translations/ZH) [``Archive``](https://github.com/KoT0XleB/AutoEvent/blob/main/Docs/Translations/ZH.7z)
+### This language must be set manually.
