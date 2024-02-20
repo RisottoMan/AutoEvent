@@ -39,13 +39,13 @@ namespace AutoEvent.Games.BuckshotRoulette
         private EventHandler _eventHandler;
         private Player _scientist;
         private Player _classD;
+        private Player _choser;
         private List<GameObject> _triggers;
         private List<GameObject> _teleports;
         private List<GameObject> _spawnpoints;
         private GameObject _shotgunObject;
         private TimeSpan _countdown;
         private EventState _eventState;
-        private Player _playerMove;
         private ShotgunState _gunState;
         private Animator _animator;
         protected override void RegisterEvents()
@@ -76,13 +76,13 @@ namespace AutoEvent.Games.BuckshotRoulette
         {
             _scientist = null;
             _classD = null;
+            _choser = null;
             _triggers = new();
             _teleports = new();
             _spawnpoints = new();
             _shotgunObject = new();
             _eventState = 0;
             _gunState = 0;
-            _playerMove = null;
 
             if (Config.Team1Loadouts == Config.Team2Loadouts)
             {
@@ -143,7 +143,7 @@ namespace AutoEvent.Games.BuckshotRoulette
         protected override void ProcessFrame()
         {
             string text = string.Empty;
-            string choserText = string.Empty;
+            string killerText = string.Empty;
             string targetText = string.Empty;
 
             switch (_eventState)
@@ -151,18 +151,24 @@ namespace AutoEvent.Games.BuckshotRoulette
                 case EventState.Waiting: UpdateWaitingState(ref text); break;
                 case EventState.ChooseClassD: _classD = UpdateChoosePlayerState(ref text, true); break;
                 case EventState.ChooseScientist: _scientist = UpdateChoosePlayerState(ref text, false); break;
-                case EventState.Playing: UpdatePlayingState(ref text, ref choserText, ref targetText); break;
-                case EventState.Shooting: UpdateShootingState(ref text, ref choserText, ref targetText); break;
-                case EventState.Finishing: UpdateFinishingState(ref text, ref choserText); break;
+                case EventState.Playing: UpdatePlayingState(ref text, ref killerText, ref targetText); break;
+                case EventState.Shooting: UpdateShootingState(ref text, ref killerText, ref targetText); break;
+                case EventState.Finishing: UpdateFinishingState(ref text, ref killerText); break;
             }
             
             foreach(Player player in Player.GetPlayers())
             {
-                if (player is _playerMove)
-                    text += choserText;
-
-                if (player is target) //????
-                    text += targetText;
+                if (player is _classD || player is _scientist)
+                {
+                    if (player is _choser)
+                    {
+                        text += $"\n{killerText}";
+                    }
+                    else 
+                    {
+                        text += $"\n{targetText}";
+                    }
+                }
 
                 player.ClearBroadcast();
                 player.ReceiceBroadcast(text, 1);
@@ -191,9 +197,9 @@ namespace AutoEvent.Games.BuckshotRoulette
             }
 
             // The game is starting
-            if (_playerMove is null) 
+            if (_choser is null) 
             {
-                 _playerMove = Random.Range(0, 2) == 1 ? _scientist : _classD;
+                 _choser = Random.Range(0, 2) == 1 ? _scientist : _classD;
             }
             _eventState = EventState.Playing;
         }
@@ -203,7 +209,7 @@ namespace AutoEvent.Games.BuckshotRoulette
         /// </summary>
         protected Player UpdateChoosePlayerState(ref string text, bool isScientist)
         {
-            text = $"{Name}\nИгроки из команды Ученых зайдите на арену\nУ вас осталось {_countdown.TotalSeconds} секунд";
+            text = Translation.ScientistNull;
             // Since we use the same method to select two states, we need these variables
             ushort value = 0;
             RoleTypeId role = RoleTypeId.Scientist;
@@ -211,7 +217,7 @@ namespace AutoEvent.Games.BuckshotRoulette
 
             if (isScientist is not true)
             {
-            text = $"{Name}\nИгроки из команды Д-Класс зайдите на арену\nУ вас осталось {_countdown.TotalSeconds} секунд";
+            text = Translation.ClassDNull;
                 value = 1;
                 role = RoleTypeId.ClassD;
             }
@@ -250,7 +256,7 @@ namespace AutoEvent.Games.BuckshotRoulette
         /// </summary>
         protected void UpdatePlayingState(ref string text)
         {
-            text = $"{Name}\n{_scientist} VS {_classD}\n{playerMove.Nickname} нажмите на кнопку для выбора в течении {_countdown.TotalSeconds} секунд";
+            text = Translation.Cycle;
             // If the player has pressed the button, then proceed to the next state
             switch (_gunState)
             {
@@ -284,12 +290,12 @@ namespace AutoEvent.Games.BuckshotRoulette
         /// </summary>
         protected void UpdateShootingState(ref string text)
         {
-            text = $"{Name}\n{_scientist} VS {_classD}\nИгрок выбрал выстрелить в противника";
-
+            text = Translation.Cycle;
             float framePercent = 0.5f;
+
             if (_gunState is ShotgunState.Suicide)
             {
-                text = $"{Name}\n{_scientist} VS {_classD}\nИгрок выбрал выстрелить в себя";
+                
                 framePercent = 0.3f;
             }
 
