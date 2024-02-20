@@ -1,0 +1,20 @@
+name: '全死亡对战'
+description: '在全死亡对战中互相战斗。'
+command_name: 'dm'
+cycle: |-
+  <size=30><i><b>{name}</b>
+  <color=red>你 - {kills}/{needKills} 杀敌</color>
+  回合时间: {time}</i></size>
+no_players: |-
+  <color=red>游戏已被管理员结束
+  你的杀敌数 {count}</color>
+time_end: |-
+  <color=red>游戏已超时结束
+  你的杀敌数 {count}</color>
+winner_end: |-
+  <b><color=red>胜利者 - <color=yellow>{winner}</color></color></b>
+  你的杀敌数 <color=red>{count}</color></color>
+  游戏时间 - <color=#008000>{time}</color></i>
+# 不要改变这些。这会破坏事情。AutoEvent 将自动管理这些设置。
+version: '1.0.1'
+language: 'ZH'

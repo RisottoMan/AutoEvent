@@ -1,0 +1,20 @@
+name: '死亡跳跃'
+description: '在脆弱的平台上跳跃'
+command_name: 'glass'
+start: |-
+  <size=50>死亡跳跃
+  在脆弱的平台上跳跃</size>
+  <size=20>存活玩家：{plyAlive} 
+  剩余时间：{time}</size>
+died: '你掉进了岩浆'
+win_survived: '<color=yellow>人类胜利！{plyAlive} 名玩家幸存</color>'
+winner: |-
+  <color=red>死亡跳跃</color>
+  <color=yellow>胜利者：{winner}</color>
+fail: |-
+  <color=red>死亡跳跃</color>
+  <color=yellow>所有玩家都死了</color>
+push: '<color=green>按 <color=yellow>[Alt]</color> 键推动玩家</color>'
+# 不要修改这里。这会导致错误。AutoEvent 会自动管理这些设置。
+version: '1.0.5'
+language: 'ZH'
