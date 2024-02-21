@@ -187,16 +187,16 @@ public class Plugin : Event, IEventMap, IInternalEvent
             {
                 if (player == _choser)
                 {
-                    task = $"\n{killerText}";
+                    task = killerText;
                 }
                 else 
                 {
-                    task = $"\n{targetText}";
+                    task = targetText";
                 }
             }
 
             player.ClearBroadcasts();
-            player.SendBroadcast(text + task, 1);
+            player.SendBroadcast(broadcast.Append($"\n{task}"), 1);
         }
     }
 
