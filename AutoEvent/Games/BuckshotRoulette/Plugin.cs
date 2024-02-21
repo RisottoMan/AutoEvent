@@ -199,7 +199,7 @@ public class Plugin : Event, IEventMap, IInternalEvent
             }
 
             player.ClearBroadcasts();
-            player.SendBroadcast(broadcast.Append($"\n{task}"), 1);
+            player.SendBroadcast(broadcast + $"\n{task}", 1);
         }
     }
 
