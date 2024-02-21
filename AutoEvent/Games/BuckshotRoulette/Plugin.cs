@@ -180,20 +180,21 @@ public class Plugin : Event, IEventMap, IInternalEvent
 
         foreach(Player player in Player.GetPlayers())
         {
+            string task = string.Empty;
             if (player == _classD || player == _scientist)
             {
                 if (player == _choser)
                 {
-                    text += $"\n{killerText}";
+                    task = $"\n{killerText}";
                 }
                 else 
                 {
-                    text += $"\n{targetText}";
+                    task = $"\n{targetText}";
                 }
             }
 
             player.ClearBroadcasts();
-            player.SendBroadcast(text, 1);
+            player.SendBroadcast(text + task, 1);
         }
     }
 
