@@ -11,9 +11,9 @@ using AutoEvent.Events.Handlers;
 using AutoEvent.Interfaces;
 using AutoEvent.API.RNG;
 using AdminToys;
-using Event = AutoEvent.Interfaces.Event;
-using Random = UnityEngine.Random;
 using CustomPlayerEffects;
+using System.Text;
+using Event = AutoEvent.Interfaces.Event;
 
 namespace AutoEvent.Games.BuckshotRoulette;
 public class Plugin : Event, IEventMap, IInternalEvent
@@ -43,7 +43,7 @@ public class Plugin : Event, IEventMap, IInternalEvent
     // Variables that store the values of the players in the arena
     private Player _scientist;
     private Player _classD;
-    private Player _choser;
+    internal Player Choser;
 
     // Variables that store the values of MER objects
     private List<GameObject> _triggers;
@@ -54,13 +54,13 @@ public class Plugin : Event, IEventMap, IInternalEvent
 
     // Other important variables
     private TimeSpan _countdown;
-    private EventState _eventState;
-    private ShotgunState _gunState;
     private Animator _animator;
+    internal EventState EventState;
+    internal ShotgunState GunState;
 
     protected override void RegisterEvents()
     {
-        _eventHandler = new EventHandler();
+        _eventHandler = new EventHandler(this);
         EventManager.RegisterEvents(_eventHandler);
         Servers.TeamRespawn += _eventHandler.OnTeamRespawn;
         Servers.SpawnRagdoll += _eventHandler.OnSpawnRagdoll;
@@ -68,6 +68,7 @@ public class Plugin : Event, IEventMap, IInternalEvent
         Servers.PlaceBlood += _eventHandler.OnPlaceBlood;
         Players.DropItem += _eventHandler.OnDropItem;
         Players.DropAmmo += _eventHandler.OnDropAmmo;
+        Players.PickUpItem += _eventHandler.OnPickupItem;
     }
 
     protected override void UnregisterEvents()
@@ -79,6 +80,7 @@ public class Plugin : Event, IEventMap, IInternalEvent
         Servers.PlaceBlood -= _eventHandler.OnPlaceBlood;
         Players.DropItem -= _eventHandler.OnDropItem;
         Players.DropAmmo -= _eventHandler.OnDropAmmo;
+        Players.PickUpItem -= _eventHandler.OnPickupItem;
         _eventHandler = null;
     }
 
@@ -86,14 +88,14 @@ public class Plugin : Event, IEventMap, IInternalEvent
     {
         _scientist = null;
         _classD = null;
-        _choser = null;
+        Choser = null;
         _shells = new();
         _triggers = new();
         _teleports = new();
         _spawnpoints = new();
         _shotgunObject = new();
-        _eventState = 0;
-        _gunState = 0;
+        EventState = 0;
+        GunState = 0;
 
         if (Config.Team1Loadouts == Config.Team2Loadouts)
         {
@@ -110,7 +112,7 @@ public class Plugin : Event, IEventMap, IInternalEvent
                 case "Shell":
                     {
                         var prim = block.GetComponent<PrimitiveObjectToy>();
-                        _shells.Add(new ShellClass() { Object = prim });
+                        _shells.Add(new ShellClass() { Object = prim, IsUsed = true });
                     }
                     break;
                 case "Shotgun":
@@ -159,23 +161,23 @@ public class Plugin : Event, IEventMap, IInternalEvent
 
     protected override void ProcessFrame()
     {
-        StringaBuilder broadcast = new StringBuilder(Translation.Cycle);
+        StringBuilder broadcast = new StringBuilder(Translation.Cycle);
         string text = string.Empty;
         string killerText = string.Empty;
         string targetText = string.Empty;
 
-        switch (_eventState)
+        switch (EventState)
         {
             case EventState.Waiting: UpdateWaitingState(ref text); break;
             case EventState.ChooseClassD: _classD = UpdateChoosePlayerState(ref text, true); break;
             case EventState.ChooseScientist: _scientist = UpdateChoosePlayerState(ref text, false); break;
             case EventState.Playing: UpdatePlayingState(ref text, ref killerText, ref targetText); break;
             case EventState.Shooting: UpdateShootingState(ref text, ref killerText, ref targetText); break;
-            case EventState.Finishing: UpdateFinishingState(ref text, ref killerText); break;
+            case EventState.Finishing: UpdateFinishingState(ref text, ref killerText, ref targetText); break;
         }
 
-        string scientistText = _scientist is not null && _scientist.IsAlive ? _scientist.Nickname : "Dead";
-        string classdText = _classd is not null && _classd.IsAlive ? _classd.Nickname : "Dead";
+        string scientistText = _scientist is not null && _scientist.IsAlive ? _scientist.Nickname : Translation.DeadBroadcast;
+        string classdText = _classD is not null && _classD.IsAlive ? _classD.Nickname : Translation.DeadBroadcast;
 
         broadcast.Replace("{name}", Name).
             Replace("{state}", text).
@@ -188,13 +190,13 @@ public class Plugin : Event, IEventMap, IInternalEvent
             string task = string.Empty;
             if (player == _classD || player == _scientist)
             {
-                if (player == _choser)
+                if (player == Choser)
                 {
                     task = killerText;
                 }
                 else 
                 {
-                    task = targetText";
+                    task = targetText;
                 }
                 task = task.Replace("{time}", $"{_countdown.TotalSeconds}");
             }
@@ -214,16 +216,16 @@ public class Plugin : Event, IEventMap, IInternalEvent
         // Until Scientist is found, the game will not start
         if (_scientist is null)
         {
-            text = Translation.ScientistNull;
-            _eventState = EventState.ChooseScientist;
+            text = Translation.WaitingScientist;
+            EventState = EventState.ChooseScientist;
             return;
         }
 
         // Until ClassD is found, the game will not start
         if (_classD is null)
         {
-            text = Translation.ScientistNull;
-            _eventState = EventState.ChooseClassD;
+            text = Translation.WaitingClassD;
+            EventState = EventState.ChooseClassD;
             return;
         }
 
@@ -248,8 +250,8 @@ public class Plugin : Event, IEventMap, IInternalEvent
 
         // The game is starting
         text = Translation.Cycle;
-        _choser ??= RNGGenerator.GetRandomNumber(0, 1) == 0 ? _scientist : _classD;
-        _eventState = EventState.Playing;
+        Choser ??= RNGGenerator.GetRandomNumber(0, 1) == 0 ? _scientist : _classD;
+        EventState = EventState.Playing;
     }
 
     /// <summary>
@@ -258,14 +260,14 @@ public class Plugin : Event, IEventMap, IInternalEvent
     protected Player UpdateChoosePlayerState(ref string text, bool isScientist)
     {
         // Since we use the same method to select two states, we need these variables
-        text = Translation.ScientistNull;
+        text = Translation.WaitingScientist;
         ushort value = 0;
         RoleTypeId role = RoleTypeId.Scientist;
         Player chosenPlayer;
 
         if (isScientist is not true)
         {
-            text = Translation.ClassDNull;
+            text = Translation.WaitingClassD;
             value = 1;
             role = RoleTypeId.ClassD;
         }
@@ -296,7 +298,7 @@ public class Plugin : Event, IEventMap, IInternalEvent
         chosenPlayer.Position = _teleports.ElementAt(value).transform.position;
         chosenPlayer.EffectsManager.EnableEffect<Ensnared>();
         _countdown = new TimeSpan(0, 0, 5);
-        _eventState = EventState.Waiting;
+        EventState = EventState.Waiting;
         return chosenPlayer;
     }
 
@@ -306,11 +308,11 @@ public class Plugin : Event, IEventMap, IInternalEvent
     protected void UpdatePlayingState(ref string text, ref string killerText, ref string targetText)
     {
         text = Translation.Cycle;
-        killerText = Translation.Killer;
-        targetText = Translation.Target;
+        killerText = Translation.PressButton;
+        targetText = Translation.WaitAction;
 
         // If the player has pressed the button, then proceed to the next state
-        switch (_gunState)
+        switch (GunState)
         {
             case ShotgunState.ShootEnemy:
                 {
@@ -330,11 +332,11 @@ public class Plugin : Event, IEventMap, IInternalEvent
 
         // We forcibly take a shot
         _animator.Play("Suicide");
-        _gunState = ShotgunState.Suicide;
+        GunState = ShotgunState.Suicide;
         goto End;
 
     End:
-        _eventState = EventState.Shooting;
+        EventState++;
         return;
     }
 
@@ -344,11 +346,11 @@ public class Plugin : Event, IEventMap, IInternalEvent
     protected void UpdateShootingState(ref string text, ref string killerText, ref string targetText)
     {
         text = Translation.Cycle;
-        killerText = Translation.Killer;
-        targetText = Translation.Target;
+        killerText = Translation.ChoiceMade;
+        targetText = Translation.ChoiceMade;
 
         float framePercent = 0.5f; // Need check
-        if (_gunState is ShotgunState.Suicide)
+        if (GunState is ShotgunState.Suicide)
         {
             framePercent = 0.5f; // Need check
         }
@@ -359,24 +361,24 @@ public class Plugin : Event, IEventMap, IInternalEvent
             var item = _shells.Where(r => r.IsUsed == false).ToList().RandomItem();
             if (item.IsLoaded)
             {
-                if (_choser == _classD)
+                if (Choser == _classD)
                 {
-                    _scientist.Kill(Translation.Lose);
+                    _scientist.Kill(Translation.KillMessage);
                 }
                 else
                 {
-                    _classD.Kill(Translation.Lose);
+                    _classD.Kill(Translation.KillMessage);
                 }
             }
             else
             {
-                if (_choser == _classD)
+                if (Choser == _classD)
                 {
-                    _classD.Kill(Translation.Lose);
+                    _classD.Kill(Translation.KillMessage);
                 }
                 else
                 {
-                    _scientist.Kill(Translation.Lose);
+                    _scientist.Kill(Translation.KillMessage);
                 }
             }
 
@@ -387,39 +389,44 @@ public class Plugin : Event, IEventMap, IInternalEvent
         // We are waiting for the end of the animation, after which we change it to default
         if (_animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1)
         {
-            // Give another player the ability to use a shotgun
-            if (_scientist.IsAlive)
-            {
-                _choser = _scientist;
-            }
-            else if (_classD.IsAlive)
-            {
-                _choser = _classD;
-            }
-            else
-            {
-                _choser = null;
-            }
-
             _animator.Play("Idle");
             _countdown = new TimeSpan(0, 0, 5);
-            _eventState++;
+            EventState++;
         }
     }
 
     /// <summary>
     /// We check who survived and give him the opportunity to shoot
     /// </summary>
-    protected void UpdateFinishingState(ref string text, ref string killerText)
+    protected void UpdateFinishingState(ref string text, ref string killerText, ref string targetText)
     {
         text = Translation.Cycle;
         killerText = Translation.Defeat;
+        targetText = Translation.Lose;
 
         if (_countdown.TotalSeconds > 0)
             return;
 
-        _eventState = 0;
-        _gunState = 0;
+        // Give another player the ability to use a shotgun
+        if (_scientist.IsAlive)
+        {
+            Choser = _scientist;
+            _classD = null;
+        }
+        else if (_classD.IsAlive)
+        {
+            Choser = _classD;
+            _scientist = null;
+        }
+        else
+        {
+            Choser = null;
+            _scientist = null;
+            _classD = null;
+        }
+
+        EventState = 0;
+        GunState = 0;
     }
 
     protected override void OnFinished()
