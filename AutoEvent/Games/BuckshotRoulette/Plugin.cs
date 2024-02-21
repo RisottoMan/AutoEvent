@@ -196,6 +196,7 @@ public class Plugin : Event, IEventMap, IInternalEvent
                 {
                     task = targetText";
                 }
+                task = task.Replace("{time}", $"{_countdown.TotalSeconds}");
             }
 
             player.ClearBroadcasts();
