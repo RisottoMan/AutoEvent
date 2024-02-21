@@ -241,7 +241,7 @@ public class Plugin : Event, IEventMap, IInternalEvent
 
         // The game is starting
         text = Translation.Cycle;
-        _choser ??= Random.Range(0, 2) == 1 ? _scientist : _classD;
+        _choser ??= RNGGenerator.GetRandomNumber(0, 1) == 0 ? _scientist : _classD;
         _eventState = EventState.Playing;
     }
 
@@ -323,6 +323,7 @@ public class Plugin : Event, IEventMap, IInternalEvent
 
         // We forcibly take a shot
         _animator.Play("Suicide");
+        _gunState = ShotgunState.Suicide;
         goto End;
 
     End:
