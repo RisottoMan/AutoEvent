@@ -159,6 +159,7 @@ public class Plugin : Event, IEventMap, IInternalEvent
 
     protected override void ProcessFrame()
     {
+        StringaBuilder broadcast = new StringBuilder(Translation.Cycle);
         string text = string.Empty;
         string killerText = string.Empty;
         string targetText = string.Empty;
@@ -173,7 +174,8 @@ public class Plugin : Event, IEventMap, IInternalEvent
             case EventState.Finishing: UpdateFinishingState(ref text, ref killerText); break;
         }
 
-        text = text.Replace("{name}", Name).
+        broadcast.Replace("{name}", Name).
+            Replace("{state}", text).
             Replace("{time}", $"{_countdown.TotalSeconds}").
             Replace("{scientist}", _scientist.Nickname).
             Replace("{classd}", _classD.Nickname);
