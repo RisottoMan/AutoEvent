@@ -174,11 +174,14 @@ public class Plugin : Event, IEventMap, IInternalEvent
             case EventState.Finishing: UpdateFinishingState(ref text, ref killerText); break;
         }
 
+        string scientistText = _scientist is not null && _scientist.IsAlive ? _scientist.Nickname : "Dead";
+        string classdText = _classd is not null && _classd.IsAlive ? _classd.Nickname : "Dead";
+
         broadcast.Replace("{name}", Name).
             Replace("{state}", text).
             Replace("{time}", $"{_countdown.TotalSeconds}").
-            Replace("{scientist}", _scientist.Nickname).
-            Replace("{classd}", _classD.Nickname);
+            Replace("{scientist}", scientistText).
+            Replace("{classd}", classdText);
 
         foreach(Player player in Player.GetPlayers())
         {
