@@ -3,7 +3,7 @@
 ### *So I left hints on how to fix the problems:*
 ----
  >  You need a map to run a mini-game.
- - You need to download *``Schematics.tar.gz``* from the [latest release](https://github.com/KoT0XleB/AutoEvent-Exiled/releases/latest) and unzip it to the folder where the schematics should be located.
+ - You need to download *``Schematics.tar.gz``* from the [latest release](https://github.com/KoT0XleB/AutoEvent-Exiled/releases/latest) and ``unzip it to the folder`` where the schematics should be located.
  - If you are using Exiled, then unzip the archive in ``EXILED/Configs/AutoEvent/Schematics``
  - If you are using NWApi, then unzip the archive in ``PluginAPI/plugins/global/AutoEvent/Schematics``
    - Ensure that the maps are added to the proper directory defined in the `schematics_directory_path` config.
