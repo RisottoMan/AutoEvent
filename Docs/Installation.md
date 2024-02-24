@@ -9,7 +9,7 @@
 
 - [Music](https://github.com/KoT0XleB/AutoEvent-Exiled/tree/main/Music) files move to => ``EXILED/Configs/AutoEvent/Music``
 
-- [Maps](https://github.com/KoT0XleB/AutoEvent-Exiled/tree/main/Schematics) folders with a files move to => ``EXILED/Configs/AutoEvent/Schematics``
+- [``Schematics.tar.gz``](https://github.com/KoT0XleB/AutoEvent-Exiled/releases/latest) unzip to => ``EXILED/Configs/AutoEvent/Schematics``
 
 - Ensure that the Config has the following directories, and that they can be accessed to the server.
 ```yml
@@ -62,7 +62,7 @@ ev.*  /   - Main Permission for all AutoEvent commands.
   
 - [Music](https://github.com/KoT0XleB/AutoEvent-Exiled/tree/main/Music) files move to => ``PluginAPI/plugins/global/AutoEvent/Music``
 
-- [Maps](https://github.com/KoT0XleB/AutoEvent-Exiled/tree/main/Schematics) folders with a files move to => ``PluginAPI/plugins/global/AutoEvent/Schematics``
+- [``Schematics.tar.gz``](https://github.com/KoT0XleB/AutoEvent-Exiled/releases/latest) unzip to =>  ``PluginAPI/plugins/global/AutoEvent/Schematics``
 
 - Ensure that the Config has the following directories, and that they can be accessed to the server. 
 ```yml
