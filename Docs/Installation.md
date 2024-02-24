@@ -4,10 +4,9 @@
 ## 1. Download and Setup :moyai:
 ### *You need to download the latest release:*
 
-- Plugin [``AutoEvent.dll``](https://github.com/KoT0XleB/AutoEvent-Exiled/releases/latest) move to => ``EXILED/Plugins``
-  - Dependencies are no longer necessary. They are bundled into the plugin now.
+- [``AutoEvent.dll``](https://github.com/KoT0XleB/AutoEvent-Exiled/releases/latest) move to => ``EXILED/Plugins``
 
-- [Music](https://github.com/KoT0XleB/AutoEvent-Exiled/tree/main/Music) files move to => ``EXILED/Configs/AutoEvent/Music``
+- [``Music``](https://github.com/KoT0XleB/AutoEvent-Exiled/tree/main/Music) files move to => ``EXILED/Configs/AutoEvent/Music``
 
 - [``Schematics.tar.gz``](https://github.com/KoT0XleB/AutoEvent-Exiled/releases/latest) unzip to => ``EXILED/Configs/AutoEvent/Schematics``
 
@@ -57,10 +56,9 @@ ev.*  /   - Main Permission for all AutoEvent commands.
 # NWApi
 ## 1. Download and Setup :moyai:
 ### *You need to download the latest release:*
-- Plugin [``AutoEvent.dll``](https://github.com/KoT0XleB/AutoEvent-Exiled/releases/latest) move to => ``PluginAPI/plugins/global``
-  - Dependencies are no longer necessary. They are bundled into the plugin now.
+- [``AutoEvent.dll``](https://github.com/KoT0XleB/AutoEvent-Exiled/releases/latest) move to => ``PluginAPI/plugins/global``
   
-- [Music](https://github.com/KoT0XleB/AutoEvent-Exiled/tree/main/Music) files move to => ``PluginAPI/plugins/global/AutoEvent/Music``
+- [``Music``](https://github.com/KoT0XleB/AutoEvent-Exiled/tree/main/Music) files move to => ``PluginAPI/plugins/global/AutoEvent/Music``
 
 - [``Schematics.tar.gz``](https://github.com/KoT0XleB/AutoEvent-Exiled/releases/latest) unzip to =>  ``PluginAPI/plugins/global/AutoEvent/Schematics``
 
