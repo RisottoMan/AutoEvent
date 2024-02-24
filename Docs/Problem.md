@@ -3,7 +3,7 @@
 ### *So I left hints on how to fix the problems:*
 ----
  >  You need a map {Name} to run a mini-game.
- - You need to download ***Schematic.tar.gz*** from the [latest release](https://github.com/KoT0XleB/AutoEvent-Exiled/releases/latest) and unzip it to the folder where the schematics should be located.
+ - You need to download *Schematic.tar.gz* from the [latest release](https://github.com/KoT0XleB/AutoEvent-Exiled/releases/latest) and unzip it to the folder where the schematics should be located.
  - If you don't know where to install schematics or maps, click [here](https://github.com/KoT0XleB/AutoEvent/blob/main/Docs/Installation.md).
    - Ensure that the maps are added to the proper directory defined in the `schematics_directory_path` config.
    - Ensure that the directory defined has proper read/write permissions, and is actually a valid directory. 
