@@ -7,6 +7,7 @@ using PluginAPI.Core;
 
 namespace AutoEvent.Patches
 {
+    // Need rework
     [HarmonyPatch(typeof(ItemSearchCompletor), nameof(ItemSearchCompletor.Complete))]
     internal static class PickUpItem
     {
