@@ -10,6 +10,6 @@ public class Translation : EventTranslation
     public string GlobalMessage { get; set; } = "Lobby\n{message}\n{count} players in the lobby";
     public string GetReady { get; set; } = "Get ready to run to the center and choose a mini game";
     public string Run { get; set; } = "RUN";
-    public string Choosing { get; set; } = "Waiting for the {nickName} to choose mini-game";
+    public string Choosing { get; set; } = "Waiting for the {nickName} to choose a mini-game";
     public string FinishMessage { get; set; } = "The lobby is finished.\nThe player {nickName} chose the {newName} mini-game.\nTotal {count} players in the lobby";
 }
