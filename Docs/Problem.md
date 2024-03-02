@@ -2,23 +2,19 @@
 ### *You may encounter a problem because of which the mini-games will not run.*
 ### *So I left hints on how to fix the problems:*
 ----
- >  Errors While attempting to run events?
- - Try checking the debug-output.log (below), and reach out to us with relevant information.
-----
- >  Dark lighting on maps?
- - Download the latest versions of the map from the link. [(press me)](https://github.com/KoT0XleB/AutoEvent-Exiled/tree/main/Schematics)
+ >  You need a map to run a mini-game.
+ - You need to download *``Schematics.tar.gz``* from the [latest release](https://github.com/KoT0XleB/AutoEvent-Exiled/releases/latest) and ``unzip it to the folder`` where the schematics should be located.
+ - If you are using ``Exiled``, then unzip the archive in ``EXILED/Configs/AutoEvent/Schematics``
+ - If you are using ``NWApi``, then unzip the archive in ``PluginAPI/plugins/global/AutoEvent/Schematics``
+   - Ensure that the maps are added to the proper directory defined in the `schematics_directory_path` config.
+   - Ensure that the directory defined has proper read/write permissions, and is actually a valid directory. 
+     - In pterodactyl the config must be in the `/home/container/` directory. 
 ----
  >  You do not have permission to use this command
  - You didn't grant the rights for the role. [(Look at the point "2. Permission")](https://github.com/KoT0XleB/AutoEvent-Exiled/blob/main/Docs/Installation.md)
 ----
  >  Only 1 argument is needed - the command name of the event!
  - You have run the command incorrectly. [(Follow this link to understand)](https://github.com/KoT0XleB/AutoEvent-Exiled/blob/main/Docs/Commands.md)
-----
- >  You need a map {Name} to run a mini-game.
- - Download the necessary maps in the [latest release](https://github.com/KoT0XleB/AutoEvent-Exiled/releases/latest) or [here](https://github.com/KoT0XleB/AutoEvent/tree/main/Schematics).
-   - Ensure that the maps are added to the proper directory defined in the `schematics_directory_path` config.
-   - Ensure that the directory defined has proper read/write permissions, and is actually a valid directory. 
-     - In pterodactyl the config must be in the `/home/container/` directory. 
 ----
  >  The event was not found, nothing happened.
  - This is the most common cause, but it's easy to fix. There may be several reasons:
