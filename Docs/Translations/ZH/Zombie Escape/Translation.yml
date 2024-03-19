@@ -1,0 +1,20 @@
+name: '僵尸逃亡'
+description: '你需要从僵尸中逃跑并乘坐直升机逃生。'
+command_name: 'zombie3'
+start: |-
+  <color=#D71868><b><i>向前跑</i></b></color>
+  感染开始于：{time}
+helicopter: |-
+  <color=yellow>{name}</color>
+  <color=red>需要呼叫直升机。</color>
+  人类剩余：{count}
+died: '核弹引爆'
+zombie_win: |-
+  <color=red>僵尸胜利！</color>
+  所有人类死亡
+human_win: |-
+  <color=#14AAF5>人类胜利！</color>
+  人类逃脱
+# 不要修改这里。这会导致错误。AutoEvent 会自动管理这些设置。
+version: '1.0.0'
+language: 'ZH'
