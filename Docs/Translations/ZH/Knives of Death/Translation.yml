@@ -1,15 +1,15 @@
-name: '死亡刀战'
-description: '在 cs 1.6 的 35hp 地图上用刀子互相对决'
+name: '囚鸟乱斗'
+description: '地图上用囚鸟互相对决'
 command_name: 'knives'
 cycle: |-
   <color=#D71868><b><i>{name}</i></b></color>
-  <color=yellow><color=blue>{mtfcount} MTF</color> <color=red>VS</color> <color=green>{chaoscount} CHAOS</color></color>
+  <color=yellow><color=blue>{mtfcount} 九尾狐</color> <color=red>VS</color> <color=green>{chaoscount} 混沌分裂者</color></color>
 chaos_win: |-
   <color=#D71868><b><i>{name}</i></b></color>
-  <color=yellow>胜利者: <color=green>CHAOS</color></color>
+  <color=yellow>胜利者: <color=green>混沌分裂者</color></color>
 mtf_win: |-
   <color=#D71868><b><i>{name}</i></b></color>
-  <color=yellow>胜利者: <color=#42AAFF>MTF</color></color>
+  <color=yellow>胜利者: <color=#42AAFF>九尾狐</color></color>
 # 不要修改这里。这会导致错误。AutoEvent 会自动管理这些设置。
 version: '1.0.2'
 language: 'ZH'

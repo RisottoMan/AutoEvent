@@ -1,4 +1,4 @@
-name: '红绿灯'
+name: '木头人'
 description: '到达终点线'
 command_name: 'light'
 start: |-
@@ -19,7 +19,7 @@ player_win: |-
   <color=green>胜利者：{winner}</color>
 red_light: '<color=red>不要动</color>'
 green_light: '<color=green>跑</color>'
-red_lose: '<color=red>你闯了红灯</color>'
+red_lose: '<color=red>你动了</color>'
 no_time: '<color=red>你没有及时到达终点线！</color>'
 hint: '<color=green>按 <color=yellow>[Alt]</color> 键推动玩家</color>'
 hint_wait: '<color=red>等待几秒钟</color>'
