@@ -3,7 +3,7 @@ description: 'Humanos sobrevivendo aos zumbis'
 command_name: 'zombie2'
 survival_before_infection: |-
   <b>{name}</b>
-  <color=yellow>Há </color> {time} <color=yellow> segundos antes da infecção começar</color>
+  <color=yellow>Há </color> {time} <color=yellow>segundos antes da infecção começar</color>
 survival_after_infection: |-
   <b>{name}</b>
   <color=#14AAF5>Humanos:</color> {humanCount}
