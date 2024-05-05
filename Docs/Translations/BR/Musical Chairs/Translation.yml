@@ -1,0 +1,27 @@
+name: 'Musical Chairs'
+description: 'Competition with other players for free chairs to funny music'
+command_name: 'chair'
+start: |-
+  <color=#42aaff>Get ready to run</color>
+  The game start in: <color=red>{time}</color>
+cycle: |-
+  <b><color=#42aaff>{name}</color></b>
+  <color=#ffff00>{state}</color>
+  <color=#008000>{count}</color> players remaining</color>
+run_dont_touch: 'Run and dont touch the platforms'
+stand_free: 'Stand on a free platform'
+stop_running: '<color=red>You stopped running</color>'
+touch_ahead: '<color=red>You touched the platforms ahead of time</color>'
+no_time: '<color=red>You didnt stand on a free platform in time</color>'
+more_players: |-
+  <b><color=#42aaff>{name}</color></b>
+  <color=red>The admin canceled the game</color>
+winner: |-
+  <b><color=#42aaff>{name}</color></b>
+  <color=red>Winner: {winner}</color>
+all_died: |-
+  <b><color=#42aaff>{name}</color></b>
+  <color=red>All players died</color>
+# DO NOT CHANGE THIS. IT WILL BREAK THINGS. AutoEvent will automatically manage these settings.
+version: '1.0.4'
+language: 'EN'

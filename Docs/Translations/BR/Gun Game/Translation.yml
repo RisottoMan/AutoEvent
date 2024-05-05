@@ -1,0 +1,13 @@
+name: 'Gun Game'
+description: 'Cool GunGame on the Shipment map from MW19.'
+command_name: 'gungame'
+cycle: |-
+  <color=#D71868><b><i>{name}</i></b></color>
+  <b><color=yellow>Next <color=#D71868>{gun}</color> <color=#D71868>||</color> Need <color=#D71868>{kills}</color> kills</color>
+  <color=#D71868>Leader: <color=yellow>{leadnick}</color> LVL <color=yellow>{leadgun}</color></color></b>
+winner: |-
+  <color=#D71868><b><i>{name}</i></b></color>
+  <color=yellow>The Winner of the game: <color=green>{winner}</color></color>
+# DO NOT CHANGE THIS. IT WILL BREAK THINGS. AutoEvent will automatically manage these settings.
+version: '1.0.0'
+language: 'EN'

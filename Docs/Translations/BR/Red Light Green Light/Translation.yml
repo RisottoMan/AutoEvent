@@ -1,0 +1,29 @@
+name: 'Red Light Green Light'
+description: 'Reach the end of the finish line'
+command_name: 'light'
+start: |-
+  <color=#42aaff>Get ready to run</color>
+  The game start in: <color=red>{time}</color>
+cycle: |-
+  <b><color=#42aaff>{name}</color></b>
+  <color=#aad9ff>{state}</color>
+  <color=red>{time} seconds remaining</color>
+all_died: |-
+  <b><color=#42aaff>{name}</color></b>
+  <color=red>No one was able to reach the finish line</color>
+more_win: |-
+  <b><color=#42aaff>{name}</color></b>
+  <color=red>{count} players win</color>
+player_win: |-
+  <b><color=#42aaff>{name}</color></b>
+  <color=green>Winner: {winner}</color>
+red_light: '<color=red>Dont move</color>'
+green_light: '<color=green>Run</color>'
+red_lose: '<color=red>You run a red light</color>'
+no_time: '<color=red>You didnt make it to the finish line!</color>'
+hint: '<color=green>Press <color=yellow>[Alt]</color> to push the player</color>'
+hint_wait: '<color=red>Wait few seconds</color>'
+hint_ready: '<color=green>Ready</color>'
+# DO NOT CHANGE THIS. IT WILL BREAK THINGS. AutoEvent will automatically manage these settings.
+version: '1.0.4'
+language: 'EN'

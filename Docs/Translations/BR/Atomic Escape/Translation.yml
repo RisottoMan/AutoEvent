@@ -1,0 +1,16 @@
+name: 'Atomic Escape'
+description: 'Escape from the facility behind SCP-173 at supersonic speed!'
+command_name: 'escape'
+before_start: |-
+  {name}
+  Prepare to escape from the facility before it explodes!
+  <color=red>Time until round starts: {time} seconds</color>
+cycle: |-
+  {name}
+  <color=red>{time}</color> seconds until explosion!
+end: |-
+  {name}
+  <color=red>{players} Players Escaped </color>
+# DO NOT CHANGE THIS. IT WILL BREAK THINGS. AutoEvent will automatically manage these settings.
+version: '1.0.1'
+language: 'EN'

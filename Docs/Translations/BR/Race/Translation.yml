@@ -1,0 +1,18 @@
+name: 'Race'
+description: 'Get to the end of the map to win'
+command_name: 'race'
+cycle: |-
+  {name}
+  <color=yellow>Pass the finishing point to win!</color>
+  Time Remaining: {time}
+died: '<color=red>You didnt finish the race</color>'
+players_survived: |-
+  <color=red>Human wins!</color>
+  Survived {count}
+one_survived: |-
+  <color=red>Human wins!</color>
+  Winner: {player}
+no_survivors: '<color=red>Nobody survived!</color>'
+# DO NOT CHANGE THIS. IT WILL BREAK THINGS. AutoEvent will automatically manage these settings.
+version: '1.0.1'
+language: 'EN'

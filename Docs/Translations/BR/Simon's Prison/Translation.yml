@@ -1,0 +1,27 @@
+name: 'Simon''s Prison'
+description: 'Jail mode from CS 1.6, in which you need to hold events [VERY HARD].'
+command_name: 'jail'
+start: |-
+  <color=yellow><color=red><b><i>{name}</i></b></color>
+  <i>Trigger or release a lockdown by shooting the big button</i>
+  Before the start: <color=red>{time}</color> seconds</color>
+start_prisoners: |-
+  <color=yellow><color=red><b><i>{name}</i></b></color>
+  <i>Escape the prison at any costs. Be careful. Items ar scattered around the map to help you survive.</i>
+  Before the start: <color=red>{time}</color> seconds</color>
+cycle: |-
+  <size=20><color=red>{name}</color>
+  <color=yellow>Prisoners: {dclasscount}</color> || <color=#14AAF5>Jailers: {mtfcount}</color>
+  <color=red>{time}</color></size>
+prisoners_win: |-
+  <color=red><b><i>Prisoners Win</i></b></color>
+  <color=red>{time}</color>
+jailers_win: |-
+  <color=#14AAF5><b><i>Jailers Win</i></b></color>
+  <color=red>{time}</color>
+lockdown_on_cooldown: 'You cannot trigger a lockdown, while it is on cooldown. Cooldown Remaining: {cooldown}'
+lives_remaining: 'You have {lives} lives remaining.'
+no_lives_remaining: 'You have no more lives remaining.'
+# DO NOT CHANGE THIS. IT WILL BREAK THINGS. AutoEvent will automatically manage these settings.
+version: '1.0.0'
+language: 'EN'

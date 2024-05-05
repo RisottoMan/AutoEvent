@@ -1,0 +1,19 @@
+name: 'DeathLine'
+description: 'Avoid the spinning platform to survive'
+command_name: 'line'
+cycle: |-
+  <color=#FF4242>{name}</color>
+  <color=#14AAF5>Time remaining: {time}
+  <color=yellow>Players Remaining: {count}</color>
+more_players: |-
+  <color=#FF4242>{name}</color>
+  <color=yellow>{count} players survived</color>
+  <color=red>Congratulate!</color>
+winner: |-
+  <color=#FF4242>{name}</color>
+  <color=yellow>Winner: {winner}</color>
+  <color=red>Congratulate!</color>
+all_died: '<color=red>All players died</color>'
+# DO NOT CHANGE THIS. IT WILL BREAK THINGS. AutoEvent will automatically manage these settings.
+version: '1.0.0'
+language: 'EN'
