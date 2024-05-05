@@ -1,27 +1,27 @@
-name: 'Buckshot Roulette'
-description: 'One-on-one battle in Russian roulette with shotguns'
+name: 'Roleta Russa'
+description: 'Batalha de Roleta Russa entre duas pessoas com espingardas'
 command_name: 'versus2'
 players_null: |-
   <color=#D71868><b><i>{name}</i></b></color>
-  Go inside the arena to fight each other!
-  <color=red>{remain}</color> seconds left
+  Entre na arena para lutar entre si!
+  <color=red>{remain}</color> segundos restando
 class_d_null: |-
   <color=#D71868><b><i>{name}</i></b></color>
-  The player left alive <color=yellow>{scientist}</color>
-  Go inside in <color=orange>{remain}</color> seconds
+  O jogador restante: <color=yellow>{scientist}</color>
+  Entre em <color=orange>{remain}</color> segundos
 scientist_null: |-
   <color=#D71868><b><i>{name}</i></b></color>
-  The player left alive <color=orange>{classd}</color>
-  Go inside in <color=yellow>{remain}</color> seconds
+  O jogador restante: <color=orange>{classd}</color>
+  Entre em <color=yellow>{remain}</color> segundos
 players_duel: |-
   <color=#D71868><b><i>{name}</i></b></color>
   <color=yellow><color=yellow>{scientist}</color> <color=red>VS</color> <color=orange>{classd}</color></color>
 class_d_win: |-
   <color=#D71868><b><i>{name}</i></b></color>
-  <color=yellow>WINNERS: <color=red>CLASS D</color></color>
+  <color=yellow>VENCEDORES: <color=red>CLASSE-Ds</color></color>
 scientist_win: |-
   <color=#D71868><b><i>{name}</i></b></color>
-  <color=yellow>WINNERS: <color=red>SCIENTISTS</color></color>
+  <color=yellow>VENCEDORES: <color=red>CIENTISTAS</color></color>
 # DO NOT CHANGE THIS. IT WILL BREAK THINGS. AutoEvent will automatically manage these settings.
 version: '1.0.2'
 language: 'EN'
