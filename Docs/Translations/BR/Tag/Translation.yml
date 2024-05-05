@@ -1,21 +1,21 @@
-name: 'Tag'
-description: 'We need to catch up with all the players on the map.'
+name: 'Pega-Pega'
+description: 'Persiga e pegue todos jogadores no mapa.'
 command_name: 'tag'
 broadcast: |-
-  RUN
-  Taggers are being selected. Hide now!
-  Time remaining: {time}
+  CORRA
+  Pegadores foram selecionados. Se esconda!
+  Tempo restando: {time}
 cycle: |-
-  Tag another player
-  <color=yellow><b><i>{time}</i></b> seconds left</color>
-hurt: 'You didn''t have time to tag someone else.'
+  Pegue outro jogador
+  <color=yellow><b><i>{time}</i></b> segundos restando</color>
+hurt: 'Você não teve tempo de pegar alguém.'
 one_player: |-
-  The player won {winner}
-  <color=yellow>Event time <color=red>{time}</color></color>
+  O jogador venceu {winner}
+  <color=yellow>Tempo do evento <color=red>{time}</color></color>
 all_die: |-
-  No one survived.
-  End of the game
-  <color=yellow>Event time <color=red>{time}</color></color>
+  Ninguém sobreviveu.
+  Fim do jogo
+  <color=yellow>Tempo do evento <color=red>{time}</color></color>
 # DO NOT CHANGE THIS. IT WILL BREAK THINGS. AutoEvent will automatically manage these settings.
 version: '1.0.2'
 language: 'EN'
