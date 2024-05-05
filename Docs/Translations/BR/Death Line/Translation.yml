@@ -1,0 +1,19 @@
+name: 'Linha da Morte'
+description: 'Evite a plataforma giratória para sobreviver'
+command_name: 'line'
+cycle: |-
+  <color=#FF4242>{name}</color>
+  <color=#14AAF5>Tempo restante: {time}
+  <color=yellow>Jogadores Restando: {count}</color>
+more_players: |-
+  <color=#FF4242>{name}</color>
+  <color=yellow>{count} jogadores sobreviveram</color>
+  <color=red>Parabéns!</color>
+winner: |-
+  <color=#FF4242>{name}</color>
+  <color=yellow>Vencedor: {winner}</color>
+  <color=red>Parabéns!</color>
+all_died: '<color=red>Todos os jogadores morreram</color>'
+# DO NOT CHANGE THIS. IT WILL BREAK THINGS. AutoEvent will automatically manage these settings.
+version: '1.0.0'
+language: 'EN'

@@ -1,0 +1,38 @@
+name: 'Counter-Strike'
+description: 'Luta entre terroristas e contra-terroristas.'
+command_name: 'cs'
+cycle: |-
+  <size=60>{name}</size>
+  <size=25><i>{task}</i>
+  <i><color=#42AAFF>{ctCount} Contras</color> <b>/</b> <color=green>{tCount} Terroristas</color></i>
+  <i>Round Time: {time}</i></size>
+no_planted_counter: 'Proteja os pontos A e B de terroristas'
+no_planted_terror: 'Plante uma bomba no ponto A ou B'
+planted_counter: '<color=red>Desarme a bomba antes que ela exploda</color>'
+planted_terror: '<color=red>Proteja a bomba até que ela exploda</color>'
+draw: |-
+  <b><color=#808080>Empate</color></b>
+  <i>Todos morreram</i>
+time_ended: |-
+  <b><color=#808080>Empate</color></b>
+  <i>O tempo acabou.</i>
+counter_win: |-
+  <b><color=#42AAFF>Contra-Terroristas venceram</color></b>
+  <i>Todos os Terroristas estão mortos</i>
+terrorist_win: |-
+  <b><color=green>Terroristas venceram</color></b>
+  <i>Todos os Contras estão mortos</i>
+planted_win: |-
+  <b><color=green>Terroristas venceram</color></b>
+  <i>Bomba explodiu</i>
+defused_win: |-
+  <b><color=#42AAFF>Contra-Terroristas venceram</color></b>
+  <i>Bomba desarmada</i>
+you_planted: '<b><color=#ff4c5b>Você plantou a bomba</color></b>'
+you_defused: '<b><color=#42aaff>Você desarmou a bomba</color></b>'
+hint_cycle: |-
+  <size=30><i><b>{name}</b>
+  {kills}
+# DO NOT CHANGE THIS. IT WILL BREAK THINGS. AutoEvent will automatically manage these settings.
+version: '1.0.0'
+language: 'EN'

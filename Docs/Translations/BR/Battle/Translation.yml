@@ -1,0 +1,16 @@
+name: 'Batalha'
+description: 'FTM luta contra a IC em uma arena!'
+command_name: 'battle'
+time_left: '<size=100><color=red>Batalha Começando em {time} </color></size>'
+ci_win: |-
+  <color=#299438>Vencedor: Insurgência do Caos </color>
+  <color=red>Duração: {time} </color>
+mtf_win: |-
+  <color=#14AAF5>Vencedor: Forças da Fundação</color>
+  <color=red>Duração: {time} </color>
+counter: |-
+  <color=#14AAF5> FTM: {FoundationForces} </color> vs <color=#299438> IC: {ChaosForces} </color> 
+   Tempo decorrido: {time}
+# DO NOT CHANGE THIS. IT WILL BREAK THINGS. AutoEvent will automatically manage these settings.
+version: '1.0.0'
+language: 'EN'

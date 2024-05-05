@@ -1,0 +1,19 @@
+name: 'Votação'
+description: 'Votação para a escolha de um mini-game'
+command_name: 'vote'
+start: |-
+  <color=#D71868><b><i>Corra Para Frente</i></b></color>
+  Infecção começa em: {time}
+cycle: |-
+  Vote: Pressione [Alt] para Pró ou [Alt]x2 para Contra
+  {trueCount} de {allCount} jogadores para {newName}
+  {time} segundos restando!
+minigame_start: '{newName} começará em breve.'
+minigame_not_start: '{newName} não começará.'
+end: |-
+  Vote: Final da votação
+  {trueCount} de {allCount} jogadores
+  {results}
+# DO NOT CHANGE THIS. IT WILL BREAK THINGS. AutoEvent will automatically manage these settings.
+version: '1.0.0'
+language: 'EN'
