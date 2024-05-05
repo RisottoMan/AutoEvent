@@ -1,0 +1,16 @@
+name: 'Sobrevivência aos Zumbis'
+description: 'Humanos sobrevivendo aos zumbis'
+command_name: 'zombie2'
+survival_before_infection: |-
+  <b>{name}</b>
+  <color=yellow>Há </color> {time} <color=yellow> segundos antes da infecção começar</color>
+survival_after_infection: |-
+  <b>{name}</b>
+  <color=#14AAF5>Humanos:</color> {humanCount}
+  <color=#299438>Tempo restante:</color> {time}
+survival_zombie_win: '<color=red>Zumbis infectaram todos os humanos e venceram!</color>'
+survival_human_win: '<color=#14AAF5>HHumanos mataram todos os zumbis e impediram a infecção</color>'
+survival_human_win_time: '<color=yellow>Humanos sobreviveram, mas a infecção não foi impedida</color>'
+# DO NOT CHANGE THIS. IT WILL BREAK THINGS. AutoEvent will automatically manage these settings.
+version: '1.0.0'
+language: 'EN'

@@ -1,0 +1,23 @@
+name: 'Infecção Zumbi'
+description: 'Modo zumbi, onde eles têm o propósito de infectar todos jogadores.'
+command_name: 'zombie'
+start: |-
+  <color=#D71868><b><i>{name}</i></b></color>
+  <color=#ABF000>Há <color=red>{time}</color> segundos restando antes do jogo começar.</color>
+cycle: |-
+  <color=#D71868><b><i>{name}</i></b></color>
+  <color=yellow>Humanos restantes: <color=green>{count}</color></color>
+  <color=yellow>Duração Decorrida: <color=red>{time}</color></color>
+extra_time: |-
+  Tempo adicional: {extratime}
+  <color=yellow>A <b><i>Última</i></b> pessoa restando!</color>
+  <color=yellow>Duração Decorrida: <color=red>{time}</color></color>
+win: |-
+  <color=red>Zumbis Venceram!</color>
+  <color=yellow>Duração Decorrida: <color=red>{time}</color></color>
+lose: |-
+  <color=yellow><color=#D71868><b><i>Humanos</i></b></color> Venceram!</color>
+  <color=yellow>Duração Decorrida: <color=red>{time}</color></color>
+# DO NOT CHANGE THIS. IT WILL BREAK THINGS. AutoEvent will automatically manage these settings.
+version: '1.0.2'
+language: 'EN'

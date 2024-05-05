@@ -1,0 +1,22 @@
+name: 'Festa do Ataque Aéreo'
+description: 'Sobreviva enquanto ataques aéreos chovem de cima.'
+command_name: 'airstrike'
+cycle: |-
+  <color=yellow>Desvie dos ataques aéreos!</color>
+  <color=green>{time} segundos se passaram</color>
+  <color=red>{count} jogadores restando</color>
+more_player: |-
+  <color=red>Festa da Morte</color>
+  <color=yellow><color=red>{count}</color> jogadores sobreviveram.</color>
+  <color=#ffc0cb>{time}</color>
+one_player: |-
+  <color=red>Festa da Morte</color>
+  <color=yellow>Vencedor - <color=red>{winner}</color></color>
+  <color=#ffc0cb>{time}</color>
+all_die: |-
+  <color=red>Festa da Morte</color>
+  <color=yellow>Ninguém sobreviveu.(((</color>
+  <color=#ffc0cb>{time}</color>
+# DO NOT CHANGE THIS. IT WILL BREAK THINGS. AutoEvent will automatically manage these settings.
+version: '1.0.3'
+language: 'EN'

@@ -1,0 +1,29 @@
+name: 'Batatinha Frita, 1, 2, 3'
+description: 'Chegue ao final da linha de chegada.'
+command_name: 'light'
+start: |-
+  <color=#42aaff>Prepare-se para correr</color>
+  O jogo começa em: <color=red>{time}</color>
+cycle: |-
+  <b><color=#42aaff>{name}</color></b>
+  <color=#aad9ff>{state}</color>
+  <color=red>{time} segundos restando</color>
+all_died: |-
+  <b><color=#42aaff>{name}</color></b>
+  <color=red>Ninguém conseguiu chegar à linha de chegada</color>
+more_win: |-
+  <b><color=#42aaff>{name}</color></b>
+  <color=red>{count} jogadores venceram</color>
+player_win: |-
+  <b><color=#42aaff>{name}</color></b>
+  <color=green>Vencedor: {winner}</color>
+red_light: '<color=red>Não se mexa</color>'
+green_light: '<color=green>Corra</color>'
+red_lose: '<color=red>Você se mexeu...</color>'
+no_time: '<color=red>Você não conseguiu alcançar a linha de chegada!</color>'
+hint: '<color=green>Pressione <color=yellow>[Alt]</color> para empurrar o jogador</color>'
+hint_wait: '<color=red>Espere alguns segundos</color>'
+hint_ready: '<color=green>Pronto</color>'
+# DO NOT CHANGE THIS. IT WILL BREAK THINGS. AutoEvent will automatically manage these settings.
+version: '1.0.4'
+language: 'EN'
