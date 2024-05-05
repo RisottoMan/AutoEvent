@@ -1,18 +1,18 @@
-name: 'Race'
-description: 'Get to the end of the map to win'
+name: 'Corrida'
+description: 'Chegue até o final do mapa para vencer'
 command_name: 'race'
 cycle: |-
   {name}
-  <color=yellow>Pass the finishing point to win!</color>
+  <color=yellow>Passe pelo ponto de chegada para vencer!</color>
   Time Remaining: {time}
-died: '<color=red>You didnt finish the race</color>'
+died: '<color=red>Você não terminou a corrida</color>'
 players_survived: |-
-  <color=red>Human wins!</color>
-  Survived {count}
+  <color=red>Humanos venceram!</color>
+  {count} sobreviveram
 one_survived: |-
-  <color=red>Human wins!</color>
-  Winner: {player}
-no_survivors: '<color=red>Nobody survived!</color>'
+  <color=red>Humanos venceram!</color>
+  Vencedor: {player}
+no_survivors: '<color=red>Ninguém sobreviveu!</color>'
 # DO NOT CHANGE THIS. IT WILL BREAK THINGS. AutoEvent will automatically manage these settings.
 version: '1.0.1'
 language: 'EN'
