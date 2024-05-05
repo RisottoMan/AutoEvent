@@ -1,21 +1,21 @@
-name: 'Airstrike Party'
-description: 'Survive as aistrikes rain down from above.'
+name: 'Festa do Ataque Áereo'
+description: 'Sobreviva enquanto ataques áereos chovem de cima.'
 command_name: 'airstrike'
 cycle: |-
-  <color=yellow>Dodge the airstrikes!</color>
-  <color=green>{time} seconds have elapsed</color>
-  <color=red>{count} players left</color>
+  <color=yellow>Desvie dos ataques áereos!</color>
+  <color=green>{time} segundos se passaram</color>
+  <color=red>{count} jogadores restando</color>
 more_player: |-
-  <color=red>Death Party</color>
-  <color=yellow><color=red>{count}</color> players survived.</color>
+  <color=red>Festa da Morte</color>
+  <color=yellow><color=red>{count}</color> jogadores sobreviveram.</color>
   <color=#ffc0cb>{time}</color>
 one_player: |-
-  <color=red>Death Party</color>
-  <color=yellow>Winner - <color=red>{winner}</color></color>
+  <color=red>Festa da Morte</color>
+  <color=yellow>Vencedor - <color=red>{winner}</color></color>
   <color=#ffc0cb>{time}</color>
 all_die: |-
-  <color=red>Death Party</color>
-  <color=yellow>No one survived.(((</color>
+  <color=red>Festa da Morte</color>
+  <color=yellow>Ninguém sobreviveu.(((</color>
   <color=#ffc0cb>{time}</color>
 # DO NOT CHANGE THIS. IT WILL BREAK THINGS. AutoEvent will automatically manage these settings.
 version: '1.0.3'
