@@ -1,20 +1,20 @@
-name: 'Dead Jump'
-description: 'Jump on fragile platforms'
+name: 'Salto Mortal'
+description: 'Pule em plataformas frágeis'
 command_name: 'glass'
 start: |-
-  <size=50>Dead Jump
-  Jump on fragile platforms</size>
-  <size=20>Alive players: {plyAlive} 
-  Time left: {time}</size>
-died: 'You fallen into lava'
-win_survived: '<color=yellow>Human wins! Survived {plyAlive} players</color>'
+  <size=50>Salto Mortal
+  Pule em plataformas frágeis</size>
+  <size=20>Jogadores vivos: {plyAlive} 
+  Tempo restante: {time}</size>
+died: 'Você caiu na lava'
+win_survived: '<color=yellow>Humanos venceram! {plyAlive} jogadores sobreviveram</color>'
 winner: |-
-  <color=red>Dead Jump</color>
-  <color=yellow>Winner: {winner}</color>
+  <color=red>Salto Mortal</color>
+  <color=yellow>Vencedor: {winner}</color>
 fail: |-
-  <color=red>Dead Jump</color>
-  <color=yellow>All players died</color>
-push: '<color=green>Press <color=yellow>[Alt]</color> to push the player</color>'
+  <color=red>Salto Mortal</color>
+  <color=yellow>Todos os jogadores morreram</color>
+push: '<color=green>Pressione <color=yellow>[Alt]</color> para empurrar o jogador</color>'
 # DO NOT CHANGE THIS. IT WILL BREAK THINGS. AutoEvent will automatically manage these settings.
 version: '1.0.5'
 language: 'EN'
