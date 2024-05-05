@@ -1,0 +1,20 @@
+name: 'Fuga dos Zumbis'
+description: 'Você precisa fugir dos zumbis e escapar por helicóptero.'
+command_name: 'zombie3'
+start: |-
+  <color=#D71868><b><i>Corra Para Frente</i></b></color>
+  Infecção começa em: {time}
+helicopter: |-
+  <color=yellow>{name}</color>
+  <color=red>Precisa chamar o helicóptero.</color>
+  Humanos restantes: {count}
+died: 'Ogiva detonada'
+zombie_win: |-
+  <color=red>Zumbis venceram!</color>
+  Todos os humanos morreram
+human_win: |-
+  <color=#14AAF5>Humanos venceram!</color>
+  Humanos escaparam
+# DO NOT CHANGE THIS. IT WILL BREAK THINGS. AutoEvent will automatically manage these settings.
+version: '1.0.0'
+language: 'BR'

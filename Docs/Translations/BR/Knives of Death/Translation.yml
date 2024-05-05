@@ -1,0 +1,15 @@
+name: 'Facas da Morte'
+description: 'Esfaqueiem-se entre si em um mapa 35hp do CS 1.6'
+command_name: 'knives'
+cycle: |-
+  <color=#D71868><b><i>{name}</i></b></color>
+  <color=yellow><color=blue>{mtfcount} FTM</color> <color=red>VS</color> <color=green>{chaoscount} CAOS</color></color>
+chaos_win: |-
+  <color=#D71868><b><i>{name}</i></b></color>
+  <color=yellow>VENCEDORES: <color=green>CAOS</color></color>
+mtf_win: |-
+  <color=#D71868><b><i>{name}</i></b></color>
+  <color=yellow>VENCEDORES: <color=#42AAFF>FTM</color></color>
+# DO NOT CHANGE THIS. IT WILL BREAK THINGS. AutoEvent will automatically manage these settings.
+version: '1.0.2'
+language: 'BR'

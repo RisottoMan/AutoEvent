@@ -1,0 +1,21 @@
+name: 'Pega-Pega'
+description: 'Persiga e pegue todos jogadores no mapa.'
+command_name: 'tag'
+broadcast: |-
+  CORRA
+  Pegadores foram selecionados. Se esconda!
+  Tempo restando: {time}
+cycle: |-
+  Pegue outro jogador
+  <color=yellow><b><i>{time}</i></b> segundos restando</color>
+hurt: 'Você não teve tempo de pegar alguém.'
+one_player: |-
+  O jogador venceu {winner}
+  <color=yellow>Tempo do evento <color=red>{time}</color></color>
+all_die: |-
+  Ninguém sobreviveu.
+  Fim do jogo
+  <color=yellow>Tempo do evento <color=red>{time}</color></color>
+# DO NOT CHANGE THIS. IT WILL BREAK THINGS. AutoEvent will automatically manage these settings.
+version: '1.0.2'
+language: 'BR'
