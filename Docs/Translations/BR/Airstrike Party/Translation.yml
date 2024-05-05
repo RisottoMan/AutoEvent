@@ -1,8 +1,8 @@
-name: 'Festa do Ataque Áereo'
-description: 'Sobreviva enquanto ataques áereos chovem de cima.'
+name: 'Festa do Ataque Aéreo'
+description: 'Sobreviva enquanto ataques aéreos chovem de cima.'
 command_name: 'airstrike'
 cycle: |-
-  <color=yellow>Desvie dos ataques áereos!</color>
+  <color=yellow>Desvie dos ataques aéreos!</color>
   <color=green>{time} segundos se passaram</color>
   <color=red>{count} jogadores restando</color>
 more_player: |-
