@@ -24,7 +24,7 @@ namespace AutoEvent
 #if EXILED
     public class AutoEvent : Plugin<Config>
     {
-        public override System.Version Version => System.Version.Parse(Version);
+        public override System.Version Version => System.Version.Parse(DebugLogger.Version);
         public override string Name => "AutoEvent";
         public override string Author => "Created by KoT0XleB, extended by swd and sky, Co-Maintained by Redforce04";
         public static bool IsPlayedGames;
@@ -35,7 +35,6 @@ namespace AutoEvent
         [PluginConfig("Configs/autoevent.yml")]
         public Config Config;
 #endif
-        public const string Version = "9.6.0";
         public const bool BetaRelease = false; // todo set beta to false before main release
         /// <summary>
         /// The location of the AutoEvent folder for schematics, music, external events and event config / translations.
@@ -52,7 +51,7 @@ namespace AutoEvent
         public override void OnEnabled()
 #else
         [PluginPriority(LoadPriority.Low)]
-        [PluginEntryPoint("AutoEvent", Version, "An event manager plugin that allows you to run mini-games.", "KoT0XleB and Redforce04")]
+        [PluginEntryPoint("AutoEvent", DebugLogger.Version, "An event manager plugin that allows you to run mini-games.", "KoT0XleB and Redforce04")]
         void OnEnabled()
 #endif
         {
@@ -84,6 +83,7 @@ namespace AutoEvent
                 Singleton = this;
                 MER.Lite.API.Initialize(AutoEvent.Singleton.Config.SchematicsDirectoryPath, Config.Debug);
                 SCPSLAudioApi.Startup.SetupDependencies();
+                /*
 #if EXILED
                 Exiled.Events.Handlers.Player.Shot += (Exiled.Events.EventArgs.Player.ShotEventArgs ev) =>
                 {
@@ -93,6 +93,7 @@ namespace AutoEvent
                     ev.CanHurt = args.CanHurt;
                 };
 #endif
+*/
                 
                 if (Config.IgnoredRoles.Contains(Config.LobbyRole))
                 {
