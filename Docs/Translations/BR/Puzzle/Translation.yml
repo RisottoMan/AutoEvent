@@ -1,0 +1,21 @@
+name: 'Quebra-Cabeça'
+description: 'Escolha a cor certa o mais rápido que puder'
+command_name: 'puzzle'
+start: '<color=red>Começa em: </color>{time}'
+stage: |-
+  <color=red>Nível: </color>{stageNum}<color=red> / </color>{stageFinal}
+  <color=yellow>Jogadores restando:</color> {plyCount}
+all_died: |-
+  <color=red>Todos os jogadores morreram</color>
+  Mini-game acabou
+some_survived: |-
+  <color=red>Diversas pessoas sobreviveram</color>
+  Mini-game acabou
+winner: |-
+  <color=red>Vencedor: {winner}</color>
+  Mini-game acabou
+died: '<color=red>Queimou na Lava</color>'
+main_message: '<color=#F59F00>Q</color><color=#F7A714>e</color><color=#F58107>b</color><color=#E06606>r</color><color=#F45002>a</color>-<color=#FA1DAF>C</color><color=#C10069>a</color><color=#C1003E>b</color><color=#C10022>e</color><color=#C10000>ç</color><color=#750000>a</color>'
+# DO NOT CHANGE THIS. IT WILL BREAK THINGS. AutoEvent will automatically manage these settings.
+version: '1.0.2'
+language: 'BR'

@@ -2,6 +2,14 @@
 ### If you want to learn how to write your own mini-games, then you should study the structure of mini-games.
 ### The basic structure:
 
+Use the ***Event*** interface to inherit all the important methods and variables for the mini-game to work.
+```csharp
+public class Plugin : Event
+{
+}
+```   
+##### Also inherit ***IEventMap*** to launch schematic maps and ***IEventSound*** to launch music (See the detailed description below).
+
 #### Event Information:
 Information about the event that users can see.
 ```csharp
@@ -9,7 +17,19 @@ public override string Name { get; set; } = "Example";
 public override string Description { get; set; } = "An example event based on the battle event.";
 public override string Author { get; set; } = "KoT0XleB";
 public override string CommandName { get; set; } = "example";
+public override Version Version { get; set; } = new Version(1, 0, 0);
 ```        
+
+#### Event Configs:
+Settings you have access to that will change functionality of the event.
+```csharp
+// Enter your config here, which is located in the folder with your mini-game
+[EventConfig]
+public Config Config { get; set; }
+
+// Custom translations have not been made yet.
+public Translate Translate { get; set; } = AutoEvent.Singleton.Translation.Translate;
+```
 
 #### Event Settings:
 Settings you have access to that will change functionality of the event.
@@ -38,12 +58,71 @@ protected override CoroutineHandle GameCoroutine { get; set; }
 // The DateTime (UTC) that the plugin started at. 
 public override DateTime StartTime { get; protected set; }
         
-// The elapsed time since the plugin started.
+// The elapsed time since the plugin started. (Default)
 public override TimeSpan EventTime { get; protected set; }
 ```
 
 #### Event API Methods
+All the necessary methods for work are presented here. Combine them as you like.
 ```csharp
+// Used to register events for plugins.
+protected override void RegisterEvents() { }
 
+// Used to unregister events for plugins.
+protected override void UnregisterEvents() { }
+
+// Called when the event is started.
+protected override void OnStart();
+
+// Called after start in a coroutine. Can be used as a countdown coroutine.
+protected override IEnumerator<float> BroadcastStartCountdown()
+
+// Called after BroadcastStartCountdown is finished. Can be used to remove walls, or give players items.
+protected override void CountdownFinished()
+
+// Used to determine whether the event should end or not. 
+// Returns true if the round is finished. False if the round should continue running.
+protected abstract bool IsRoundDone();
+
+// It is called as many times per second as is set in the FrameDelayInSeconds.
+protected override void ProcessFrame() { }
+
+// Called when the event is finished. If the event is stopped via OnStop, this won't be called, as the event never truly finishes properly.
+protected abstract void OnFinished();
+
+// Called if the event is forcibly stopped. If this is called, OnFinished won't be called.
+protected override void OnStop() { }
+
+// The overridable class for after and event is finished / stopped and cleanup is occuring.
+protected virtual void OnCleanup() { }
 ```
-### In Exiled and NWApi there is a difference in creating mini-games. If the entire toolkit has already been created in Exiled, and the plugin just makes it convenient to create mini-games, but NWApi had to create its own toolkit. You can use the implemented cancellable events in the code for yourself.
+
+#### Event maps and music
+Use IEventMap and IEventSound to inherit important variables.
+```csharp
+public class Plugin : Event, IEventSound, IEventMap
+{
+    public MapInfo MapInfo { get; set; } = new MapInfo()
+    { 
+        MapName = "SchematicName", // Enter the name of your schematic
+        Position = new Vector3(0, 0, 0), // A position for your schematics
+        IsStatic = true // Always use true to optimize tps
+    };
+    public SoundInfo SoundInfo { get; set; } = new SoundInfo()
+    { 
+        SoundName = "MusicName.ogg",  // Enter the name of your music
+        Volume = 10, // It is recommended to set the value for music from 5 to 10.
+        Loop = true // It make music endless
+    };
+}
+```
+
+#### Loader Custom Mini-Games
+##### Creating mini-games is not so difficult if you are using a loader of custom mini-games:
+###### Start a project in Visual Studio with a class library .NetFramework 4.8
+###### Paste the compiled dll mini-game into the folder:
+###### Exiled -> ``EXILED\Configs\AutoEvent\Events`` 
+###### NWApi -> ``PluginAPI\plugins\global\AutoEvent\Events``
+##### Do not forget to set ``IsDebug = true`` in the config and check the launch of your mini-game.
+
+

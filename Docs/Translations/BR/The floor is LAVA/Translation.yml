@@ -1,0 +1,15 @@
+name: 'O Chão é LAVA'
+description: 'Sobrevivência onde você precisa evitar a lava e atirar nos outros.'
+command_name: 'lava'
+start: |-
+  <size=100><color=red>{time}</color></size>
+  Pegue armas e escale.
+cycle: '<size=20><color=red><b>Vivos: {count} jogadores</b></color></size>'
+win: |-
+  <color=red><b>Vencedor
+  Jogador - {winner}</b></color>
+all_dead: '<color=red><b>Ninguém sobreviveu até o final.</b></color>'
+died: '<color=red>Queimou na Lava</color>'
+# DO NOT CHANGE THIS. IT WILL BREAK THINGS. AutoEvent will automatically manage these settings.
+version: '1.0.3'
+language: 'BR'

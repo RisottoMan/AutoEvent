@@ -1,0 +1,27 @@
+name: '霰弹枪俄罗斯轮盘赌'
+description: '用霰弹枪进行一对一的俄罗斯轮盘赌战斗'
+command_name: 'versus2'
+players_null: |-
+  <color=#D71868><b><i>{name}</i></b></color>
+  进入竞技场互相对战！
+  <color=red>{remain}</color> 秒剩余
+class_d_null: |-
+  <color=#D71868><b><i>{name}</i></b></color>
+  幸存的玩家 <color=yellow>{scientist}</color>
+  <color=orange>{remain}</color> 秒内进入
+scientist_null: |-
+  <color=#D71868><b><i>{name}</i></b></color>
+  幸存的玩家 <color=orange>{classd}</color>
+  <color=yellow>{remain}</color> 秒内进入
+players_duel: |-
+  <color=#D71868><b><i>{name}</i></b></color>
+  <color=yellow><color=yellow>{scientist}</color> <color=red>VS</color> <color=orange>{classd}</color></color>
+class_d_win: |-
+  <color=#D71868><b><i>{name}</i></b></color>
+  <color=yellow>胜利者: <color=red>CLASS D</color></color>
+scientist_win: |-
+  <color=#D71868><b><i>{name}</i></b></color>
+  <color=yellow>胜利者: <color=red>SCIENTISTS</color></color>
+# 不要修改这部分。这会导致错误。AutoEvent会自动管理这些设置。
+version: '1.0.2'
+language: 'ZH'
