@@ -1,0 +1,16 @@
+name: 'Fuga Atômica'
+description: 'Fuja da instalação a uma velocidade supersônica!'
+command_name: 'escape'
+before_start: |-
+  {name}
+  Prepare-se para escapar da instalação antes que ela exploda!
+  <color=red>Tempo até começo da partida: {time} segundos</color>
+cycle: |-
+  {name}
+  <color=red>{time}</color> segundos até explosão! 
+end: |-
+  {name}
+  <color=red>{players} Jogadores Fugiram </color>
+# DO NOT CHANGE THIS. IT WILL BREAK THINGS. AutoEvent will automatically manage these settings.
+version: '1.0.1'
+language: 'BR'

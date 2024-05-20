@@ -1,0 +1,16 @@
+name: '战斗'
+description: 'MTF 与 CI 在竞技场上对抗！'
+command_name: 'battle'
+time_left: '<size=100><color=red>战斗将在 {time} 后开始 </color></size>'
+ci_win: |-
+  <color=#299438>胜利者：混沌分裂者 </color>
+  <color=red>持续时间：{time} </color>
+mtf_win: |-
+  <color=#14AAF5>胜利者：基金会部队</color>
+  <color=red>持续时间：{time} </color>
+counter: |-
+  <color=#14AAF5> MTF：{FoundationForces} </color> vs <color=#299438> CI：{ChaosForces} </color> 
+   已用时间：{time}
+# 不要修改这里。这会导致错误。AutoEvent 会自动管理这些设置。
+version: '1.0.0'
+language: 'ZH'

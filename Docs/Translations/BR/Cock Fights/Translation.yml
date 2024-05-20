@@ -1,0 +1,27 @@
+name: 'Rinha de Galo'
+description: 'Duelo de jogadores no mapa 35hp do CS 1.6'
+command_name: 'versus'
+players_null: |-
+  <color=#D71868><b><i>{name}</i></b></color>
+  Entre na arena para lutar entre si!
+  <color=red>{remain}</color> segundos restando
+class_d_null: |-
+  <color=#D71868><b><i>{name}</i></b></color>
+  O jogador vivo restante: <color=yellow>{scientist}</color>
+  Entre em <color=orange>{remain}</color> segundos
+scientist_null: |-
+  <color=#D71868><b><i>{name}</i></b></color>
+  O jogador vivo restante: <color=orange>{classd}</color>
+  Entre em <color=yellow>{remain}</color> segundos
+players_duel: |-
+  <color=#D71868><b><i>{name}</i></b></color>
+  <color=yellow><color=yellow>{scientist}</color> <color=red>VS</color> <color=orange>{classd}</color></color>
+class_d_win: |-
+  <color=#D71868><b><i>{name}</i></b></color>
+  <color=yellow>VENCEDORES: <color=red>CLASSE-Ds</color></color>
+scientist_win: |-
+  <color=#D71868><b><i>{name}</i></b></color>
+  <color=yellow>VENCEDORES: <color=red>CIENTISTAS</color></color>
+# DO NOT CHANGE THIS. IT WILL BREAK THINGS. AutoEvent will automatically manage these settings.
+version: '1.0.2'
+language: 'BR'

@@ -1,5 +1,10 @@
 ## I'll introduce you to 20 mini-games I've made:
 
+### Winter Mini-Games
+##### Here are all the maps and mini-games that were changed in the New Year update.
+##### (Click on the snow logo)
+[![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/MiniGames%20Winter(mini).png)](https://github.com/KoT0XleB/AutoEvent/blob/main/Docs/NewYearMiniGames.md)
+
 ### Zombie Infection [zombie]
 ##### Zombie mode, the purpose of which is to infect all players. 
 ##### It's a pretty nice map, where it's nice to run away from zombies, but it's easy to get infected if you're careless.

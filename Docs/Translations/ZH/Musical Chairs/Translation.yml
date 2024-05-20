@@ -1,0 +1,27 @@
+name: '争抢椅子'
+description: '在有趣的音乐中和其他玩家争夺空椅子'
+command_name: 'chair'
+start: |-
+  <color=#42aaff>准备好跑了吗</color>
+  游戏将在 <color=red>{time}</color> 后开始
+cycle: |-
+  <b><color=#42aaff>{name}</color></b>
+  <color=#ffff00>{state}</color>
+  <color=#008000>还剩 {count}</color> 名玩家</color>
+run_dont_touch: '跑起来，不要碰到平台'
+stand_free: '站在一个空的平台上'
+stop_running: '<color=red>你停止了跑动</color>'
+touch_ahead: '<color=red>你提前碰到了平台</color>'
+no_time: '<color=red>你没有及时站在一个空的平台上</color>'
+more_players: |-
+  <b><color=#42aaff>{name}</color></b>
+  <color=red>管理员取消了游戏</color>
+winner: |-
+  <b><color=#42aaff>{name}</color></b>
+  <color=red>胜利者：{winner}</color>
+all_died: |-
+  <b><color=#42aaff>{name}</color></b>
+  <color=red>所有玩家都死了</color>
+# 不要修改这里。这会导致错误。AutoEvent 会自动管理这些设置。
+version: '1.0.4'
+language: 'ZH'

@@ -1,0 +1,21 @@
+name: 'Lobby'
+description: 'Um salão onde o jogador mais rápido escolhe um mini-game.'
+command_name: 'lobby'
+cycle: |-
+  Vote: Pressione [Alt] para Pró ou [Alt]x2 para Contra
+  {trueCount} de {allCount} jogadores para {newName}
+  {time} segundos restando!
+global_message: |-
+  Lobby
+  {message}
+  {count} jogadores no salão
+get_ready: 'Preparem-se para correr ao centro e escolher um mini-game'
+run: 'CORRE'
+choosing: 'Esperando o {nickName} escolher um mini-game'
+finish_message: |-
+  O tempo de estadia no salão acabou.
+  O jogador {nickName} escolheu o mini-game {newName}.
+  Total de {count} jogadores no salão
+# DO NOT CHANGE THIS. IT WILL BREAK THINGS. AutoEvent will automatically manage these settings.
+version: '1.0.0'
+language: 'BR'
