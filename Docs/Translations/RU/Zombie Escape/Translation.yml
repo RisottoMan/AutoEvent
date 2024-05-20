@@ -1,0 +1,20 @@
+name: 'Зомби Побег'
+description: 'Сбегите от зомби на вертолете.'
+command_name: 'zombie3'
+start: |-
+  <color=#D71868><b><i>Бегите</i></b></color>
+  Начало через: {time}
+helicopter: |-
+  <color=yellow>{name}</color>
+  <color=red>Вызовите вертолет!</color>
+  Осталось людей: {count}
+died: 'Боеголовка взорвана'
+zombie_win: |-
+  <color=red>Зомби выиграли!</color>
+  Все люди погибли
+human_win: |-
+  <color=#14AAF5>Люди выиграли!</color>
+  Люди сбежали
+# DO NOT CHANGE THIS. IT WILL BREAK THINGS. AutoEvent will automatically manage these settings.
+version: '1.0.0'
+language: 'RU'

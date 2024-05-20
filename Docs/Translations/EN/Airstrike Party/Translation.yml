@@ -1,0 +1,22 @@
+name: 'Airstrike Party'
+description: 'Survive as aistrikes rain down from above.'
+command_name: 'airstrike'
+cycle: |-
+  <color=yellow>Dodge the airstrikes!</color>
+  <color=green>{time} seconds have elapsed</color>
+  <color=red>{count} players left</color>
+more_player: |-
+  <color=red>Death Party</color>
+  <color=yellow><color=red>{count}</color> players survived.</color>
+  <color=#ffc0cb>{time}</color>
+one_player: |-
+  <color=red>Death Party</color>
+  <color=yellow>Winner - <color=red>{winner}</color></color>
+  <color=#ffc0cb>{time}</color>
+all_die: |-
+  <color=red>Death Party</color>
+  <color=yellow>No one survived.(((</color>
+  <color=#ffc0cb>{time}</color>
+# DO NOT CHANGE THIS. IT WILL BREAK THINGS. AutoEvent will automatically manage these settings.
+version: '1.0.3'
+language: 'EN'

@@ -28,8 +28,6 @@ namespace AutoEvent.Games.CounterStrike
             if (ev.Item.ItemTypeId != ItemType.SCP018)
                 return;
 
-            var trans = AutoEvent.Singleton.Translation.StrikeTranslation;
-
             if (_plugin.BombState == BombState.NoPlanted)
             {
                 if (ev.Player.IsChaos)
@@ -42,7 +40,7 @@ namespace AutoEvent.Games.CounterStrike
                     _plugin.Buttons.ForEach(r => GameObject.Destroy(r));
 
                     Extensions.PlayAudio("BombPlanted.ogg", 5, false);
-                    ev.Player.ReceiveHint(trans.StrikeYouPlanted, 3);
+                    ev.Player.ReceiveHint(_plugin.Translation.YouPlanted, 3);
                 }
             }
             else if (_plugin.BombState == BombState.Planted)
@@ -52,7 +50,7 @@ namespace AutoEvent.Games.CounterStrike
                     _plugin.Winner = ev.Player;
                     _plugin.BombState = BombState.Defused;
                     //GameObject.Destroy(_plugin.BombObject);
-                    ev.Player.ReceiveHint(trans.StrikeYouDefused, 3);
+                    ev.Player.ReceiveHint(_plugin.Translation.YouDefused, 3);
                 }
             }
 

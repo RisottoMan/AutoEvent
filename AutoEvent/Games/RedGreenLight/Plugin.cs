@@ -14,60 +14,60 @@ namespace AutoEvent.Games.Light
 {
     public class Plugin : Event, IEventMap, IInternalEvent
     {
-        public override string Name { get; set; } = AutoEvent.Singleton.Translation.LightTranslation.LightName;
-        public override string Description { get; set; } = AutoEvent.Singleton.Translation.LightTranslation.LightDescription;
+        public override string Name { get; set; } = "Red Light Green Light";
+        public override string Description { get; set; } = "Reach the end of the finish line";
         public override string Author { get; set; } = "KoT0XleB";
-        public override string CommandName { get; set; } = AutoEvent.Singleton.Translation.LightTranslation.LightCommandName;
-        public override Version Version { get; set; } = new Version(1, 0, 1);
-        private LightTranslation Translation { get; set; } = AutoEvent.Singleton.Translation.LightTranslation;
+        public override string CommandName { get; set; } = "light";
+        public override Version Version { get; set; } = new Version(1, 0, 4);
         [EventConfig]
         public Config Config { get; set; }
+        [EventTranslation]
+        public Translation Translation { get; set; }
         public MapInfo MapInfo { get; set; } = new MapInfo()
         {
             MapName = "RedLight",
-            Position = new Vector3(0f, 1030f, -43.5f)
+            Position = new Vector3(0f, 1030f, -43.5f),
+            IsStatic = false
         };
-        private EventHandler EventHandler { get; set; }
-        GameObject Wall { get; set; }
-        GameObject Doll { get; set; }
-        GameObject RedLine { get; set; }
-        TimeSpan ActiveTime { get; set; }
-        State EventState { get; set; }
-        public Dictionary<Player, float> pushCooldown;
+        private EventHandler _eventHandler;
+        private GameObject _wall;
+        private GameObject _doll;
+        private GameObject _redLine;
+        private float _countdown;
+        private EventState _eventState;
+        internal Dictionary<Player, float> PushCooldown;
+        private Dictionary<Player, Quaternion> _playerRotation;
         protected override void RegisterEvents()
         {
-            EventHandler = new EventHandler(this);
-
-            EventManager.RegisterEvents(EventHandler);
-            Servers.TeamRespawn += EventHandler.OnTeamRespawn;
-            Servers.PlaceBullet += EventHandler.OnPlaceBullet;
-            Servers.PlaceBlood += EventHandler.OnPlaceBlood;
-            Players.DropItem += EventHandler.OnDropItem;
-            Players.DropAmmo += EventHandler.OnDropAmmo;
-            Players.PlayerDamage += EventHandler.OnDamage;
-            Players.PlayerNoclip += EventHandler.OnPlayerNoclip;
+            _eventHandler = new EventHandler(this);
+            EventManager.RegisterEvents(_eventHandler);
+            Servers.TeamRespawn += _eventHandler.OnTeamRespawn;
+            Servers.PlaceBullet += _eventHandler.OnPlaceBullet;
+            Servers.PlaceBlood += _eventHandler.OnPlaceBlood;
+            Players.DropItem += _eventHandler.OnDropItem;
+            Players.DropAmmo += _eventHandler.OnDropAmmo;
+            Players.PlayerDamage += _eventHandler.OnDamage;
+            Players.PlayerNoclip += _eventHandler.OnPlayerNoclip;
         }
 
         protected override void UnregisterEvents()
         {
-            EventManager.UnregisterEvents(EventHandler);
-
-            Servers.TeamRespawn -= EventHandler.OnTeamRespawn;
-            Servers.PlaceBullet -= EventHandler.OnPlaceBullet;
-            Servers.PlaceBlood -= EventHandler.OnPlaceBlood;
-            Players.DropItem -= EventHandler.OnDropItem;
-            Players.DropAmmo -= EventHandler.OnDropAmmo;
-            Players.PlayerDamage -= EventHandler.OnDamage;
-            Players.PlayerNoclip -= EventHandler.OnPlayerNoclip;
-
-            EventHandler = null;
+            EventManager.UnregisterEvents(_eventHandler);
+            Servers.TeamRespawn -= _eventHandler.OnTeamRespawn;
+            Servers.PlaceBullet -= _eventHandler.OnPlaceBullet;
+            Servers.PlaceBlood -= _eventHandler.OnPlaceBlood;
+            Players.DropItem -= _eventHandler.OnDropItem;
+            Players.DropAmmo -= _eventHandler.OnDropAmmo;
+            Players.PlayerDamage -= _eventHandler.OnDamage;
+            Players.PlayerNoclip -= _eventHandler.OnPlayerNoclip;
+            _eventHandler = null;
         }
 
         protected override void OnStart()
         {
-            RedLine = null;
-            EventState = State.GreenLight;
-            pushCooldown = new Dictionary<Player, float>();
+            _redLine = null;
+            _eventState = 0;
+            PushCooldown = new Dictionary<Player, float>();
             List<GameObject> spawnpoints = new List<GameObject>();
 
             foreach (GameObject gameObject in MapInfo.Map.AttachedBlocks)
@@ -75,9 +75,9 @@ namespace AutoEvent.Games.Light
                 switch(gameObject.name)
                 {
                     case "Spawnpoint": spawnpoints.Add(gameObject); break;
-                    case "Wall": Wall = gameObject; break;
-                    case "RedLine": RedLine = gameObject; break;
-                    case "Doll": { DebugLogger.LogDebug("Doll найден"); Doll = gameObject; break; }
+                    case "Wall": _wall = gameObject; break;
+                    case "RedLine": _redLine = gameObject; break;
+                    case "Doll": _doll = gameObject; break;
                 }
             }
 
@@ -85,7 +85,6 @@ namespace AutoEvent.Games.Light
             {
                 player.GiveLoadout(Config.PlayerLoadout);
                 player.Position = spawnpoints.RandomItem().transform.position;
-                player.ReceiveHint("<color=green>Press <color=yellow>[Alt]</color> to push the player</color>", Config.TotalTimeInSeconds);
             }
         }
 
@@ -93,174 +92,168 @@ namespace AutoEvent.Games.Light
         {
             for (int time = 10; time > 0; time--)
             {
-                string text = Translation.LightStart.Replace("{time}", time.ToString());
+                string text = Translation.Start.Replace("{time}", time.ToString());
                 Extensions.Broadcast(text, 1);
                 yield return Timing.WaitForSeconds(1f);
             }
-
-            yield return Timing.WaitForSeconds(0f);
         }
 
         protected override void CountdownFinished()
         {
-            ActiveTime = new TimeSpan(0, 0, 5);
-            Doll.transform.rotation = Quaternion.identity;
-            ActiveTime = TimeSpan.FromSeconds(Random.Range(1.5f, 4));
-
-            GameObject.Destroy(Wall);
+            _countdown = Random.Range(1.5f, 4);
+            _doll.transform.rotation = Quaternion.identity;
+            GameObject.Destroy(_wall);
         }
 
         protected override bool IsRoundDone()
         {
-            if (ActiveTime.TotalSeconds > 0)
-            {
-                ActiveTime -= TimeSpan.FromSeconds(FrameDelayInSeconds);
-            }
-            else ActiveTime = TimeSpan.Zero;
-
-            foreach (var key in pushCooldown.Keys.ToList())
-            {
-                if (pushCooldown[key] > 0)
-                    pushCooldown[key] -= FrameDelayInSeconds;
-            }
-
-            return !(EventTime.TotalSeconds < Config.TotalTimeInSeconds && 
-                Player.GetPlayers().Count(r => r.IsAlive) > 0);
+            _countdown = _countdown > 0 ? _countdown -= FrameDelayInSeconds : 0;
+            return !(EventTime.TotalSeconds < Config.TotalTimeInSeconds && Player.GetPlayers().Count(r => r.IsAlive) > 0);
         }
+
         protected override float FrameDelayInSeconds { get; set; } = 0.1f;
-        protected Dictionary<Player, Quaternion> _playerRotation;
         protected override void ProcessFrame()
         {
-            int remainTime = Config.TotalTimeInSeconds - (int)EventTime.TotalSeconds;
-            string text = Translation.LightCycle.
+            string text = string.Empty;
+            switch (_eventState)
+            {
+                case EventState.GreenLight: UpdateGreenLightState(ref text); break;
+                case EventState.Rotate: UpdateRotateState(ref text); break;
+                case EventState.RedLight: UpdateRedLightState(ref text); break;
+                case EventState.Return: UpdateReturnState(ref text); break;
+            }
+
+            foreach (var key in PushCooldown.Keys.ToList())
+            {
+                if (PushCooldown[key] > 0)
+                    PushCooldown[key] -= FrameDelayInSeconds;
+            }
+
+            foreach(Player player in Player.GetPlayers())
+            {
+                if (Config.IsEnablePush)
+                    player.ReceiveHint(Translation.Hint, 1);
+
+                player.ClearBroadcasts();
+                player.SendBroadcast(Translation.Cycle.
                 Replace("{name}", Name).
-                Replace("{time}", remainTime.ToString());
-
-            if (EventState == State.GreenLight)
-            {
-                text = text.Replace("{state}", Translation.LightGreenLight);
-
-                if (ActiveTime.TotalSeconds <= 0)
-                {
-                    Extensions.PlayAudio("RedLight.ogg", 10, false);
-                    ActiveTime = TimeSpan.FromSeconds(Random.Range(4, 8));
-                    EventState = State.RotatingEnable;
-                }
+                Replace("{state}", text).
+                Replace("{time}", $"{Config.TotalTimeInSeconds - (int)EventTime.TotalSeconds}"), 1);
             }
-            else if (EventState == State.RotatingEnable)
+        }
+
+        protected void UpdateGreenLightState(ref string text)
+        {
+            text = Translation.GreenLight;
+
+            if (_countdown > 0)
+                return;
+
+            Extensions.PlayAudio("RedLight.ogg", 10, false);
+            _countdown = Random.Range(4, 8);
+            _eventState++;
+        }
+
+        protected void UpdateRotateState(ref string text)
+        {
+            text = Translation.RedLight;
+            Vector3 rotation = _doll.transform.rotation.eulerAngles;
+
+            if (Mathf.Abs(rotation.y - 180) > 0.01f)
             {
-                text = text.Replace("{state}", Translation.LightRedLight);
-                Vector3 rotation = Doll.transform.rotation.eulerAngles;
-
-                if (Mathf.Abs(rotation.y - 180) > 0.01f)
-                {
-                    rotation.y += 20;
-                    Doll.transform.rotation = Quaternion.Euler(rotation);
-                }
-                else
-                {
-                    _playerRotation = new Dictionary<Player, Quaternion>();
-                    Player.GetPlayers().ForEach(r => 
-                    {
-                        _playerRotation.Add(r, r.Camera.rotation);
-                    });
-
-                    EventState = State.RedLight;
-                }
+                rotation.y += 20;
+                _doll.transform.rotation = Quaternion.Euler(rotation);
             }
-            else if (EventState == State.RedLight)
+            else
             {
-                text = text.Replace("{state}", Translation.LightRedLight);
-                foreach (Player player in Player.GetPlayers())
-                {
-                    if ((int)RedLine.transform.position.z <= (int)player.Position.z)
-                        continue;
-
-                    Vector3 camera = Doll.transform.position + new Vector3(0, 10, 0);
-                    Vector3 distance = player.Position - camera;
-                    Physics.Raycast(camera, distance.normalized, out RaycastHit raycastHit, distance.magnitude);
-
-                    if (raycastHit.collider.gameObject.layer != 13)
-                        continue;
-
-                    if (!_playerRotation.ContainsKey(player))
-                        continue;
-
-                    if (player.Velocity == Vector3.zero && 
-                        Quaternion.Angle(_playerRotation[player], player.Camera.rotation) < 10)
-                        continue;
-
-                    Extensions.GrenadeSpawn(0.1f, player.Position, 0.1f);
-                    player.Kill(Translation.LightRedLose);
-                    ActiveTime += TimeSpan.FromSeconds(1f);
-                }
-
-                if (ActiveTime.TotalSeconds <= 0)
-                {
-                    Extensions.PlayAudio("GreenLight.ogg", 10, false);
-                    EventState = State.RotatingDisable;
-                    ActiveTime = TimeSpan.FromSeconds(Random.Range(1.5f, 4));
-                }
+                _playerRotation = new Dictionary<Player, Quaternion>();
+                Player.GetPlayers().ForEach(r => { _playerRotation.Add(r, r.Camera.rotation); });
+                _eventState++;
             }
-            else if (EventState == State.RotatingDisable)
+        }
+
+        protected void UpdateRedLightState(ref string text)
+        {
+            text = Translation.RedLight;
+
+            foreach (Player player in Player.GetPlayers())
             {
-                text = text.Replace("{state}", Translation.LightGreenLight);
-                Vector3 rotation = Doll.transform.rotation.eulerAngles;
+                if ((int)_redLine.transform.position.z <= (int)player.Position.z)
+                    continue;
 
-                if (Mathf.Abs(rotation.y - 0) > 0.01f)
-                {
-                    rotation.y -= 20;
-                    Doll.transform.rotation = Quaternion.Euler(rotation);
-                }
-                else
-                {
-                    _playerRotation.Clear();
-                    EventState = State.GreenLight;
-                }
+                Vector3 camera = _doll.transform.position + new Vector3(0, 10, 0);
+                Vector3 distance = player.Position - camera;
+                Physics.Raycast(camera, distance.normalized, out RaycastHit raycastHit, distance.magnitude);
+
+                if (raycastHit.collider.gameObject.layer != 13)
+                    continue;
+
+                if (!_playerRotation.ContainsKey(player))
+                    continue;
+
+                if (player.Velocity == Vector3.zero &&
+                    Quaternion.Angle(_playerRotation[player], player.Camera.rotation) < 10)
+                    continue;
+
+                Extensions.GrenadeSpawn(0.1f, player.Position, 0.1f);
+                player.Kill(Translation.RedLose);
+                _countdown++;
             }
-            
-            Extensions.Broadcast(text, 1);
+
+            if (_countdown > 0)
+                return;
+
+            Extensions.PlayAudio("GreenLight.ogg", 10, false);
+            _countdown = Random.Range(1.5f, 4f);
+            _eventState++;
+        }
+
+        protected void UpdateReturnState(ref string text)
+        {
+            text = Translation.GreenLight;
+            Vector3 rotation = _doll.transform.rotation.eulerAngles;
+
+            if (Mathf.Abs(rotation.y - 0) > 0.01f)
+            {
+                rotation.y -= 20;
+                _doll.transform.rotation = Quaternion.Euler(rotation);
+            }
+            else
+            {
+                _playerRotation.Clear();
+                _eventState = 0;
+            }
         }
 
         protected override void OnFinished()
         {
             foreach (Player player in Player.GetPlayers())
             {
-                if ((int)RedLine.transform.position.z > (int)player.Position.z)
+                if ((int)_redLine.transform.position.z > (int)player.Position.z)
                 {
                     Extensions.GrenadeSpawn(0.1f, player.Position, 0.1f);
-                    player.Kill(Translation.LightNoTime);
+                    player.Kill(Translation.NoTime);
                 }
             }
+
+            string text = string.Empty;
             int count = Player.GetPlayers().Count(r => r.IsAlive);
+
             if (count > 1)
             {
-                string text = Translation.LightMoreWin.
-                    Replace("{name}", Name).
-                    Replace("{count}", count.ToString());
-                Extensions.Broadcast(text, 10);
+                text = Translation.MoreWin.Replace("{name}", Name).Replace("{count}", count.ToString());
             }
             else if (count == 1)
             {
                 Player winner = Player.GetPlayers().Where(r => r.IsAlive).FirstOrDefault();
-                string text = Translation.LightPlayerWin.
-                    Replace("{name}", Name).
-                    Replace("{winner}", winner.Nickname);
-                Extensions.Broadcast(text, 10);
+                text = Translation.PlayerWin.Replace("{name}", Name).Replace("{winner}", winner.Nickname);
             }
             else
             {
-                string text = Translation.LightAllDied.
-                    Replace("{name}", Name);
-                Extensions.Broadcast(text, 10);
+                text = Translation.AllDied.Replace("{name}", Name);
             }
+
+            Extensions.Broadcast(text, 10);
         }
-    }
-    public enum State
-    {
-        GreenLight,
-        RotatingEnable,
-        RedLight,
-        RotatingDisable
     }
 }

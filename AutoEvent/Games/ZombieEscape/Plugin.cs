@@ -7,7 +7,6 @@ using PluginAPI.Events;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using AutoEvent.Games.Infection;
 using AutoEvent.Interfaces;
 using UnityEngine;
 using Event = AutoEvent.Interfaces.Event;
@@ -17,20 +16,28 @@ namespace AutoEvent.Games.ZombieEscape
     public class Plugin : Event, IEventSound, IEventMap, IInternalEvent
     {
         // todo - add a one way platform or way to fight back as mtf at end, once you are at the actual helicopter.
-        public override string Name { get; set; } = AutoEvent.Singleton.Translation.ZombieEscapeTranslate.ZombieEscapeName;
-        public override string Description { get; set; } = AutoEvent.Singleton.Translation.ZombieEscapeTranslate.ZombieEscapeDescription;
+        public override string Name { get; set; } = "Zombie Escape";
+        public override string Description { get; set; } = "Óou need to run away from zombies and escape by helicopter";
         public override string Author { get; set; } = "KoT0XleB";
-        public override string CommandName { get; set; } = AutoEvent.Singleton.Translation.ZombieEscapeTranslate.ZombieEscapeCommandName;
+        public override string CommandName { get; set; } = "zombie3";
         public override Version Version { get; set; } = new Version(1, 0, 0);
         [EventConfig]
-        public ZombieEscapeConfig Config { get; set; }
+        public Config Config { get; set; }
+        [EventTranslation]
+        public Translation Translation { get; set; }
         public MapInfo MapInfo { get; set; } = new MapInfo()
-            { MapName = "zm_osprey", Position = new Vector3(-15f, 1020f, -80f), MapRotation = Quaternion.identity };
+        { 
+            MapName = "zm_osprey", 
+            Position = new Vector3(-15f, 1020f, -80f)
+        };
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
-            { SoundName = "Survival.ogg", Volume = 10, Loop = false };
+        { 
+            SoundName = "Survival.ogg", 
+            Volume = 10,
+            Loop = false 
+        };
         protected override float PostRoundDelay { get; set; } = 10f;
-        private EventHandler EventHandler { get; set; }
-        private ZombieEscapeTranslate Translation { get; set; } = AutoEvent.Singleton.Translation.ZombieEscapeTranslate;
+        private EventHandler _eventHandler { get; set; }
         private SchematicObject _boat;
         private SchematicObject _heli;
         private GameObject _button;
@@ -42,33 +49,32 @@ namespace AutoEvent.Games.ZombieEscape
         protected override void RegisterEvents()
         {
 
-            EventHandler = new EventHandler(this);
-            EventManager.RegisterEvents(EventHandler);
-            Servers.TeamRespawn += EventHandler.OnTeamRespawn;
-            Servers.SpawnRagdoll += EventHandler.OnSpawnRagdoll;
-            Servers.PlaceBullet += EventHandler.OnPlaceBullet;
-            Servers.PlaceBlood += EventHandler.OnPlaceBlood;
-            Players.DropItem += EventHandler.OnDropItem;
-            Players.DropAmmo += EventHandler.OnDropAmmo;
-            Players.PlayerDamage += EventHandler.OnPlayerDamage;
+            _eventHandler = new EventHandler(this);
+            EventManager.RegisterEvents(_eventHandler);
+            Servers.TeamRespawn += _eventHandler.OnTeamRespawn;
+            Servers.SpawnRagdoll += _eventHandler.OnSpawnRagdoll;
+            Servers.PlaceBullet += _eventHandler.OnPlaceBullet;
+            Servers.PlaceBlood += _eventHandler.OnPlaceBlood;
+            Players.DropItem += _eventHandler.OnDropItem;
+            Players.DropAmmo += _eventHandler.OnDropAmmo;
+            Players.PlayerDamage += _eventHandler.OnPlayerDamage;
         }
 
         protected override void UnregisterEvents()
         {
-            if (EventHandler is null)
+            if (_eventHandler is null)
             {
                 DebugLogger.LogDebug("Handler is null");
             }
-            EventManager.UnregisterEvents(EventHandler);
-            Servers.TeamRespawn -= EventHandler.OnTeamRespawn;
-            Servers.SpawnRagdoll -= EventHandler.OnSpawnRagdoll;
-            Servers.PlaceBullet -= EventHandler.OnPlaceBullet;
-            Servers.PlaceBlood -= EventHandler.OnPlaceBlood;
-            Players.DropItem -= EventHandler.OnDropItem;
-            Players.DropAmmo -= EventHandler.OnDropAmmo;
-            Players.PlayerDamage -= EventHandler.OnPlayerDamage;
-
-            EventHandler = null;
+            EventManager.UnregisterEvents(_eventHandler);
+            Servers.TeamRespawn -= _eventHandler.OnTeamRespawn;
+            Servers.SpawnRagdoll -= _eventHandler.OnSpawnRagdoll;
+            Servers.PlaceBullet -= _eventHandler.OnPlaceBullet;
+            Servers.PlaceBlood -= _eventHandler.OnPlaceBlood;
+            Players.DropItem -= _eventHandler.OnDropItem;
+            Players.DropAmmo -= _eventHandler.OnDropAmmo;
+            Players.PlayerDamage -= _eventHandler.OnPlayerDamage;
+            _eventHandler = null;
         }
         /*public Plugin(SchematicObject boat)
         {
@@ -93,7 +99,7 @@ namespace AutoEvent.Games.ZombieEscape
             for (float _time = 20; _time > 0; _time--)
             {
                 Extensions.Broadcast(
-                    Translation.ZombieEscapeBeforeStart.Replace("{name}", Name).Replace("{time}", $"{_time}"), 1);
+                    Translation.Start.Replace("{name}", Name).Replace("{time}", $"{_time}"), 1);
                 yield return Timing.WaitForSeconds(1f);
             }
         }
@@ -171,7 +177,7 @@ namespace AutoEvent.Games.ZombieEscape
                     _heli = Extensions.LoadMap("Helicopter_Zombie", MapInfo.Map.Position, Quaternion.identity, Vector3.one, false);
                 }
 
-                string text = Translation.ZombieEscapeHelicopter.Replace("{name}", Name)
+                string text = Translation.Helicopter.Replace("{name}", Name)
                     .Replace("{count}", $"{Player.GetPlayers().Count(r => r.IsHuman)}");
                 player.ClearBroadcasts();
                 player.SendBroadcast(text, 1);
@@ -199,19 +205,19 @@ namespace AutoEvent.Games.ZombieEscape
                 {
                     if (Vector3.Distance(player.Position, _finishPosition) > 5)
                     {
-                        player.Damage(15000f, Translation.ZombieEscapeDied);
+                        player.Damage(15000f, Translation.Died);
                     }
                 }
             }
 
             if (Player.GetPlayers().Count(r => r.IsHuman) == 0)
             {
-                Extensions.Broadcast(Translation.ZombieEscapeZombieWin, 10);
+                Extensions.Broadcast(Translation.ZombieWin, 10);
                 Extensions.PlayAudio("ZombieWin.ogg", 7, false);
             }
             else
             {
-                Extensions.Broadcast(Translation.ZombieEscapeHumanWin, 10);
+                Extensions.Broadcast(Translation.HumanWin, 10);
                 Extensions.PlayAudio("HumanWin.ogg", 7, false);
             }
         }
@@ -223,6 +229,5 @@ namespace AutoEvent.Games.ZombieEscape
             if (_heli != null)
                 Extensions.UnLoadMap(_heli); 
         }
-
     }
 }

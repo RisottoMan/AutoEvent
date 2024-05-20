@@ -1,0 +1,21 @@
+name: 'Tag'
+description: 'We need to catch up with all the players on the map.'
+command_name: 'tag'
+broadcast: |-
+  RUN
+  Taggers are being selected. Hide now!
+  Time remaining: {time}
+cycle: |-
+  Tag another player
+  <color=yellow><b><i>{time}</i></b> seconds left</color>
+hurt: 'You didn''t have time to tag someone else.'
+one_player: |-
+  The player won {winner}
+  <color=yellow>Event time <color=red>{time}</color></color>
+all_die: |-
+  No one survived.
+  End of the game
+  <color=yellow>Event time <color=red>{time}</color></color>
+# DO NOT CHANGE THIS. IT WILL BREAK THINGS. AutoEvent will automatically manage these settings.
+version: '1.0.2'
+language: 'EN'

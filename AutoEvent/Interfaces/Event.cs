@@ -1,5 +1,4 @@
 ﻿using AutoEvent.API.Attributes;
-using PluginAPI.Core;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -7,13 +6,10 @@ using System.Linq;
 using System.Reflection;
 using AutoEvent.API.Enums;
 using AutoEvent.API;
-using AutoEvent.Configs;
-using HarmonyLib;
 using MEC;
-using UnityEngine;
-using YamlDotNet.Core;
+using AutoEvent.API.Season;
+using AutoEvent.API.Season.Enum;
 using Version = System.Version;
-using System.Xml.Linq;
 
 namespace AutoEvent.Interfaces
 {
@@ -50,12 +46,19 @@ namespace AutoEvent.Interfaces
 
                     if (!ev.AutoLoad)
                         continue;
+
+                    if (ev is IHidden)
+                    {
+                        DebugLogger.LogDebug($"Skip registration \"{ev.Name}\" mini-game. The game is hidden", LogLevel.Debug);
+                        continue;
+                    }
+
                     ev.Id = Events.Count;
                     try
                     {
                         ev.VerifyEventInfo();
                         ev.LoadConfigs();
-                        //ev.LoadTranslation();
+                        ev.LoadTranslation();
                         ev.InstantiateEvent();
                     }
                     catch (Exception e)
@@ -69,7 +72,7 @@ namespace AutoEvent.Interfaces
                         confs += $"{conf.PresetName}, ";
                     }
                     Events.Add(ev);
-                    DebugLogger.LogDebug($"[EventLoader] {ev.Name} has been registered. Presets: {(confs + ",").Replace(", ,", "")}", LogLevel.Info, true);
+                    DebugLogger.LogDebug($"[EventLoader] {ev.Name} has been registered. Presets: {(confs + ",").Replace(", ,", "")}", LogLevel.Info); // , true);
                 }
                 catch (MissingMethodException) { }
                 catch (Exception ex)
@@ -138,6 +141,9 @@ namespace AutoEvent.Interfaces
         /// </summary> 
         public abstract string CommandName { get; set; }
 
+        /// <summary>
+        /// A version of the mini-game.
+        /// </summary>
         public abstract Version Version { get; set; }
     #endregion
     #region Event Settings // Settings that event authors can define to modify the abstracted implementations
@@ -295,6 +301,23 @@ namespace AutoEvent.Interfaces
         return eventConfigs;
     }
     
+    public List<EventTranslation> GetCurrentTranslationsValues()
+    {
+        List<EventTranslation> eventConfigs = new List<EventTranslation>();
+        foreach (PropertyInfo propertyInfo in this.GetType().GetProperties())
+        {
+            var attr = propertyInfo.GetCustomAttribute<EventTranslationAttribute>();
+            if (attr is null)
+                continue;
+            object value = propertyInfo.GetValue(this);
+            if(value is not EventTranslation conf)
+                continue;
+            eventConfigs.Add(conf);
+        }
+
+        return eventConfigs;
+    }
+
     /// <summary>
     /// Used to start the event safely.
     /// </summary>
@@ -396,7 +419,7 @@ namespace AutoEvent.Interfaces
         public List<EventConfig> ConfigPresets { get; set; } = new List<EventConfig>();
 
         private List<Type> _confTypes { get; set; } = new List<Type>();
-    
+
         /// <summary>
         /// Ensures that information such as the command name is valid.
         /// </summary>
@@ -466,7 +489,7 @@ namespace AutoEvent.Interfaces
                 {
                     continue;
                 }
-            
+
                 DebugLogger.LogDebug($"Config \"{property.Name}\" found for {Name}", LogLevel.Debug);
 
                 object config = conf.Load(path, property.Name, property.PropertyType, this.Version);
@@ -500,34 +523,50 @@ namespace AutoEvent.Interfaces
         /// <param name="conf"></param>
         private void _setRandomMap(EventConfig conf)
         {
-            if (this is IEventMap map && conf.AvailableMaps is not null && conf.AvailableMaps.Count > 0)
+            if (conf.AvailableMaps is null || conf.AvailableMaps.Count == 0)
+                return;
+
+            // We get the current style and check the maps by their style
+            SeasonStyle _curSeason = SeasonMethod.GetSeasonStyle();
+
+            List<MapChance> maps = new();
+            foreach (var map in conf.AvailableMaps)
             {
-                bool spawnAutomatically = map.MapInfo.SpawnAutomatically;
-                if (conf.AvailableMaps.Count == 1)
+                if (map.SeasonFlag is SeasonFlag.None || map.SeasonFlag == _curSeason.SeasonFlag)
                 {
-                    map.MapInfo = conf.AvailableMaps[0].Map;
-                    map.MapInfo.SpawnAutomatically = spawnAutomatically;
+                    maps.Add(map);
+                }
+            }
+
+            if (this is IEventMap eventMap)
+            {
+                bool spawnAutomatically = eventMap.MapInfo.SpawnAutomatically;
+                if (maps.Count == 1)
+                {
+                    eventMap.MapInfo = maps[0].Map;
+                    eventMap.MapInfo.SpawnAutomatically = spawnAutomatically;
                     goto Message;
                 }
 
-                foreach (var mapItem in conf.AvailableMaps.Where(x => x.Chance <= 0))
+                foreach (var mapItem in maps.Where(x => x.Chance <= 0))
                     mapItem.Chance = 1;
             
-                float totalChance = conf.AvailableMaps.Sum(x => x.Chance);
+                float totalChance = maps.Sum(x => x.Chance);
             
-                for (int i = 0; i < conf.AvailableMaps.Count - 1; i++)
+                for (int i = 0; i < maps.Count - 1; i++)
                 {
-                    if (UnityEngine.Random.Range(0, totalChance) <= conf.AvailableMaps[i].Chance)
+                    if (UnityEngine.Random.Range(0, totalChance) <= maps[i].Chance)
                     {
-                        map.MapInfo = conf.AvailableMaps[i].Map;
-                        map.MapInfo.SpawnAutomatically = spawnAutomatically;
+                        eventMap.MapInfo = maps[i].Map;
+                        eventMap.MapInfo.SpawnAutomatically = spawnAutomatically;
                         goto Message;
                     }
                 }
-                map.MapInfo = conf.AvailableMaps[conf.AvailableMaps.Count - 1].Map;
-                map.MapInfo.SpawnAutomatically = spawnAutomatically;
+                eventMap.MapInfo = maps[maps.Count - 1].Map;
+                eventMap.MapInfo.SpawnAutomatically = spawnAutomatically;
+
                 Message:
-                DebugLogger.LogDebug($"[{this.Name}] Map {map.MapInfo.MapName} selected.", LogLevel.Debug);
+                DebugLogger.LogDebug($"[{this.Name}] Map {eventMap.MapInfo.MapName} selected.", LogLevel.Debug);
             }
         
         }
@@ -648,6 +687,13 @@ namespace AutoEvent.Interfaces
                     DebugLogger.LogDebug($"(Event {this.Name}) Translation: {property.Name}.", LogLevel.Debug);
                     continue;
                 }
+
+                property.SetValue(this, evTranslation);
+
+                // Replace all the main strings of the mini-game.
+                this.Name = evTranslation.Name;
+                this.Description = evTranslation.Description;
+                this.CommandName = evTranslation.CommandName;
             }
         }
 
@@ -892,6 +938,7 @@ namespace AutoEvent.Interfaces
             try
             {
                 EventConfig conf = this.GetCurrentConfigsValues().FirstOrDefault();
+                EventTranslation trans = this.GetCurrentTranslationsValues().FirstOrDefault();
                 if (conf is not null)
                 {
                     this._setRandomMap(conf); 

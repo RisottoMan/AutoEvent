@@ -14,8 +14,8 @@ using System.Collections.Generic;
 using System.Linq;
 using AutoEvent.API;
 using CustomPlayerEffects;
-using InventoryMenu.API;
-using InventoryMenu.API.EventArgs;
+//using InventoryMenu.API;
+//using InventoryMenu.API.EventArgs;
 using InventorySystem.Items;
 using MEC;
 
@@ -28,6 +28,7 @@ public class Loadouts
     {
         _plugin = plugin;
     }
+    /*
     internal void HuntersSelectLoadout(MenuItemClickedArgs ev)
     {
         GhostBusterClassType type = ev.MenuItemClicked.Item switch
@@ -121,4 +122,5 @@ public class Loadouts
         ev.Items = new Dictionary<ushort, ItemBase>() { { item.Key, item.Value } };
         
     }
+    */
 }

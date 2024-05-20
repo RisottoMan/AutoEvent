@@ -1,0 +1,16 @@
+name: 'Зомби Выживание'
+description: 'Выживание в окружении зомби'
+command_name: 'zombie2'
+survival_before_infection: |-
+  <b>{name}</b>
+  <color=yellow>Осталось</color> {time} <color=yellow>секунд до заражения</color>
+survival_after_infection: |-
+  <b>{name}</b>
+  <color=#14AAF5>Выживших:</color> {humanCount}
+  <color=#299438>До конца:</color> {time}
+survival_zombie_win: '<color=red>Зомби заразили всех людей!</color>'
+survival_human_win: '<color=#14AAF5>Люди устранили угрозу и остановили инфекцию</color>'
+survival_human_win_time: '<color=yellow>Люди выжили, но не остановили инфекцию</color>'
+# DO NOT CHANGE THIS. IT WILL BREAK THINGS. AutoEvent will automatically manage these settings.
+version: '1.0.0'
+language: 'RU'

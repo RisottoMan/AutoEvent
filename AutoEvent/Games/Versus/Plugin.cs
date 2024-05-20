@@ -8,94 +8,105 @@ using UnityEngine;
 using PluginAPI.Core;
 using PluginAPI.Events;
 using AutoEvent.Events.Handlers;
-using AutoEvent.Games.Infection;
 using AutoEvent.Interfaces;
 using Event = AutoEvent.Interfaces.Event;
+using System.Text;
 
 namespace AutoEvent.Games.Versus
 {
     public class Plugin : Event, IEventSound, IEventMap, IInternalEvent
     {
-        public override string Name { get; set; } = AutoEvent.Singleton.Translation.VersusTranslate.VersusName;
-        public override string Description { get; set; } = AutoEvent.Singleton.Translation.VersusTranslate.VersusDescription;
+        public override string Name { get; set; } = "Cock Fights";
+        public override string Description { get; set; } = "Duel of players on the 35hp map from cs 1.6";
         public override string Author { get; set; } = "KoT0XleB";
-        public override string CommandName { get; set; } = AutoEvent.Singleton.Translation.VersusTranslate.VersusCommandName;
-        public override Version Version { get; set; } = new Version(1, 0, 1);
+        public override string CommandName { get; set; } = "versus";
+        public override Version Version { get; set; } = new Version(1, 0, 2);
         [EventConfig]
-        public VersusConfig Config { get; set; }
+        public Config Config { get; set; }
+        [EventTranslation]
+        public Translation Translation { get; set; }
         public MapInfo MapInfo { get; set; } = new MapInfo()
         { 
-            MapName = "35Hp", 
-            Position = new Vector3(6f, 1015f, -5f),
-            IsStatic = true
+            MapName = "35Hp",
+            Position = new Vector3(0, 30, 30)
         };
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
-            { SoundName = "Knife.ogg", Volume = 10, Loop = true };
+        { 
+            SoundName = "Knife.ogg",
+            Volume = 10
+        };
         protected override FriendlyFireSettings ForceEnableFriendlyFire { get; set; } = FriendlyFireSettings.Disable;
-        private EventHandler EventHandler { get; set; }
-        private VersusTranslate Translation { get; set; } = AutoEvent.Singleton.Translation.VersusTranslate;
-        public Player Scientist { get; set; }
-        public Player ClassD { get; set; }
+        internal Player Scientist;
+        internal Player ClassD;
+        private EventHandler _eventHandler;
         private List<GameObject> _triggers;
         private List<GameObject> _teleports;
         private TimeSpan _countdown;
-
-        public override void InstantiateEvent()
-        {
-            if(Config.Team1Loadouts.Any(loadout => loadout.Roles.Any(role => Config.Team2Loadouts.Any(loadout2 => loadout2.Roles.Any(role2 => role.Key == role2.Key)))))
-            {
-                DebugLogger.LogDebug($"{Name} has two enemy team roles that are the same role. This will break the event if it is run. To prevent this, default configs will be used for loadouts.");
-                var newConf = new VersusConfig();
-                Config.Team1Loadouts = newConf.Team1Loadouts;
-                Config.Team2Loadouts = newConf.Team2Loadouts;
-            }
-        }
+        private EventState _eventState;
 
         protected override void RegisterEvents()
         {
-
-            EventHandler = new EventHandler(this);
-            EventManager.RegisterEvents(EventHandler);
-            Servers.TeamRespawn += EventHandler.OnTeamRespawn;
-            Servers.SpawnRagdoll += EventHandler.OnSpawnRagdoll;
-            Servers.PlaceBullet += EventHandler.OnPlaceBullet;
-            Servers.PlaceBlood += EventHandler.OnPlaceBlood;
-            Players.DropItem += EventHandler.OnDropItem;
-            Players.DropAmmo += EventHandler.OnDropAmmo;
-            Players.ChargingJailbird += EventHandler.OnJailbirdCharge;
+            _eventHandler = new EventHandler(this);
+            EventManager.RegisterEvents(_eventHandler);
+            Servers.TeamRespawn += _eventHandler.OnTeamRespawn;
+            Servers.SpawnRagdoll += _eventHandler.OnSpawnRagdoll;
+            Servers.PlaceBullet += _eventHandler.OnPlaceBullet;
+            Servers.PlaceBlood += _eventHandler.OnPlaceBlood;
+            Players.DropItem += _eventHandler.OnDropItem;
+            Players.DropAmmo += _eventHandler.OnDropAmmo;
+            Players.ChargingJailbird += _eventHandler.OnJailbirdCharge;
         }
 
         protected override void UnregisterEvents()
         {
-            EventManager.UnregisterEvents(EventHandler);
-            Servers.TeamRespawn -= EventHandler.OnTeamRespawn;
-            Servers.SpawnRagdoll -= EventHandler.OnSpawnRagdoll;
-            Servers.PlaceBullet -= EventHandler.OnPlaceBullet;
-            Servers.PlaceBlood -= EventHandler.OnPlaceBlood;
-            Players.DropItem -= EventHandler.OnDropItem;
-            Players.DropAmmo -= EventHandler.OnDropAmmo;
-            Players.ChargingJailbird -= EventHandler.OnJailbirdCharge;
-
-            EventHandler = null;
+            EventManager.UnregisterEvents(_eventHandler);
+            Servers.TeamRespawn -= _eventHandler.OnTeamRespawn;
+            Servers.SpawnRagdoll -= _eventHandler.OnSpawnRagdoll;
+            Servers.PlaceBullet -= _eventHandler.OnPlaceBullet;
+            Servers.PlaceBlood -= _eventHandler.OnPlaceBlood;
+            Players.DropItem -= _eventHandler.OnDropItem;
+            Players.DropAmmo -= _eventHandler.OnDropAmmo;
+            Players.ChargingJailbird -= _eventHandler.OnJailbirdCharge;
+            _eventHandler = null;
         }
 
         protected override void OnStart()
         {
             Scientist = null;
             ClassD = null;
-            
+            _eventState = 0;
+            _triggers = new();
+            _teleports = new();
+            _countdown = new TimeSpan(0, 0, Config.AutoSelectDelayInSeconds);
+
+            if (Config.Team1Loadouts == Config.Team2Loadouts)
+            {
+                DebugLogger.LogDebug("Warning: Teams should not have the same roles.", LogLevel.Warn, true);
+            }
+
+            List<GameObject> spawnpoints = new();
+            foreach (GameObject block in MapInfo.Map.AttachedBlocks)
+            {
+                switch (block.name)
+                {
+                    case "Trigger": _triggers.Add(block); break;
+                    case "Teleport": _teleports.Add(block); break;
+                    case "Spawnpoint": spawnpoints.Add(block); break;
+                }
+            }
+
             var count = 0;
             foreach (Player player in Player.GetPlayers())
             {
                 if (count % 2 == 0)     
                 {              
                     player.GiveLoadout(Config.Team1Loadouts);
-                    player.Position = RandomClass.GetSpawnPosition(MapInfo.Map, true);
+                    player.Position = spawnpoints.ElementAt(0).transform.position;
                 }
                 else
                 {
                     player.GiveLoadout(Config.Team2Loadouts);
-                    player.Position = RandomClass.GetSpawnPosition(MapInfo.Map, false);
+                    player.Position = spawnpoints.ElementAt(1).transform.position;
                 }
                 count++;
 
@@ -113,102 +124,136 @@ namespace AutoEvent.Games.Versus
             }
         }
 
-        protected override void CountdownFinished()
-        {
-            _triggers = MapInfo.Map.AttachedBlocks.Where(x => x.name == "Trigger").ToList();
-            _teleports = MapInfo.Map.AttachedBlocks.Where(x => x.name == "Teleport").ToList();
-            _countdown = new TimeSpan(0, 0, Config.AutoSelectDelayInSeconds);
-        }
-
         protected override bool IsRoundDone()
         {
-            // At least 1 player on scientists &&
-            // At least 1 player on dbois
+            _countdown = _countdown.TotalSeconds > 0 ? _countdown.Subtract(new TimeSpan(0, 0, 1)) : TimeSpan.Zero;
+            // At least 1 player on scientists && At least 1 player on dbois
             return !(Player.GetPlayers().Any(ply => Config.Team1Loadouts.Any(loadout => loadout.Roles.Any(role => ply.Role == role.Key))) &&
                      Player.GetPlayers().Any(ply => Config.Team2Loadouts.Any(loadout => loadout.Roles.Any(role => ply.Role == role.Key))));
         }
 
         protected override void ProcessFrame()
         {
-            foreach (Player player in Player.GetPlayers())
+            switch (_eventState)
             {
-                if (Scientist == null)
-                {
-                    if (Config.Team1Loadouts.Any(x => x.Roles.Any(y => y.Key == player.Role)) &&
-                        (Vector3.Distance(player.Position, _triggers.ElementAt(0).transform.position) <= 1f ||
-                         (Config.AutoSelectDelayInSeconds != -1 && _countdown.TotalSeconds == 0)))
-                    {
-                        Scientist = player;                    if (Config.HalloweenMelee)
-                {
-                    player.EffectsManager.EnableEffect<MarshmallowEffect>();
-                };
-Scientist.Position = _teleports.ElementAt(0).transform.position;
-                        if (ClassD != null)
-                            ClassD.Heal(100);
-
-                        _countdown = new TimeSpan(0, 0,  Config.AutoSelectDelayInSeconds);
-                    }
-                }
-
-                if (ClassD == null)
-                {
-                    if (Config.Team2Loadouts.Any(x => x.Roles.Any(y => y.Key == player.Role)) &&
-                        (Vector3.Distance(player.Position, _triggers.ElementAt(1).transform.position) <= 1f ||
-                         (Config.AutoSelectDelayInSeconds != -1 && _countdown.TotalSeconds == 0)))
-                    {
-                        ClassD = player;
-if (Config.HalloweenMelee)
-                {
-                    player.EffectsManager.EnableEffect<MarshmallowEffect>();
-                };
-                        ClassD.Position = _teleports.ElementAt(1).transform.position;
-                        if (Scientist != null)
-                            Scientist.Heal(100);
-
-                        _countdown = new TimeSpan(0, 0, Config.AutoSelectDelayInSeconds);
-                    }
-                }
+                case EventState.Waiting: UpdateWaitingState(); break;
+                case EventState.ChooseScientist: Scientist = UpdateChoosePlayerState(true); break;
+                case EventState.ChooseClassD: ClassD = UpdateChoosePlayerState(false); break;
+                case EventState.Playing: UpdatePlayingState(); break;
             }
 
-            if (ClassD == null && Scientist == null)
+            string text = string.Empty;
+            if (ClassD is null && Scientist is null)
             {
-                Extensions.Broadcast(
-                    Translation.VersusPlayersNull.Replace("{name}", Name)
-                        .Replace("{remain}", $"{_countdown.TotalSeconds}"), 1);
+                text = Translation.PlayersNull;
             }
-            else if (ClassD == null)
+            else if (ClassD is null)
             {
-                Extensions.Broadcast(
-                    Translation.VersusClassDNull.Replace("{name}", Name).Replace("{scientist}", Scientist.Nickname)
-                        .Replace("{remain}", $"{_countdown.TotalSeconds}"), 1);
+                text = Translation.ClassDNull.Replace("{scientist}", Scientist.Nickname);
             }
-            else if (Scientist == null)
+            else if (Scientist is null)
             {
-                Extensions.Broadcast(
-                    Translation.VersusScientistNull.Replace("{name}", Name).Replace("{classd}", ClassD.Nickname)
-                        .Replace("{remain}", $"{_countdown.TotalSeconds}"), 1);
+                text = Translation.ScientistNull.Replace("{classd}", ClassD.Nickname);
             }
             else
             {
-                Extensions.Broadcast(
-                    Translation.VersusPlayersDuel.Replace("{name}", Name).Replace("{scientist}", Scientist.Nickname)
-                        .Replace("{classd}", ClassD.Nickname), 1);
+                text = Translation.PlayersDuel.Replace("{scientist}", Scientist.Nickname).
+                    Replace("{classd}", ClassD.Nickname);
             }
 
-            _countdown = _countdown.TotalSeconds > 0 ? _countdown.Subtract(new TimeSpan(0, 0, 1)) : TimeSpan.Zero;
+            Extensions.Broadcast(text.Replace("{name}", Name).Replace("{remain}", $"{_countdown.TotalSeconds}"), 1);
+        }
+
+        /// <summary>
+        /// Updating variables before starting the game
+        /// </summary>
+        protected void UpdateWaitingState()
+        {
+            _countdown = new TimeSpan(0, 0, Config.AutoSelectDelayInSeconds);
+
+            if (Scientist is null)
+            {
+                if (ClassD is not null)
+                    ClassD.Heal(100);
+
+                _eventState = EventState.ChooseScientist;
+                return;
+            }
+
+            if (ClassD is null)
+            {
+                if (Scientist is not null)
+                    Scientist.Heal(100);
+
+                _eventState = EventState.ChooseClassD;
+                return;
+            }
+
+            _eventState = EventState.Playing;
+        }
+
+        /// <summary>
+        /// Choosing a new player
+        /// </summary>
+        protected Player UpdateChoosePlayerState(bool isScientist)
+        {
+            ushort value = 0;
+            RoleTypeId role = RoleTypeId.Scientist;
+            Player chosenPlayer;
+
+            if (isScientist is not true)
+            {
+                value = 1;
+                role = RoleTypeId.ClassD;
+            }
+
+            foreach (Player player in Player.GetPlayers())
+            {
+                if (player.Role != role)
+                    continue;
+
+                if (Vector3.Distance(player.Position, _triggers.ElementAt(value).transform.position) <= 1f)
+                {
+                    chosenPlayer = player;
+                    goto End;
+                }
+            }
+
+            if (_countdown.TotalSeconds > 0)
+                return null;
+
+            chosenPlayer = Player.GetPlayers().Where(r => r.Role == role).ToList().RandomItem();
+            goto End;
+
+        End:
+            chosenPlayer.Position = _teleports.ElementAt(value).transform.position;
+            _eventState = EventState.Waiting;
+            return chosenPlayer;
+        }
+
+        /// <summary>
+        /// Game in process
+        /// </summary>
+        protected void UpdatePlayingState()
+        {
+            if (ClassD is null || Scientist is null)
+                _eventState = 0;
         }
 
         protected override void OnFinished()
         {
+            string text = string.Empty;
+
             if (Player.GetPlayers().Count(r => r.Role == RoleTypeId.Scientist) == 0)
             {
-                Extensions.Broadcast(Translation.VersusClassDWin.Replace("{name}", Name), 10);
+                text = Translation.ClassDWin.Replace("{name}", Name);
             }
             else if (Player.GetPlayers().Count(r => r.Role == RoleTypeId.ClassD) == 0)
             {
-                Extensions.Broadcast(Translation.VersusScientistWin.Replace("{name}", Name), 10);
+                text = Translation.ScientistWin.Replace("{name}", Name);
             }
+
+            Extensions.Broadcast(text, 10);
         }
-        
     }
 }

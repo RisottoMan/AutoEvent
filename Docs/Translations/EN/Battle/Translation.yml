@@ -1,0 +1,16 @@
+name: 'Battle'
+description: 'MTF fight against CI in an arena!'
+command_name: 'battle'
+time_left: '<size=100><color=red>Battle Starting in {time} </color></size>'
+ci_win: |-
+  <color=#299438>Winner: Chaos Insurgency </color>
+  <color=red>Duration: {time} </color>
+mtf_win: |-
+  <color=#14AAF5>Winner: Foundation forces</color>
+  <color=red>Duration: {time} </color>
+counter: |-
+  <color=#14AAF5> MTF: {FoundationForces} </color> vs <color=#299438> CI: {ChaosForces} </color> 
+   Elapsed time: {time}
+# DO NOT CHANGE THIS. IT WILL BREAK THINGS. AutoEvent will automatically manage these settings.
+version: '1.0.0'
+language: 'EN'

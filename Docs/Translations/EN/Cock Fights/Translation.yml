@@ -1,0 +1,27 @@
+name: 'Cock Fights'
+description: 'Duel of players on the 35hp map from cs 1.6'
+command_name: 'versus'
+players_null: |-
+  <color=#D71868><b><i>{name}</i></b></color>
+  Go inside the arena to fight each other!
+  <color=red>{remain}</color> seconds left
+class_d_null: |-
+  <color=#D71868><b><i>{name}</i></b></color>
+  The player left alive <color=yellow>{scientist}</color>
+  Go inside in <color=orange>{remain}</color> seconds
+scientist_null: |-
+  <color=#D71868><b><i>{name}</i></b></color>
+  The player left alive <color=orange>{classd}</color>
+  Go inside in <color=yellow>{remain}</color> seconds
+players_duel: |-
+  <color=#D71868><b><i>{name}</i></b></color>
+  <color=yellow><color=yellow>{scientist}</color> <color=red>VS</color> <color=orange>{classd}</color></color>
+class_d_win: |-
+  <color=#D71868><b><i>{name}</i></b></color>
+  <color=yellow>WINNERS: <color=red>CLASS D</color></color>
+scientist_win: |-
+  <color=#D71868><b><i>{name}</i></b></color>
+  <color=yellow>WINNERS: <color=red>SCIENTISTS</color></color>
+# DO NOT CHANGE THIS. IT WILL BREAK THINGS. AutoEvent will automatically manage these settings.
+version: '1.0.2'
+language: 'EN'

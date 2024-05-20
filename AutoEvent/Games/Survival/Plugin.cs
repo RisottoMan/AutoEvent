@@ -1,7 +1,5 @@
-﻿using CustomPlayerEffects;
-using MER.Lite.Objects;
+﻿using MER.Lite.Objects;
 using MEC;
-using PlayerRoles;
 using PluginAPI.Core;
 using PluginAPI.Events;
 using System;
@@ -9,7 +7,6 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using AutoEvent.Events.Handlers;
-using AutoEvent.Games.Infection;
 using AutoEvent.Interfaces;
 using Event = AutoEvent.Interfaces.Event;
 
@@ -17,24 +14,28 @@ namespace AutoEvent.Games.Survival
 {
     public class Plugin : Event, IEventSound, IEventMap, IInternalEvent
     {
-        public override string Name { get; set; } = AutoEvent.Singleton.Translation.SurvivalTranslate.SurvivalName;
-        public override string Description { get; set; } = AutoEvent.Singleton.Translation.SurvivalTranslate.SurvivalDescription;
+        public override string Name { get; set; } = "Zombie Survival";
+        public override string Description { get; set; } = "Humans surviving from zombies";
         public override string Author { get; set; } = "KoT0XleB";
-        public override string CommandName { get; set; } = AutoEvent.Singleton.Translation.SurvivalTranslate.SurvivalCommandName;
+        public override string CommandName { get; set; } = "zombie2";
         public override Version Version { get; set; } = new Version(1, 0, 0);
         [EventConfig]
-        public SurvivalConfig Config { get; set; }
+        public Config Config { get; set; }
+        [EventTranslation]
+        public Translation Translation { get; set; }
         public MapInfo MapInfo { get; set; } = new MapInfo()
         { 
             MapName = "Survival", 
-            Position = new Vector3(15f, 1030f, -43.68f),
-            IsStatic = true
+            Position = new Vector3(15f, 1030f, -43.68f)
         };
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
-            { SoundName = "Survival.ogg", Volume = 10, Loop = false };
+        { 
+            SoundName = "Survival.ogg",
+            Volume = 10,
+            Loop = false
+        };
         protected override float PostRoundDelay { get; set; } = 10f;
-        private EventHandler EventHandler { get; set; }
-        private SurvivalTranslate Translation { get; set; } = AutoEvent.Singleton.Translation.SurvivalTranslate;
+        private EventHandler _eventHandler { get; set; }
         internal Player FirstZombie { get; private set; }
         private GameObject _teleport;
         private GameObject _teleport1;
@@ -42,31 +43,28 @@ namespace AutoEvent.Games.Survival
 
         protected override void RegisterEvents()
         {
-
-            EventHandler = new EventHandler(this);
-            EventManager.RegisterEvents(EventHandler);
-            Servers.TeamRespawn += EventHandler.OnTeamRespawn;
-            Servers.SpawnRagdoll += EventHandler.OnSpawnRagdoll;
-            Servers.PlaceBullet += EventHandler.OnPlaceBullet;
-            Servers.PlaceBlood += EventHandler.OnPlaceBlood;
-            Players.DropItem += EventHandler.OnDropItem;
-            Players.DropAmmo += EventHandler.OnDropAmmo;
-            Players.PlayerDamage += EventHandler.OnPlayerDamage;
-
+            _eventHandler = new EventHandler(this);
+            EventManager.RegisterEvents(_eventHandler);
+            Servers.TeamRespawn += _eventHandler.OnTeamRespawn;
+            Servers.SpawnRagdoll += _eventHandler.OnSpawnRagdoll;
+            Servers.PlaceBullet += _eventHandler.OnPlaceBullet;
+            Servers.PlaceBlood += _eventHandler.OnPlaceBlood;
+            Players.DropItem += _eventHandler.OnDropItem;
+            Players.DropAmmo += _eventHandler.OnDropAmmo;
+            Players.PlayerDamage += _eventHandler.OnPlayerDamage;
         }
 
         protected override void UnregisterEvents()
         {
-            EventManager.UnregisterEvents(EventHandler);
-            Servers.TeamRespawn -= EventHandler.OnTeamRespawn;
-            Servers.SpawnRagdoll -= EventHandler.OnSpawnRagdoll;
-            Servers.PlaceBullet -= EventHandler.OnPlaceBullet;
-            Servers.PlaceBlood -= EventHandler.OnPlaceBlood;
-            Players.DropItem -= EventHandler.OnDropItem;
-            Players.DropAmmo -= EventHandler.OnDropAmmo;
-            Players.PlayerDamage -= EventHandler.OnPlayerDamage;
-
-            EventHandler = null;
+            EventManager.UnregisterEvents(_eventHandler);
+            Servers.TeamRespawn -= _eventHandler.OnTeamRespawn;
+            Servers.SpawnRagdoll -= _eventHandler.OnSpawnRagdoll;
+            Servers.PlaceBullet -= _eventHandler.OnPlaceBullet;
+            Servers.PlaceBlood -= _eventHandler.OnPlaceBlood;
+            Players.DropItem -= _eventHandler.OnDropItem;
+            Players.DropAmmo -= _eventHandler.OnDropAmmo;
+            Players.PlayerDamage -= _eventHandler.OnPlayerDamage;
+            _eventHandler = null;
         }
 
         protected override void OnStart()
@@ -145,21 +143,25 @@ namespace AutoEvent.Games.Survival
 
         protected override void OnFinished()
         {
+            string text = string.Empty;
+            string musicName = "HumanWin.ogg";
+
             if (Player.GetPlayers().Count(r => r.IsHuman) == 0)
             {
-                Extensions.Broadcast(Translation.SurvivalZombieWin, 10);
-                Extensions.PlayAudio("ZombieWin.ogg", 7, false);
+                text = Translation.SurvivalZombieWin;
+                musicName = "ZombieWin.ogg";
             }
             else if (Player.GetPlayers().Count(r => r.IsSCP) == 0)
             {
-                Extensions.Broadcast(Translation.SurvivalHumanWin, 10);
-                Extensions.PlayAudio("HumanWin.ogg", 7, false);
+                text = Translation.SurvivalHumanWin;
             }
             else
             {
-                Extensions.Broadcast(Translation.SurvivalHumanWinTime, 10);
-                Extensions.PlayAudio("HumanWin.ogg", 7, false);
+                text = Translation.SurvivalHumanWinTime;
             }
+
+            Extensions.PlayAudio(musicName, 7, false);
+            Extensions.Broadcast(text, 10);
         }
     }
 }

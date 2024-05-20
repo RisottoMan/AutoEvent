@@ -1,4 +1,5 @@
-﻿public enum FreddyState
+﻿namespace AutoEvent.Games.Fnaf;
+public enum FreddyState
 {
     Waiting,
     Playing,

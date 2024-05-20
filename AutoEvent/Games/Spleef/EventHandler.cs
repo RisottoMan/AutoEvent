@@ -1,26 +1,6 @@
-﻿// <copyright file="Log.cs" company="Redforce04#4091">
-// Copyright (c) Redforce04. All rights reserved.
-// </copyright>
-// -----------------------------------------
-//    Solution:         AutoEvent
-//    Project:          AutoEvent
-//    FileName:         EventHandler.cs
-//    Author:           Redforce04#4091
-//    Revision Date:    10/17/2023 6:20 PM
-//    Created Date:     10/17/2023 6:20 PM
-// -----------------------------------------
-
-using System;
-using AutoEvent.API.Components;
-using AutoEvent.Events.EventArgs;
-using AutoEvent.Games.Spleef.Features;
+﻿using AutoEvent.Events.EventArgs;
 using InventorySystem.Items.Armor;
 using InventorySystem.Items.Firearms;
-using InventorySystem.Items.Firearms.Modules;
-using PlayerStatsSystem;
-using PluginAPI.Core.Attributes;
-using PluginAPI.Enums;
-using PluginAPI.Events;
 using UnityEngine;
 
 namespace AutoEvent.Games.Spleef;
@@ -49,11 +29,7 @@ public class EventHandler
             ev.Damage = BodyArmorUtils.ProcessDamage(0, firearm.BaseStats.DamageAtDistance(firearm, ev.Distance), Mathf.RoundToInt(firearm.ArmorPenetration * 100f));
         }
 
-        ev.RaycastHit.collider.transform.GetComponentsInParent<FallPlatformComponent>().ForEach(x =>
-        {
-            var damageHandler = new FirearmDamageHandler(ev.Player.CurrentItem as Firearm, ev.Damage, false);
-            bool result = x.Damage(ev.Damage, damageHandler, ev.RaycastHit.point);
-        });
+        ev.RaycastHit.collider.transform.GetComponentsInParent<FallPlatformComponent>().ForEach(GameObject.Destroy);
     }
 
 

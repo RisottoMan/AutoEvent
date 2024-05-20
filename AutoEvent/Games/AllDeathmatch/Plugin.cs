@@ -8,33 +8,32 @@ using AutoEvent.API.Enums;
 using UnityEngine;
 using AutoEvent.Events.Handlers;
 using AutoEvent.Interfaces;
-using Event = AutoEvent.Interfaces.Event;
 using System.Text;
+using Event = AutoEvent.Interfaces.Event;
 
 namespace AutoEvent.Games.AllDeathmatch
 {
     public class Plugin : Event, IEventMap, IEventSound, IInternalEvent
     {
-        public override string Name { get; set; } = AutoEvent.Singleton.Translation.AllTranslation.AllName;
-        public override string Description { get; set; } = AutoEvent.Singleton.Translation.AllTranslation.AllDescription;
+        public override string Name { get; set; } = "All Deathmatch";
+        public override string Description { get; set; } = "Fight against each other in all deathmatch.";
         public override string Author { get; set; } = "KoT0XleB";
-        public override string CommandName { get; set; } = AutoEvent.Singleton.Translation.AllTranslation.AllCommandName;
-        private AllTranslation Translation { get; set; } = AutoEvent.Singleton.Translation.AllTranslation;
+        public override string CommandName { get; set; } = "dm";
         public override Version Version { get; set; } = new Version(1, 0, 1);
         protected override FriendlyFireSettings ForceEnableFriendlyFire { get; set; } = FriendlyFireSettings.Enable;
         [EventConfig]
         public Config Config { get; set; }
+        [EventTranslation]
+        public Translation Translation { get; set; }
         public MapInfo MapInfo { get; set; } = new MapInfo()
         {
             MapName = "de_dust2",
-            Position = new Vector3(0, 30, 30),
-            IsStatic = true,
+            Position = new Vector3(0, 30, 30)
         };
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
         { 
             SoundName = "ExecDeathmatch.ogg", 
-            Volume = 10,
-            Loop = true 
+            Volume = 10
         };
         private EventHandler _eventHandler { get; set; }
         internal List<GameObject> Points { get; set; }
@@ -165,7 +164,7 @@ namespace AutoEvent.Games.AllDeathmatch
                 var playerItem = sortedDict.FirstOrDefault(x => x.Key == player);
                 playerText = leaderboard + $"<color=#ff0000>You - {playerItem.Value}/{_needKills} kills</color></size>";
 
-                string text = AutoEvent.Singleton.Translation.AllTranslation.AllCycle.
+                string text = Translation.Cycle.
                     Replace("{name}", Name).
                     Replace("{kills}", playerItem.Value.ToString()).
                     Replace("{needKills}", _needKills.ToString()).
@@ -185,17 +184,15 @@ namespace AutoEvent.Games.AllDeathmatch
                 string text = string.Empty;
                 if (Player.GetPlayers().Count(r => r.IsAlive) == 0)
                 {
-                    text = Translation.AllNoPlayers;
+                    text = Translation.NoPlayers;
                 }
                 else if (EventTime.TotalMinutes >= Config.TimeMinutesRound)
                 {
-                    text = Translation.AllTimeEnd;
+                    text = Translation.TimeEnd;
                 }
                 else if (_winner != null)
                 {
-                    text = Translation.AllWinnerEnd.
-                        Replace("{winner}", _winner.Nickname).
-                        Replace("{time}", time);
+                    text = Translation.WinnerEnd.Replace("{winner}", _winner.Nickname).Replace("{time}", time);
                 }
 
                 text = text.Replace("{count}", TotalKills.First(x => x.Key == player).Value.ToString());

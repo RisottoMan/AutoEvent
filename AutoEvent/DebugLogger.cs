@@ -14,16 +14,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
-using MEC;
-using PluginAPI;
 using PluginAPI.Core;
-using PluginAPI.Helpers;
-using PluginAPI.Loader;
-using UnityEngine;
-using Version = GameCore.Version;
 
 namespace AutoEvent;
-
 public class DebugLogger
 {
     static DebugLogger() 
@@ -32,9 +25,7 @@ public class DebugLogger
     }
     public static DebugLogger Singleton;
     internal static List<AssemblyInfo> Assemblies { get; set; }
-    internal static string SLVersion => GameCore.Version.VersionString;
     public static bool NoRestartEnabled { get; set; } = false;
-    public const string Version = "9.2.2";
     public DebugLogger(bool writeDirectly)
     {
         Singleton = this;
@@ -49,7 +40,6 @@ public class DebugLogger
 
         try
         {
-
             _filePath = Path.Combine(AutoEvent.BaseConfigPath, "debug-output.log");
             if (WriteDirectly)
             {

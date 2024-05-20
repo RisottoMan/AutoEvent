@@ -1,95 +1,92 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using AutoEvent.API;
-using AutoEvent.Games.Battle;
 using AutoEvent.Interfaces;
 using PlayerRoles;
 using UnityEngine;
 
-namespace AutoEvent.Games.Infection
+namespace AutoEvent.Games.Boss;
+public class Config : EventConfig
 {
-    public class BossConfig : EventConfig
+    [Description("A list of loadouts for non-boss players.")]
+    public List<Loadout> Loadouts { get; set; } = new List<Loadout>()
     {
-        [Description("A list of loadouts for non-boss players.")]
-        public List<Loadout> Loadouts { get; set; } = new List<Loadout>()
+        new Loadout()
         {
-            new Loadout()
+            Chance = 33,
+            Items = new List<ItemType>()
             {
-                Chance = 33,
-                Items = new List<ItemType>()
-                {
-                    ItemType.GunE11SR,
-                    ItemType.Medkit,
-                    ItemType.ArmorCombat,
-                    ItemType.SCP1853,
-                    ItemType.Adrenaline,
-                },
-                Health = 200,
-                Roles = new Dictionary<RoleTypeId, int>() { { RoleTypeId.NtfSergeant, 100 } }
+                ItemType.GunE11SR,
+                ItemType.Medkit,
+                ItemType.ArmorCombat,
+                ItemType.SCP1853,
+                ItemType.Adrenaline,
             },
-            new Loadout()
+            Health = 200,
+            Roles = new Dictionary<RoleTypeId, int>() { { RoleTypeId.NtfSergeant, 100 } }
+        },
+        new Loadout()
+        {
+            Chance = 33,
+            Items = new List<ItemType>()
             {
-                Chance = 33,
-                Items = new List<ItemType>()
-                {
-                    ItemType.GunShotgun,
-                    ItemType.Medkit,
-                    ItemType.Medkit,
-                    ItemType.Medkit,
-                    ItemType.Medkit,
-                    ItemType.Medkit,
-                    ItemType.Medkit,
-                    ItemType.ArmorCombat,
-                    ItemType.SCP500
-                },
-                Health = 200,
-                Roles = new Dictionary<RoleTypeId, int>() { { RoleTypeId.NtfSpecialist, 100 } }
+                ItemType.GunShotgun,
+                ItemType.Medkit,
+                ItemType.Medkit,
+                ItemType.Medkit,
+                ItemType.Medkit,
+                ItemType.Medkit,
+                ItemType.Medkit,
+                ItemType.ArmorCombat,
+                ItemType.SCP500
             },
-            new Loadout()
-            {
-                Chance = 33,
-                Items = new List<ItemType>()
-                {
-                    ItemType.GunLogicer,
-                    ItemType.ArmorHeavy,
-                    ItemType.SCP500,
-                    ItemType.SCP500,
-                    ItemType.SCP1853,
-                    ItemType.Medkit,
-                },
-                Health = 200,
-                ArtificialHealth = new ArtificialHealth(100),
-                Roles = new Dictionary<RoleTypeId, int>() { { RoleTypeId.NtfCaptain, 100 } }
-            }
-        };
-
-        [Description("A list of loadouts for boss players.")]
-        public List<Loadout> BossLoadouts { get; set; } = new List<Loadout>()
+            Health = 200,
+            Roles = new Dictionary<RoleTypeId, int>() { { RoleTypeId.NtfSpecialist, 100 } }
+        },
+        new Loadout()
         {
-            new Loadout()
+            Chance = 33,
+            Items = new List<ItemType>()
             {
-                Roles = new Dictionary<RoleTypeId, int>() { { RoleTypeId.Scp3114, 100 } },
-                Size = new Vector3(0.5f, 0.5f, 0.5f),
-                //Items = new List<ItemType>() { ItemType.GunLogicer, ItemType.Ammo556x45 }
+                ItemType.GunLogicer,
+                ItemType.ArmorHeavy,
+                ItemType.SCP500,
+                ItemType.SCP500,
+                ItemType.SCP1853,
+                ItemType.Medkit,
             },
-            
-        };
+            Health = 200,
+            ArtificialHealth = new ArtificialHealth(100),
+            Roles = new Dictionary<RoleTypeId, int>() { { RoleTypeId.NtfCaptain, 100 } }
+        }
+    };
 
-        [Description("How many players should be on the boss team. [Default: 1 Player]")]
-        public RoleCount BossCount { get; set; } = new RoleCount()
+    [Description("A list of loadouts for boss players.")]
+    public List<Loadout> BossLoadouts { get; set; } = new List<Loadout>()
+    {
+        new Loadout()
         {
-            MinimumPlayers = 1, // at least one player
-            MaximumPlayers = 1, // only one player
-            PlayerPercentage = -1 // ignore percentage of players ingame.
-        };
+            Roles = new Dictionary<RoleTypeId, int>() { { RoleTypeId.Scp3114, 100 } },
+            Size = new Vector3(0.5f, 0.5f, 0.5f),
+            //Items = new List<ItemType>() { ItemType.GunLogicer, ItemType.Ammo556x45 }
+        },
+        
+    };
 
-        [Description("How long the event should last in seconds. [Default: 120]")]
-        public int DurationInSeconds { get; set; } = 120;
+    [Description("How many players should be on the boss team. [Default: 1 Player]")]
+    public RoleCount BossCount { get; set; } = new RoleCount()
+    {
+        MinimumPlayers = 1, // at least one player
+        MaximumPlayers = 1, // only one player
+        PlayerPercentage = -1 // ignore percentage of players ingame.
+    };
 
-        public List<string> BossScreams { get; set; } = new List<string>()
-        {
-            "zombi_hurt_01.ogg",
-            "zombi_hurt_02.ogg"
-        };
-    }
+    [Description("How long the event should last in seconds. [Default: 120]")]
+    public int DurationInSeconds { get; set; } = 120;
+
+    public List<string> BossScreams { get; set; } = new List<string>()
+    {
+        "zombi_hurt_01.ogg",
+        "zombi_hurt_02.ogg"
+    };
 }

@@ -1,18 +1,6 @@
-﻿// <copyright file="Log.cs" company="Redforce04#4091">
-// Copyright (c) Redforce04. All rights reserved.
-// </copyright>
-// -----------------------------------------
-//    Solution:         AutoEvent
-//    Project:          AutoEvent
-//    FileName:         LockdownSettings.cs
-//    Author:           Redforce04#4091
-//    Revision Date:    09/24/2023 2:58 PM
-//    Created Date:     09/24/2023 2:58 PM
-// -----------------------------------------
+﻿using System.ComponentModel;
 
-using System.ComponentModel;
-
-namespace AutoEvent.Games.Infection;
+namespace AutoEvent.Games.Jail;
 
 public class LockdownSettings
 {

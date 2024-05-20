@@ -9,7 +9,6 @@ using System.Linq;
 using AdminToys;
 using UnityEngine;
 using AutoEvent.Events.Handlers;
-using AutoEvent.Games.Infection;
 using AutoEvent.Interfaces;
 using Event = AutoEvent.Interfaces.Event;
 
@@ -17,49 +16,57 @@ namespace AutoEvent.Games.FallDown
 {
     public class Plugin : Event, IEventSound, IEventMap, IInternalEvent
     {
-        public override string Name { get; set; } = AutoEvent.Singleton.Translation.FallTranslate.FallName;
-        public override string Description { get; set; } = AutoEvent.Singleton.Translation.FallTranslate.FallDescription;
+        public override string Name { get; set; } = "FallDown";
+        public override string Description { get; set; } = "All platforms are destroyed. It is necessary to survive";
         public override string Author { get; set; } = "KoT0XleB";
-        public override string CommandName { get; set; } = AutoEvent.Singleton.Translation.FallTranslate.FallCommandName;
-        public override Version Version { get; set; } = new Version(1, 0, 1);
-        [EventConfig] public FallDownConfig Config { get; set; } = null;
-        [EventConfigPreset] public FallDownConfig Warning => FallDownConfigPresets.PlatformWarning;
+        public override string CommandName { get; set; } = "fall";
+        public override Version Version { get; set; } = new Version(1, 0, 2);
+        [EventConfig]
+        public Config Config { get; set; }
+        [EventConfigPreset] 
+        public Config Warning => Preset.PlatformWarning;
+        [EventTranslation]
+        public Translation Translation { get; set; }
         public MapInfo MapInfo { get; set; } = new MapInfo()
-            { MapName = "FallDown", Position = new Vector3(10f, 1020f, -43.68f) };
+        { 
+            MapName = "FallDown", 
+            Position = new Vector3(10f, 1020f, -43.68f)
+        };
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
-            { SoundName = "ChristmasMusic.ogg", Volume = 7, Loop = true };
+        { 
+            SoundName = "ChristmasMusic.ogg", 
+            Volume = 7
+        };
         protected override float FrameDelayInSeconds { get; set; } = 0.9f;
         protected override float PostRoundDelay { get; set; } = 10f;
-        private EventHandler EventHandler { get; set; }
-        private FallTranslate Translation { get; set; } = AutoEvent.Singleton.Translation.FallTranslate;
-        private int _platformId { get; set; }
+        private EventHandler _eventHandler;
+        private int _platformId;
         private List<GameObject> _platforms;
         private GameObject _lava;
         private bool _noPlatformsRemainingWarning;
 
         protected override void RegisterEvents()
         {
-            EventHandler = new EventHandler();
-            EventManager.RegisterEvents(EventHandler);
-            Servers.TeamRespawn += EventHandler.OnTeamRespawn;
-            Servers.SpawnRagdoll += EventHandler.OnSpawnRagdoll;
-            Servers.PlaceBullet += EventHandler.OnPlaceBullet;
-            Servers.PlaceBlood += EventHandler.OnPlaceBlood;
-            Players.DropItem += EventHandler.OnDropItem;
-            Players.DropAmmo += EventHandler.OnDropAmmo;
+            _eventHandler = new EventHandler();
+            EventManager.RegisterEvents(_eventHandler);
+            Servers.TeamRespawn += _eventHandler.OnTeamRespawn;
+            Servers.SpawnRagdoll += _eventHandler.OnSpawnRagdoll;
+            Servers.PlaceBullet += _eventHandler.OnPlaceBullet;
+            Servers.PlaceBlood += _eventHandler.OnPlaceBlood;
+            Players.DropItem += _eventHandler.OnDropItem;
+            Players.DropAmmo += _eventHandler.OnDropAmmo;
         }
 
         protected override void UnregisterEvents()
         {
-            EventManager.UnregisterEvents(EventHandler);
-            Servers.TeamRespawn -= EventHandler.OnTeamRespawn;
-            Servers.SpawnRagdoll -= EventHandler.OnSpawnRagdoll;
-            Servers.PlaceBullet -= EventHandler.OnPlaceBullet;
-            Servers.PlaceBlood -= EventHandler.OnPlaceBlood;
-            Players.DropItem -= EventHandler.OnDropItem;
-            Players.DropAmmo -= EventHandler.OnDropAmmo;
-
-            EventHandler = null;
+            EventManager.UnregisterEvents(_eventHandler);
+            Servers.TeamRespawn -= _eventHandler.OnTeamRespawn;
+            Servers.SpawnRagdoll -= _eventHandler.OnSpawnRagdoll;
+            Servers.PlaceBullet -= _eventHandler.OnPlaceBullet;
+            Servers.PlaceBlood -= _eventHandler.OnPlaceBlood;
+            Players.DropItem -= _eventHandler.OnDropItem;
+            Players.DropAmmo -= _eventHandler.OnDropAmmo;
+            _eventHandler = null;
         }
 
         protected override void OnStart()
@@ -72,7 +79,7 @@ namespace AutoEvent.Games.FallDown
             }
 
             _lava = MapInfo.Map.AttachedBlocks.First(x => x.name == "Lava");
-            _lava.AddComponent<LavaComponent>();
+            _lava.AddComponent<LavaComponent>().StartComponent(this);
         }
 
         protected override IEnumerator<float> BroadcastStartCountdown()
@@ -111,7 +118,7 @@ namespace AutoEvent.Games.FallDown
 
             var count = Player.GetPlayers().Count(r => r.IsAlive);
             var time = $"{EventTime.Minutes:00}:{EventTime.Seconds:00}";
-            Extensions.Broadcast(Translation.FallBroadcast.Replace("{name}", Name).Replace("{time}", time).Replace("{count}", $"{count}"), (ushort)FrameDelayInSeconds);
+            Extensions.Broadcast(Translation.Broadcast.Replace("{name}", Name).Replace("{time}", time).Replace("{count}", $"{count}"), 1);
             
             if (_platforms.Count < 1)
             {
@@ -145,11 +152,11 @@ namespace AutoEvent.Games.FallDown
         {
             if (Player.GetPlayers().Count(r => r.IsAlive) == 1)
             {
-                Extensions.Broadcast(Translation.FallWinner.Replace("{winner}", Player.GetPlayers().First(r => r.IsAlive).Nickname), 10);
+                Extensions.Broadcast(Translation.Winner.Replace("{winner}", Player.GetPlayers().First(r => r.IsAlive).Nickname), 10);
             }
             else
             {
-                Extensions.Broadcast(Translation.FallDied, 10);
+                Extensions.Broadcast(Translation.Died, 10);
             }
         }
     }

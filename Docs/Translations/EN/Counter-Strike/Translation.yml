@@ -1,0 +1,38 @@
+name: 'Counter-Strike'
+description: 'Fight between terrorists and counter-terrorists.'
+command_name: 'cs'
+cycle: |-
+  <size=60>{name}</size>
+  <size=25><i>{task}</i>
+  <i><color=#42AAFF>{ctCount} Counters</color> <b>/</b> <color=green>{tCount} Terrorists</color></i>
+  <i>Round Time: {time}</i></size>
+no_planted_counter: 'Protect plants A and B from terrorists'
+no_planted_terror: 'Place the bomb on plant A or B'
+planted_counter: '<color=red>Defuse the bomb before it explodes</color>'
+planted_terror: '<color=red>Protect the bomb until it explodes</color>'
+draw: |-
+  <b><color=#808080>Draw</color></b>
+  <i>Everyone died</i>
+time_ended: |-
+  <b><color=#808080>Draw</color></b>
+  <i>The time is over.</i>
+counter_win: |-
+  <b><color=#42AAFF>Counter-Terrorists win</color></b>
+  <i>All the terrorists are dead</i>
+terrorist_win: |-
+  <b><color=green>Terrorists win</color></b>
+  <i>All the Counters are dead</i>
+planted_win: |-
+  <b><color=green>Terrorists win</color></b>
+  <i>Bomb exploded</i>
+defused_win: |-
+  <b><color=#42AAFF>Counter-Terrorists win</color></b>
+  <i>Bomb defused</i>
+you_planted: '<b><color=#ff4c5b>You planted the bomb</color></b>'
+you_defused: '<b><color=#42aaff>You defused the bomb</color></b>'
+hint_cycle: |-
+  <size=30><i><b>{name}</b>
+  {kills}
+# DO NOT CHANGE THIS. IT WILL BREAK THINGS. AutoEvent will automatically manage these settings.
+version: '1.0.0'
+language: 'EN'
