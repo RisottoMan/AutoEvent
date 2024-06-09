@@ -1,4 +1,7 @@
-﻿namespace MER.Lite.Objects
+﻿using System.Collections.Generic;
+using MEC;
+
+namespace MER.Lite.Objects
 {
     using AdminToys;
     using Serializable;
@@ -10,6 +13,7 @@
     public class PrimitiveObject : MapEditorObject
     {
         private Transform _transform;
+        private Rigidbody? _rigidbody;
         private PrimitiveObjectToy _primitiveObjectToy;
 
         private void Awake()
@@ -26,10 +30,11 @@
         public PrimitiveObject Init(PrimitiveSerializable primitiveSerializable)
         {
             Base = primitiveSerializable;
-            _prevScale = transform.localScale;
+            _primitiveObjectToy.MovementSmoothing = 60;
 
+            _primitiveObjectToy.NetworkIsStatic = true;
+            base.UpdateObject();
             UpdateObject();
-            IsStatic = false;
 
             return this;
         }
@@ -39,6 +44,7 @@
             base.Init(block);
 
             Base = new(block);
+            _primitiveObjectToy.MovementSmoothing = 60;
 
             UpdateObject();
             IsStatic = true;
@@ -51,6 +57,20 @@
         /// </summary>
         public PrimitiveSerializable Base { get; private set; }
 
+        public Rigidbody Rigidbody
+        {
+            get
+            {
+                if (_rigidbody is not null)
+                    return _rigidbody;
+
+                if (TryGetComponent(out _rigidbody))
+                    return _rigidbody!;
+
+                return _rigidbody = gameObject.AddComponent<Rigidbody>();
+            }
+        }
+        
         public bool IsStatic
         {
             get => _isStatic;
@@ -68,14 +88,22 @@
             UpdateTransformProperties();
             _primitiveObjectToy.NetworkPrimitiveType = Base.PrimitiveType;
             _primitiveObjectToy.NetworkMaterialColor = GetColorFromString(Base.Color);
+            _primitiveObjectToy.NetworkPrimitiveFlags = Base.PrimitiveFlags;
 
-            if (IsSchematicBlock && _prevScale == transform.localScale)
+            if (IsSchematicBlock)
                 return;
 
-            _prevScale = transform.localScale;
-            base.UpdateObject();
+            if (_primitiveObjectToy.NetworkIsStatic)
+                Timing.RunCoroutine(RefreshStatic());
         }
 
+        private IEnumerator<float> RefreshStatic()
+        {
+            _primitiveObjectToy.NetworkIsStatic = false;
+            yield return Timing.WaitForOneFrame;
+            _primitiveObjectToy.NetworkIsStatic = true;
+        }
+        
         private void UpdateTransformProperties()
         {
             _primitiveObjectToy.NetworkPosition = _transform.position;
@@ -84,6 +112,5 @@
         }
 
         private bool _isStatic;
-        private Vector3 _prevScale;
     }
 }

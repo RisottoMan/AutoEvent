@@ -3,18 +3,21 @@ using System.IO;
 using AutoEvent.Commands;
 using AutoEvent.Interfaces;
 using HarmonyLib;
-using PluginAPI.Core.Attributes;
-using PluginAPI.Enums;
 using PluginAPI.Events;
 using MEC;
 using AutoEvent.API;
 using AutoEvent.API.Season;
+using AutoEvent.Patches;
+using PluginAPI.Core.Attributes;
+using PluginAPI.Enums;
+using PluginAPI.Helpers;
+using RemoteAdmin;
 using Event = AutoEvent.Interfaces.Event;
 using Log = PluginAPI.Core.Log;
 using Map = PluginAPI.Core.Map;
-using Paths = PluginAPI.Helpers.Paths;
 using Player = PluginAPI.Core.Player;
 using Server = PluginAPI.Core.Server;
+using Console = GameCore.Console;
 #if EXILED
 using Exiled.API.Features;
 
@@ -112,6 +115,12 @@ namespace AutoEvent
                 try
                 {
                     HarmonyPatch = new Harmony("autoevent");
+                    
+                    HarmonyMethod transpiler = new (typeof(SanitizationPatch), nameof(SanitizationPatch.Transpiler));
+                    HarmonyPatch.Patch(AccessTools.Method(typeof(Console), nameof(Console.TypeCommand)), transpiler: transpiler);
+                    HarmonyPatch.Patch(AccessTools.Method(typeof(CommandProcessor), nameof(CommandProcessor.ProcessQuery)), transpiler: transpiler);
+                    HarmonyPatch.Patch(AccessTools.Method(typeof(QueryProcessor), nameof(QueryProcessor.ProcessGameConsoleQuery)), transpiler: transpiler);
+                    
                     HarmonyPatch.PatchAll();
 
                 }

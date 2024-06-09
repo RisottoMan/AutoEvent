@@ -16,7 +16,7 @@ using System.Text;
 using Event = AutoEvent.Interfaces.Event;
 
 namespace AutoEvent.Games.BuckshotRoulette;
-public class Plugin : Event, IEventMap, IInternalEvent
+public class Plugin : Event, IEventMap, IInternalEvent, IHidden
 {
     public override string Name { get; set; } = "Buckshot Roulette";
     public override string Description { get; set; } = "One-on-one battle in Russian roulette with shotguns";

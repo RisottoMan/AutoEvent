@@ -24,8 +24,6 @@ using Exiled.API.Features;
 using Exiled.Permissions.Extensions;
 #endif
 namespace AutoEvent.Commands.Config;
-
-
 public class Select : ICommand, IUsageProvider, IPermission
 {
     public string Command => nameof(Select);
@@ -33,7 +31,7 @@ public class Select : ICommand, IUsageProvider, IPermission
     public string Description => "Selects a config preset to use for an event.";
     public string[] Usage => new[] { "[Event]", "[Preset / Default]" };
     public string Permission { get; set; } = "ev.config.select";
-
+    public bool SanitizeResponse => false;
     public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
     {
         

@@ -21,16 +21,14 @@ using Exiled.Permissions.Extensions;
 #endif
 
 namespace AutoEvent.Commands.Config;
-
-
 public class List : ICommand, IUsageProvider, IPermission
 {
     public string Command => nameof(List);
     public string[] Aliases => Array.Empty<string>();
     public string Description => "Lists available presets for an event.";
     public string[] Usage => new string[] { "event" };
-
     public string Permission { get; set; } = "ev.config.list";
+    public bool SanitizeResponse => false;
     public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
     {
         if (!sender.CheckPermission(((IPermission)this).Permission, out bool IsConsoleCommandSender))

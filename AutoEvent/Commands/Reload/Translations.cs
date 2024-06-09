@@ -28,7 +28,7 @@ public class Translations : ICommand, IPermission
     public string[] Aliases => Array.Empty<string>();
     public string Description => "Reloads all events";
     public string Permission { get; set; } = "ev.reload";
-    
+    public bool SanitizeResponse => false;
     public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
     {
         if (!sender.CheckPermission(((IPermission)this).Permission, out bool IsConsoleCommandSender))

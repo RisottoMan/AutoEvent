@@ -28,8 +28,8 @@ public class Save : ICommand, IUsageProvider, IPermission
     public string[] Aliases => Array.Empty<string>();
     public string Description => "Saves an updated config or preset for future use.";
     public string[] Usage => new string[] { "[Preset / Default]" };
-
     public string Permission { get; set; } = "ev.config.save";
+    public bool SanitizeResponse => false;
     public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
     {
         

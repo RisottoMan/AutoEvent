@@ -21,15 +21,13 @@ using Exiled.Permissions.Extensions;
 #endif
 
 namespace AutoEvent.Commands.Debug;
-
-
 public class Disable : ICommand, IPermission
 {
     public string Command => nameof(Disable);
-    public string[] Aliases => Array.Empty<string>();
+    public string[] Aliases => new string[] { };
     public string Description => "Disables Debug Mode";
-    
     public string Permission { get; set; } = "ev.debug";
+    public bool SanitizeResponse => false;
     public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
     {
         if (!sender.CheckPermission(((IPermission)this).Permission, out bool IsConsoleCommandSender))

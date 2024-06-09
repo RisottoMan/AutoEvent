@@ -30,17 +30,14 @@ using Exiled.API.Features;
 using Exiled.Permissions.Extensions;
 #endif
 namespace AutoEvent.Commands.Config;
-
-
 public class Modify : ICommand, IUsageProvider, IPermission
 {
     public string Command => nameof(Modify);
     public string[] Aliases => Array.Empty<string>();
     public string Description => "Modifies an option in a config or preset for an event.";
     public string[] Usage => new string[] { "event", "preset", "option", "[value]" };
-    
     public string Permission { get; set; } = "ev.config.modify";
-
+    public bool SanitizeResponse => false;
     public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
     {
 

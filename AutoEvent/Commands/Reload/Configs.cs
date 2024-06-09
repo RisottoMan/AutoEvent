@@ -21,14 +21,13 @@ using Exiled.Permissions.Extensions;
 #endif
 namespace AutoEvent.Commands.Reload;
 
-
 public class Configs : ICommand, IPermission
 {
     public string Command => nameof(Configs);
     public string[] Aliases => Array.Empty<string>();
     public string Description => "Reloads all events";
     public string Permission { get; set; } = "ev.reload";
-
+    public bool SanitizeResponse => false;
     public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
     {
         if (!sender.CheckPermission(((IPermission)this).Permission, out bool IsConsoleCommandSender))
@@ -43,8 +42,7 @@ public class Configs : ICommand, IPermission
             ev.LoadConfigs();
             confCount += ev.ConfigPresets.Count;
         }
-
- 
+        
         response = $"Reloaded {confCount} Configs and Config Presets.";
         return true;
     }

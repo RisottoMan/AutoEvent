@@ -34,9 +34,8 @@ public class RNG : ICommand, IPermission
     public string Command => nameof(RNG);
     public string[] Aliases => Array.Empty<string>();
     public string Description => "Creates an RNG platform list.";
-
     public string Permission { get; set; } = "ev.debug";
-
+    public bool SanitizeResponse => false;
     public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
     {
         if (!sender.CheckPermission(((IPermission)this).Permission, out bool IsConsoleCommandSender))

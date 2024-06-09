@@ -24,6 +24,10 @@ namespace AutoEvent.Commands.Config;
 
 public class Config : ParentCommand
 {
+    public override string Command => nameof(Config);
+    public override string[] Aliases => Array.Empty<string>();
+    public override string Description => "Allows modifying configs before and during events";
+    public bool SanitizeResponse => false;
     public Config() => LoadGeneratedCommands();
     public override void LoadGeneratedCommands()
     {
@@ -62,10 +66,6 @@ public class Config : ParentCommand
                    */
         return false;
     }
-
-    public override string Command => nameof(Config);
-    public override string[] Aliases => Array.Empty<string>();
-    public override string Description => "Allows modifying configs before and during events";
 }
 
 /*
