@@ -115,14 +115,7 @@ namespace AutoEvent
                 try
                 {
                     HarmonyPatch = new Harmony("autoevent");
-                    
-                    HarmonyMethod transpiler = new (typeof(SanitizationPatch), nameof(SanitizationPatch.Transpiler));
-                    HarmonyPatch.Patch(AccessTools.Method(typeof(Console), nameof(Console.TypeCommand)), transpiler: transpiler);
-                    HarmonyPatch.Patch(AccessTools.Method(typeof(CommandProcessor), nameof(CommandProcessor.ProcessQuery)), transpiler: transpiler);
-                    HarmonyPatch.Patch(AccessTools.Method(typeof(QueryProcessor), nameof(QueryProcessor.ProcessGameConsoleQuery)), transpiler: transpiler);
-                    
                     HarmonyPatch.PatchAll();
-
                 }
                 catch (Exception e)
                 {
