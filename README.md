@@ -11,7 +11,7 @@
 [![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/Message3.png)](https://github.com/KoT0XleB/AutoEvent-Exiled/blob/main/Docs/Language.md)
 [![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/Message4.png)](https://github.com/KoT0XleB/AutoEvent-Exiled/blob/main/Docs/Problem.md)
 [![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/Message5.png)](https://github.com/KoT0XleB/AutoEvent-Exiled/blob/main/Docs/Example.md)
-[![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/Message6.png)](https://discord.gg/Bu7ZsKsbjP)
+[![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/Message6.png)](https://discord.gg/n3Y8XGtQGX)
 
 # Credits
 - Thanks to **Redforce04** for the help in changing the structures of the mini-games.
