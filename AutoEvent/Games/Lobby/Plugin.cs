@@ -141,7 +141,7 @@ namespace AutoEvent.Games.Lobby
         {
             text = Translation.Run;
 
-            foreach (Player player in Player.GetPlayers().OrderBy(p => Guid.NewGuid()))
+            foreach (Player player in Player.GetPlayers().OrderBy(p => return Guid.NewGuid();))
             {
                 if (Vector3.Distance(_teleports.ElementAt(0).transform.position, player.Position) < 1)
                 {
