@@ -191,7 +191,7 @@ namespace AutoEvent.Games.MusicalChairs
             _eventState++;
         }
 
-        protected void UpdateStoppingState(ref string text)
+        protected void UpdateStoppingState(ref string text) // bug
         {
             text = Translation.StandFree;
 

@@ -38,8 +38,8 @@ namespace AutoEvent.Games.ZombieEscape
         };
         protected override float PostRoundDelay { get; set; } = 10f;
         private EventHandler _eventHandler { get; set; }
-        private SchematicObject _boat;
-        private SchematicObject _heli;
+        private GameObject _boat;
+        private GameObject _heli;
         private GameObject _button;
         private GameObject _button1;
         private GameObject _button2;
@@ -92,6 +92,59 @@ namespace AutoEvent.Games.ZombieEscape
 
                 // Timing.CallDelayed(0.1f, () => { player.CurrentItem = item; });
             }
+            
+            _button = new GameObject();
+            _button1 = new GameObject();
+            _button2 = new GameObject();
+            _wall = new GameObject();
+            _finishPosition = new Vector3();
+            
+            foreach (var gameObject in MapInfo.Map.AttachedBlocks)
+            {
+                switch (gameObject.name)
+                {
+                    case "Button":
+                    {
+                        _button = gameObject;
+                        break;
+                    }
+                    case "Button1":
+                    {
+                        _button1 = gameObject;
+                        break;
+                    }
+                    case "Button2":
+                    {
+                        _button2 = gameObject;
+                        break;
+                    }
+                    case "Lava":
+                    {
+                        gameObject.AddComponent<LavaComponent>();
+                        break;
+                    }
+                    case "Wall":
+                    {
+                        _wall = gameObject;
+                        break;
+                    }
+                    case "Finish":
+                    {
+                        _finishPosition = gameObject.transform.position;
+                        break;
+                    }
+                    case "Helicopter":
+                    {
+                        _heli = gameObject;
+                        if (gameObject.GetComponentInChildren<Animator>())
+                        {
+                            DebugLogger.LogDebug("Animator component for Helicopter is found", LogLevel.Debug);
+                        }
+                        break;
+                    }
+                }
+            }
+            DebugLogger.LogDebug("Serialized GameObjects.", LogLevel.Debug);
         }
 
         protected override IEnumerator<float> BroadcastStartCountdown()
@@ -114,50 +167,6 @@ namespace AutoEvent.Games.ZombieEscape
                 ply.GiveLoadout(Config.ZombieLoadouts);
                 ply.EffectsManager.EnableEffect<Disabled>();
             }
-
-            _button = new GameObject();
-            _button1 = new GameObject();
-            _button2 = new GameObject();
-            _wall = new GameObject();
-            _finishPosition = new Vector3();
-            
-            foreach (var gameObject in MapInfo.Map.AttachedBlocks)
-            {
-                switch (gameObject.name)
-                {
-                    case "Button":
-                    {
-                        _button = gameObject;
-                    }
-                        break;
-                    case "Button1":
-                    {
-                        _button1 = gameObject;
-                    }
-                        break;
-                    case "Button2":
-                    {
-                        _button2 = gameObject;
-                    }
-                        break;
-                    case "Lava":
-                    {
-                        gameObject.AddComponent<LavaComponent>();
-                    }
-                        break;
-                    case "Wall":
-                    {
-                        _wall = gameObject;
-                    }
-                        break;
-                    case "Finish":
-                    {
-                        _finishPosition = gameObject.transform.position;
-                    }
-                        break;
-                }
-            }
-            DebugLogger.LogDebug("Serialized GameObjects.", LogLevel.Debug);
         }
 
         protected override void ProcessFrame()
@@ -170,13 +179,24 @@ namespace AutoEvent.Games.ZombieEscape
                     _wall.AddComponent<WallComponent>().Init(Config.GateLockDuration);
                 }
 
+                var heliAnimation = _heli.GetComponentInChildren<Animator>();
                 if (Vector3.Distance(player.Position, _button2.transform.position) < 3)
                 {
                     _button2.transform.position += Vector3.down * 5;
                     EventTime = new TimeSpan(0, 0, (int)(Config.RoundDurationInSeconds - Config.EscapeDurationInSeconds));
-                    _heli = Extensions.LoadMap("Helicopter_Zombie", MapInfo.Map.Position, Quaternion.identity, Vector3.one, false);
+                    heliAnimation.Play("Animation");
                 }
 
+                AnimatorClipInfo[] clipInfo = heliAnimation.GetCurrentAnimatorClipInfo(0);
+                if (clipInfo[0].clip.name == "End")
+                {
+                    if (Vector3.Distance(player.Position, _finishPosition) > 5)
+                    {
+                        player.EffectsManager.EnableEffect<Flashed>(1);
+                        player.Damage(15000f, Translation.Died);
+                    }
+                }
+                
                 string text = Translation.Helicopter.Replace("{name}", Name)
                     .Replace("{count}", $"{Player.GetPlayers().Count(r => r.IsHuman)}");
                 player.ClearBroadcasts();
@@ -197,19 +217,6 @@ namespace AutoEvent.Games.ZombieEscape
 
         protected override void OnFinished()
         {
-            foreach (Player player in Player.GetPlayers())
-            {
-                player.EffectsManager.EnableEffect<Flashed>(1);
-
-                if (_heli != null)
-                {
-                    if (Vector3.Distance(player.Position, _finishPosition) > 5)
-                    {
-                        player.Damage(15000f, Translation.Died);
-                    }
-                }
-            }
-
             if (Player.GetPlayers().Count(r => r.IsHuman) == 0)
             {
                 Extensions.Broadcast(Translation.ZombieWin, 10);
@@ -220,14 +227,6 @@ namespace AutoEvent.Games.ZombieEscape
                 Extensions.Broadcast(Translation.HumanWin, 10);
                 Extensions.PlayAudio("HumanWin.ogg", 7, false);
             }
-        }
-        protected override void OnCleanup()
-        {
-            if (_boat != null)
-                Extensions.UnLoadMap(_boat);
-
-            if (_heli != null)
-                Extensions.UnLoadMap(_heli); 
         }
     }
 }

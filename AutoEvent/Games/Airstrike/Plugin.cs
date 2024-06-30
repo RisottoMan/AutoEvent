@@ -205,11 +205,12 @@ namespace AutoEvent.Games.Airstrike
                 });
             }
             var time = $"{EventTime.Minutes:00}:{EventTime.Seconds:00}";
-            if (Player.GetPlayers().Count(r => r.Role != RoleTypeId.ChaosConscript) > 1)
+            int count = Player.GetPlayers().Count(r => r.IsAlive && r.Role != RoleTypeId.ChaosConscript);
+            if (count > 1)
             {
                 Extensions.Broadcast(Translation.MorePlayer.Replace("{count}", $"{Player.GetPlayers().Count(r => r.Role != RoleTypeId.ChaosConscript)}").Replace("{time}", time), 10);
             }
-            else if (Player.GetPlayers().Count(r => r.IsAlive && r.Role != RoleTypeId.ChaosConscript) == 1)
+            else if (count == 1)
             {
                 var player = Player.GetPlayers().First(r => r.IsAlive && r.Role != RoleTypeId.ChaosConscript);
                 player.Health = 1000;

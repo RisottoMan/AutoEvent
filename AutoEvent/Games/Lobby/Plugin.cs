@@ -4,15 +4,14 @@ using System.Collections.Generic;
 using AutoEvent.Interfaces;
 using UnityEngine;
 using System.Linq;
-using CommandSystem;
 using PluginAPI.Core;
-using MEC;
+
 using Event = AutoEvent.Interfaces.Event;
 using Player = PluginAPI.Core.Player;
 
 namespace AutoEvent.Games.Lobby
 {
-    public class Plugin : Event, IEventMap, IEventSound, IInternalEvent, IHiddenCommand
+    public class Plugin : Event, IEventMap, IEventSound, IInternalEvent, IHidden
     {
         public override string Name { get; set; } = "Lobby";
         public override string Description { get; set; } = "A lobby in which one quick player chooses a mini-game.";

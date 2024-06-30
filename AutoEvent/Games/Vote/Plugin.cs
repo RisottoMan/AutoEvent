@@ -6,13 +6,13 @@ using AutoEvent.Interfaces;
 using AutoEvent.Events.Handlers;
 using MEC;
 using PluginAPI.Core;
-using CommandSystem;
+
 using Event = AutoEvent.Interfaces.Event;
 using Player = PluginAPI.Core.Player;
 
 namespace AutoEvent.Games.Vote
 {
-    public class Plugin : Event, IEventSound, IInternalEvent, IHiddenCommand
+    public class Plugin : Event, IEventSound, IInternalEvent, IHidden
     {
         public override string Name { get; set; } = "Vote";
         public override string Description { get; set; } = "Start voting for the mini-game";
