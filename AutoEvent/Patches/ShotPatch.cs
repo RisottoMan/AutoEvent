@@ -38,7 +38,7 @@ namespace AutoEvent.Patches
         /// <returns>FuckReturn.</returns>
         internal static bool ProcessShot(ReferenceHub player, RaycastHit hit, IDestructible destructible, ref float damage)
         {
-            ShotEventArgs shotEvent = new(Player.Get(player), hit, destructible, damage);
+            NewShotEventArgs shotEvent = new(Player.Get(player), hit, destructible, damage);
 
             global::AutoEvent.Events.Handlers.Players.OnShot(shotEvent);
 
@@ -55,7 +55,7 @@ namespace AutoEvent.Patches
             Label returnLabel = generator.DefineLabel();
             Label jump = generator.DefineLabel();
 
-            LocalBuilder ev = generator.DeclareLocal(typeof(ShotEventArgs));
+            LocalBuilder ev = generator.DeclareLocal(typeof(NewShotEventArgs));
 
             int offset = 2;
             int index = newInstructions.FindLastIndex(

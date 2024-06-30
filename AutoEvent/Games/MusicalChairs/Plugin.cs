@@ -126,6 +126,10 @@ namespace AutoEvent.Games.MusicalChairs
                 Replace("{count}", $"{Player.GetPlayers().Count(r => r.IsAlive)}"), 1);
         }
 
+        /// <summary>
+        /// The state in which we set the initial values for the new game
+        /// </summary>
+        /// <param name="text"></param>
         protected void UpdateWaitingState(ref string text)
         {
             text = Translation.RunDontTouch;
@@ -147,6 +151,10 @@ namespace AutoEvent.Games.MusicalChairs
             _eventState++;
         }
 
+        /// <summary>
+        /// Game cycle in which we check that the player runs around the center and does not touch the platforms
+        /// </summary>
+        /// <param name="text"></param>
         protected void UpdatePlayingState(ref string text)
         {
             text = Translation.RunDontTouch;
@@ -155,6 +163,7 @@ namespace AutoEvent.Games.MusicalChairs
             {
                 float curAngle = 180f + Mathf.Rad2Deg * (Mathf.Atan2(player.Position.z - MapInfo.Position.z, player.Position.x - MapInfo.Position.x));
 
+                // The player can run in any direction. The main thing is that the angle changes and is not the same
                 if (_playerDict[player].Angle == curAngle)
                 {
                     Extensions.GrenadeSpawn(0.1f, player.Position, 0.1f);
@@ -165,6 +174,7 @@ namespace AutoEvent.Games.MusicalChairs
                     _playerDict[player].Angle = curAngle;
                 }
 
+                // If the player touches the platform, it will explode
                 foreach (GameObject platform in Platforms)
                 {
                     if (Vector3.Distance(player.Position, platform.transform.position) < 1.5f)
@@ -191,10 +201,15 @@ namespace AutoEvent.Games.MusicalChairs
             _eventState++;
         }
 
-        protected void UpdateStoppingState(ref string text) // bug
+        /// <summary>
+        /// The game stops and the players have to stand on the platforms
+        /// </summary>
+        /// <param name="text"></param>
+        protected void UpdateStoppingState(ref string text)
         {
             text = Translation.StandFree;
 
+            var tempDict = new List<KeyValuePair<Player, GameObject>>();
             foreach (GameObject platform in Platforms)
             {
                 foreach (Player player in Player.GetPlayers())
@@ -205,11 +220,16 @@ namespace AutoEvent.Games.MusicalChairs
                     if (Vector3.Distance(player.Position, platform.transform.position) < 1.5f)
                     {
                         platform.GetComponent<PrimitiveObjectToy>().NetworkMaterialColor = Color.red;
-                        _playerDict[player].Platform = platform;
+                        tempDict.Add(new KeyValuePair<Player, GameObject>(player, platform));
                     }
                 }
             }
 
+            foreach (var item in tempDict)
+            {
+                _playerDict[item.Key].Platform = item.Value;
+            }
+            
             if (_countdown.TotalSeconds > 0)
                 return;
 
@@ -217,16 +237,20 @@ namespace AutoEvent.Games.MusicalChairs
             _eventState++;
         }
 
+        /// <summary>
+        /// Kill players who did not manage to stand on the platforms
+        /// </summary>
+        /// <param name="text"></param>
         protected void UpdateEndingState(ref string text)
         {
             text = Translation.StandFree;
 
-            foreach (Player player in Player.GetPlayers())
+            foreach (Player player in Player.GetPlayers().Where(r => r.IsAlive))
             {
                 if (_playerDict[player].Platform is null)
                 {
-                    Extensions.GrenadeSpawn(0.1f, player.Position, 0.1f);
                     player.Kill(Translation.NoTime);
+                    Extensions.GrenadeSpawn(0.1f, player.Position, 0.1f);
                 }
             }
 

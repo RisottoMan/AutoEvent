@@ -19,7 +19,9 @@ using Player = PluginAPI.Core.Player;
 using Server = PluginAPI.Core.Server;
 using Console = GameCore.Console;
 #if EXILED
+using AutoEvent.Events.EventArgs;
 using Exiled.API.Features;
+using Exiled.Events.EventArgs.Player;
 
 #endif
 namespace AutoEvent
@@ -27,9 +29,10 @@ namespace AutoEvent
 #if EXILED
     public class AutoEvent : Plugin<Config>
     {
-        public override System.Version Version => System.Version.Parse(DebugLogger.Version);
+        public override Version Version => Version.Parse(DebugLogger.Version);
+        public override Version RequiredExiledVersion => new Version(8, 9, 6);
         public override string Name => "AutoEvent";
-        public override string Author => "Created by KoT0XleB, extended by swd and sky, Co-Maintained by Redforce04";
+        public override string Author => "Created by a large community of programmers, map builders and just ordinary people, under the leadership of RisottoMan.";
         public static bool IsPlayedGames;
 
 #else
@@ -86,17 +89,16 @@ namespace AutoEvent
                 Singleton = this;
                 MER.Lite.API.Initialize(AutoEvent.Singleton.Config.SchematicsDirectoryPath, Config.Debug);
                 SCPSLAudioApi.Startup.SetupDependencies();
-                /*
+
 #if EXILED
                 Exiled.Events.Handlers.Player.Shot += (Exiled.Events.EventArgs.Player.ShotEventArgs ev) =>
                 {
-                    var args = new ShotEventArgs(Player.Get(ev.Player.ReferenceHub), ev.RaycastHit, ev.Hitbox, ev.Damage);
+                    var args = new NewShotEventArgs(Player.Get(ev.Player.ReferenceHub), ev.RaycastHit, ev.Hitbox, ev.Damage);
                     global::AutoEvent.Events.Handlers.Players.OnShot(args);
                     ev.Damage = args.Damage;
                     ev.CanHurt = args.CanHurt;
                 };
 #endif
-*/
                 
                 if (Config.IgnoredRoles.Contains(Config.LobbyRole))
                 {
