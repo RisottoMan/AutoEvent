@@ -3,9 +3,9 @@ using PluginAPI.Core;
 
 namespace AutoEvent.Events.EventArgs
 {
-    public class Scp018CollisionArgs
+    public class Scp018UpdateArgs
     {
-        public Scp018CollisionArgs(Scp018Projectile proj)
+        public Scp018UpdateArgs(Scp018Projectile proj)
         {
             Player = Player.Get(proj.PreviousOwner.Hub);
             Projectile = proj;

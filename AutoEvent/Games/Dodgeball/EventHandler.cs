@@ -1,40 +1,40 @@
 ﻿using AutoEvent.Events.EventArgs;
-using PlayerRoles;
-using PluginAPI.Core.Attributes;
-using PluginAPI.Enums;
-using PluginAPI.Events;
-using PlayerStatsSystem;
+using PluginAPI.Core;
+using UnityEngine;
 
 namespace AutoEvent.Games.Dodgeball
 {
     public class EventHandler
     {
         private Plugin _plugin;
+        private Translation _translation;
         public EventHandler(Plugin plugin)
         {
             _plugin = plugin;
-        }
-        public void OnScp018Bounce(Scp018BounceArgs ev)
-        {
-            ev.Pickup.DestroySelf();
-        }
-        public void OnDamage(PlayerDamageArgs ev)
-        {
-            if (ev.AttackerHandler is Scp018DamageHandler ballDamagehandler)
-            {
-                ballDamagehandler.Damage = 50;
-            }
-        }
-        [PluginEvent(ServerEventType.PlayerThrowProjectile)]
-        public void OnPlayerThrowProjectile(PlayerThrowProjectileEvent ev)
-        {
-            //_plugin.BallObjects.Add(ev.Item.PickupDropModel.gameObject);
+            _translation = plugin.Translation;
         }
 
-        [PluginEvent(ServerEventType.PlayerJoined)]
-        public void OnPlayerJoin(PlayerJoinedEvent ev)
+        // If the ball hits the player, the player will receive damage, and the ball will be destroy
+        public void OnScp018Update(Scp018UpdateArgs ev)
         {
-            ev.Player.SetRole(RoleTypeId.Spectator);
+            Collider[] _colliders = Physics.OverlapSphere(ev.Projectile.transform.position, ev.Projectile._radius);
+
+            foreach (var collider in _colliders)
+            {
+                Player player = Player.Get(collider.gameObject);
+                if (player != null && ev.Player != player)
+                {
+                    player.Damage(50, _translation.Knocked.Replace("{killer}", ev.Player.Nickname));
+                    ev.Projectile.DestroySelf();
+                    break;
+                }
+            }
+        }
+        
+        // If the ball collided with a wall, we destroy it
+        public void OnScp018Collision(Scp018CollisionArgs ev)
+        {
+            ev.Projectile.DestroySelf();
         }
 
         public void OnTeamRespawn(TeamRespawnArgs ev) => ev.IsAllowed = false;
