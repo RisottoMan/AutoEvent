@@ -32,9 +32,36 @@ Many of the settings used option types that are can be used by any plugin. Here 
 | Position |     |     |
 | Rotation |     |     |
 
+### Available Sounds - A list of sounds that can be used for this event
 
-### SoundChance
-> ### SoundInfo
+| Option    | Description                               |
+|-----------|-------------------------------------------|
+| Chance    | The chance of getting this sound          |
+| SoundName | The name of the sound                     |
+| Volume    | The volume that the sound should play at. |
+| Loop      | Should the sound loop or not.             |
+
+```
+available_sounds:   - A list of sounds that can be used for this event.
+  chance: 10   - If you have several music files, they will be selected by chance in percent. For example, 10%.
+  sound:   - This is an object that contains detailed information about your music.
+    sound_name: 'YourMusicName.ogg'   - Specify the name of your music with the ogg type.
+    volume: 25  - Specify the volume of the music. It should not be too loud [VSR 8.3.1] or quiet.
+    loop: true  - Loops the music, so if it reaches the end, it will start playing again.
+    audio_player_base:  - Do not specify anything. This is my mistake)
+```
+
+#### How do convert audio files from mp3 to ogg format?
+1) Go to website https://convertio.co/mp3-ogg/
+2) Click on the "Advanced" button to adjust the settings
+3) Settings:
+- Codec: Ogg (Vorbis)
+- Quality: Lowest  - The quality does not affect the sound quality in the game
+- Audio Channels: Mono (1.0)
+- Frequency: 48000 Hz
+- Volume: No change
+4) Insert your audio file to website and click the "Convert" button.
+5) Download and transfer the file to the Music folder.
 
 ### FriendlyFireSettings
 Be aware: Some events may override this setting if it is deemed necessary for event functionality. By default most plugins will just use whatever the default server value is. ***This feature works with CedMod.***
