@@ -62,7 +62,7 @@ available_sounds:   - A list of sounds that can be used for this event.
   - Volume: No change
 4) Insert your audio file to website and click the "Convert" button.
 5) Download and transfer the file to the Music folder.
-6) If you find an error when starting the mini-games, repeat all the steps again.
+6) If you find an error when starting the mini-games, repeat all the steps again (1 - 5).
 
 ### FriendlyFireSettings
 Be aware: Some events may override this setting if it is deemed necessary for event functionality. By default most plugins will just use whatever the default server value is. ***This feature works with CedMod.***
