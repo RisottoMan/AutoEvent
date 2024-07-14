@@ -21,7 +21,7 @@ namespace AutoEvent.Commands
                 RegisterCommand(new Run());
                 RegisterCommand(new Stop());
                 //RegisterCommand(new Lobby());
-                //RegisterCommand(new Vote());
+                RegisterCommand(new Vote());
                 RegisterCommand(new Volume());
                 RegisterCommand(new NoRestart()); 
                 //RegisterCommand(new Reload.Reload());

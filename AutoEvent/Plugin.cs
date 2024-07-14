@@ -7,11 +7,9 @@ using PluginAPI.Events;
 using MEC;
 using AutoEvent.API;
 using AutoEvent.API.Season;
-using AutoEvent.Patches;
 using PluginAPI.Core.Attributes;
 using PluginAPI.Enums;
 using PluginAPI.Helpers;
-using RemoteAdmin;
 using Event = AutoEvent.Interfaces.Event;
 using Log = PluginAPI.Core.Log;
 using Map = PluginAPI.Core.Map;
@@ -29,7 +27,7 @@ namespace AutoEvent
 #if EXILED
     public class AutoEvent : Plugin<Config>
     {
-        public override Version Version => Version.Parse(DebugLogger.Version);
+        public override Version Version => Version.Parse(PluginVersion);
         public override Version RequiredExiledVersion => new Version(8, 9, 6);
         public override string Name => "AutoEvent";
         public override string Author => "Created by a large community of programmers, map builders and just ordinary people, under the leadership of RisottoMan.";
@@ -41,6 +39,7 @@ namespace AutoEvent
         [PluginConfig("Configs/autoevent.yml")]
         public Config Config;
 #endif
+        public const string PluginVersion = "9.7.5";
         public const bool BetaRelease = false; // todo set beta to false before main release
         /// <summary>
         /// The location of the AutoEvent folder for schematics, music, external events and event config / translations.
@@ -57,7 +56,7 @@ namespace AutoEvent
         public override void OnEnabled()
 #else
         [PluginPriority(LoadPriority.Low)]
-        [PluginEntryPoint("AutoEvent", DebugLogger.Version, "An event manager plugin that allows you to run mini-games.", "KoT0XleB and Redforce04")]
+        [PluginEntryPoint("AutoEvent", PluginVersion, "An event manager plugin that allows you to run mini-games.", "KoT0XleB and Redforce04")]
         void OnEnabled()
 #endif
         {
@@ -187,6 +186,10 @@ namespace AutoEvent
             {
                 PermissionSystem.Load();
             });
+            
+#if EXILED
+            base.OnEnabled();
+#endif
         }
         public static void CreateDirectoryIfNotExists(string directory, string subPath = "")
         {
@@ -219,6 +222,9 @@ namespace AutoEvent
             EventManager.UnregisterEvents(this);
             HarmonyPatch.UnpatchAll();
             Singleton = null;
+#if EXILED
+            base.OnDisabled();
+#endif
         }
 
         public void OnEventFinished()
