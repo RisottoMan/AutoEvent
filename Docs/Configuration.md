@@ -26,6 +26,7 @@ The structures of the elements will be presented below. You can copy and paste t
 
 ## Detailed configuration
 ### Available Sounds - A list of sounds that can be used for this event
+Warning: If you add your music to the config, then default music will not be played.
 
 | Option    | Description                                                                      |
 |-----------|----------------------------------------------------------------------------------|
