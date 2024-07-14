@@ -72,7 +72,7 @@ available_sounds:   - A list of sounds that can be used for this event.
 
 ```
 available_maps:   - A list of schematics that can be used for this event.
-- # I am the first item in the list, but you can copy and paste me as the next item. Don't forget to copy all the parameters.
+- # I am the first item in the list, but you can copy and paste me as the next item.
   chance: 50
   map:  - This is an object that contains detailed information about your map.
     map_name: 'DeathParty'
