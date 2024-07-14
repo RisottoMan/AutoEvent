@@ -27,16 +27,16 @@ The structures of the elements will be presented below. You can copy and paste t
 ## Detailed configuration
 ### Available Sounds - A list of sounds that can be used for this event
 
-| Option    | Description                               |
-|-----------|-------------------------------------------|
-| Chance    | If you have several music files, they will be selected by chance in percent. For example, 10%.          |
-| SoundName | This is an object that contains detailed information about your music.                     |
-| Volume    | Specify the volume of the music. It should not be too loud (VSR 8.3.1]) or quiet. |
-| Loop      | Loops the music, so if it reaches the end, it will start playing again.            |
+| Option    | Description                                                                      |
+|-----------|----------------------------------------------------------------------------------|
+| Chance    | If you have several music files, they will be selected by chance in percent.     |
+| SoundName | This is an object that contains detailed information about your music.           |
+| Volume    | Specify the volume of the music. It should not be too loud (VSR 8.3.1) or quiet. |
+| Loop      | Loops the music, so if it reaches the end, it will start playing again.          |
 
 ```
 available_sounds:   - A list of sounds that can be used for this event.
-- # I am the first item in the list, but you can copy and paste me as the next item. Don't forget to copy all the parameters.
+- # I am the first item in the list, but you can copy and paste me as the next item.
   chance: 10
   sound:   - This is an object that contains detailed information about your music.
     sound_name: 'YourMusicName.ogg'
@@ -63,32 +63,33 @@ available_sounds:   - A list of sounds that can be used for this event.
 | Option     | Description                                                                        |
 |------------|------------------------------------------------------------------------------------|
 | Chance     | The chance that this map will be selected. If it is the only map, this is ignored. |
-| Position   | The position to spawn the map.                                                     |
-| Rotation   | The rotation of the map.                                                           |
-| Scale      | The scale of the map.                                                              |
+| MapName    | Specify the name of the folder of your schematic                                   |
+| Position   | The Vector3 type stores the x/y/z coordinates in which your map will appear.       |
+| Rotation   | The Vector3 type saves the x/y/z rotation of your map.                             |
+| Scale      | The Vector3 type saves the x/y/z size of your map.                                 |
 | IsStatic   | If there are objects in the map that use animations, then they will not be static. |
 | SeasonFlag | You can specify on which holiday to allow the map to be launched.                  |
 
 ```
 available_maps:   - A list of schematics that can be used for this event.
 - # I am the first item in the list, but you can copy and paste me as the next item. Don't forget to copy all the parameters.
-  chance: 50   - If you have several music files, they will be selected by chance in percent. For example, 10%.
+  chance: 50
   map:  - This is an object that contains detailed information about your map.
-    sound_name: 'DeathParty'   - Pay special attention that you do not specify json, but the name of the folder of your schematics.
-    position:   - The Vector3 type stores the x/y/z coordinates in which your map will appear.
+    map_name: 'DeathParty'
+    position:
       x: 10
       y: 1012
       z: -40
-    rotation:   - The Vector3 type saves the x/y/z rotation of your map.
+    rotation:
       x: 0
       y: 0
       z: 0
-    scale:   - The Vector3 type saves the x/y/z size of your map.
+    scale:
       x: 1
       y: 1
       z: 1
-    is_static: true   - Optimizes the tps for your server if you specify true, but does not work with animations.
-  season_flag: None   - Specify None if you want your map to always work, not on holidays.
+    is_static: true
+  season_flag: None
 ```
 
 ### FriendlyFireSettings
