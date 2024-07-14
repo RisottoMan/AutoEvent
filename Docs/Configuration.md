@@ -8,7 +8,7 @@ All configs have shared options that are present in any config. If use improperl
 
 | Option Name                 | Description                                                                                                                                                    | See Also:             |
 |-----------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------|
-| Available Maps              | Allows you to specify a map or list of maps to choose from for the event to use. **Some events require custom components in the event to work, such as jail.** | MapChance             |
+| Available Maps              | Allows you to specify a map or list of maps to choose from for the event to use. **Some events require custom components in the event to work, such as versus.** | MapChance             |
 | Available Sounds            | Allows you to specify an audio or list of audios to choose from for the event to use.                                                                          | SoundChance           |
 | Event Friendly Fire Autoban | Allows you to manually specify whether or not the friendly fire autoban should be enabled / disabled.                                                          | FriendlyFireSettings  |
 | Event Friendly Fire         | Allows you to manually specify whether friendly fire should be allowed for an event.                                                                           | FriendlyFireSettings  |
@@ -44,34 +44,3 @@ Be aware: Some events may override this setting if it is deemed necessary for ev
 | Enable  | Enable Friendly Fire / Friendly Fire Autoban for the round.  |
 | Disable | Disable Friendly Fire / Friendly Fire Autoban for the round. |
 | Default | Use whatever the default server setting is.                  |
-
-### Vector3
-
-
-### Loadout
-
-
-
-
-## Battle
-
-
-## Boss
-## Deathmatch
-## DeathParty
-## Escape
-## FallDown
-## FinishWay
-## Football
-## Glass
-## GunGame
-## HideAndSeek
-## Infection
-## Jail
-## Knives
-## Lava
-## Line
-## Puzzle
-## Survival
-## Versus
-## ZombieEscape
