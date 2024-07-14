@@ -1,5 +1,4 @@
-﻿using AutoEvent.API.Attributes;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -40,8 +39,7 @@ namespace AutoEvent.Interfaces
                         continue;
                     
                     object evBase = Activator.CreateInstance(type);
-                        if(evBase is null || evBase is not Event ev ||
-                        type.GetCustomAttributes(typeof(DisabledFeaturesAttribute), false).Any(x => x is not null))
+                        if(evBase is null || evBase is not Event ev)
                         continue;
 
                     if (!ev.AutoLoad)

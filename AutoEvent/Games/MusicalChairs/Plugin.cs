@@ -249,8 +249,8 @@ namespace AutoEvent.Games.MusicalChairs
             {
                 if (_playerDict[player].Platform is null)
                 {
-                    player.Kill(Translation.NoTime);
                     Extensions.GrenadeSpawn(0.1f, player.Position, 0.1f);
+                    player.Kill(Translation.NoTime);
                 }
             }
 

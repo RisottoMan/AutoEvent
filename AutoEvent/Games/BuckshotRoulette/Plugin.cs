@@ -9,7 +9,6 @@ using PluginAPI.Core;
 using PluginAPI.Events;
 using AutoEvent.Events.Handlers;
 using AutoEvent.Interfaces;
-using AutoEvent.API.RNG;
 using AdminToys;
 using CustomPlayerEffects;
 using System.Text;
@@ -234,6 +233,7 @@ public class Plugin : Event, IEventMap, IInternalEvent, IHidden
         {
             foreach(var shell in _shells)
             {
+                /*
                 if (RNGGenerator.GetRandomNumber(0, 1) == 0)
                 {
                     shell.Object.MaterialColor = Color.red;
@@ -244,13 +244,14 @@ public class Plugin : Event, IEventMap, IInternalEvent, IHidden
                     shell.Object.MaterialColor = Color.cyan;
                     shell.IsLoaded = false;
                 }
+                */
                 shell.IsUsed = false;
             } 
         }
 
         // The game is starting
         text = Translation.Cycle;
-        Choser ??= RNGGenerator.GetRandomNumber(0, 1) == 0 ? _scientist : _classD;
+        //Choser ??= RNGGenerator.GetRandomNumber(0, 1) == 0 ? _scientist : _classD;
         EventState = EventState.Playing;
     }
 

@@ -40,7 +40,7 @@ public class Debug : ParentCommand
         this.RegisterCommand(new InfiniteAmmo());
         this.RegisterCommand(new ImpactGrenade());
         this.RegisterCommand(new SetRole());
-        this.RegisterCommand(new RNG());
+        //this.RegisterCommand(new RNG());
     }
 
     protected override bool ExecuteParent(ArraySegment<string> arguments, ICommandSender sender, [UnscopedRef] out string response)

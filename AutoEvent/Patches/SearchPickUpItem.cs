@@ -1,14 +1,12 @@
 ﻿using AutoEvent.Events.EventArgs;
 using AutoEvent.Events.Handlers;
-using Exiled.Events.EventArgs.Player;
 using HarmonyLib;
 using InventorySystem.Searching;
 using PluginAPI.Core;
 
 namespace AutoEvent.Patches
 {
-    //[HarmonyPatch(typeof(ItemSearchCompletor), nameof(ItemSearchCompletor.ValidateStart))]
-    //[HarmonyPatch(typeof(SearchCoordinator), nameof(SearchCoordinator.ReceiveRequestUnsafe))]
+    [HarmonyPatch(typeof(SearchCoordinator), nameof(SearchCoordinator.ReceiveRequestUnsafe))]
     internal static class SearchPickUpItem
     {
         public static bool Prefix(SearchCoordinator __instance)
