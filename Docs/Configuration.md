@@ -6,12 +6,12 @@ All configs have shared options that are present in any config. If use improperl
 
 ### Available Shared Options:
 
-| Option Name                 | Description                                                                                                                                                    | See Also:             |
-|-----------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------|
-| Available Maps              | Allows you to specify a map or list of maps to choose from for the event to use. **Some events require custom components in the event to work, such as versus.** | MapChance             |
-| Available Sounds            | Allows you to specify an audio or list of audios to choose from for the event to use.                                                                          | SoundChance           |
-| Event Friendly Fire Autoban | Allows you to manually specify whether or not the friendly fire autoban should be enabled / disabled.                                                          | FriendlyFireSettings  |
-| Event Friendly Fire         | Allows you to manually specify whether friendly fire should be allowed for an event.                                                                           | FriendlyFireSettings  |
+| Option Name                 | Description                                                                                                                                                    |
+|-----------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Available Maps              | Allows you to specify a map or list of maps to choose from for the event to use. **Some events require custom components in the event to work, such as versus.** |
+| Available Sounds            | Allows you to specify an audio or list of audios to choose from for the event to use.                                                                          |
+| Event Friendly Fire Autoban | Allows you to manually specify whether or not the friendly fire autoban should be enabled / disabled.                                                          |
+| Event Friendly Fire         | Allows you to manually specify whether friendly fire should be allowed for an event.                                                                           |
 | Debug                       | Should debug mode be enabled for this plugin. For any built in plugins, this option is ignored, and the base config option is used instead.                    |                       |
 
 #### What does list mean? 
