@@ -1,4 +1,4 @@
-﻿# Events and Configs
+﻿# Configuration of configs
 A List of Events and a list of config options they support.
 
 ## General
