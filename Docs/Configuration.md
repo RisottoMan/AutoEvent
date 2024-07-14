@@ -29,20 +29,20 @@ The structures of the elements will be presented below. You can copy and paste t
 
 | Option    | Description                               |
 |-----------|-------------------------------------------|
-| Chance    | The chance of getting this sound          |
-| SoundName | The name of the sound                     |
-| Volume    | The volume that the sound should play at. |
-| Loop      | Should the sound loop or not.             |
+| Chance    | If you have several music files, they will be selected by chance in percent. For example, 10%.          |
+| SoundName | This is an object that contains detailed information about your music.                     |
+| Volume    | Specify the volume of the music. It should not be too loud (VSR 8.3.1]) or quiet. |
+| Loop      | Loops the music, so if it reaches the end, it will start playing again.            |
 
 ```
 available_sounds:   - A list of sounds that can be used for this event.
 - # I am the first item in the list, but you can copy and paste me as the next item. Don't forget to copy all the parameters.
-  chance: 10   - If you have several music files, they will be selected by chance in percent. For example, 10%.
+  chance: 10
   sound:   - This is an object that contains detailed information about your music.
-    sound_name: 'YourMusicName.ogg'   - Specify the name of your music with the ogg type.
-    volume: 25  - Specify the volume of the music. It should not be too loud [VSR 8.3.1] or quiet.
-    loop: true  - Loops the music, so if it reaches the end, it will start playing again.
-    audio_player_base:  - Do not specify anything. This is my mistake)
+    sound_name: 'YourMusicName.ogg'
+    volume: 25
+    loop: true
+    audio_player_base:
 ```
 
 #### How do convert audio files from mp3 to ogg format?
