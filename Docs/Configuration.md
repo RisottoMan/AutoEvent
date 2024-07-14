@@ -14,24 +14,16 @@ All configs have shared options that are present in any config. If use improperl
 | Event Friendly Fire         | Allows you to manually specify whether friendly fire should be allowed for an event.                                                                           | FriendlyFireSettings  |
 | Debug                       | Should debug mode be enabled for this plugin. For any built in plugins, this option is ignored, and the base config option is used instead.                    |                       |
 
+#### What does list mean? 
+This means that you can add multiple audio files and schematics to your config at the same time.
 
-### General Setting Types
-Many of the settings used option types that are can be used by any plugin. Here are the general option types to be aware of. 
+```
+available_sounds:
+- This is the first item in the list
+- This is the second item in the list
+```
 
-### MapChance
-
-| Option | Description                                                                        |
-|--------|------------------------------------------------------------------------------------|
-| Chance | The chance that this map will be selected. If it is the only map, this is ignored. |
-| Map    | The MapInfo (See Below) for the map.                                               |
-
-> ### MapInfo
-| Option   |     |     | 
-|----------|-----|-----|
-| MapName  |     |     |
-| Position |     |     |
-| Rotation |     |     |
-
+## Detailed configuration
 ### Available Sounds - A list of sounds that can be used for this event
 
 | Option    | Description                               |
@@ -63,6 +55,38 @@ available_sounds:   - A list of sounds that can be used for this event.
 4) Insert your audio file to website and click the "Convert" button.
 5) Download and transfer the file to the Music folder.
 6) If you find an error when starting the mini-games, repeat all the steps again (1 - 5).
+
+### Available Maps
+
+| Option     | Description                                                                        |
+|------------|------------------------------------------------------------------------------------|
+| Chance     | The chance that this map will be selected. If it is the only map, this is ignored. |
+| Position   | The position to spawn the map.                                                     |
+| Rotation   | The rotation of the map.                                                           |
+| Scale      | The scale of the map.                                                              |
+| IsStatic   | If there are objects in the map that use animations, then they will not be static. |
+| SeasonFlag | You can specify on which holiday to allow the map to be launched.                  |
+
+```
+available_maps:   - A list of schematics that can be used for this event.
+  chance: 50   - If you have several music files, they will be selected by chance in percent. For example, 10%.
+  map:  - This is an object that contains detailed information about your map.
+    sound_name: 'DeathParty'   - Pay special attention that you do not specify json, but the name of the folder of your schematics.
+    position:   - The Vector3 type stores the x/y/z coordinates in which your map will appear.
+      x: 10
+      y: 1012
+      z: -40
+    rotation:   - The Vector3 type saves the x/y/z rotation of your map.
+      x: 0
+      y: 0
+      z: 0
+    scale:   - The Vector3 type saves the x/y/z size of your map.
+      x: 1
+      y: 1
+      z: 1
+    is_static: true   - Optimizes the tps for your server if you specify true, but does not work with animations.
+  season_flag: None   - Specify None if you want your map to always work, not on holidays.
+```
 
 ### FriendlyFireSettings
 Be aware: Some events may override this setting if it is deemed necessary for event functionality. By default most plugins will just use whatever the default server value is. ***This feature works with CedMod.***
