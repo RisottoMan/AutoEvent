@@ -22,6 +22,7 @@ available_sounds:
 - This is the first item in the list
 - This is the second item in the list
 ```
+The structures of the elements will be presented below. You can copy and paste them as I indicated here. A minus sign indicates a new object.
 
 ## Detailed configuration
 ### Available Sounds - A list of sounds that can be used for this event
@@ -35,6 +36,7 @@ available_sounds:
 
 ```
 available_sounds:   - A list of sounds that can be used for this event.
+- # I am the first item in the list, but you can copy and paste me as the next item. Don't forget to copy all the parameters in me.
   chance: 10   - If you have several music files, they will be selected by chance in percent. For example, 10%.
   sound:   - This is an object that contains detailed information about your music.
     sound_name: 'YourMusicName.ogg'   - Specify the name of your music with the ogg type.
@@ -69,6 +71,7 @@ available_sounds:   - A list of sounds that can be used for this event.
 
 ```
 available_maps:   - A list of schematics that can be used for this event.
+- # I am the first item in the list, but you can copy and paste me as the next item. Don't forget to copy all the parameters in me.
   chance: 50   - If you have several music files, they will be selected by chance in percent. For example, 10%.
   map:  - This is an object that contains detailed information about your map.
     sound_name: 'DeathParty'   - Pay special attention that you do not specify json, but the name of the folder of your schematics.
