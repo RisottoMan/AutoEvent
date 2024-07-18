@@ -1,0 +1,27 @@
+name: '西蒙监狱'
+description: '监狱模式，你需要举办各种活动[或是残暴统治(bushi]。'
+command_name: 'jail'
+start: |-
+  <color=yellow><color=red><b><i>{name}</i></b></color>
+  <i>通过射击大按钮来触发或解除封锁</i>
+  开始前： <color=red>{time}</color> 秒</color>
+start_prisoners: |-
+  <color=yellow><color=red><b><i>{name}</i></b></color>
+  <i>不惜一切代价逃出监狱。小心。地图上散落着一些物品可以帮助你生存。</i>
+  开始前： <color=red>{time}</color> 秒</color>
+cycle: |-
+  <size=20><color=red>{name}</color>
+  <color=yellow>囚犯： {dclasscount}</color> || <color=#14AAF5>狱卒： {mtfcount}</color>
+  <color=red>{time}</color></size>
+prisoners_win: |-
+  <color=red><b><i>囚犯胜利</i></b></color>
+  <color=red>{time}</color>
+jailers_win: |-
+  <color=#14AAF5><b><i>狱卒胜利</i></b></color>
+  <color=red>{time}</color>
+lockdown_on_cooldown: '你不能在冷却期间触发封锁。冷却剩余时间：{cooldown}'
+lives_remaining: '你还有 {lives} 条命。'
+no_lives_remaining: '你没有更多的命了。'
+# 不要修改这里。这会导致错误。AutoEvent 会自动管理这些设置。
+version: '1.0.0'
+language: 'ZH'
