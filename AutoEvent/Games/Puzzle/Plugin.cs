@@ -20,30 +20,30 @@ using Version = System.Version;
 namespace AutoEvent.Games.Puzzle
 {
     public class Plugin : Event, IEventSound, IEventMap, IInternalEvent
-    { //todo: add some configs for a platform choose speed, and platform fall delay. Maybe make this a scale from 1 - 10 or something.
+    {
         public override string Name { get; set; } = "Puzzle";
         public override string Description { get; set; } = "Get up the fastest on the right color";
-        public override string Author { get; set; } = "KoT0XleB";
+        public override string Author { get; set; } = "RisottoMan && Redforce";
         public override string CommandName { get; set; } = "puzzle";
-        public override Version Version { get; set; } = new Version(1, 0, 2);
-        [EventConfig]
-        public Config Config { get; set; }
-        [EventConfigPreset] 
-        public Config ColorMatch => Preset.ColorMatch;
-        [EventConfigPreset] 
-        public Config Run => Preset.Run;
-        [EventTranslation]
-        public Translation Translation { get; set; }
-        public MapInfo MapInfo { get; set; } = new MapInfo()
-        { 
-            MapName = "Puzzle", 
+        public override Version Version { get; set; } = new Version(1, 1, 0);
+        [EventConfig] public Config Config { get; set; }
+        [EventConfigPreset] public Config ColorMatch => Preset.ColorMatch;
+        [EventConfigPreset] public Config Run => Preset.Run;
+        [EventTranslation] public Translation Translation { get; set; }
+
+        public MapInfo MapInfo { get; set; } = new()
+        {
+            MapName = "Puzzle",
             Position = new Vector3(76f, 1026.5f, -43.68f)
         };
-        public SoundInfo SoundInfo { get; set; } = new SoundInfo()
-        { 
-            SoundName = "ChristmasMusic.ogg", 
-            Volume = 7
+
+        public SoundInfo SoundInfo { get; set; } = new()
+        {
+            SoundName = "Puzzle.ogg",
+            Volume = 15,
+            Loop = true
         };
+
         protected override float PostRoundDelay { get; set; } = 10f;
         private EventHandler _eventHandler { get; set; }
         private GridSelector GridSelector { get; set; }
@@ -52,18 +52,24 @@ namespace AutoEvent.Games.Puzzle
         /// </summary>
         private List<GameObject> _listPlatforms;
 
+        // Lists of game objects
         private List<GameObject> _colorIndicators;
+        private List<GameObject> _nonFallingPlatforms;
 
+        private int _stage;
+        private EventState _eventState;
+        private TimeSpan _countdown;
+        private GridData _currentGridData;
+        
         /// <summary>
         /// All platforms in the map.
         /// </summary>
-        private Dictionary<ushort, GameObject> _platforms; 
-        private GameObject _lava;
-        private int _stage;
+        private Dictionary<ushort, GameObject> _platforms;
         private int _finaleStage => Config.Rounds;
-        private float _speed = 5;
-        private float _timeDelay = 0.5f;
-        private string _stageText;
+        private float _speed;
+        private float _timeDelay;
+        private float _fallDelay;
+
         protected override void RegisterEvents()
         {
             _eventHandler = new EventHandler();
@@ -88,22 +94,43 @@ namespace AutoEvent.Games.Puzzle
             _eventHandler = null;
         }
 
+        /// <summary>
+        /// Interaction with players and objects before the start of the game
+        /// </summary>
         protected override void OnStart()
         {
-            GridSelector = new GridSelector(Config.PlatformsOnEachAxis, Config.PlatformsOnEachAxis, Config.Salt, Config.SeedMethod);
-            // _platforms = MapInfo.Map.AttachedBlocks.Where(x => x.name == "Platform").ToList();
-            _platforms = new Dictionary<ushort, GameObject>();
-            _lava = MapInfo.Map.AttachedBlocks.First(x => x.name == "Lava");
-            _lava.AddComponent<LavaComponent>().StartComponent(this);
-            _colorIndicators = MapInfo.Map.AttachedBlocks.Where(x => x.name == "Cube").ToList();
+            _platforms = new();
+            _colorIndicators = new();
+            GameObject spawnpoint = new();
+            GridSelector = new GridSelector(Config.PlatformsOnEachAxis, Config.PlatformsOnEachAxis, Config.Salt);
+            
+            foreach (GameObject block in MapInfo.Map.AttachedBlocks)
+            {
+                switch (block.name)
+                {
+                    case "Lava":
+                        block.AddComponent<LavaComponent>().StartComponent(this);
+                        break;
+                    case "Indicator":
+                        _colorIndicators.Add(block);
+                        break;
+                    case "Spawnpoint":
+                        spawnpoint = block;
+                        break;
+                }
+            }
+
             GeneratePlatforms(Config.PlatformsOnEachAxis);
             foreach (Player player in Player.GetPlayers())
             {
                 Extensions.SetRole(player, RoleTypeId.ClassD, RoleSpawnFlags.None);
-                player.Position = RandomClass.GetSpawnPosition(MapInfo.Map);
+                player.Position = spawnpoint.transform.position;
             }
         }
 
+        /// <summary>
+        /// Generates platforms before starting the game
+        /// </summary>
         private void GeneratePlatforms(int amountPerAxis = 5)
         {
             float areaSizeX = 20f;
@@ -124,13 +151,7 @@ namespace AutoEvent.Games.Puzzle
                     platforms.Add(plat);
                 }
             }
-            var primary = MapInfo.Map.AttachedBlocks.FirstOrDefault(x => x.name == "Platform");
-            foreach(var plat in MapInfo.Map.AttachedBlocks.Where(x => x.name == "Platform"))
-            {
-                if (plat.GetInstanceID() != primary.GetInstanceID())
-                    GameObject.Destroy(plat);
-            }
-
+            
             ushort id = 0;
             foreach (Platform platform in platforms)
             {
@@ -149,21 +170,21 @@ namespace AutoEvent.Games.Puzzle
                 _platforms.Add(id, obj.gameObject);
                 id++;
             }
-
-            GameObject.Destroy(primary);
         }
 
+        /// <summary>
+        /// Broadcast before the start of the game
+        /// </summary>
         protected override IEnumerator<float> BroadcastStartCountdown()
         {
-            for (int time = 15; time > 0; time--)
+            for (int time = 10; time > 0; time--)
             {
-                Extensions.Broadcast($"{Translation.MainMessage}\n{Translation.Start.Replace("{time}", $"{time}")}", 1);
+                string text = Translation.Start.Replace("{name}", Name).Replace("{time}", $"{time}");
+                Extensions.Broadcast(text, 1);
                 yield return Timing.WaitForSeconds(1f);
             }
-        }
 
-        protected override void CountdownFinished()
-        {
+            _eventState = 0;
             _stage = 1;
             _speed = 5;
             _timeDelay = 0.5f;
@@ -174,46 +195,61 @@ namespace AutoEvent.Games.Puzzle
         {
             // Stage is smaller than the final stage &&
             // at least one player is alive.
+            _countdown = _countdown.TotalSeconds > 0 ? _countdown.Subtract(new TimeSpan(0, 0, 1)) : TimeSpan.Zero;
             return !(_stage <= _finaleStage && Player.GetPlayers().Count(r => r.IsAlive) > 0);
         }
 
-        protected override IEnumerator<float> RunGameCoroutine()
+        /// <summary>
+        /// The logic of the mini-game
+        /// </summary>
+        protected override void ProcessFrame()
         {
-            while (!IsRoundDone() || DebugLogger.AntiEnd)
+            switch (_eventState)
             {
-                if (KillLoop)
-                {
-                    yield break;
-                }
-                var puzzleCoroutine = Timing.RunCoroutine(PuzzleCoroutine(), "Puzzle Coroutine");
-                yield return Timing.WaitUntilDone(puzzleCoroutine);
-
-                EventTime = EventTime.Add(new TimeSpan(0, 0,1));
-                yield return Timing.WaitForSeconds(1f);
+                case EventState.Waiting:
+                    UpdateWaitingState();
+                    break;
+                case EventState.Starting:
+                    UpdateStartingState();
+                    break;
+                case EventState.Falling:
+                    UpdateFallingState();
+                    break;
+                case EventState.Returning:
+                    UpdateReturningState();
+                    break;
+                case EventState.Ending:
+                    UpdateEndingState();
+                    break;
             }
-            yield break;
-        }
 
-        public IEnumerator<float> PuzzleCoroutine()
-        {
-            float selectionDelay = Config.SelectionTime.GetValue(_stage, 10,0,10);
-            float fallDelay = Config.FallDelay.GetValue(_stage, 10, .3f,8);
-            _stageText = Translation.Stage
+            DebugLogger.LogDebug(_eventState.ToString());
+            string text = Translation.Stage
+                .Replace("{name}", Name)
                 .Replace("{stageNum}", $"{_stage}")
                 .Replace("{stageFinal}", $"{_finaleStage}")
-                .Replace("{plyCount}", $"{Player.GetPlayers().Count(r => r.IsAlive)}");
+                .Replace("{count}", $"{Player.GetPlayers().Count(r => r.IsAlive)}");
+            Extensions.Broadcast(text, 1);
+        }
 
-            // Wait for platform selection.
+        /// <summary>
+        /// Задаем начальные значения
+        /// </summary>
+        protected void UpdateWaitingState()
+        {
+            float selectionDelay = Config.SelectionTime.GetValue(_stage, 10, 0, 10);
+            _fallDelay = Config.FallDelay.GetValue(_stage, 10, .3f,8);
             int spread = (int)Config.PlatformSpread.GetValue(_stage, Config.Rounds, 1, 3);
             float hueOffset = Config.HueDifficulty.GetValue(_stage, Config.Rounds, 0, 1);
             float satOffset = Config.SaturationDifficulty.GetValue(_stage, Config.Rounds, 0, 1);
             float vOffset = Config.VDifficulty.GetValue(_stage, Config.Rounds, 0, 1);
             int safePlatformCount = (int)Config.NonFallingPlatforms.GetValue(_stage, Config.Rounds, 1, 100);
-            var data = GridSelector.SelectGridItem((byte)spread, true, null, hueOffset, satOffset, vOffset, safePlatformCount);
+            _currentGridData = GridSelector.SelectGridItem((byte)spread, true, null, hueOffset, satOffset, vOffset, safePlatformCount);
             DebugLogger.LogDebug($"Stage {_stage}: spread: {spread}, platformCount: {safePlatformCount}, hsv: {hueOffset}, {satOffset}, {vOffset}");
-            var color = new Color(data.SafePoints.First().Value.R / 255f, data.SafePoints.First().Value.G / 255f,
-                data.SafePoints.First().Value.B / 255f);
-
+            var color = new Color(_currentGridData.SafePoints.First().Value.R / 255f, 
+                _currentGridData.SafePoints.First().Value.G / 255f, 
+                _currentGridData.SafePoints.First().Value.B / 255f);
+            
             if (Config.UseRandomPlatformColors)
             {
                 foreach (GameObject colorIndicator in _colorIndicators)
@@ -221,55 +257,68 @@ namespace AutoEvent.Games.Puzzle
                     colorIndicator.GetComponent<PrimitiveObjectToy>().NetworkMaterialColor = color;
                 }
             }
-            for (float time = (float)Math.Ceiling(selectionDelay / _timeDelay); time > 0; time--)
-            {
-                foreach (var platform in _platforms.Values)
-                {
-                    platform.GetComponent<PrimitiveObjectToy>().NetworkMaterialColor =
-                        new Color(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f), 1f);
-                }
+            
+            _countdown = TimeSpan.FromSeconds((float)Math.Ceiling(selectionDelay / _timeDelay));
+            FrameDelayInSeconds = _timeDelay;
+            _eventState++;
+        }
 
-                Extensions.Broadcast($"<b>{Name}</b>\n{_stageText}", 1);
-                yield return Timing.WaitForSeconds(_timeDelay);
+        /// <summary>
+        /// The game is in an active process when the platforms change their color
+        /// </summary>
+        protected void UpdateStartingState() // скорость с которой вызывается StartingState слишком маленькая
+        {
+            foreach (var platform in _platforms.Values)
+            {
+                platform.GetComponent<PrimitiveObjectToy>().NetworkMaterialColor =
+                    new Color(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f), 1f);
             }
 
-            List<GameObject> nonFallingPlatforms = new List<GameObject>();
+            if (_countdown.TotalSeconds > 0)
+                return;
+
+            // Change the color of those platforms that should fall to magenta
+            _nonFallingPlatforms = new List<GameObject>();
             _listPlatforms = new List<GameObject>();
-            foreach (var pnt in data.SafePoints)
+            foreach (var pnt in _currentGridData.SafePoints)
             {
-                nonFallingPlatforms.Add(_platforms[pnt.Key]);
+                _nonFallingPlatforms.Add(_platforms[pnt.Key]);
             }
             try
             {
-                foreach (var plat in nonFallingPlatforms)
+                foreach (var plat in _nonFallingPlatforms)
                 {
 
                     if (Config.UseRandomPlatformColors)
                     {
-                        plat.GetComponent<PrimitiveObjectToy>().NetworkMaterialColor = color;
+                        plat.GetComponent<PrimitiveObjectToy>().NetworkMaterialColor = new Color(
+                            _currentGridData.SafePoints.First().Value.R / 255f, 
+                            _currentGridData.SafePoints.First().Value.G / 255f, 
+                            _currentGridData.SafePoints.First().Value.B / 255f);
                     }
                     else
+                    {
                         plat.GetComponent<PrimitiveObjectToy>().NetworkMaterialColor = Color.green;
+                    }
                 }
             }
             catch (Exception e)
             {
                 DebugLogger.LogDebug($"Caught an exception while selecting colors. Exception: \n{e}");
             }
-            // Platform Selection.
 
-            // Platforms have been selected.
             foreach (var kvp in _platforms)
             {
-                if (!nonFallingPlatforms.Contains(kvp.Value))
+                if (!_nonFallingPlatforms.Contains(kvp.Value))
                 {
                     if (Config.UseRandomPlatformColors)
                     {
                         try
                         {
                             kvp.Value.GetComponent<PrimitiveObjectToy>().NetworkMaterialColor = new Color(
-                                data.Points[kvp.Key].R / 255f, data.Points[kvp.Key].G / 255f,
-                                data.Points[kvp.Key].B / 255f);
+                                _currentGridData.Points[kvp.Key].R / 255f, 
+                                _currentGridData.Points[kvp.Key].G / 255f,
+                                _currentGridData.Points[kvp.Key].B / 255f);
                         }
                         catch (Exception e)
                         {
@@ -284,58 +333,88 @@ namespace AutoEvent.Games.Puzzle
                     _listPlatforms.Add(kvp.Value);
                 }
             }
-                
-            
-            // Delay before fall.
-            Extensions.Broadcast($"<b>{Translation.MainMessage}</b>\n{_stageText}", (ushort)(fallDelay + 1));
-            yield return Timing.WaitForSeconds(fallDelay);
 
-            // Platforms Fall.
+            FrameDelayInSeconds = 1;
+            _countdown = TimeSpan.FromSeconds(_fallDelay);
+            _eventState++;
+        }
+
+        /// <summary>
+        /// Platforms are falling down
+        /// </summary>
+        protected void UpdateFallingState()
+        {
+            if (_countdown.TotalSeconds > 0)
+                return;
+
             foreach (var platform in _platforms.Values)
             {
-                if (!nonFallingPlatforms.Contains(platform))
+                if (!_nonFallingPlatforms.Contains(platform))
                 {
                     platform.transform.position += Vector3.down * 5;
                 }
             }
-               
-            // Wait for platforms to return.
-            Extensions.Broadcast($"<b>{Translation.MainMessage}</b>\n{_stageText}", (ushort)(fallDelay + 1));
-            yield return Timing.WaitForSeconds(fallDelay);
-                
-            // Platforms Return.
+            
+            _countdown = TimeSpan.FromSeconds(_fallDelay);
+            _eventState++;
+        }
+
+        /// <summary>
+        /// The platforms are coming back
+        /// </summary>
+        protected void UpdateReturningState()
+        {
+            if (_countdown.TotalSeconds > 0)
+                return;
+
             foreach (var platform in _platforms.Values)
             {
-                if (!nonFallingPlatforms.Contains(platform))
+                if (!_nonFallingPlatforms.Contains(platform))
                 {
                     platform.transform.position += Vector3.up * 5;
                 }
             }
-            Extensions.Broadcast($"<b>{Translation.MainMessage}</b>\n{_stageText}", (ushort)(_speed + 1.5f));
-            yield return Timing.WaitForSeconds(_speed);
+            
+            _countdown = TimeSpan.FromSeconds(_speed);
+            _eventState++;
+        }
+
+        /// <summary>
+        /// Wait for a while
+        /// </summary>
+        protected void UpdateEndingState()
+        {
+            if (_countdown.TotalSeconds > 0)
+                return;
 
             _speed -= 0.39f;
             _stage++;
             _timeDelay -= 0.039f;
+            _eventState = 0;
         }
 
         protected override void OnFinished()
         {
-            if (Player.GetPlayers().Count(r => r.IsAlive) < 1)
+            string text;
+            int count = Player.GetPlayers().Count(r => r.IsAlive);
+
+            if (count < 1)
             {
-                Extensions.Broadcast($"<b>{Translation.MainMessage}</b>\n{Translation.AllDied}", 10);
+                text = Translation.AllDied.Replace("{name}", Name);
             }
-            else if (Player.GetPlayers().Count(r => r.IsAlive) == 1)
+            else if (count == 1)
             {
-                var player = Player.GetPlayers().First(r => r.IsAlive).DisplayNickname;
-                Extensions.Broadcast($"<b>{Translation.MainMessage}</b>\n{Translation.Winner.Replace("{winner}", $"{player}")}", 10);
+                string nickname = Player.GetPlayers().First(r => r.IsAlive).Nickname;
+                text = Translation.Winner.Replace("{name}", Name).Replace("{winner}", nickname);
             }
             else
             {
-                Extensions.Broadcast($"<b>{Translation.MainMessage}</b>\n{Translation.SomeSurvived}", 10);
+                text = Translation.SomeSurvived.Replace("{name}", Name).Replace("{count}", $"{count}");
             }
-        }
 
+            Extensions.Broadcast(text, 10);
+        }
+        
         protected override void OnCleanup()
         {
             foreach (var platform in this._platforms)
