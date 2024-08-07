@@ -23,7 +23,7 @@ namespace AutoEvent.Patches
                 if (AttachmentsServerHandler.PlayerPreferences.TryGetValue(__instance.ReferenceHub, out var preferedAllAttachmets)
                     && preferedAllAttachmets.TryGetValue(item, out var preferedAttachments))
                 {
-                    firearmStatusFlags |= (FirearmStatusFlags)preferedAttachments;
+                    firearm.ApplyAttachmentsCode(preferedAttachments, true);
                 }
 
                 if (firearm.Attachments.Any((Attachment a) => a.Name == AttachmentName.Flashlight))
