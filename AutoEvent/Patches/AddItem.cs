@@ -1,13 +1,10 @@
-﻿using Exiled.API.Enums;
-using Exiled.API.Extensions;
-using HarmonyLib;
+﻿using HarmonyLib;
 using InventorySystem;
 using InventorySystem.Items;
 using InventorySystem.Items.Firearms;
 using InventorySystem.Items.Firearms.Attachments;
 using InventorySystem.Items.Firearms.Attachments.Components;
 using PluginAPI.Core;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace AutoEvent.Patches
