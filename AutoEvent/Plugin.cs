@@ -97,6 +97,14 @@ namespace AutoEvent
                     ev.Damage = args.Damage;
                     ev.CanHurt = args.CanHurt;
                 };
+                
+                Exiled.Events.Handlers.Player.SearchingPickup += (Exiled.Events.EventArgs.Player.SearchingPickupEventArgs ev) =>
+                {
+                    var args = new SearchPickUpItemArgs(Player.Get(ev.Player.ReferenceHub), ev.Pickup.Base, ev.SearchSession, ev.SearchCompletor, ev.SearchTime);
+                    global::AutoEvent.Events.Handlers.Players.OnSearchPickUpItem(args);
+                    ev.IsAllowed = args.IsAllowed;
+                    ev.SearchTime = args.SearchTime;
+                };
 #endif
                 
                 if (Config.IgnoredRoles.Contains(Config.LobbyRole))

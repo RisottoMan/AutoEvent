@@ -8,6 +8,6 @@ using PlayerRoles;
 namespace AutoEvent.Games.Deathrun;
 public class Config : EventConfig
 {
-    [Description("How long the round should last in seconds.")]
-    public int RoundDurationInSeconds { get; set; } = 300;
+    [Description("How long the round should last in minutes.")]
+    public int RoundDurationInMinutes { get; set; } = 5;
 }
