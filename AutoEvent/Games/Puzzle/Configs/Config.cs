@@ -2,7 +2,6 @@
 using System.ComponentModel;
 using AutoEvent.API;
 using AutoEvent.API.Season.Enum;
-using AutoEvent.Games.Glass;
 using AutoEvent.Interfaces;
 using UnityEngine;
 
@@ -26,9 +25,6 @@ public class Config : EventConfig
 
     [Description("The number of rounds in the match.")]
     public int Rounds { get; set; } = 10;
-
-    [Description("The Random Number Generator Method to use with the seeding algorithim.")]
-    public SeedMethod SeedMethod { get; set; } = SeedMethod.UnityRandom;
 
     [Description("Salt for the RNG.")] 
     public string Salt { get; set; } = "salty hashbrown";

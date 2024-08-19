@@ -5,7 +5,7 @@ cycle: |-
   <size=60>{name}</size>
   <size=25><i>{task}</i>
   <i><color=#42AAFF>{ctCount} Contras</color> <b>/</b> <color=green>{tCount} Terroristas</color></i>
-  <i>Round Time: {time}</i></size>
+  <i>Tempo de Partida: {time}</i></size>
 no_planted_counter: 'Proteja os pontos A e B de terroristas'
 no_planted_terror: 'Plante uma bomba no ponto A ou B'
 planted_counter: '<color=red>Desarme a bomba antes que ela exploda</color>'

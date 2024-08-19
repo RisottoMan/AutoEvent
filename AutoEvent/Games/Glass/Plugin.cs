@@ -25,9 +25,9 @@ namespace AutoEvent.Games.Glass
     {
         public override string Name { get; set; } = "Dead Jump";
         public override string Description { get; set; } = "Jump on fragile platforms";
-        public override string Author { get; set; } = "KoT0XleB";
+        public override string Author { get; set; } = "RisottoMan && Redforce";
         public override string CommandName { get; set; } = "glass";
-        public override Version Version { get; set; } = new Version(1, 0, 5);
+        public override Version Version { get; set; } = new Version(1, 1, 0);
         [EventConfig]
         public Config Config { get; set; }
         [EventTranslation]
@@ -49,6 +49,7 @@ namespace AutoEvent.Games.Glass
         private GameObject _lava;
         private GameObject _finish;
         private GameObject _wall;
+        private GameObject _spawnpoints;
         private int _matchTimeInSeconds;
         private TimeSpan _remaining;
         private bool isPlayerFinished;
@@ -91,7 +92,7 @@ namespace AutoEvent.Games.Glass
                 case int n when (n > 25 && n <= 30): platformCount = 12; _matchTimeInSeconds = 120; break;
                 case int n when (n > 30): platformCount = 15; _matchTimeInSeconds = 150; break;
             }
-
+            
             _remaining = TimeSpan.FromSeconds(_matchTimeInSeconds);
 
             GameObject platform = new();
@@ -104,6 +105,7 @@ namespace AutoEvent.Games.Glass
                     case "Platform1": platform1 = block; break;
                     case "Finish": _finish = block; break;
                     case "Wall": _wall = block; break;
+                    case "Spawnpoint": _spawnpoints = block; break;
                     case "Lava":
                         {
                             _lava = block;
@@ -114,7 +116,7 @@ namespace AutoEvent.Games.Glass
             }
 
             Vector3 delta = new Vector3(3.69f, 0, 0);
-            PlatformSelector selector = new PlatformSelector(platformCount, Config.SeedSalt, Config.MinimumSideOffset, Config.MaximumSideOffset, Config.PlatformScrambleMethod);
+            PlatformSelector selector = new PlatformSelector(platformCount, Config.SeedSalt, Config.MinimumSideOffset, Config.MaximumSideOffset);
             for (int i = 0; i < platformCount; i++)
             {
                 PlatformData data;
@@ -129,7 +131,7 @@ namespace AutoEvent.Games.Glass
                     DebugLogger.LogDebug($"selector count: {selector.PlatformCount}, selector length: {selector.PlatformData.Count}, specified count: {platformCount}, [i: {i}]");
                     DebugLogger.LogDebug($"{e}");
                 }
-
+                
                 GameObject newPlatform = CreatePlatformByParent(platform, platform.transform.position + delta * (i + 1));
                 GameObject newPlatform1 = CreatePlatformByParent(platform1, platform1.transform.position + delta * (i + 1));
                 
@@ -147,7 +149,7 @@ namespace AutoEvent.Games.Glass
             foreach (Player player in Player.GetPlayers())
             {
                 Extensions.SetRole(player, RoleTypeId.ClassD, RoleSpawnFlags.None);
-                player.Position = RandomClass.GetSpawnPosition(MapInfo.Map);
+                player.Position = _spawnpoints.transform.position;
             }
         }
 
@@ -234,16 +236,17 @@ namespace AutoEvent.Games.Glass
                     player.Damage(500, Translation.Died);
                 }
             }
-            
-            if (Player.GetPlayers().Count(r => r.IsAlive) > 1)
+
+            int count = Player.GetPlayers().Count(r => r.IsAlive);
+            if (count > 1)
             {
                 Extensions.Broadcast(Translation.WinSurvived.Replace("{plyAlive}", Player.GetPlayers().Count(r => r.IsAlive).ToString()), 3);
             }
-            else if (Player.GetPlayers().Count(r => r.IsAlive) == 1)
+            else if (count == 1)
             {
                 Extensions.Broadcast(Translation.Winner.Replace("{winner}", Player.GetPlayers().First(r =>r.IsAlive).Nickname), 10);
             }
-            else if (Player.GetPlayers().Count(r => r.IsAlive) < 1)
+            else
             {
                 Extensions.Broadcast(Translation.Fail, 10);
             }

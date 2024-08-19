@@ -1,40 +1,21 @@
-﻿// <copyright file="Log.cs" company="Redforce04#4091">
-// Copyright (c) Redforce04. All rights reserved.
-// </copyright>
-// -----------------------------------------
-//    Solution:         AutoEvent
-//    Project:          AutoEvent
-//    FileName:         GridSelector.cs
-//    Author:           Redforce04#4091
-//    Revision Date:    10/16/2023 2:58 PM
-//    Created Date:     10/16/2023 2:58 PM
-// -----------------------------------------
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using AutoEvent.API;
-using AutoEvent.API.RNG;
-using AutoEvent.Games.Glass;
-using HarmonyLib;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
 namespace AutoEvent.Games.Puzzle;
-
 public class GridSelector
 {
     private byte GridSizeX { get; init; }
     private byte GridSizeY { get; init; }
     private string Salt { get; set; }
     public List<GridData> GridData { get; set; }
-    
-    private SeedMethod _seedMethod;
 
-    public GridSelector(byte gridSizeX, byte gridSizeY, string salt, SeedMethod seedMethod)
+    public GridSelector(byte gridSizeX, byte gridSizeY, string salt)
     {
         GridSizeX = gridSizeX;
         GridSizeY = gridSizeY;
-        _seedMethod = seedMethod;
         GridData = new List<GridData>();
         Salt = salt;
     }
@@ -52,8 +33,7 @@ public class GridSelector
         // DebugLogger.LogDebug($"Selecting GridInfo. Creating New Grid.");
         var data = new Puzzle.GridData(GridSizeX, GridSizeY);
         data.SafePointCount = safePlatformCount;
-        var bytes = RNGGenerator.GetRandomBytes().AddRangeToArray(RNGGenerator.TextToBytes(Salt));
-        data.Seed = RNGGenerator.GetSeed(bytes);
+        data.Seed = (System.DateTime.Now.Ticks + Salt).GetHashCode().ToString();
         Texture2D bitMap = new Texture2D(GridSizeX, GridSizeY);
         for (byte XXX = 0; XXX < GridSizeX; XXX++)
         {
@@ -100,33 +80,17 @@ public class GridSelector
                 byte g = (byte)(newColor.g * 255);
                 byte b = (byte)(newColor.b * 255);
                 
-                switch (_seedMethod)
-                {
-                    case SeedMethod.SystemRandom:
-                        // byte chance = System.BitConverter.GetBytes(bitMap.GetPixel(x, y).a)[0];
-                        byte chance = (byte) (bitMap.GetPixel(x, y).r * 255);
-                        byte intensity = 0;
-                        if(chance > 0)
-                            intensity = System.BitConverter.GetBytes(new System.Random(RNGGenerator.GetIntFromSeededString(data.Seed, 3, 4, id)).Next(0, chance))[0];
-                        data.Points.Add(id, new GridPoint(intensity, chance){ R = r, G = g, B = b});
-                        //line3 += $" [{bitMap.GetPixel(x, y).r:F3}] ";
-                        //line2 += $" [{chance:000}] ";
-                        //line += $" [{intensity:000}] ";
-                        break;
-                    case SeedMethod.UnityRandom:
-                        bitMap.GetPixel(x, y);
-                        // chance = System.BitConverter.GetBytes(bitMap.GetPixel(x, y).a)[0];
-                        chance = (byte) (bitMap.GetPixel(x, y).r * 255);
-                        intensity = 0;
-                        Random.InitState(RNGGenerator.GetIntFromSeededString(data.Seed, 3, 4, id));
-                        if(chance > 0)
-                            intensity = System.BitConverter.GetBytes(Random.Range(0, chance))[0];
-                        data.Points.Add(id, new GridPoint(intensity, chance){ R = r, G = g, B = b});
-                        //line3 += $" [{bitMap.GetPixel(x, y).r:F3}] ";
-                        //line2 += $" [{chance:000}] ";
-                        //line += $" [{intensity:000}] ";
-                        break;
-                }
+                bitMap.GetPixel(x, y);
+                // chance = System.BitConverter.GetBytes(bitMap.GetPixel(x, y).a)[0];
+                byte chance = (byte) (bitMap.GetPixel(x, y).r * 255);
+                byte intensity = 0;
+                Random.InitState(GetIntFromSeededString(data.Seed, 3, id));
+                if(chance > 0)
+                    intensity = System.BitConverter.GetBytes(Random.Range(0, chance))[0];
+                data.Points.Add(id, new GridPoint(intensity, chance){ R = r, G = g, B = b});
+                //line3 += $" [{bitMap.GetPixel(x, y).r:F3}] ";
+                //line2 += $" [{chance:000}] ";
+                //line += $" [{intensity:000}] ";
                 
                 id++;
             }
@@ -193,5 +157,19 @@ public class GridSelector
                 LogLevel.Debug, false);
         }*/
 
+    }
+    
+    public static int GetIntFromSeededString(string seed, int count, int amount)
+    {
+        string seedGen = "";
+        for (int s = 0; s < count; s++)
+        {
+            int indexer = (amount * count) + s;
+            while (indexer >= seed.Length)
+                indexer -= seed.Length - 1;
+            seedGen += seed[indexer].ToString();
+        }
+
+        return int.Parse(seedGen);
     }
 }
