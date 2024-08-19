@@ -97,7 +97,7 @@ namespace AutoEvent.API.AdvancedMERTool.Serializable
     public class EffectGivingModule : RandomExecutionModule
     {
         public EffectFlag EffectFlag;
-        public StatusEffect EffectType;
+        public StatusEffect effectType;
         public SendType GivingTo;
         public byte Inensity;
         public float Duration;
@@ -123,10 +123,10 @@ namespace AutoEvent.API.AdvancedMERTool.Serializable
                 foreach (Player player in list)
                 {
                     if (module.EffectFlag.HasFlag(EffectFlag.Disable))
-                        player.EffectsManager.DisableAllEffects();
+                        Extensions.DisableEffect(player, module.effectType);
                     else if (module.EffectFlag.HasFlag(EffectFlag.Enable))
                     {
-                        Extensions.GiveEffect(player, EffectType, module.Inensity, module.Duration, module.EffectFlag.HasFlag(EffectFlag.ModifyDuration));
+                        Extensions.GiveEffect(player, module.effectType, module.Inensity, module.Duration, module.EffectFlag.HasFlag(EffectFlag.ModifyDuration));
                     }
                 }
             }

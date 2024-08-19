@@ -109,12 +109,26 @@ public class Plugin : Event, IEventMap, IInternalEvent
     protected override void ProcessFrame()
     {
         TimeSpan timeleft = TimeSpan.FromSeconds(Config.RoundDurationInMinutes * 60 - EventTime.TotalSeconds);
+        string timetext = $"{timeleft.Minutes:00}:{timeleft.Seconds:00}";
+        
+        if (timeleft.TotalSeconds < 0)
+        {
+            timetext = Translation.OverTimeBroadcast;
+
+            foreach (Player player in Player.GetPlayers().Where(r => r.Role is RoleTypeId.ClassD))
+            {
+                if (player.IsWithoutItems)
+                {
+                    player.Kill(Translation.Died);
+                }
+            }
+        }
         
         string text = Translation.CycleBroadcast;
         text = text.Replace("{name}", Name);
-        text = text.Replace("{runnerCount}", Player.GetPlayers().Count(r => r.Role is RoleTypeId.ClassD).ToString());
-        text = text.Replace("{deathCount}", Player.GetPlayers().Count(r => r.Role is RoleTypeId.Scientist).ToString());
-        text = text.Replace("{time}", $"{timeleft.Minutes:00}:{timeleft.Seconds:00}");
+        text = text.Replace("{runnerCount}",$"{Player.GetPlayers().Count(r => r.Role is RoleTypeId.ClassD)}");
+        text = text.Replace("{deathCount}", $"{Player.GetPlayers().Count(r => r.Role is RoleTypeId.Scientist)}");
+        text = text.Replace("{time}", timetext);
 
         Extensions.Broadcast(text, 1);
     }

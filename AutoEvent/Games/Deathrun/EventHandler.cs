@@ -1,4 +1,6 @@
-﻿using AutoEvent.Events.EventArgs;
+﻿using System.Collections.Generic;
+using AutoEvent.Events.EventArgs;
+using InventorySystem.Configs;
 using PluginAPI.Core.Attributes;
 using PluginAPI.Enums;
 using PluginAPI.Events;
@@ -7,12 +9,15 @@ using Utils.Networking;
 namespace AutoEvent.Games.Deathrun;
 public class EventHandler
 {
-    [PluginEvent(ServerEventType.PlayerDeath)]
-    public void OnDeath(PlayerDeathEvent ev)
+    [PluginEvent(ServerEventType.PlayerSpawn)]
+    public void OnSpawning(PlayerSpawnEvent ev)
     {
-        //new PlayerRoles.PlayableScps.HumeShield.DynamicHumeShieldController.ShieldBreakMessage()
-        //    { Target = ev.Player.ReferenceHub }.SendToAuthenticated();
+        foreach (KeyValuePair<ItemType, ushort> AmmoLimit in InventoryLimits.StandardAmmoLimits)
+        {
+            ev.Player.SetAmmo(AmmoLimit.Key, AmmoLimit.Value);
+        }
     }
+    
     public void OnTeamRespawn(TeamRespawnArgs ev) => ev.IsAllowed = false;
     public void OnDropItem(DropItemArgs ev) => ev.IsAllowed = false;
     public void OnDropAmmo(DropAmmoArgs ev) => ev.IsAllowed = false;
