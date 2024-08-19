@@ -1,21 +1,21 @@
-name: '捉人'
-description: '我们需要追上地图上的所有玩家。'
+name: '抓人游戏'
+description: '需要在地图上抓住所有玩家。'
 command_name: 'tag'
 broadcast: |-
-  跑
-  捉人者正在被选中。快躲起来！
+  跑！
+  正在选择抓人者。现在藏起来！
   剩余时间：{time}
 cycle: |-
-  捉住另一个玩家
+  抓住其他玩家
   <color=yellow><b><i>{time}</i></b> 秒剩余</color>
-hurt: '你没有时间捉住别人。'
+hurt: '你没有时间去抓住其他人。'
 one_player: |-
   玩家 {winner} 获胜
-  <color=yellow>活动时间 <color=red>{time}</color></color>
+  <color=yellow>事件时间 <color=red>{time}</color></color>
 all_die: |-
   没有人幸存。
   游戏结束
-  <color=yellow>活动时间 <color=red>{time}</color></color>
-# 不要修改这里。这会导致错误。AutoEvent 会自动管理这些设置。
+  <color=yellow>事件时间 <color=red>{time}</color></color>
+# 不要更改此项。它会导致问题。AutoEvent 将自动管理这些设置。
 version: '1.0.2'
 language: 'ZH'

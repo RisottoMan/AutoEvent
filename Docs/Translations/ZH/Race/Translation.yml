@@ -1,18 +1,18 @@
-name: '赛跑'
-description: '到达地图的终点就赢了'
+name: '竞速'
+description: '到达地图的终点以赢得比赛'
 command_name: 'race'
 cycle: |-
   {name}
-  <color=yellow>通过终点线就赢了！</color>
+  <color=yellow>通过终点线即可获胜！</color>
   剩余时间：{time}
-died: '<color=red>你没有完成赛跑</color>'
+died: '<color=red>你没有完成比赛</color>'
 players_survived: |-
-  <color=red>人类胜利！</color>
-  幸存者 {count} 人
+  <color=red>人类获胜！</color>
+  幸存 {count}
 one_survived: |-
-  <color=red>人类胜利！</color>
+  <color=red>人类获胜！</color>
   胜利者：{player}
 no_survivors: '<color=red>没有人幸存！</color>'
-# 不要修改这里。这会导致错误。AutoEvent 会自动管理这些设置。
+# 不要更改此项。它会导致问题。AutoEvent 将自动管理这些设置。
 version: '1.0.1'
 language: 'ZH'
