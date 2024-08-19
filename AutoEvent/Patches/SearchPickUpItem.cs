@@ -6,7 +6,7 @@ using PluginAPI.Core;
 
 namespace AutoEvent.Patches
 {
-    [HarmonyPatch(typeof(SearchCoordinator), nameof(SearchCoordinator.ReceiveRequestUnsafe))]
+    //[HarmonyPatch(typeof(SearchCoordinator), nameof(SearchCoordinator.ReceiveRequestUnsafe))]
     internal static class SearchPickUpItem
     {
         public static bool Prefix(SearchCoordinator __instance)
