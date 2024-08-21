@@ -26,9 +26,10 @@ namespace AutoEvent.Commands.Debug;
 public class Presets : ICommand, IPermission
 {
     public string Command => nameof(Presets);
-    public string[] Aliases => Array.Empty<string>();
     public string Description => "Logs the available presets for an event.";
+    public string[] Aliases => new string[] { };
     public string Permission { get; set; } = "ev.debug";
+    public bool SanitizeResponse => false;
     public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
     {
 

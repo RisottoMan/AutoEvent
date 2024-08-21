@@ -33,6 +33,7 @@ namespace AutoEvent.Games.Battle
             Volume = 10, 
             Loop = false 
         };
+        protected override FriendlyFireSettings ForceEnableFriendlyFire { get; set; } = FriendlyFireSettings.Disable;
         [EventConfig]
         public Config Config { get; set; }
         [EventTranslation]

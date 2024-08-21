@@ -1,16 +1,16 @@
-name: '原子逃生'
-description: '以超音速逃离 SCP-173 背后的设施！'
+name: '原子逃脱'
+description: '以超音速逃离 SCP-173 后面的设施!'
 command_name: 'escape'
 before_start: |-
   {name}
-  在设施爆炸前准备逃跑！
+  准备从设施中逃脱，设施即将爆炸!
   <color=red>回合开始前的时间: {time} 秒</color>
 cycle: |-
   {name}
-  <color=red>{time}</color> 秒后爆炸！
+  <color=red>{time}</color> 秒后爆炸!
 end: |-
   {name}
-  <color=red>{players} 玩家逃脱了</color>
-# 不要改变这些。这会破坏事情。AutoEvent 将自动管理这些设置。
-version: '1.0.1'
+  <color=red>{players} 玩家逃脱成功 </color>
+# 不要更改此项。它会导致问题。AutoEvent 将自动管理这些设置。
+version: '1.0.2'
 language: 'ZH'

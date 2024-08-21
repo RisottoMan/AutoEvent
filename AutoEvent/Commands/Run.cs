@@ -19,7 +19,7 @@ namespace AutoEvent.Commands
         public string[] Aliases => new []{ "start", "play", "begin" };
         public string[] Usage => new string[] { "Event Name" };
         public string Permission { get; set; } = "ev.run";
-
+        public bool SanitizeResponse => false;
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
             if (!sender.CheckPermission(((IPermission)this).Permission, out bool IsConsoleCommandSender))
@@ -41,7 +41,7 @@ namespace AutoEvent.Commands
             }
 
             Event ev = Event.GetEvent(arguments.At(0));
-            if (ev == null || ev is IHidden)
+            if (ev == null || ev is IHidden or IHiddenCommand)
             {
                 response = $"The mini-game {arguments.At(0)} is not found.";
                 return false;

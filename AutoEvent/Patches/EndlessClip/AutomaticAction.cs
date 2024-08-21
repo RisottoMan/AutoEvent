@@ -50,7 +50,7 @@ public class AutomaticAction
         FirearmStatusFlags firearmStatusFlags = __instance._firearm.Status.Flags;
         
         firearmStatusFlags.SetFlag(FirearmStatusFlags.Chambered, true);
-        //firearmStatusFlags.SetFlag(FirearmStatusFlags.Cocked, true);
+        firearmStatusFlags.SetFlag(FirearmStatusFlags.Cocked, true);
         __instance._firearm.Status = new FirearmStatus((byte)((int)__instance._firearm.AmmoManagerModule.MaxAmmo), firearmStatusFlags, __instance._firearm.Status.Attachments);
     }
 }

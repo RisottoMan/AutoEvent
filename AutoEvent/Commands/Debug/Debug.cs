@@ -24,6 +24,10 @@ namespace AutoEvent.Commands.Debug;
 
 public class Debug : ParentCommand
 {
+    public override string Command => nameof(global::AutoEvent.Commands.Debug);
+    public override string[] Aliases => Array.Empty<string>();
+    public override string Description => "Runs various debug functions";
+    public bool SanitizeResponse => false;
     public Debug() => LoadGeneratedCommands();
     public override void LoadGeneratedCommands()
     {
@@ -36,7 +40,7 @@ public class Debug : ParentCommand
         this.RegisterCommand(new InfiniteAmmo());
         this.RegisterCommand(new ImpactGrenade());
         this.RegisterCommand(new SetRole());
-        this.RegisterCommand(new RNG());
+        //this.RegisterCommand(new RNG());
     }
 
     protected override bool ExecuteParent(ArraySegment<string> arguments, ICommandSender sender, [UnscopedRef] out string response)
@@ -68,8 +72,4 @@ public class Debug : ParentCommand
         */
         return false;
     }
-
-    public override string Command => nameof(global::AutoEvent.Commands.Debug);
-    public override string[] Aliases => Array.Empty<string>();
-    public override string Description => "Runs various debug functions";
 }

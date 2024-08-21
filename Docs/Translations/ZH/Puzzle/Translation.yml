@@ -1,21 +1,26 @@
-name: '色盲派对'
-description: '最快地跳到正确的颜色上'
+name: '谜题'
+description: '在正确的颜色上最快地到达'
 command_name: 'puzzle'
-start: '<color=red>开始倒计时: </color>{time}'
+start: |-
+  <b>{name}</b>
+  <color=yellow>迷你游戏将在 <color=red>{time}</color> 秒后开始</color>
 stage: |-
+  <b>{name}</b>
   <color=red>阶段: </color>{stageNum}<color=red> / </color>{stageFinal}
-  <color=yellow>剩余玩家:</color> {plyCount}
+  <color=yellow>剩余玩家:</color> {count}
 all_died: |-
+  <b>{name}</b>
   <color=red>所有玩家都死了</color>
-  小游戏结束
+  迷你游戏结束
 some_survived: |-
-  <color=red>有几个人幸存了</color>
-  小游戏结束
+  <b>{name}</b>
+  <color=green>{count} 玩家幸存</color>
+  迷你游戏结束
 winner: |-
-  <color=red>胜利者: {winner}</color>
-  小游戏结束
-died: '<color=red>被岩浆烧死了</color>'
-main_message: '<color=#F59F00>P</color><color=#F68523>u</color><color=#F76B46>z</color><color=#F85169>z</color><color=#F9378C>l</color><color=#FA1DAF>e</color>'
-# 不要修改这里。这会导致错误。AutoEvent 会自动管理这些设置。
-version: '1.0.2'
-language: 'ZH'
+  <b>{name}</b>
+  <color=green>玩家 {winner} 获胜</color>
+  迷你游戏结束
+died: '<color=red>被熔岩烧死</color>'
+# 不要更改此项。它会导致问题。AutoEvent 将自动管理这些设置。
+version: '1.1.0'
+language: 'CN'

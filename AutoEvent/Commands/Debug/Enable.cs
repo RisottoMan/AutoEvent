@@ -20,15 +20,13 @@ using Exiled.API.Features;
 using Exiled.Permissions.Extensions;
 #endif
 namespace AutoEvent.Commands.Debug;
-
-
 public class Enable : ICommand, IPermission
 {
     public string Command => nameof(Enable);
     public string[] Aliases => Array.Empty<string>();
     public string Description => "Enables Debug Mode";
     public string Permission { get; set; } = "ev.debug";
-
+    public bool SanitizeResponse => false;
     public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
     {
 

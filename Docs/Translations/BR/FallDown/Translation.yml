@@ -1,0 +1,12 @@
+name: 'A Queda'
+description: 'Todas plataformas estão destruídas. É necessário sobreviver'
+command_name: 'fall'
+broadcast: |-
+  {name}
+  {time}
+  <color=yellow>Restando: </color>{count}<color=yellow> jogadores</color>
+winner: '<color=red>Vencedor:</color> {winner}'
+died: '<color=red>Todos os jogadores morreram</color>'
+# DO NOT CHANGE THIS. IT WILL BREAK THINGS. AutoEvent will automatically manage these settings.
+version: '1.0.2'
+language: 'BR'

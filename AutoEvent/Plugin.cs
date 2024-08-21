@@ -3,20 +3,23 @@ using System.IO;
 using AutoEvent.Commands;
 using AutoEvent.Interfaces;
 using HarmonyLib;
-using PluginAPI.Core.Attributes;
-using PluginAPI.Enums;
 using PluginAPI.Events;
 using MEC;
 using AutoEvent.API;
 using AutoEvent.API.Season;
+using PluginAPI.Core.Attributes;
+using PluginAPI.Enums;
+using PluginAPI.Helpers;
 using Event = AutoEvent.Interfaces.Event;
 using Log = PluginAPI.Core.Log;
 using Map = PluginAPI.Core.Map;
-using Paths = PluginAPI.Helpers.Paths;
 using Player = PluginAPI.Core.Player;
 using Server = PluginAPI.Core.Server;
+using Console = GameCore.Console;
 #if EXILED
+using AutoEvent.Events.EventArgs;
 using Exiled.API.Features;
+using Exiled.Events.EventArgs.Player;
 
 #endif
 namespace AutoEvent
@@ -24,9 +27,10 @@ namespace AutoEvent
 #if EXILED
     public class AutoEvent : Plugin<Config>
     {
-        public override System.Version Version => System.Version.Parse(Version);
+        public override Version Version => Version.Parse(PluginVersion);
+        public override Version RequiredExiledVersion => new Version(8, 9, 6);
         public override string Name => "AutoEvent";
-        public override string Author => "Created by KoT0XleB, extended by swd and sky, Co-Maintained by Redforce04";
+        public override string Author => "Created by a large community of programmers, map builders and just ordinary people, under the leadership of RisottoMan.";
         public static bool IsPlayedGames;
 
 #else
@@ -35,7 +39,7 @@ namespace AutoEvent
         [PluginConfig("Configs/autoevent.yml")]
         public Config Config;
 #endif
-        public const string Version = "9.6.0";
+        public const string PluginVersion = "9.8.0";
         public const bool BetaRelease = false; // todo set beta to false before main release
         /// <summary>
         /// The location of the AutoEvent folder for schematics, music, external events and event config / translations.
@@ -52,7 +56,7 @@ namespace AutoEvent
         public override void OnEnabled()
 #else
         [PluginPriority(LoadPriority.Low)]
-        [PluginEntryPoint("AutoEvent", Version, "An event manager plugin that allows you to run mini-games.", "KoT0XleB and Redforce04")]
+        [PluginEntryPoint("AutoEvent", PluginVersion, "An event manager plugin that allows you to run mini-games.", "KoT0XleB and Redforce04")]
         void OnEnabled()
 #endif
         {
@@ -84,13 +88,22 @@ namespace AutoEvent
                 Singleton = this;
                 MER.Lite.API.Initialize(AutoEvent.Singleton.Config.SchematicsDirectoryPath, Config.Debug);
                 SCPSLAudioApi.Startup.SetupDependencies();
+
 #if EXILED
                 Exiled.Events.Handlers.Player.Shot += (Exiled.Events.EventArgs.Player.ShotEventArgs ev) =>
                 {
-                    var args = new ShotEventArgs(Player.Get(ev.Player.ReferenceHub), ev.RaycastHit, ev.Hitbox, ev.Damage);
+                    var args = new NewShotEventArgs(Player.Get(ev.Player.ReferenceHub), ev.RaycastHit, ev.Hitbox, ev.Damage);
                     global::AutoEvent.Events.Handlers.Players.OnShot(args);
                     ev.Damage = args.Damage;
                     ev.CanHurt = args.CanHurt;
+                };
+                
+                Exiled.Events.Handlers.Player.SearchingPickup += (Exiled.Events.EventArgs.Player.SearchingPickupEventArgs ev) =>
+                {
+                    var args = new SearchPickUpItemArgs(Player.Get(ev.Player.ReferenceHub), ev.Pickup.Base, ev.SearchSession, ev.SearchCompletor, ev.SearchTime);
+                    global::AutoEvent.Events.Handlers.Players.OnSearchPickUpItem(args);
+                    ev.IsAllowed = args.IsAllowed;
+                    ev.SearchTime = args.SearchTime;
                 };
 #endif
                 
@@ -112,7 +125,6 @@ namespace AutoEvent
                 {
                     HarmonyPatch = new Harmony("autoevent");
                     HarmonyPatch.PatchAll();
-
                 }
                 catch (Exception e)
                 {
@@ -182,6 +194,10 @@ namespace AutoEvent
             {
                 PermissionSystem.Load();
             });
+            
+#if EXILED
+            base.OnEnabled();
+#endif
         }
         public static void CreateDirectoryIfNotExists(string directory, string subPath = "")
         {
@@ -214,6 +230,9 @@ namespace AutoEvent
             EventManager.UnregisterEvents(this);
             HarmonyPatch.UnpatchAll();
             Singleton = null;
+#if EXILED
+            base.OnDisabled();
+#endif
         }
 
         public void OnEventFinished()
