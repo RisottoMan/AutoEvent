@@ -1,15 +1,15 @@
-name: '地板是岩浆'
-description: '生存游戏，你需要避开岩浆并射击其他人。'
+name: '地板是熔岩'
+description: '生存模式，避免熔岩并击败其他玩家。'
 command_name: 'lava'
 start: |-
   <size=100><color=red>{time}</color></size>
-  拿起武器并爬上去。
-cycle: '<size=20><color=red><b>存活：{count} 名玩家</b></color></size>'
+  拿起武器，爬上去。
+cycle: '<size=20><color=red><b>存活: {count} 玩家</b></color></size>'
 win: |-
-  <color=red><b>胜利者
+  <color=red><b>获胜者
   玩家 - {winner}</b></color>
 all_dead: '<color=red><b>没有人活到最后。</b></color>'
-died: '<color=red>被岩浆烧死了</color>'
-# 不要修改这里。这会导致错误。AutoEvent 会自动管理这些设置。
+died: '<color=red>被熔岩烧死</color>'
+# 不要更改此项。它会导致问题。AutoEvent 将自动管理这些设置。
 version: '1.0.3'
 language: 'ZH'

@@ -1,10 +1,10 @@
 {
-  "RootObjectId": -119394,
+  "RootObjectId": -396586,
   "Blocks": [
     {
       "Name": "Spawnpoint",
-      "ObjectId": -119398,
-      "ParentId": -119394,
+      "ObjectId": -396592,
+      "ParentId": -396586,
       "Position": {
         "x": -0.34,
         "y": 16.47,
@@ -16,20 +16,21 @@
         "z": 0.0
       },
       "Scale": {
-        "x": -0.01,
-        "y": -0.01,
-        "z": -0.01
+        "x": 0.01,
+        "y": 0.01,
+        "z": 0.01
       },
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "00000000"
+        "Color": "00000000",
+        "PrimitiveFlags": 2
       }
     },
     {
       "Name": "Point Light",
-      "ObjectId": -119478,
-      "ParentId": -119394,
+      "ObjectId": -396604,
+      "ParentId": -396586,
       "Position": {
         "x": 0.0,
         "y": 20.24,
@@ -45,8 +46,8 @@
     },
     {
       "Name": "Lava",
-      "ObjectId": -119408,
-      "ParentId": -119394,
+      "ObjectId": -396610,
+      "ParentId": -396586,
       "Position": {
         "x": 0.025,
         "y": 2.284,
@@ -58,20 +59,21 @@
         "z": 0.0
       },
       "Scale": {
-        "x": -25.0864735,
-        "y": -5.89100933,
-        "z": -25.2814617
+        "x": 25.0864735,
+        "y": 5.89100933,
+        "z": 25.2814617
       },
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "00FF00C8"
+        "Color": "00FF00C8",
+        "PrimitiveFlags": 2
       }
     },
     {
       "Name": "Quad",
-      "ObjectId": -119418,
-      "ParentId": -119394,
+      "ObjectId": -396622,
+      "ParentId": -396586,
       "Position": {
         "x": 12.0620012,
         "y": 8.848002,
@@ -90,13 +92,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 5,
-        "Color": "FFFFFFFF"
+        "Color": "FFFFFFFF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Quad (1)",
-      "ObjectId": -119428,
-      "ParentId": -119394,
+      "ObjectId": -396634,
+      "ParentId": -396586,
       "Position": {
         "x": -12.3779993,
         "y": 8.769002,
@@ -115,13 +118,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 5,
-        "Color": "FFFFFFFF"
+        "Color": "FFFFFFFF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Quad (2)",
-      "ObjectId": -119438,
-      "ParentId": -119394,
+      "ObjectId": -396646,
+      "ParentId": -396586,
       "Position": {
         "x": -0.1749978,
         "y": 8.853002,
@@ -140,13 +144,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 5,
-        "Color": "FFFFFFFF"
+        "Color": "FFFFFFFF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Quad (3)",
-      "ObjectId": -119448,
-      "ParentId": -119394,
+      "ObjectId": -396658,
+      "ParentId": -396586,
       "Position": {
         "x": -0.221000671,
         "y": 8.809001,
@@ -165,13 +170,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 5,
-        "Color": "FFFFFFFF"
+        "Color": "FFFFFFFF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Quad (4)",
-      "ObjectId": -119458,
-      "ParentId": -119394,
+      "ObjectId": -396670,
+      "ParentId": -396586,
       "Position": {
         "x": 0.0,
         "y": 0.0,
@@ -190,13 +196,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 5,
-        "Color": "9A9999FF"
+        "Color": "9A9999FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Quad (5)",
-      "ObjectId": -119468,
-      "ParentId": -119394,
+      "ObjectId": -396682,
+      "ParentId": -396586,
       "Position": {
         "x": -0.07899857,
         "y": 17.8139248,
@@ -215,13 +222,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 5,
-        "Color": "FFFF00FF"
+        "Color": "FFFF00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Wall",
-      "ObjectId": -125418,
-      "ParentId": -119394,
+      "ObjectId": -396694,
+      "ParentId": -396586,
       "Position": {
         "x": 0.0,
         "y": 13.15,
@@ -240,13 +248,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 5,
-        "Color": "FFFFFF64"
+        "Color": "FFFFFF64",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -119484,
-      "ParentId": -119394,
+      "ObjectId": -396706,
+      "ParentId": -396586,
       "Position": {
         "x": -11.47,
         "y": 9.35,
@@ -265,13 +274,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FF0000FF"
+        "Color": "FF0000FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -119494,
-      "ParentId": -119394,
+      "ObjectId": -396718,
+      "ParentId": -396586,
       "Position": {
         "x": -11.47,
         "y": 9.35,
@@ -290,13 +300,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FF0000FF"
+        "Color": "FF0000FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -119504,
-      "ParentId": -119394,
+      "ObjectId": -396730,
+      "ParentId": -396586,
       "Position": {
         "x": -11.47,
         "y": 9.35,
@@ -315,13 +326,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FF0000FF"
+        "Color": "FF0000FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -119514,
-      "ParentId": -119394,
+      "ObjectId": -396742,
+      "ParentId": -396586,
       "Position": {
         "x": -11.47,
         "y": 9.35,
@@ -340,13 +352,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FF0000FF"
+        "Color": "FF0000FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -119524,
-      "ParentId": -119394,
+      "ObjectId": -396754,
+      "ParentId": -396586,
       "Position": {
         "x": -11.47,
         "y": 9.35,
@@ -365,13 +378,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FF0000FF"
+        "Color": "FF0000FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -119534,
-      "ParentId": -119394,
+      "ObjectId": -396766,
+      "ParentId": -396586,
       "Position": {
         "x": -11.47,
         "y": 9.35,
@@ -390,13 +404,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FF0000FF"
+        "Color": "FF0000FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -119544,
-      "ParentId": -119394,
+      "ObjectId": -396778,
+      "ParentId": -396586,
       "Position": {
         "x": -11.47,
         "y": 9.35,
@@ -415,13 +430,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FF0000FF"
+        "Color": "FF0000FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -119554,
-      "ParentId": -119394,
+      "ObjectId": -396790,
+      "ParentId": -396586,
       "Position": {
         "x": -11.47,
         "y": 9.35,
@@ -440,13 +456,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FF0000FF"
+        "Color": "FF0000FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -119564,
-      "ParentId": -119394,
+      "ObjectId": -396802,
+      "ParentId": -396586,
       "Position": {
         "x": -11.47,
         "y": 9.35,
@@ -465,13 +482,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FF0000FF"
+        "Color": "FF0000FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -119574,
-      "ParentId": -119394,
+      "ObjectId": -396814,
+      "ParentId": -396586,
       "Position": {
         "x": -11.47,
         "y": 9.35,
@@ -490,13 +508,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FF0000FF"
+        "Color": "FF0000FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -119584,
-      "ParentId": -119394,
+      "ObjectId": -396826,
+      "ParentId": -396586,
       "Position": {
         "x": -11.47,
         "y": 9.35,
@@ -515,13 +534,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FF0000FF"
+        "Color": "FF0000FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -119594,
-      "ParentId": -119394,
+      "ObjectId": -396838,
+      "ParentId": -396586,
       "Position": {
         "x": -11.47,
         "y": 9.35,
@@ -540,13 +560,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FF0000FF"
+        "Color": "FF0000FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -119604,
-      "ParentId": -119394,
+      "ObjectId": -396850,
+      "ParentId": -396586,
       "Position": {
         "x": -11.47,
         "y": 9.35,
@@ -565,13 +586,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FF0000FF"
+        "Color": "FF0000FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -119614,
-      "ParentId": -119394,
+      "ObjectId": -396862,
+      "ParentId": -396586,
       "Position": {
         "x": -9.57,
         "y": 9.35,
@@ -590,13 +612,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FF0000FF"
+        "Color": "FF0000FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -119624,
-      "ParentId": -119394,
+      "ObjectId": -396874,
+      "ParentId": -396586,
       "Position": {
         "x": -9.57,
         "y": 9.35,
@@ -615,13 +638,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FF8B00FF"
+        "Color": "FF8B00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -119634,
-      "ParentId": -119394,
+      "ObjectId": -396886,
+      "ParentId": -396586,
       "Position": {
         "x": -9.57,
         "y": 9.35,
@@ -640,13 +664,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FF8B00FF"
+        "Color": "FF8B00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -119644,
-      "ParentId": -119394,
+      "ObjectId": -396898,
+      "ParentId": -396586,
       "Position": {
         "x": -9.57,
         "y": 9.35,
@@ -665,13 +690,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FF8B00FF"
+        "Color": "FF8B00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -119654,
-      "ParentId": -119394,
+      "ObjectId": -396910,
+      "ParentId": -396586,
       "Position": {
         "x": -9.57,
         "y": 9.35,
@@ -690,13 +716,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FF8B00FF"
+        "Color": "FF8B00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -119664,
-      "ParentId": -119394,
+      "ObjectId": -396922,
+      "ParentId": -396586,
       "Position": {
         "x": -9.57,
         "y": 9.35,
@@ -715,13 +742,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FF8B00FF"
+        "Color": "FF8B00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -119674,
-      "ParentId": -119394,
+      "ObjectId": -396934,
+      "ParentId": -396586,
       "Position": {
         "x": -9.57,
         "y": 9.35,
@@ -740,13 +768,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FF8B00FF"
+        "Color": "FF8B00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -119684,
-      "ParentId": -119394,
+      "ObjectId": -396946,
+      "ParentId": -396586,
       "Position": {
         "x": -9.57,
         "y": 9.35,
@@ -765,13 +794,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FF8B00FF"
+        "Color": "FF8B00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -119694,
-      "ParentId": -119394,
+      "ObjectId": -396958,
+      "ParentId": -396586,
       "Position": {
         "x": -9.57,
         "y": 9.35,
@@ -790,13 +820,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FF8B00FF"
+        "Color": "FF8B00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -119704,
-      "ParentId": -119394,
+      "ObjectId": -396970,
+      "ParentId": -396586,
       "Position": {
         "x": -9.57,
         "y": 9.35,
@@ -815,13 +846,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FF8B00FF"
+        "Color": "FF8B00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -119714,
-      "ParentId": -119394,
+      "ObjectId": -396982,
+      "ParentId": -396586,
       "Position": {
         "x": -9.57,
         "y": 9.35,
@@ -840,13 +872,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FF8B00FF"
+        "Color": "FF8B00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -119724,
-      "ParentId": -119394,
+      "ObjectId": -396994,
+      "ParentId": -396586,
       "Position": {
         "x": -9.57,
         "y": 9.35,
@@ -865,13 +898,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FF8B00FF"
+        "Color": "FF8B00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -119734,
-      "ParentId": -119394,
+      "ObjectId": -397006,
+      "ParentId": -396586,
       "Position": {
         "x": -9.57,
         "y": 9.35,
@@ -890,13 +924,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FF0000FF"
+        "Color": "FF0000FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -119744,
-      "ParentId": -119394,
+      "ObjectId": -397018,
+      "ParentId": -396586,
       "Position": {
         "x": -7.67,
         "y": 9.35,
@@ -915,13 +950,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FF0000FF"
+        "Color": "FF0000FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -119754,
-      "ParentId": -119394,
+      "ObjectId": -397030,
+      "ParentId": -396586,
       "Position": {
         "x": -7.67,
         "y": 9.35,
@@ -940,13 +976,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FF8B00FF"
+        "Color": "FF8B00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -119764,
-      "ParentId": -119394,
+      "ObjectId": -397042,
+      "ParentId": -396586,
       "Position": {
         "x": -7.67,
         "y": 9.35,
@@ -965,13 +1002,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FFCB00FF"
+        "Color": "FFCB00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -119774,
-      "ParentId": -119394,
+      "ObjectId": -397054,
+      "ParentId": -396586,
       "Position": {
         "x": -7.67,
         "y": 9.35,
@@ -990,13 +1028,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FFCB00FF"
+        "Color": "FFCB00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -119784,
-      "ParentId": -119394,
+      "ObjectId": -397066,
+      "ParentId": -396586,
       "Position": {
         "x": -7.67,
         "y": 9.35,
@@ -1015,13 +1054,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FFCB00FF"
+        "Color": "FFCB00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -119794,
-      "ParentId": -119394,
+      "ObjectId": -397078,
+      "ParentId": -396586,
       "Position": {
         "x": -7.67,
         "y": 9.35,
@@ -1040,13 +1080,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FFCB00FF"
+        "Color": "FFCB00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -119804,
-      "ParentId": -119394,
+      "ObjectId": -397090,
+      "ParentId": -396586,
       "Position": {
         "x": -7.67,
         "y": 9.35,
@@ -1065,13 +1106,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FFCB00FF"
+        "Color": "FFCB00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -119814,
-      "ParentId": -119394,
+      "ObjectId": -397102,
+      "ParentId": -396586,
       "Position": {
         "x": -7.67,
         "y": 9.35,
@@ -1090,13 +1132,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FFCB00FF"
+        "Color": "FFCB00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -119824,
-      "ParentId": -119394,
+      "ObjectId": -397114,
+      "ParentId": -396586,
       "Position": {
         "x": -7.67,
         "y": 9.35,
@@ -1115,13 +1158,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FFCB00FF"
+        "Color": "FFCB00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -119834,
-      "ParentId": -119394,
+      "ObjectId": -397126,
+      "ParentId": -396586,
       "Position": {
         "x": -7.67,
         "y": 9.35,
@@ -1140,13 +1184,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FFCB00FF"
+        "Color": "FFCB00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -119844,
-      "ParentId": -119394,
+      "ObjectId": -397138,
+      "ParentId": -396586,
       "Position": {
         "x": -7.67,
         "y": 9.35,
@@ -1165,13 +1210,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FFCB00FF"
+        "Color": "FFCB00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -119854,
-      "ParentId": -119394,
+      "ObjectId": -397150,
+      "ParentId": -396586,
       "Position": {
         "x": -7.67,
         "y": 9.35,
@@ -1190,13 +1236,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FF8B00FF"
+        "Color": "FF8B00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -119864,
-      "ParentId": -119394,
+      "ObjectId": -397162,
+      "ParentId": -396586,
       "Position": {
         "x": -7.67,
         "y": 9.35,
@@ -1215,13 +1262,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FF0000FF"
+        "Color": "FF0000FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -119874,
-      "ParentId": -119394,
+      "ObjectId": -397174,
+      "ParentId": -396586,
       "Position": {
         "x": -5.77000046,
         "y": 9.35,
@@ -1240,13 +1288,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FF0000FF"
+        "Color": "FF0000FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -119884,
-      "ParentId": -119394,
+      "ObjectId": -397186,
+      "ParentId": -396586,
       "Position": {
         "x": -5.77000046,
         "y": 9.35,
@@ -1265,13 +1314,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FF8B00FF"
+        "Color": "FF8B00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -119894,
-      "ParentId": -119394,
+      "ObjectId": -397198,
+      "ParentId": -396586,
       "Position": {
         "x": -5.77000046,
         "y": 9.35,
@@ -1290,13 +1340,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FFCB00FF"
+        "Color": "FFCB00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -119904,
-      "ParentId": -119394,
+      "ObjectId": -397210,
+      "ParentId": -396586,
       "Position": {
         "x": -5.77000046,
         "y": 9.35,
@@ -1315,13 +1366,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FFFF00FF"
+        "Color": "FFFF00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -119914,
-      "ParentId": -119394,
+      "ObjectId": -397222,
+      "ParentId": -396586,
       "Position": {
         "x": -5.77000046,
         "y": 9.35,
@@ -1340,13 +1392,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FFFF00FF"
+        "Color": "FFFF00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -119924,
-      "ParentId": -119394,
+      "ObjectId": -397234,
+      "ParentId": -396586,
       "Position": {
         "x": -5.77000046,
         "y": 9.35,
@@ -1365,13 +1418,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FFFF00FF"
+        "Color": "FFFF00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -119934,
-      "ParentId": -119394,
+      "ObjectId": -397246,
+      "ParentId": -396586,
       "Position": {
         "x": -5.77000046,
         "y": 9.35,
@@ -1390,13 +1444,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FFFF00FF"
+        "Color": "FFFF00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -119944,
-      "ParentId": -119394,
+      "ObjectId": -397258,
+      "ParentId": -396586,
       "Position": {
         "x": -5.77000046,
         "y": 9.35,
@@ -1415,13 +1470,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FFFF00FF"
+        "Color": "FFFF00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -119954,
-      "ParentId": -119394,
+      "ObjectId": -397270,
+      "ParentId": -396586,
       "Position": {
         "x": -5.77000046,
         "y": 9.35,
@@ -1440,13 +1496,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FFFF00FF"
+        "Color": "FFFF00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -119964,
-      "ParentId": -119394,
+      "ObjectId": -397282,
+      "ParentId": -396586,
       "Position": {
         "x": -5.77000046,
         "y": 9.35,
@@ -1465,13 +1522,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FFFF00FF"
+        "Color": "FFFF00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -119974,
-      "ParentId": -119394,
+      "ObjectId": -397294,
+      "ParentId": -396586,
       "Position": {
         "x": -5.77000046,
         "y": 9.35,
@@ -1490,13 +1548,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FFCB00FF"
+        "Color": "FFCB00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -119984,
-      "ParentId": -119394,
+      "ObjectId": -397306,
+      "ParentId": -396586,
       "Position": {
         "x": -5.77000046,
         "y": 9.35,
@@ -1515,13 +1574,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FF8B00FF"
+        "Color": "FF8B00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -119994,
-      "ParentId": -119394,
+      "ObjectId": -397318,
+      "ParentId": -396586,
       "Position": {
         "x": -5.77000046,
         "y": 9.35,
@@ -1540,13 +1600,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FF0000FF"
+        "Color": "FF0000FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -120004,
-      "ParentId": -119394,
+      "ObjectId": -397330,
+      "ParentId": -396586,
       "Position": {
         "x": -3.87000036,
         "y": 9.35,
@@ -1565,13 +1626,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FF0000FF"
+        "Color": "FF0000FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -120014,
-      "ParentId": -119394,
+      "ObjectId": -397342,
+      "ParentId": -396586,
       "Position": {
         "x": -3.87000036,
         "y": 9.35,
@@ -1590,13 +1652,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FF8B00FF"
+        "Color": "FF8B00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -120024,
-      "ParentId": -119394,
+      "ObjectId": -397354,
+      "ParentId": -396586,
       "Position": {
         "x": -3.87000036,
         "y": 9.35,
@@ -1615,13 +1678,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FFCB00FF"
+        "Color": "FFCB00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -120034,
-      "ParentId": -119394,
+      "ObjectId": -397366,
+      "ParentId": -396586,
       "Position": {
         "x": -3.87000036,
         "y": 9.35,
@@ -1640,13 +1704,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FFFF00FF"
+        "Color": "FFFF00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -120044,
-      "ParentId": -119394,
+      "ObjectId": -397378,
+      "ParentId": -396586,
       "Position": {
         "x": -3.87000036,
         "y": 9.35,
@@ -1665,13 +1730,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "A9FF00FF"
+        "Color": "A9FF00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -120054,
-      "ParentId": -119394,
+      "ObjectId": -397390,
+      "ParentId": -396586,
       "Position": {
         "x": -3.87000036,
         "y": 9.35,
@@ -1690,13 +1756,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "A9FF00FF"
+        "Color": "A9FF00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -120064,
-      "ParentId": -119394,
+      "ObjectId": -397402,
+      "ParentId": -396586,
       "Position": {
         "x": -3.87000036,
         "y": 9.35,
@@ -1715,13 +1782,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "A9FF00FF"
+        "Color": "A9FF00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -120074,
-      "ParentId": -119394,
+      "ObjectId": -397414,
+      "ParentId": -396586,
       "Position": {
         "x": -3.87000036,
         "y": 9.35,
@@ -1740,13 +1808,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "A9FF00FF"
+        "Color": "A9FF00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -120084,
-      "ParentId": -119394,
+      "ObjectId": -397426,
+      "ParentId": -396586,
       "Position": {
         "x": -3.87000036,
         "y": 9.35,
@@ -1765,13 +1834,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "A9FF00FF"
+        "Color": "A9FF00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -120094,
-      "ParentId": -119394,
+      "ObjectId": -397438,
+      "ParentId": -396586,
       "Position": {
         "x": -3.87000036,
         "y": 9.35,
@@ -1790,13 +1860,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FFFF00FF"
+        "Color": "FFFF00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -120104,
-      "ParentId": -119394,
+      "ObjectId": -397450,
+      "ParentId": -396586,
       "Position": {
         "x": -3.87000036,
         "y": 9.35,
@@ -1815,13 +1886,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FFCB00FF"
+        "Color": "FFCB00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -120114,
-      "ParentId": -119394,
+      "ObjectId": -397462,
+      "ParentId": -396586,
       "Position": {
         "x": -3.87000036,
         "y": 9.35,
@@ -1840,13 +1912,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FF8B00FF"
+        "Color": "FF8B00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -120124,
-      "ParentId": -119394,
+      "ObjectId": -397474,
+      "ParentId": -396586,
       "Position": {
         "x": -3.87000036,
         "y": 9.35,
@@ -1865,13 +1938,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FF0000FF"
+        "Color": "FF0000FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -120134,
-      "ParentId": -119394,
+      "ObjectId": -397486,
+      "ParentId": -396586,
       "Position": {
         "x": -1.97000027,
         "y": 9.35,
@@ -1890,13 +1964,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FF0000FF"
+        "Color": "FF0000FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -120144,
-      "ParentId": -119394,
+      "ObjectId": -397498,
+      "ParentId": -396586,
       "Position": {
         "x": -1.97000027,
         "y": 9.35,
@@ -1915,13 +1990,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FF8B00FF"
+        "Color": "FF8B00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -120154,
-      "ParentId": -119394,
+      "ObjectId": -397510,
+      "ParentId": -396586,
       "Position": {
         "x": -1.97000027,
         "y": 9.35,
@@ -1940,13 +2016,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FFCB00FF"
+        "Color": "FFCB00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -120164,
-      "ParentId": -119394,
+      "ObjectId": -397522,
+      "ParentId": -396586,
       "Position": {
         "x": -1.97000027,
         "y": 9.35,
@@ -1965,13 +2042,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FFFF00FF"
+        "Color": "FFFF00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -120174,
-      "ParentId": -119394,
+      "ObjectId": -397534,
+      "ParentId": -396586,
       "Position": {
         "x": -1.97000027,
         "y": 9.35,
@@ -1990,13 +2068,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "A9FF00FF"
+        "Color": "A9FF00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -120184,
-      "ParentId": -119394,
+      "ObjectId": -397546,
+      "ParentId": -396586,
       "Position": {
         "x": -1.97000027,
         "y": 9.35,
@@ -2015,13 +2094,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "6CE960FF"
+        "Color": "6CE960FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -120194,
-      "ParentId": -119394,
+      "ObjectId": -397558,
+      "ParentId": -396586,
       "Position": {
         "x": -1.97000027,
         "y": 9.35,
@@ -2040,13 +2120,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "6CE960FF"
+        "Color": "6CE960FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -120204,
-      "ParentId": -119394,
+      "ObjectId": -397570,
+      "ParentId": -396586,
       "Position": {
         "x": -1.97000027,
         "y": 9.35,
@@ -2065,13 +2146,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "6CE960FF"
+        "Color": "6CE960FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -120214,
-      "ParentId": -119394,
+      "ObjectId": -397582,
+      "ParentId": -396586,
       "Position": {
         "x": -1.97000027,
         "y": 9.35,
@@ -2090,13 +2172,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "A9FF00FF"
+        "Color": "A9FF00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -120224,
-      "ParentId": -119394,
+      "ObjectId": -397594,
+      "ParentId": -396586,
       "Position": {
         "x": -1.97000027,
         "y": 9.35,
@@ -2115,13 +2198,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FFFF00FF"
+        "Color": "FFFF00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -120234,
-      "ParentId": -119394,
+      "ObjectId": -397606,
+      "ParentId": -396586,
       "Position": {
         "x": -1.97000027,
         "y": 9.35,
@@ -2140,13 +2224,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FFCB00FF"
+        "Color": "FFCB00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -120244,
-      "ParentId": -119394,
+      "ObjectId": -397618,
+      "ParentId": -396586,
       "Position": {
         "x": -1.97000027,
         "y": 9.35,
@@ -2165,13 +2250,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FF8B00FF"
+        "Color": "FF8B00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -120254,
-      "ParentId": -119394,
+      "ObjectId": -397630,
+      "ParentId": -396586,
       "Position": {
         "x": -1.97000027,
         "y": 9.35,
@@ -2190,13 +2276,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FF0000FF"
+        "Color": "FF0000FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -120264,
-      "ParentId": -119394,
+      "ObjectId": -397642,
+      "ParentId": -396586,
       "Position": {
         "x": -0.07000065,
         "y": 9.35,
@@ -2215,13 +2302,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FF0000FF"
+        "Color": "FF0000FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -120274,
-      "ParentId": -119394,
+      "ObjectId": -397654,
+      "ParentId": -396586,
       "Position": {
         "x": -0.07000065,
         "y": 9.35,
@@ -2240,13 +2328,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FF8B00FF"
+        "Color": "FF8B00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -120284,
-      "ParentId": -119394,
+      "ObjectId": -397666,
+      "ParentId": -396586,
       "Position": {
         "x": -0.07000065,
         "y": 9.35,
@@ -2265,13 +2354,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FFCB00FF"
+        "Color": "FFCB00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -120294,
-      "ParentId": -119394,
+      "ObjectId": -397678,
+      "ParentId": -396586,
       "Position": {
         "x": -0.07000065,
         "y": 9.35,
@@ -2290,13 +2380,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FFFF00FF"
+        "Color": "FFFF00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -120304,
-      "ParentId": -119394,
+      "ObjectId": -397690,
+      "ParentId": -396586,
       "Position": {
         "x": -0.07000065,
         "y": 9.35,
@@ -2315,13 +2406,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "A9FF00FF"
+        "Color": "A9FF00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -120314,
-      "ParentId": -119394,
+      "ObjectId": -397702,
+      "ParentId": -396586,
       "Position": {
         "x": -0.07000065,
         "y": 9.35,
@@ -2340,13 +2432,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "6CE960FF"
+        "Color": "6CE960FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -120324,
-      "ParentId": -119394,
+      "ObjectId": -397714,
+      "ParentId": -396586,
       "Position": {
         "x": -0.07000065,
         "y": 9.35,
@@ -2365,13 +2458,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "6CE960FF"
+        "Color": "6CE960FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -120334,
-      "ParentId": -119394,
+      "ObjectId": -397726,
+      "ParentId": -396586,
       "Position": {
         "x": -0.07000065,
         "y": 9.35,
@@ -2390,13 +2484,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "6CE960FF"
+        "Color": "6CE960FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -120344,
-      "ParentId": -119394,
+      "ObjectId": -397738,
+      "ParentId": -396586,
       "Position": {
         "x": -0.07000065,
         "y": 9.35,
@@ -2415,13 +2510,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "A9FF00FF"
+        "Color": "A9FF00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -120354,
-      "ParentId": -119394,
+      "ObjectId": -397750,
+      "ParentId": -396586,
       "Position": {
         "x": -0.07000065,
         "y": 9.35,
@@ -2440,13 +2536,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FFFF00FF"
+        "Color": "FFFF00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -120364,
-      "ParentId": -119394,
+      "ObjectId": -397762,
+      "ParentId": -396586,
       "Position": {
         "x": -0.07000065,
         "y": 9.35,
@@ -2465,13 +2562,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FFCB00FF"
+        "Color": "FFCB00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -120374,
-      "ParentId": -119394,
+      "ObjectId": -397774,
+      "ParentId": -396586,
       "Position": {
         "x": -0.07000065,
         "y": 9.35,
@@ -2490,13 +2588,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FF8B00FF"
+        "Color": "FF8B00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -120384,
-      "ParentId": -119394,
+      "ObjectId": -397786,
+      "ParentId": -396586,
       "Position": {
         "x": -0.07000065,
         "y": 9.35,
@@ -2515,13 +2614,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FF0000FF"
+        "Color": "FF0000FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -120394,
-      "ParentId": -119394,
+      "ObjectId": -397798,
+      "ParentId": -396586,
       "Position": {
         "x": 1.82999992,
         "y": 9.35,
@@ -2540,13 +2640,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FF0000FF"
+        "Color": "FF0000FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -120404,
-      "ParentId": -119394,
+      "ObjectId": -397810,
+      "ParentId": -396586,
       "Position": {
         "x": 1.82999992,
         "y": 9.35,
@@ -2565,13 +2666,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FF8B00FF"
+        "Color": "FF8B00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -120414,
-      "ParentId": -119394,
+      "ObjectId": -397822,
+      "ParentId": -396586,
       "Position": {
         "x": 1.82999992,
         "y": 9.35,
@@ -2590,13 +2692,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FFCB00FF"
+        "Color": "FFCB00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -120424,
-      "ParentId": -119394,
+      "ObjectId": -397834,
+      "ParentId": -396586,
       "Position": {
         "x": 1.82999992,
         "y": 9.35,
@@ -2615,13 +2718,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FFFF00FF"
+        "Color": "FFFF00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -120434,
-      "ParentId": -119394,
+      "ObjectId": -397846,
+      "ParentId": -396586,
       "Position": {
         "x": 1.82999992,
         "y": 9.35,
@@ -2640,13 +2744,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "A9FF00FF"
+        "Color": "A9FF00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -120444,
-      "ParentId": -119394,
+      "ObjectId": -397858,
+      "ParentId": -396586,
       "Position": {
         "x": 1.82999992,
         "y": 9.35,
@@ -2665,13 +2770,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "6CE960FF"
+        "Color": "6CE960FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -120454,
-      "ParentId": -119394,
+      "ObjectId": -397870,
+      "ParentId": -396586,
       "Position": {
         "x": 1.82999992,
         "y": 9.35,
@@ -2690,13 +2796,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "6CE960FF"
+        "Color": "6CE960FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -120464,
-      "ParentId": -119394,
+      "ObjectId": -397882,
+      "ParentId": -396586,
       "Position": {
         "x": 1.82999992,
         "y": 9.35,
@@ -2715,13 +2822,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "6CE960FF"
+        "Color": "6CE960FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -120474,
-      "ParentId": -119394,
+      "ObjectId": -397894,
+      "ParentId": -396586,
       "Position": {
         "x": 1.82999992,
         "y": 9.35,
@@ -2740,13 +2848,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "A9FF00FF"
+        "Color": "A9FF00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -120484,
-      "ParentId": -119394,
+      "ObjectId": -397906,
+      "ParentId": -396586,
       "Position": {
         "x": 1.82999992,
         "y": 9.35,
@@ -2765,13 +2874,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FFFF00FF"
+        "Color": "FFFF00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -120494,
-      "ParentId": -119394,
+      "ObjectId": -397918,
+      "ParentId": -396586,
       "Position": {
         "x": 1.82999992,
         "y": 9.35,
@@ -2790,13 +2900,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FFCB00FF"
+        "Color": "FFCB00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -120504,
-      "ParentId": -119394,
+      "ObjectId": -397930,
+      "ParentId": -396586,
       "Position": {
         "x": 1.82999992,
         "y": 9.35,
@@ -2815,13 +2926,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FF8B00FF"
+        "Color": "FF8B00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -120514,
-      "ParentId": -119394,
+      "ObjectId": -397942,
+      "ParentId": -396586,
       "Position": {
         "x": 1.82999992,
         "y": 9.35,
@@ -2840,13 +2952,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FF0000FF"
+        "Color": "FF0000FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -120524,
-      "ParentId": -119394,
+      "ObjectId": -397954,
+      "ParentId": -396586,
       "Position": {
         "x": 3.72999954,
         "y": 9.35,
@@ -2865,13 +2978,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FF0000FF"
+        "Color": "FF0000FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -120534,
-      "ParentId": -119394,
+      "ObjectId": -397966,
+      "ParentId": -396586,
       "Position": {
         "x": 3.72999954,
         "y": 9.35,
@@ -2890,13 +3004,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FF8B00FF"
+        "Color": "FF8B00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -120544,
-      "ParentId": -119394,
+      "ObjectId": -397978,
+      "ParentId": -396586,
       "Position": {
         "x": 3.72999954,
         "y": 9.35,
@@ -2915,13 +3030,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FFCB00FF"
+        "Color": "FFCB00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -120554,
-      "ParentId": -119394,
+      "ObjectId": -397990,
+      "ParentId": -396586,
       "Position": {
         "x": 3.72999954,
         "y": 9.35,
@@ -2940,13 +3056,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FFFF00FF"
+        "Color": "FFFF00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -120564,
-      "ParentId": -119394,
+      "ObjectId": -398002,
+      "ParentId": -396586,
       "Position": {
         "x": 3.72999954,
         "y": 9.35,
@@ -2965,13 +3082,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "A9FF00FF"
+        "Color": "A9FF00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -120574,
-      "ParentId": -119394,
+      "ObjectId": -398014,
+      "ParentId": -396586,
       "Position": {
         "x": 3.72999954,
         "y": 9.35,
@@ -2990,13 +3108,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "A9FF00FF"
+        "Color": "A9FF00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -120584,
-      "ParentId": -119394,
+      "ObjectId": -398026,
+      "ParentId": -396586,
       "Position": {
         "x": 3.72999954,
         "y": 9.35,
@@ -3015,13 +3134,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "A9FF00FF"
+        "Color": "A9FF00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -120594,
-      "ParentId": -119394,
+      "ObjectId": -398038,
+      "ParentId": -396586,
       "Position": {
         "x": 3.72999954,
         "y": 9.35,
@@ -3040,13 +3160,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "A9FF00FF"
+        "Color": "A9FF00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -120604,
-      "ParentId": -119394,
+      "ObjectId": -398050,
+      "ParentId": -396586,
       "Position": {
         "x": 3.72999954,
         "y": 9.35,
@@ -3065,13 +3186,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "A9FF00FF"
+        "Color": "A9FF00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -120614,
-      "ParentId": -119394,
+      "ObjectId": -398062,
+      "ParentId": -396586,
       "Position": {
         "x": 3.72999954,
         "y": 9.35,
@@ -3090,13 +3212,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FFFF00FF"
+        "Color": "FFFF00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -120624,
-      "ParentId": -119394,
+      "ObjectId": -398074,
+      "ParentId": -396586,
       "Position": {
         "x": 3.72999954,
         "y": 9.35,
@@ -3115,13 +3238,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FFCB00FF"
+        "Color": "FFCB00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -120634,
-      "ParentId": -119394,
+      "ObjectId": -398086,
+      "ParentId": -396586,
       "Position": {
         "x": 3.72999954,
         "y": 9.35,
@@ -3140,13 +3264,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FF8B00FF"
+        "Color": "FF8B00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -120644,
-      "ParentId": -119394,
+      "ObjectId": -398098,
+      "ParentId": -396586,
       "Position": {
         "x": 3.72999954,
         "y": 9.35,
@@ -3165,13 +3290,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FF0000FF"
+        "Color": "FF0000FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -120654,
-      "ParentId": -119394,
+      "ObjectId": -398110,
+      "ParentId": -396586,
       "Position": {
         "x": 5.63,
         "y": 9.35,
@@ -3190,13 +3316,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FF0000FF"
+        "Color": "FF0000FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -120664,
-      "ParentId": -119394,
+      "ObjectId": -398122,
+      "ParentId": -396586,
       "Position": {
         "x": 5.63,
         "y": 9.35,
@@ -3215,13 +3342,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FF8B00FF"
+        "Color": "FF8B00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -120674,
-      "ParentId": -119394,
+      "ObjectId": -398134,
+      "ParentId": -396586,
       "Position": {
         "x": 5.63,
         "y": 9.35,
@@ -3240,13 +3368,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FFCB00FF"
+        "Color": "FFCB00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -120684,
-      "ParentId": -119394,
+      "ObjectId": -398146,
+      "ParentId": -396586,
       "Position": {
         "x": 5.63,
         "y": 9.35,
@@ -3265,13 +3394,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FFFF00FF"
+        "Color": "FFFF00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -120694,
-      "ParentId": -119394,
+      "ObjectId": -398158,
+      "ParentId": -396586,
       "Position": {
         "x": 5.63,
         "y": 9.35,
@@ -3290,13 +3420,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FFFF00FF"
+        "Color": "FFFF00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -120704,
-      "ParentId": -119394,
+      "ObjectId": -398170,
+      "ParentId": -396586,
       "Position": {
         "x": 5.63,
         "y": 9.35,
@@ -3315,13 +3446,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FFFF00FF"
+        "Color": "FFFF00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -120714,
-      "ParentId": -119394,
+      "ObjectId": -398182,
+      "ParentId": -396586,
       "Position": {
         "x": 5.63,
         "y": 9.35,
@@ -3340,13 +3472,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FFFF00FF"
+        "Color": "FFFF00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -120724,
-      "ParentId": -119394,
+      "ObjectId": -398194,
+      "ParentId": -396586,
       "Position": {
         "x": 5.63,
         "y": 9.35,
@@ -3365,13 +3498,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FFFF00FF"
+        "Color": "FFFF00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -120734,
-      "ParentId": -119394,
+      "ObjectId": -398206,
+      "ParentId": -396586,
       "Position": {
         "x": 5.63,
         "y": 9.35,
@@ -3390,13 +3524,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FFFF00FF"
+        "Color": "FFFF00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -120744,
-      "ParentId": -119394,
+      "ObjectId": -398218,
+      "ParentId": -396586,
       "Position": {
         "x": 5.63,
         "y": 9.35,
@@ -3415,13 +3550,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FFFF00FF"
+        "Color": "FFFF00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -120754,
-      "ParentId": -119394,
+      "ObjectId": -398230,
+      "ParentId": -396586,
       "Position": {
         "x": 5.63,
         "y": 9.35,
@@ -3440,13 +3576,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FFCB00FF"
+        "Color": "FFCB00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -120764,
-      "ParentId": -119394,
+      "ObjectId": -398242,
+      "ParentId": -396586,
       "Position": {
         "x": 5.63,
         "y": 9.35,
@@ -3465,13 +3602,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FF8B00FF"
+        "Color": "FF8B00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -120774,
-      "ParentId": -119394,
+      "ObjectId": -398254,
+      "ParentId": -396586,
       "Position": {
         "x": 5.63,
         "y": 9.35,
@@ -3490,13 +3628,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FF0000FF"
+        "Color": "FF0000FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -120784,
-      "ParentId": -119394,
+      "ObjectId": -398266,
+      "ParentId": -396586,
       "Position": {
         "x": 7.52999973,
         "y": 9.35,
@@ -3515,13 +3654,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FF0000FF"
+        "Color": "FF0000FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -120794,
-      "ParentId": -119394,
+      "ObjectId": -398278,
+      "ParentId": -396586,
       "Position": {
         "x": 7.52999973,
         "y": 9.35,
@@ -3540,13 +3680,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FF8B00FF"
+        "Color": "FF8B00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -120804,
-      "ParentId": -119394,
+      "ObjectId": -398290,
+      "ParentId": -396586,
       "Position": {
         "x": 7.52999973,
         "y": 9.35,
@@ -3565,13 +3706,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FFCB00FF"
+        "Color": "FFCB00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -120814,
-      "ParentId": -119394,
+      "ObjectId": -398302,
+      "ParentId": -396586,
       "Position": {
         "x": 7.52999973,
         "y": 9.35,
@@ -3590,13 +3732,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FFCB00FF"
+        "Color": "FFCB00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -120824,
-      "ParentId": -119394,
+      "ObjectId": -398314,
+      "ParentId": -396586,
       "Position": {
         "x": 7.52999973,
         "y": 9.35,
@@ -3615,13 +3758,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FFCB00FF"
+        "Color": "FFCB00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -120834,
-      "ParentId": -119394,
+      "ObjectId": -398326,
+      "ParentId": -396586,
       "Position": {
         "x": 7.52999973,
         "y": 9.35,
@@ -3640,13 +3784,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FFCB00FF"
+        "Color": "FFCB00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -120844,
-      "ParentId": -119394,
+      "ObjectId": -398338,
+      "ParentId": -396586,
       "Position": {
         "x": 7.52999973,
         "y": 9.35,
@@ -3665,13 +3810,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FFCB00FF"
+        "Color": "FFCB00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -120854,
-      "ParentId": -119394,
+      "ObjectId": -398350,
+      "ParentId": -396586,
       "Position": {
         "x": 7.52999973,
         "y": 9.35,
@@ -3690,13 +3836,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FFCB00FF"
+        "Color": "FFCB00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -120864,
-      "ParentId": -119394,
+      "ObjectId": -398362,
+      "ParentId": -396586,
       "Position": {
         "x": 7.52999973,
         "y": 9.35,
@@ -3715,13 +3862,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FFCB00FF"
+        "Color": "FFCB00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -120874,
-      "ParentId": -119394,
+      "ObjectId": -398374,
+      "ParentId": -396586,
       "Position": {
         "x": 7.52999973,
         "y": 9.35,
@@ -3740,13 +3888,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FFCB00FF"
+        "Color": "FFCB00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -120884,
-      "ParentId": -119394,
+      "ObjectId": -398386,
+      "ParentId": -396586,
       "Position": {
         "x": 7.52999973,
         "y": 9.35,
@@ -3765,13 +3914,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FFCB00FF"
+        "Color": "FFCB00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -120894,
-      "ParentId": -119394,
+      "ObjectId": -398398,
+      "ParentId": -396586,
       "Position": {
         "x": 7.52999973,
         "y": 9.35,
@@ -3790,13 +3940,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FF8B00FF"
+        "Color": "FF8B00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -120904,
-      "ParentId": -119394,
+      "ObjectId": -398410,
+      "ParentId": -396586,
       "Position": {
         "x": 7.52999973,
         "y": 9.35,
@@ -3815,13 +3966,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FF0000FF"
+        "Color": "FF0000FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -120914,
-      "ParentId": -119394,
+      "ObjectId": -398422,
+      "ParentId": -396586,
       "Position": {
         "x": 9.429999,
         "y": 9.35,
@@ -3840,13 +3992,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FF0000FF"
+        "Color": "FF0000FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -120924,
-      "ParentId": -119394,
+      "ObjectId": -398434,
+      "ParentId": -396586,
       "Position": {
         "x": 9.429999,
         "y": 9.35,
@@ -3865,13 +4018,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FF8B00FF"
+        "Color": "FF8B00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -120934,
-      "ParentId": -119394,
+      "ObjectId": -398446,
+      "ParentId": -396586,
       "Position": {
         "x": 9.429999,
         "y": 9.35,
@@ -3890,13 +4044,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FF8B00FF"
+        "Color": "FF8B00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -120944,
-      "ParentId": -119394,
+      "ObjectId": -398458,
+      "ParentId": -396586,
       "Position": {
         "x": 9.429999,
         "y": 9.35,
@@ -3915,13 +4070,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FF8B00FF"
+        "Color": "FF8B00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -120954,
-      "ParentId": -119394,
+      "ObjectId": -398470,
+      "ParentId": -396586,
       "Position": {
         "x": 9.429999,
         "y": 9.35,
@@ -3940,13 +4096,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FF8B00FF"
+        "Color": "FF8B00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -120964,
-      "ParentId": -119394,
+      "ObjectId": -398482,
+      "ParentId": -396586,
       "Position": {
         "x": 9.429999,
         "y": 9.35,
@@ -3965,13 +4122,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FF8B00FF"
+        "Color": "FF8B00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -120974,
-      "ParentId": -119394,
+      "ObjectId": -398494,
+      "ParentId": -396586,
       "Position": {
         "x": 9.429999,
         "y": 9.35,
@@ -3990,13 +4148,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FF8B00FF"
+        "Color": "FF8B00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -120984,
-      "ParentId": -119394,
+      "ObjectId": -398506,
+      "ParentId": -396586,
       "Position": {
         "x": 9.429999,
         "y": 9.35,
@@ -4015,13 +4174,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FF8B00FF"
+        "Color": "FF8B00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -120994,
-      "ParentId": -119394,
+      "ObjectId": -398518,
+      "ParentId": -396586,
       "Position": {
         "x": 9.429999,
         "y": 9.35,
@@ -4040,13 +4200,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FF8B00FF"
+        "Color": "FF8B00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -121004,
-      "ParentId": -119394,
+      "ObjectId": -398530,
+      "ParentId": -396586,
       "Position": {
         "x": 9.429999,
         "y": 9.35,
@@ -4065,13 +4226,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FF8B00FF"
+        "Color": "FF8B00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -121014,
-      "ParentId": -119394,
+      "ObjectId": -398542,
+      "ParentId": -396586,
       "Position": {
         "x": 9.429999,
         "y": 9.35,
@@ -4090,13 +4252,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FF8B00FF"
+        "Color": "FF8B00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -121024,
-      "ParentId": -119394,
+      "ObjectId": -398554,
+      "ParentId": -396586,
       "Position": {
         "x": 9.429999,
         "y": 9.35,
@@ -4115,13 +4278,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FF8B00FF"
+        "Color": "FF8B00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -121034,
-      "ParentId": -119394,
+      "ObjectId": -398566,
+      "ParentId": -396586,
       "Position": {
         "x": 9.429999,
         "y": 9.35,
@@ -4140,13 +4304,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FF0000FF"
+        "Color": "FF0000FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -121044,
-      "ParentId": -119394,
+      "ObjectId": -398578,
+      "ParentId": -396586,
       "Position": {
         "x": 11.329999,
         "y": 9.35,
@@ -4165,13 +4330,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FF0000FF"
+        "Color": "FF0000FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -121054,
-      "ParentId": -119394,
+      "ObjectId": -398590,
+      "ParentId": -396586,
       "Position": {
         "x": 11.329999,
         "y": 9.35,
@@ -4190,13 +4356,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FF0000FF"
+        "Color": "FF0000FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -121064,
-      "ParentId": -119394,
+      "ObjectId": -398602,
+      "ParentId": -396586,
       "Position": {
         "x": 11.329999,
         "y": 9.35,
@@ -4215,13 +4382,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FF0000FF"
+        "Color": "FF0000FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -121074,
-      "ParentId": -119394,
+      "ObjectId": -398614,
+      "ParentId": -396586,
       "Position": {
         "x": 11.329999,
         "y": 9.35,
@@ -4240,13 +4408,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FF0000FF"
+        "Color": "FF0000FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -121084,
-      "ParentId": -119394,
+      "ObjectId": -398626,
+      "ParentId": -396586,
       "Position": {
         "x": 11.329999,
         "y": 9.35,
@@ -4265,13 +4434,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FF0000FF"
+        "Color": "FF0000FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -121094,
-      "ParentId": -119394,
+      "ObjectId": -398638,
+      "ParentId": -396586,
       "Position": {
         "x": 11.329999,
         "y": 9.35,
@@ -4290,13 +4460,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FF0000FF"
+        "Color": "FF0000FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -121104,
-      "ParentId": -119394,
+      "ObjectId": -398650,
+      "ParentId": -396586,
       "Position": {
         "x": 11.329999,
         "y": 9.35,
@@ -4315,13 +4486,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FF0000FF"
+        "Color": "FF0000FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -121114,
-      "ParentId": -119394,
+      "ObjectId": -398662,
+      "ParentId": -396586,
       "Position": {
         "x": 11.329999,
         "y": 9.35,
@@ -4340,13 +4512,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FF0000FF"
+        "Color": "FF0000FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -121124,
-      "ParentId": -119394,
+      "ObjectId": -398674,
+      "ParentId": -396586,
       "Position": {
         "x": 11.329999,
         "y": 9.35,
@@ -4365,13 +4538,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FF0000FF"
+        "Color": "FF0000FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -121134,
-      "ParentId": -119394,
+      "ObjectId": -398686,
+      "ParentId": -396586,
       "Position": {
         "x": 11.329999,
         "y": 9.35,
@@ -4390,13 +4564,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FF0000FF"
+        "Color": "FF0000FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -121144,
-      "ParentId": -119394,
+      "ObjectId": -398698,
+      "ParentId": -396586,
       "Position": {
         "x": 11.329999,
         "y": 9.35,
@@ -4415,13 +4590,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FF0000FF"
+        "Color": "FF0000FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -121154,
-      "ParentId": -119394,
+      "ObjectId": -398710,
+      "ParentId": -396586,
       "Position": {
         "x": 11.329999,
         "y": 9.35,
@@ -4440,13 +4616,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FF0000FF"
+        "Color": "FF0000FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Platform",
-      "ObjectId": -121164,
-      "ParentId": -119394,
+      "ObjectId": -398722,
+      "ParentId": -396586,
       "Position": {
         "x": 11.329999,
         "y": 9.35,
@@ -4465,7 +4642,8 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FF0000FF"
+        "Color": "FF0000FF",
+        "PrimitiveFlags": 3
       }
     }
   ]

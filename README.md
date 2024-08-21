@@ -11,7 +11,7 @@
 [![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/Message3.png)](https://github.com/KoT0XleB/AutoEvent-Exiled/blob/main/Docs/Language.md)
 [![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/Message4.png)](https://github.com/KoT0XleB/AutoEvent-Exiled/blob/main/Docs/Problem.md)
 [![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/Message5.png)](https://github.com/KoT0XleB/AutoEvent-Exiled/blob/main/Docs/Example.md)
-[![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/Message6.png)](https://discord.gg/n3Y8XGtQGX)
+[![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/Message6.png)](https://github.com/KoT0XleB/AutoEvent-Exiled/blob/main/Docs/Configuration.md)
 
 # Credits
 - Thanks to **Redforce04** for the help in changing the structures of the mini-games.
@@ -21,3 +21,4 @@
 - Small parts of the code for NWApi were borrowed from [Exiled](https://github.com/Exiled-Team/EXILED), for which many thanks.
 - Special thanks to **Michal78900** for the opportunity to borrow [MapEditorReborn](https://github.com/Michal78900/MapEditorReborn) code for NWApi.
 - Special thanks to **ced777ric** for the plugin [SCPSLAudioApi](https://github.com/CedModV2/SCPSLAudioApi) for launching music.
+- Special thanks to **MujisongPlay** for the plugin [AdvancedMERtools](https://github.com/MujisongPlay/AdvancedMERtools) for the expansion of MER.

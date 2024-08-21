@@ -4,7 +4,7 @@ command_name: 'race'
 cycle: |-
   {name}
   <color=yellow>Passe pelo ponto de chegada para vencer!</color>
-  Time Remaining: {time}
+  Tempo Restante: {time}
 died: '<color=red>Você não terminou a corrida</color>'
 players_survived: |-
   <color=red>Humanos venceram!</color>

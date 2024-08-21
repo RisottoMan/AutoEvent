@@ -44,9 +44,9 @@ internal class Vote : ICommand, IUsageProvider, IPermission
             response = $"The mini-game {arguments.At(0)} is not found.";
             return false;
         }
-
+        
         Event vote = Event.GetEvent("Vote");
-        if (vote == null)
+        if (vote is null)
         {
             response = $"The vote is not found.";
             return false;

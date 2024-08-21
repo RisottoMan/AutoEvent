@@ -1,11 +1,11 @@
-﻿using AutoEvent.API.Attributes;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using AutoEvent.API.Enums;
 using AutoEvent.API;
+using AutoEvent.API.AdvancedMERTool;
 using MEC;
 using AutoEvent.API.Season;
 using AutoEvent.API.Season.Enum;
@@ -40,8 +40,7 @@ namespace AutoEvent.Interfaces
                         continue;
                     
                     object evBase = Activator.CreateInstance(type);
-                        if(evBase is null || evBase is not Event ev ||
-                        type.GetCustomAttributes(typeof(DisabledFeaturesAttribute), false).Any(x => x is not null))
+                        if(evBase is null || evBase is not Event ev)
                         continue;
 
                     if (!ev.AutoLoad)
@@ -208,6 +207,8 @@ namespace AutoEvent.Interfaces
         /// The elapsed time since the plugin started.
         /// </summary>
         public virtual TimeSpan EventTime { get; protected set; }
+        
+        public virtual AdvancedMERTools AdvancedMERObject { get; protected set; }
 
     #endregion
     #region Event API Methods // Methods that can be used as api calls such as starting music / spawning map. 
@@ -265,6 +266,12 @@ namespace AutoEvent.Interfaces
                 map.MapInfo.MapRotation, 
                 map.MapInfo.Scale,
                 map.MapInfo.IsStatic);
+            
+            Timing.CallDelayed(0.05f, () =>
+            {
+                AdvancedMERObject = new AdvancedMERTools();
+                AdvancedMERObject.OnEnabled(map.MapInfo.Map);
+            });
         }
     }
 
@@ -277,6 +284,7 @@ namespace AutoEvent.Interfaces
         if (this is IEventMap eventMap)
         {
             Extensions.UnLoadMap(eventMap.MapInfo.Map);
+            AdvancedMERObject.OnDisabled();
         }
     }
 

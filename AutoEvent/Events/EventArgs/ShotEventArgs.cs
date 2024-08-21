@@ -13,7 +13,7 @@ namespace AutoEvent.Events.EventArgs
     /// <summary>
     ///     Contains all information after a player has fired a weapon.
     /// </summary>
-    public class ShotEventArgs
+    public class NewShotEventArgs
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="ShotEventArgs" /> class.
@@ -28,7 +28,7 @@ namespace AutoEvent.Events.EventArgs
         /// <param name="damage">
         ///     <inheritdoc cref="Damage" />
         /// </param>
-        public ShotEventArgs(Player shooter, RaycastHit hit, IDestructible destructible, float damage)
+        public NewShotEventArgs(Player shooter, RaycastHit hit, IDestructible destructible, float damage)
         {
             Player = shooter;
             Damage = damage;

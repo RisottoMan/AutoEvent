@@ -21,12 +21,12 @@ namespace AutoEvent.Commands
                 RegisterCommand(new Run());
                 RegisterCommand(new Stop());
                 //RegisterCommand(new Lobby());
-                //RegisterCommand(new Vote());
+                RegisterCommand(new Vote());
                 RegisterCommand(new Volume());
                 RegisterCommand(new NoRestart()); 
-                RegisterCommand(new Reload.Reload());
+                //RegisterCommand(new Reload.Reload());
                 RegisterCommand(new Debug.Debug());
-                RegisterCommand(new Config.Config());
+                //RegisterCommand(new Config.Config());
             }
             catch (Exception e)
             {
@@ -54,12 +54,7 @@ namespace AutoEvent.Commands
                 else
                     response += $" {x.Key} {args} -> {x.Value.Description}. \n";
             }
-        
-                       // "<color=yellow>  list <color=white>-> gets the list of the events\n" +
-                       // "<color=yellow>  run <color=white>-> run an event\n" +
-                       // "<color=yellow>  stop <color=white>-> stop the current event\n" +
-                       // "<color=yellow>  volume <color=white>-> change the volume of the sounds\n" +
-                       // "<color=yellow>  reload <color=white>-> reloads events, configs, and translations";
+            
             return false;
         }
     }

@@ -1,21 +1,16 @@
-﻿using InventorySystem.Items.Pickups;
-using InventorySystem.Items.ThrowableProjectiles;
+﻿using InventorySystem.Items.ThrowableProjectiles;
 using PluginAPI.Core;
 
 namespace AutoEvent.Events.EventArgs
 {
-    public class Scp018BounceArgs
+    public class Scp018CollisionArgs
     {
-        public Scp018BounceArgs(ReferenceHub hub, ItemPickupBase pickup, ThrownProjectile proj, bool isAllowed = true)
+        public Scp018CollisionArgs(Scp018Projectile proj)
         {
-            Player = Player.Get(hub);
-            Pickup = pickup;
+            Player = Player.Get(proj.PreviousOwner.Hub);
             Projectile = proj;
-            IsAllowed = isAllowed;
         }
         public Player Player { get; }
-        public ItemPickupBase Pickup { get; }
-        public ThrownProjectile Projectile { get; }
-        public bool IsAllowed { get; set; }
+        public Scp018Projectile Projectile { get; }
     }
 }

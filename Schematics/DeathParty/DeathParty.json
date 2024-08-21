@@ -1,10 +1,10 @@
 {
-  "RootObjectId": -1684,
+  "RootObjectId": -390904,
   "Blocks": [
     {
       "Name": "LightSource",
-      "ObjectId": -1688,
-      "ParentId": -1684,
+      "ObjectId": -390910,
+      "ParentId": -390904,
       "Position": {
         "x": 0.0,
         "y": 20.3375015,
@@ -20,8 +20,8 @@
     },
     {
       "Name": "Spawnpoint",
-      "ObjectId": -1690,
-      "ParentId": -1684,
+      "ObjectId": -390916,
+      "ParentId": -390904,
       "Position": {
         "x": 0.0,
         "y": 3.8,
@@ -33,20 +33,21 @@
         "z": 0.0
       },
       "Scale": {
-        "x": -0.01,
-        "y": -0.01,
-        "z": -0.01
+        "x": 0.01,
+        "y": 0.01,
+        "z": 0.01
       },
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "00000000"
+        "Color": "00000000",
+        "PrimitiveFlags": 2
       }
     },
     {
       "Name": "Arena",
-      "ObjectId": -1692,
-      "ParentId": -1684,
+      "ObjectId": -390928,
+      "ParentId": -390904,
       "Position": {
         "x": 0.022,
         "y": 0.487,
@@ -65,13 +66,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 5,
-        "Color": "FFFFFFFF"
+        "Color": "FFFFFFFF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Quad (1)",
-      "ObjectId": -1694,
-      "ParentId": -1684,
+      "ObjectId": -390940,
+      "ParentId": -390904,
       "Position": {
         "x": 0.0,
         "y": 9.44875,
@@ -90,13 +92,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 5,
-        "Color": "FFFF00FF"
+        "Color": "FFFF00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Quad (2)",
-      "ObjectId": -1696,
-      "ParentId": -1684,
+      "ObjectId": -390952,
+      "ParentId": -390904,
       "Position": {
         "x": 0.0,
         "y": 9.44875,
@@ -115,13 +118,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 5,
-        "Color": "FFFF00FF"
+        "Color": "FFFF00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Quad (3)",
-      "ObjectId": -1698,
-      "ParentId": -1684,
+      "ObjectId": -390964,
+      "ParentId": -390904,
       "Position": {
         "x": 17.75,
         "y": 9.44875,
@@ -140,13 +144,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 5,
-        "Color": "FFFF00FF"
+        "Color": "FFFF00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Quad (4)",
-      "ObjectId": -1700,
-      "ParentId": -1684,
+      "ObjectId": -390976,
+      "ParentId": -390904,
       "Position": {
         "x": -17.6875,
         "y": 9.44875,
@@ -165,13 +170,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 5,
-        "Color": "FFFF00FF"
+        "Color": "FFFF00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Quad (1)",
-      "ObjectId": -1702,
-      "ParentId": -1684,
+      "ObjectId": -390988,
+      "ParentId": -390904,
       "Position": {
         "x": 6.797415,
         "y": 9.44875,
@@ -190,13 +196,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 5,
-        "Color": "FFFF00FF"
+        "Color": "FFFF00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Quad (2)",
-      "ObjectId": -1704,
-      "ParentId": -1684,
+      "ObjectId": -391000,
+      "ParentId": -390904,
       "Position": {
         "x": -6.787848,
         "y": 9.44875,
@@ -215,13 +222,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 5,
-        "Color": "FFFF00FF"
+        "Color": "FFFF00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Quad (3)",
-      "ObjectId": -1706,
-      "ParentId": -1684,
+      "ObjectId": -391012,
+      "ParentId": -390904,
       "Position": {
         "x": 16.4275627,
         "y": 9.44875,
@@ -240,13 +248,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 5,
-        "Color": "FFFF00FF"
+        "Color": "FFFF00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Quad (4)",
-      "ObjectId": -1708,
-      "ParentId": -1684,
+      "ObjectId": -391024,
+      "ParentId": -390904,
       "Position": {
         "x": -16.312418,
         "y": 9.44875,
@@ -265,13 +274,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 5,
-        "Color": "FFFF00FF"
+        "Color": "FFFF00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Quad (5)",
-      "ObjectId": -1710,
-      "ParentId": -1684,
+      "ObjectId": -391036,
+      "ParentId": -390904,
       "Position": {
         "x": 0.0,
         "y": 18.225,
@@ -290,13 +300,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 5,
-        "Color": "FFFFFFFF"
+        "Color": "FFFFFFFF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Quad (1)",
-      "ObjectId": -1712,
-      "ParentId": -1684,
+      "ObjectId": -391048,
+      "ParentId": -390904,
       "Position": {
         "x": 16.41041,
         "y": 9.44875,
@@ -315,13 +326,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 5,
-        "Color": "FFFF00FF"
+        "Color": "FFFF00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Quad (2)",
-      "ObjectId": -1714,
-      "ParentId": -1684,
+      "ObjectId": -391060,
+      "ParentId": -390904,
       "Position": {
         "x": -16.3873138,
         "y": 9.44875,
@@ -329,7 +341,7 @@
       },
       "Rotation": {
         "x": 0.0,
-        "y": 247.499985,
+        "y": 247.5,
         "z": 0.0
       },
       "Scale": {
@@ -340,13 +352,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 5,
-        "Color": "FFFF00FF"
+        "Color": "FFFF00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Quad (3)",
-      "ObjectId": -1716,
-      "ParentId": -1684,
+      "ObjectId": -391072,
+      "ParentId": -390904,
       "Position": {
         "x": 6.861923,
         "y": 9.44875,
@@ -365,13 +378,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 5,
-        "Color": "FFFF00FF"
+        "Color": "FFFF00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Quad (4)",
-      "ObjectId": -1718,
-      "ParentId": -1684,
+      "ObjectId": -391084,
+      "ParentId": -390904,
       "Position": {
         "x": -6.69942331,
         "y": 9.44875,
@@ -390,13 +404,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 5,
-        "Color": "FFFF00FF"
+        "Color": "FFFF00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Quad (1)",
-      "ObjectId": -1720,
-      "ParentId": -1684,
+      "ObjectId": -391096,
+      "ParentId": -390904,
       "Position": {
         "x": 12.5599842,
         "y": 9.44875,
@@ -415,13 +430,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 5,
-        "Color": "FFFF00FF"
+        "Color": "FFFF00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Quad (2)",
-      "ObjectId": -1722,
-      "ParentId": -1684,
+      "ObjectId": -391108,
+      "ParentId": -390904,
       "Position": {
         "x": -12.5423059,
         "y": 9.44875,
@@ -429,7 +445,7 @@
       },
       "Rotation": {
         "x": 0.0,
-        "y": 225.0,
+        "y": 224.999985,
         "z": 0.0
       },
       "Scale": {
@@ -440,13 +456,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 5,
-        "Color": "FFFF00FF"
+        "Color": "FFFF00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Quad (3)",
-      "ObjectId": -1724,
-      "ParentId": -1684,
+      "ObjectId": -391120,
+      "ParentId": -390904,
       "Position": {
         "x": 12.6041784,
         "y": 9.44875,
@@ -465,13 +482,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 5,
-        "Color": "FFFF00FF"
+        "Color": "FFFF00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Quad (4)",
-      "ObjectId": -1726,
-      "ParentId": -1684,
+      "ObjectId": -391132,
+      "ParentId": -390904,
       "Position": {
         "x": -12.4539185,
         "y": 9.44875,
@@ -490,7 +508,8 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 5,
-        "Color": "FFFF00FF"
+        "Color": "FFFF00FF",
+        "PrimitiveFlags": 3
       }
     }
   ]

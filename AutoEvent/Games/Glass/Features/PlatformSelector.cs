@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using AutoEvent.API.RNG;
-using HarmonyLib;
+using UnityEngine;
 
 namespace AutoEvent.Games.Glass.Features;
 public class PlatformSelector
@@ -13,52 +12,25 @@ public class PlatformSelector
     public int MaximumSideOffset { get; set; } = 0;
     public int LeftSidedPlatforms { get; set; } = 0;
     public int RightSidedPlatforms { get; set; } = 0;
-    private SeedMethod _seedMethod;
 
-    public PlatformSelector(int platformCount, string salt, int minimumSideOffset, int maximumSideOffset,
-        SeedMethod seedMethod)
+    public PlatformSelector(int platformCount, string salt, int minimumSideOffset, int maximumSideOffset)
     {
         PlatformCount = platformCount;
         PlatformData = new List<PlatformData>();
         MinimumSideOffset = minimumSideOffset;
         MaximumSideOffset = maximumSideOffset;
-        _seedMethod = seedMethod;
-        initSeed(salt);
+        Seed = (System.DateTime.Now.Ticks + salt).GetHashCode().ToString();
         _selectPlatformSideCount();
         _createPlatforms();
         _logOutput();
     }
-
-    private void initSeed(string salt)
-    {
-        var bytes = RNGGenerator.GetRandomBytes().AddRangeToArray(RNGGenerator.TextToBytes(salt));
-        Seed = RNGGenerator.GetSeed(bytes);
-    }
-
+    
     private void _selectPlatformSideCount()
     {
-        bool leftSidePriority = true;
-        int seedInt = RNGGenerator.GetIntFromSeededString(Seed, 3, 4, 0);
-        int percent = 50;
-        int priority = 5;
-        int remainder = 5;
-        switch (_seedMethod)
-        {
-            case SeedMethod.UnityRandom:
-                UnityEngine.Random.InitState(seedInt);
-                leftSidePriority = UnityEngine.Random.Range(0, 2) == 1;
-                percent = UnityEngine.Random.Range((int)MinimumSideOffset, (int)MaximumSideOffset);
-                break;
-            case SeedMethod.SystemRandom:
-                var random = new System.Random(seedInt);
-                leftSidePriority = random.Next(0, 2) == 1;
-                percent = random.Next((int)MinimumSideOffset, (int)MaximumSideOffset);
-                random.Next();
-                break;
-        }
-
-        priority = (int)((float)PlatformCount * ((float)percent / 100f));
-        remainder = PlatformCount - priority;
+        bool leftSidePriority = Random.Range(0, 2) == 1;
+        int percent = Random.Range(MinimumSideOffset, MaximumSideOffset);
+        int priority = (int)((float)PlatformCount * ((float)percent / 100f));
+        int remainder = PlatformCount - priority;
         LeftSidedPlatforms = leftSidePriority ? priority : remainder;
         RightSidedPlatforms = leftSidePriority ? remainder : priority;
     }
@@ -66,15 +38,15 @@ public class PlatformSelector
     private void _createPlatforms()
     {
         List<PlatformData> data = new List<PlatformData>();
+        
         for (int i = 0; i < LeftSidedPlatforms; i++)
         {
-            data.Add(new PlatformData(true, RNGGenerator.GetIntFromSeededString(Seed, 4, 4, 1 + i)));
+            data.Add(new PlatformData(true, GetIntFromSeededString(Seed, 4, 1 + i)));
         }
 
         for (int i = 0; i < RightSidedPlatforms; i++)
         {
-            data.Add(new PlatformData(false,
-                RNGGenerator.GetIntFromSeededString(Seed, 4, 4, 1 + i + LeftSidedPlatforms)));
+            data.Add(new PlatformData(false, GetIntFromSeededString(Seed, 4, 1 + i + LeftSidedPlatforms)));
         }
 
         PlatformData = data.OrderBy(x => x.Placement).ToList();
@@ -83,7 +55,7 @@ public class PlatformSelector
     private void _logOutput()
     {
         DebugLogger.LogDebug(
-            $"Selecting {PlatformCount} Platforms. [{MinimumSideOffset}, {MaximumSideOffset}]   {LeftSidedPlatforms} | {RightSidedPlatforms}  Seed: {Seed}",
+            $"Selecting {PlatformCount} Platforms. [{MinimumSideOffset}, {MaximumSideOffset}]   {LeftSidedPlatforms} | {RightSidedPlatforms}",
             LogLevel.Debug, false);
         foreach (var platform in PlatformData.OrderByDescending(x => x.Placement))
         {
@@ -91,5 +63,19 @@ public class PlatformSelector
                 (platform.LeftSideIsDangerous ? "[X] [=]" : "[=] [X]") + $"  Priority: {platform.Placement}",
                 LogLevel.Debug, false);
         }
+    }
+    
+    public static int GetIntFromSeededString(string seed, int count, int amount)
+    {
+        string seedGen = "";
+        for (int s = 0; s < count; s++)
+        {
+            int indexer = (amount * count) + s;
+            while (indexer >= seed.Length)
+                indexer -= seed.Length - 1;
+            seedGen += seed[indexer].ToString();
+        }
+
+        return int.Parse(seedGen);
     }
 }
