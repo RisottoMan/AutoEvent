@@ -9,5 +9,7 @@ namespace AutoEvent.Games.Deathrun;
 public class Config : EventConfig
 {
     [Description("How long the round should last in minutes.")]
-    public int RoundDurationInMinutes { get; set; } = 5;
+    public int RoundDurationInSeconds { get; set; } = 300;
+    [Description("How many seconds after the start of the game can be given a second life? Disable -> -1")]
+    public int SecondLifeInSeconds { get; set; } = 15;
 }

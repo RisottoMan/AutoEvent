@@ -16,4 +16,5 @@ public class Translation : EventTranslation
     public string RunnerWinBroadcast { get; set; } = "<color=#FFC618>{name}</color>\n<b><color=yellow>Runners win</color></b>";
     public string Died { get; set; } = "<color=red>You didn't have time to kill the death</color>";
     public string OverTimeBroadcast { get; set; } = "<b><color=red>Time to kill <i>Death</i> 😸</color></b>";
+    public string SecondLifeHint { get; set; } = "<b><color=green>You've got a second life.</color></b>";
 }

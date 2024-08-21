@@ -4,7 +4,6 @@ using InventorySystem.Configs;
 using PluginAPI.Core.Attributes;
 using PluginAPI.Enums;
 using PluginAPI.Events;
-using Utils.Networking;
 
 namespace AutoEvent.Games.Deathrun;
 public class EventHandler
@@ -16,6 +15,13 @@ public class EventHandler
         {
             ev.Player.SetAmmo(AmmoLimit.Key, AmmoLimit.Value);
         }
+    }
+
+    [PluginEvent(ServerEventType.PlayerDying)]
+    public void OnPlayerDying(PlayerDyingEvent ev)
+    {
+        DebugLogger.LogDebug("Play music");
+        Extensions.PlayPlayerAudio(ev.Player, "Death-Sound.ogg", 7);
     }
     
     public void OnTeamRespawn(TeamRespawnArgs ev) => ev.IsAllowed = false;
