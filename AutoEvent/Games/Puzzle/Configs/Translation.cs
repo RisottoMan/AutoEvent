@@ -1,4 +1,4 @@
-﻿using AutoEvent.Interfaces;
+using AutoEvent.Interfaces;
 
 namespace AutoEvent.Games.Puzzle;
 public class Translation : EventTranslation
