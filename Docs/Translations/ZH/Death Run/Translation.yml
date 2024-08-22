@@ -1,6 +1,22 @@
 name: 'Death Run'
 description: 'Go to the end, avoiding death-activated trap along the way'
 command_name: 'deathrun'
+before_start_broadcast: |-
+  <color=#FFC618>{name}</color>
+  <size=35><color=#ff4c5b>Warning! There are deadly traps ahead</color>
+  <color=#20B2AA>Get ready to run in <b>{time}</b> seconds</color></size>
+cycle_broadcast: |-
+  <color=#FFC618>{name}</color>
+  <size=35><color=yellow>😃 Runners [{runnerCount}]</color> | <color=#ff4c5b>[{deathCount}] Death 😈</color>
+  <color=#20B2AA>Time Left: <b>{time}</b></color></size>
+death_win_broadcast: |-
+  <color=#FFC618>{name}</color>
+  <b><color=#ff4c5b>Death win</color></b>
+runner_win_broadcast: |-
+  <color=#FFC618>{name}</color>
+  <b><color=yellow>Runners win</color></b>
+died: '<color=red>You didn''t have time to kill the death</color>'
+over_time_broadcast: "<b><color=red>Time to kill <i>Death</i> \U0001F638</color></b>"
 # DO NOT CHANGE THIS. IT WILL BREAK THINGS. AutoEvent will automatically manage these settings.
 version: '1.0.0'
 language: 'EN'
