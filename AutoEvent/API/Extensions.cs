@@ -349,6 +349,9 @@ namespace AutoEvent
             effect.Duration, effect.AddDuration);
         public static void GiveEffect(this Player ply, StatusEffect effect, byte intensity, float duration = 0f, bool addDuration = false) =>             
             ply.EffectsManager.ChangeState(effect.ToString(), intensity, duration, addDuration);
+        public static void DisableEffect(this Player ply, Effect effect) => DisableEffect(ply, effect.EffectType);
+        public static void DisableEffect(this Player ply, StatusEffect effect) =>             
+            ply.EffectsManager.ChangeState(effect.ToString(), 0, 0, true);
         public static Type GetStatusEffectBaseType(this StatusEffect effect)
         {
             // I should have done this via reflection but oh well... 

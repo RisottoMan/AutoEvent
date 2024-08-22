@@ -1,50 +1,30 @@
-﻿using MEC;
-using PlayerRoles;
-using InventorySystem.Configs;
-using System.Collections.Generic;
-using CustomPlayerEffects;
-using System.Linq;
+﻿using System.Collections.Generic;
 using AutoEvent.Events.EventArgs;
-using MER.Lite.Components;
+using InventorySystem.Configs;
 using PluginAPI.Core.Attributes;
 using PluginAPI.Enums;
 using PluginAPI.Events;
-using PluginAPI.Core;
-using PlayerStatsSystem;
-using UnityEngine;
 
 namespace AutoEvent.Games.Deathrun;
 public class EventHandler
 {
-    Plugin _plugin;
-    public EventHandler(Plugin plugin)
+    [PluginEvent(ServerEventType.PlayerSpawn)]
+    public void OnSpawning(PlayerSpawnEvent ev)
     {
-        _plugin = plugin;
-    }
-
-    // If the player presses the Scp-018
-    public void OnPickUpItem(PickUpItemArgs ev) // Need rewrite
-    {
-        if (ev.Item.ItemTypeId != ItemType.SCP018)
-            return;
-        
-        GameObject parent = _plugin.MapInfo.Map.AttachedBlocks.
-            First(r => r.gameObject == ev.Pickup.transform.parent.gameObject);
-            
-        var animation = parent.GetComponentInChildren<Animator>();
-        string animationName = animation.runtimeAnimatorController.animationClips.
-            First(r => r.name.Contains("Animation")).name;
-        animation.Play(animationName);
-        
-        Timing.CallDelayed(0.2f, () =>
+        foreach (KeyValuePair<ItemType, ushort> AmmoLimit in InventoryLimits.StandardAmmoLimits)
         {
-            ev.Player.RemoveItems(ItemType.SCP018);
-        });
+            ev.Player.SetAmmo(AmmoLimit.Key, AmmoLimit.Value);
+        }
     }
 
+    [PluginEvent(ServerEventType.PlayerDying)]
+    public void OnPlayerDying(PlayerDyingEvent ev)
+    {
+        DebugLogger.LogDebug("Play music");
+        Extensions.PlayPlayerAudio(ev.Player, "Death-Sound.ogg", 7);
+    }
+    
     public void OnTeamRespawn(TeamRespawnArgs ev) => ev.IsAllowed = false;
-    public void OnPlaceBullet(PlaceBulletArgs ev) => ev.IsAllowed = false;
-    public void OnPlaceBlood(PlaceBloodArgs ev) => ev.IsAllowed = false;
     public void OnDropItem(DropItemArgs ev) => ev.IsAllowed = false;
     public void OnDropAmmo(DropAmmoArgs ev) => ev.IsAllowed = false;
 }

@@ -21,3 +21,4 @@
 - Small parts of the code for NWApi were borrowed from [Exiled](https://github.com/Exiled-Team/EXILED), for which many thanks.
 - Special thanks to **Michal78900** for the opportunity to borrow [MapEditorReborn](https://github.com/Michal78900/MapEditorReborn) code for NWApi.
 - Special thanks to **ced777ric** for the plugin [SCPSLAudioApi](https://github.com/CedModV2/SCPSLAudioApi) for launching music.
+- Special thanks to **MujisongPlay** for the plugin [AdvancedMERtools](https://github.com/MujisongPlay/AdvancedMERtools) for the expansion of MER.

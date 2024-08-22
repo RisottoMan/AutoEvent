@@ -39,7 +39,7 @@ namespace AutoEvent
         [PluginConfig("Configs/autoevent.yml")]
         public Config Config;
 #endif
-        public const string PluginVersion = "9.7.5";
+        public const string PluginVersion = "9.8.0";
         public const bool BetaRelease = false; // todo set beta to false before main release
         /// <summary>
         /// The location of the AutoEvent folder for schematics, music, external events and event config / translations.
@@ -96,6 +96,14 @@ namespace AutoEvent
                     global::AutoEvent.Events.Handlers.Players.OnShot(args);
                     ev.Damage = args.Damage;
                     ev.CanHurt = args.CanHurt;
+                };
+                
+                Exiled.Events.Handlers.Player.SearchingPickup += (Exiled.Events.EventArgs.Player.SearchingPickupEventArgs ev) =>
+                {
+                    var args = new SearchPickUpItemArgs(Player.Get(ev.Player.ReferenceHub), ev.Pickup.Base, ev.SearchSession, ev.SearchCompletor, ev.SearchTime);
+                    global::AutoEvent.Events.Handlers.Players.OnSearchPickUpItem(args);
+                    ev.IsAllowed = args.IsAllowed;
+                    ev.SearchTime = args.SearchTime;
                 };
 #endif
                 
