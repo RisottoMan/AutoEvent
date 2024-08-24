@@ -18,7 +18,7 @@ public class Plugin : Event, IEventMap, IInternalEvent, IEventTag
     public override string Description { get; set; } = "Go to the end, avoiding death-activated trap along the way";
     public override string Author { get; set; } = "RisottoMan/code & xleb.ik/map";
     public override string CommandName { get; set; } = "deathrun";
-    public override Version Version { get; set; } = new Version(1, 0, 0);
+    public override Version Version { get; set; } = new Version(1, 0, 1);
     [EventConfig]
     public Config Config { get; set; }
     [EventTranslation]
@@ -30,8 +30,8 @@ public class Plugin : Event, IEventMap, IInternalEvent, IEventTag
     };
     public TagInfo TagInfo { get; set; } = new()
     {
-        Name = "NEW GAME",
-        Color = "#8b00ff"
+        Name = "New Game ->",
+        Color = "#ff0000"
     };
     private EventHandler _eventHandler { get; set; }
     private GameObject _wall { get; set; }
@@ -74,6 +74,8 @@ public class Plugin : Event, IEventMap, IInternalEvent, IEventTag
             Player death = Player.GetPlayers().Where(r => r.Role != RoleTypeId.Scientist).ToList().RandomItem();
             Extensions.SetRole(death, RoleTypeId.Scientist, RoleSpawnFlags.None);
             death.Position = deathSpawns.RandomItem().transform.position;
+            death.EffectsManager.EnableEffect<MovementBoost>();
+            death.EffectsManager.ChangeState<MovementBoost>(50);
         }
         
         // Teleport runners to spawnpoint

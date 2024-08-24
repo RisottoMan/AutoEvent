@@ -16,13 +16,6 @@ public class EventHandler
             ev.Player.SetAmmo(AmmoLimit.Key, AmmoLimit.Value);
         }
     }
-
-    [PluginEvent(ServerEventType.PlayerDying)]
-    public void OnPlayerDying(PlayerDyingEvent ev)
-    {
-        DebugLogger.LogDebug("Play music");
-        Extensions.PlayPlayerAudio(ev.Player, "Death-Sound.ogg", 7);
-    }
     
     public void OnTeamRespawn(TeamRespawnArgs ev) => ev.IsAllowed = false;
     public void OnDropItem(DropItemArgs ev) => ev.IsAllowed = false;
