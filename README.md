@@ -15,7 +15,7 @@
 
 # Credits
 I have stopped supporting AutoEvent. 
-If you want to support mini-games, then I have saved the [OpenSource Maps](https://github.com/RisottoMan/AutoEvent/tree/main/Schematics/All%20Source%20maps) for you.
+If you want to support mini-games, then I have saved the [OpenSource Maps](https://github.com/RisottoMan/AutoEvent/tree/main/Schematics/All%20Source%20maps).
 
 # Credits
 - Thanks to **Redforce04** for the help in changing the structures of the mini-games.
