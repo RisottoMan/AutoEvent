@@ -1,6 +1,22 @@
-name: 'Death Run'
-description: 'Go to the end, avoiding death-activated trap along the way'
+name: '死亡冲刺'
+description: '到达终点，警惕死亡的陷阱'
 command_name: 'deathrun'
+before_start_broadcast: |-
+  <color=#FFC618>{name}</color>
+  <size=35><color=#ff4c5b>警告！前方有致命陷阱</color>
+  <color=#20B2AA>准备在 <b>{time}</b> 秒后开始</color></size>
+cycle_broadcast: |-
+  <color=#FFC618>{name}</color>
+  <size=35><color=yellow>😃 参赛者 [{runnerCount}]</color> | <color=#ff4c5b>[{deathCount}] 死亡 😈</color>
+  <color=#20B2AA>剩余时间: <b>{time}</b></color></size>
+death_win_broadcast: |-
+  <color=#FFC618>{name}</color>
+  <b><color=#ff4c5b>死亡方获胜</color></b>
+runner_win_broadcast: |-
+  <color=#FFC618>{name}</color>
+  <b><color=yellow>参赛者获胜</color></b>
+died: '<color=red>你没有时间击杀死亡</color>'
+over_time_broadcast: "<b><color=red>时间到，击杀 <i>死亡</i> \U0001F638</color></b>"
 # DO NOT CHANGE THIS. IT WILL BREAK THINGS. AutoEvent will automatically manage these settings.
-version: '1.0.0'
-language: 'EN'
+version: '1.0.1'
+language: 'CN'
