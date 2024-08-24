@@ -128,7 +128,7 @@ public class Plugin : Event, IEventMap, IEventSound, IInternalEvent, IHiddenComm
     {
         text = Translation.Run;
 
-        foreach (Player player in Player.GetPlayers().OrderBy(p => return Guid.NewGuid();))
+        foreach (Player player in Player.GetPlayers().OrderBy(p => Guid.NewGuid()))
         {
             if (Vector3.Distance(_teleports.ElementAt(0).transform.position, player.Position) < 1)
             {

@@ -18,7 +18,7 @@ public class Plugin : Event, IEventMap, IInternalEvent, IEventTag
     public override string Description { get; set; } = "Go to the end, avoiding death-activated trap along the way";
     public override string Author { get; set; } = "RisottoMan/code & xleb.ik/map";
     public override string CommandName { get; set; } = "deathrun";
-    public override Version Version { get; set; } = new Version(1, 0, 0);
+    public override Version Version { get; set; } = new Version(1, 0, 1);
     [EventConfig]
     public Config Config { get; set; }
     [EventTranslation]
