@@ -13,10 +13,6 @@
 [![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/Message5.png)](https://github.com/KoT0XleB/AutoEvent-Exiled/blob/main/Docs/Example.md)
 [![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/Message6.png)](https://github.com/KoT0XleB/AutoEvent-Exiled/blob/main/Docs/Configuration.md)
 
-# Support
-I have stopped supporting AutoEvent. 
-If you want to support mini-games, then I have saved the [OpenSource Maps](https://github.com/RisottoMan/AutoEvent/tree/main/Schematics/All%20Source%20maps).
-
 # Credits
 - Thanks to **Redforce04** for the help in changing the structures of the mini-games.
 - Thanks to **ART0022VI** for a little help in fixing plugins.
