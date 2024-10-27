@@ -15,7 +15,7 @@ namespace AutoEvent.Games.Race
     {
         public override string Name { get; set; } = "Race";
         public override string Description { get; set; } = "Get to the end of the map to win";
-        public override string Author { get; set; } = "KoT0XleB";
+        public override string Author { get; set; } = "RisottoMan";
         public override string CommandName { get; set; } = "race";
         public override Version Version { get; set; } = new Version(1, 0, 1);
         [EventConfig]

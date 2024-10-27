@@ -13,13 +13,13 @@ using Event = AutoEvent.Interfaces.Event;
 
 namespace AutoEvent.Games.Knives
 {
-    public class Plugin : Event, IEventSound, IEventMap, IInternalEvent
+    public class Plugin : Event, IEventSound, IEventMap, IInternalEvent, IEventTag
     {
         public override string Name { get; set; } = "Knives of Death";
         public override string Description { get; set; } = "Knife players against each other on a 35hp map from cs 1.6";
-        public override string Author { get; set; } = "KoT0XleB";
+        public override string Author { get; set; } = "RisottoMan/code & xleb.ik/map";
         public override string CommandName { get; set; } = "knives";
-        public override Version Version { get; set; } = new Version(1, 0, 2);
+        public override Version Version { get; set; } = new Version(1, 0, 3);
         [EventConfig]
         public KnivesConfig Config { get; set; }
         [EventTranslation]
@@ -33,6 +33,11 @@ namespace AutoEvent.Games.Knives
         { 
             SoundName = "Knife.ogg", 
             Volume = 10
+        };
+        public TagInfo TagInfo { get; set; } = new()
+        {
+            Name = "Halloween",
+            Color = "#ff0000"
         };
         protected override FriendlyFireSettings ForceEnableFriendlyFire { get; set; } = FriendlyFireSettings.Disable;
         private EventHandler _eventHandler { get; set; }

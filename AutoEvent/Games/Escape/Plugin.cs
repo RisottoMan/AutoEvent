@@ -20,7 +20,7 @@ namespace AutoEvent.Games.Escape
     {
         public override string Name { get; set; } = "Atomic Escape";
         public override string Description { get; set; } = "Escape from the facility behind SCP-173 at supersonic speed!";
-        public override string Author { get; set; } = "KoT0XleB";
+        public override string Author { get; set; } = "RisottoMan";
         public override string CommandName { get; set; } = "escape";
         public override Version Version { get; set; } = new Version(1, 0, 2);
         [EventConfig]

@@ -39,7 +39,7 @@ namespace AutoEvent
         [PluginConfig("Configs/autoevent.yml")]
         public Config Config;
 #endif
-        public const string PluginVersion = "9.8.1";
+        public const string PluginVersion = "9.9.0";
         public const bool BetaRelease = false; // todo set beta to false before main release
         /// <summary>
         /// The location of the AutoEvent folder for schematics, music, external events and event config / translations.

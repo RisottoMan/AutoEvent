@@ -14,13 +14,13 @@ using System.Text;
 
 namespace AutoEvent.Games.Versus
 {
-    public class Plugin : Event, IEventSound, IEventMap, IInternalEvent
+    public class Plugin : Event, IEventSound, IEventMap, IInternalEvent, IEventTag
     {
         public override string Name { get; set; } = "Cock Fights";
         public override string Description { get; set; } = "Duel of players on the 35hp map from cs 1.6";
-        public override string Author { get; set; } = "KoT0XleB";
+        public override string Author { get; set; } = "RisottoMan/code & xleb.ik/map";
         public override string CommandName { get; set; } = "versus";
-        public override Version Version { get; set; } = new Version(1, 0, 2);
+        public override Version Version { get; set; } = new Version(1, 0, 3);
         [EventConfig]
         public Config Config { get; set; }
         [EventTranslation]
@@ -34,6 +34,11 @@ namespace AutoEvent.Games.Versus
         { 
             SoundName = "Knife.ogg",
             Volume = 10
+        };
+        public TagInfo TagInfo { get; set; } = new()
+        {
+            Name = "Halloween",
+            Color = "#ff0000"
         };
         protected override FriendlyFireSettings ForceEnableFriendlyFire { get; set; } = FriendlyFireSettings.Disable;
         internal Player Scientist;

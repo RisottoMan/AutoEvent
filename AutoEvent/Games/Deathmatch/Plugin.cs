@@ -12,13 +12,13 @@ using Event = AutoEvent.Interfaces.Event;
 
 namespace AutoEvent.Games.Deathmatch
 {
-    public class Plugin : Event, IEventMap, IEventSound, IInternalEvent
+    public class Plugin : Event, IEventMap, IEventSound, IInternalEvent, IEventTag
     {
         public override string Name { get; set; } = "Team Death-Match";
         public override string Description { get; set; } = "Team Death-Match on the Shipment map from MW19";
-        public override string Author { get; set; } = "KoT0XleB";
+        public override string Author { get; set; } = "RisottoMan/code & xleb.ik/map";
         public override string CommandName { get; set; } = "tdm";
-        public override Version Version { get; set; } = new Version(1, 0, 0);
+        public override Version Version { get; set; } = new Version(1, 0, 1);
         [EventConfig]
         public Config Config { get; set; }
         [EventTranslation]
@@ -32,6 +32,11 @@ namespace AutoEvent.Games.Deathmatch
         { 
             SoundName = "ClassicMusic.ogg", 
             Volume = 5
+        };
+        public TagInfo TagInfo { get; set; } = new()
+        {
+            Name = "Halloween",
+            Color = "#ff0000"
         };
         protected override FriendlyFireSettings ForceEnableFriendlyFire { get; set; } = FriendlyFireSettings.Disable;
         protected override float PostRoundDelay { get; set; } = 10f;

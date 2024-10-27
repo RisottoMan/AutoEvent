@@ -17,7 +17,7 @@ namespace AutoEvent.Games.AllDeathmatch
     {
         public override string Name { get; set; } = "All Deathmatch";
         public override string Description { get; set; } = "Fight against each other in all deathmatch.";
-        public override string Author { get; set; } = "KoT0XleB";
+        public override string Author { get; set; } = "RisottoMan";
         public override string CommandName { get; set; } = "dm";
         public override Version Version { get; set; } = new Version(1, 0, 1);
         protected override FriendlyFireSettings ForceEnableFriendlyFire { get; set; } = FriendlyFireSettings.Enable;

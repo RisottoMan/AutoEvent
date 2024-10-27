@@ -15,7 +15,7 @@ namespace AutoEvent.Games.Line
     {
         public override string Name { get; set; } = "Death Line";
         public override string Description { get; set; } = "Avoid the spinning platform to survive";
-        public override string Author { get; set; } = "Logic_Gun";
+        public override string Author { get; set; } = "Logic_Gun & RisottoMan";
         public override string CommandName { get; set; } = "line";
         public override Version Version { get; set; } = new Version(1, 0, 0);
         [EventConfig]

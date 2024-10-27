@@ -21,6 +21,7 @@ public class KnivesConfig : EventConfig
             AvailableMaps.Add(new MapChance(50, new MapInfo("35hp_2", new Vector3(5f, 1030f, -45f))));
             AvailableMaps.Add(new MapChance(50, new MapInfo("35hp_2_Xmas2024", new Vector3(5f, 1030f, -45f)), SeasonFlag.Christmas));
             AvailableMaps.Add(new MapChance(50, new MapInfo("35hp_2_Xmas2024", new Vector3(5f, 1030f, -45f)), SeasonFlag.NewYear));
+            AvailableMaps.Add(new MapChance(50, new MapInfo("35hp_2_Halloween2024", new Vector3(5f, 1030f, -45f)), SeasonFlag.Halloween));
         }
     }
 

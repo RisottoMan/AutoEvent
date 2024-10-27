@@ -2,12 +2,28 @@
 using System.ComponentModel;
 using AutoEvent.API;
 using AutoEvent.API.Enums;
+using AutoEvent.API.Season.Enum;
 using AutoEvent.Interfaces;
 using PlayerRoles;
+using UnityEngine;
 
 namespace AutoEvent.Games.Deathmatch;
 public class Config : EventConfig
 {
+    public Config()
+    {
+        if (AvailableMaps is null)
+        {
+            AvailableMaps = new List<MapChance>();
+        }
+
+        if (AvailableMaps.Count < 1)
+        {
+            AvailableMaps.Add(new MapChance(50, new MapInfo("Shipment", new Vector3(93f, 1020f, -43f) )));
+            AvailableMaps.Add(new MapChance(50, new MapInfo("Shipment_Halloween2024", new Vector3(93f, 1020f, -43f)), SeasonFlag.Halloween));
+        }
+    }
+    
     [Description("How many total kills a team needs to win. Determined per-person at the start of the round. [Default: 3]")]
     public int KillsPerPerson { get; set; } = 3;
 

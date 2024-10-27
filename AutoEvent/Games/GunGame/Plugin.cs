@@ -13,13 +13,13 @@ using Utils.NonAllocLINQ;
 using Event = AutoEvent.Interfaces.Event;
 
 namespace AutoEvent.Games.GunGame;
-public class Plugin : Event, IEventSound, IEventMap, IInternalEvent
+public class Plugin : Event, IEventSound, IEventMap, IInternalEvent, IEventTag
 {
     public override string Name { get; set; } = "Gun Game";
     public override string Description { get; set; } = "Cool GunGame on the Shipment map from MW19";
-    public override string Author { get; set; } = "KoT0XleB";
+    public override string Author { get; set; } = "RisottoMan/code & xleb.ik/map";
     public override string CommandName { get; set; } = "gungame";
-    public override Version Version { get; set; } = new Version(1, 0, 0);
+    public override Version Version { get; set; } = new Version(1, 0, 1);
     [EventConfig]
     public Config Config { get; set; }
     [EventConfigPreset]
@@ -36,12 +36,19 @@ public class Plugin : Event, IEventSound, IEventMap, IInternalEvent
         SoundName = "ClassicMusic.ogg", 
         Volume = 5
     };
+    public TagInfo TagInfo { get; set; } = new()
+    {
+        Name = "Halloween",
+        Color = "#ff0000"
+    };
     protected override FriendlyFireSettings ForceEnableFriendlyFire { get; set; } = FriendlyFireSettings.Enable;
     protected override float PostRoundDelay { get; set; } = 10f;
     private EventHandler _eventHandler { get; set; }
     internal List<Vector3> SpawnPoints { get; private set; }
     internal Dictionary<Player, Stats> PlayerStats { get; set; }
     private Player _winner;
+    private IEventTag _eventTagImplementation;
+
     protected override void RegisterEvents()
     {
         PlayerStats = new Dictionary<Player, Stats>();

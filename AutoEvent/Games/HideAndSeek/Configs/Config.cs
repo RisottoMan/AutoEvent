@@ -22,6 +22,7 @@ public class Config : EventConfig
             AvailableMaps.Add(new MapChance(50, new MapInfo("HideAndSeek", new Vector3(5.5f, 1026.5f, -45f))));
             AvailableMaps.Add(new MapChance(50, new MapInfo("HideAndSeek_Xmas2024", new Vector3(5.5f, 1026.5f, -45f)), SeasonFlag.Christmas));
             AvailableMaps.Add(new MapChance(50, new MapInfo("HideAndSeek_Xmas2024", new Vector3(5.5f, 1026.5f, -45f)), SeasonFlag.NewYear));
+            AvailableMaps.Add(new MapChance(50, new MapInfo("HideAndSeek_Halloween2024", new Vector3(5.5f, 1026.5f, -45f)), SeasonFlag.Halloween));
         }
     }
 

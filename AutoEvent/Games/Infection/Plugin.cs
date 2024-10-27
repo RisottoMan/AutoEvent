@@ -5,20 +5,22 @@ using PluginAPI.Events;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using AutoEvent.API.Enums;
 using AutoEvent.Interfaces;
+using InventorySystem.Items.MarshmallowMan;
 using UnityEngine;
 using Event = AutoEvent.Interfaces.Event;
 using Player = PluginAPI.Core.Player;
 
 namespace AutoEvent.Games.Infection
 {
-    public class Plugin : Event, IEventSound, IEventMap, IInternalEvent
+    public class Plugin : Event, IEventSound, IEventMap, IInternalEvent, IEventTag
     {
         public override string Name { get; set; } = "Zombie Infection";
         public override string Description { get; set; } = "Zombie mode, the purpose of which is to infect all players";
-        public override string Author { get; set; } = "KoT0XleB";
+        public override string Author { get; set; } = "RisottoMan";
         public override string CommandName { get; set; } = "zombie";
-        public override Version Version { get; set; } = new Version(1, 0, 2);
+        public override Version Version { get; set; } = new Version(1, 0, 4);
         [EventConfig] 
         public Config Config { get; set; }
         [EventTranslation]
@@ -33,10 +35,16 @@ namespace AutoEvent.Games.Infection
             SoundName = "Zombie_Run.ogg", 
             Volume = 15
         };
+        public TagInfo TagInfo { get; set; } = new()
+        {
+            Name = "Halloween",
+            Color = "#ff0000"
+        };
         protected override float PostRoundDelay { get; set; } = 10f;
         private EventHandler _eventHandler { get; set; }
         private int _overtime = 30;
-        // public bool IsFlamingoVariant { get; set; } // Christmas Update
+        public bool IsChristmasUpdate { get; set; } = false;
+        public bool IsHalloweenUpdate { get; set; } = false;
 
         protected override void RegisterEvents()
         {
@@ -67,8 +75,13 @@ namespace AutoEvent.Games.Infection
         protected override void OnStart()
         {
             _overtime = 30;
-            // IsFlamingoVariant = Random.Range(0, 2) == 1 ? true : false; // Christmas Update
-
+            // Halloween update
+            if (Enum.IsDefined(typeof(ItemType), "Marshmallow"))
+            {
+                IsHalloweenUpdate = true;
+                ForceEnableFriendlyFire = FriendlyFireSettings.Enable;
+            }
+            
             foreach (Player player in Player.GetPlayers())
             {
                 /* // Christmas Update
@@ -80,23 +93,15 @@ namespace AutoEvent.Games.Infection
                 player.GiveLoadout(Config.PlayerLoadouts);
                 player.Position = RandomPosition.GetSpawnPosition(MapInfo.Map);
             }
-
-            float scale = 1;
-            switch(Player.GetPlayers().Count())
-            {
-                case var n when (n > 15 && n <= 20): scale = 1.1f; break;
-                case var n when (n > 20 && n <= 25): scale = 1.2f; break;
-                case var n when (n > 25 && n <= 30): scale = 1.3f; break;
-                case var n when (n > 30 && n <= 35): scale = 1.4f; break;
-                case var n when (n > 35): scale = 1.5f; break;
-            }
         }
 
         protected override IEnumerator<float> BroadcastStartCountdown()
         {
             for (float time = 15; time > 0; time--)
             {
-                Extensions.Broadcast(Translation.Start.Replace("{name}", Name).Replace("{time}", time.ToString("00")), 1);
+                Extensions.Broadcast(Translation.Start.
+                    Replace("{name}", Name).
+                    Replace("{time}", time.ToString("00")), 1);
                 yield return Timing.WaitForSeconds(1f);
             }
         }
@@ -110,7 +115,18 @@ namespace AutoEvent.Games.Infection
                 player.GiveLoadout(Config.ZombieFlamingoLoadouts);
             }
             */
-            player.GiveLoadout(Config.ZombieLoadouts);
+            
+            if (IsHalloweenUpdate)
+            {
+                player.SetRole(RoleTypeId.Scientist, RoleSpawnFlags.None);
+                player.EffectsManager.EnableEffect<MarshmallowEffect>();
+                player.IsGodModeEnabled = true;
+            }
+            else
+            {
+                player.GiveLoadout(Config.ZombieLoadouts);
+            }
+            
             Extensions.PlayPlayerAudio(player, Config.ZombieScreams.RandomItem(), 15);
         }
 
@@ -126,14 +142,17 @@ namespace AutoEvent.Games.Infection
                 else return true;
             }
             */
-            if (Player.GetPlayers().Count(r => r.Role == RoleTypeId.ClassD) > 0 && _overtime > 0) return false;
-            else return true;
+
+            if (Player.GetPlayers().Count(r => r.Role == RoleTypeId.ClassD) > 0 && _overtime > 0) 
+                return false;
+            return true;
         }
         
         protected override void ProcessFrame()
         {
             int count = 0;
-            count = Player.GetPlayers().Count(r => r.Role == RoleTypeId.ClassD);
+            string time = $"{EventTime.Minutes:00}:{EventTime.Seconds:00}";
+            
             /* // Christmas Update
             if (IsFlamingoVariant == true)
             {
@@ -142,17 +161,19 @@ namespace AutoEvent.Games.Infection
                 r.Role == RoleTypeId.AlphaFlamingo);
             }
             */
-            var time = $"{EventTime.Minutes:00}:{EventTime.Seconds:00}";
+            count = Player.GetPlayers().Count(r => r.Role == RoleTypeId.ClassD);
 
             if (count > 1)
             {
-                Extensions.Broadcast(Translation.Cycle.Replace("{name}", Name).Replace("{count}", count.ToString()).Replace("{time}", time), 1);
+                Extensions.Broadcast(Translation.Cycle.
+                    Replace("{name}", Name).
+                    Replace("{count}", count.ToString()).
+                    Replace("{time}", time), 1);
             }
             else if (count == 1)
             {
                 _overtime--;
-                Extensions.Broadcast(
-                    Translation.ExtraTime
+                Extensions.Broadcast(Translation.ExtraTime
                         .Replace("{extratime}", _overtime.ToString("00"))
                         .Replace("{time}", $"{EventTime.Minutes:00}:{EventTime.Seconds:00}"), 1);
             }

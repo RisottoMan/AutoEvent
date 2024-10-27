@@ -9,6 +9,7 @@ using AutoEvent.API.AdvancedMERTool;
 using MEC;
 using AutoEvent.API.Season;
 using AutoEvent.API.Season.Enum;
+using GameCore;
 using Version = System.Version;
 
 namespace AutoEvent.Interfaces
@@ -536,14 +537,20 @@ namespace AutoEvent.Interfaces
 
             // We get the current style and check the maps by their style
             SeasonStyle _curSeason = SeasonMethod.GetSeasonStyle();
-
+            int seasonMapsCount = conf.AvailableMaps.Count(r => r.SeasonFlag == _curSeason.SeasonFlag);
+            
             List<MapChance> maps = new();
             foreach (var map in conf.AvailableMaps)
             {
-                if (map.SeasonFlag is SeasonFlag.None || map.SeasonFlag == _curSeason.SeasonFlag)
+                if (seasonMapsCount > 0)
                 {
+                    if (map.SeasonFlag != _curSeason.SeasonFlag)
+                        continue;
+                    
                     maps.Add(map);
                 }
+                
+                maps.Add(map);
             }
 
             if (this is IEventMap eventMap)

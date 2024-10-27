@@ -12,13 +12,13 @@ using Player = PluginAPI.Core.Player;
 
 namespace AutoEvent.Games.HideAndSeek
 {
-    public class Plugin : Event, IEventSound, IEventMap, IInternalEvent
+    public class Plugin : Event, IEventSound, IEventMap, IInternalEvent, IEventTag
     {
         public override string Name { get; set; } = "Tag";
         public override string Description { get; set; } = "We need to catch up with all the players on the map";
-        public override string Author { get; set; } = "KoT0XleB";
+        public override string Author { get; set; } = "RisottoMan";
         public override string CommandName { get; set; } = "tag";
-        public override Version Version { get; set; } = new Version(1, 0, 2);
+        public override Version Version { get; set; } = new Version(1, 0, 3);
         [EventConfig]
         public Config Config { get; set; }
         [EventTranslation]
@@ -33,6 +33,11 @@ namespace AutoEvent.Games.HideAndSeek
         { 
             SoundName = "HideAndSeek.ogg", 
             Volume = 5
+        };
+        public TagInfo TagInfo { get; set; } = new()
+        {
+            Name = "Halloween",
+            Color = "#ff0000"
         };
         private EventHandler _eventHandler;
         private TimeSpan _countdown;
