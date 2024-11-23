@@ -118,7 +118,7 @@ public class Plugin : Event, IEventSound, IEventMap, IInternalEvent
 
     protected override bool IsRoundDone()
     {
-        _countdown = _countdown.TotalSeconds > 0 ? _countdown.Subtract(new TimeSpan(0, 0, 1)) : TimeSpan.Zero; 
+        _countdown = _countdown.TotalSeconds > 0 ? _countdown.Subtract(TimeSpan.FromSeconds(FrameDelayInSeconds)) : TimeSpan.Zero;
         return !(Player.GetPlayers().Count(r => r.IsAlive) > 1);
     }
     protected override float FrameDelayInSeconds { get; set; } = 0.5f;
