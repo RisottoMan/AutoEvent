@@ -12,13 +12,13 @@ using PlayerRoles;
 using Event = AutoEvent.Interfaces.Event;
 
 namespace AutoEvent.Games.Deathrun;
-public class Plugin : Event, IEventMap, IInternalEvent, IEventTag
+public class Plugin : Event, IEventMap, IInternalEvent
 {
     public override string Name { get; set; } = "Death Run";
     public override string Description { get; set; } = "Go to the end, avoiding death-activated trap along the way";
     public override string Author { get; set; } = "RisottoMan/code & xleb.ik/map";
     public override string CommandName { get; set; } = "deathrun";
-    public override Version Version { get; set; } = new Version(1, 0, 1);
+    public override Version Version { get; set; } = new Version(1, 0, 2);
     [EventConfig]
     public Config Config { get; set; }
     [EventTranslation]
@@ -27,11 +27,6 @@ public class Plugin : Event, IEventMap, IInternalEvent, IEventTag
     { 
         MapName = "TempleMap", 
         Position = new Vector3(0, 30, 30)
-    };
-    public TagInfo TagInfo { get; set; } = new()
-    {
-        Name = "New Game ->",
-        Color = "#ff0000"
     };
     private EventHandler _eventHandler { get; set; }
     private GameObject _wall { get; set; }
@@ -72,24 +67,15 @@ public class Plugin : Event, IEventMap, IInternalEvent, IEventTag
         for (int i = 0; Player.GetPlayers().Count() / 20 >= i; i++)
         {
             Player death = Player.GetPlayers().Where(r => r.Role != RoleTypeId.Scientist).ToList().RandomItem();
-            Extensions.SetRole(death, RoleTypeId.Scientist, RoleSpawnFlags.None);
+            death.GiveLoadout(Config.DeathLoadouts);
             death.Position = deathSpawns.RandomItem().transform.position;
-            death.EffectsManager.EnableEffect<MovementBoost>();
-            death.EffectsManager.ChangeState<MovementBoost>(50);
         }
         
         // Teleport runners to spawnpoint
         foreach (Player runner in Player.GetPlayers().Where(r => r.Role != RoleTypeId.Scientist))
         {
-            Extensions.SetRole(runner, RoleTypeId.ClassD, RoleSpawnFlags.None);
+            runner.GiveLoadout(Config.PlayerLoadouts);
             runner.Position = runnerSpawns.RandomItem().transform.position;
-        }
-
-        // Disable fog for all players
-        foreach (Player player in Player.GetPlayers())
-        {
-            player.EffectsManager.EnableEffect<FogControl>();
-            player.EffectsManager.ChangeState<FogControl>(1);
         }
     }
 
@@ -109,15 +95,14 @@ public class Plugin : Event, IEventMap, IInternalEvent, IEventTag
     // Destroy the wall so that players can start passing the map
     protected override void CountdownFinished()
     {
-        //GameObject.Destroy(MapInfo.Map.AttachedBlocks.First(r => r.name == "Wall"));
         _wall.transform.position += new Vector3(0, 10, 0);
     }
 
     // While all the players are alive and time has not over
     protected override bool IsRoundDone()
     {
-        return !(Player.GetPlayers().Count(r => r.Role is RoleTypeId.Scientist) > 0 &&
-                 Player.GetPlayers().Count(r => r.Role is RoleTypeId.ClassD) > 0 &&
+        return !(Player.GetPlayers().Count(r => r.Role == RoleTypeId.Scientist) > 0 &&
+                 Player.GetPlayers().Count(r => r.Role == RoleTypeId.ClassD) > 0 &&
                  EventTime.TotalSeconds < Config.RoundDurationInSeconds);
     }
 

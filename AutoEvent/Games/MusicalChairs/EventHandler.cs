@@ -32,14 +32,11 @@ public class EventHandler
     [PluginEvent(ServerEventType.PlayerDeath)]
     public void OnPlayerDeath(PlayerDeathEvent ev)
     {
-        _plugin.Platforms = Functions.RearrangePlatforms(
-            Player.GetPlayers().Count(r => r.IsAlive), _plugin.Platforms, _plugin.MapInfo.Position);
-    }
-
-    [PluginEvent(ServerEventType.PlayerJoined)]
-    public void OnPlayerJoin(PlayerJoinedEvent ev)
-    {
-        ev.Player.SetRole(RoleTypeId.Spectator);
+        int playerCount = Player.GetPlayers().Count(r => r.IsAlive);
+        if (playerCount > 0)
+        {
+            _plugin.Platforms = Functions.RearrangePlatforms(playerCount, _plugin.Platforms, _plugin.MapInfo.Position);
+        }
     }
 
     public void OnTeamRespawn(TeamRespawnArgs ev) => ev.IsAllowed = false;

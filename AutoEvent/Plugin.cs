@@ -28,10 +28,9 @@ namespace AutoEvent
     public class AutoEvent : Plugin<Config>
     {
         public override Version Version => Version.Parse(PluginVersion);
-        public override Version RequiredExiledVersion => new Version(8, 9, 6);
+        public override Version RequiredExiledVersion => new Version(8, 14, 0);
         public override string Name => "AutoEvent";
         public override string Author => "Created by a large community of programmers, map builders and just ordinary people, under the leadership of RisottoMan.";
-        public static bool IsPlayedGames;
 
 #else
     public class AutoEvent
@@ -39,7 +38,7 @@ namespace AutoEvent
         [PluginConfig("Configs/autoevent.yml")]
         public Config Config;
 #endif
-        public const string PluginVersion = "9.9.0";
+        public const string PluginVersion = "9.9.1";
         public const bool BetaRelease = false; // todo set beta to false before main release
         /// <summary>
         /// The location of the AutoEvent folder for schematics, music, external events and event config / translations.
@@ -149,19 +148,12 @@ namespace AutoEvent
                     DebugLogger.LogDebug($"{e}");
                 }
 
-#if !EXILED
-                string path = Path.Combine(Config.EventConfigsDirectoryPath, "translation.yml");
-                if (File.Exists(path))
+                // By mistake, I included all the open source maps in the archive Schematics.tar.gz
+                string opensourcePath = Path.Combine(Config.SchematicsDirectoryPath, "All Source maps");
+                if (Directory.Exists(opensourcePath))
                 {
-                    DebugLogger.LogDebug($"Translations in the {path} are no longer supported.", LogLevel.Warn, true);
+                    Directory.Delete(opensourcePath, true);
                 }
-#else
-                string path = Path.Combine(Exiled.API.Features.Paths.Configs, $"{Exiled.API.Features.Server.Port}-translations.yml");
-                if (File.Exists(path))
-                {
-                    DebugLogger.LogDebug($"Translations in the {path} are no longer supported.", LogLevel.Warn, true);
-                }
-#endif
 
                 Event.RegisterInternalEvents();
                 Loader.LoadEvents();

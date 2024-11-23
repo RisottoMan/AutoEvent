@@ -55,27 +55,7 @@ public class Config : EventConfig
             Roles = new Dictionary<RoleTypeId, int>() { { RoleTypeId.Scp0492, 100 } }
         }
     };
-    /* // Christmas Update
-    public List<Loadout> FlamingoLoadouts { get; set; } = new List<Loadout>()
-    {
-        new Loadout()
-        {
-            Roles = new Dictionary<RoleTypeId, int>() 
-            {
-                { RoleTypeId.Flamingo, 50 },
-                { RoleTypeId.AlphaFlamingo, 50 }
-            }
-        }
-    };
-
-    public List<Loadout> ZombieFlamingoLoadouts { get; set; } = new List<Loadout>()
-    {
-        new Loadout()
-        {
-            Roles = new Dictionary<RoleTypeId, int>() { { RoleTypeId.ZombieFlamingo, 100 } }
-        }
-    };
-    */
+    
     public List<string> ZombieScreams { get; set; } = new List<string>()
     {
         "human_death_01.ogg",

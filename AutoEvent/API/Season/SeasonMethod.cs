@@ -15,7 +15,7 @@ public class SeasonMethod
 
         SeasonStyle style = null;
         DateTime curDate = new DateTime(2024, DateTime.Now.Month, DateTime.Now.Day);
-
+        
         foreach (SeasonStyle item in _styles)
         {
             if (item.FirstDate <= curDate && curDate <= item.LastDate)
@@ -23,7 +23,7 @@ public class SeasonMethod
                 style = item;
             }
         }
-
+        
         style ??= new SeasonStyle()
         {
             PrimaryColor = "#FFFF00",

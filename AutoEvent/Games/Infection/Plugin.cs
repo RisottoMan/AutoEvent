@@ -14,7 +14,7 @@ using Player = PluginAPI.Core.Player;
 
 namespace AutoEvent.Games.Infection
 {
-    public class Plugin : Event, IEventSound, IEventMap, IInternalEvent, IEventTag
+    public class Plugin : Event, IEventSound, IEventMap, IInternalEvent
     {
         public override string Name { get; set; } = "Zombie Infection";
         public override string Description { get; set; } = "Zombie mode, the purpose of which is to infect all players";
@@ -34,11 +34,6 @@ namespace AutoEvent.Games.Infection
         { 
             SoundName = "Zombie_Run.ogg", 
             Volume = 15
-        };
-        public TagInfo TagInfo { get; set; } = new()
-        {
-            Name = "Halloween",
-            Color = "#ff0000"
         };
         protected override float PostRoundDelay { get; set; } = 10f;
         private EventHandler _eventHandler { get; set; }
@@ -81,16 +76,24 @@ namespace AutoEvent.Games.Infection
                 IsHalloweenUpdate = true;
                 ForceEnableFriendlyFire = FriendlyFireSettings.Enable;
             }
+            // Christmas update
+            else if (Enum.IsDefined(typeof(RoleTypeId), "ZombieFlamingo"))
+            {
+                IsChristmasUpdate = true;
+            }
             
             foreach (Player player in Player.GetPlayers())
             {
-                /* // Christmas Update
-                if (IsFlamingoVariant == true)
+                if (IsChristmasUpdate)
                 {
-                    player.GiveLoadout(Config.FlamingoLoadouts);
+                    RoleTypeId roleType = (RoleTypeId)Enum.Parse(typeof(RoleTypeId), "Flamingo");
+                    player.SetRole(roleType, RoleSpawnFlags.None);
                 }
-                */
-                player.GiveLoadout(Config.PlayerLoadouts);
+                else
+                {
+                    player.GiveLoadout(Config.PlayerLoadouts);
+                }
+                
                 player.Position = RandomPosition.GetSpawnPosition(MapInfo.Map);
             }
         }
@@ -109,18 +112,17 @@ namespace AutoEvent.Games.Infection
         protected override void CountdownFinished()
         {
             Player player = Player.GetPlayers().RandomItem();
-            /* // ChristmasUpdate
-            if (IsFlamingoVariant == true)
-            {
-                player.GiveLoadout(Config.ZombieFlamingoLoadouts);
-            }
-            */
             
             if (IsHalloweenUpdate)
             {
                 player.SetRole(RoleTypeId.Scientist, RoleSpawnFlags.None);
                 player.EffectsManager.EnableEffect<MarshmallowEffect>();
                 player.IsGodModeEnabled = true;
+            }
+            else if (IsChristmasUpdate)
+            {
+                RoleTypeId roleType = (RoleTypeId)Enum.Parse(typeof(RoleTypeId), "Flamingo");
+                player.SetRole(roleType, RoleSpawnFlags.None);
             }
             else
             {
@@ -132,36 +134,31 @@ namespace AutoEvent.Games.Infection
 
         protected override bool IsRoundDone()
         {
-            /* // Christmas Update
-            if (IsFlamingoVariant == true)
+            RoleTypeId roleType = RoleTypeId.ClassD;
+            if (IsChristmasUpdate)
             {
-                if (Player.GetPlayers().Count(r => 
-                r.Role == RoleTypeId.Flamingo || 
-                r.Role == RoleTypeId.AlphaFlamingo) > 0
-                && _overtime > 0) return false;
-                else return true;
+                roleType = (RoleTypeId)Enum.Parse(typeof(RoleTypeId), "Flamingo");
             }
-            */
 
-            if (Player.GetPlayers().Count(r => r.Role == RoleTypeId.ClassD) > 0 && _overtime > 0) 
+            if (Player.GetPlayers().Count(r => r.Role == roleType) > 0 && _overtime > 0)
+            {
                 return false;
+            }
+            
             return true;
         }
         
         protected override void ProcessFrame()
         {
-            int count = 0;
+            RoleTypeId roleType = RoleTypeId.ClassD;
             string time = $"{EventTime.Minutes:00}:{EventTime.Seconds:00}";
             
-            /* // Christmas Update
-            if (IsFlamingoVariant == true)
+            if (IsChristmasUpdate)
             {
-                count = Player.GetPlayers().Count(r =>
-                r.Role == RoleTypeId.Flamingo ||
-                r.Role == RoleTypeId.AlphaFlamingo);
+                roleType = (RoleTypeId)Enum.Parse(typeof(RoleTypeId), "Flamingo");
             }
-            */
-            count = Player.GetPlayers().Count(r => r.Role == RoleTypeId.ClassD);
+            
+            int count = Player.GetPlayers().Count(r => r.Role == roleType);
 
             if (count > 1)
             {
@@ -181,23 +178,13 @@ namespace AutoEvent.Games.Infection
 
         protected override void OnFinished()
         {
-            /* // Christmas Update
-            if (IsFlamingoVariant == true)
+            RoleTypeId roleType = RoleTypeId.ClassD;
+            if (IsChristmasUpdate)
             {
-                if (Player.GetPlayers().Count(r => 
-                r.Role == RoleTypeId.Flamingo ||
-                r.Role == RoleTypeId.AlphaFlamingo) == 0)
-                {
-                    Extensions.Broadcast(Translation.ZombieWin
-                        .Replace("{time}", $"{EventTime.Minutes:00}:{EventTime.Seconds:00}"), 10);
-                }
-                else
-                {
-                    Extensions.Broadcast(Translation.ZombieLose
-                        .Replace("{time}", $"{EventTime.Minutes:00}:{EventTime.Seconds:00}"), 10);
-                }
-            }*/
-            if (Player.GetPlayers().Count(r => r.Role == RoleTypeId.ClassD) == 0)
+                roleType = (RoleTypeId)Enum.Parse(typeof(RoleTypeId), "Flamingo");
+            }
+            
+            if (Player.GetPlayers().Count(r => r.Role == roleType) == 0)
             {
                 Extensions.Broadcast(Translation.Win
                     .Replace("{time}", $"{EventTime.Minutes:00}:{EventTime.Seconds:00}"), 10);

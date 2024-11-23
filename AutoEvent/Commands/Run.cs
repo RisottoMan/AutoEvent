@@ -69,7 +69,8 @@ namespace AutoEvent.Commands
             }
             else if (!Extensions.IsExistsMap(map.MapInfo.MapName))
             {
-                response = $"You need a map {map.MapInfo.MapName} to run a mini-game.";
+                response = $"You need to download the map {map.MapInfo.MapName} to run this mini game.\n" +
+                           $"Download and install Schematics.tar.gz from the github.";
                 return false;
             }
 

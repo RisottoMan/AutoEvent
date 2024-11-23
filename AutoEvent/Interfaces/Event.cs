@@ -151,12 +151,6 @@ namespace AutoEvent.Interfaces
         /// How long to wait after the round finishes, before the cleanup begins. Default is 10 seconds.
         /// </summary>
         protected virtual float PostRoundDelay { get; set; } = 10f;
-
-        /// <summary>
-        /// Obsolete. Use <see cref="IExiledEvent"/> instead.
-        /// </summary>
-        [Obsolete("This is no longer supported. Inherit IExiledEvent instead.")]
-        public virtual bool UsesExiled { get; protected set; } = false;
         
         /// <summary>
         /// If using NwApi or Exiled as the base plugin, set this to false, and manually add your plugin to Event.Events (List[Events]).
@@ -536,23 +530,23 @@ namespace AutoEvent.Interfaces
                 return;
 
             // We get the current style and check the maps by their style
-            SeasonStyle _curSeason = SeasonMethod.GetSeasonStyle();
-            int seasonMapsCount = conf.AvailableMaps.Count(r => r.SeasonFlag == _curSeason.SeasonFlag);
+            SeasonFlag seasonFlag = SeasonMethod.GetSeasonStyle().SeasonFlag;
+            
+            // If there are no seasonal maps, then choose the default maps
+            if (conf.AvailableMaps.Count(r => r.SeasonFlag == seasonFlag) == 0)
+            {
+                seasonFlag = 0;
+            }
             
             List<MapChance> maps = new();
             foreach (var map in conf.AvailableMaps)
             {
-                if (seasonMapsCount > 0)
+                if (map.SeasonFlag == seasonFlag)
                 {
-                    if (map.SeasonFlag != _curSeason.SeasonFlag)
-                        continue;
-                    
                     maps.Add(map);
                 }
-                
-                maps.Add(map);
             }
-
+            
             if (this is IEventMap eventMap)
             {
                 bool spawnAutomatically = eventMap.MapInfo.SpawnAutomatically;

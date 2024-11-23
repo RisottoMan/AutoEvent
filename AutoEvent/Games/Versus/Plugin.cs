@@ -14,7 +14,7 @@ using System.Text;
 
 namespace AutoEvent.Games.Versus
 {
-    public class Plugin : Event, IEventSound, IEventMap, IInternalEvent, IEventTag
+    public class Plugin : Event, IEventSound, IEventMap, IInternalEvent
     {
         public override string Name { get; set; } = "Cock Fights";
         public override string Description { get; set; } = "Duel of players on the 35hp map from cs 1.6";
@@ -34,11 +34,6 @@ namespace AutoEvent.Games.Versus
         { 
             SoundName = "Knife.ogg",
             Volume = 10
-        };
-        public TagInfo TagInfo { get; set; } = new()
-        {
-            Name = "Halloween",
-            Color = "#ff0000"
         };
         protected override FriendlyFireSettings ForceEnableFriendlyFire { get; set; } = FriendlyFireSettings.Disable;
         internal Player Scientist;

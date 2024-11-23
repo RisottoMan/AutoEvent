@@ -1,6 +1,5 @@
-﻿using System.Collections.Generic;
-using AutoEvent.Events.EventArgs;
-using InventorySystem.Configs;
+﻿using AutoEvent.Events.EventArgs;
+using PlayerRoles;
 using PluginAPI.Core.Attributes;
 using PluginAPI.Enums;
 using PluginAPI.Events;
@@ -8,13 +7,10 @@ using PluginAPI.Events;
 namespace AutoEvent.Games.Deathrun;
 public class EventHandler
 {
-    [PluginEvent(ServerEventType.PlayerSpawn)]
-    public void OnSpawning(PlayerSpawnEvent ev)
+    [PluginEvent(ServerEventType.PlayerJoined)]
+    public void OnJoin(PlayerJoinedEvent ev)
     {
-        foreach (KeyValuePair<ItemType, ushort> AmmoLimit in InventoryLimits.StandardAmmoLimits)
-        {
-            ev.Player.SetAmmo(AmmoLimit.Key, AmmoLimit.Value);
-        }
+        ev.Player.SetRole(RoleTypeId.Spectator);
     }
     
     public void OnTeamRespawn(TeamRespawnArgs ev) => ev.IsAllowed = false;

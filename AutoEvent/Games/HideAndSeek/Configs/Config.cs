@@ -19,10 +19,10 @@ public class Config : EventConfig
 
         if (AvailableMaps.Count < 1)
         {
-            AvailableMaps.Add(new MapChance(50, new MapInfo("HideAndSeek", new Vector3(5.5f, 1026.5f, -45f))));
-            AvailableMaps.Add(new MapChance(50, new MapInfo("HideAndSeek_Xmas2024", new Vector3(5.5f, 1026.5f, -45f)), SeasonFlag.Christmas));
-            AvailableMaps.Add(new MapChance(50, new MapInfo("HideAndSeek_Xmas2024", new Vector3(5.5f, 1026.5f, -45f)), SeasonFlag.NewYear));
-            AvailableMaps.Add(new MapChance(50, new MapInfo("HideAndSeek_Halloween2024", new Vector3(5.5f, 1026.5f, -45f)), SeasonFlag.Halloween));
+            AvailableMaps.Add(new MapChance(50, new MapInfo("HideAndSeek", new Vector3(0, 30, 30))));
+            AvailableMaps.Add(new MapChance(50, new MapInfo("HideAndSeek_Xmas2024", new Vector3(0, 30, 30)), SeasonFlag.Christmas));
+            AvailableMaps.Add(new MapChance(50, new MapInfo("HideAndSeek_Xmas2024", new Vector3(0, 30, 30)), SeasonFlag.NewYear));
+            AvailableMaps.Add(new MapChance(50, new MapInfo("HideAndSeek_Halloween2024", new Vector3(0, 30, 30)), SeasonFlag.Halloween));
         }
     }
 
@@ -48,6 +48,8 @@ public class Config : EventConfig
 
     [Description("The amount of taggers that should spawn.")]
     public RoleCount TaggerCount { get; set; } = new RoleCount(1, 6, 35);
+    [Description("Can be used to disable the jailbird charging attack.")]
+    public bool JailbirdCanCharge { get; set; } = false;
 
     [Description("A list of loadouts players can get.")]
     public List<Loadout> PlayerLoadouts { get; set; } = new List<Loadout>()
@@ -55,7 +57,11 @@ public class Config : EventConfig
         new Loadout()
         {
             Roles = new Dictionary<RoleTypeId, int>() { { RoleTypeId.ClassD, 100 } },
-            Effects = new List<Effect>() { new Effect() { EffectType = StatusEffect.MovementBoost, Intensity = 50, Duration = 0 } },
+            Effects = new List<Effect>()
+            {
+                new Effect() { EffectType = StatusEffect.MovementBoost, Intensity = 50, Duration = 0 },
+                new Effect() { EffectType = StatusEffect.FogControl, Intensity = 1, Duration = 0 }
+            },
             Chance = 100,
             InfiniteAmmo = AmmoMode.InfiniteAmmo
         }

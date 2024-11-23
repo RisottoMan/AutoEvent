@@ -13,7 +13,7 @@ using Utils.NonAllocLINQ;
 using Event = AutoEvent.Interfaces.Event;
 
 namespace AutoEvent.Games.GunGame;
-public class Plugin : Event, IEventSound, IEventMap, IInternalEvent, IEventTag
+public class Plugin : Event, IEventSound, IEventMap, IInternalEvent
 {
     public override string Name { get; set; } = "Gun Game";
     public override string Description { get; set; } = "Cool GunGame on the Shipment map from MW19";
@@ -35,11 +35,6 @@ public class Plugin : Event, IEventSound, IEventMap, IInternalEvent, IEventTag
     { 
         SoundName = "ClassicMusic.ogg", 
         Volume = 5
-    };
-    public TagInfo TagInfo { get; set; } = new()
-    {
-        Name = "Halloween",
-        Color = "#ff0000"
     };
     protected override FriendlyFireSettings ForceEnableFriendlyFire { get; set; } = FriendlyFireSettings.Enable;
     protected override float PostRoundDelay { get; set; } = 10f;
