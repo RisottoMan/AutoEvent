@@ -9,6 +9,7 @@ using AutoEvent.Events.Handlers;
 using AutoEvent.Interfaces;
 using AdminToys;
 using Event = AutoEvent.Interfaces.Event;
+using Object = UnityEngine.Object;
 
 namespace AutoEvent.Games.MusicalChairs;
 public class Plugin : Event, IEventSound, IEventMap, IInternalEvent
@@ -36,10 +37,10 @@ public class Plugin : Event, IEventSound, IEventMap, IInternalEvent
     private EventHandler _eventHandler;
     private EventState _eventState;
     private GameObject _parentPlatform;
-    private Dictionary<Player, PlayerClass> _playerDict;
     private TimeSpan _countdown;
     
     internal List<GameObject> Platforms;
+    internal Dictionary<Player, PlayerClass> PlayerDict;
     
     protected override void RegisterEvents()
     {
@@ -93,16 +94,16 @@ public class Plugin : Event, IEventSound, IEventMap, IInternalEvent
             player.Position = spawnpoints.RandomItem().transform.position;
         }
         
-        _playerDict = new();
+        PlayerDict = new();
+        PlayerClass playerClass = new PlayerClass()
+        {
+            Angle = 0,
+            IsStandUpPlatform = false
+        };
+        
         foreach (Player player in Player.GetPlayers())
         {
-            PlayerClass playerClass = new PlayerClass()
-            {
-                Angle = 0,
-                IsStandUpPlatform = false
-            };
-
-            _playerDict.Add(player, playerClass);
+            PlayerDict.Add(player, playerClass);
         }
     }
 
@@ -149,8 +150,9 @@ public class Plugin : Event, IEventSound, IEventMap, IInternalEvent
 
         if (_countdown.TotalSeconds > 0)
             return;
-
-        foreach (var value in _playerDict.Values)
+        
+        // Reset the parameters in the dictionary
+        foreach (var value in PlayerDict.Values)
         {
             value.Angle = 0;
             value.IsStandUpPlatform = false;
@@ -168,19 +170,20 @@ public class Plugin : Event, IEventSound, IEventMap, IInternalEvent
     {
         text = Translation.RunDontTouch;
 
-        foreach (Player player in Player.GetPlayers())
+        // Check only alive players
+        foreach (Player player in Player.GetPlayers().Where(r => r.IsAlive))
         {
             float playerAngle = 180f + Mathf.Rad2Deg * (Mathf.Atan2(player.Position.z - MapInfo.Position.z, player.Position.x - MapInfo.Position.x));
 
             // The player can run in any direction. The main thing is that the angle changes and is not the same
-            if (Mathf.Approximately(_playerDict[player].Angle, playerAngle))
+            if (Mathf.Approximately(PlayerDict[player].Angle, playerAngle))
             {
                 Extensions.GrenadeSpawn(0.1f, player.Position, 0.1f);
                 player.Kill(Translation.StopRunning);
             }
             else
             {
-                _playerDict[player].Angle = playerAngle;
+                PlayerDict[player].Angle = playerAngle;
             }
 
             // If the player touches the platform, it will explode || Layer mask is 0 for primitives
@@ -218,10 +221,11 @@ public class Plugin : Event, IEventSound, IEventMap, IInternalEvent
     {
         text = Translation.StandFree;
         
-        foreach (Player player in Player.GetPlayers())
+        // Check only alive players
+        foreach (Player player in Player.GetPlayers().Where(r => r.IsAlive))
         {
             // Player is not contains in _playerDict
-            if (!_playerDict.TryGetValue(player, out var playerClass))
+            if (!PlayerDict.TryGetValue(player, out var playerClass))
                 continue;
             
             // The player has already stood on the platform
@@ -247,7 +251,17 @@ public class Plugin : Event, IEventSound, IEventMap, IInternalEvent
         
         if (_countdown.TotalSeconds > 0)
             return;
-
+        
+        // Kill alive players who didn't get up to platform
+        foreach (Player player in Player.GetPlayers().Where(r => r.IsAlive))
+        {
+            if (!PlayerDict[player].IsStandUpPlatform)
+            {
+                Extensions.GrenadeSpawn(0.1f, player.Position, 0.1f);
+                player.Kill(Translation.NoTime);
+            }
+        }
+        
         _countdown = new TimeSpan(0, 0, 3);
         _eventState++;
     }
@@ -260,27 +274,17 @@ public class Plugin : Event, IEventSound, IEventMap, IInternalEvent
     {
         text = Translation.StandFree;
 
-        foreach (Player player in Player.GetPlayers().Where(r => r.IsAlive))
-        {
-            // Kill the players who didn't get up to platform
-            if (!_playerDict[player].IsStandUpPlatform)
-            {
-                Extensions.GrenadeSpawn(0.1f, player.Position, 0.1f);
-                player.Kill(Translation.NoTime);
-            }
-        }
-
         if (_countdown.TotalSeconds > 0)
             return;
-
-        Extensions.ResumeAudio();
-        _countdown = new TimeSpan(0, 0, 3);
-        _eventState = 0;
 
         foreach (var platform in Platforms)
         {
             platform.GetComponent<PrimitiveObjectToy>().NetworkMaterialColor = Color.yellow;
         }
+        
+        Extensions.ResumeAudio();
+        _countdown = new TimeSpan(0, 0, 3);
+        _eventState = 0;
     }
 
     protected override void OnFinished()
@@ -309,7 +313,7 @@ public class Plugin : Event, IEventSound, IEventMap, IInternalEvent
     {
         foreach (GameObject platform in Platforms)
         {
-            GameObject.Destroy(platform);
+            Object.Destroy(platform);
         }
     }
 }

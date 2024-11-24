@@ -48,8 +48,9 @@ public class Functions
 
         for (int i = playerCount; i <= platforms.Count;)
         {
-            GameObject.Destroy(platforms.Last());
-            platforms.Remove(platforms.Last());
+            GameObject lastPlatform = platforms.Last();
+            Object.Destroy(lastPlatform);
+            platforms.Remove(lastPlatform);
         }
 
         int count = platforms.Count;
