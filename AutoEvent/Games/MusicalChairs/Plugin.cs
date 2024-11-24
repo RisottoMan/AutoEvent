@@ -95,15 +95,13 @@ public class Plugin : Event, IEventSound, IEventMap, IInternalEvent
         }
         
         PlayerDict = new();
-        PlayerClass playerClass = new PlayerClass()
-        {
-            Angle = 0,
-            IsStandUpPlatform = false
-        };
-        
         foreach (Player player in Player.GetPlayers())
         {
-            PlayerDict.Add(player, playerClass);
+            PlayerDict.Add(player, new PlayerClass()
+            {
+                Angle = 0,
+                IsStandUpPlatform = false
+            });
         }
     }
 
