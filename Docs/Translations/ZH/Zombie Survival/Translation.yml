@@ -1,16 +1,16 @@
 name: '僵尸生存'
-description: '人类从僵尸中生存下来'
+description: '人类在僵尸面前求生'
 command_name: 'zombie2'
 survival_before_infection: |-
   <b>{name}</b>
-  <color=yellow>感染开始前还有 </color> {time} <color=yellow>秒</color>
+  <color=yellow>感染开始前还有</color> {time} <color=yellow>秒</color>
 survival_after_infection: |-
   <b>{name}</b>
-  <color=#14AAF5>人类：</color> {humanCount}
-  <color=#299438>剩余时间：</color> {time}
-survival_zombie_win: '<color=red>僵尸感染了所有人类并获胜！</color>'
-survival_human_win: '<color=#14AAF5>人类杀死了所有僵尸并阻止了感染</color>'
-survival_human_win_time: '<color=yellow>人类幸存了，但感染没有停止</color>'
-# 不要修改这里。这会导致错误。AutoEvent 会自动管理这些设置。
+  <color=#14AAF5>人类:</color> {humanCount}
+  <color=#299438>剩余时间:</color> {time}
+survival_zombie_win: '<color=red>僵尸感染了所有人类并赢得胜利!</color>'
+survival_human_win: '<color=#14AAF5>人类消灭了所有僵尸并阻止了感染</color>'
+survival_human_win_time: '<color=yellow>人类幸存，但感染未被阻止</color>'
+# 不要更改此项。它会导致问题。AutoEvent 将自动管理这些设置。
 version: '1.0.0'
 language: 'ZH'

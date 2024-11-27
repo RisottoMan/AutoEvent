@@ -18,6 +18,7 @@ public class EventHandler
 
     public void OnDamage(PlayerDamageArgs ev)
     {
+        // The players will not die from the explosion
         if (ev.AttackerHandler is ExplosionDamageHandler damageHandler)
         {
             damageHandler.Damage = 0;
@@ -32,14 +33,28 @@ public class EventHandler
     [PluginEvent(ServerEventType.PlayerDeath)]
     public void OnPlayerDeath(PlayerDeathEvent ev)
     {
-        _plugin.Platforms = Functions.RearrangePlatforms(
-            Player.GetPlayers().Count(r => r.IsAlive), _plugin.Platforms, _plugin.MapInfo.Position);
+        // Remove the dead player from the dictionary
+        if (_plugin.PlayerDict.ContainsKey(ev.Player))
+        {
+            _plugin.PlayerDict.Remove(ev.Player);
+        }
+        
+        // If the player is dead, then remove the last platform
+        int playerCount = Player.GetPlayers().Count(r => r.IsAlive);
+        if (playerCount > 0)
+        {
+            _plugin.Platforms = Functions.RearrangePlatforms(playerCount, _plugin.Platforms, _plugin.MapInfo.Position);
+        }
     }
-
-    [PluginEvent(ServerEventType.PlayerJoined)]
-    public void OnPlayerJoin(PlayerJoinedEvent ev)
+    
+    [PluginEvent(ServerEventType.PlayerLeft)]
+    public void OnPlayerLeft(PlayerLeftEvent ev)
     {
-        ev.Player.SetRole(RoleTypeId.Spectator);
+        // Remove the left player from the dictionary
+        if (_plugin.PlayerDict.ContainsKey(ev.Player))
+        {
+            _plugin.PlayerDict.Remove(ev.Player);
+        }
     }
 
     public void OnTeamRespawn(TeamRespawnArgs ev) => ev.IsAllowed = false;

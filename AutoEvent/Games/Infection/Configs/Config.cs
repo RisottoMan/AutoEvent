@@ -28,6 +28,8 @@ public class Config : EventConfig
             AvailableMaps.Add(new MapChance(50, new MapInfo("ZombieRework_Xmas2024", new Vector3(115.5f, 1030f, -43.5f)), SeasonFlag.Christmas));
             AvailableMaps.Add(new MapChance(50, new MapInfo("Zombie_Xmas2024", new Vector3(115.5f, 1030f, -43.5f)), SeasonFlag.NewYear));
             AvailableMaps.Add(new MapChance(50, new MapInfo("ZombieRework_Xmas2024", new Vector3(115.5f, 1030f, -43.5f)), SeasonFlag.NewYear));
+            AvailableMaps.Add(new MapChance(50, new MapInfo("Zombie_Halloween2024", new Vector3(115.5f, 1030f, -43.5f)), SeasonFlag.Halloween));
+            AvailableMaps.Add(new MapChance(50, new MapInfo("ZombieRework_Halloween2024", new Vector3(115.5f, 1030f, -43.5f)), SeasonFlag.Halloween));
         }
 
         if (AvailableSounds.Count < 1)
@@ -53,27 +55,7 @@ public class Config : EventConfig
             Roles = new Dictionary<RoleTypeId, int>() { { RoleTypeId.Scp0492, 100 } }
         }
     };
-    /* // Christmas Update
-    public List<Loadout> FlamingoLoadouts { get; set; } = new List<Loadout>()
-    {
-        new Loadout()
-        {
-            Roles = new Dictionary<RoleTypeId, int>() 
-            {
-                { RoleTypeId.Flamingo, 50 },
-                { RoleTypeId.AlphaFlamingo, 50 }
-            }
-        }
-    };
-
-    public List<Loadout> ZombieFlamingoLoadouts { get; set; } = new List<Loadout>()
-    {
-        new Loadout()
-        {
-            Roles = new Dictionary<RoleTypeId, int>() { { RoleTypeId.ZombieFlamingo, 100 } }
-        }
-    };
-    */
+    
     public List<string> ZombieScreams { get; set; } = new List<string>()
     {
         "human_death_01.ogg",

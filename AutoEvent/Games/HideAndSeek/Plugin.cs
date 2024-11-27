@@ -9,7 +9,6 @@ using AutoEvent.Events.Handlers;
 using AutoEvent.Interfaces;
 using Event = AutoEvent.Interfaces.Event;
 using Player = PluginAPI.Core.Player;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace AutoEvent.Games.HideAndSeek
 {
@@ -17,9 +16,9 @@ namespace AutoEvent.Games.HideAndSeek
     {
         public override string Name { get; set; } = "Tag";
         public override string Description { get; set; } = "We need to catch up with all the players on the map";
-        public override string Author { get; set; } = "KoT0XleB";
+        public override string Author { get; set; } = "RisottoMan";
         public override string CommandName { get; set; } = "tag";
-        public override Version Version { get; set; } = new Version(1, 0, 2);
+        public override Version Version { get; set; } = new Version(1, 1, 1);
         [EventConfig]
         public Config Config { get; set; }
         [EventTranslation]
@@ -28,7 +27,7 @@ namespace AutoEvent.Games.HideAndSeek
         public MapInfo MapInfo { get; set; } = new MapInfo()
         { 
             MapName = "HideAndSeek", 
-            Position = new Vector3(5.5f, 1026.5f, -45f)
+            Position = new Vector3(0, 30, 30)
         };
         public SoundInfo SoundInfo { get; set; } = new SoundInfo()
         { 
@@ -49,6 +48,7 @@ namespace AutoEvent.Games.HideAndSeek
             Players.DropItem += _eventHandler.OnDropItem;
             Players.DropAmmo += _eventHandler.OnDropAmmo;
             Players.PlayerDamage += _eventHandler.OnPlayerDamage;
+            Players.ChargingJailbird += _eventHandler.OnJailbirdCharge;
         }
         protected override void UnregisterEvents()
         {
@@ -60,6 +60,7 @@ namespace AutoEvent.Games.HideAndSeek
             Players.DropItem -= _eventHandler.OnDropItem;
             Players.DropAmmo -= _eventHandler.OnDropAmmo;
             Players.PlayerDamage -= _eventHandler.OnPlayerDamage;
+            Players.ChargingJailbird -= _eventHandler.OnJailbirdCharge;
             _eventHandler = null;
         }
 

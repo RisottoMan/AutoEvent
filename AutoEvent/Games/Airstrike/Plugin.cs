@@ -18,7 +18,7 @@ namespace AutoEvent.Games.Airstrike
     {
         public override string Name { get; set; } = "Airstrike Party";
         public override string Description { get; set; } = "Survive as aistrikes rain down from above.";
-        public override string Author { get; set; } = "KoT0XleB";
+        public override string Author { get; set; } = "RisottoMan";
         public override string CommandName { get; set; } = "airstrike";
         public override Version Version { get; set; } = new Version(1, 0, 3);
         public MapInfo MapInfo { get; set; } = new MapInfo()
@@ -205,11 +205,12 @@ namespace AutoEvent.Games.Airstrike
                 });
             }
             var time = $"{EventTime.Minutes:00}:{EventTime.Seconds:00}";
-            if (Player.GetPlayers().Count(r => r.Role != RoleTypeId.ChaosConscript) > 1)
+            int count = Player.GetPlayers().Count(r => r.IsAlive && r.Role != RoleTypeId.ChaosConscript);
+            if (count > 1)
             {
                 Extensions.Broadcast(Translation.MorePlayer.Replace("{count}", $"{Player.GetPlayers().Count(r => r.Role != RoleTypeId.ChaosConscript)}").Replace("{time}", time), 10);
             }
-            else if (Player.GetPlayers().Count(r => r.IsAlive && r.Role != RoleTypeId.ChaosConscript) == 1)
+            else if (count == 1)
             {
                 var player = Player.GetPlayers().First(r => r.IsAlive && r.Role != RoleTypeId.ChaosConscript);
                 player.Health = 1000;

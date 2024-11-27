@@ -13,13 +13,13 @@ using Event = AutoEvent.Interfaces.Event;
 
 namespace AutoEvent.Games.Dodgeball
 {
-    public class Plugin : Event, IEventMap, IInternalEvent, IEventSound, IHidden
+    public class Plugin : Event, IEventMap, IInternalEvent, IEventSound
     {
         public override string Name { get; set; } = "Dodgeball";
         public override string Description { get; set; } = "Defeat the enemy with balls.";
-        public override string Author { get; set; } = "KoT0XleB";
+        public override string Author { get; set; } = "RisottoMan & Моге-ко";
         public override string CommandName { get; set; } = "dodge";
-        public override Version Version { get; set; } = new Version(1, 0, 1);
+        public override Version Version { get; set; } = new Version(1, 0, 2);
         [EventConfig]
         public Config Config { get; set; }
         [EventTranslation]
@@ -41,8 +41,6 @@ namespace AutoEvent.Games.Dodgeball
         private List<GameObject> _sciPoint;
         private GameObject _redLine;
         private TimeSpan _roundTime;
-        private GameObject _ballObject;
-        public List<GameObject> BallObjects;
         protected override void RegisterEvents()
         {
             _eventHandler = new EventHandler(this);
@@ -51,9 +49,9 @@ namespace AutoEvent.Games.Dodgeball
             Servers.SpawnRagdoll += _eventHandler.OnSpawnRagdoll;
             Servers.PlaceBullet += _eventHandler.OnPlaceBullet;
             Servers.PlaceBlood += _eventHandler.OnPlaceBlood;
+            Servers.Scp018Update += _eventHandler.OnScp018Update;
+            Servers.Scp018Collision += _eventHandler.OnScp018Collision;
             Players.DropAmmo += _eventHandler.OnDropAmmo;
-            Servers.Scp018Bounce += _eventHandler.OnScp018Bounce;
-            Players.PlayerDamage += _eventHandler.OnDamage;
         }
 
         protected override void UnregisterEvents()
@@ -63,10 +61,9 @@ namespace AutoEvent.Games.Dodgeball
             Servers.SpawnRagdoll -= _eventHandler.OnSpawnRagdoll;
             Servers.PlaceBullet -= _eventHandler.OnPlaceBullet;
             Servers.PlaceBlood -= _eventHandler.OnPlaceBlood;
+            Servers.Scp018Update -= _eventHandler.OnScp018Update;
+            Servers.Scp018Collision -= _eventHandler.OnScp018Collision;
             Players.DropAmmo -= _eventHandler.OnDropAmmo;
-            Servers.Scp018Bounce -= _eventHandler.OnScp018Bounce;
-            Players.PlayerDamage -= _eventHandler.OnDamage;
-
             _eventHandler = null;
         }
 
@@ -77,7 +74,6 @@ namespace AutoEvent.Games.Dodgeball
             _ballItems = new List<GameObject>();
             _dPoint = new List<GameObject>();
             _sciPoint = new List<GameObject>();
-            BallObjects = new List<GameObject>();
             _roundTime = new TimeSpan(0, 0, Config.TotalTimeInSeconds);
 
             foreach (GameObject gameObject in MapInfo.Map.AttachedBlocks)
@@ -89,7 +85,6 @@ namespace AutoEvent.Games.Dodgeball
                     case "Wall": _walls.Add(gameObject); break;
                     case "Snowball_Item": _ballItems.Add(gameObject); break;
                     case "RedLine": _redLine = gameObject; break;
-                    case "Snowball_Object": _ballObject = gameObject; break;
                 }
             }
 
@@ -144,15 +139,7 @@ namespace AutoEvent.Games.Dodgeball
 
             foreach (Player player in Player.GetPlayers())
             {
-                foreach(GameObject ball in BallObjects)
-                {
-                    if (Vector3.Distance(player.Position, ball.transform.position) < 1)
-                    {
-                        player.Damage(50, "Damaged");
-                        GameObject.Destroy(ball);
-                    }
-                }
-
+                // If a player tries to go to the other half of the field, he takes damage and teleports him back
                 if ((int)_redLine.transform.position.z == (int)player.Position.z)
                 {
                     if (player.Role == RoleTypeId.ClassD)
@@ -167,6 +154,7 @@ namespace AutoEvent.Games.Dodgeball
                     player.Damage(40, Translation.Redline);
                 }
 
+                // If a player approaches the balls, then the ball is given into his hand
                 foreach(GameObject ball in _ballItems)
                 {
                     if (Vector3.Distance(ball.transform.position, player.Position) < 1.5f)

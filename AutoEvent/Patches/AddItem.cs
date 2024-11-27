@@ -15,10 +15,17 @@ namespace AutoEvent.Patches
         public static bool Prefix(Player __instance, ItemType item, ref ItemBase __result)
         {
             ItemBase itemBase = __instance.ReferenceHub.inventory.ServerAddItem(item, 0);
-            
+
             if (itemBase is Firearm firearm)
             {
                 FirearmStatusFlags firearmStatusFlags = FirearmStatusFlags.MagazineInserted;
+
+                if (AttachmentsServerHandler.PlayerPreferences.TryGetValue(__instance.ReferenceHub, out var preferedAllAttachmets)
+                    && preferedAllAttachmets.TryGetValue(item, out var preferedAttachments))
+                {
+                    firearm.ApplyAttachmentsCode(preferedAttachments, true);
+                }
+
                 if (firearm.Attachments.Any((Attachment a) => a.Name == AttachmentName.Flashlight))
                 {
                     firearmStatusFlags |= FirearmStatusFlags.FlashlightEnabled;

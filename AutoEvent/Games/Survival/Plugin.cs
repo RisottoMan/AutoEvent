@@ -16,7 +16,7 @@ namespace AutoEvent.Games.Survival
     {
         public override string Name { get; set; } = "Zombie Survival";
         public override string Description { get; set; } = "Humans surviving from zombies";
-        public override string Author { get; set; } = "KoT0XleB";
+        public override string Author { get; set; } = "RisottoMan";
         public override string CommandName { get; set; } = "zombie2";
         public override Version Version { get; set; } = new Version(1, 0, 0);
         [EventConfig]

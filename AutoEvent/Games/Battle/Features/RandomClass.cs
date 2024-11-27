@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using MER.Lite.Objects;
-using PluginAPI.Core;
+﻿using MER.Lite.Objects;
 using System.Linq;
-using AutoEvent.Games.Example;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 namespace AutoEvent.Games.Battle
 {

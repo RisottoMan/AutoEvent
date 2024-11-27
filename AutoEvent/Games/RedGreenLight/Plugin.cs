@@ -16,7 +16,7 @@ namespace AutoEvent.Games.Light
     {
         public override string Name { get; set; } = "Red Light Green Light";
         public override string Description { get; set; } = "Reach the end of the finish line";
-        public override string Author { get; set; } = "KoT0XleB";
+        public override string Author { get; set; } = "RisottoMan";
         public override string CommandName { get; set; } = "light";
         public override Version Version { get; set; } = new Version(1, 0, 4);
         [EventConfig]

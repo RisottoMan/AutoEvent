@@ -1,10 +1,10 @@
 {
-  "RootObjectId": 36562,
+  "RootObjectId": 332754,
   "Blocks": [
     {
       "Name": "Point Light",
-      "ObjectId": 29236,
-      "ParentId": 36562,
+      "ObjectId": 332760,
+      "ParentId": 332754,
       "Position": {
         "x": 0.0,
         "y": 32.29,
@@ -20,8 +20,8 @@
     },
     {
       "Name": "Point Light",
-      "ObjectId": 32180,
-      "ParentId": 36562,
+      "ObjectId": 332766,
+      "ParentId": 332754,
       "Position": {
         "x": -23.27,
         "y": 13.96,
@@ -37,8 +37,8 @@
     },
     {
       "Name": "Point Light",
-      "ObjectId": 36486,
-      "ParentId": 36562,
+      "ObjectId": 332772,
+      "ParentId": 332754,
       "Position": {
         "x": 22.82,
         "y": 13.96,
@@ -54,8 +54,8 @@
     },
     {
       "Name": "Point Light",
-      "ObjectId": 26684,
-      "ParentId": 36562,
+      "ObjectId": 332778,
+      "ParentId": 332754,
       "Position": {
         "x": -0.71,
         "y": 13.96,
@@ -71,8 +71,8 @@
     },
     {
       "Name": "Point Light",
-      "ObjectId": 25638,
-      "ParentId": 36562,
+      "ObjectId": 332784,
+      "ParentId": 332754,
       "Position": {
         "x": -0.71,
         "y": 13.96,
@@ -88,8 +88,8 @@
     },
     {
       "Name": "Lava",
-      "ObjectId": 32452,
-      "ParentId": 36562,
+      "ObjectId": 332790,
+      "ParentId": 332754,
       "Position": {
         "x": 0.167,
         "y": 0.96,
@@ -101,20 +101,21 @@
         "z": 0.0
       },
       "Scale": {
-        "x": -33.6453667,
-        "y": -5.89100933,
-        "z": -33.10944
+        "x": 33.6453667,
+        "y": 5.89100933,
+        "z": 33.10944
       },
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "00EEFFDE"
+        "Color": "00EEFFDE",
+        "PrimitiveFlags": 2
       }
     },
     {
       "Name": "Parent-Platform",
-      "ObjectId": 26864,
-      "ParentId": 36562,
+      "ObjectId": 332800,
+      "ParentId": 332754,
       "Position": {
         "x": -15.48,
         "y": 2.15,
@@ -133,13 +134,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "5C94FCFF"
+        "Color": "5C94FCFF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Quad",
-      "ObjectId": 29316,
-      "ParentId": 36562,
+      "ObjectId": 332810,
+      "ParentId": 332754,
       "Position": {
         "x": 16.41,
         "y": 11.465,
@@ -158,13 +160,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 5,
-        "Color": "FFDC00FF"
+        "Color": "FFDC00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Quad",
-      "ObjectId": 36810,
-      "ParentId": 36562,
+      "ObjectId": 332820,
+      "ParentId": 332754,
       "Position": {
         "x": -16.41,
         "y": 11.364,
@@ -183,13 +186,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 5,
-        "Color": "A7FF3BFF"
+        "Color": "A7FF3BFF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Quad",
-      "ObjectId": 33318,
-      "ParentId": 36562,
+      "ObjectId": 332830,
+      "ParentId": 332754,
       "Position": {
         "x": 0.042,
         "y": 11.442,
@@ -208,13 +212,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 5,
-        "Color": "FF8C00FF"
+        "Color": "FF8C00FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Quad",
-      "ObjectId": 30204,
-      "ParentId": 36562,
+      "ObjectId": 332840,
+      "ParentId": 332754,
       "Position": {
         "x": 0.023,
         "y": 11.428,
@@ -233,13 +238,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 5,
-        "Color": "FF9EECFF"
+        "Color": "FF9EECFF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Quad",
-      "ObjectId": 36288,
-      "ParentId": 36562,
+      "ObjectId": 332850,
+      "ParentId": 332754,
       "Position": {
         "x": 0.066,
         "y": 0.15,
@@ -258,13 +264,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 5,
-        "Color": "FFFFFFFF"
+        "Color": "FFFFFFFF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Quad",
-      "ObjectId": 29388,
-      "ParentId": 36562,
+      "ObjectId": 332860,
+      "ParentId": 332754,
       "Position": {
         "x": -0.013,
         "y": 22.968,
@@ -283,7 +290,8 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 5,
-        "Color": "00EBFFFF"
+        "Color": "00EBFFFF",
+        "PrimitiveFlags": 3
       }
     }
   ]

@@ -19,7 +19,7 @@ namespace AutoEvent.Games.Lava
     {
         public override string Name { get; set; } = "The floor is LAVA";
         public override string Description { get; set; } = "Survival, in which you need to avoid lava and shoot at others";
-        public override string Author { get; set; } = "KoT0XleB";
+        public override string Author { get; set; } = "RisottoMan";
         public override string CommandName { get; set; } = "lava";
         public override Version Version { get; set; } = new Version(1, 0, 3);
         [EventConfig]

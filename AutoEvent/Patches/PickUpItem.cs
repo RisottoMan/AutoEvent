@@ -21,7 +21,6 @@ namespace AutoEvent.Patches
                 PickupSyncInfo info = __instance.TargetPickup.Info;
                 info.InUse = false;
                 __instance.TargetPickup.NetworkInfo = info;
-                return;
             }
         }
     }

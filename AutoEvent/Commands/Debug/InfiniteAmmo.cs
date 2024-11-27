@@ -26,7 +26,12 @@ namespace AutoEvent.Commands.Debug;
 
 public class InfiniteAmmo : ICommand, IUsageProvider, IPermission
 {
+    public string Command { get; } = "InfAmmo";
+    public string[] Aliases { get; } = Array.Empty<string>();
+    public string Description { get; } = "Gives a user infinite ammo.";
+    public string[] Usage { get; } = new[] { "%player%", "[Infinite / Endless / None]" };
     public string Permission { get; set; } = "ev.debug";
+    public bool SanitizeResponse => false;
     public bool Execute(ArraySegment<string> arguments, ICommandSender sender, [UnscopedRef] out string response)
     {
         if (!sender.CheckPermission(((IPermission)this).Permission, out bool IsConsoleCommandSender))
@@ -67,9 +72,4 @@ public class InfiniteAmmo : ICommand, IUsageProvider, IPermission
         response = "Please specify a player.";
         return false;
     }
-
-    public string Command { get; } = "InfAmmo";
-    public string[] Aliases { get; } = Array.Empty<string>();
-    public string Description { get; } = "Gives a user infinite ammo.";
-    public string[] Usage { get; } = new[] { "%player%", "[Infinite / Endless / None]" };
 }

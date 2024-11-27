@@ -1,5 +1,4 @@
-﻿using MER.Lite.Objects;
-using AutoEvent.Events.Handlers;
+﻿using AutoEvent.Events.Handlers;
 using MEC;
 using PluginAPI.Events;
 using System;
@@ -16,7 +15,7 @@ namespace AutoEvent.Games.Line
     {
         public override string Name { get; set; } = "Death Line";
         public override string Description { get; set; } = "Avoid the spinning platform to survive";
-        public override string Author { get; set; } = "Logic_Gun";
+        public override string Author { get; set; } = "Logic_Gun & RisottoMan";
         public override string CommandName { get; set; } = "line";
         public override Version Version { get; set; } = new Version(1, 0, 0);
         [EventConfig]
@@ -35,10 +34,7 @@ namespace AutoEvent.Games.Line
         };
         protected override float PostRoundDelay { get; set; } = 10f;
         private EventHandler _eventHandler { get; set; }
-        private readonly int _hardCountsLimit = 8;
-        private Dictionary<int, SchematicObject> _hardGameMap;
         private TimeSpan _timeRemaining;
-        private int _hardCounts;
         // todo - revamp configs for this
 
         protected override void RegisterEvents()
@@ -68,8 +64,6 @@ namespace AutoEvent.Games.Line
         protected override void OnStart()
         {
             _timeRemaining = new TimeSpan(0, 2, 0);
-            _hardGameMap = new Dictionary<int, SchematicObject>();
-            _hardCounts = 0;
             
             foreach (Player player in Player.GetPlayers())
             {
@@ -106,29 +100,7 @@ namespace AutoEvent.Games.Line
             Extensions.Broadcast(Translation.Cycle.Replace("{name}", Name).
                 Replace("{time}", $"{_timeRemaining.Minutes:00}:{_timeRemaining.Seconds:00}").
                 Replace("{count}", $"{Player.GetPlayers().Count(r => r.HasLoadout(Config.Loadouts))}"), 10);
-
-            if (EventTime.Seconds == 30 && _hardCounts < _hardCountsLimit)
-            {
-                if (_hardCounts == 0)
-                {
-                    Extensions.StopAudio();
-                    Extensions.PlayAudio("LineHard.ogg", 10, true);
-                }
-
-                try
-                {
-                    var map_hard = Extensions.LoadMap("HardLine", new Vector3(76f, 1026.5f, -43.68f), Quaternion.Euler(Vector3.zero), Vector3.one, false);
-                    _hardGameMap.Add(_hardCounts, map_hard);
-                }
-                catch(Exception ex)
-                {
-                    DebugLogger.LogDebug($"An error has occured while processing frame.", LogLevel.Warn, true);
-                    DebugLogger.LogDebug($"{ex}", LogLevel.Debug);
-
-                }
-
-                _hardCounts++;
-            }
+            
             _timeRemaining -= TimeSpan.FromSeconds(FrameDelayInSeconds);
         }
 
@@ -157,12 +129,6 @@ namespace AutoEvent.Games.Line
             {
                 Extensions.Broadcast(Translation.AllDied, 10);
             }
-        }
-
-        protected override void OnCleanup()
-        {
-            foreach (var map in _hardGameMap.Values)
-                Extensions.UnLoadMap(map);
         }
     }
 }

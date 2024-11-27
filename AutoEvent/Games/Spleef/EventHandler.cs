@@ -12,7 +12,7 @@ public class EventHandler
     {
         _plugin = plugin;
     }
-    public void OnShot(ShotEventArgs ev)
+    public void OnShot(NewShotEventArgs ev)
     {
         if (_plugin.Config.PlatformHealth < 0)
         {
@@ -26,13 +26,13 @@ public class EventHandler
 
         if (ev.Damage <= 0)
         {
-            ev.Damage = BodyArmorUtils.ProcessDamage(0, firearm.BaseStats.DamageAtDistance(firearm, ev.Distance), Mathf.RoundToInt(firearm.ArmorPenetration * 100f));
+            ev.Damage = BodyArmorUtils.ProcessDamage(0, firearm.BaseStats.DamageAtDistance(firearm, ev.Distance), 
+                Mathf.RoundToInt(firearm.ArmorPenetration * 100f));
         }
 
         ev.RaycastHit.collider.transform.GetComponentsInParent<FallPlatformComponent>().ForEach(GameObject.Destroy);
     }
-
-
+    
     public void OnTeamRespawn(TeamRespawnArgs ev) => ev.IsAllowed = false;
     public void OnSpawnRagdoll(SpawnRagdollArgs ev) => ev.IsAllowed = false;
     public void OnPlaceBullet(PlaceBulletArgs ev) => ev.IsAllowed = false;

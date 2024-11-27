@@ -14,6 +14,7 @@ namespace AutoEvent.Commands
         public string Description => "Kills the running mini-game (just kills all the players)";
         public string[] Aliases => new string[] { };
         public string Permission { get; set; } = "ev.stop";
+        public bool SanitizeResponse => false;
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
             if (!sender.CheckPermission(((IPermission)this).Permission, out bool IsConsoleCommandSender))

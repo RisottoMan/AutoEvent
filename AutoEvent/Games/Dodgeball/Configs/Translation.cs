@@ -13,4 +13,5 @@ public class Translation : EventTranslation
     public string ScientistWin { get; set; } = "<b><color=#ffff00>{name}</color></b>\n<color=#ffff00>Scientists Win</color>\nTime: <color=red>{time}</color>";
     public string Draw { get; set; } = "<b><color=#ffff00>{name}</color></b>\n<color=#808080>Draw</color>\nTime: <color=red>{time}</color>";
     public string Redline { get; set; } = "<color=red>You can't go through the red line</color>";
+    public string Knocked { get; set; } = "<color=red>You were knocked out by {killer}</color>";
 }

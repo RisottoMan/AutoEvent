@@ -291,59 +291,6 @@ namespace AutoEvent
             RockList.Add(serial, settings);
         }*/
 
-        
-        /// <summary>
-        /// Gets the keycard permissions of a player.
-        /// </summary>
-        /// <param name="ply">The player to get the permissions of./param>
-        /// <param name="inHandOnly">Will only cards that are in hand count. (Bypass / SCP Override as well)</param>
-        /// <returns></returns>
-        public static KeycardPermissions KeyCardLevel(this Player ply, bool inHandOnly = false)
-        {
-            KeycardPermissions perms = KeycardPermissions.None;
-            
-            // Add Current Keycard Only
-            if (inHandOnly && ply.CurrentItem is KeycardItem keycard)
-                perms = (KeycardPermissions)keycard.Permissions;
-
-            // Add all keycards
-            if (!inHandOnly)
-            {
-                foreach (var item in ply.Items)
-                {
-                    if (item is not KeycardItem keycardItem)
-                        continue;
-                    perms.Include((int)keycardItem.Permissions);
-                }
-            }
-            // Add bypass mode
-            if (ply.IsBypassEnabled)
-                perms |= KeycardPermissions.BypassMode;
-
-            // Add scp override
-            if (ply.IsSCP)
-                perms |= KeycardPermissions.ScpOverride;
-            
-            // Add 079 override
-            if (ply.Role == RoleTypeId.Scp079)
-                perms |= KeycardPermissions.Scp079Override;
-
-            return perms;
-        }
-        
-
-        /// <summary>
-        /// Checks whether a player has a keycard level.
-        /// </summary>
-        /// <param name="ply">The player to get the permissions of.</param>
-        /// <param name="inHandOnly">Will only cards that are in hand count. (Bypass / SCP Override as well)</param>
-        /// <returns>True if the player has the level. False if the player does not have the level.</returns>
-        public static bool HasKeycardLevel(this Player ply, KeycardPermissions perms, bool inHandOnly = false)
-        {
-            KeycardPermissions curPerms = ply.KeyCardLevel(inHandOnly);
-            return curPerms.HasRequiredFlags(perms);
-        }
-
         public static void ExplodeOnCollision(this Item grenade, bool giveNewGrenadeOnExplosion = false) => ExplodeOnCollision(grenade.Serial, giveNewGrenadeOnExplosion);
         public static void ExplodeOnCollision(this ItemBase grenade, bool giveNewGrenadeOnExplosion = false) => ExplodeOnCollision(grenade.ItemSerial, giveNewGrenadeOnExplosion);
         public static void ExplodeOnCollision(this ushort item, bool giveNewGrenadeOnExplosion = false)
@@ -402,6 +349,9 @@ namespace AutoEvent
             effect.Duration, effect.AddDuration);
         public static void GiveEffect(this Player ply, StatusEffect effect, byte intensity, float duration = 0f, bool addDuration = false) =>             
             ply.EffectsManager.ChangeState(effect.ToString(), intensity, duration, addDuration);
+        public static void DisableEffect(this Player ply, Effect effect) => DisableEffect(ply, effect.EffectType);
+        public static void DisableEffect(this Player ply, StatusEffect effect) =>             
+            ply.EffectsManager.ChangeState(effect.ToString(), 0, 0, true);
         public static Type GetStatusEffectBaseType(this StatusEffect effect)
         {
             // I should have done this via reflection but oh well... 
