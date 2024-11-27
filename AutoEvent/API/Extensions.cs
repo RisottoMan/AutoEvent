@@ -352,53 +352,6 @@ namespace AutoEvent
         public static void DisableEffect(this Player ply, Effect effect) => DisableEffect(ply, effect.EffectType);
         public static void DisableEffect(this Player ply, StatusEffect effect) =>             
             ply.EffectsManager.ChangeState(effect.ToString(), 0, 0, true);
-        public static Type GetStatusEffectBaseType(this StatusEffect effect)
-        {
-            // I should have done this via reflection but oh well... 
-            switch (effect)
-            {
-                case StatusEffect.Asphyxiated: return typeof(Asphyxiated); 
-                case StatusEffect.Bleeding: return typeof(Bleeding);
-                case StatusEffect.Blinded: return typeof(Blinded);
-                case StatusEffect.Burned: return typeof(Burned);
-                case StatusEffect.Concussed: return typeof(Concussed);
-                case StatusEffect.Corroding: return typeof(Corroding);
-                case StatusEffect.Deafened: return typeof(Deafened);
-                case StatusEffect.Decontaminating: return typeof(Decontaminating);
-                case StatusEffect.Disabled: return typeof(Disabled);
-                case StatusEffect.Ensnared: return typeof(Ensnared);
-                case StatusEffect.Exhausted: return typeof(Exhausted);
-                case StatusEffect.Flashed: return typeof(Flashed);
-                case StatusEffect.Hemorrhage: return typeof(Hemorrhage);
-                case StatusEffect.Hypothermia: return typeof(Hypothermia);
-                case StatusEffect.Invigorated: return typeof(Invigorated);
-                case StatusEffect.Invisible: return typeof(Invisible);
-                case StatusEffect.Poisoned: return typeof(Poisoned);
-                case StatusEffect.Scanned: return typeof(Scanned);
-                case StatusEffect.Scp207: return typeof(Scp207);
-                case StatusEffect.Scp1853: return typeof(Scp1853);
-                case StatusEffect.Stained: return typeof(Stained);
-                case StatusEffect.Traumatized: return typeof(Traumatized);
-                case StatusEffect.Vitality: return typeof(Vitality);
-                case StatusEffect.AmnesiaItems: return typeof(AmnesiaItems);
-                case StatusEffect.AmnesiaVision: return typeof(AmnesiaVision);
-                case StatusEffect.AntiScp207: return typeof(AntiScp207);
-                case StatusEffect.BodyshotReduction: return typeof(BodyshotReduction);
-                case StatusEffect.CardiacArrest: return typeof(CardiacArrest);
-                case StatusEffect.DamageReduction: return typeof(DamageReduction);
-                case StatusEffect.InsufficientLighting: return typeof(InsufficientLighting);
-                case StatusEffect.MovementBoost: return typeof(MovementBoost);
-                case StatusEffect.PocketCorroding: return typeof(PocketCorroding);
-                case StatusEffect.RainbowTaste: return typeof(RainbowTaste);
-                case StatusEffect.SeveredHands: return typeof(SeveredHands);
-                case StatusEffect.SinkHole: return typeof(Sinkhole);
-                case StatusEffect.SoundtrackMute: return typeof(SoundtrackMute);
-                case StatusEffect.SpawnProtected: return typeof(SpawnProtected);
-
-            }
-
-            return null;
-        }
 
         public static void TeleportEnd()
         {

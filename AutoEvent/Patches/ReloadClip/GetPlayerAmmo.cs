@@ -19,22 +19,24 @@ using PluginAPI.Core;
 
 namespace AutoEvent.Patches;
 
-[HarmonyPatch(typeof(InventorySystem.Items.Firearms.Modules.AutomaticAmmoManager),nameof(InventorySystem.Items.Firearms.Modules.AutomaticAmmoManager.UserAmmo),MethodType.Getter)]
+//[HarmonyPatch(typeof(InventorySystem.Items.Firearms.Modules.AutomaticAmmoManager),nameof(InventorySystem.Items.Firearms.Modules.AutomaticAmmoManager.UserAmmo),MethodType.Getter)]
 public class GetPlayerAmmo
 {
-    public static bool Prefix(AutomaticAmmoManager __instance, ref ushort __result)
+    public static bool Prefix(AutomaticActionModule __instance, ref ushort __result) //AutomaticAmmoManager __instance, ref ushort __result
     {
-        Player ply = Player.Get(__instance._firearm.Owner);
+        Player ply = Player.Get(__instance.Firearm.Owner);
         if (ply is null)
         {
             return true;
         }
+        
         if (Extensions.InfiniteAmmoList is null || !Extensions.InfiniteAmmoList.ContainsKey(ply))
         {
             return true;
         }
-        __instance._firearm.Owner.inventory.ServerSetAmmo(__instance._firearm.AmmoType,  __instance._firearm.AmmoManagerModule.MaxAmmo);
-        __result = __instance._firearm.AmmoManagerModule.MaxAmmo;
+        
+        //__instance.Firearm.Owner.inventory.ServerSetAmmo(__instance.Firearm.AmmoType,  __instance.Firearm.AmmoManagerModule.MaxAmmo);
+        //__result = __instance.Firearm.AmmoManagerModule.MaxAmmo;
         return false;
     }
 }

@@ -26,8 +26,8 @@ public class EventHandler
 
         if (ev.Damage <= 0)
         {
-            ev.Damage = BodyArmorUtils.ProcessDamage(0, firearm.BaseStats.DamageAtDistance(firearm, ev.Distance), 
-                Mathf.RoundToInt(firearm.ArmorPenetration * 100f));
+            //ev.Damage = BodyArmorUtils.ProcessDamage(0, firearm.BaseStats.DamageAtDistance(firearm, ev.Distance), 
+            //    Mathf.RoundToInt(firearm.ArmorPenetration * 100f));
         }
 
         ev.RaycastHit.collider.transform.GetComponentsInParent<FallPlatformComponent>().ForEach(GameObject.Destroy);

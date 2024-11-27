@@ -77,7 +77,15 @@
             _lightSourceToy.LightColor = GetColorFromString(Base.Color);
             _lightSourceToy.LightIntensity = Base.Intensity;
             _lightSourceToy.LightRange = Base.Range;
-            _lightSourceToy.LightShadows = Base.Shadows;
+
+            if (Base.Shadows)
+            {
+                _lightSourceToy.ShadowType = LightShadows.Soft;
+            }
+            else
+            {
+                _lightSourceToy.ShadowType = LightShadows.None;
+            }
 
             UpdateTransformProperties();
         }

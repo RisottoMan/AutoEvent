@@ -150,7 +150,7 @@ namespace AutoEvent.API.AdvancedMERTool.Serializable
                 if (module.EffectOnly)
                     ExplosionUtils.ServerSpawnEffect(transform.TransformPoint(module.LocalPosition), ItemType.GrenadeHE);
                 else
-                    ExplosionUtils.ServerExplode(transform.TransformPoint(module.LocalPosition), module.FFon ? new Footprint(ReferenceHub.LocalHub) : new Footprint(hub));
+                    ExplosionUtils.ServerExplode(transform.TransformPoint(module.LocalPosition), module.FFon ? new Footprint(ReferenceHub.LocalHub) : new Footprint(hub), ExplosionType.Custom);
             }
         }
     }

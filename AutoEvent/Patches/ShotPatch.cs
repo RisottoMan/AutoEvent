@@ -23,9 +23,8 @@ namespace AutoEvent.Patches
 #pragma warning disable SA1402 // File may only contain a single type
 
     using static HarmonyLib.AccessTools;
-
-
-    [HarmonyPatch(typeof(SingleBulletHitreg), nameof(SingleBulletHitreg.ServerProcessRaycastHit))]
+    
+    //[HarmonyPatch(typeof(HitscanHitregModuleBase), nameof(HitscanHitregModuleBase.ServerProcessTargetHit))]
     internal static class Shot
     {
         /// <summary>
@@ -57,135 +56,31 @@ namespace AutoEvent.Patches
 
             LocalBuilder ev = generator.DeclareLocal(typeof(NewShotEventArgs));
 
-            int offset = 2;
-            int index = newInstructions.FindLastIndex(
-                instruction => instruction.Calls(Method(typeof(FirearmBaseStats), nameof(FirearmBaseStats.DamageAtDistance)))) + offset;
+            int offset = 1;
+            int index = newInstructions.FindIndex(x => x.opcode == OpCodes.Stloc_0) + offset;
 
             newInstructions.InsertRange(
                 index,
                 new CodeInstruction[]
                 {
                     // this.Hub
+                    new(OpCodes.Ldarg_1),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(HitboxIdentity), nameof(HitboxIdentity.TargetHub))),
+
+                    // this.Firearm
                     new(OpCodes.Ldarg_0),
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(StandardHitregBase), nameof(StandardHitregBase.Hub))),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(SingleBulletHitscan), nameof(SingleBulletHitscan.Firearm))),
 
                     // hit
                     new(OpCodes.Ldarg_2),
 
                     // destructible
-                    new(OpCodes.Ldloc_0),
+                    new(OpCodes.Ldloc_1),
 
                     // damage
-                    new(OpCodes.Ldloca_S, 1),
+                    new(OpCodes.Ldloca_S, 0),
 
-                    new(OpCodes.Call, Method(typeof(Shot), nameof(ProcessShot), new[] { typeof(ReferenceHub), typeof(RaycastHit), typeof(IDestructible), typeof(float).MakeByRefType(), })),
-
-                    // if (!ev.CanHurt)
-                    //    return;
-                    new(OpCodes.Brfalse_S, returnLabel),
-                });
-
-            offset = -3;
-            index = newInstructions.FindLastIndex(
-                instruction => instruction.Calls(Method(typeof(StandardHitregBase), nameof(StandardHitregBase.PlaceBulletholeDecal)))) + offset;
-
-            // replace the original goto label
-            newInstructions.FindAll(instruction => instruction.opcode == OpCodes.Brfalse).ForEach(instruction => instruction.operand = jump);
-
-            newInstructions.InsertRange(
-                index,
-                new CodeInstruction[]
-                {
-                    new CodeInstruction(OpCodes.Nop).WithLabels(jump),
-
-                    // this.Hub
-                    new(OpCodes.Ldarg_0),
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(StandardHitregBase), nameof(StandardHitregBase.Hub))),
-
-                    // hit
-                    new(OpCodes.Ldarg_2),
-
-                    // destructible
-                    new(OpCodes.Ldnull),
-
-                    // damage
-                    new(OpCodes.Ldc_R4, 0f),
-                    new(OpCodes.Stloc_S, 1),
-                    new(OpCodes.Ldloca_S, 1),
-
-                    // Shot.ProcessShot
-                    new(OpCodes.Call, Method(typeof(Shot), nameof(ProcessShot), new[] { typeof(ReferenceHub), typeof(RaycastHit), typeof(IDestructible), typeof(float).MakeByRefType(), })),
-                    new(OpCodes.Pop),
-                });
-
-            newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);
-
-            for (int z = 0; z < newInstructions.Count; z++)
-                yield return newInstructions[z];
-
-            ListPool<CodeInstruction>.Shared.Return(newInstructions);
-        }
-    }
-
-    [HarmonyPatch(typeof(BuckshotHitreg), nameof(BuckshotHitreg.ShootPellet))]
-    internal static class Shot2
-    {
-        private static IEnumerable<CodeInstruction> Transpiller(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
-        {
-            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
-
-            Label returnLabel = generator.DefineLabel();
-
-            int offset = -3;
-            int index = newInstructions.FindIndex(instruction => instruction.Calls(Method(typeof(StandardHitregBase), nameof(StandardHitregBase.PlaceBulletholeDecal)))) + offset;
-
-            newInstructions.InsertRange(
-                index,
-                new CodeInstruction[]
-                {
-                    // this.Hub
-                    new CodeInstruction(OpCodes.Ldarg_0),
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(BuckshotHitreg), nameof(BuckshotHitreg.Hub))),
-
-                    // hit
-                    new(OpCodes.Ldloc_2),
-
-                    // destructible
-                    new(OpCodes.Ldloc_3),
-
-                    // damage
-                    new(OpCodes.Ldc_R4, 0f),
-                    new(OpCodes.Stloc_S, 4),
-                    new(OpCodes.Ldloca_S, 4),
-
-                    new(OpCodes.Call, Method(typeof(Shot), nameof(Shot.ProcessShot), new[] { typeof(ReferenceHub), typeof(RaycastHit), typeof(IDestructible), typeof(float).MakeByRefType(), })),
-
-                    // if (!ev.CanHurt)
-                    //    return;
-                    new(OpCodes.Brfalse_S, returnLabel),
-                });
-
-            offset = 0;
-            index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ldsfld) + offset;
-
-            newInstructions.InsertRange(
-                index,
-                new[]
-                {
-                    // this.Hub
-                    new CodeInstruction(OpCodes.Ldarg_0),
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(BuckshotHitreg), nameof(BuckshotHitreg.Hub))),
-
-                    // hit
-                    new(OpCodes.Ldloc_2),
-
-                    // destructible
-                    new(OpCodes.Ldloc_3),
-
-                    // damage
-                    new(OpCodes.Ldloca_S, 4),
-
-                    new(OpCodes.Call, Method(typeof(Shot), nameof(Shot.ProcessShot), new[] { typeof(ReferenceHub), typeof(RaycastHit), typeof(IDestructible), typeof(float).MakeByRefType(), })),
+                    new(OpCodes.Call, Method(typeof(Shot), nameof(ProcessShot), new[] { typeof(ReferenceHub), typeof(Firearm), typeof(RaycastHit), typeof(IDestructible), typeof(float).MakeByRefType(), })),
 
                     // if (!ev.CanHurt)
                     //    return;

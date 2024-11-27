@@ -73,7 +73,7 @@ public class AdvancedMERTools
             {
                 if (target.childCount == 0 || target.childCount <= int.Parse(path[i].ToString()))
                 {
-                    ServerLogs.AddLog(ServerLogs.Modules.Logger, "Advanced MER tools: Could not find appropriate child!", ServerLogs.ServerLogType.RemoteAdminActivity_Misc);
+                    ServerLogs.AddLog(ServerLogs.Modules.GameLogic, "Advanced MER tools: Could not find appropriate child!", ServerLogs.ServerLogType.RemoteAdminActivity_Misc);
                     break;
                 }
                 target = target.GetChild(int.Parse(path[i]));

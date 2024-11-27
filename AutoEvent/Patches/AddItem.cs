@@ -9,7 +9,7 @@ using System.Linq;
 
 namespace AutoEvent.Patches
 {
-    [HarmonyPatch(typeof(Player), nameof(Player.AddItem))]
+    //[HarmonyPatch(typeof(Player), nameof(Player.AddItem))]
     internal class AddItem
     {
         public static bool Prefix(Player __instance, ItemType item, ref ItemBase __result)
@@ -18,7 +18,7 @@ namespace AutoEvent.Patches
 
             if (itemBase is Firearm firearm)
             {
-                FirearmStatusFlags firearmStatusFlags = FirearmStatusFlags.MagazineInserted;
+                //FirearmStatusFlags firearmStatusFlags = FirearmStatusFlags.MagazineInserted;
 
                 if (AttachmentsServerHandler.PlayerPreferences.TryGetValue(__instance.ReferenceHub, out var preferedAllAttachmets)
                     && preferedAllAttachmets.TryGetValue(item, out var preferedAttachments))
@@ -26,12 +26,12 @@ namespace AutoEvent.Patches
                     firearm.ApplyAttachmentsCode(preferedAttachments, true);
                 }
 
-                if (firearm.Attachments.Any((Attachment a) => a.Name == AttachmentName.Flashlight))
-                {
-                    firearmStatusFlags |= FirearmStatusFlags.FlashlightEnabled;
-                }
-
-                firearm.Status = new FirearmStatus(firearm.AmmoManagerModule.MaxAmmo, firearmStatusFlags, firearm.GetCurrentAttachmentsCode());
+                // if (firearm.Attachments.Any((Attachment a) => a.Name == AttachmentName.Flashlight))
+                // {
+                //     firearmStatusFlags |= FirearmStatusFlags.FlashlightEnabled;
+                // }
+                //
+                // firearm.Status = new FirearmStatus(firearm.AmmoManagerModule.MaxAmmo, firearmStatusFlags, firearm.GetCurrentAttachmentsCode());
             }
 
             __result = itemBase;

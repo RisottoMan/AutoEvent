@@ -18,22 +18,24 @@ using PluginAPI.Core;
 
 namespace AutoEvent.Patches;
 
-[HarmonyPatch(typeof(InventorySystem.Items.Firearms.Modules.ClipLoadedInternalMagAmmoManager),nameof(InventorySystem.Items.Firearms.Modules.ClipLoadedInternalMagAmmoManager.UserAmmo),MethodType.Getter)]
+//[HarmonyPatch(typeof(RevolverClipReloaderModule),nameof(InventorySystem.Items.Firearms.Modules.RevolverClipReloaderModule.amm.UserAmmo),MethodType.Getter)]
 public class ClipLoadedInternalMagAmmoManagerPatch
 {
-    public static bool Prefix(AutomaticAmmoManager __instance, ref ushort __result)
+    public static bool Prefix(AutomaticActionModule __instance, ref ushort __result)
     {
-        Player ply = Player.Get(__instance._firearm.Owner);
+        Player ply = Player.Get(__instance.Firearm.Owner);
         if (ply is null)
         {
             return true;
         }
+        
         if (Extensions.InfiniteAmmoList is null || !Extensions.InfiniteAmmoList.ContainsKey(ply))
         {
             return true;
         }
-        __instance._firearm.Owner.inventory.ServerSetAmmo(__instance._firearm.AmmoType,  __instance._firearm.AmmoManagerModule.MaxAmmo);
-        __result = __instance._firearm.AmmoManagerModule.MaxAmmo;
+        
+        //__instance._firearm.Owner.inventory.ServerSetAmmo(__instance._firearm.AmmoType,  __instance._firearm.AmmoManagerModule.MaxAmmo);
+        //__result = __instance._firearm.AmmoManagerModule.MaxAmmo;
         return false;
     }
 }

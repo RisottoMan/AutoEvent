@@ -1,16 +1,4 @@
-﻿// <copyright file="Log.cs" company="Redforce04#4091">
-// Copyright (c) Redforce04. All rights reserved.
-// </copyright>
-// -----------------------------------------
-//    Solution:         AutoEvent
-//    Project:          AutoEvent
-//    FileName:         AmmoGetPatch.cs
-//    Author:           Redforce04#4091
-//    Revision Date:    09/19/2023 3:22 PM
-//    Created Date:     09/19/2023 3:22 PM
-// -----------------------------------------
-
-using AutoEvent.API;
+﻿using AutoEvent.API;
 using HarmonyLib;
 using InventorySystem;
 using InventorySystem.Items.Firearms;
@@ -20,24 +8,23 @@ using PluginAPI.Core;
 namespace AutoEvent.Patches;
 
 
-[HarmonyPatch(typeof(InventorySystem.Items.Firearms.Modules.DoubleAction),
-    nameof(InventorySystem.Items.Firearms.Modules.DoubleAction.ServerAuthorizeShot))]
+[HarmonyPatch(typeof(DoubleActionModule), nameof(DoubleActionModule.ServerProcessCmd))]
 public class DoubleAction
 {
     [HarmonyPostfix()]
-    public static void Postfix(InventorySystem.Items.Firearms.Modules.DoubleAction __instance)
+    public static void Postfix(DoubleActionModule __instance)
     {
-        if (__instance._firearm is null)
+        if (__instance.Firearm is null)
         {
             return;
         }
 
-        if (__instance._firearm.Footprint.Hub is null)
+        if (__instance.Firearm.Footprint.Hub is null)
         {
             return;
         }
 
-        Player ply = Player.Get(__instance._firearm.Owner);
+        Player ply = Player.Get(__instance.Firearm.Owner);
         if (ply is null)
         {
             return;
@@ -46,6 +33,6 @@ public class DoubleAction
         {
             return;
         }
-        __instance._firearm.Status = new FirearmStatus(__instance._firearm.AmmoManagerModule.MaxAmmo, __instance._firearm.Status.Flags, __instance._firearm.Status.Attachments);
+        //__instance.Firearm..Status = new FirearmStatus(__instance.Firearm..MaxAmmo, __instance.Firearm.TierFlags, __instance.Firearm.Attachments);
     }
 }

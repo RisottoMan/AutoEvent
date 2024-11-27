@@ -139,10 +139,10 @@ namespace AutoEvent.Games.GunGame
             var item = player.AddItem(gun);
             if (item is Firearm firearm)
             {
-                var status = firearm.Status;
-                byte ammo = firearm.AmmoManagerModule.MaxAmmo;
-                var stats = new FirearmStatus(ammo, status.Flags, status.Attachments);
-                firearm.Status = stats;
+                //var status = firearm.Status;
+                //byte ammo = firearm.AmmoManagerModule.MaxAmmo;
+                //var stats = new FirearmStatus(ammo, status.Flags, status.Attachments);
+                //firearm.Status = stats;
             }
             Timing.CallDelayed(.1f, () =>
             {

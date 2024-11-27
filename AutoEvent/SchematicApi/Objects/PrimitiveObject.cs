@@ -79,7 +79,7 @@
         private void UpdateTransformProperties()
         {
             _primitiveObjectToy.NetworkPosition = _transform.position;
-            _primitiveObjectToy.NetworkRotation = new LowPrecisionQuaternion(_transform.rotation);
+            _primitiveObjectToy.NetworkRotation = new LowPrecisionQuaternion(_transform.rotation).Value;
             _primitiveObjectToy.NetworkScale = _transform.root != _transform ? Vector3.Scale(_transform.localScale, _transform.root.localScale) : _transform.localScale;
         }
 
