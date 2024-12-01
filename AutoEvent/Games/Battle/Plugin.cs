@@ -21,7 +21,7 @@ namespace AutoEvent.Games.Battle
         public override string Description { get; set; } = "MTF fight against CI in an arena";
         public override string Author { get; set; } = "RisottoMan";
         public override string CommandName { get; set; } = "battle";
-        public override Version Version { get; set; } = new Version(1, 0, 0);
+        public override Version Version { get; set; } = new Version(1, 0, 1);
         public MapInfo MapInfo { get; set; } = new MapInfo()
         { 
             MapName = "Battle", 

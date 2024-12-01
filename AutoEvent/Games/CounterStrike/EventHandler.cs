@@ -1,16 +1,9 @@
 ﻿using AutoEvent.Events.EventArgs;
-using InventorySystem.Configs;
-using InventorySystem.Items;
-using MEC;
 using PlayerRoles;
-using PluginAPI.Core;
 using PluginAPI.Core.Attributes;
-using PluginAPI.Core.Items;
 using PluginAPI.Enums;
 using PluginAPI.Events;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 namespace AutoEvent.Games.CounterStrike
@@ -54,24 +47,6 @@ namespace AutoEvent.Games.CounterStrike
             }
 
             ev.IsAllowed = false;
-        }
-
-        [PluginEvent(ServerEventType.PlayerReloadWeapon)]
-        public void OnReloading(PlayerReloadWeaponEvent ev)
-        {
-            foreach (KeyValuePair<ItemType, ushort> AmmoLimit in InventoryLimits.StandardAmmoLimits)
-            {
-                ev.Player.SetAmmo(AmmoLimit.Key, AmmoLimit.Value);
-            }
-        }
-
-        [PluginEvent(ServerEventType.PlayerSpawn)]
-        public void OnSpawning(PlayerSpawnEvent ev)
-        {
-            foreach (KeyValuePair<ItemType, ushort> AmmoLimit in InventoryLimits.StandardAmmoLimits)
-            {
-                ev.Player.SetAmmo(AmmoLimit.Key, AmmoLimit.Value);
-            }
         }
 
         [PluginEvent(ServerEventType.PlayerJoined)]

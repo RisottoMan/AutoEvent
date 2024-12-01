@@ -20,7 +20,7 @@ namespace AutoEvent.Games.CounterStrike
         public override string Description { get; set; } = "Fight between terrorists and counter-terrorists";
         public override string Author { get; set; } = "RisottoMan";
         public override string CommandName { get; set; } = "cs";
-        public override Version Version { get; set; } = new Version(1, 0, 0);
+        public override Version Version { get; set; } = new Version(1, 0, 1);
         protected override FriendlyFireSettings ForceEnableFriendlyFire { get; set; } = FriendlyFireSettings.Disable;
         [EventConfig]
         public Config Config { get; set; }

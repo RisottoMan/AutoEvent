@@ -56,9 +56,6 @@ public class InfiniteAmmo : ICommand, IUsageProvider, IPermission
                     case "infinite":
                         ammo = AmmoMode.InfiniteAmmo;
                         break;
-                    case "endless":
-                        ammo = AmmoMode.EndlessClip;
-                        break;
                     case "none":
                         ammo = AmmoMode.None;
                         break;

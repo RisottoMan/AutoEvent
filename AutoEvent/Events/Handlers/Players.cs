@@ -15,7 +15,6 @@ namespace AutoEvent.Events.Handlers
         public static event Action<PlayerNoclipArgs> PlayerNoclip;
         public static event Action<SwingingJailbirdEventArgs> SwingingJailbird;
         public static event Action<ChargingJailbirdEventArgs> ChargingJailbird;
-        public static event Action<NewShotEventArgs> Shot;
         public static event Action<PickUpItemArgs> PickUpItem;
         public static event Action<SearchPickUpItemArgs> SearchPickUpItem;
         public static event Action<PlayerJumpArgs> PlayerJump;
@@ -30,7 +29,6 @@ namespace AutoEvent.Events.Handlers
         public static void OnPlayerNoclip(PlayerNoclipArgs ev) => PlayerNoclip?.Invoke(ev);
         public static void OnSwingingJailbird(SwingingJailbirdEventArgs ev) => SwingingJailbird?.Invoke(ev);
         public static void OnChargingJailbird(ChargingJailbirdEventArgs ev) => ChargingJailbird?.Invoke(ev);
-        public static void OnShot(NewShotEventArgs ev) => Shot?.Invoke(ev);
         public static void OnPickUpItem(PickUpItemArgs ev) => PickUpItem?.Invoke(ev);
         public static void OnSearchPickUpItem(SearchPickUpItemArgs ev) => SearchPickUpItem?.Invoke(ev);
         public static void OnPlayerJump(PlayerJumpArgs ev) => PlayerJump?.Invoke(ev);

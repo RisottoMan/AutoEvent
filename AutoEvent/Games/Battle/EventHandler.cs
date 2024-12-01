@@ -1,11 +1,8 @@
 ﻿using AutoEvent.Events.EventArgs;
-using InventorySystem.Configs;
 using PlayerRoles;
-using PluginAPI.Core;
 using PluginAPI.Core.Attributes;
 using PluginAPI.Enums;
 using PluginAPI.Events;
-using System.Collections.Generic;
 
 namespace AutoEvent.Games.Battle
 {
@@ -15,26 +12,6 @@ namespace AutoEvent.Games.Battle
         public void OnJoin(PlayerJoinedEvent ev)
         {
             ev.Player.SetRole(RoleTypeId.Spectator);
-        }
-
-        [PluginEvent(ServerEventType.PlayerReloadWeapon)]
-        public void OnReloading(PlayerReloadWeaponEvent ev)
-        {
-            SetMaxAmmo(ev.Player);
-        }
-
-        [PluginEvent(ServerEventType.PlayerSpawn)]
-        public void OnSpawning(PlayerSpawnEvent ev)
-        {
-            SetMaxAmmo(ev.Player);
-        }
-
-        private void SetMaxAmmo(Player pl)
-        {
-            foreach (KeyValuePair<ItemType, ushort> AmmoLimit in InventoryLimits.StandardAmmoLimits)
-            {
-                pl.SetAmmo(AmmoLimit.Key, AmmoLimit.Value);
-            }
         }
 
         public void OnTeamRespawn(TeamRespawnArgs ev) => ev.IsAllowed = false;

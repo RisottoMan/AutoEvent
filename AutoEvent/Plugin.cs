@@ -28,7 +28,7 @@ namespace AutoEvent
     public class AutoEvent : Plugin<Config>
     {
         public override Version Version => Version.Parse(PluginVersion);
-        public override Version RequiredExiledVersion => new Version(8, 14, 0);
+        public override Version RequiredExiledVersion => new Version(9, 0, 0);
         public override string Name => "AutoEvent";
         public override string Author => "Created by a large community of programmers, map builders and just ordinary people, under the leadership of RisottoMan.";
 
@@ -39,7 +39,6 @@ namespace AutoEvent
         public Config Config;
 #endif
         public const string PluginVersion = "9.10.0";
-        public const bool BetaRelease = false; // todo set beta to false before main release
         /// <summary>
         /// The location of the AutoEvent folder for schematics, music, external events and event config / translations.
         /// </summary>
@@ -55,17 +54,11 @@ namespace AutoEvent
         public override void OnEnabled()
 #else
         [PluginPriority(LoadPriority.Low)]
-        [PluginEntryPoint("AutoEvent", PluginVersion, "An event manager plugin that allows you to run mini-games.", "KoT0XleB and Redforce04")]
+        [PluginEntryPoint("AutoEvent", PluginVersion, "Created by a large community of programmers, map builders and just ordinary people, under the leadership of RisottoMan", "RisottoMan and Redforce04")]
         void OnEnabled()
 #endif
         {
             if (!Config.IsEnabled) return;
-            if (BetaRelease)
-            {
-                Log.Warning("Warning: This release of AutoEvent is a Beta-Release." +
-                            " If you encounter any bugs, please reach out to Redforce04 (redforce04) or KoT0XleB (spagettimen) via discord." +
-                            " Alternatively, make an issue on our github (https://github.com/KoT0XleB/AutoEvent/). Have fun!");
-            }
 
             // Call Costura first just to ensure dependencies are loaded.
             // Also make sure there isn't anything that needs a dependency in this method.
@@ -87,16 +80,6 @@ namespace AutoEvent
                 Singleton = this;
                 MER.Lite.API.Initialize(AutoEvent.Singleton.Config.SchematicsDirectoryPath, Config.Debug);
                 SCPSLAudioApi.Startup.SetupDependencies();
-
-#if EXILED
-                Exiled.Events.Handlers.Player.Shot += (Exiled.Events.EventArgs.Player.ShotEventArgs ev) =>
-                {
-                    var args = new NewShotEventArgs(Player.Get(ev.Player.ReferenceHub), ev.RaycastHit, ev.Hitbox, ev.Damage);
-                    global::AutoEvent.Events.Handlers.Players.OnShot(args);
-                    ev.Damage = args.Damage;
-                    ev.CanHurt = args.CanHurt;
-                };
-#endif
                 
                 if (Config.IgnoredRoles.Contains(Config.LobbyRole))
                 {

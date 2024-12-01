@@ -48,7 +48,6 @@ public class Plugin : Event, IEventMap, IInternalEvent
         Servers.PlaceBlood += _eventHandler.OnPlaceBlood;
         Players.DropItem += _eventHandler.OnDropItem;
         Players.DropAmmo += _eventHandler.OnDropAmmo;
-        Players.Shot += _eventHandler.OnShot;
         EventManager.RegisterEvents(_eventHandler);
     }
 
@@ -61,7 +60,6 @@ public class Plugin : Event, IEventMap, IInternalEvent
         Servers.PlaceBlood -= _eventHandler.OnPlaceBlood;
         Players.DropItem -= _eventHandler.OnDropItem;
         Players.DropAmmo -= _eventHandler.OnDropAmmo;
-        Players.Shot -= _eventHandler.OnShot;
         _eventHandler = null;
     }
 

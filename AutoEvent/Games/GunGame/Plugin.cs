@@ -91,7 +91,6 @@ public class Plugin : Event, IEventSound, IEventMap, IInternalEvent
             }
 
             player.ClearInventory();
-            //Extensions.SetRole(player, GunGameRandom.GetRandomRole(), RoleSpawnFlags.None);
             player.GiveLoadout(Config.Loadouts, LoadoutFlags.IgnoreWeapons | LoadoutFlags.IgnoreGodMode);
             player.Position = SpawnPoints.RandomItem();
 
@@ -173,10 +172,18 @@ public class Plugin : Event, IEventSound, IEventMap, IInternalEvent
     {
         if (_winner != null)
         {
-            Extensions.Broadcast(
-                Translation.Winner.Replace("{name}", Name).Replace("{winner}", _winner.Nickname), 10);
+            string text = Translation.Winner.
+                Replace("{name}", Name).
+                Replace("{winner}", _winner.Nickname);
+            Extensions.Broadcast(text, 10);
         }
-
+        else
+        {
+            string text = Translation.Winner.
+                Replace("{name}", Name).
+                Replace("{winner}", Player.GetPlayers().First(r => r.IsAlive).Nickname);
+            Extensions.Broadcast(text, 10);
+        }
         foreach (var player in Player.GetPlayers())
         {
             player.ClearInventory();

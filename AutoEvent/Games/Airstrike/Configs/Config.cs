@@ -36,10 +36,3 @@ public class Config : EventConfig
     [Description("If enabled the minigame will end when there is only one player left. Otherwise it will end when everyone dies, or the rounds (configurable) are over.")] 
     public bool LastPlayerAliveWins { get; set; } = true;
 }
-
-public enum Filter
-{
-    Linear,
-    //Quadratic,
-    //Exponential,
-}

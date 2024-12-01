@@ -51,6 +51,7 @@ namespace AutoEvent.Games.AllDeathmatch
             Servers.PlaceBlood += _eventHandler.OnPlaceBlood;
             Players.DropAmmo += _eventHandler.OnDropAmmo;
             Players.PlayerDying += _eventHandler.OnPlayerDying;
+            Players.HandCuff += _eventHandler.OnHandCuff;
         }
         protected override void UnregisterEvents()
         {
@@ -61,6 +62,7 @@ namespace AutoEvent.Games.AllDeathmatch
             Servers.PlaceBlood -= _eventHandler.OnPlaceBlood;
             Players.DropAmmo -= _eventHandler.OnDropAmmo;
             Players.PlayerDying -= _eventHandler.OnPlayerDying;
+            Players.HandCuff -= _eventHandler.OnHandCuff;
 
             _eventHandler = null;
         }

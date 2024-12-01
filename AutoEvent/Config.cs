@@ -37,17 +37,8 @@ namespace AutoEvent
         public bool Debug { get; set; } = false;
         
         [Description("Enables / Disables Auto-Logging to a debug output file. Enabled by default on debug releases.")]
-        public bool AutoLogDebug { get; set; } = AutoEvent.BetaRelease;
+        public bool AutoLogDebug { get; set; } = false;
         
-#if !EXILED
-        [Description("A list of admins who can run mini-games. Specify the GroupName from the config_remoteadmin")]
-        public List<string> PermissionList { get; set; } = new List<string>()
-        {
-            "owner",
-            "admin",
-            "moderator"
-        };
-#endif
         [Description("The global volume of plugins (0 - 200, 100 is normal)")]
         public float Volume { get; set; } = 100;
 
@@ -79,10 +70,8 @@ namespace AutoEvent
         
         [Description("Where the music directory is located. By default it is located in the AutoEvent folder.")]
         public string MusicDirectoryPath { get; set; }
-        [Description("Is it necessary to leave a stupid text when starting the server?")]
-        public bool IsStartupText { get; set; } = true;
-        [Description("It is used for automatic downloading of translations. [Default: EN]")]
+        
+        [Description("Just shows the country of translation. [Default: EN]")]
         public string Language { get; set; } = "EN";
-
     }
 }

@@ -16,14 +16,11 @@ using System.Reflection;
 using AutoEvent.API;
 using AutoEvent.API.Enums;
 using AutoEvent.Events.EventArgs;
-using CustomPlayerEffects;
 using Footprinting;
 using InventorySystem.Configs;
 using InventorySystem.Items.ThrowableProjectiles;
 using InventorySystem.Items;
 using InventorySystem.Items.Jailbird;
-using InventorySystem.Items.Keycards;
-using InventorySystem.Items.Usables.Scp244.Hypothermia;
 using JetBrains.Annotations;
 using PlayerRoles.Ragdolls;
 using Item = PluginAPI.Core.Items.Item;
@@ -198,7 +195,7 @@ namespace AutoEvent
 
             if ((loadout.InfiniteAmmo != AmmoMode.None && !flags.HasFlag(LoadoutFlags.IgnoreInfiniteAmmo)) || flags.HasFlag(LoadoutFlags.ForceInfiniteAmmo) || flags.HasFlag(LoadoutFlags.ForceEndlessClip))
             {
-                player.GiveInfiniteAmmo(loadout.InfiniteAmmo == AmmoMode.EndlessClip || flags.HasFlag(LoadoutFlags.ForceEndlessClip) ? AmmoMode.EndlessClip : AmmoMode.InfiniteAmmo);
+                player.GiveInfiniteAmmo(AmmoMode.InfiniteAmmo);
             }
             if(loadout.Health != 0 && !flags.HasFlag(LoadoutFlags.IgnoreHealth))
                 player.Health = loadout.Health;
@@ -268,7 +265,13 @@ namespace AutoEvent
                 or ItemType.GunE11SR   or ItemType.GunFSP9     or ItemType.GunFRMG0    
                 or ItemType.Jailbird   or ItemType.MicroHID    or ItemType.ParticleDisruptor  
                 or ItemType.GrenadeHE  or ItemType.SCP018; // Dont add weapons
-        
+
+        public static bool IsAmmo(this ItemType item) => item
+            is ItemType.Ammo9x19    or 
+               ItemType.Ammo12gauge or 
+               ItemType.Ammo44cal   or 
+               ItemType.Ammo556x45  or 
+               ItemType.Ammo762x39;
         
         public static void SetPlayerAhp(this Player player, float amount, float limit = 75, float decay = 1.2f,
             float efficacy = 0.7f, float sustain = 0, bool persistant = false)
@@ -280,45 +283,12 @@ namespace AutoEvent
         }
 
         public static Dictionary<ushort, bool> ExplodeOnCollisionList = new Dictionary<ushort, bool>();
-        //public static Dictionary<ushort, RockSettings> RockList = new Dictionary<ushort,RockSettings>();
-
-
-        //public static void MakeRock(this Item rock, RockSettings settings) => MakeRock(rock.Serial, settings);
-        //public static void MakeRock(this ItemBase rock, RockSettings settings) => MakeRock(rock.ItemSerial, settings);
-        /*
-        public static void MakeRock(ushort serial, RockSettings settings)
-        {
-            RockList.Add(serial, settings);
-        }*/
 
         public static void ExplodeOnCollision(this Item grenade, bool giveNewGrenadeOnExplosion = false) => ExplodeOnCollision(grenade.Serial, giveNewGrenadeOnExplosion);
         public static void ExplodeOnCollision(this ItemBase grenade, bool giveNewGrenadeOnExplosion = false) => ExplodeOnCollision(grenade.ItemSerial, giveNewGrenadeOnExplosion);
         public static void ExplodeOnCollision(this ushort item, bool giveNewGrenadeOnExplosion = false)
         {
             ExplodeOnCollisionList.Add(item, giveNewGrenadeOnExplosion);
-        }
-        
-        public static ThrowableItem CreateThrowable(ItemType type, Player player = null) => (player != null ? player.ReferenceHub : ReferenceHub.HostHub)
-            .inventory.CreateItemInstance(new ItemIdentifier(type, ItemSerialGenerator.GenerateNext()), false) as ThrowableItem;
-        public static ThrownProjectile SpawnThrowable(
-            this ThrowableItem item,
-            Vector3 position,
-            float fuseTime = -1f,
-            Player owner = null,
-            bool activate = false
-        )
-        {
-            TimeGrenade grenade = (TimeGrenade) Object.Instantiate(item.Projectile, position, Quaternion.identity);
-            if (fuseTime >= 0)
-                grenade._fuseTime = fuseTime;
-            grenade.NetworkInfo = new PickupSyncInfo(item.ItemTypeId, item.Weight, item.ItemSerial);
-            grenade.PreviousOwner = new Footprint(owner != null ? owner.ReferenceHub : ReferenceHub.HostHub);
-            if (grenade is Scp018Projectile scp018)
-                scp018.GetComponent<Rigidbody>().velocity = activate ? new Vector3(Random.value, Random.value, Random.value) : Vector3.zero; // add some force to make the ball bounce
-            NetworkServer.Spawn(grenade.gameObject);
-            if(activate)
-                grenade.ServerActivate();
-            return grenade;
         }
         
         public static Dictionary<Player, AmmoMode> InfiniteAmmoList = new Dictionary<Player, AmmoMode>();
@@ -340,9 +310,10 @@ namespace AutoEvent
             {
                 InfiniteAmmoList.Add(player, ammoMode);
             }
-            foreach (KeyValuePair<ItemType, ushort> AmmoLimit in InventoryLimits.StandardAmmoLimits)
+            
+            foreach (var ammoLimit in  InventoryLimits.Config.AmmoLimitsSync)
             {
-                player.SetAmmo(AmmoLimit.Key, AmmoLimit.Value);
+                player.SetAmmo(ammoLimit.AmmoType, ammoLimit.Limit);
             }
         }
         public static void GiveEffect(this Player ply, Effect effect) => GiveEffect(ply, effect.EffectType, effect.Intensity,

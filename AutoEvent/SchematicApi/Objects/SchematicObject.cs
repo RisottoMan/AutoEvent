@@ -1,4 +1,9 @@
-﻿namespace MER.Lite.Objects
+﻿using InventorySystem;
+using InventorySystem.Items;
+using InventorySystem.Items.Firearms;
+using InventorySystem.Items.Pickups;
+
+namespace MER.Lite.Objects
 {
     using System;
     using System.Collections.Generic;
@@ -232,7 +237,7 @@
 
             GameObject gameObject = null;
             RuntimeAnimatorController animatorController;
-
+            
             switch (block.BlockType)
             {
                 case BlockType.Empty:
@@ -244,6 +249,7 @@
                             parent = parentTransform,
                             localPosition = block.Position,
                             localEulerAngles = block.Rotation,
+                            localScale = Vector3.one
                         },
                     };
 
@@ -276,7 +282,7 @@
                 case BlockType.Pickup:
                 {
                     ItemPickup pickup = null;
-
+                    
                     if (block.Properties.TryGetValue("Chance", out object property) && Random.Range(0, 101) > float.Parse(property.ToString()))
                     {
                         gameObject = new("Empty Pickup")
@@ -285,18 +291,37 @@
                         };
                         break;
                     }
-
+                    
                     if (block.Properties.TryGetValue("CustomItem", out property) && !string.IsNullOrEmpty(property.ToString()))
                     {
                         string customItemName = property.ToString();
                     }
                     else
                     {
-                        var itemType = ((ItemType)Enum.Parse(typeof(ItemType), block.Properties["ItemType"].ToString()));
-                        pickup = ItemPickup.Create(itemType, new Vector3(0, 0, 0), Quaternion.identity);
+                        var itemtype = ((ItemType)Enum.Parse(typeof(ItemType), block.Properties["ItemType"].ToString()));
+                        // <<< An error occurred when creating the pickup. Maybe will fix it
+                        //pickup = ItemPickup.Create(itemtype, Vector3.zero, Quaternion.identity); // bug
+                        // >>>
+                        if (!InventoryItemLoader.AvailableItems.TryGetValue(itemtype, out ItemBase itemBase))
+                        {
+                            pickup = (ItemPickup) null;
+                            break;
+                        }
+                        else
+                        {
+                            PickupSyncInfo pickupSyncInfo = new PickupSyncInfo()
+                            {
+                                ItemId = itemtype,
+                                Serial = ItemSerialGenerator.GenerateNext(),
+                                WeightKg = itemBase.Weight
+                            };
+                            ItemPickupBase itemPickupBase = InventoryExtensions.ServerCreatePickup(itemBase, pickupSyncInfo, Vector3.zero, Quaternion.identity, false, null);
+                            pickup = new ItemPickup(itemPickupBase);
+                        }
+                        // >>>
                         pickup.GameObject.AddComponent<PickupComponent>();
                     }
-
+                    
                     gameObject = pickup.GameObject;
                     gameObject.name = block.Name;
 
@@ -306,8 +331,8 @@
                     gameObject.transform.localPosition = block.Position;
                     gameObject.transform.localEulerAngles = block.Rotation;
                     gameObject.transform.localScale = block.Scale;
-
                     NetworkServer.Spawn(gameObject);
+                    
                     break;
                 }
 
@@ -367,7 +392,7 @@
                     break;
                 }
             }
-
+            
             AttachedBlocks.Add(gameObject);
             ObjectFromId.Add(block.ObjectId, gameObject.transform);
 

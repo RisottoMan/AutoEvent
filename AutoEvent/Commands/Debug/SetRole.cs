@@ -109,9 +109,6 @@ public class SetRole : ICommand, IUsageProvider, IPermission
                     case 3:
                         switch (arguments.At(i).ToLower())
                         {
-                            case "endless":
-                                loadout.InfiniteAmmo = AmmoMode.EndlessClip;
-                                break;
                             case "infinite":
                                 loadout.InfiniteAmmo = AmmoMode.InfiniteAmmo;
                                 break;
