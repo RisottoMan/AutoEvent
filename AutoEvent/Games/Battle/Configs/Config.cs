@@ -17,7 +17,8 @@ public class Config : EventConfig
             {
                 ItemType.GunE11SR, ItemType.Medkit, ItemType.Medkit,
                 ItemType.ArmorCombat, ItemType.SCP1853, ItemType.Adrenaline,
-            }
+            },
+            InfiniteAmmo = AmmoMode.InfiniteAmmo
         },
         new Loadout()
         {
@@ -28,7 +29,8 @@ public class Config : EventConfig
                 ItemType.GunShotgun, ItemType.Medkit, ItemType.Medkit,
                 ItemType.Medkit, ItemType.Medkit, ItemType.Medkit,
                 ItemType.ArmorCombat, ItemType.SCP500,
-            }
+            },
+            InfiniteAmmo = AmmoMode.InfiniteAmmo
         },
         new Loadout()
         {
@@ -38,7 +40,8 @@ public class Config : EventConfig
             {
                 ItemType.GunLogicer, ItemType.ArmorHeavy, ItemType.SCP500,
                 ItemType.SCP500, ItemType.SCP1853, ItemType.Medkit,
-            }
+            },
+            InfiniteAmmo = AmmoMode.InfiniteAmmo
         }
     };
 }

@@ -10,6 +10,9 @@
    - Ensure that the directory defined has proper read/write permissions, and is actually a valid directory. 
      - In pterodactyl the config must be in the `/home/container/` directory. 
 ----
+ >  'ev list' command doesnt work OR there are strange characters in the console OR no color in the console
+ - You need to download this fix. [(CommandSanitizationFixes)](https://github.com/Jesus-QC/CommandSanitizationFixes)
+----
  >  You do not have permission to use this command
  - You didn't grant the rights for the role. [(Look at the point "2. Permission")](https://github.com/KoT0XleB/AutoEvent-Exiled/blob/main/Docs/Installation.md)
 ----

@@ -44,18 +44,6 @@ namespace AutoEvent.Games.GunGame
             GetWeaponForPlayer(ev.Player);
         }
 
-        [PluginEvent(ServerEventType.PlayerReloadWeapon)]
-        public void OnReloading(PlayerReloadWeaponEvent ev)
-        {
-            SetMaxAmmo(ev.Player);
-        }
-
-        [PluginEvent(ServerEventType.PlayerSpawn)]
-        public void OnSpawning(PlayerSpawnEvent ev)
-        {
-            SetMaxAmmo(ev.Player);
-        }
-
         public void OnPlayerDying(PlayerDyingArgs ev)
         {
             ev.IsAllowed = false;
@@ -139,10 +127,10 @@ namespace AutoEvent.Games.GunGame
             var item = player.AddItem(gun);
             if (item is Firearm firearm)
             {
-                var status = firearm.Status;
-                byte ammo = firearm.AmmoManagerModule.MaxAmmo;
-                var stats = new FirearmStatus(ammo, status.Flags, status.Attachments);
-                firearm.Status = stats;
+                //var status = firearm.Status;
+                //byte ammo = firearm.AmmoManagerModule.MaxAmmo;
+                //var stats = new FirearmStatus(ammo, status.Flags, status.Attachments);
+                //firearm.Status = stats;
             }
             Timing.CallDelayed(.1f, () =>
             {
@@ -151,16 +139,6 @@ namespace AutoEvent.Games.GunGame
                     player.CurrentItem = item;
                 }
             });
-        }
-
-        private void SetMaxAmmo(Player pl)
-        {
-            DebugLogger.LogDebug($"Setting max ammo for {pl.Nickname}.");
-
-            foreach (KeyValuePair<ItemType, ushort> AmmoLimit in InventoryLimits.StandardAmmoLimits)
-            {
-                pl.SetAmmo(AmmoLimit.Key, AmmoLimit.Value);
-            }
         }
 
         public void OnTeamRespawn(TeamRespawnArgs ev) => ev.IsAllowed = false;

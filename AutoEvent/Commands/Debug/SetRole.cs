@@ -27,10 +27,14 @@ using UnityEngine;
 using Utils.NonAllocLINQ;
 
 namespace AutoEvent.Commands.Debug;
-
 public class SetRole : ICommand, IUsageProvider, IPermission
 {
-public string Permission { get; set; } = "ev.debug";
+    public string Command { get; } = "SetRole";
+    public string[] Aliases { get; } = Array.Empty<string>();
+    public string Description { get; } = "Gives a user an impact grenade.";
+    public string[] Usage { get; } = new[] { "%player%", "[frag / flash / ball]" };
+    public string Permission { get; set; } = "ev.debug";
+    public bool SanitizeResponse => false;
     public bool Execute(ArraySegment<string> arguments, ICommandSender sender, [UnscopedRef] out string response)
     {
         if (!sender.CheckPermission(((IPermission)this).Permission, out bool IsConsoleCommandSender))
@@ -105,9 +109,6 @@ public string Permission { get; set; } = "ev.debug";
                     case 3:
                         switch (arguments.At(i).ToLower())
                         {
-                            case "endless":
-                                loadout.InfiniteAmmo = AmmoMode.EndlessClip;
-                                break;
                             case "infinite":
                                 loadout.InfiniteAmmo = AmmoMode.InfiniteAmmo;
                                 break;
@@ -206,9 +207,4 @@ public string Permission { get; set; } = "ev.debug";
         response = "Please specify a player.";
         return false;
     }
-
-    public string Command { get; } = "SetRole";
-    public string[] Aliases { get; } = Array.Empty<string>();
-    public string Description { get; } = "Gives a user an impact grenade.";
-    public string[] Usage { get; } = new[] { "%player%", "[frag / flash / ball]" };
 }

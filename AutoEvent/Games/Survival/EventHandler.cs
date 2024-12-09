@@ -98,26 +98,6 @@ namespace AutoEvent.Games.Survival
             }
         }
 
-        [PluginEvent(ServerEventType.PlayerReloadWeapon)]
-        public void OnReloading(PlayerReloadWeaponEvent ev)
-        {
-            SetMaxAmmo(ev.Player);
-        }
-
-        [PluginEvent(ServerEventType.PlayerSpawn)]
-        public void OnSpawning(PlayerSpawnEvent ev)
-        {
-            SetMaxAmmo(ev.Player);
-        }
-
-        private void SetMaxAmmo(Player pl)
-        {
-            foreach (KeyValuePair<ItemType, ushort> AmmoLimit in InventoryLimits.StandardAmmoLimits)
-            {
-                pl.SetAmmo(AmmoLimit.Key, AmmoLimit.Value);
-            }
-        }
-
         public void OnTeamRespawn(TeamRespawnArgs ev) => ev.IsAllowed = false;
         public void OnSpawnRagdoll(SpawnRagdollArgs ev) => ev.IsAllowed = false;
         public void OnPlaceBullet(PlaceBulletArgs ev) => ev.IsAllowed = false;

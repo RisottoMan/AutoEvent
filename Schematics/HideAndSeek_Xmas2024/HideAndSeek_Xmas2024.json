@@ -1,10 +1,10 @@
 {
-  "RootObjectId": -53818,
+  "RootObjectId": 297506,
   "Blocks": [
     {
       "Name": "Point Light",
-      "ObjectId": -53824,
-      "ParentId": -53818,
+      "ObjectId": 297512,
+      "ParentId": 297506,
       "Position": {
         "x": 0.21,
         "y": 18.74,
@@ -20,8 +20,8 @@
     },
     {
       "Name": "Point Light",
-      "ObjectId": -53830,
-      "ParentId": -53818,
+      "ObjectId": 297518,
+      "ParentId": 297506,
       "Position": {
         "x": 14.56,
         "y": 18.74,
@@ -37,8 +37,8 @@
     },
     {
       "Name": "Point Light",
-      "ObjectId": -53836,
-      "ParentId": -53818,
+      "ObjectId": 297524,
+      "ParentId": 297506,
       "Position": {
         "x": -15.79,
         "y": 18.74,
@@ -54,8 +54,8 @@
     },
     {
       "Name": "Point Light",
-      "ObjectId": -53842,
-      "ParentId": -53818,
+      "ObjectId": 297530,
+      "ParentId": 297506,
       "Position": {
         "x": -15.79,
         "y": 18.74,
@@ -71,8 +71,8 @@
     },
     {
       "Name": "Point Light",
-      "ObjectId": -53848,
-      "ParentId": -53818,
+      "ObjectId": 297536,
+      "ParentId": 297506,
       "Position": {
         "x": 12.0,
         "y": 18.74,
@@ -88,8 +88,8 @@
     },
     {
       "Name": "Spawnpoint",
-      "ObjectId": -53854,
-      "ParentId": -53818,
+      "ObjectId": 297542,
+      "ParentId": 297506,
       "Position": {
         "x": 4.83833361,
         "y": 0.876,
@@ -101,20 +101,21 @@
         "z": 0.0
       },
       "Scale": {
-        "x": -0.01,
-        "y": -0.01,
-        "z": -0.01
+        "x": 0.01,
+        "y": 0.01,
+        "z": 0.01
       },
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "00000000"
+        "Color": "00000000",
+        "PrimitiveFlags": 0
       }
     },
     {
       "Name": "Spawnpoint",
-      "ObjectId": -53866,
-      "ParentId": -53818,
+      "ObjectId": 297552,
+      "ParentId": 297506,
       "Position": {
         "x": 18.471,
         "y": 1.09,
@@ -126,20 +127,21 @@
         "z": 0.0
       },
       "Scale": {
-        "x": -0.01,
-        "y": -0.01,
-        "z": -0.01
+        "x": 0.01,
+        "y": 0.01,
+        "z": 0.01
       },
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "00000000"
+        "Color": "00000000",
+        "PrimitiveFlags": 0
       }
     },
     {
       "Name": "Spawnpoint",
-      "ObjectId": -53878,
-      "ParentId": -53818,
+      "ObjectId": 297562,
+      "ParentId": 297506,
       "Position": {
         "x": -11.21,
         "y": 3.53,
@@ -151,20 +153,21 @@
         "z": 0.0
       },
       "Scale": {
-        "x": -0.01,
-        "y": -0.01,
-        "z": -0.01
+        "x": 0.01,
+        "y": 0.01,
+        "z": 0.01
       },
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "00000000"
+        "Color": "00000000",
+        "PrimitiveFlags": 0
       }
     },
     {
       "Name": "Spawnpoint",
-      "ObjectId": -53890,
-      "ParentId": -53818,
+      "ObjectId": 297572,
+      "ParentId": 297506,
       "Position": {
         "x": -8.22,
         "y": -0.007,
@@ -176,20 +179,21 @@
         "z": 0.0
       },
       "Scale": {
-        "x": -0.01,
-        "y": -0.01,
-        "z": -0.01
+        "x": 0.01,
+        "y": 0.01,
+        "z": 0.01
       },
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "00000000"
+        "Color": "00000000",
+        "PrimitiveFlags": 0
       }
     },
     {
       "Name": "Cylinder",
-      "ObjectId": -53902,
-      "ParentId": -53818,
+      "ObjectId": 297582,
+      "ParentId": 297506,
       "Position": {
         "x": -11.0950012,
         "y": -0.710000038,
@@ -208,13 +212,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 2,
-        "Color": "00FFF4FF"
+        "Color": "00FFF4FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube",
-      "ObjectId": -53914,
-      "ParentId": -53818,
+      "ObjectId": 297592,
+      "ParentId": 297506,
       "Position": {
         "x": -1.04000092,
         "y": 3.41000032,
@@ -233,13 +238,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "008EFFC8"
+        "Color": "008EFFC8",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube",
-      "ObjectId": -53926,
-      "ParentId": -53818,
+      "ObjectId": 297602,
+      "ParentId": 297506,
       "Position": {
         "x": 8.175,
         "y": 4.26000071,
@@ -258,13 +264,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "9A9999FF"
+        "Color": "9A9999FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube",
-      "ObjectId": -53938,
-      "ParentId": -53818,
+      "ObjectId": 297612,
+      "ParentId": 297506,
       "Position": {
         "x": 11.025,
         "y": 3.197,
@@ -283,13 +290,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "00FF77FF"
+        "Color": "00FF77FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube",
-      "ObjectId": -53950,
-      "ParentId": -53818,
+      "ObjectId": 297622,
+      "ParentId": 297506,
       "Position": {
         "x": 17.62,
         "y": 5.025,
@@ -308,13 +316,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "9A9999FF"
+        "Color": "9A9999FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube",
-      "ObjectId": -53962,
-      "ParentId": -53818,
+      "ObjectId": 297632,
+      "ParentId": 297506,
       "Position": {
         "x": 18.465,
         "y": 6.16499949,
@@ -333,13 +342,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "B4C2C5C8"
+        "Color": "B4C2C5C8",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube",
-      "ObjectId": -53974,
-      "ParentId": -53818,
+      "ObjectId": 297642,
+      "ParentId": 297506,
       "Position": {
         "x": 17.795,
         "y": 5.62999964,
@@ -358,13 +368,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "B4C2C5FF"
+        "Color": "B4C2C5FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube",
-      "ObjectId": -53986,
-      "ParentId": -53818,
+      "ObjectId": 297652,
+      "ParentId": 297506,
       "Position": {
         "x": 13.72,
         "y": 3.50499964,
@@ -383,13 +394,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "9A9999FF"
+        "Color": "9A9999FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube",
-      "ObjectId": -53998,
-      "ParentId": -53818,
+      "ObjectId": 297662,
+      "ParentId": 297506,
       "Position": {
         "x": 15.99,
         "y": 3.50499964,
@@ -408,13 +420,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "9A9999FF"
+        "Color": "9A9999FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube",
-      "ObjectId": -54010,
-      "ParentId": -53818,
+      "ObjectId": 297672,
+      "ParentId": 297506,
       "Position": {
         "x": 1.18000031,
         "y": 3.41000032,
@@ -433,13 +446,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "B4C2C5FF"
+        "Color": "B4C2C5FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube",
-      "ObjectId": -54022,
-      "ParentId": -53818,
+      "ObjectId": 297682,
+      "ParentId": 297506,
       "Position": {
         "x": 6.72999954,
         "y": 3.41000032,
@@ -458,13 +472,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "B4C2C5FF"
+        "Color": "B4C2C5FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube",
-      "ObjectId": -54034,
-      "ParentId": -53818,
+      "ObjectId": 297692,
+      "ParentId": 297506,
       "Position": {
         "x": 10.68,
         "y": 3.42499971,
@@ -483,13 +498,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "00FF77FF"
+        "Color": "00FF77FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube",
-      "ObjectId": -54046,
-      "ParentId": -53818,
+      "ObjectId": 297702,
+      "ParentId": 297506,
       "Position": {
         "x": -2.79999924,
         "y": 3.42499971,
@@ -508,13 +524,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "0086FFFF"
+        "Color": "0086FFFF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube",
-      "ObjectId": -54058,
-      "ParentId": -53818,
+      "ObjectId": 297712,
+      "ParentId": 297506,
       "Position": {
         "x": -8.83,
         "y": 4.56,
@@ -533,13 +550,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "B4C2C5FF"
+        "Color": "B4C2C5FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube",
-      "ObjectId": -54070,
-      "ParentId": -53818,
+      "ObjectId": 297722,
+      "ParentId": 297506,
       "Position": {
         "x": 3.44999981,
         "y": 6.325,
@@ -558,13 +576,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "9A9999FF"
+        "Color": "9A9999FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube",
-      "ObjectId": -54082,
-      "ParentId": -53818,
+      "ObjectId": 297732,
+      "ParentId": 297506,
       "Position": {
         "x": -18.663,
         "y": 5.8255,
@@ -583,13 +602,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "0086FFFF"
+        "Color": "0086FFFF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube",
-      "ObjectId": -54094,
-      "ParentId": -53818,
+      "ObjectId": 297742,
+      "ParentId": 297506,
       "Position": {
         "x": -16.765,
         "y": 5.816,
@@ -608,13 +628,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "0086FFFF"
+        "Color": "0086FFFF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube",
-      "ObjectId": -54106,
-      "ParentId": -53818,
+      "ObjectId": 297752,
+      "ParentId": 297506,
       "Position": {
         "x": -18.653,
         "y": 4.855,
@@ -633,13 +654,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "0086FFFF"
+        "Color": "0086FFFF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube",
-      "ObjectId": -54118,
-      "ParentId": -53818,
+      "ObjectId": 297762,
+      "ParentId": 297506,
       "Position": {
         "x": -19.5300026,
         "y": 2.90500021,
@@ -658,13 +680,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "B4C2C5FF"
+        "Color": "B4C2C5FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube",
-      "ObjectId": -54130,
-      "ParentId": -53818,
+      "ObjectId": 297772,
+      "ParentId": 297506,
       "Position": {
         "x": -20.29,
         "y": 0.707,
@@ -683,13 +706,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "B4C2C5FF"
+        "Color": "B4C2C5FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube",
-      "ObjectId": -54142,
-      "ParentId": -53818,
+      "ObjectId": 297782,
+      "ParentId": 297506,
       "Position": {
         "x": -19.2550011,
         "y": 0.7189,
@@ -708,13 +732,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "B4C2C5FF"
+        "Color": "B4C2C5FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube",
-      "ObjectId": -54154,
-      "ParentId": -53818,
+      "ObjectId": 297792,
+      "ParentId": 297506,
       "Position": {
         "x": -20.52,
         "y": 3.03999949,
@@ -733,13 +758,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FFFFFFFF"
+        "Color": "FFFFFFFF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube",
-      "ObjectId": -54166,
-      "ParentId": -53818,
+      "ObjectId": 297802,
+      "ParentId": 297506,
       "Position": {
         "x": -18.21,
         "y": 3.4455,
@@ -758,13 +784,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "B4C2C5FF"
+        "Color": "B4C2C5FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube",
-      "ObjectId": -54178,
-      "ParentId": -53818,
+      "ObjectId": 297812,
+      "ParentId": 297506,
       "Position": {
         "x": -19.5649986,
         "y": 1.329,
@@ -783,13 +810,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "B4C2C5FF"
+        "Color": "B4C2C5FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube",
-      "ObjectId": -54190,
-      "ParentId": -53818,
+      "ObjectId": 297822,
+      "ParentId": 297506,
       "Position": {
         "x": -17.79,
         "y": 0.759999752,
@@ -808,13 +836,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "B4C2C5FF"
+        "Color": "B4C2C5FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube",
-      "ObjectId": -54202,
-      "ParentId": -53818,
+      "ObjectId": 297832,
+      "ParentId": 297506,
       "Position": {
         "x": -1.75499916,
         "y": 5.726,
@@ -833,13 +862,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "0086FFFF"
+        "Color": "0086FFFF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube",
-      "ObjectId": -54214,
-      "ParentId": -53818,
+      "ObjectId": 297842,
+      "ParentId": 297506,
       "Position": {
         "x": -10.9049988,
         "y": -0.07499981,
@@ -858,13 +888,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "0B00FFFF"
+        "Color": "0B00FFFF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube",
-      "ObjectId": -54226,
-      "ParentId": -53818,
+      "ObjectId": 297852,
+      "ParentId": 297506,
       "Position": {
         "x": 11.98,
         "y": -1.0250001,
@@ -883,13 +914,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "28F5FFFF"
+        "Color": "28F5FFFF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube",
-      "ObjectId": -54238,
-      "ParentId": -53818,
+      "ObjectId": 297862,
+      "ParentId": 297506,
       "Position": {
         "x": 13.635,
         "y": -1.0250001,
@@ -908,13 +940,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "28F5FFFF"
+        "Color": "28F5FFFF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube",
-      "ObjectId": -54250,
-      "ParentId": -53818,
+      "ObjectId": 297872,
+      "ParentId": 297506,
       "Position": {
         "x": 16.09,
         "y": -1.0250001,
@@ -933,13 +966,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "28F5FFFF"
+        "Color": "28F5FFFF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube",
-      "ObjectId": -54262,
-      "ParentId": -53818,
+      "ObjectId": 297882,
+      "ParentId": 297506,
       "Position": {
         "x": 20.66,
         "y": -0.514999866,
@@ -958,13 +992,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "0086FFFF"
+        "Color": "0086FFFF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube",
-      "ObjectId": -54274,
-      "ParentId": -53818,
+      "ObjectId": 297892,
+      "ParentId": 297506,
       "Position": {
         "x": -10.5750008,
         "y": -0.379,
@@ -983,13 +1018,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "0086FFFF"
+        "Color": "0086FFFF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube",
-      "ObjectId": -54286,
-      "ParentId": -53818,
+      "ObjectId": 297902,
+      "ParentId": 297506,
       "Position": {
         "x": -7.825001,
         "y": -0.8249998,
@@ -1008,13 +1044,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FFFFFFFF"
+        "Color": "FFFFFFFF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube",
-      "ObjectId": -54298,
-      "ParentId": -53818,
+      "ObjectId": 297912,
+      "ParentId": 297506,
       "Position": {
         "x": -1.76000023,
         "y": -0.5500002,
@@ -1033,13 +1070,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "FFFFFFFF"
+        "Color": "FFFFFFFF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Quad",
-      "ObjectId": -54310,
-      "ParentId": -53818,
+      "ObjectId": 297922,
+      "ParentId": 297506,
       "Position": {
         "x": -0.333,
         "y": -1.85,
@@ -1058,13 +1096,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 5,
-        "Color": "CBE2FFFF"
+        "Color": "CBE2FFFF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Quad",
-      "ObjectId": -54322,
-      "ParentId": -53818,
+      "ObjectId": 297932,
+      "ParentId": 297506,
       "Position": {
         "x": -0.405,
         "y": 10.3,
@@ -1083,13 +1122,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 5,
-        "Color": "13CFCFFF"
+        "Color": "13CFCFFF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Quad",
-      "ObjectId": -54334,
-      "ParentId": -53818,
+      "ObjectId": 297942,
+      "ParentId": 297506,
       "Position": {
         "x": -0.34,
         "y": 10.15,
@@ -1108,13 +1148,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 5,
-        "Color": "13CFCFFF"
+        "Color": "13CFCFFF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Quad",
-      "ObjectId": -54346,
-      "ParentId": -53818,
+      "ObjectId": 297952,
+      "ParentId": 297506,
       "Position": {
         "x": -21.515,
         "y": 10.22,
@@ -1133,13 +1174,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 5,
-        "Color": "13CFCFFF"
+        "Color": "13CFCFFF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Quad",
-      "ObjectId": -54358,
-      "ParentId": -53818,
+      "ObjectId": 297962,
+      "ParentId": 297506,
       "Position": {
         "x": 20.74,
         "y": 10.36,
@@ -1158,13 +1200,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 5,
-        "Color": "13CFCFFF"
+        "Color": "13CFCFFF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Quad",
-      "ObjectId": -54370,
-      "ParentId": -53818,
+      "ObjectId": 297972,
+      "ParentId": 297506,
       "Position": {
         "x": -0.426,
         "y": 22.6,
@@ -1183,13 +1226,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 5,
-        "Color": "00F7FFFF"
+        "Color": "00F7FFFF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube",
-      "ObjectId": -54382,
-      "ParentId": -53818,
+      "ObjectId": 297982,
+      "ParentId": 297506,
       "Position": {
         "x": -2.914,
         "y": 10.526,
@@ -1208,13 +1252,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "91FAF0FF"
+        "Color": "91FAF0FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube",
-      "ObjectId": -54394,
-      "ParentId": -53818,
+      "ObjectId": 297992,
+      "ParentId": 297506,
       "Position": {
         "x": -6.846,
         "y": 7.037,
@@ -1233,13 +1278,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "91FAF0FF"
+        "Color": "91FAF0FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube",
-      "ObjectId": -54406,
-      "ParentId": -53818,
+      "ObjectId": 298002,
+      "ParentId": 297506,
       "Position": {
         "x": -10.385,
         "y": 6.01,
@@ -1258,13 +1304,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "91FAF0FF"
+        "Color": "91FAF0FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube",
-      "ObjectId": -54418,
-      "ParentId": -53818,
+      "ObjectId": 298012,
+      "ParentId": 297506,
       "Position": {
         "x": 12.386,
         "y": 10.136,
@@ -1283,13 +1330,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "91FAF0FF"
+        "Color": "91FAF0FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube",
-      "ObjectId": -54430,
-      "ParentId": -53818,
+      "ObjectId": 298022,
+      "ParentId": 297506,
       "Position": {
         "x": 19.05,
         "y": 13.91,
@@ -1298,7 +1346,7 @@
       "Rotation": {
         "x": 0.0,
         "y": 90.0,
-        "z": 34.99999
+        "z": 34.9999847
       },
       "Scale": {
         "x": 7.217039,
@@ -1308,13 +1356,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "91FAF0FF"
+        "Color": "91FAF0FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube",
-      "ObjectId": -54442,
-      "ParentId": -53818,
+      "ObjectId": 298032,
+      "ParentId": 297506,
       "Position": {
         "x": 19.05,
         "y": 14.26,
@@ -1333,13 +1382,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "91FAF0FF"
+        "Color": "91FAF0FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube",
-      "ObjectId": -54454,
-      "ParentId": -53818,
+      "ObjectId": 298042,
+      "ParentId": 297506,
       "Position": {
         "x": 11.06,
         "y": 10.82,
@@ -1358,13 +1408,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "91FAF0FF"
+        "Color": "91FAF0FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube",
-      "ObjectId": -54466,
-      "ParentId": -53818,
+      "ObjectId": 298052,
+      "ParentId": 297506,
       "Position": {
         "x": -2.97,
         "y": 8.11,
@@ -1383,13 +1434,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "91FAF0FF"
+        "Color": "91FAF0FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube",
-      "ObjectId": -54478,
-      "ParentId": -53818,
+      "ObjectId": 298062,
+      "ParentId": 297506,
       "Position": {
         "x": -14.7761,
         "y": 2.2204,
@@ -1408,13 +1460,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "91FAF0FF"
+        "Color": "91FAF0FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube",
-      "ObjectId": -54490,
-      "ParentId": -53818,
+      "ObjectId": 298072,
+      "ParentId": 297506,
       "Position": {
         "x": -10.891,
         "y": 12.131,
@@ -1433,13 +1486,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "91FAF0FF"
+        "Color": "91FAF0FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube",
-      "ObjectId": -54502,
-      "ParentId": -53818,
+      "ObjectId": 298082,
+      "ParentId": 297506,
       "Position": {
         "x": -4.82,
         "y": 9.72,
@@ -1458,13 +1512,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "91FAF0FF"
+        "Color": "91FAF0FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube",
-      "ObjectId": -54514,
-      "ParentId": -53818,
+      "ObjectId": 298092,
+      "ParentId": 297506,
       "Position": {
         "x": 6.527,
         "y": -1.032,
@@ -1483,13 +1538,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "91FAF0FF"
+        "Color": "91FAF0FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube",
-      "ObjectId": -54526,
-      "ParentId": -53818,
+      "ObjectId": 298102,
+      "ParentId": 297506,
       "Position": {
         "x": -7.142,
         "y": 8.82,
@@ -1508,13 +1564,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "91FAF0FF"
+        "Color": "91FAF0FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube",
-      "ObjectId": -54538,
-      "ParentId": -53818,
+      "ObjectId": 298112,
+      "ParentId": 297506,
       "Position": {
         "x": 1.31,
         "y": 12.34,
@@ -1533,13 +1590,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "91FAF0FF"
+        "Color": "91FAF0FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube",
-      "ObjectId": -54550,
-      "ParentId": -53818,
+      "ObjectId": 298122,
+      "ParentId": 297506,
       "Position": {
         "x": -20.62,
         "y": 12.355,
@@ -1548,7 +1606,7 @@
       "Rotation": {
         "x": 0.0,
         "y": 90.0,
-        "z": 34.99999
+        "z": 34.9999847
       },
       "Scale": {
         "x": 3.397172,
@@ -1558,13 +1616,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "91FAF0FF"
+        "Color": "91FAF0FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube",
-      "ObjectId": -54562,
-      "ParentId": -53818,
+      "ObjectId": 298132,
+      "ParentId": 297506,
       "Position": {
         "x": -20.62,
         "y": 9.39,
@@ -1583,13 +1642,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "91FAF0FF"
+        "Color": "91FAF0FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube",
-      "ObjectId": -54574,
-      "ParentId": -53818,
+      "ObjectId": 298142,
+      "ParentId": 297506,
       "Position": {
         "x": -18.8548,
         "y": 3.7727,
@@ -1608,13 +1668,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "91FAF0FF"
+        "Color": "91FAF0FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube",
-      "ObjectId": -54586,
-      "ParentId": -53818,
+      "ObjectId": 298152,
+      "ParentId": 297506,
       "Position": {
         "x": 7.78,
         "y": -1.0250001,
@@ -1633,13 +1694,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "28F5FFFF"
+        "Color": "28F5FFFF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube",
-      "ObjectId": -54598,
-      "ParentId": -53818,
+      "ObjectId": 298162,
+      "ParentId": 297506,
       "Position": {
         "x": 13.62,
         "y": -1.0250001,
@@ -1658,13 +1720,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "28F5FFFF"
+        "Color": "28F5FFFF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube",
-      "ObjectId": -54610,
-      "ParentId": -53818,
+      "ObjectId": 298172,
+      "ParentId": 297506,
       "Position": {
         "x": 11.888,
         "y": -1.0250001,
@@ -1683,13 +1746,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "28F5FFFF"
+        "Color": "28F5FFFF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube",
-      "ObjectId": -54622,
-      "ParentId": -53818,
+      "ObjectId": 298182,
+      "ParentId": 297506,
       "Position": {
         "x": 14.14,
         "y": -1.0250001,
@@ -1708,13 +1772,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "28F5FFFF"
+        "Color": "28F5FFFF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube",
-      "ObjectId": -54634,
-      "ParentId": -53818,
+      "ObjectId": 298192,
+      "ParentId": 297506,
       "Position": {
         "x": 8.759,
         "y": -1.0250001,
@@ -1733,13 +1798,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "28F5FFFF"
+        "Color": "28F5FFFF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube",
-      "ObjectId": -54646,
-      "ParentId": -53818,
+      "ObjectId": 298202,
+      "ParentId": 297506,
       "Position": {
         "x": -9.8,
         "y": -1.0250001,
@@ -1758,13 +1824,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "28F5FFFF"
+        "Color": "28F5FFFF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube",
-      "ObjectId": -54658,
-      "ParentId": -53818,
+      "ObjectId": 298212,
+      "ParentId": 297506,
       "Position": {
         "x": -13.01,
         "y": -1.0250001,
@@ -1783,13 +1850,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "28F5FFFF"
+        "Color": "28F5FFFF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube",
-      "ObjectId": -54670,
-      "ParentId": -53818,
+      "ObjectId": 298222,
+      "ParentId": 297506,
       "Position": {
         "x": -5.35,
         "y": -1.0250001,
@@ -1808,13 +1876,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "28F5FFFF"
+        "Color": "28F5FFFF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube",
-      "ObjectId": -54682,
-      "ParentId": -53818,
+      "ObjectId": 298232,
+      "ParentId": 297506,
       "Position": {
         "x": -13.01,
         "y": -1.0250001,
@@ -1833,13 +1902,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "28F5FFFF"
+        "Color": "28F5FFFF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube",
-      "ObjectId": -54694,
-      "ParentId": -53818,
+      "ObjectId": 298242,
+      "ParentId": 297506,
       "Position": {
         "x": -9.34,
         "y": -1.0250001,
@@ -1858,13 +1928,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "28F5FFFF"
+        "Color": "28F5FFFF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube",
-      "ObjectId": -54706,
-      "ParentId": -53818,
+      "ObjectId": 298252,
+      "ParentId": 297506,
       "Position": {
         "x": -5.07,
         "y": -1.0250001,
@@ -1883,13 +1954,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "28F5FFFF"
+        "Color": "28F5FFFF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube",
-      "ObjectId": -54718,
-      "ParentId": -53818,
+      "ObjectId": 298262,
+      "ParentId": 297506,
       "Position": {
         "x": -2.82,
         "y": -1.0250001,
@@ -1908,13 +1980,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "28F5FFFF"
+        "Color": "28F5FFFF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube",
-      "ObjectId": -54730,
-      "ParentId": -53818,
+      "ObjectId": 298272,
+      "ParentId": 297506,
       "Position": {
         "x": -0.21,
         "y": -1.0250001,
@@ -1933,13 +2006,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "28F5FFFF"
+        "Color": "28F5FFFF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube",
-      "ObjectId": -54742,
-      "ParentId": -53818,
+      "ObjectId": 298282,
+      "ParentId": 297506,
       "Position": {
         "x": 2.04,
         "y": -1.0250001,
@@ -1958,13 +2032,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "28F5FFFF"
+        "Color": "28F5FFFF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube",
-      "ObjectId": -54754,
-      "ParentId": -53818,
+      "ObjectId": 298292,
+      "ParentId": 297506,
       "Position": {
         "x": -2.25,
         "y": -1.0250001,
@@ -1983,13 +2058,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "28F5FFFF"
+        "Color": "28F5FFFF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube",
-      "ObjectId": -54766,
-      "ParentId": -53818,
+      "ObjectId": 298302,
+      "ParentId": 297506,
       "Position": {
         "x": 0.98,
         "y": -1.0250001,
@@ -2008,13 +2084,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "28F5FFFF"
+        "Color": "28F5FFFF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube",
-      "ObjectId": -54778,
-      "ParentId": -53818,
+      "ObjectId": 298312,
+      "ParentId": 297506,
       "Position": {
         "x": 8.521,
         "y": 8.45,
@@ -2033,13 +2110,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "92FBF1FF"
+        "Color": "92FBF1FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube",
-      "ObjectId": -54790,
-      "ParentId": -53818,
+      "ObjectId": 298322,
+      "ParentId": 297506,
       "Position": {
         "x": 12.38,
         "y": 10.25,
@@ -2058,20 +2136,21 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "92FBF1FF"
+        "Color": "92FBF1FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube",
-      "ObjectId": -54802,
-      "ParentId": -53818,
+      "ObjectId": 298332,
+      "ParentId": 297506,
       "Position": {
         "x": 12.459,
         "y": 11.684,
         "z": 9.794
       },
       "Rotation": {
-        "x": -6.40330256E-07,
+        "x": -1.06721711E-06,
         "y": 335.0,
         "z": 15.7
       },
@@ -2083,13 +2162,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "92FBF1FF"
+        "Color": "92FBF1FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube",
-      "ObjectId": -54814,
-      "ParentId": -53818,
+      "ObjectId": 298342,
+      "ParentId": 297506,
       "Position": {
         "x": -0.91,
         "y": 10.76,
@@ -2108,13 +2188,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "92FBF1FF"
+        "Color": "92FBF1FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube",
-      "ObjectId": -54826,
-      "ParentId": -53818,
+      "ObjectId": 298352,
+      "ParentId": 297506,
       "Position": {
         "x": -18.1,
         "y": 6.88,
@@ -2133,13 +2214,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "92FBF1FF"
+        "Color": "92FBF1FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube",
-      "ObjectId": -54838,
-      "ParentId": -53818,
+      "ObjectId": 298362,
+      "ParentId": 297506,
       "Position": {
         "x": 5.119,
         "y": -0.043,
@@ -2158,13 +2240,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "92FBF1FF"
+        "Color": "92FBF1FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube",
-      "ObjectId": -54850,
-      "ParentId": -53818,
+      "ObjectId": 298372,
+      "ParentId": 297506,
       "Position": {
         "x": -0.91,
         "y": 9.277,
@@ -2183,13 +2266,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "92FBF1FF"
+        "Color": "92FBF1FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube",
-      "ObjectId": -54862,
-      "ParentId": -53818,
+      "ObjectId": 298382,
+      "ParentId": 297506,
       "Position": {
         "x": -11.26,
         "y": 8.51,
@@ -2208,13 +2292,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "92FBF1FF"
+        "Color": "92FBF1FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube",
-      "ObjectId": -54874,
-      "ParentId": -53818,
+      "ObjectId": 298392,
+      "ParentId": 297506,
       "Position": {
         "x": -3.409,
         "y": 14.072,
@@ -2223,7 +2308,7 @@
       "Rotation": {
         "x": 0.0,
         "y": 0.0,
-        "z": 8.879997
+        "z": 8.879996
       },
       "Scale": {
         "x": 8.410352,
@@ -2233,13 +2318,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "92FBF1FF"
+        "Color": "92FBF1FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube",
-      "ObjectId": -54886,
-      "ParentId": -53818,
+      "ObjectId": 298402,
+      "ParentId": 297506,
       "Position": {
         "x": 3.32,
         "y": -1.0250001,
@@ -2258,13 +2344,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "28F5FFFF"
+        "Color": "28F5FFFF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube",
-      "ObjectId": -54898,
-      "ParentId": -53818,
+      "ObjectId": 298412,
+      "ParentId": 297506,
       "Position": {
         "x": 6.15,
         "y": -1.0250001,
@@ -2283,13 +2370,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "28F5FFFF"
+        "Color": "28F5FFFF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube",
-      "ObjectId": -54910,
-      "ParentId": -53818,
+      "ObjectId": 298422,
+      "ParentId": 297506,
       "Position": {
         "x": 10.62,
         "y": -1.0250001,
@@ -2308,13 +2396,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "28F5FFFF"
+        "Color": "28F5FFFF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube",
-      "ObjectId": -54922,
-      "ParentId": -53818,
+      "ObjectId": 298432,
+      "ParentId": 297506,
       "Position": {
         "x": 8.76,
         "y": -1.0250001,
@@ -2333,13 +2422,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "28F5FFFF"
+        "Color": "28F5FFFF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube",
-      "ObjectId": -54934,
-      "ParentId": -53818,
+      "ObjectId": 298442,
+      "ParentId": 297506,
       "Position": {
         "x": 11.31,
         "y": -1.0250001,
@@ -2358,13 +2448,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "28F5FFFF"
+        "Color": "28F5FFFF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube",
-      "ObjectId": -54946,
-      "ParentId": -53818,
+      "ObjectId": 298452,
+      "ParentId": 297506,
       "Position": {
         "x": 6.94,
         "y": -1.0250001,
@@ -2383,13 +2474,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "28F5FFFF"
+        "Color": "28F5FFFF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube",
-      "ObjectId": -54958,
-      "ParentId": -53818,
+      "ObjectId": 298462,
+      "ParentId": 297506,
       "Position": {
         "x": 3.5,
         "y": -1.0250001,
@@ -2408,13 +2500,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "28F5FFFF"
+        "Color": "28F5FFFF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube",
-      "ObjectId": -54970,
-      "ParentId": -53818,
+      "ObjectId": 298472,
+      "ParentId": 297506,
       "Position": {
         "x": -0.2,
         "y": -1.0250001,
@@ -2433,13 +2526,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "28F5FFFF"
+        "Color": "28F5FFFF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube",
-      "ObjectId": -54982,
-      "ParentId": -53818,
+      "ObjectId": 298482,
+      "ParentId": 297506,
       "Position": {
         "x": -5.34,
         "y": -1.0250001,
@@ -2458,13 +2552,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "28F5FFFF"
+        "Color": "28F5FFFF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube",
-      "ObjectId": -54994,
-      "ParentId": -53818,
+      "ObjectId": 298492,
+      "ParentId": 297506,
       "Position": {
         "x": 5.05,
         "y": -1.0250001,
@@ -2483,13 +2578,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "28F5FFFF"
+        "Color": "28F5FFFF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube",
-      "ObjectId": -55006,
-      "ParentId": -53818,
+      "ObjectId": 298502,
+      "ParentId": 297506,
       "Position": {
         "x": 3.11,
         "y": -1.0250001,
@@ -2508,13 +2604,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "28F5FFFF"
+        "Color": "28F5FFFF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube",
-      "ObjectId": -55018,
-      "ParentId": -53818,
+      "ObjectId": 298512,
+      "ParentId": 297506,
       "Position": {
         "x": 4.5,
         "y": -1.0250001,
@@ -2533,13 +2630,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "28F5FFFF"
+        "Color": "28F5FFFF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube",
-      "ObjectId": -55030,
-      "ParentId": -53818,
+      "ObjectId": 298522,
+      "ParentId": 297506,
       "Position": {
         "x": 14.14,
         "y": -1.0250001,
@@ -2558,13 +2656,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "28F5FFFF"
+        "Color": "28F5FFFF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube",
-      "ObjectId": -55042,
-      "ParentId": -53818,
+      "ObjectId": 298532,
+      "ParentId": 297506,
       "Position": {
         "x": -14.69,
         "y": -1.0250001,
@@ -2583,13 +2682,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "28F5FFFF"
+        "Color": "28F5FFFF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube",
-      "ObjectId": -55054,
-      "ParentId": -53818,
+      "ObjectId": 298542,
+      "ParentId": 297506,
       "Position": {
         "x": 14.14,
         "y": 0.277,
@@ -2608,13 +2708,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "92FBF1FF"
+        "Color": "92FBF1FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube",
-      "ObjectId": -55066,
-      "ParentId": -53818,
+      "ObjectId": 298552,
+      "ParentId": 297506,
       "Position": {
         "x": 14.04,
         "y": 1.02,
@@ -2633,13 +2734,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "92FBF1FF"
+        "Color": "92FBF1FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube",
-      "ObjectId": -55078,
-      "ParentId": -53818,
+      "ObjectId": 298562,
+      "ParentId": 297506,
       "Position": {
         "x": 10.94,
         "y": 1.7,
@@ -2658,13 +2760,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "92FBF1FF"
+        "Color": "92FBF1FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube",
-      "ObjectId": -55090,
-      "ParentId": -53818,
+      "ObjectId": 298572,
+      "ParentId": 297506,
       "Position": {
         "x": 8.03,
         "y": 2.61,
@@ -2683,13 +2786,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "92FBF1FF"
+        "Color": "92FBF1FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube",
-      "ObjectId": -55102,
-      "ParentId": -53818,
+      "ObjectId": 298582,
+      "ParentId": 297506,
       "Position": {
         "x": 8.03,
         "y": 3.42,
@@ -2708,13 +2812,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "92FBF1FF"
+        "Color": "92FBF1FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube",
-      "ObjectId": -55114,
-      "ParentId": -53818,
+      "ObjectId": 298592,
+      "ParentId": 297506,
       "Position": {
         "x": 11.28,
         "y": 4.416,
@@ -2723,7 +2828,7 @@
       "Rotation": {
         "x": 0.0,
         "y": 0.0,
-        "z": 18.3999977
+        "z": 18.4
       },
       "Scale": {
         "x": 2.09469461,
@@ -2733,13 +2838,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "92FBF1FF"
+        "Color": "92FBF1FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube",
-      "ObjectId": -55126,
-      "ParentId": -53818,
+      "ObjectId": 298602,
+      "ParentId": 297506,
       "Position": {
         "x": 14.424,
         "y": 5.357,
@@ -2758,13 +2864,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "92FBF1FF"
+        "Color": "92FBF1FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube",
-      "ObjectId": -55138,
-      "ParentId": -53818,
+      "ObjectId": 298612,
+      "ParentId": 297506,
       "Position": {
         "x": 14.227,
         "y": 6.26,
@@ -2783,13 +2890,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "92FBF1FF"
+        "Color": "92FBF1FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube",
-      "ObjectId": -55150,
-      "ParentId": -53818,
+      "ObjectId": 298622,
+      "ParentId": 297506,
       "Position": {
         "x": 11.25,
         "y": 7.25,
@@ -2808,13 +2916,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "92FBF1FF"
+        "Color": "92FBF1FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube",
-      "ObjectId": -55162,
-      "ParentId": -53818,
+      "ObjectId": 298632,
+      "ParentId": 297506,
       "Position": {
         "x": -16.473,
         "y": -0.918,
@@ -2833,13 +2942,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "92FBF1FF"
+        "Color": "92FBF1FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube",
-      "ObjectId": -55174,
-      "ParentId": -53818,
+      "ObjectId": 298642,
+      "ParentId": 297506,
       "Position": {
         "x": -11.05,
         "y": -0.52,
@@ -2858,13 +2968,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "92FBF1FF"
+        "Color": "92FBF1FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube",
-      "ObjectId": -55186,
-      "ParentId": -53818,
+      "ObjectId": 298652,
+      "ParentId": 297506,
       "Position": {
         "x": -14.7741,
         "y": 0.957,
@@ -2883,13 +2994,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "92FBF1FF"
+        "Color": "92FBF1FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube",
-      "ObjectId": -55198,
-      "ParentId": -53818,
+      "ObjectId": 298662,
+      "ParentId": 297506,
       "Position": {
         "x": -16.454,
         "y": 0.292,
@@ -2908,13 +3020,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "92FBF1FF"
+        "Color": "92FBF1FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube",
-      "ObjectId": -55210,
-      "ParentId": -53818,
+      "ObjectId": 298672,
+      "ParentId": 297506,
       "Position": {
         "x": -11.11,
         "y": 1.54,
@@ -2933,13 +3046,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "92FBF1FF"
+        "Color": "92FBF1FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube",
-      "ObjectId": -55222,
-      "ParentId": -53818,
+      "ObjectId": 298682,
+      "ParentId": 297506,
       "Position": {
         "x": -12.4027,
         "y": 0.668,
@@ -2958,13 +3072,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "92FBF1FF"
+        "Color": "92FBF1FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube",
-      "ObjectId": -55234,
-      "ParentId": -53818,
+      "ObjectId": 298692,
+      "ParentId": 297506,
       "Position": {
         "x": -12.147,
         "y": -0.100000024,
@@ -2983,13 +3098,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "92FBF1FF"
+        "Color": "92FBF1FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube",
-      "ObjectId": -55246,
-      "ParentId": -53818,
+      "ObjectId": 298702,
+      "ParentId": 297506,
       "Position": {
         "x": -9.857,
         "y": -1.1,
@@ -3008,13 +3124,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "92FBF1FF"
+        "Color": "92FBF1FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube",
-      "ObjectId": -55258,
-      "ParentId": -53818,
+      "ObjectId": 298712,
+      "ParentId": 297506,
       "Position": {
         "x": 18.509,
         "y": -0.66,
@@ -3033,13 +3150,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "28F5FFFF"
+        "Color": "28F5FFFF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube",
-      "ObjectId": -55270,
-      "ParentId": -53818,
+      "ObjectId": 298722,
+      "ParentId": 297506,
       "Position": {
         "x": 18.509,
         "y": -1.418,
@@ -3058,13 +3176,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "28F5FFFF"
+        "Color": "28F5FFFF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube",
-      "ObjectId": -55282,
-      "ParentId": -53818,
+      "ObjectId": 298732,
+      "ParentId": 297506,
       "Position": {
         "x": 18.509,
         "y": -1.92,
@@ -3083,13 +3202,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "28F5FFFF"
+        "Color": "28F5FFFF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube (1)",
-      "ObjectId": -55294,
-      "ParentId": -53818,
+      "ObjectId": 298742,
+      "ParentId": 297506,
       "Position": {
         "x": 8.16,
         "y": 8.12,
@@ -3108,13 +3228,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "92FBF1FF"
+        "Color": "92FBF1FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube (2)",
-      "ObjectId": -55306,
-      "ParentId": -53818,
+      "ObjectId": 298752,
+      "ParentId": 297506,
       "Position": {
         "x": 3.52,
         "y": 1.025,
@@ -3133,13 +3254,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "92FBF1FF"
+        "Color": "92FBF1FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube (3)",
-      "ObjectId": -55318,
-      "ParentId": -53818,
+      "ObjectId": 298762,
+      "ParentId": 297506,
       "Position": {
         "x": 5.119,
         "y": 2.024,
@@ -3158,13 +3280,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "92FBF1FF"
+        "Color": "92FBF1FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube (4)",
-      "ObjectId": -55330,
-      "ParentId": -53818,
+      "ObjectId": 298772,
+      "ParentId": 297506,
       "Position": {
         "x": 6.527,
         "y": 3.091,
@@ -3183,13 +3306,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "92FBF1FF"
+        "Color": "92FBF1FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube (5)",
-      "ObjectId": -55342,
-      "ParentId": -53818,
+      "ObjectId": 298782,
+      "ParentId": 297506,
       "Position": {
         "x": 5.119,
         "y": 4.08,
@@ -3208,13 +3332,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "92FBF1FF"
+        "Color": "92FBF1FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube (6)",
-      "ObjectId": -55354,
-      "ParentId": -53818,
+      "ObjectId": 298792,
+      "ParentId": 297506,
       "Position": {
         "x": 3.52,
         "y": 5.148,
@@ -3233,13 +3358,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "92FBF1FF"
+        "Color": "92FBF1FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube (7)",
-      "ObjectId": -55366,
-      "ParentId": -53818,
+      "ObjectId": 298802,
+      "ParentId": 297506,
       "Position": {
         "x": 4.909,
         "y": 6.147,
@@ -3258,13 +3384,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "92FBF1FF"
+        "Color": "92FBF1FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube (8)",
-      "ObjectId": -55378,
-      "ParentId": -53818,
+      "ObjectId": 298812,
+      "ParentId": 297506,
       "Position": {
         "x": 6.527,
         "y": 7.07,
@@ -3283,13 +3410,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "92FBF1FF"
+        "Color": "92FBF1FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube (10)",
-      "ObjectId": -55390,
-      "ParentId": -53818,
+      "ObjectId": 298822,
+      "ParentId": 297506,
       "Position": {
         "x": 6.804,
         "y": 12.59,
@@ -3308,13 +3436,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "92FBF1FF"
+        "Color": "92FBF1FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube (9)",
-      "ObjectId": -55402,
-      "ParentId": -53818,
+      "ObjectId": 298832,
+      "ParentId": 297506,
       "Position": {
         "x": 6.535,
         "y": 8.058,
@@ -3333,13 +3462,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "92FBF1FF"
+        "Color": "92FBF1FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube (11)",
-      "ObjectId": -55414,
-      "ParentId": -53818,
+      "ObjectId": 298842,
+      "ParentId": 297506,
       "Position": {
         "x": 3.318,
         "y": 13.758,
@@ -3358,13 +3488,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "92FBF1FF"
+        "Color": "92FBF1FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube (12)",
-      "ObjectId": -55426,
-      "ParentId": -53818,
+      "ObjectId": 298852,
+      "ParentId": 297506,
       "Position": {
         "x": 0.702,
         "y": 14.87,
@@ -3383,13 +3514,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "92FBF1FF"
+        "Color": "92FBF1FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube (13)",
-      "ObjectId": -55438,
-      "ParentId": -53818,
+      "ObjectId": 298862,
+      "ParentId": 297506,
       "Position": {
         "x": -15.4552,
         "y": 8.031,
@@ -3408,13 +3540,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "92FBF1FF"
+        "Color": "92FBF1FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube (14)",
-      "ObjectId": -55450,
-      "ParentId": -53818,
+      "ObjectId": 298872,
+      "ParentId": 297506,
       "Position": {
         "x": -18.649,
         "y": 2.924,
@@ -3433,13 +3566,14 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "92FBF1FF"
+        "Color": "92FBF1FF",
+        "PrimitiveFlags": 3
       }
     },
     {
       "Name": "Cube (15)",
-      "ObjectId": -55462,
-      "ParentId": -53818,
+      "ObjectId": 298882,
+      "ParentId": 297506,
       "Position": {
         "x": -20.82,
         "y": 5.22,
@@ -3458,7 +3592,8 @@
       "BlockType": 1,
       "Properties": {
         "PrimitiveType": 3,
-        "Color": "92FBF1FF"
+        "Color": "92FBF1FF",
+        "PrimitiveFlags": 3
       }
     }
   ]

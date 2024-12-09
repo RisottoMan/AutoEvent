@@ -27,7 +27,7 @@
         {
             Base = primitiveSerializable;
             _prevScale = transform.localScale;
-
+            
             UpdateObject();
             IsStatic = false;
 
@@ -68,18 +68,18 @@
             UpdateTransformProperties();
             _primitiveObjectToy.NetworkPrimitiveType = Base.PrimitiveType;
             _primitiveObjectToy.NetworkMaterialColor = GetColorFromString(Base.Color);
+            _primitiveObjectToy.NetworkPrimitiveFlags = Base.PrimitiveFlags;
 
             if (IsSchematicBlock && _prevScale == transform.localScale)
                 return;
-
+            
             _prevScale = transform.localScale;
             base.UpdateObject();
         }
-
         private void UpdateTransformProperties()
         {
             _primitiveObjectToy.NetworkPosition = _transform.position;
-            _primitiveObjectToy.NetworkRotation = new LowPrecisionQuaternion(_transform.rotation);
+            _primitiveObjectToy.NetworkRotation = new LowPrecisionQuaternion(_transform.rotation).Value;
             _primitiveObjectToy.NetworkScale = _transform.root != _transform ? Vector3.Scale(_transform.localScale, _transform.root.localScale) : _transform.localScale;
         }
 

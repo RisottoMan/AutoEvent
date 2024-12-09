@@ -1,19 +1,19 @@
 name: '投票'
-description: '开始为小游戏投票'
+description: '开始为迷你游戏投票'
 command_name: 'vote'
 start: |-
   <color=#D71868><b><i>向前跑</i></b></color>
-  感染开始于：{time}
+  开始时间: {time}
 cycle: |-
-  投票：按 [Alt] 赞成或 [Alt]x2 反对
-  {trueCount} 个玩家支持 {newName}
-  还剩 {time} 秒！
-minigame_start: '{newName} 即将开始。'
-minigame_not_start: '{newName} 不会开始。'
+  投票: 按 [Alt] 支持或 [Alt]x2 反对
+  {trueCount} / {allCount} 玩家支持 {newName}
+  剩余时间: {time} 秒
+minigame_start: '{newName} 将很快开始。'
+minigame_not_start: '{newName} 将不会开始。'
 end: |-
-  投票：投票结束
-  {trueCount} 个玩家中的 {allCount} 个
+  投票: 投票结束
+  {trueCount} / {allCount} 玩家
   {results}
-# 不要修改这里。这会导致错误。AutoEvent 会自动管理这些设置。
+# 不要更改此项。它会导致问题。AutoEvent 将自动管理这些设置。
 version: '1.0.0'
 language: 'ZH'

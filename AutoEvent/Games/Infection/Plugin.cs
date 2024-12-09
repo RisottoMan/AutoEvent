@@ -5,7 +5,9 @@ using PluginAPI.Events;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using AutoEvent.API.Enums;
 using AutoEvent.Interfaces;
+using InventorySystem.Items.MarshmallowMan;
 using UnityEngine;
 using Event = AutoEvent.Interfaces.Event;
 using Player = PluginAPI.Core.Player;
@@ -16,9 +18,9 @@ namespace AutoEvent.Games.Infection
     {
         public override string Name { get; set; } = "Zombie Infection";
         public override string Description { get; set; } = "Zombie mode, the purpose of which is to infect all players";
-        public override string Author { get; set; } = "KoT0XleB";
+        public override string Author { get; set; } = "RisottoMan";
         public override string CommandName { get; set; } = "zombie";
-        public override Version Version { get; set; } = new Version(1, 0, 2);
+        public override Version Version { get; set; } = new Version(1, 0, 4);
         [EventConfig] 
         public Config Config { get; set; }
         [EventTranslation]
@@ -36,7 +38,8 @@ namespace AutoEvent.Games.Infection
         protected override float PostRoundDelay { get; set; } = 10f;
         private EventHandler _eventHandler { get; set; }
         private int _overtime = 30;
-        // public bool IsFlamingoVariant { get; set; } // Christmas Update
+        public bool IsChristmasUpdate { get; set; } = false;
+        public bool IsHalloweenUpdate { get; set; } = false;
 
         protected override void RegisterEvents()
         {
@@ -67,28 +70,31 @@ namespace AutoEvent.Games.Infection
         protected override void OnStart()
         {
             _overtime = 30;
-            // IsFlamingoVariant = Random.Range(0, 2) == 1 ? true : false; // Christmas Update
-
+            // Halloween update
+            if (Enum.IsDefined(typeof(ItemType), "Marshmallow"))
+            {
+                IsHalloweenUpdate = true;
+                ForceEnableFriendlyFire = FriendlyFireSettings.Enable;
+            }
+            // Christmas update
+            else if (Enum.IsDefined(typeof(RoleTypeId), "ZombieFlamingo"))
+            {
+                IsChristmasUpdate = true;
+            }
+            
             foreach (Player player in Player.GetPlayers())
             {
-                /* // Christmas Update
-                if (IsFlamingoVariant == true)
+                if (IsChristmasUpdate)
                 {
-                    player.GiveLoadout(Config.FlamingoLoadouts);
+                    RoleTypeId roleType = (RoleTypeId)Enum.Parse(typeof(RoleTypeId), "Flamingo");
+                    player.SetRole(roleType, RoleSpawnFlags.None);
                 }
-                */
-                player.GiveLoadout(Config.PlayerLoadouts);
+                else
+                {
+                    player.GiveLoadout(Config.PlayerLoadouts);
+                }
+                
                 player.Position = RandomPosition.GetSpawnPosition(MapInfo.Map);
-            }
-
-            float scale = 1;
-            switch(Player.GetPlayers().Count())
-            {
-                case var n when (n > 15 && n <= 20): scale = 1.1f; break;
-                case var n when (n > 20 && n <= 25): scale = 1.2f; break;
-                case var n when (n > 25 && n <= 30): scale = 1.3f; break;
-                case var n when (n > 30 && n <= 35): scale = 1.4f; break;
-                case var n when (n > 35): scale = 1.5f; break;
             }
         }
 
@@ -96,7 +102,9 @@ namespace AutoEvent.Games.Infection
         {
             for (float time = 15; time > 0; time--)
             {
-                Extensions.Broadcast(Translation.Start.Replace("{name}", Name).Replace("{time}", time.ToString("00")), 1);
+                Extensions.Broadcast(Translation.Start.
+                    Replace("{name}", Name).
+                    Replace("{time}", time.ToString("00")), 1);
                 yield return Timing.WaitForSeconds(1f);
             }
         }
@@ -104,55 +112,65 @@ namespace AutoEvent.Games.Infection
         protected override void CountdownFinished()
         {
             Player player = Player.GetPlayers().RandomItem();
-            /* // ChristmasUpdate
-            if (IsFlamingoVariant == true)
+            
+            if (IsHalloweenUpdate)
             {
-                player.GiveLoadout(Config.ZombieFlamingoLoadouts);
+                player.SetRole(RoleTypeId.Scientist, RoleSpawnFlags.None);
+                player.EffectsManager.EnableEffect<MarshmallowEffect>();
+                player.IsGodModeEnabled = true;
             }
-            */
-            player.GiveLoadout(Config.ZombieLoadouts);
+            else if (IsChristmasUpdate)
+            {
+                RoleTypeId roleType = (RoleTypeId)Enum.Parse(typeof(RoleTypeId), "Flamingo");
+                player.SetRole(roleType, RoleSpawnFlags.None);
+            }
+            else
+            {
+                player.GiveLoadout(Config.ZombieLoadouts);
+            }
+            
             Extensions.PlayPlayerAudio(player, Config.ZombieScreams.RandomItem(), 15);
         }
 
         protected override bool IsRoundDone()
         {
-            /* // Christmas Update
-            if (IsFlamingoVariant == true)
+            RoleTypeId roleType = RoleTypeId.ClassD;
+            if (IsChristmasUpdate)
             {
-                if (Player.GetPlayers().Count(r => 
-                r.Role == RoleTypeId.Flamingo || 
-                r.Role == RoleTypeId.AlphaFlamingo) > 0
-                && _overtime > 0) return false;
-                else return true;
+                roleType = (RoleTypeId)Enum.Parse(typeof(RoleTypeId), "Flamingo");
             }
-            */
-            if (Player.GetPlayers().Count(r => r.Role == RoleTypeId.ClassD) > 0 && _overtime > 0) return false;
-            else return true;
+
+            if (Player.GetPlayers().Count(r => r.Role == roleType) > 0 && _overtime > 0)
+            {
+                return false;
+            }
+            
+            return true;
         }
         
         protected override void ProcessFrame()
         {
-            int count = 0;
-            count = Player.GetPlayers().Count(r => r.Role == RoleTypeId.ClassD);
-            /* // Christmas Update
-            if (IsFlamingoVariant == true)
+            RoleTypeId roleType = RoleTypeId.ClassD;
+            string time = $"{EventTime.Minutes:00}:{EventTime.Seconds:00}";
+            
+            if (IsChristmasUpdate)
             {
-                count = Player.GetPlayers().Count(r =>
-                r.Role == RoleTypeId.Flamingo ||
-                r.Role == RoleTypeId.AlphaFlamingo);
+                roleType = (RoleTypeId)Enum.Parse(typeof(RoleTypeId), "Flamingo");
             }
-            */
-            var time = $"{EventTime.Minutes:00}:{EventTime.Seconds:00}";
+            
+            int count = Player.GetPlayers().Count(r => r.Role == roleType);
 
             if (count > 1)
             {
-                Extensions.Broadcast(Translation.Cycle.Replace("{name}", Name).Replace("{count}", count.ToString()).Replace("{time}", time), 1);
+                Extensions.Broadcast(Translation.Cycle.
+                    Replace("{name}", Name).
+                    Replace("{count}", count.ToString()).
+                    Replace("{time}", time), 1);
             }
             else if (count == 1)
             {
                 _overtime--;
-                Extensions.Broadcast(
-                    Translation.ExtraTime
+                Extensions.Broadcast(Translation.ExtraTime
                         .Replace("{extratime}", _overtime.ToString("00"))
                         .Replace("{time}", $"{EventTime.Minutes:00}:{EventTime.Seconds:00}"), 1);
             }
@@ -160,23 +178,13 @@ namespace AutoEvent.Games.Infection
 
         protected override void OnFinished()
         {
-            /* // Christmas Update
-            if (IsFlamingoVariant == true)
+            RoleTypeId roleType = RoleTypeId.ClassD;
+            if (IsChristmasUpdate)
             {
-                if (Player.GetPlayers().Count(r => 
-                r.Role == RoleTypeId.Flamingo ||
-                r.Role == RoleTypeId.AlphaFlamingo) == 0)
-                {
-                    Extensions.Broadcast(Translation.ZombieWin
-                        .Replace("{time}", $"{EventTime.Minutes:00}:{EventTime.Seconds:00}"), 10);
-                }
-                else
-                {
-                    Extensions.Broadcast(Translation.ZombieLose
-                        .Replace("{time}", $"{EventTime.Minutes:00}:{EventTime.Seconds:00}"), 10);
-                }
-            }*/
-            if (Player.GetPlayers().Count(r => r.Role == RoleTypeId.ClassD) == 0)
+                roleType = (RoleTypeId)Enum.Parse(typeof(RoleTypeId), "Flamingo");
+            }
+            
+            if (Player.GetPlayers().Count(r => r.Role == roleType) == 0)
             {
                 Extensions.Broadcast(Translation.Win
                     .Replace("{time}", $"{EventTime.Minutes:00}:{EventTime.Seconds:00}"), 10);

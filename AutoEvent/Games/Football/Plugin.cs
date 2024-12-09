@@ -15,7 +15,7 @@ namespace AutoEvent.Games.Football
     {
         public override string Name { get; set; } = "Football";
         public override string Description { get; set; } = "Score 3 goals to win";
-        public override string Author { get; set; } = "KoT0XleB";
+        public override string Author { get; set; } = "RisottoMan";
         public override string CommandName { get; set; } = "football";
         public override Version Version { get; set; } = new Version(1, 0, 0);
         [EventConfig] 

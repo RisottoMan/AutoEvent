@@ -8,6 +8,8 @@ using System.Linq;
 using AutoEvent.API;
 using AutoEvent.API.Enums;
 using AutoEvent.Interfaces;
+using InventorySystem;
+using InventorySystem.Items;
 using InventorySystem.Items.Pickups;
 using PluginAPI.Core.Items;
 using UnityEngine;
@@ -19,7 +21,7 @@ namespace AutoEvent.Games.Lava
     {
         public override string Name { get; set; } = "The floor is LAVA";
         public override string Description { get; set; } = "Survival, in which you need to avoid lava and shoot at others";
-        public override string Author { get; set; } = "KoT0XleB";
+        public override string Author { get; set; } = "RisottoMan";
         public override string CommandName { get; set; } = "lava";
         public override Version Version { get; set; } = new Version(1, 0, 3);
         [EventConfig]
@@ -107,12 +109,34 @@ namespace AutoEvent.Games.Lava
                     ItemPickup.Remove(item);
                     item.DestroySelf();
                 }
+                
                 DebugLogger.LogDebug($"Positions found: {itemPositions.Count}");
-
-
                 foreach (Vector3 position in itemPositions)
                 {
-                    ItemPickup.Create(_getItemByChance(), position + new Vector3(0,0.5f,0), Quaternion.Euler(Vector3.zero)).Spawn();
+                    // <<< An error occurred when creating the pickup. Maybe will fix it
+                    //ItemPickup.Create(_getItemByChance(), position + new Vector3(0,0.5f,0), Quaternion.Euler(Vector3.zero)).Spawn();
+                    // >>>
+                    if (!InventoryItemLoader.AvailableItems.TryGetValue(_getItemByChance(), out ItemBase itemBase))
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        PickupSyncInfo pickupSyncInfo = new PickupSyncInfo()
+                        {
+                            ItemId = _getItemByChance(),
+                            Serial = ItemSerialGenerator.GenerateNext(),
+                            WeightKg = itemBase.Weight
+                        };
+                        ItemPickupBase itemPickupBase = InventoryExtensions.ServerCreatePickup(
+                            itemBase,
+                            pickupSyncInfo, position + new Vector3(0,0.5f,0),
+                            Quaternion.identity,
+                            false,
+                            null);
+                        new ItemPickup(itemPickupBase).Spawn();
+                    }
+                    // >>>
                 }
             }
 

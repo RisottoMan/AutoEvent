@@ -75,7 +75,7 @@ public class EventHandler
             player.CurrentItem = weapon;
         });
     }
-
+    
     [PluginEvent(ServerEventType.PlayerJoined)]
     public void OnJoin(PlayerJoinedEvent ev)
     {
@@ -88,4 +88,5 @@ public class EventHandler
     public void OnPlaceBlood(PlaceBloodArgs ev) => ev.IsAllowed = false;
     public void OnDropItem(DropItemArgs ev) => ev.IsAllowed = false;
     public void OnDropAmmo(DropAmmoArgs ev) => ev.IsAllowed = false;
+    public void OnJailbirdCharge(ChargingJailbirdEventArgs ev) => ev.IsAllowed = _plugin.Config.JailbirdCanCharge;
 }

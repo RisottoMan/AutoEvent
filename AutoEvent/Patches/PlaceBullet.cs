@@ -5,7 +5,7 @@ using InventorySystem.Items.Firearms.Modules;
 
 namespace AutoEvent.Patches
 {
-    [HarmonyPatch(typeof(StandardHitregBase), nameof(StandardHitregBase.PlaceBulletholeDecal))]
+    [HarmonyPatch(typeof(ImpactEffectsModule), nameof(ImpactEffectsModule.ServerSendImpactDecal))]
     internal static class PlaceBullet
     {
         public static bool Prefix()

@@ -16,9 +16,9 @@ namespace AutoEvent.Games.Deathmatch
     {
         public override string Name { get; set; } = "Team Death-Match";
         public override string Description { get; set; } = "Team Death-Match on the Shipment map from MW19";
-        public override string Author { get; set; } = "KoT0XleB";
+        public override string Author { get; set; } = "RisottoMan/code & xleb.ik/map";
         public override string CommandName { get; set; } = "tdm";
-        public override Version Version { get; set; } = new Version(1, 0, 0);
+        public override Version Version { get; set; } = new Version(1, 0, 1);
         [EventConfig]
         public Config Config { get; set; }
         [EventTranslation]

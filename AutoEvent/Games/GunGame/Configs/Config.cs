@@ -1,12 +1,28 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using AutoEvent.API;
+using AutoEvent.API.Season.Enum;
 using AutoEvent.Interfaces;
 using PlayerRoles;
+using UnityEngine;
 
 namespace AutoEvent.Games.GunGame;
 public class Config : EventConfig
 {
+    public Config()
+    {
+        if (AvailableMaps is null)
+        {
+            AvailableMaps = new List<MapChance>();
+        }
+
+        if (AvailableMaps.Count < 1)
+        {
+            AvailableMaps.Add(new MapChance(50, new MapInfo("Shipment", new Vector3(93f, 1020f, -43f) )));
+            AvailableMaps.Add(new MapChance(50, new MapInfo("Shipment_Halloween2024", new Vector3(93f, 1020f, -43f)), SeasonFlag.Halloween));
+        }
+    }
+    
     [Description("A list of guns a player can get.")]
     public List<GunRole> Guns { get; set; } = new List<GunRole>()
     {

@@ -22,6 +22,11 @@ namespace AutoEvent.Commands;
 [CommandHandler(typeof(GameConsoleCommandHandler))]
 public class NoRestart : ICommand, IPermission
 {
+    public string Command => nameof(NoRestart);
+    public string[] Aliases => Array.Empty<string>();
+    public string Description => "Disables auto-restarting the server after events are done.";
+    public string Permission { get; set; } = "ev.norestart";
+    public bool SanitizeResponse => false;
     public bool Execute(ArraySegment<string> arguments, ICommandSender sender, [UnscopedRef] out string response)
     {
         if (!sender.CheckPermission(Permission, out bool isConsole))
@@ -64,9 +69,4 @@ public class NoRestart : ICommand, IPermission
         response = $"No-Restart has been disabled. The server {boldstart}will{boldend} restart after the next event.";
         return true;
     }
-
-    public string Command => nameof(NoRestart);
-    public string[] Aliases => Array.Empty<string>();
-    public string Description => "Disables auto-restarting the server after events are done.";
-    public string Permission { get; set; } = "ev.norestart";
 }

@@ -20,7 +20,7 @@ namespace AutoEvent.Games.Jail
     {
         public override string Name { get; set; } = "Simon's Prison";
         public override string Description { get; set; } = "Jail mode from CS 1.6, in which you need to hold events [VERY HARD]";
-        public override string Author { get; set; } = "KoT0XleB";
+        public override string Author { get; set; } = "RisottoMan";
         public override string CommandName { get; set; } = "jail";
         public override Version Version { get; set; } = new Version(1, 0, 0);
         [EventConfig]

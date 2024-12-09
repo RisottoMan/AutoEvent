@@ -1,0 +1,265 @@
+[
+  {
+    "ColliderActionType": 16,
+    "CollisionType": 1,
+    "DetectType": 2,
+    "ObjectId": "0 1 7",
+    "Amount": 0.0,
+    "warheadActionType": 0,
+    "commandings": [
+      {
+        "CommandContext": "kill {p_i}",
+        "ChanceWeight": 100.0,
+        "ForceExecute": false
+      }
+    ]
+  },
+  {
+    "ColliderActionType": 16,
+    "CollisionType": 1,
+    "DetectType": 2,
+    "ObjectId": "1 1 7",
+    "Amount": 0.0,
+    "warheadActionType": 0,
+    "commandings": [
+      {
+        "CommandContext": "kill {p_i}",
+        "ChanceWeight": 100.0,
+        "ForceExecute": false
+      }
+    ]
+  },
+  {
+    "ColliderActionType": 16,
+    "CollisionType": 1,
+    "DetectType": 2,
+    "ObjectId": "0 1 11",
+    "Amount": 0.0,
+    "warheadActionType": 0,
+    "commandings": [
+      {
+        "CommandContext": "kill {p_i}",
+        "ChanceWeight": 100.0,
+        "ForceExecute": false
+      }
+    ]
+  },
+  {
+    "ColliderActionType": 16,
+    "CollisionType": 1,
+    "DetectType": 2,
+    "ObjectId": "0 1 12",
+    "Amount": 0.0,
+    "warheadActionType": 0,
+    "commandings": [
+      {
+        "CommandContext": "kill {p_i}",
+        "ChanceWeight": 100.0,
+        "ForceExecute": false
+      }
+    ]
+  },
+  {
+    "ColliderActionType": 2,
+    "CollisionType": 2,
+    "DetectType": 2,
+    "ObjectId": "1 21",
+    "Amount": 0.0,
+    "warheadActionType": 0,
+    "effectGivingModules": [
+      {
+        "EffectFlag": 2,
+        "effectType": 29,
+        "GivingTo": 1,
+        "Inensity": 1,
+        "Duration": 0.0,
+        "ChanceWeight": 100.0,
+        "ForceExecute": false
+      }
+    ]
+  },
+  {
+    "ColliderActionType": 16,
+    "CollisionType": 3,
+    "DetectType": 2,
+    "ObjectId": "1 22",
+    "Amount": 0.0,
+    "warheadActionType": 0,
+    "commandings": [
+      {
+        "CommandContext": "kill {p_i}",
+        "ChanceWeight": 100.0,
+        "ForceExecute": false
+      }
+    ]
+  },
+  {
+    "ColliderActionType": 16,
+    "CollisionType": 3,
+    "DetectType": 2,
+    "ObjectId": "0 1 23",
+    "Amount": 0.0,
+    "warheadActionType": 0,
+    "commandings": [
+      {
+        "CommandContext": "kill {p_i}",
+        "ChanceWeight": 100.0,
+        "ForceExecute": false
+      }
+    ]
+  },
+  {
+    "ColliderActionType": 16,
+    "CollisionType": 1,
+    "DetectType": 2,
+    "ObjectId": "0 1 24",
+    "Amount": 0.0,
+    "warheadActionType": 0,
+    "commandings": [
+      {
+        "CommandContext": "kill {p_i}",
+        "ChanceWeight": 100.0,
+        "ForceExecute": false
+      }
+    ]
+  },
+  {
+    "ColliderActionType": 16,
+    "CollisionType": 1,
+    "DetectType": 2,
+    "ObjectId": "1 26",
+    "Amount": 0.0,
+    "warheadActionType": 0,
+    "commandings": [
+      {
+        "CommandContext": "give {p_i} 20.",
+        "ChanceWeight": 100.0,
+        "ForceExecute": false
+      }
+    ]
+  },
+  {
+    "ColliderActionType": 8,
+    "CollisionType": 1,
+    "DetectType": 2,
+    "ObjectId": "0 27",
+    "Amount": 0.0,
+    "animationDTOs": [
+      {
+        "Animator": "27",
+        "Animation": "Trigger1action",
+        "AnimationType": 0,
+        "ChanceWeight": 100.0,
+        "ForceExecute": false
+      }
+    ],
+    "warheadActionType": 0
+  },
+  {
+    "ColliderActionType": 8,
+    "CollisionType": 1,
+    "DetectType": 2,
+    "ObjectId": "0 28",
+    "Amount": 0.0,
+    "animationDTOs": [
+      {
+        "Animator": "28",
+        "Animation": "Trigger2action",
+        "AnimationType": 0,
+        "ChanceWeight": 100.0,
+        "ForceExecute": false
+      }
+    ],
+    "warheadActionType": 0
+  },
+  {
+    "ColliderActionType": 16,
+    "CollisionType": 1,
+    "DetectType": 2,
+    "ObjectId": "29",
+    "Amount": 0.0,
+    "warheadActionType": 0,
+    "commandings": [
+      {
+        "CommandContext": "kill {p_i}",
+        "ChanceWeight": 100.0,
+        "ForceExecute": false
+      }
+    ]
+  },
+  {
+    "ColliderActionType": 16,
+    "CollisionType": 1,
+    "DetectType": 2,
+    "ObjectId": "30",
+    "Amount": 0.0,
+    "warheadActionType": 0,
+    "commandings": [
+      {
+        "CommandContext": "kill {p_i}",
+        "ChanceWeight": 100.0,
+        "ForceExecute": false
+      }
+    ]
+  },
+  {
+    "ColliderActionType": 16,
+    "CollisionType": 1,
+    "DetectType": 2,
+    "ObjectId": "31",
+    "Amount": 0.0,
+    "warheadActionType": 0,
+    "commandings": [
+      {
+        "CommandContext": "kill {p_i}",
+        "ChanceWeight": 100.0,
+        "ForceExecute": false
+      }
+    ]
+  },
+  {
+    "ColliderActionType": 16,
+    "CollisionType": 1,
+    "DetectType": 2,
+    "ObjectId": "32",
+    "Amount": 0.0,
+    "warheadActionType": 0,
+    "commandings": [
+      {
+        "CommandContext": "kill {p_i}",
+        "ChanceWeight": 100.0,
+        "ForceExecute": false
+      }
+    ]
+  },
+  {
+    "ColliderActionType": 16,
+    "CollisionType": 1,
+    "DetectType": 2,
+    "ObjectId": "33",
+    "Amount": 0.0,
+    "warheadActionType": 0,
+    "commandings": [
+      {
+        "CommandContext": "kill {p_i}",
+        "ChanceWeight": 100.0,
+        "ForceExecute": false
+      }
+    ]
+  },
+  {
+    "ColliderActionType": 16,
+    "CollisionType": 1,
+    "DetectType": 2,
+    "ObjectId": "34",
+    "Amount": 0.0,
+    "warheadActionType": 0,
+    "commandings": [
+      {
+        "CommandContext": "kill {p_i}",
+        "ChanceWeight": 100.0,
+        "ForceExecute": false
+      }
+    ]
+  }
+]

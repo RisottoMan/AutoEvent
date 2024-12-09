@@ -81,9 +81,7 @@ public class Loadout
 public enum AmmoMode
 {
     [Description("Ammo will be normal.")]
-    None = 0 ,
+    None = 0,
     [Description("Player will be able to reload regardless of if there is ammo in their inventory.")]
-    InfiniteAmmo = 2,
-    [Description("The player will be able to fire indefinitely.")]
-    EndlessClip = 3,
+    InfiniteAmmo = 2
 }

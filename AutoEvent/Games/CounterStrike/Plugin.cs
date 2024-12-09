@@ -18,9 +18,9 @@ namespace AutoEvent.Games.CounterStrike
     {
         public override string Name { get; set; } = "Counter-Strike";
         public override string Description { get; set; } = "Fight between terrorists and counter-terrorists";
-        public override string Author { get; set; } = "KoT0XleB";
+        public override string Author { get; set; } = "RisottoMan";
         public override string CommandName { get; set; } = "cs";
-        public override Version Version { get; set; } = new Version(1, 0, 0);
+        public override Version Version { get; set; } = new Version(1, 0, 1);
         protected override FriendlyFireSettings ForceEnableFriendlyFire { get; set; } = FriendlyFireSettings.Disable;
         [EventConfig]
         public Config Config { get; set; }
@@ -56,7 +56,7 @@ namespace AutoEvent.Games.CounterStrike
             Servers.PlaceBullet += _eventHandler.OnPlaceBullet;
             Servers.PlaceBlood += _eventHandler.OnPlaceBlood;
             Players.DropAmmo += _eventHandler.OnDropAmmo;
-            Players.PickUpItem += _eventHandler.OnPickUpItem;
+            Players.SearchPickUpItem += _eventHandler.OnSearchPickUpItem;
         }
 
         protected override void UnregisterEvents()
@@ -67,7 +67,7 @@ namespace AutoEvent.Games.CounterStrike
             Servers.PlaceBullet -= _eventHandler.OnPlaceBullet;
             Servers.PlaceBlood -= _eventHandler.OnPlaceBlood;
             Players.DropAmmo -= _eventHandler.OnDropAmmo;
-            Players.PickUpItem -= _eventHandler.OnPickUpItem;
+            Players.SearchPickUpItem -= _eventHandler.OnSearchPickUpItem;
 
             _eventHandler = null;
         }

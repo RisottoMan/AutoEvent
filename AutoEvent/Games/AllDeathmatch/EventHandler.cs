@@ -41,26 +41,6 @@ namespace AutoEvent.Games.AllDeathmatch
 
         }
 
-        [PluginEvent(ServerEventType.PlayerReloadWeapon)]
-        public void OnReloading(PlayerReloadWeaponEvent ev)
-        {
-            SetMaxAmmo(ev.Player);
-        }
-
-        [PluginEvent(ServerEventType.PlayerSpawn)]
-        public void OnSpawning(PlayerSpawnEvent ev)
-        {
-            SetMaxAmmo(ev.Player);
-        }
-
-        private void SetMaxAmmo(Player pl)
-        {
-            foreach (KeyValuePair<ItemType, ushort> AmmoLimit in InventoryLimits.StandardAmmoLimits)
-            {
-                pl.SetAmmo(AmmoLimit.Key, AmmoLimit.Value);
-            }
-        }
-
         public void OnPlayerDying(PlayerDyingArgs ev)
         {
             ev.IsAllowed = false;

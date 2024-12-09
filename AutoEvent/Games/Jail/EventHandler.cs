@@ -25,11 +25,11 @@ public class EventHandler
     [PluginEvent(ServerEventType.PlayerShotWeapon)]
     public void PlayerShoot(PlayerShotWeaponEvent ev)
     {
-        if (!Physics.Raycast(ev.Player.Camera.position, ev.Player.Camera.forward, out RaycastHit raycastHit, 100f))
+        if (!Physics.Raycast(ev.Player.Camera.position, ev.Player.Camera.forward, out RaycastHit raycastHit, 100f, 1 << 0))
         {
             return;
         }
-
+        
         if (Vector3.Distance(raycastHit.transform.gameObject.transform.position, _plugin.Button.transform.position) < 3)
         {
             BypassLevel bypassLevel = BypassLevel.None;
@@ -47,7 +47,7 @@ public class EventHandler
                 return;
             }
             ev.Player.ReceiveHitMarker(2f);
-            //_plugin.PrisonerDoors.GetComponent<JailerComponent>().ToggleDoor();
+            _plugin.PrisonerDoors.GetComponent<JailerComponent>().ToggleDoor();
         }
     }
 

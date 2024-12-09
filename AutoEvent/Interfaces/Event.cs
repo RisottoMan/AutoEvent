@@ -1,14 +1,15 @@
-﻿using AutoEvent.API.Attributes;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using AutoEvent.API.Enums;
 using AutoEvent.API;
+using AutoEvent.API.AdvancedMERTool;
 using MEC;
 using AutoEvent.API.Season;
 using AutoEvent.API.Season.Enum;
+using GameCore;
 using Version = System.Version;
 
 namespace AutoEvent.Interfaces
@@ -40,8 +41,7 @@ namespace AutoEvent.Interfaces
                         continue;
                     
                     object evBase = Activator.CreateInstance(type);
-                        if(evBase is null || evBase is not Event ev ||
-                        type.GetCustomAttributes(typeof(DisabledFeaturesAttribute), false).Any(x => x is not null))
+                        if(evBase is null || evBase is not Event ev)
                         continue;
 
                     if (!ev.AutoLoad)
@@ -151,12 +151,6 @@ namespace AutoEvent.Interfaces
         /// How long to wait after the round finishes, before the cleanup begins. Default is 10 seconds.
         /// </summary>
         protected virtual float PostRoundDelay { get; set; } = 10f;
-
-        /// <summary>
-        /// Obsolete. Use <see cref="IExiledEvent"/> instead.
-        /// </summary>
-        [Obsolete("This is no longer supported. Inherit IExiledEvent instead.")]
-        public virtual bool UsesExiled { get; protected set; } = false;
         
         /// <summary>
         /// If using NwApi or Exiled as the base plugin, set this to false, and manually add your plugin to Event.Events (List[Events]).
@@ -208,6 +202,8 @@ namespace AutoEvent.Interfaces
         /// The elapsed time since the plugin started.
         /// </summary>
         public virtual TimeSpan EventTime { get; protected set; }
+        
+        public virtual AdvancedMERTools AdvancedMERObject { get; protected set; }
 
     #endregion
     #region Event API Methods // Methods that can be used as api calls such as starting music / spawning map. 
@@ -265,6 +261,12 @@ namespace AutoEvent.Interfaces
                 map.MapInfo.MapRotation, 
                 map.MapInfo.Scale,
                 map.MapInfo.IsStatic);
+            
+            Timing.CallDelayed(0.05f, () =>
+            {
+                AdvancedMERObject = new AdvancedMERTools();
+                AdvancedMERObject.OnEnabled(map.MapInfo.Map);
+            });
         }
     }
 
@@ -277,6 +279,7 @@ namespace AutoEvent.Interfaces
         if (this is IEventMap eventMap)
         {
             Extensions.UnLoadMap(eventMap.MapInfo.Map);
+            AdvancedMERObject.OnDisabled();
         }
     }
 
@@ -527,17 +530,23 @@ namespace AutoEvent.Interfaces
                 return;
 
             // We get the current style and check the maps by their style
-            SeasonStyle _curSeason = SeasonMethod.GetSeasonStyle();
-
+            SeasonFlag seasonFlag = SeasonMethod.GetSeasonStyle().SeasonFlag;
+            
+            // If there are no seasonal maps, then choose the default maps
+            if (conf.AvailableMaps.Count(r => r.SeasonFlag == seasonFlag) == 0)
+            {
+                seasonFlag = 0;
+            }
+            
             List<MapChance> maps = new();
             foreach (var map in conf.AvailableMaps)
             {
-                if (map.SeasonFlag is SeasonFlag.None || map.SeasonFlag == _curSeason.SeasonFlag)
+                if (map.SeasonFlag == seasonFlag)
                 {
                     maps.Add(map);
                 }
             }
-
+            
             if (this is IEventMap eventMap)
             {
                 bool spawnAutomatically = eventMap.MapInfo.SpawnAutomatically;

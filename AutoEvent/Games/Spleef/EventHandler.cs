@@ -1,6 +1,9 @@
 ﻿using AutoEvent.Events.EventArgs;
 using InventorySystem.Items.Armor;
 using InventorySystem.Items.Firearms;
+using PluginAPI.Core.Attributes;
+using PluginAPI.Enums;
+using PluginAPI.Events;
 using UnityEngine;
 
 namespace AutoEvent.Games.Spleef;
@@ -12,8 +15,15 @@ public class EventHandler
     {
         _plugin = plugin;
     }
-    public void OnShot(ShotEventArgs ev)
+    
+    [PluginEvent(ServerEventType.PlayerShotWeapon)]
+    public void PlayerShoot(PlayerShotWeaponEvent ev)
     {
+        if (!Physics.Raycast(ev.Player.Camera.position, ev.Player.Camera.forward, out RaycastHit raycastHit, 10f, 1 << 0))
+        {
+            return;
+        }
+        
         if (_plugin.Config.PlatformHealth < 0)
         {
             return;
@@ -24,15 +34,9 @@ public class EventHandler
             return;
         }
 
-        if (ev.Damage <= 0)
-        {
-            ev.Damage = BodyArmorUtils.ProcessDamage(0, firearm.BaseStats.DamageAtDistance(firearm, ev.Distance), Mathf.RoundToInt(firearm.ArmorPenetration * 100f));
-        }
-
-        ev.RaycastHit.collider.transform.GetComponentsInParent<FallPlatformComponent>().ForEach(GameObject.Destroy);
+        raycastHit.collider.transform.GetComponentsInParent<FallPlatformComponent>().ForEach(GameObject.Destroy);
     }
-
-
+    
     public void OnTeamRespawn(TeamRespawnArgs ev) => ev.IsAllowed = false;
     public void OnSpawnRagdoll(SpawnRagdollArgs ev) => ev.IsAllowed = false;
     public void OnPlaceBullet(PlaceBulletArgs ev) => ev.IsAllowed = false;

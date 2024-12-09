@@ -3,32 +3,39 @@ using InventorySystem;
 using InventorySystem.Items;
 using InventorySystem.Items.Firearms;
 using InventorySystem.Items.Firearms.Attachments;
-using InventorySystem.Items.Firearms.Attachments.Components;
+using InventorySystem.Items.Firearms.Modules;
 using PluginAPI.Core;
-using System.Linq;
 
-namespace AutoEvent.Patches
+namespace AutoEvent.Patches;
+
+[HarmonyPatch(typeof(Player), nameof(Player.AddItem), new [] { typeof(ItemType)})]
+internal class AddItem
 {
-    [HarmonyPatch(typeof(Player), nameof(Player.AddItem))]
-    internal class AddItem
+    public static bool Prefix(Player __instance, ItemType item, ref ItemBase __result)
     {
-        public static bool Prefix(Player __instance, ItemType item, ref ItemBase __result)
+        ItemBase itemBase = __instance.ReferenceHub.inventory.ServerAddItem(item, 0);
+
+        if (itemBase is Firearm firearm)
         {
-            ItemBase itemBase = __instance.ReferenceHub.inventory.ServerAddItem(item, 0);
-            
-            if (itemBase is Firearm firearm)
+            if (AttachmentsServerHandler.PlayerPreferences.TryGetValue(__instance.ReferenceHub, out var preferedAllAttachmets)
+                && preferedAllAttachmets.TryGetValue(item, out var preferedAttachments))
             {
-                FirearmStatusFlags firearmStatusFlags = FirearmStatusFlags.MagazineInserted;
-                if (firearm.Attachments.Any((Attachment a) => a.Name == AttachmentName.Flashlight))
-                {
-                    firearmStatusFlags |= FirearmStatusFlags.FlashlightEnabled;
-                }
-
-                firearm.Status = new FirearmStatus(firearm.AmmoManagerModule.MaxAmmo, firearmStatusFlags, firearm.GetCurrentAttachmentsCode());
+                firearm.ApplyAttachmentsCode(preferedAttachments, true);
             }
-
-            __result = itemBase;
-            return false;
+            
+            if (firearm.TryGetModule(out MagazineModule magModule))
+            {
+                magModule.UserInv.ServerSetAmmo(magModule.AmmoType, magModule.AmmoMax);
+                magModule.ServerInsertMagazine();
+            }
+            
+            if (firearm.TryGetModule(out CylinderAmmoModule cylModule))
+            {
+                cylModule.ServerModifyAmmo(cylModule.AmmoMax);
+            }
         }
+        
+        __result = itemBase;
+        return false;
     }
 }

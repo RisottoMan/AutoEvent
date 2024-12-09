@@ -26,7 +26,6 @@ public class DebugLogger
     public static DebugLogger Singleton;
     internal static List<AssemblyInfo> Assemblies { get; set; }
     public static bool NoRestartEnabled { get; set; } = false;
-    public const string Version = "9.6.0";
     public DebugLogger(bool writeDirectly)
     {
         Singleton = this;

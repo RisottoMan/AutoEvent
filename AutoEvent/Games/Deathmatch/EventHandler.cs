@@ -1,6 +1,5 @@
 ﻿using AutoEvent.Events.EventArgs;
 using CustomPlayerEffects;
-using InventorySystem.Configs;
 using MEC;
 using PlayerRoles;
 using PluginAPI.Core.Attributes;
@@ -43,26 +42,6 @@ namespace AutoEvent.Games.Deathmatch
                     ev.Player.CurrentItem = ev.Player.Items.First();
                 }
             });
-        }
-
-        [PluginEvent(ServerEventType.PlayerReloadWeapon)]
-        public void OnReloading(PlayerReloadWeaponEvent ev)
-        {
-            SetMaxAmmo(ev.Player);
-        }
-
-        [PluginEvent(ServerEventType.PlayerSpawn)]
-        public void OnSpawning(PlayerSpawnEvent ev)
-        {
-            SetMaxAmmo(ev.Player);
-        }
-
-        private void SetMaxAmmo(Player pl)
-        {
-            foreach (KeyValuePair<ItemType, ushort> AmmoLimit in InventoryLimits.StandardAmmoLimits)
-            {
-                pl.SetAmmo(AmmoLimit.Key, AmmoLimit.Value);
-            }
         }
 
         public void OnPlayerDying(PlayerDyingArgs ev)

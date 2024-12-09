@@ -210,15 +210,6 @@ public static class PermissionSystem
             {
                 result = true;
             }
-
-#if !EXILED
-            var player = Player.Get(sender);
-            if (player is null ||
-                !config.PermissionList.Contains(ServerStatic.PermissionsHandler._members[player.UserId]))
-            {
-                result = false;
-            }
-#endif
         }
         catch (Exception e)
         {

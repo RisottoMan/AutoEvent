@@ -16,7 +16,8 @@ public class Config : EventConfig
         new Loadout()
         {
             Roles = new Dictionary<RoleTypeId, int>(){ { RoleTypeId.NtfSpecialist, 100 } },
-            Items = new List<ItemType>() { ItemType.GunE11SR, ItemType.GrenadeHE, ItemType.GrenadeFlash, ItemType.Radio, ItemType.ArmorCombat }
+            Items = new List<ItemType>() { ItemType.GunE11SR, ItemType.GrenadeHE, ItemType.GrenadeFlash, ItemType.Radio, ItemType.ArmorCombat },
+            InfiniteAmmo = AmmoMode.InfiniteAmmo
         }
     };
 
@@ -26,7 +27,8 @@ public class Config : EventConfig
         new Loadout()
         {
             Roles = new Dictionary<RoleTypeId, int>(){ { RoleTypeId.ChaosRifleman, 100 } },
-            Items = new List<ItemType>() { ItemType.GunAK, ItemType.GrenadeHE, ItemType.GrenadeFlash, ItemType.Radio, ItemType.ArmorCombat }
+            Items = new List<ItemType>() { ItemType.GunAK, ItemType.GrenadeHE, ItemType.GrenadeFlash, ItemType.Radio, ItemType.ArmorCombat },
+            InfiniteAmmo = AmmoMode.InfiniteAmmo
         }
     };
 }

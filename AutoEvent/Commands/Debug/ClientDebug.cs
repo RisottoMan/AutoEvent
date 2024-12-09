@@ -22,6 +22,11 @@ namespace AutoEvent.Commands.Debug;
 [CommandHandler(typeof(ClientCommandHandler))]
 public class ClientDebug : ICommand, IPermission
 {
+    public string Command => "evdebug";
+    public string[] Aliases => Array.Empty<string>();
+    public string Description => "Toggles some basic debug information for the user.";
+    public string Permission { get; set; } = "ev.debugconsole";
+    public bool SanitizeResponse => false;
     public bool Execute(ArraySegment<string> arguments, ICommandSender sender, [UnscopedRef] out string response)
     {
         string id = Player.Get(sender).UserId;
@@ -46,9 +51,4 @@ public class ClientDebug : ICommand, IPermission
         response = "Enabled Forwarding Debug Logging.";
         return true;
     }
-
-    public string Command => "evdebug";
-    public string[] Aliases => Array.Empty<string>();
-    public string Description => "Toggles some basic debug information for the user.";
-    public string Permission { get; set; } = "ev.debugconsole";
 }

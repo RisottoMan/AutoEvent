@@ -16,14 +16,11 @@ using System.Reflection;
 using AutoEvent.API;
 using AutoEvent.API.Enums;
 using AutoEvent.Events.EventArgs;
-using CustomPlayerEffects;
 using Footprinting;
 using InventorySystem.Configs;
 using InventorySystem.Items.ThrowableProjectiles;
 using InventorySystem.Items;
 using InventorySystem.Items.Jailbird;
-using InventorySystem.Items.Keycards;
-using InventorySystem.Items.Usables.Scp244.Hypothermia;
 using JetBrains.Annotations;
 using PlayerRoles.Ragdolls;
 using Item = PluginAPI.Core.Items.Item;
@@ -198,7 +195,7 @@ namespace AutoEvent
 
             if ((loadout.InfiniteAmmo != AmmoMode.None && !flags.HasFlag(LoadoutFlags.IgnoreInfiniteAmmo)) || flags.HasFlag(LoadoutFlags.ForceInfiniteAmmo) || flags.HasFlag(LoadoutFlags.ForceEndlessClip))
             {
-                player.GiveInfiniteAmmo(loadout.InfiniteAmmo == AmmoMode.EndlessClip || flags.HasFlag(LoadoutFlags.ForceEndlessClip) ? AmmoMode.EndlessClip : AmmoMode.InfiniteAmmo);
+                player.GiveInfiniteAmmo(AmmoMode.InfiniteAmmo);
             }
             if(loadout.Health != 0 && !flags.HasFlag(LoadoutFlags.IgnoreHealth))
                 player.Health = loadout.Health;
@@ -268,7 +265,13 @@ namespace AutoEvent
                 or ItemType.GunE11SR   or ItemType.GunFSP9     or ItemType.GunFRMG0    
                 or ItemType.Jailbird   or ItemType.MicroHID    or ItemType.ParticleDisruptor  
                 or ItemType.GrenadeHE  or ItemType.SCP018; // Dont add weapons
-        
+
+        public static bool IsAmmo(this ItemType item) => item
+            is ItemType.Ammo9x19    or 
+               ItemType.Ammo12gauge or 
+               ItemType.Ammo44cal   or 
+               ItemType.Ammo556x45  or 
+               ItemType.Ammo762x39;
         
         public static void SetPlayerAhp(this Player player, float amount, float limit = 75, float decay = 1.2f,
             float efficacy = 0.7f, float sustain = 0, bool persistant = false)
@@ -280,98 +283,12 @@ namespace AutoEvent
         }
 
         public static Dictionary<ushort, bool> ExplodeOnCollisionList = new Dictionary<ushort, bool>();
-        //public static Dictionary<ushort, RockSettings> RockList = new Dictionary<ushort,RockSettings>();
-
-
-        //public static void MakeRock(this Item rock, RockSettings settings) => MakeRock(rock.Serial, settings);
-        //public static void MakeRock(this ItemBase rock, RockSettings settings) => MakeRock(rock.ItemSerial, settings);
-        /*
-        public static void MakeRock(ushort serial, RockSettings settings)
-        {
-            RockList.Add(serial, settings);
-        }*/
-
-        
-        /// <summary>
-        /// Gets the keycard permissions of a player.
-        /// </summary>
-        /// <param name="ply">The player to get the permissions of./param>
-        /// <param name="inHandOnly">Will only cards that are in hand count. (Bypass / SCP Override as well)</param>
-        /// <returns></returns>
-        public static KeycardPermissions KeyCardLevel(this Player ply, bool inHandOnly = false)
-        {
-            KeycardPermissions perms = KeycardPermissions.None;
-            
-            // Add Current Keycard Only
-            if (inHandOnly && ply.CurrentItem is KeycardItem keycard)
-                perms = (KeycardPermissions)keycard.Permissions;
-
-            // Add all keycards
-            if (!inHandOnly)
-            {
-                foreach (var item in ply.Items)
-                {
-                    if (item is not KeycardItem keycardItem)
-                        continue;
-                    perms.Include((int)keycardItem.Permissions);
-                }
-            }
-            // Add bypass mode
-            if (ply.IsBypassEnabled)
-                perms |= KeycardPermissions.BypassMode;
-
-            // Add scp override
-            if (ply.IsSCP)
-                perms |= KeycardPermissions.ScpOverride;
-            
-            // Add 079 override
-            if (ply.Role == RoleTypeId.Scp079)
-                perms |= KeycardPermissions.Scp079Override;
-
-            return perms;
-        }
-        
-
-        /// <summary>
-        /// Checks whether a player has a keycard level.
-        /// </summary>
-        /// <param name="ply">The player to get the permissions of.</param>
-        /// <param name="inHandOnly">Will only cards that are in hand count. (Bypass / SCP Override as well)</param>
-        /// <returns>True if the player has the level. False if the player does not have the level.</returns>
-        public static bool HasKeycardLevel(this Player ply, KeycardPermissions perms, bool inHandOnly = false)
-        {
-            KeycardPermissions curPerms = ply.KeyCardLevel(inHandOnly);
-            return curPerms.HasRequiredFlags(perms);
-        }
 
         public static void ExplodeOnCollision(this Item grenade, bool giveNewGrenadeOnExplosion = false) => ExplodeOnCollision(grenade.Serial, giveNewGrenadeOnExplosion);
         public static void ExplodeOnCollision(this ItemBase grenade, bool giveNewGrenadeOnExplosion = false) => ExplodeOnCollision(grenade.ItemSerial, giveNewGrenadeOnExplosion);
         public static void ExplodeOnCollision(this ushort item, bool giveNewGrenadeOnExplosion = false)
         {
             ExplodeOnCollisionList.Add(item, giveNewGrenadeOnExplosion);
-        }
-        
-        public static ThrowableItem CreateThrowable(ItemType type, Player player = null) => (player != null ? player.ReferenceHub : ReferenceHub.HostHub)
-            .inventory.CreateItemInstance(new ItemIdentifier(type, ItemSerialGenerator.GenerateNext()), false) as ThrowableItem;
-        public static ThrownProjectile SpawnThrowable(
-            this ThrowableItem item,
-            Vector3 position,
-            float fuseTime = -1f,
-            Player owner = null,
-            bool activate = false
-        )
-        {
-            TimeGrenade grenade = (TimeGrenade) Object.Instantiate(item.Projectile, position, Quaternion.identity);
-            if (fuseTime >= 0)
-                grenade._fuseTime = fuseTime;
-            grenade.NetworkInfo = new PickupSyncInfo(item.ItemTypeId, item.Weight, item.ItemSerial);
-            grenade.PreviousOwner = new Footprint(owner != null ? owner.ReferenceHub : ReferenceHub.HostHub);
-            if (grenade is Scp018Projectile scp018)
-                scp018.GetComponent<Rigidbody>().velocity = activate ? new Vector3(Random.value, Random.value, Random.value) : Vector3.zero; // add some force to make the ball bounce
-            NetworkServer.Spawn(grenade.gameObject);
-            if(activate)
-                grenade.ServerActivate();
-            return grenade;
         }
         
         public static Dictionary<Player, AmmoMode> InfiniteAmmoList = new Dictionary<Player, AmmoMode>();
@@ -393,62 +310,19 @@ namespace AutoEvent
             {
                 InfiniteAmmoList.Add(player, ammoMode);
             }
-            foreach (KeyValuePair<ItemType, ushort> AmmoLimit in InventoryLimits.StandardAmmoLimits)
+            
+            foreach (var ammoLimit in  InventoryLimits.Config.AmmoLimitsSync)
             {
-                player.SetAmmo(AmmoLimit.Key, AmmoLimit.Value);
+                player.SetAmmo(ammoLimit.AmmoType, ammoLimit.Limit);
             }
         }
         public static void GiveEffect(this Player ply, Effect effect) => GiveEffect(ply, effect.EffectType, effect.Intensity,
             effect.Duration, effect.AddDuration);
         public static void GiveEffect(this Player ply, StatusEffect effect, byte intensity, float duration = 0f, bool addDuration = false) =>             
             ply.EffectsManager.ChangeState(effect.ToString(), intensity, duration, addDuration);
-        public static Type GetStatusEffectBaseType(this StatusEffect effect)
-        {
-            // I should have done this via reflection but oh well... 
-            switch (effect)
-            {
-                case StatusEffect.Asphyxiated: return typeof(Asphyxiated); 
-                case StatusEffect.Bleeding: return typeof(Bleeding);
-                case StatusEffect.Blinded: return typeof(Blinded);
-                case StatusEffect.Burned: return typeof(Burned);
-                case StatusEffect.Concussed: return typeof(Concussed);
-                case StatusEffect.Corroding: return typeof(Corroding);
-                case StatusEffect.Deafened: return typeof(Deafened);
-                case StatusEffect.Decontaminating: return typeof(Decontaminating);
-                case StatusEffect.Disabled: return typeof(Disabled);
-                case StatusEffect.Ensnared: return typeof(Ensnared);
-                case StatusEffect.Exhausted: return typeof(Exhausted);
-                case StatusEffect.Flashed: return typeof(Flashed);
-                case StatusEffect.Hemorrhage: return typeof(Hemorrhage);
-                case StatusEffect.Hypothermia: return typeof(Hypothermia);
-                case StatusEffect.Invigorated: return typeof(Invigorated);
-                case StatusEffect.Invisible: return typeof(Invisible);
-                case StatusEffect.Poisoned: return typeof(Poisoned);
-                case StatusEffect.Scanned: return typeof(Scanned);
-                case StatusEffect.Scp207: return typeof(Scp207);
-                case StatusEffect.Scp1853: return typeof(Scp1853);
-                case StatusEffect.Stained: return typeof(Stained);
-                case StatusEffect.Traumatized: return typeof(Traumatized);
-                case StatusEffect.Vitality: return typeof(Vitality);
-                case StatusEffect.AmnesiaItems: return typeof(AmnesiaItems);
-                case StatusEffect.AmnesiaVision: return typeof(AmnesiaVision);
-                case StatusEffect.AntiScp207: return typeof(AntiScp207);
-                case StatusEffect.BodyshotReduction: return typeof(BodyshotReduction);
-                case StatusEffect.CardiacArrest: return typeof(CardiacArrest);
-                case StatusEffect.DamageReduction: return typeof(DamageReduction);
-                case StatusEffect.InsufficientLighting: return typeof(InsufficientLighting);
-                case StatusEffect.MovementBoost: return typeof(MovementBoost);
-                case StatusEffect.PocketCorroding: return typeof(PocketCorroding);
-                case StatusEffect.RainbowTaste: return typeof(RainbowTaste);
-                case StatusEffect.SeveredHands: return typeof(SeveredHands);
-                case StatusEffect.SinkHole: return typeof(Sinkhole);
-                case StatusEffect.SoundtrackMute: return typeof(SoundtrackMute);
-                case StatusEffect.SpawnProtected: return typeof(SpawnProtected);
-
-            }
-
-            return null;
-        }
+        public static void DisableEffect(this Player ply, Effect effect) => DisableEffect(ply, effect.EffectType);
+        public static void DisableEffect(this Player ply, StatusEffect effect) =>             
+            ply.EffectsManager.ChangeState(effect.ToString(), 0, 0, true);
 
         public static void TeleportEnd()
         {
