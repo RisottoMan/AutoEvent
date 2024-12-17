@@ -1,0 +1,19 @@
+name: 'เส้นตาย'
+description: 'หลบเส้นที่เข้ามาหาเรื่อย ๆ '
+command_name: 'line'
+cycle: |-
+  <color=#FF4242>{name}</color>
+  <color=#14AAF5>เวลา: {time}
+  <color=yellow>ผู้เล่นเหลือ: {count}</color>
+more_players: |-
+  <color=#FF4242>{name}</color>
+  <color=yellow>{count} คน รอด!!</color>
+  <color=red>ยินดีด้วย!</color>
+winner: |-
+  <color=#FF4242>{name}</color>
+  <color=yellow>ผู้ชนะ: {winner}</color>
+  <color=red>ยินดีด้วย!</color>
+all_died: '<color=red>ตายทั้งหมด</color>'
+# DO NOT CHANGE THIS. IT WILL BREAK THINGS. AutoEvent will automatically manage these settings.
+version: '1.0.0'
+language: 'TH'

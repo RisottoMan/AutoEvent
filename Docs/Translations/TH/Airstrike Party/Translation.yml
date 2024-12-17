@@ -1,0 +1,22 @@
+name: 'ระเบิดจากฟากฟ้า'
+description: 'เอาชีวิตรอดจากระเบิดที่หล่นมาจากฟากฟ้าSurvive as aistrikes rain down from above.'
+command_name: 'airstrike'
+cycle: |-
+  <color=yellow>หลบลูกระเบิดจากฟากฟ้า!</color>
+  <color=green>เวลา: {time} วินาทีผ่านไป</color>
+  <color=red>เหลือคนรอด {count} คน</color>
+more_player: |-
+  <color=red>Death Party</color>
+  <color=yellow><color=red>เหลือคนรอด {count}</color> คน</color>
+  <color=#ffc0cb>{time}</color>
+one_player: |-
+  <color=red>Death Party</color>
+  <color=yellow>ผู้ชนะคือ <color=red>{winner}</color></color>
+  <color=#ffc0cb>{time}</color>
+all_die: |-
+  <color=red>Death Party</color>
+  <color=yellow>ไม่มีใครรอด(((</color>
+  <color=#ffc0cb>{time}</color>
+# DO NOT CHANGE THIS. IT WILL BREAK THINGS. AutoEvent will automatically manage these settings.
+version: '1.0.3'
+language: 'TH'

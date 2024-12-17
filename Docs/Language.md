@@ -18,4 +18,5 @@
 ## > Chinese [``View``](https://github.com/KoT0XleB/AutoEvent/tree/main/Docs/Translations/ZH) [``Archive``](https://github.com/KoT0XleB/AutoEvent/blob/main/Docs/Translations/ZH.7z)
 ### This language must be set manually.
 ## > Brazilian [``View``](https://github.com/KoT0XleB/AutoEvent/tree/main/Docs/Translations/BR) [``Archive``](https://github.com/KoT0XleB/AutoEvent/blob/main/Docs/Translations/BR.7z)
+## > Thai [``View``](https://github.com/KoT0XleB/AutoEvent/tree/main/Docs/Translations/TH) [``Archive``](https://github.com/KoT0XleB/AutoEvent/blob/main/Docs/Translations/TH.7z)
 ### This language must be set manually.

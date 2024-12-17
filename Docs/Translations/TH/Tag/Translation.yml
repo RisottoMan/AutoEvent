@@ -1,0 +1,21 @@
+name: 'วิ่งไล่แปะ'
+description: 'วิ่งไล่แปะหรือวิ่งหนีเอาตัวรอด'
+command_name: 'tag'
+broadcast: |-
+  วิ่ง
+  คนไล่แปะกำลังโดนเลือก แอบซะ!
+  เหลือเวลาอีก: {time}
+cycle: |-
+  ไล่แปะคนเล่นอื่น
+  <color=yellow>เหลือ <b><i>{time}</i></b> วินาที</color>
+hurt: 'คุณไล่แปะคนอื่นไม่ทัน'
+one_player: |-
+  ผู้ชนะได้แก่ {winner}
+  <color=yellow>เวลา <color=red>{time}</color></color>
+all_die: |-
+  ไม่มีใครรอด
+  จบเกม
+  <color=yellow>เวลา <color=red>{time}</color></color>
+# DO NOT CHANGE THIS. IT WILL BREAK THINGS. AutoEvent will automatically manage these settings.
+version: '1.0.2'
+language: 'TH'

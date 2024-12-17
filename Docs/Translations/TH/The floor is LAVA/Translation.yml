@@ -1,0 +1,15 @@
+name: 'พื้นเป็นลาวา'
+description: 'เอาตัวรอดด้วยการหลีกเลี่ยงลาวา และสังหารผู้เล่นอื่นด้วย'
+command_name: 'lava'
+start: |-
+  <size=100><color=red>{time}</color></size>
+  หาอาวุธและรีบขึ้น
+cycle: '<size=20><color=red><b>รอด: {count} คน</b></color></size>'
+win: |-
+  <color=red><b>ชนะ
+  ผู้ชนะ - {winner}</b></color>
+all_dead: '<color=red><b>ไม่มีใครรอดจนถึงสุดท้าย</b></color>'
+died: '<color=red>หล่นลาวาตาย</color>'
+# DO NOT CHANGE THIS. IT WILL BREAK THINGS. AutoEvent will automatically manage these settings.
+version: '1.0.3'
+language: 'EN'

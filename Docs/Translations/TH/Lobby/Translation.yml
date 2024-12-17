@@ -1,0 +1,21 @@
+name: 'Lobby'
+description: 'A lobby in which one quick player chooses a mini-game.'
+command_name: 'lobby'
+cycle: |-
+  Vote: Press [Alt] Pros or [Alt]x2 Cons
+  {trueCount} of {allCount} players for {newName}
+  {time} seconds left!
+global_message: |-
+  Lobby
+  {message}
+  {count} players in the lobby
+get_ready: 'Get ready to run to the center and choose a mini game'
+run: 'RUN'
+choosing: 'Waiting for the {nickName} to choose mini-game'
+finish_message: |-
+  The lobby is finished.
+  The player {nickName} chose the {newName} mini-game.
+  Total {count} players in the lobby
+# DO NOT CHANGE THIS. IT WILL BREAK THINGS. AutoEvent will automatically manage these settings.
+version: '1.0.0'
+language: 'EN'

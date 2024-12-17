@@ -1,0 +1,38 @@
+name: 'Counter-Strike'
+description: 'การสู้ระหว่าง ผู้ก่อการร้าย กับ ผู้ต่อต้านก่อการร้าย'
+command_name: 'cs'
+cycle: |-
+  <size=60>{name}</size>
+  <size=25><i>{task}</i>
+  <i><color=#42AAFF>{ctCount} Counters</color> <b>/</b> <color=green>{tCount} Terrorists</color></i>
+  <i>เวลารอบ: {time}</i></size>
+no_planted_counter: 'ปกป้องจุดวาง A และ B จากผู้ก่อการร้าย'
+no_planted_terror: 'วางระเบิดในจุดวาง A และ B'
+planted_counter: '<color=red>รีบแก้ระเบิดก่อนมันจะระเบิด</color>'
+planted_terror: '<color=red>ปกป้องระเบิดจนกว่ามันจะระเบิด</color>'
+draw: |-
+  <b><color=#808080>เสมอ</color></b>
+  <i>ทุกคน ตาย</i>
+time_ended: |-
+  <b><color=#808080>เสมอ</color></b>
+  <i>หมด เวลา</i>
+counter_win: |-
+  <b><color=#42AAFF>ผู้ต่อต้านก่อการร้าย ชนะ</color></b>
+  <i>ผู้ก่อการร้ายตายหมด</i>
+terrorist_win: |-
+  <b><color=green>ผู้ก่อการร้าย ชนะ</color></b>
+  <i>ผู้ต่อต้านก่อการร้ายตายหมด</i>
+planted_win: |-
+  <b><color=green>ผู้ก่อการร้าย ชนะ</color></b>
+  <i>ระเบิดทำงานสำเร็จ</i>
+defused_win: |-
+  <b><color=#42AAFF>ผู้ต่อต้านก่อการร้าย ชนะ</color></b>
+  <i>กู้ระเบิดสำเร็จ</i>
+you_planted: '<b><color=#ff4c5b>คุณวางระเบิด</color></b>'
+you_defused: '<b><color=#42aaff>คุณกู้ระเบิด</color></b>'
+hint_cycle: |-
+  <size=30><i><b>{name}</b>
+  {kills}
+# DO NOT CHANGE THIS. IT WILL BREAK THINGS. AutoEvent will automatically manage these settings.
+version: '1.0.0'
+language: 'TH'

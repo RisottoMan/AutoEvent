@@ -1,0 +1,18 @@
+name: 'วิ่งแข่ง'
+description: 'วิ่งไปยังจุดเส้นชัยเพื่อชนะ'
+command_name: 'race'
+cycle: |-
+  {name}
+  <color=yellow>วิ่งไปจุดเส้นชัยเพื่อชนะ!</color>
+  เหลืออีก: {time}
+died: '<color=red>วิ่งไม่ทัน</color>'
+players_survived: |-
+  <color=red>ชนะ!</color>
+  รอดทั้งหมด {count} คน
+one_survived: |-
+  <color=red>ชนะ!</color>
+  ผู้ชนะ: {player}
+no_survivors: '<color=red>ไม่มีใครรอด!</color>'
+# DO NOT CHANGE THIS. IT WILL BREAK THINGS. AutoEvent will automatically manage these settings.
+version: '1.0.1'
+language: 'TH'
