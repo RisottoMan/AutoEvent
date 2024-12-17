@@ -1,0 +1,27 @@
+name: 'แลกหมัดมวย'
+description: 'ปะทะผู้เล่นอีกฝั่งโดยการเข้าเวที'
+command_name: 'versus'
+players_null: |-
+  <color=#D71868><b><i>{name}</i></b></color>
+  เข้าไปในเวที แล้วไปสู้กันซะ!
+  <color=red>เหลือ {remain}</color> วินาที
+class_d_null: |-
+  <color=#D71868><b><i>{name}</i></b></color>
+  ผู้รอดชีวิต <color=yellow>{scientist}</color>
+  บังคับเข้าเวทีในอีก <color=orange>{remain}</color> วิ
+scientist_null: |-
+  <color=#D71868><b><i>{name}</i></b></color>
+  ผู้รอดชีวิต <color=orange>{classd}</color>
+  บังคับเข้าเวทีในอีก <color=yellow>{remain}</color> วิ
+players_duel: |-
+  <color=#D71868><b><i>{name}</i></b></color>
+  <color=yellow><color=yellow>{scientist}</color> <color=red>สู้กับ</color> <color=orange>{classd}</color></color>
+class_d_win: |-
+  <color=#D71868><b><i>{name}</i></b></color>
+  <color=yellow>ทีมชนะ: <color=red>CLASS D</color></color>
+scientist_win: |-
+  <color=#D71868><b><i>{name}</i></b></color>
+  <color=yellow>ทีมชนะ: <color=red>SCIENTISTS</color></color>
+# DO NOT CHANGE THIS. IT WILL BREAK THINGS. AutoEvent will automatically manage these settings.
+version: '1.0.2'
+language: 'TH'

@@ -1,0 +1,19 @@
+name: 'โหวต'
+description: 'โหวตเพื่อเริ่มมินิเกม'
+command_name: 'vote'
+start: |-
+  <color=#D71868><b><i>Run Forward</i></b></color>
+  Infection starts in: {time}
+cycle: |-
+  โหวต: กด [Alt] 1 ครั้ง โหวตใช่ หรือ กด [Alt] 2 ครั้ง โหวตไม่
+  {trueCount}/{allCount} ผู้เล่นโหวตสำหรับ {newName}
+   เหลืออีก {time} วินาที!
+minigame_start: 'เกม {newName} กำลังจะเริ่ม'
+minigame_not_start: 'อดเล่น {newName}'
+end: |-
+  โหวต: จบการโหวต
+  {trueCount}/{allCount} คนเล่น
+  {results}
+# DO NOT CHANGE THIS. IT WILL BREAK THINGS. AutoEvent will automatically manage these settings.
+version: '1.0.0'
+language: 'TH'
