@@ -1,0 +1,20 @@
+name: 'Zombie Escape'
+description: 'Уou need to run away from zombies and escape by helicopter.'
+command_name: 'zombie3'
+start: |-
+  <color=#D71868><b><i>Run Forward</i></b></color>
+  Infection starts in: {time}
+helicopter: |-
+  <color=yellow>{name}</color>
+  <color=red>Need to call helicopter.</color>
+  Humans left: {count}
+died: 'Warhead detonated'
+zombie_win: |-
+  <color=red>Zombies wins!</color>
+  All humans died
+human_win: |-
+  <color=#14AAF5>Humans wins!</color>
+  Humans escaped
+# DO NOT CHANGE THIS. IT WILL BREAK THINGS. AutoEvent will automatically manage these settings.
+version: '1.0.0'
+language: 'EN'

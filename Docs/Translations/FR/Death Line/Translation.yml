@@ -1,0 +1,19 @@
+name: 'DeathLine'
+description: 'Evite la platforme qui bouge'
+command_name: 'line'
+cycle: |-
+  <color=#FF4242>{name}</color>
+  <color=#14AAF5>Temps restant: {time}
+  <color=yellow>Joueurs restant: {count}</color>
+more_players: |-
+  <color=#FF4242>{name}</color>
+  <color=yellow>{count} Joueurs ont survécu</color>
+  <color=red>Congratulate!</color>
+winner: |-
+  <color=#FF4242>{name}</color>
+  <color=yellow>Winner: {winner}</color>
+  <color=red>Félicitation!</color>
+all_died: '<color=red>Tous le joueurs sont mort</color>'
+# DO NOT CHANGE THIS. IT WILL BREAK THINGS. AutoEvent will automatically manage these settings.
+version: '1.0.0'
+language: 'EN'

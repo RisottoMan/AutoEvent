@@ -1,0 +1,22 @@
+name: 'Airstrike Party'
+description: 'Survivez à des frappes aériennes'
+command_name: 'airstrike'
+cycle: |-
+  <color=yellow>Esquiver les frappes aériennes </color>
+  <color=green>{time} secondes se sont écoulées/color>
+  <color=red>{count} joueurs restant</color>
+more_player: |-
+  <color=red>Death Party</color>
+  <color=yellow><color=red>{count}</color> joueurs ayant survécu.</color>
+  <color=#ffc0cb>{time}</color>
+one_player: |-
+  <color=red>Death Party</color>
+  <color=yellow>Winner - <color=red>{winner}</color></color>
+  <color=#ffc0cb>{time}</color>
+all_die: |-
+  <color=red>Death Party</color>
+  <color=yellow>Personne n''a survécu.(((</color>
+  <color=#ffc0cb>{time}</color>
+# DO NOT CHANGE THIS. IT WILL BREAK THINGS. AutoEvent will automatically manage these settings.
+version: '1.0.3'
+language: 'EN'

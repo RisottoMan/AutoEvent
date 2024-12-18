@@ -1,0 +1,15 @@
+name: 'The floor is LAVA'
+description: 'Survival, in which you need to avoid lava and shoot at others.'
+command_name: 'lava'
+start: |-
+  <size=100><color=red>{time}</color></size>
+  Take weapons and climb up.
+cycle: '<size=20><color=red><b>Alive: {count} players</b></color></size>'
+win: |-
+  <color=red><b>Winner
+  Player - {winner}</b></color>
+all_dead: '<color=red><b>No one survived to the end.</b></color>'
+died: '<color=red>Burned in Lava</color>'
+# DO NOT CHANGE THIS. IT WILL BREAK THINGS. AutoEvent will automatically manage these settings.
+version: '1.0.3'
+language: 'EN'

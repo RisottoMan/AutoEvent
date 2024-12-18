@@ -1,0 +1,21 @@
+name: 'Puzzle'
+description: 'Va le plus vite sur la bonne platforme'
+command_name: 'puzzle'
+start: '<color=red>Starts in: </color>{time}'
+stage: |-
+  <color=red>Stage: </color>{stageNum}<color=red> / </color>{stageFinal}
+  <color=yellow>Joueurs restant:</color> {plyCount}
+all_died: |-
+  <color=red>Tout les joueurs sont mort/color>
+  Mini-jeu terminé
+some_survived: |-
+  <color=red>Une partie des joueurs a survécu</color>
+  Mini-jeu terminé
+winner: |-
+  <color=red>Winner: {winner}</color>
+  Mini-jeu terminé
+died: '<color=red>Mort dans la lave</color>'
+main_message: '<color=#F59F00>P</color><color=#F68523>u</color><color=#F76B46>z</color><color=#F85169>z</color><color=#F9378C>l</color><color=#FA1DAF>e</color>'
+# DO NOT CHANGE THIS. IT WILL BREAK THINGS. AutoEvent will automatically manage these settings.
+version: '1.0.2'
+language: 'EN'
