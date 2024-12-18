@@ -1,29 +1,29 @@
 name: 'Red Light Green Light'
-description: 'Reach the end of the finish line'
+description: 'POV Squid game 1,2,3 soleil'
 command_name: 'light'
 start: |-
-  <color=#42aaff>Get ready to run</color>
-  The game start in: <color=red>{time}</color>
+  <color=#42aaff>Attention, la partie commence !</color>
+  Début du mini-jeu dans : <color=red>{time}</color>
 cycle: |-
   <b><color=#42aaff>{name}</color></b>
   <color=#aad9ff>{state}</color>
-  <color=red>{time} seconds remaining</color>
+  <color=red>{time} secondes restantes</color>
 all_died: |-
   <b><color=#42aaff>{name}</color></b>
-  <color=red>No one was able to reach the finish line</color>
+  <color=red>Personne n''est arrivé à la fin</color>
 more_win: |-
   <b><color=#42aaff>{name}</color></b>
   <color=red>{count} players win</color>
 player_win: |-
   <b><color=#42aaff>{name}</color></b>
   <color=green>Winner: {winner}</color>
-red_light: '<color=red>Dont move</color>'
-green_light: '<color=green>Run</color>'
-red_lose: '<color=red>You run a red light</color>'
-no_time: '<color=red>You didnt make it to the finish line!</color>'
-hint: '<color=green>Press <color=yellow>[Alt]</color> to push the player</color>'
-hint_wait: '<color=red>Wait few seconds</color>'
-hint_ready: '<color=green>Ready</color>'
+red_light: '<color=red>Ne bouge pas</color>'
+green_light: '<color=green>Tu peux bouger</color>'
+red_lose: '<color=red>C''étais rouge</color>'
+no_time: '<color=red>Tu as été trop lent</color>'
+hint: '<color=green>Appuie sur <color=yellow>[Alt]</color> pour pousser les autres</color>'
+hint_wait: '<color=red>Attends...</color>'
+hint_ready: '<color=green>Pret</color>'
 # DO NOT CHANGE THIS. IT WILL BREAK THINGS. AutoEvent will automatically manage these settings.
 version: '1.0.4'
 language: 'EN'

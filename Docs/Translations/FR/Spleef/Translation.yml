@@ -1,21 +1,21 @@
 name: 'Spleef'
-description: 'Shoot at the platforms and don''t fall into the void'
+description: 'Tirer sur les plateformes pour les faire disparaître et tuer vos ennemis'
 command_name: 'spleef'
-start: '<color=red>Starts in: </color>{time}'
+start: '<color=red>Commence dans: </color>{time}'
 cycle: |-
   <color=red>{name}</color>
-  <color=yellow>Players Alive:</color> {players}
-  <color=#42aaff>Time remaining:</color> {remaining}
+  <color=yellow>Joueurs en vie:</color> {players}
+  <color=#42aaff>Temps restant:</color> {remaining}
 all_died: |-
-  <color=red>All players died</color>
-  Mini-game ended
+  <color=red>Tous les joueurs sont mort</color>
+  Mini-jeu terminé
 some_survived: |-
-  <color=red>Several people survived</color>
-  Mini-game ended
+  <color=red>Une partie des joueurs ont survécu</color>
+  Mini-jeu terminé
 winner: |-
   <color=red>Winner: {winner}</color>
-  Mini-game ended
-died: '<color=red>Burned in Lava</color>'
+  Mini-jeu terminé
+died: '<color=red>Mort dans la lave</color>'
 # DO NOT CHANGE THIS. IT WILL BREAK THINGS. AutoEvent will automatically manage these settings.
 version: '1.0.5'
 language: 'EN'

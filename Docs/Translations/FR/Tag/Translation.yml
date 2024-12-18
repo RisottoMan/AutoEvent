@@ -1,20 +1,20 @@
 name: 'Tag'
-description: 'We need to catch up with all the players on the map.'
+description: 'Tag tous les autres joueurs et sois le dernier en vie'
 command_name: 'tag'
 broadcast: |-
   RUN
-  Taggers are being selected. Hide now!
-  Time remaining: {time}
+  Les tagueurs sont en train d''être' sélectionné. CACHE-TOI !
+  Temps restant: {time}
 cycle: |-
-  Tag another player
-  <color=yellow><b><i>{time}</i></b> seconds left</color>
-hurt: 'You didn''t have time to tag someone else.'
+  Tague une autre personne
+  <color=yellow><b><i>{time}</i></b> secondes restante</color>
+hurt: 'Tu n''as pas réussi à taguer une autre personne...'
 one_player: |-
-  The player won {winner}
+  {winner} à gagné
   <color=yellow>Event time <color=red>{time}</color></color>
 all_die: |-
-  No one survived.
-  End of the game
+  Personne n''a survécu
+  Fin de la partie
   <color=yellow>Event time <color=red>{time}</color></color>
 # DO NOT CHANGE THIS. IT WILL BREAK THINGS. AutoEvent will automatically manage these settings.
 version: '1.0.2'
