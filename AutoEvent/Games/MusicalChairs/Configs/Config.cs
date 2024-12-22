@@ -19,13 +19,13 @@ public class Config : EventConfig
         if (AvailableMaps.Count < 1)
         {
             AvailableMaps.Add(new MapChance(50, new MapInfo("MusicalChairs", new Vector3(115.5f, 1030f, -43.5f))));
-            AvailableMaps.Add(new MapChance(50, new MapInfo("MusicalChairs_Xmas2024", new Vector3(115.5f, 1030f, -43.5f)), SeasonFlag.Christmas));
-            AvailableMaps.Add(new MapChance(50, new MapInfo("MusicalChairs_Xmas2024", new Vector3(115.5f, 1030f, -43.5f)), SeasonFlag.NewYear));
+            AvailableMaps.Add(new MapChance(50, new MapInfo("MusicalChairs_Xmas2024", new Vector3(115.5f, 1030f, -43.5f)), SeasonFlags.Christmas));
+            AvailableMaps.Add(new MapChance(50, new MapInfo("MusicalChairs_Xmas2024", new Vector3(115.5f, 1030f, -43.5f)), SeasonFlags.NewYear));
         }
     }
 
     [Description("A loadout for players")]
-    public List<Loadout> PlayerLoadout = new List<Loadout>()
+    public List<Loadout> PlayerLoadout = new()
     {
         new Loadout()
         {
@@ -34,7 +34,8 @@ public class Config : EventConfig
             {
                 { RoleTypeId.ClassD, 50 },
                 { RoleTypeId.Scientist, 50 }
-            }
+            },
+            Stamina = 0
         },
     };
 }

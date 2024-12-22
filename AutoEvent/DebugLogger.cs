@@ -1,16 +1,4 @@
-﻿// <copyright file="Log.cs" company="Redforce04#4091">
-// Copyright (c) Redforce04. All rights reserved.
-// </copyright>
-// -----------------------------------------
-//    Solution:         AutoEvent
-//    Project:          AutoEvent
-//    FileName:         DebugLogger.cs
-//    Author:           Redforce04#4091
-//    Revision Date:    09/05/2023 7:30 PM
-//    Created Date:     09/05/2023 7:30 PM
-// -----------------------------------------
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
@@ -244,7 +232,7 @@ public class DebugLogger
             }
         }
             
-        if (outputIfNotDebug || AutoEvent.Debug)
+        if (outputIfNotDebug || DebugLogger.Debug)
         {
             switch (level)
             {

@@ -1,24 +1,20 @@
 ﻿using MEC;
-using PluginAPI.Core;
-using PluginAPI.Events;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using AutoEvent.Events.Handlers;
 using AutoEvent.Interfaces;
-using CustomPlayerEffects;
+using Exiled.API.Features;
 using PlayerRoles;
 using Event = AutoEvent.Interfaces.Event;
 
 namespace AutoEvent.Games.Deathrun;
-public class Plugin : Event, IEventMap, IInternalEvent
+public class Plugin : Event, IEventMap
 {
     public override string Name { get; set; } = "Death Run";
     public override string Description { get; set; } = "Go to the end, avoiding death-activated trap along the way";
     public override string Author { get; set; } = "RisottoMan/code & xleb.ik/map";
     public override string CommandName { get; set; } = "deathrun";
-    public override Version Version { get; set; } = new Version(1, 0, 2);
     [EventConfig]
     public Config Config { get; set; }
     [EventTranslation]
@@ -28,27 +24,9 @@ public class Plugin : Event, IEventMap, IInternalEvent
         MapName = "TempleMap", 
         Position = new Vector3(0, 30, 30)
     };
-    private EventHandler _eventHandler { get; set; }
     private GameObject _wall { get; set; }
     private List<GameObject> runnerSpawns { get; set; }
-    protected override void RegisterEvents()
-    {
-        _eventHandler = new EventHandler();
-        EventManager.RegisterEvents(_eventHandler);
-        Servers.TeamRespawn += _eventHandler.OnTeamRespawn;
-        Players.DropItem += _eventHandler.OnDropItem;
-        Players.DropAmmo += _eventHandler.OnDropAmmo;
-    }
-
-    protected override void UnregisterEvents()
-    {
-        EventManager.UnregisterEvents(_eventHandler);
-        Servers.TeamRespawn -= _eventHandler.OnTeamRespawn;
-        Players.DropItem -= _eventHandler.OnDropItem;
-        Players.DropAmmo -= _eventHandler.OnDropAmmo;
-        _eventHandler = null;
-    }
-
+    
     protected override void OnStart()
     {
         runnerSpawns = new();
@@ -64,15 +42,15 @@ public class Plugin : Event, IEventMap, IInternalEvent
         }
         
         // Making a random death-guy and teleport to spawnpoint
-        for (int i = 0; Player.GetPlayers().Count() / 20 >= i; i++)
+        for (int i = 0; Player.List.Count() / 20 >= i; i++)
         {
-            Player death = Player.GetPlayers().Where(r => r.Role != RoleTypeId.Scientist).ToList().RandomItem();
+            Player death = Player.List.Where(r => r.Role != RoleTypeId.Scientist).ToList().RandomItem();
             death.GiveLoadout(Config.DeathLoadouts);
             death.Position = deathSpawns.RandomItem().transform.position;
         }
         
         // Teleport runners to spawnpoint
-        foreach (Player runner in Player.GetPlayers().Where(r => r.Role != RoleTypeId.Scientist))
+        foreach (Player runner in Player.List.Where(r => r.Role != RoleTypeId.Scientist))
         {
             runner.GiveLoadout(Config.PlayerLoadouts);
             runner.Position = runnerSpawns.RandomItem().transform.position;
@@ -101,8 +79,8 @@ public class Plugin : Event, IEventMap, IInternalEvent
     // While all the players are alive and time has not over
     protected override bool IsRoundDone()
     {
-        return !(Player.GetPlayers().Count(r => r.Role == RoleTypeId.Scientist) > 0 &&
-                 Player.GetPlayers().Count(r => r.Role == RoleTypeId.ClassD) > 0 &&
+        return !(Player.List.Count(r => r.Role == RoleTypeId.Scientist) > 0 &&
+                 Player.List.Count(r => r.Role == RoleTypeId.ClassD) > 0 &&
                  EventTime.TotalSeconds < Config.RoundDurationInSeconds);
     }
 
@@ -116,9 +94,9 @@ public class Plugin : Event, IEventMap, IInternalEvent
         {
             timetext = Translation.OverTimeBroadcast;
 
-            foreach (Player player in Player.GetPlayers().Where(r => r.Role is RoleTypeId.ClassD))
+            foreach (Player player in Player.List.Where(r => r.Role.Type is RoleTypeId.ClassD))
             {
-                if (player.IsWithoutItems)
+                if (player.Items.Count == 0)
                 {
                     player.Kill(Translation.Died);
                 }
@@ -127,18 +105,18 @@ public class Plugin : Event, IEventMap, IInternalEvent
         // A second life for dead players
         else if (Config.SecondLifeInSeconds == EventTime.TotalSeconds)
         {
-            foreach (Player runner in Player.GetPlayers().Where(r => r.Role is RoleTypeId.Spectator))
+            foreach (Player player in Player.List.Where(r => r.Role.Type is RoleTypeId.Spectator))
             {
-                Extensions.SetRole(runner, RoleTypeId.ClassD, RoleSpawnFlags.None);
-                runner.Position = runnerSpawns.RandomItem().transform.position;
-                runner.ReceiveHint(Translation.SecondLifeHint, 5);
+                player.Role.Set(RoleTypeId.ClassD, RoleSpawnFlags.None);
+                player.Position = runnerSpawns.RandomItem().transform.position;
+                player.ShowHint(Translation.SecondLifeHint, 5);
             }
         }
         
         string text = Translation.CycleBroadcast;
         text = text.Replace("{name}", Name);
-        text = text.Replace("{runnerCount}",$"{Player.GetPlayers().Count(r => r.Role is RoleTypeId.ClassD)}");
-        text = text.Replace("{deathCount}", $"{Player.GetPlayers().Count(r => r.Role is RoleTypeId.Scientist)}");
+        text = text.Replace("{runnerCount}",$"{Player.List.Count(r => r.Role.Type is RoleTypeId.ClassD)}");
+        text = text.Replace("{deathCount}", $"{Player.List.Count(r => r.Role.Type is RoleTypeId.Scientist)}");
         text = text.Replace("{time}", timetext);
 
         Extensions.Broadcast(text, 1);
@@ -148,7 +126,7 @@ public class Plugin : Event, IEventMap, IInternalEvent
     {
         string text = string.Empty;
         
-        if (Player.GetPlayers().Count(r => r.Role is RoleTypeId.ClassD) == 0)
+        if (Player.List.Count(r => r.Role.Type is RoleTypeId.ClassD) == 0)
         {
             text = Translation.DeathWinBroadcast.Replace("{name}", Name);
         }

@@ -48,7 +48,7 @@ public class SeasonMethod
         {
             Text = "<size=80><color=#42aaff><b>🎄 MERRY CHRISTMAS 🎄</b></color></size>",
             PrimaryColor = "#42aaff",
-            SeasonFlag = SeasonFlag.Christmas,
+            SeasonFlag = SeasonFlags.Christmas,
             FirstDate = new DateTime(2024, 1, 1),
             LastDate = new DateTime(2024, 1, 10)
         },
@@ -56,7 +56,7 @@ public class SeasonMethod
         {
             Text = "<size=80><color=#42aaff><b>🎄 HAPPY NEW YEAR 🎄</b></color></size>",
             PrimaryColor = "#77dde7",
-            SeasonFlag = SeasonFlag.NewYear,
+            SeasonFlag = SeasonFlags.NewYear,
             FirstDate = new DateTime(2024, 1, 11),
             LastDate = new DateTime(2024, 1, 30)
         },
@@ -64,7 +64,7 @@ public class SeasonMethod
         {
             Text = "<size=75><color=#FF96DE><b>😍 Happy Valentine’s Day 😍</b></color></size>",
             PrimaryColor = "#FF96DE",
-            SeasonFlag = SeasonFlag.ValentineDay,
+            SeasonFlag = SeasonFlags.ValentineDay,
             FirstDate = new DateTime(2024, 2, 14),
             LastDate = new DateTime(2024, 2, 21)
         },
@@ -72,7 +72,7 @@ public class SeasonMethod
         {
             Text = "<size=70><color=#27A327><b>😂 Funny April Fool's Day 😂</b></color></size>",
             PrimaryColor = "#27A327",
-            SeasonFlag = SeasonFlag.AprilFoolDay,
+            SeasonFlag = SeasonFlags.AprilFoolDay,
             FirstDate = new DateTime(2024, 4, 1),
             LastDate = new DateTime(2024, 4, 7)
         },
@@ -80,7 +80,7 @@ public class SeasonMethod
         {
             Text = "<size=75><color=#F5F5DC><b>🐰 Easter Holidays 🐣</b></color></size>",
             PrimaryColor = "#F5F5DC",
-            SeasonFlag = SeasonFlag.EasterHolidays,
+            SeasonFlag = SeasonFlags.EasterHolidays,
             FirstDate = new DateTime(2024, 4, 17),
             LastDate = new DateTime(2024, 4, 24)
         },
@@ -88,7 +88,7 @@ public class SeasonMethod
         {
             Text = "<size=85><color=#F1FF52><b>☀️ Summer Holidays ☀️</b></color></size>",
             PrimaryColor = "#F1FF52",
-            SeasonFlag = SeasonFlag.SummerHolidays,
+            SeasonFlag = SeasonFlags.SummerHolidays,
             FirstDate = new DateTime(2024, 6, 1),
             LastDate = new DateTime(2024, 6, 14)
         },
@@ -96,7 +96,7 @@ public class SeasonMethod
         {
             Text = "<size=80><color=#FFA500><b>🔔📖 Autumn 📖🔔</b></color></size>",
             PrimaryColor = "#FFA500",
-            SeasonFlag = SeasonFlag.Autumn,
+            SeasonFlag = SeasonFlags.Autumn,
             FirstDate = new DateTime(2024, 9, 1),
             LastDate = new DateTime(2024, 9, 14)
         },
@@ -104,7 +104,7 @@ public class SeasonMethod
         {
             Text = "<size=80><color=#8B00FF><b>👻 Halloween 🎃</b></color></size>",
             PrimaryColor = "#8B00FF",
-            SeasonFlag = SeasonFlag.Halloween,
+            SeasonFlag = SeasonFlags.Halloween,
             FirstDate = new DateTime(2024, 10, 21),
             LastDate = new DateTime(2024, 10, 30)
         },
@@ -112,7 +112,7 @@ public class SeasonMethod
         {
             Text = "<size=80><color=#FF0000><b>🔥 Black Friday 🔥</b></color></size>",
             PrimaryColor = "#FF0000",
-            SeasonFlag = SeasonFlag.BlackFriday,
+            SeasonFlag = SeasonFlags.BlackFriday,
             FirstDate = new DateTime(2024, 11, 25),
             LastDate = new DateTime(2024, 11, 30)
         },
@@ -120,7 +120,7 @@ public class SeasonMethod
         {
             Text = "<size=70><color=#42aaff><b>New year is coming...</b></color></size>",
             PrimaryColor = "#77dde7",
-            SeasonFlag = SeasonFlag.NewYear,
+            SeasonFlag = SeasonFlags.NewYear,
             FirstDate = new DateTime(2024, 12, 25),
             LastDate = new DateTime(2024, 12, 31)
         }

@@ -1,35 +1,17 @@
-﻿// <copyright file="Log.cs" company="Redforce04#4091">
-// Copyright (c) Redforce04. All rights reserved.
-// </copyright>
-// -----------------------------------------
-//    Solution:         AutoEvent
-//    Project:          AutoEvent
-//    FileName:         NoRestart.cs
-//    Author:           Redforce04#4091
-//    Revision Date:    10/28/2023 12:53 PM
-//    Created Date:     10/28/2023 12:53 PM
-// -----------------------------------------
-
-using System;
+﻿using System;
 using System.Diagnostics.CodeAnalysis;
-using AutoEvent.Interfaces;
 using CommandSystem;
-using Mirror;
+using Exiled.Permissions.Extensions;
 
 namespace AutoEvent.Commands;
-
-[CommandHandler(typeof(RemoteAdminCommandHandler))]
-[CommandHandler(typeof(GameConsoleCommandHandler))]
-public class NoRestart : ICommand, IPermission
+public class NoRestart : ICommand
 {
     public string Command => nameof(NoRestart);
-    public string[] Aliases => Array.Empty<string>();
+    public string[] Aliases => [];
     public string Description => "Disables auto-restarting the server after events are done.";
-    public string Permission { get; set; } = "ev.norestart";
-    public bool SanitizeResponse => false;
     public bool Execute(ArraySegment<string> arguments, ICommandSender sender, [UnscopedRef] out string response)
     {
-        if (!sender.CheckPermission(Permission, out bool isConsole))
+        if (!sender.CheckPermission("ev.norestart"))
         {
             response = "You do not have permission to run this command!";
             return false;
@@ -37,10 +19,11 @@ public class NoRestart : ICommand, IPermission
 
         if (!AutoEvent.Singleton.Config.RestartAfterRoundFinish)
         {
-            response =
-                "Auto-Restart is not enabled on this server. To use this command, enable it in the AutoEvent Config.";
+            response = "Auto-Restart is not enabled on this server. To use this command, enable it in the AutoEvent Config.";
             return false;
         }
+        
+        bool isConsole = sender is ServerConsoleSender;
         
         string boldstart = isConsole ? "" : "<b>";
         string boldend = isConsole ? "" : "</b>";

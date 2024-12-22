@@ -44,7 +44,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="ExMod.Exiled" Version="9.0.0-alpha.1" />
+    <PackageReference Include="ExMod.Exiled" Version="9.0.0-beta.1" />
     <PackageReference Include="Fody" Version="6.8.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -120,6 +120,9 @@
     <Compile Remove="ReplaceTextWithVariables\*" />
     <Compile Remove="InventoryMenu\**" />
     <Compile Remove="InventoryMenu\*" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="API\Season\Enum\" />
   </ItemGroup>
   <Target Name="RemoveFile" BeforeTargets="ReplaceFile">
     <Exec Command="if exist $(SolutionDir)VersionInfo.cs del $(SolutionDir)VersionInfo.cs" />

@@ -4,6 +4,8 @@ using AutoEvent.API;
 using AutoEvent.API.Enums;
 using AutoEvent.API.Season.Enum;
 using AutoEvent.Interfaces;
+using Exiled.API.Enums;
+using Exiled.API.Features;
 using PlayerRoles;
 using UnityEngine;
 
@@ -20,9 +22,9 @@ public class Config : EventConfig
         if (AvailableMaps.Count < 1)
         {
             AvailableMaps.Add(new MapChance(50, new MapInfo("HideAndSeek", new Vector3(0, 30, 30))));
-            AvailableMaps.Add(new MapChance(50, new MapInfo("HideAndSeek_Xmas2024", new Vector3(0, 30, 30)), SeasonFlag.Christmas));
-            AvailableMaps.Add(new MapChance(50, new MapInfo("HideAndSeek_Xmas2024", new Vector3(0, 30, 30)), SeasonFlag.NewYear));
-            AvailableMaps.Add(new MapChance(50, new MapInfo("HideAndSeek_Halloween2024", new Vector3(0, 30, 30)), SeasonFlag.Halloween));
+            AvailableMaps.Add(new MapChance(50, new MapInfo("HideAndSeek_Xmas2024", new Vector3(0, 30, 30)), SeasonFlags.Christmas));
+            AvailableMaps.Add(new MapChance(50, new MapInfo("HideAndSeek_Xmas2024", new Vector3(0, 30, 30)), SeasonFlags.NewYear));
+            AvailableMaps.Add(new MapChance(50, new MapInfo("HideAndSeek_Halloween2024", new Vector3(0, 30, 30)), SeasonFlags.Halloween));
         }
     }
 
@@ -52,15 +54,15 @@ public class Config : EventConfig
     public bool JailbirdCanCharge { get; set; } = false;
 
     [Description("A list of loadouts players can get.")]
-    public List<Loadout> PlayerLoadouts { get; set; } = new List<Loadout>()
+    public List<Loadout> PlayerLoadouts { get; set; } = new()
     {
         new Loadout()
         {
             Roles = new Dictionary<RoleTypeId, int>() { { RoleTypeId.ClassD, 100 } },
             Effects = new List<Effect>()
             {
-                new Effect() { EffectType = StatusEffect.MovementBoost, Intensity = 50, Duration = 0 },
-                new Effect() { EffectType = StatusEffect.FogControl, Intensity = 1, Duration = 0 }
+                new Effect() { Type = EffectType.MovementBoost, Intensity = 50, Duration = 0 },
+                new Effect() { Type = EffectType.FogControl, Intensity = 1, Duration = 0 }
             },
             Chance = 100,
             InfiniteAmmo = AmmoMode.InfiniteAmmo
@@ -72,7 +74,7 @@ public class Config : EventConfig
         new Loadout()
         {
             Roles = new Dictionary<RoleTypeId, int>() { { RoleTypeId.Scientist, 100 } },
-            Effects = new List<Effect>() { new Effect() { EffectType = StatusEffect.MovementBoost, Intensity = 70, Duration = 0 } },
+            Effects = new List<Effect>() { new Effect() { Type = EffectType.MovementBoost, Intensity = 70, Duration = 0 } },
             Chance = 100,
             InfiniteAmmo = AmmoMode.InfiniteAmmo
         }

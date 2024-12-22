@@ -1,13 +1,9 @@
-﻿using AutoEvent.Events.EventArgs;
-using MEC;
-using PlayerRoles;
-using PlayerStatsSystem;
-using PluginAPI.Core;
-using PluginAPI.Core.Attributes;
-using PluginAPI.Enums;
-using PluginAPI.Events;
+﻿using MEC;
 using System.Collections.Generic;
+using Exiled.API.Features;
+using Exiled.Events.EventArgs.Player;
 using UnityEngine;
+using DamageType = Exiled.API.Enums.DamageType;
 
 namespace AutoEvent.Games.Light;
 public class EventHandler
@@ -18,20 +14,20 @@ public class EventHandler
         _plugin = plugin;
     }
 
-    public void OnDamage(PlayerDamageArgs ev)
+    public void OnHurt(HurtEventArgs ev)
     {
-        if (ev.AttackerHandler is ExplosionDamageHandler damageHandler)
+        if (ev.DamageHandler.Type == DamageType.Explosion)
         {
-            damageHandler.Damage = 0;
+            ev.DamageHandler.Damage = 0;
         }
     }
 
-    public void OnPlayerNoclip(PlayerNoclipArgs ev)
+    public void OnTogglingNoclip(TogglingNoClipEventArgs ev)
     {
         if (!_plugin.Config.IsEnablePush)
             return;
 
-        Transform transform = ev.Player.Camera.transform;
+        Transform transform = ev.Player.CameraTransform.transform;
         var ray = new Ray(transform.position + (transform.forward * 0.1f), transform.forward);
 
         if (!Physics.Raycast(ray, out RaycastHit hit, 1.7f))
@@ -53,7 +49,7 @@ public class EventHandler
 
     private IEnumerator<float> PushPlayer(Player player, Player target)
     {
-        Vector3 pushed = player.Camera.transform.forward * 1.7f;
+        Vector3 pushed = player.CameraTransform.transform.forward * 1.7f;
         Vector3 endPos = target.Position + new Vector3(pushed.x, 0, pushed.z);
         int layerAsLayerMask = 0;
 
@@ -72,16 +68,4 @@ public class EventHandler
             yield return Timing.WaitForOneFrame;
         }
     }
-
-    [PluginEvent(ServerEventType.PlayerJoined)]
-    public void OnPlayerJoin(PlayerJoinedEvent ev)
-    {
-        ev.Player.SetRole(RoleTypeId.Spectator);
-    }
-
-    public void OnTeamRespawn(TeamRespawnArgs ev) => ev.IsAllowed = false;
-    public void OnPlaceBullet(PlaceBulletArgs ev) => ev.IsAllowed = false;
-    public void OnPlaceBlood(PlaceBloodArgs ev) => ev.IsAllowed = false;
-    public void OnDropItem(DropItemArgs ev) => ev.IsAllowed = false;
-    public void OnDropAmmo(DropAmmoArgs ev) => ev.IsAllowed = false;
 }

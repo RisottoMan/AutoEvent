@@ -1,7 +1,4 @@
-﻿using System;
-using MER.Lite.Objects;
-using System.Linq;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace AutoEvent.Games.Jail
 {

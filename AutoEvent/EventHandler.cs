@@ -1,32 +1,155 @@
-﻿using AutoEvent.Events.EventArgs;
-using InventorySystem.Items.ThrowableProjectiles;
-using LightContainmentZoneDecontamination;
-using PluginAPI.Core;
-using PluginAPI.Core.Attributes;
-using PluginAPI.Enums;
-using PluginAPI.Events;
-#if EXILED
-using Exiled.Permissions.Extensions;
-#endif
+﻿using AutoEvent.API.Enums;
+using AutoEvent.Interfaces;
+using Exiled.Events.EventArgs.Map;
+using Exiled.Events.EventArgs.Player;
+using Exiled.Events.EventArgs.Server;
 
-namespace AutoEvent
+namespace AutoEvent;
+internal class EventHandler
 {
-    internal class EventHandler
+    private readonly AutoEvent _plugin;
+    public EventHandler(AutoEvent plugin)
     {
-        [PluginEvent(ServerEventType.RoundRestart)]
-        public void OnRestarting()
-        {
-            if (AutoEvent.ActiveEvent == null) return;
+        _plugin = plugin;
 
-            ServerStatic.StopNextRound = ServerStatic.NextRoundAction.Restart;
+        Exiled.Events.Handlers.Server.RestartingRound += OnRestarting;
+        Exiled.Events.Handlers.Server.RespawningTeam += OnRespawningTeam;
+        Exiled.Events.Handlers.Map.Decontaminating += OnDecontaminating;
+        Exiled.Events.Handlers.Map.PlacingBulletHole += OnPlacingBulletHole;
+        Exiled.Events.Handlers.Player.SpawningRagdoll += OnSpawningRagdoll;
+        Exiled.Events.Handlers.Player.Shooting += OnShooting;
+        Exiled.Events.Handlers.Player.DroppingAmmo += OnDroppingAmmo;
+        Exiled.Events.Handlers.Player.DroppingItem += OnDroppingItem;
+        Exiled.Events.Handlers.Player.Handcuffing += OnHandcuffing;
+        Exiled.Events.Handlers.Player.Dying += OnDying;
+        //Exiled.Events.Handlers.Player.Joined += OnJoined; -> spectator
+    }
+
+    ~EventHandler()
+    {
+        Exiled.Events.Handlers.Server.RestartingRound -= OnRestarting;
+        Exiled.Events.Handlers.Server.RespawningTeam -= OnRespawningTeam;
+        Exiled.Events.Handlers.Map.Decontaminating -= OnDecontaminating;
+        Exiled.Events.Handlers.Map.PlacingBulletHole -= OnPlacingBulletHole;
+        Exiled.Events.Handlers.Player.SpawningRagdoll -= OnSpawningRagdoll;
+        Exiled.Events.Handlers.Player.Shooting -= OnShooting;
+        Exiled.Events.Handlers.Player.DroppingAmmo -= OnDroppingAmmo;
+        Exiled.Events.Handlers.Player.DroppingItem -= OnDroppingItem;
+        Exiled.Events.Handlers.Player.Handcuffing -= OnHandcuffing;
+        Exiled.Events.Handlers.Player.Dying -= OnDying;
+        //Exiled.Events.Handlers.Player.Joined -= OnJoined;
+    }
+
+    private void OnRestarting()
+    {
+        if (AutoEvent.ActiveEvent == null) return;
+
+        //ServerStatic.StopNextRound = ServerStatic.NextRoundAction.Restart;
+    }
+
+    private void OnRespawningTeam(RespawningTeamEventArgs ev)
+    {
+        if (AutoEvent.ActiveEvent is Event activeEvent)
+        {
+            if (!activeEvent.EventHandlerSettings.HasFlag(EventFlags.IgnoreRespawnTeam))
+            {
+                ev.IsAllowed = false;
+            }
         }
-
-        [PluginEvent(ServerEventType.LczDecontaminationStart)]
-        public void OnDecontamination(LczDecontaminationStartEvent ev)
+    }
+    
+    private void OnDecontaminating(DecontaminatingEventArgs ev)
+    {
+        if (AutoEvent.ActiveEvent is Event activeEvent)
         {
-            if (AutoEvent.ActiveEvent == null) return;
+            if (!activeEvent.EventHandlerSettings.HasFlag(EventFlags.IgnoreDecontaminating))
+            {
+                ev.IsAllowed = false;
+            }
+        }
+    }
 
-            DecontaminationController.Singleton.NetworkDecontaminationOverride = DecontaminationController.DecontaminationStatus.Disabled;
+    private void OnPlacingBulletHole(PlacingBulletHoleEventArgs ev)
+    {
+        if (AutoEvent.ActiveEvent is Event activeEvent)
+        {
+            if (!activeEvent.EventHandlerSettings.HasFlag(EventFlags.IgnoreBulletHole))
+            {
+                ev.IsAllowed = false;
+            }
+        }
+    }
+
+    private void OnSpawningRagdoll(SpawningRagdollEventArgs ev)
+    {
+        if (AutoEvent.ActiveEvent is Event activeEvent)
+        {
+            if (!activeEvent.EventHandlerSettings.HasFlag(EventFlags.IgnoreRagdoll))
+            {
+                ev.IsAllowed = false;
+            }
+        }
+    }
+
+    private void OnShooting(ShootingEventArgs ev)
+    {
+        if (AutoEvent.ActiveEvent is Event activeEvent)
+        {
+            if (activeEvent.EventHandlerSettings.HasFlag(EventFlags.IgnoreInfiniteAmmo))
+                return;
+
+            if (!Extensions.InfiniteAmmoList.ContainsKey(ev.Player))
+                return;
+
+            ev.Firearm.Ammo += 1;
+            // todo -> shotgun x2
+        }
+    }
+
+    private void OnDroppingAmmo(DroppingAmmoEventArgs ev)
+    {
+        if (AutoEvent.ActiveEvent is Event activeEvent)
+        {
+            if (!activeEvent.EventHandlerSettings.HasFlag(EventFlags.IgnoreDroppingAmmo))
+            {
+                ev.IsAllowed = false;
+            }
+        }
+    }
+
+    private void OnDroppingItem(DroppingItemEventArgs ev)
+    {
+        if (AutoEvent.ActiveEvent is Event activeEvent)
+        {
+            if (!activeEvent.EventHandlerSettings.HasFlag(EventFlags.IgnoreDroppingItem))
+            {
+                ev.IsAllowed = false;
+            }
+        }
+    }
+
+    private void OnHandcuffing(HandcuffingEventArgs ev)
+    {
+        if (AutoEvent.ActiveEvent is Event activeEvent)
+        {
+            if (!activeEvent.EventHandlerSettings.HasFlag(EventFlags.IgnoreHandcuffing))
+            {
+                ev.IsAllowed = false;
+            }
+        }
+    }
+
+    private void OnDying(DyingEventArgs ev)
+    {
+        if (AutoEvent.ActiveEvent == null)
+            return;
+        
+        if (!ev.IsAllowed)
+            return;
+            
+        if (Extensions.InfiniteAmmoList is not null && Extensions.InfiniteAmmoList.ContainsKey(ev.Player))
+        {
+            Extensions.InfiniteAmmoList.Remove(ev.Player);
         }
     }
 }

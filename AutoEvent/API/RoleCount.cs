@@ -1,21 +1,8 @@
-﻿// <copyright file="Log.cs" company="Redforce04#4091">
-// Copyright (c) Redforce04. All rights reserved.
-// </copyright>
-// -----------------------------------------
-//    Solution:         AutoEvent
-//    Project:          AutoEvent
-//    FileName:         RoleCount.cs
-//    Author:           Redforce04#4091
-//    Revision Date:    09/17/2023 2:44 PM
-//    Created Date:     09/17/2023 2:44 PM
-// -----------------------------------------
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using JetBrains.Annotations;
-using PluginAPI.Core;
+using Exiled.API.Features;
 using UnityEngine;
 
 namespace AutoEvent.API;
@@ -42,16 +29,16 @@ public class RoleCount
 
     public List<Player> GetPlayers(bool alwaysLeaveOnePlayer = true, List<Player>? availablePlayers = null)
     {
-        float percent = Player.GetPlayers().Count * (PlayerPercentage / 100f);
+        float percent = Player.List.Count * (PlayerPercentage / 100f);
         int players = Mathf.Clamp((int)percent, MinimumPlayers,
-            MaximumPlayers == -1 ? Player.GetPlayers().Count : MaximumPlayers);
+            MaximumPlayers == -1 ? Player.List.Count : MaximumPlayers);
         List<Player> validPlayers = new List<Player>();
         // DebugLogger.LogDebug($"Selecting Players: {players} < {(int)percent:F2} ({percent}) <  ");
         try
         {
             for (int i = 0; i < players; i++)
             {
-                List<Player> playersToPullFrom = (availablePlayers ?? Player.GetPlayers()) .Where(x => !validPlayers.Contains(x)).ToList();
+                List<Player> playersToPullFrom = (availablePlayers ?? Player.List) .Where(x => !validPlayers.Contains(x)).ToList();
                 if (playersToPullFrom.Count < 1)
                 {
                     DebugLogger.LogDebug("Cannot pull more players.");
@@ -73,9 +60,9 @@ public class RoleCount
         catch (Exception e)
         {
             DebugLogger.LogDebug("Could not assign player to list.", LogLevel.Warn);
-            DebugLogger.LogDebug($"{e}", LogLevel.Debug);
+            DebugLogger.LogDebug($"{e}");
         }
-        if(alwaysLeaveOnePlayer && validPlayers.Count >= (availablePlayers ?? Player.GetPlayers()).Count)
+        if(alwaysLeaveOnePlayer && validPlayers.Count >= (availablePlayers ?? Player.List).Count)
         {
             var plyToRemove = validPlayers.RandomItem();
             validPlayers.Remove(plyToRemove);

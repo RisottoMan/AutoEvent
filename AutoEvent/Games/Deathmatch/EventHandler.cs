@@ -1,97 +1,78 @@
-﻿using AutoEvent.Events.EventArgs;
-using CustomPlayerEffects;
+﻿using CustomPlayerEffects;
 using MEC;
 using PlayerRoles;
-using PluginAPI.Core.Attributes;
-using PluginAPI.Enums;
-using PluginAPI.Events;
 using System.Collections.Generic;
 using System.Linq;
-using Player = PluginAPI.Core.Player;
+using Exiled.API.Features;
+using Exiled.Events.EventArgs.Player;
 
-namespace AutoEvent.Games.Deathmatch
+namespace AutoEvent.Games.Deathmatch;
+public class EventHandler
 {
-    public class EventHandler
+    Plugin _plugin;
+    public EventHandler(Plugin plugin)
     {
-        Plugin _plugin;
-        public EventHandler(Plugin plugin)
+        _plugin = plugin;
+    }
+
+    public void OnJoined(JoinedEventArgs ev)
+    {
+        int mtfCount = Player.List.Count(r => r.Role.Team == Team.FoundationForces);
+        int chaosCount = Player.List.Count(r => r.Role.Team == Team.ChaosInsurgency);
+        if (mtfCount > chaosCount)
         {
-            _plugin = plugin;
+            ev.Player.GiveLoadout(_plugin.Config.ChaosLoadouts);
+        }
+        else
+        {
+            ev.Player.GiveLoadout(_plugin.Config.NTFLoadouts);
+        }
+        
+        ev.Player.Position = RandomClass.GetRandomPosition(_plugin.MapInfo.Map);
+
+        Timing.CallDelayed(.1f, () =>
+        {
+            if (ev.Player.Items.First() != null)
+            {
+                ev.Player.CurrentItem = ev.Player.Items.First();
+            }
+        });
+    }
+
+    public void OnDying(DyingEventArgs ev)
+    {
+        ev.IsAllowed = false;
+
+        if (ev.Player.Role.Team == Team.FoundationForces)
+        {
+            _plugin.ChaosKills++;
+        }
+        else if (ev.Player.Role.Team == Team.ChaosInsurgency)
+        {
+            _plugin.MtfKills++;
         }
 
-        [PluginEvent(ServerEventType.PlayerJoined)]
-        public void OnJoin(PlayerJoinedEvent ev)
+        ev.Player.EnableEffect<Flashed>(0.1f);
+        ev.Player.Position = RandomClass.GetRandomPosition(_plugin.MapInfo.Map);
+        ev.Player.IsGodModeEnabled = true;
+        ev.Player.Health = 100;
+
+        foreach (var itemBase in ev.Player.Items)
         {
-            int mtfCount = Player.GetPlayers().Count(r => r.Team == Team.FoundationForces);
-            int chaosCount = Player.GetPlayers().Count(r => r.Team == Team.ChaosInsurgency);
-            if (mtfCount > chaosCount)
+            if (itemBase.IsWeapon)
             {
-                ev.Player.GiveLoadout(_plugin.Config.ChaosLoadouts);
+                ev.Player.RemoveItem(itemBase);
             }
-            else
-            {
-                ev.Player.GiveLoadout(_plugin.Config.NTFLoadouts);
-            }
-            
-            ev.Player.Position = RandomClass.GetRandomPosition(_plugin.MapInfo.Map);
-
-            Timing.CallDelayed(.1f, () =>
-            {
-                if (ev.Player.Items.First() != null)
-                {
-                    ev.Player.CurrentItem = ev.Player.Items.First();
-                }
-            });
         }
-
-        public void OnPlayerDying(PlayerDyingArgs ev)
+        
+        var item = ev.Player.AddItem(_plugin.Config.AvailableWeapons.RandomItem());
+        Timing.CallDelayed(.1f, () =>
         {
-            ev.IsAllowed = false;
-
-            if (ev.Target.Team == Team.FoundationForces)
+            ev.Player.IsGodModeEnabled = false;
+            if (item != null)
             {
-                _plugin.ChaosKills++;
+                ev.Player.CurrentItem = item;
             }
-            else if (ev.Target.Team == Team.ChaosInsurgency)
-            {
-                _plugin.MtfKills++;
-            }
-
-            ev.Target.EffectsManager.EnableEffect<Flashed>(0.1f);
-            ev.Target.Position = RandomClass.GetRandomPosition(_plugin.MapInfo.Map);
-            ev.Target.IsGodModeEnabled = true;
-            ev.Target.Health = 100;
-
-            List<ItemType> itemsToDrop = new List<ItemType>();
-            foreach (var itemBase in ev.Target.Items)
-            {
-                if (itemBase.ItemTypeId.IsWeapon())
-                {
-                    itemsToDrop.Add(itemBase.ItemTypeId);
-                }
-            }
-
-            foreach (var itemType in itemsToDrop)
-            {
-                ev.Target.RemoveItems(itemType);
-            }
-            var item = ev.Target.AddItem(_plugin.Config.AvailableWeapons.RandomItem());
-            Timing.CallDelayed(.1f, () =>
-            {
-                ev.Target.IsGodModeEnabled = false;
-                if (item != null)
-                {
-                    ev.Target.CurrentItem = item;
-                }
-            });
-        }
-
-        public void OnHandCuff(HandCuffArgs ev) => ev.IsAllowed = false;
-        public void OnTeamRespawn(TeamRespawnArgs ev) => ev.IsAllowed = false;
-        public void OnSpawnRagdoll(SpawnRagdollArgs ev) => ev.IsAllowed = false;
-        public void OnPlaceBullet(PlaceBulletArgs ev) => ev.IsAllowed = false;
-        public void OnPlaceBlood(PlaceBloodArgs ev) => ev.IsAllowed = false;
-        public void OnDropItem(DropItemArgs ev) => ev.IsAllowed = false;
-        public void OnDropAmmo(DropAmmoArgs ev) => ev.IsAllowed = false;
+        });
     }
 }

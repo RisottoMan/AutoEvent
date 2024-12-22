@@ -1,16 +1,4 @@
-﻿// <copyright file="Log.cs" company="Redforce04#4091">
-// Copyright (c) Redforce04. All rights reserved.
-// </copyright>
-// -----------------------------------------
-//    Solution:         AutoEvent
-//    Project:          AutoEvent
-//    FileName:         GetPlayerPatches.cs
-//    Author:           Redforce04#4091
-//    Revision Date:    09/21/2023 3:12 PM
-//    Created Date:     09/21/2023 3:12 PM
-// -----------------------------------------
-
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
@@ -25,9 +13,9 @@ public class GetPlayersNWApi
     static IEnumerable<MethodBase> TargetMethods()
     {
         return typeof(PluginAPI.Core.Player).GetMethods()
-            .Where(method => !method.IsGenericMethod && method.Name == nameof(Player.GetPlayers))
-            .Cast<MethodBase>();
+            .Where(method => !method.IsGenericMethod && method.Name == nameof(Player.GetPlayers));
     }
+    
     [HarmonyPrefix]
     public static bool Prefix(ref List<Player> __result)
     {
@@ -53,10 +41,8 @@ public class GetPlayersNWApi
                 __result = Player.GetPlayers<Player>().Where(x => !AutoEvent.Singleton.Config.IgnoredRoles.Contains(x.Role)).ToList();
                 return false;
             }
-            // DebugLogger.LogDebug($"trace: {frame.GetMethod().DeclaringType?.Namespace} {frame.GetMethod().DeclaringType?.Name}.{frame.GetMethod().Name}");
         }
 
         return true;
-        
     }
 }

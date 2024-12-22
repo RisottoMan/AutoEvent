@@ -19,7 +19,7 @@ public class Config : EventConfig
         if (AvailableMaps.Count < 1)
         {
             AvailableMaps.Add(new MapChance(50, new MapInfo("Shipment", new Vector3(93f, 1020f, -43f) )));
-            AvailableMaps.Add(new MapChance(50, new MapInfo("Shipment_Halloween2024", new Vector3(93f, 1020f, -43f)), SeasonFlag.Halloween));
+            AvailableMaps.Add(new MapChance(50, new MapInfo("Shipment_Halloween2024", new Vector3(93f, 1020f, -43f)), SeasonFlags.Halloween));
         }
     }
     
@@ -47,7 +47,7 @@ public class Config : EventConfig
     };
 
     [Description("The loadouts a player can get.")]
-    public List<Loadout> Loadouts { get; set; } = new List<Loadout>()
+    public List<Loadout> Loadouts { get; set; } = new()
     {
         new Loadout()
         {

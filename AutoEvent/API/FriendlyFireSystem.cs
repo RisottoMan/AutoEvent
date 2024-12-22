@@ -1,16 +1,4 @@
-﻿// <copyright file="Log.cs" company="Redforce04#4091">
-// Copyright (c) Redforce04. All rights reserved.
-// </copyright>
-// -----------------------------------------
-//    Solution:         AutoEvent
-//    Project:          AutoEvent
-//    FileName:         FriendlyFireSystem.cs
-//    Author:           Redforce04#4091
-//    Revision Date:    09/26/2023 11:40 PM
-//    Created Date:     09/26/2023 11:40 PM
-// -----------------------------------------
-
-using System;
+﻿using System;
 using System.Linq;
 using System.Reflection;
 using CedMod;

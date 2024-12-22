@@ -18,8 +18,8 @@ public class Config : EventConfig
         if (AvailableMaps.Count < 1)
         {
             AvailableMaps.Add(new MapChance(50, new MapInfo("Glass", new Vector3(76f, 1026.5f, -43.68f), null, null, false)));
-            AvailableMaps.Add(new MapChance(50, new MapInfo("Glass_Xmas2024", new Vector3(76f, 1026.5f, -43.68f), null, null, false), SeasonFlag.Christmas));
-            AvailableMaps.Add(new MapChance(50, new MapInfo("Glass_Xmas2024", new Vector3(76f, 1026.5f, -43.68f), null, null, false), SeasonFlag.NewYear));
+            AvailableMaps.Add(new MapChance(50, new MapInfo("Glass_Xmas2024", new Vector3(76f, 1026.5f, -43.68f), null, null, false), SeasonFlags.Christmas));
+            AvailableMaps.Add(new MapChance(50, new MapInfo("Glass_Xmas2024", new Vector3(76f, 1026.5f, -43.68f), null, null, false), SeasonFlags.NewYear));
         }
     }
 

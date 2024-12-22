@@ -50,11 +50,11 @@ public class MapChance
 {
     public MapChance() { }
 
-    public MapChance(float chance, MapInfo map, SeasonFlag? flag = SeasonFlag.None)
+    public MapChance(float chance, MapInfo map, SeasonFlags? flag = SeasonFlags.None)
     {
         Chance = chance;
         Map = map;
-        SeasonFlag = flag ?? SeasonFlag.None;
+        SeasonFlag = flag ?? SeasonFlags.None;
     }
     [Description("The chance of getting this map.")]
     public float Chance { get; set; } = 1f;
@@ -63,7 +63,7 @@ public class MapChance
     public MapInfo Map { get; set; }
 
     [Description("Style of this map.")]
-    public SeasonFlag SeasonFlag { get; set; } = SeasonFlag.None;
+    public SeasonFlags SeasonFlag { get; set; } = SeasonFlags.None;
 }
 
 public class SoundChance

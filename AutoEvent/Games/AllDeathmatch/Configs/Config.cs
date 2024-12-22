@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using AutoEvent.API;
-using AutoEvent.API.Enums;
 using AutoEvent.Interfaces;
+using Exiled.API.Enums;
+using Exiled.API.Features;
 using PlayerRoles;
 
 namespace AutoEvent.Games.AllDeathmatch;
@@ -12,7 +13,7 @@ public class Config : EventConfig
     public int TimeMinutesRound { get; set; } = 10;
     
     [Description("A list of loadouts for team NTF")]
-    public List<Loadout> NTFLoadouts = new List<Loadout>()
+    public List<Loadout> NTFLoadouts = new()
     {
         new Loadout()
         {
@@ -23,13 +24,13 @@ public class Config : EventConfig
             {
                 new Effect()
                 {
-                    EffectType = StatusEffect.MovementBoost,
+                    Type = EffectType.MovementBoost,
                     Intensity = 10,
                     Duration = 0,
                 },
                 new Effect()
                 {
-                    EffectType = StatusEffect.Scp1853,
+                    Type = EffectType.Scp1853,
                     Intensity = 1,
                     Duration = 0,
                 }

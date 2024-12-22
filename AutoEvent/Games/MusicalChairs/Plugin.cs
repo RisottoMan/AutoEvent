@@ -3,22 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using MEC;
 using UnityEngine;
-using PluginAPI.Core;
-using PluginAPI.Events;
-using AutoEvent.Events.Handlers;
 using AutoEvent.Interfaces;
 using AdminToys;
+using Exiled.API.Features;
 using Event = AutoEvent.Interfaces.Event;
 using Object = UnityEngine.Object;
 
 namespace AutoEvent.Games.MusicalChairs;
-public class Plugin : Event, IEventSound, IEventMap, IInternalEvent
+public class Plugin : Event, IEventSound, IEventMap
 {
     public override string Name { get; set; } = "Musical Chairs";
     public override string Description { get; set; } = "Competition with other players for free chairs to funny music";
     public override string Author { get; set; } = "RisottoMan";
     public override string CommandName { get; set; } = "chair";
-    public override Version Version { get; set; } = new Version(1, 1, 0);
     [EventConfig]
     public Config Config { get; set; }
     [EventTranslation]
@@ -45,28 +42,16 @@ public class Plugin : Event, IEventSound, IEventMap, IInternalEvent
     protected override void RegisterEvents()
     {
         _eventHandler = new EventHandler(this);
-        EventManager.RegisterEvents(_eventHandler);
-        Servers.TeamRespawn += _eventHandler.OnTeamRespawn;
-        Servers.SpawnRagdoll += _eventHandler.OnSpawnRagdoll;
-        Servers.PlaceBullet += _eventHandler.OnPlaceBullet;
-        Servers.PlaceBlood += _eventHandler.OnPlaceBlood;
-        Players.DropItem += _eventHandler.OnDropItem;
-        Players.DropAmmo += _eventHandler.OnDropAmmo;
-        Players.PlayerDamage += _eventHandler.OnDamage;
-        Players.UsingStamina += _eventHandler.OnUsingStamina;
+        Exiled.Events.Handlers.Player.Hurting += _eventHandler.OnHurting;
+        Exiled.Events.Handlers.Player.Died += _eventHandler.OnDied;
+        Exiled.Events.Handlers.Player.Left += _eventHandler.OnLeft;
     }
 
     protected override void UnregisterEvents()
     {
-        EventManager.UnregisterEvents(_eventHandler);
-        Servers.TeamRespawn -= _eventHandler.OnTeamRespawn;
-        Servers.SpawnRagdoll -= _eventHandler.OnSpawnRagdoll;
-        Servers.PlaceBullet -= _eventHandler.OnPlaceBullet;
-        Servers.PlaceBlood -= _eventHandler.OnPlaceBlood;
-        Players.DropItem -= _eventHandler.OnDropItem;
-        Players.DropAmmo -= _eventHandler.OnDropAmmo;
-        Players.PlayerDamage -= _eventHandler.OnDamage;
-        Players.UsingStamina -= _eventHandler.OnUsingStamina;
+        Exiled.Events.Handlers.Player.Hurting -= _eventHandler.OnHurting;
+        Exiled.Events.Handlers.Player.Died -= _eventHandler.OnDied;
+        Exiled.Events.Handlers.Player.Left -= _eventHandler.OnLeft;
         _eventHandler = null;
     }
 
@@ -85,17 +70,18 @@ public class Plugin : Event, IEventSound, IEventMap, IInternalEvent
             }
         }
 
-        int count = Player.GetPlayers().Count > 40 ? 40 : Player.GetPlayers().Count - 1;
+        int count = Player.List.Count > 40 ? 40 : Player.List.Count - 1;
         Platforms = Functions.GeneratePlatforms(count, _parentPlatform, MapInfo.Position);
         
-        foreach (Player player in Player.GetPlayers())
+        foreach (Player player in Player.List)
         {
             player.GiveLoadout(Config.PlayerLoadout);
             player.Position = spawnpoints.RandomItem().transform.position;
+            player.IsUsingStamina = false;
         }
         
         PlayerDict = new();
-        foreach (Player player in Player.GetPlayers())
+        foreach (Player player in Player.List)
         {
             PlayerDict.Add(player, new PlayerClass()
             {
@@ -118,7 +104,7 @@ public class Plugin : Event, IEventSound, IEventMap, IInternalEvent
     protected override bool IsRoundDone()
     {
         _countdown = _countdown.TotalSeconds > 0 ? _countdown.Subtract(TimeSpan.FromSeconds(FrameDelayInSeconds)) : TimeSpan.Zero;
-        return !(Player.GetPlayers().Count(r => r.IsAlive) > 1);
+        return !(Player.List.Count(r => r.IsAlive) > 1);
     }
     protected override float FrameDelayInSeconds { get; set; } = 0.5f;
     protected override void ProcessFrame()
@@ -135,7 +121,7 @@ public class Plugin : Event, IEventSound, IEventMap, IInternalEvent
         Extensions.Broadcast(Translation.Cycle.
             Replace("{name}", Name).
             Replace("{state}", text).
-            Replace("{count}", $"{Player.GetPlayers().Count(r => r.IsAlive)}"), 1);
+            Replace("{count}", $"{Player.List.Count(r => r.IsAlive)}"), 1);
     }
 
     /// <summary>
@@ -169,7 +155,7 @@ public class Plugin : Event, IEventSound, IEventMap, IInternalEvent
         text = Translation.RunDontTouch;
 
         // Check only alive players
-        foreach (Player player in Player.GetPlayers().Where(r => r.IsAlive))
+        foreach (Player player in Player.List.Where(r => r.IsAlive))
         {
             float playerAngle = 180f + Mathf.Rad2Deg * (Mathf.Atan2(player.Position.z - MapInfo.Position.z, player.Position.x - MapInfo.Position.x));
 
@@ -220,7 +206,7 @@ public class Plugin : Event, IEventSound, IEventMap, IInternalEvent
         text = Translation.StandFree;
         
         // Check only alive players
-        foreach (Player player in Player.GetPlayers().Where(r => r.IsAlive))
+        foreach (Player player in Player.List.Where(r => r.IsAlive))
         {
             // Player is not contains in _playerDict
             if (!PlayerDict.TryGetValue(player, out var playerClass))
@@ -251,7 +237,7 @@ public class Plugin : Event, IEventSound, IEventMap, IInternalEvent
             return;
         
         // Kill alive players who didn't get up to platform
-        foreach (Player player in Player.GetPlayers().Where(r => r.IsAlive))
+        foreach (Player player in Player.List.Where(r => r.IsAlive))
         {
             if (!PlayerDict[player].IsStandUpPlatform)
             {
@@ -288,7 +274,7 @@ public class Plugin : Event, IEventSound, IEventMap, IInternalEvent
     protected override void OnFinished()
     {
         string text = string.Empty;
-        int count = Player.GetPlayers().Count(r => r.IsAlive);
+        int count = Player.List.Count(r => r.IsAlive);
 
         if (count > 1)
         {
@@ -296,7 +282,7 @@ public class Plugin : Event, IEventSound, IEventMap, IInternalEvent
         }
         else if (count == 1)
         {
-            Player winner = Player.GetPlayers().First(r => r.IsAlive);
+            Player winner = Player.List.First(r => r.IsAlive);
             text = Translation.Winner.Replace("{name}", Name).Replace("{winner}", winner.Nickname);
         }
         else

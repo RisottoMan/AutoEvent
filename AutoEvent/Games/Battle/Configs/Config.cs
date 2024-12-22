@@ -7,13 +7,13 @@ namespace AutoEvent.Games.Battle;
 public class Config : EventConfig
 {
     [Description("A List of Loadouts to use.")]
-    public List<Loadout> Loadouts { get; set; } = new List<Loadout>()
+    public List<Loadout> Loadouts { get; set; } = new()
     {
         new Loadout()
         {
             Health = 100,
             Chance = 33,
-            Items = new List<ItemType>()
+            Items = new()
             {
                 ItemType.GunE11SR, ItemType.Medkit, ItemType.Medkit,
                 ItemType.ArmorCombat, ItemType.SCP1853, ItemType.Adrenaline,
@@ -24,7 +24,7 @@ public class Config : EventConfig
         {
             Health = 115,
             Chance = 33,
-            Items = new List<ItemType>()
+            Items = new()
             {
                 ItemType.GunShotgun, ItemType.Medkit, ItemType.Medkit,
                 ItemType.Medkit, ItemType.Medkit, ItemType.Medkit,
@@ -36,7 +36,7 @@ public class Config : EventConfig
         {
             Health = 200,
             Chance = 33,
-            Items = new List<ItemType>()
+            Items = new()
             {
                 ItemType.GunLogicer, ItemType.ArmorHeavy, ItemType.SCP500,
                 ItemType.SCP500, ItemType.SCP1853, ItemType.Medkit,

@@ -1,89 +1,65 @@
-﻿using AutoEvent.Events.EventArgs;
-using AutoEvent.Interfaces;
+﻿using Exiled.API.Enums;
+using Exiled.Events.EventArgs.Player;
 using InventorySystem.Items.ThrowableProjectiles;
 using MEC;
 using PlayerRoles;
-using PlayerStatsSystem;
-using PluginAPI.Core;
-using PluginAPI.Core.Attributes;
-using PluginAPI.Enums;
-using PluginAPI.Events;
 
-namespace AutoEvent.Games.Airstrike
+namespace AutoEvent.Games.Airstrike;
+public class EventHandler
 {
-    public class EventHandler
+    Plugin _plugin;
+    public EventHandler(Plugin plugin)
     {
-        Plugin _plugin;
-        public EventHandler(Plugin plugin)
-        {
-            _plugin = plugin;
-        }
+        _plugin = plugin;
+    }
 
-        public void OnPlayerDying(PlayerDyingArgs ev)
-        {
-            if (!_plugin.Config.RespawnPlayersWithGrenades)
-                return;
-            Timing.CallDelayed(1f, () =>
-            {
-                ev.Target.SetRole(RoleTypeId.ChaosConscript, RoleChangeReason.Respawn);
-                ev.Target.Position = RandomClass.GetSpawnPosition(_plugin.MapInfo.Map);
-                ev.Target.ClearInventory();
-                var item = ev.Target.AddItem(ItemType.GrenadeHE);
-                Timing.CallDelayed(.1f, () =>
-                {
-                    ev.Target.CurrentItem = item;
-                });
-                ev.Target.ReceiveHint("You have a grenade! Throw it at the people who are still alive!", 5f);
-                ev.Target.IsGodModeEnabled = true;
-            });
-        }
-
-        [PluginEvent(ServerEventType.PlayerThrowProjectile)]
-        public void OnPlayerThrowing(Player ply, ThrowableItem throwableItemitem, ThrowableItem.ProjectileSettings projectileSettings, bool isAllowed)
-        {
-            //MyPlayer plr, ItemBase item, Rigidbody rb
-            if (ply.Role != RoleTypeId.ChaosConscript)
-            {
-                return;
-            }
-            Timing.CallDelayed(3f, () =>
-            {
-                var item = ply.AddItem(ItemType.GrenadeHE);
-                Timing.CallDelayed(.1f, () =>
-                {
-                    ply.CurrentItem = item;
-                });
-            });
-        }
+    public void OnDying(DyingEventArgs ev)
+    {
+        if (!_plugin.Config.RespawnPlayersWithGrenades)
+            return;
         
-        [PluginEvent(ServerEventType.PlayerJoined)]
-        public void OnJoin(PlayerJoinedEvent ev)
+        // Timing.CallDelayed -> 1f
+        ev.Player.Role.Set(RoleTypeId.ChaosConscript, RoleSpawnFlags.None);
+        ev.Player.Position = _plugin.SpawnList.RandomItem().transform.position;
+        ev.Player.ClearInventory();
+        var item = ev.Player.AddItem(ItemType.GrenadeHE);
+        Timing.CallDelayed(.1f, () =>
         {
-            ev.Player.SetRole(RoleTypeId.Spectator);
-        }
+            ev.Player.CurrentItem = item;
+        });
+        ev.Player.ShowHint("You have a grenade! Throw it at the people who are still alive!", 5f);
+        ev.Player.IsGodModeEnabled = true;
+    }
 
-        public void OnPlayerDamage(PlayerDamageArgs ev)
+    public void OnThrownProjectile(ThrownProjectileEventArgs ev)
+    {
+        if (ev.Player.Role != RoleTypeId.ChaosConscript)
+            return;
+        
+        Timing.CallDelayed(3f, () =>
         {
-            if (ev.AttackerHandler is ExplosionDamageHandler)
+            var item = ev.Player.AddItem(ItemType.GrenadeHE);
+            Timing.CallDelayed(.1f, () =>
             {
-                ev.IsAllowed = false;
+                ev.Player.CurrentItem = item;
+            });
+        });
+    }
 
-                if (_plugin.Stage != 5)
-                {
-                    ev.Target.Damage(10, "Grenade");
-                }
-                else
-                {
-                    ev.Target.Damage(100, "Grenade");
-                }
+    public void OnHurting(HurtingEventArgs ev)
+    {
+        if (ev.DamageHandler.Type is DamageType.Explosion)
+        {
+            ev.IsAllowed = false;
+
+            if (_plugin.Stage != 5)
+            {
+                ev.Player.Hurt(10, "Grenade");
+            }
+            else
+            {
+                ev.Player.Hurt(100, "Grenade");
             }
         }
-
-        public void OnTeamRespawn(TeamRespawnArgs ev) => ev.IsAllowed = false;
-        public void OnSpawnRagdoll(SpawnRagdollArgs ev) => ev.IsAllowed = false;
-        public void OnPlaceBullet(PlaceBulletArgs ev) => ev.IsAllowed = false;
-        public void OnPlaceBlood(PlaceBloodArgs ev) => ev.IsAllowed = false;
-        public void OnDropItem(DropItemArgs ev) => ev.IsAllowed = false;
-        public void OnDropAmmo(DropAmmoArgs ev) => ev.IsAllowed = false;
     }
 }

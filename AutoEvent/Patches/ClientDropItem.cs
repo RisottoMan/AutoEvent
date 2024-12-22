@@ -1,6 +1,4 @@
-﻿using AutoEvent.Events.EventArgs;
-using AutoEvent.Events.Handlers;
-using HarmonyLib;
+﻿using HarmonyLib;
 using InventorySystem;
 
 namespace AutoEvent.Patches;
@@ -10,9 +8,11 @@ internal static class ClientDropItem
 {
     public static bool Prefix()
     {
-        DropItemArgs dropItemEvent = new DropItemArgs();
-        Players.OnDropItem(dropItemEvent);
+        if (AutoEvent.ActiveEvent != null)
+        {
+            return false;
+        }
 
-        return dropItemEvent.IsAllowed;
+        return true;
     }
 }

@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using AutoEvent.API;
-using AutoEvent.API.Enums;
 using AutoEvent.Interfaces;
+using Exiled.API.Enums;
+using Exiled.API.Features;
 using PlayerRoles;
 
 namespace AutoEvent.Games.Survival;
@@ -50,46 +51,25 @@ public class Config : EventConfig
     };
     
     [Description("A list of loadouts zombies can get.")]
-    public List<Loadout> ZombieLoadouts { get; set; } = new List<Loadout>()
+    public List<Loadout> ZombieLoadouts { get; set; } = new()
     {
         new Loadout()
         {
             Roles = new Dictionary<RoleTypeId, int>() { { RoleTypeId.Scp0492, 100 } },
             Effects = new List<Effect>()
             {
-                new Effect() { EffectType = StatusEffect.Disabled },
-                new Effect() { EffectType = StatusEffect.Scp1853 },
+                new() { Type = EffectType.Disabled },
+                new() { Type = EffectType.Scp1853 },
             },
             Health = 5000,
         }
     };
     
     [Description("The amount of Zombies that can spawn.")]
-    public RoleCount Zombies { get; set; } = new RoleCount()
+    public RoleCount Zombies { get; set; } = new()
     {
         MinimumPlayers = 1,
         MaximumPlayers = 3,
         PlayerPercentage = 10,
-    };
-
-    [Description("The effect that guns should have.")]
-    public WeaponEffect WeaponEffect { get; set; } = new WeaponEffect()
-    {
-        Effects = new List<Effect>()
-        {
-            new Effect()
-            {
-                EffectType = StatusEffect.SinkHole,
-                Duration = .5f,
-                Intensity = 255,
-                AddDuration = true,
-            },
-            new Effect()
-            {
-                EffectType = StatusEffect.Stained,
-                Duration = .5f,
-                AddDuration = true,
-            }
-        }
     };
 }

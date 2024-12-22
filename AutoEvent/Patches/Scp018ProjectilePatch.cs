@@ -1,5 +1,5 @@
-﻿using AutoEvent.Events.EventArgs;
-using AutoEvent.Events.Handlers;
+﻿using AutoEvent.Events;
+using AutoEvent.Events.EventArgs;
 using HarmonyLib;
 using InventorySystem.Items.ThrowableProjectiles;
 using UnityEngine;
@@ -11,7 +11,7 @@ internal static class Scp018ProjectilePatch
     public static void Postfix(Scp018Projectile __instance)
     {
         Scp018UpdateArgs scp018UpdateEvent = new Scp018UpdateArgs(__instance);
-        Servers.OnScp018Update(scp018UpdateEvent);
+        Handlers.OnScp018Update(scp018UpdateEvent);
     }
 }
 
@@ -21,6 +21,6 @@ internal static class Scp018ProjectileBouncePatch
     public static void Postfix(Scp018Projectile __instance, Collision collision)
     {
         Scp018CollisionArgs scp018CollisionEvent = new Scp018CollisionArgs(__instance);
-        Servers.OnScp018Collision(scp018CollisionEvent);
+        Handlers.OnScp018Collision(scp018CollisionEvent);
     }
 }

@@ -1,5 +1,4 @@
-﻿using GameCore;
-using System;
+﻿using System;
 using System.IO;
 using YamlDotNet.Core;
 using Version = System.Version;
@@ -14,7 +13,7 @@ public class EventTranslationAttribute : Attribute
         
     }
     
-    public virtual object Load(string folderPath, Type type, Version version)
+    public virtual object Load(string folderPath, Type type)
     {
         string configPath = Path.Combine(folderPath, "Translation.yml");
         object conf = null;
@@ -27,12 +26,8 @@ public class EventTranslationAttribute : Attribute
 
             if (conf is not null and EventTranslation translation)
             {
-                if (translation.Version == version.ToString())
-                {
-                    _isLoaded = true;
-                    return conf;
-                }
-                else DebugLogger.LogDebug($"The translation version or language is not equal to the version or language of the plugin. It will be deleted and remade.");
+                _isLoaded = true;
+                return conf;
             }
             else
             {
@@ -58,22 +53,17 @@ public class EventTranslationAttribute : Attribute
             catch (Exception e) { }
         }
 
-        CreateNewTranslation(ref conf, type, configPath, version);
+        CreateNewTranslation(ref conf, type, configPath);
         _isLoaded = true;
         return conf;
     }
 
-    private void CreateNewTranslation(ref object conf, Type type, string configPath, Version version)
+    private void CreateNewTranslation(ref object conf, Type type, string configPath)
     {
         conf = type.GetConstructor(Type.EmptyTypes)?.Invoke(Array.Empty<object>());
         if (conf is null)
         {
-            DebugLogger.LogDebug("Translation is null.", LogLevel.Debug);
-        }
-
-        if (conf is EventTranslation evTrans)
-        {
-            evTrans.Version = version.ToString();
+            DebugLogger.LogDebug("Translation is null.");
         }
 
         File.WriteAllText(configPath, Configs.Serialization.Serializer.Serialize(conf));
@@ -81,6 +71,5 @@ public class EventTranslationAttribute : Attribute
     }
 
     public bool IsLoaded => _isLoaded;
-
     protected bool _isLoaded = false;
 }

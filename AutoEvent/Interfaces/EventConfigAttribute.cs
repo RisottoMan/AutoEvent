@@ -1,16 +1,4 @@
-﻿// <copyright file="Log.cs" company="Redforce04#4091">
-// Copyright (c) Redforce04. All rights reserved.
-// </copyright>
-// -----------------------------------------
-//    Solution:         AutoEvent
-//    Project:          AutoEvent
-//    FileName:         EventConfig.cs
-//    Author:           Redforce04#4091
-//    Revision Date:    09/13/2023 12:36 PM
-//    Created Date:     09/13/2023 12:36 PM
-// -----------------------------------------
-
-using System;
+﻿using System;
 using System.IO;
 using YamlDotNet.Core;
 using Version = System.Version;
@@ -20,12 +8,7 @@ namespace AutoEvent.Interfaces;
 [AttributeUsage(AttributeTargets.Property)]
 public class EventConfigAttribute : Attribute
 {
-    public EventConfigAttribute()
-    {
-        
-    }
-    
-    public virtual object Load(string folderPath, string configName, Type type, Version version)
+    public virtual object Load(string folderPath, string configName, Type type)
     {
         string configPath = Path.Combine(folderPath, configName + ".yml");
         object conf = null;
@@ -38,12 +21,8 @@ public class EventConfigAttribute : Attribute
 
             if (conf is not null and EventConfig config)
             {
-                if (config.ConfigVersion == version.ToString())
-                {
-                    _isLoaded = true;
-                    return conf;
-                }
-                else DebugLogger.LogDebug($"The config version and the plugin version are not equal. It will be deleted and remade.");
+                _isLoaded = true;
+                return conf;
             }
             else DebugLogger.LogDebug("Config was not serialized into an event config. It will be deleted and remade.");
         }
@@ -67,22 +46,17 @@ public class EventConfigAttribute : Attribute
             catch (Exception e) { }
         }
 
-        CreateNewConfig(ref conf, type, configPath, version);
+        CreateNewConfig(ref conf, type, configPath);
         _isLoaded = true;
         return conf;
     }
 
-    private void CreateNewConfig(ref object conf, Type type, string configPath, Version version)
+    private void CreateNewConfig(ref object conf, Type type, string configPath)
     {
         conf = type.GetConstructor(Type.EmptyTypes)?.Invoke(Array.Empty<object>());
         if (conf is null)
         {
-            DebugLogger.LogDebug("Config is null.", LogLevel.Debug);
-        }
-        
-        if (conf is EventConfig evConf)
-        {
-            evConf.ConfigVersion = version.ToString();
+            DebugLogger.LogDebug("Config is null.");
         }
 
         File.WriteAllText(configPath, Configs.Serialization.Serializer.Serialize(conf));

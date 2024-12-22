@@ -1,21 +1,7 @@
-﻿// <copyright file="Log.cs" company="Redforce04#4091">
-// Copyright (c) Redforce04. All rights reserved.
-// </copyright>
-// -----------------------------------------
-//    Solution:         AutoEvent
-//    Project:          AutoEvent
-//    FileName:         Loadout.cs
-//    Author:           Redforce04#4091
-//    Revision Date:    09/17/2023 2:51 PM
-//    Created Date:     09/17/2023 2:51 PM
-// -----------------------------------------
-
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
-using AutoEvent.API.Enums;
-using Exiled.API.Features.Items;
+using Exiled.API.Features;
 using PlayerRoles;
-using PluginAPI.Enums;
 using UnityEngine;
 using YamlDotNet.Serialization;
 

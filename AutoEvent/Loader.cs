@@ -4,8 +4,6 @@ using System.IO;
 using System.IO.Compression;
 using System.Reflection;
 using AutoEvent.Interfaces;
-using PluginAPI.Helpers;
-using PluginAPI.Core;
 
 namespace AutoEvent;
 
@@ -27,7 +25,7 @@ public class Loader
     /// <summary>
     /// Debug logging only
     /// </summary>
-    private static bool Debug => AutoEvent.Debug;
+    private static bool Debug => DebugLogger.Debug;
     
     /// <summary>
     /// Checks to see if exiled is present on this server.
@@ -194,12 +192,6 @@ public class Loader
                             $"[ExternalEventLoader] \"{type.FullName}\" does not inherit from Event, skipping.",
                             LogLevel.Debug);
 
-                        continue;
-                    }
-                    
-                    if(type.GetInterface(nameof(IExiledEvent)) is not null && !isExiledPresent())
-                    {
-                        DebugLogger.LogDebug($"[ExternalEventLoader] Cannot register plugin {type.Name} because it requires exiled to work. Exiled has not loaded yet, or is not present at all.",LogLevel.Warn, true);
                         continue;
                     }
 
