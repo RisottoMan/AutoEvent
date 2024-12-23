@@ -5,19 +5,14 @@ using System.Linq;
 using UnityEngine;
 using AutoEvent.Interfaces;
 using Exiled.API.Features;
-using Event = AutoEvent.Interfaces.Event;
 
 namespace AutoEvent.Games.Football;
-public class Plugin : Event, IEventSound, IEventMap
+public class Plugin : Event<Config, Translation>, IEventSound, IEventMap
 {
     public override string Name { get; set; } = "Football";
     public override string Description { get; set; } = "Score 3 goals to win";
     public override string Author { get; set; } = "RisottoMan";
     public override string CommandName { get; set; } = "football";
-    [EventConfig] 
-    public Config Config { get; set; }
-    [EventTranslation]
-    public Translation Translation { get; set; }
     public MapInfo MapInfo { get; set; } = new()
     {
         MapName = "Football", 

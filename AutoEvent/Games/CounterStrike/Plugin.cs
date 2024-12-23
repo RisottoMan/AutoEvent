@@ -9,10 +9,9 @@ using Exiled.API.Enums;
 using Exiled.API.Features;
 using PlayerRoles;
 using Random = UnityEngine.Random;
-using Event = AutoEvent.Interfaces.Event;
 
 namespace AutoEvent.Games.CounterStrike;
-public class Plugin : Event, IEventMap, IEventSound
+public class Plugin : Event<Config, Translation>, IEventMap, IEventSound
 {
     public override string Name { get; set; } = "Counter-Strike";
     public override string Description { get; set; } = "Fight between terrorists and counter-terrorists";
@@ -20,10 +19,6 @@ public class Plugin : Event, IEventMap, IEventSound
     public override string CommandName { get; set; } = "cs";
     protected override FriendlyFireSettings ForceEnableFriendlyFire { get; set; } = FriendlyFireSettings.Disable;
     public override EventFlags EventHandlerSettings { get; set; } = EventFlags.IgnoreDroppingItem;
-    [EventConfig]
-    public Config Config { get; set; }
-    [EventTranslation]
-    public Translation Translation { get; set; }
     public MapInfo MapInfo { get; set; } = new()
     { 
         MapName = "de_dust2", 
@@ -188,22 +183,22 @@ public class Plugin : Event, IEventMap, IEventSound
             }
 
             text = Translation.PlantedWin;
-            Extensions.PlayAudio("TBombWin.ogg", 15, false);
+            //Extensions.PlayAudio("TBombWin.ogg", 15, false);
         }
         else if (BombState == BombState.Defused)
         {
             text = Translation.DefusedWin;
-            Extensions.PlayAudio("CTWin.ogg", 10, false);
+            //Extensions.PlayAudio("CTWin.ogg", 10, false);
         }
         else if (tCount == 0)
         {
             text = Translation.CounterWin;
-            Extensions.PlayAudio("CTWin.ogg", 10, false);
+            //Extensions.PlayAudio("CTWin.ogg", 10, false);
         }
         else if (ctCount == 0)
         {
             text = Translation.TerroristWin;
-            Extensions.PlayAudio("TWin.ogg", 15, false);
+            //Extensions.PlayAudio("TWin.ogg", 15, false);
         }
         else if (ctCount == 0 && tCount == 0)
         {

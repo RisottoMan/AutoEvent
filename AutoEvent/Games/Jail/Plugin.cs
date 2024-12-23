@@ -7,21 +7,16 @@ using AutoEvent.API.Enums;
 using UnityEngine;
 using AutoEvent.Interfaces;
 using MapGeneration.Distributors;
-using Event = AutoEvent.Interfaces.Event;
 using AutoEvent.Games.Football;
 using Exiled.API.Features;
 
 namespace AutoEvent.Games.Jail;
-public class Plugin : Event, IEventMap
+public class Plugin : Event<Config, Translation>, IEventMap
 {
     public override string Name { get; set; } = "Simon's Prison";
     public override string Description { get; set; } = "Jail mode from CS 1.6, in which you need to hold events [VERY HARD]";
     public override string Author { get; set; } = "RisottoMan";
     public override string CommandName { get; set; } = "jail";
-    [EventConfig]
-    public Config Config { get; set; }
-    [EventTranslation]
-    public Translation Translation { get; set; }
     public MapInfo MapInfo { get; set; } = new()
     {
         MapName = "Jail", 
@@ -31,7 +26,6 @@ public class Plugin : Event, IEventMap
     protected override FriendlyFireSettings ForceEnableFriendlyFire { get; set; } = FriendlyFireSettings.Enable;
     public override EventFlags EventHandlerSettings { get; set; } = EventFlags.IgnoreDroppingItem;
     protected override float FrameDelayInSeconds { get; set; } = 0.5f;
-    protected override float PostRoundDelay { get; set; } = 10f;
     private EventHandler _eventHandler { get; set; }
     internal GameObject Button { get; private set; }
     internal GameObject PrisonerDoors { get; private set; }

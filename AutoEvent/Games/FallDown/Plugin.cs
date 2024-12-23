@@ -1,25 +1,19 @@
 ﻿using MEC;
 using PlayerRoles;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using AdminToys;
 using UnityEngine;
 using AutoEvent.Interfaces;
 using Exiled.API.Features;
-using Event = AutoEvent.Interfaces.Event;
 
 namespace AutoEvent.Games.FallDown;
-public class Plugin : Event, IEventSound, IEventMap
+public class Plugin : Event<Config, Translation>, IEventSound, IEventMap
 {
     public override string Name { get; set; } = "FallDown";
     public override string Description { get; set; } = "All platforms are destroyed. It is necessary to survive";
     public override string Author { get; set; } = "RisottoMan";
     public override string CommandName { get; set; } = "fall";
-    [EventConfig]
-    public Config Config { get; set; }
-    [EventTranslation]
-    public Translation Translation { get; set; }
     public MapInfo MapInfo { get; set; } = new()
     { 
         MapName = "FallDown", 

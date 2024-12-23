@@ -10,19 +10,14 @@ using InventorySystem;
 using InventorySystem.Items;
 using InventorySystem.Items.Pickups;
 using UnityEngine;
-using Event = AutoEvent.Interfaces.Event;
 
 namespace AutoEvent.Games.Lava;
-public class Plugin : Event, IEventSound, IEventMap
+public class Plugin : Event<Config, Translation>, IEventSound, IEventMap
 {
     public override string Name { get; set; } = "The floor is LAVA";
     public override string Description { get; set; } = "Survival, in which you need to avoid lava and shoot at others";
     public override string Author { get; set; } = "RisottoMan";
     public override string CommandName { get; set; } = "lava";
-    [EventConfig]
-    public Config Config { get; set; }
-    [EventTranslation]
-    public Translation Translation { get; set; }
     public MapInfo MapInfo { get; set; } = new()
     { 
         MapName = "Lava", 

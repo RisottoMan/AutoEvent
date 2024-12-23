@@ -13,20 +13,15 @@ using MapEditorReborn.API.Features;
 using MapEditorReborn.API.Features.Objects;
 using MapEditorReborn.API.Features.Serializable;
 using Object = UnityEngine.Object;
-using Event = AutoEvent.Interfaces.Event;
 using Random = UnityEngine.Random;
 
 namespace AutoEvent.Games.Glass;
-public class Plugin : Event, IEventSound, IEventMap
+public class Plugin : Event<Config, Translation>, IEventSound, IEventMap
 {
     public override string Name { get; set; } = "Dead Jump";
     public override string Description { get; set; } = "Jump on fragile platforms";
     public override string Author { get; set; } = "RisottoMan && Redforce";
     public override string CommandName { get; set; } = "glass";
-    [EventConfig]
-    public Config Config { get; set; }
-    [EventTranslation]
-    public Translation Translation { get; set; }
     public MapInfo MapInfo { get; set; } = new()
     { 
         MapName = "Glass", 

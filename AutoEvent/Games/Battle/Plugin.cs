@@ -1,16 +1,14 @@
 ﻿using MEC;
 using PlayerRoles;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using AutoEvent.API.Enums;
 using AutoEvent.Interfaces;
 using Exiled.API.Features;
 using UnityEngine;
-using Event = AutoEvent.Interfaces.Event;
 
 namespace AutoEvent.Games.Battle;
-public class Plugin : Event, IEventMap, IEventSound
+public class Plugin : Event<Config, Translation>, IEventMap, IEventSound
 {
     public override string Name { get; set; } = "Battle";
     public override string Description { get; set; } = "MTF fight against CI in an arena";
@@ -29,10 +27,6 @@ public class Plugin : Event, IEventMap, IEventSound
     };
     protected override FriendlyFireSettings ForceEnableFriendlyFire { get; set; } = FriendlyFireSettings.Disable;
     public override EventFlags EventHandlerSettings { get; set; } = EventFlags.IgnoreDroppingItem;
-    [EventConfig]
-    public Config Config { get; set; }
-    [EventTranslation]
-    public Translation Translation { get; set; }
     private List<GameObject> _workstations;
 
     protected override void OnStart()

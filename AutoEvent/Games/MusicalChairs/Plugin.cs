@@ -6,20 +6,15 @@ using UnityEngine;
 using AutoEvent.Interfaces;
 using AdminToys;
 using Exiled.API.Features;
-using Event = AutoEvent.Interfaces.Event;
 using Object = UnityEngine.Object;
 
 namespace AutoEvent.Games.MusicalChairs;
-public class Plugin : Event, IEventSound, IEventMap
+public class Plugin : Event<Config, Translation>, IEventSound, IEventMap
 {
     public override string Name { get; set; } = "Musical Chairs";
     public override string Description { get; set; } = "Competition with other players for free chairs to funny music";
     public override string Author { get; set; } = "RisottoMan";
     public override string CommandName { get; set; } = "chair";
-    [EventConfig]
-    public Config Config { get; set; }
-    [EventTranslation]
-    public Translation Translation { get; set; }
     public MapInfo MapInfo { get; set; } = new()
     {
         MapName = "MusicalChairs",
@@ -192,7 +187,7 @@ public class Plugin : Event, IEventSound, IEventMap
             platform.GetComponent<PrimitiveObjectToy>().NetworkMaterialColor = Color.black;
         }
 
-        Extensions.PauseAudio();
+        //Extensions.PauseAudio();
         _countdown = new TimeSpan(0, 0, 3);
         _eventState++;
     }
@@ -266,7 +261,7 @@ public class Plugin : Event, IEventSound, IEventMap
             platform.GetComponent<PrimitiveObjectToy>().NetworkMaterialColor = Color.yellow;
         }
         
-        Extensions.ResumeAudio();
+        //Extensions.ResumeAudio();
         _countdown = new TimeSpan(0, 0, 3);
         _eventState = 0;
     }

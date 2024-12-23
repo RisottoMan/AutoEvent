@@ -8,19 +8,14 @@ using AutoEvent.Interfaces;
 using Exiled.API.Features;
 using InventorySystem.Items.MarshmallowMan;
 using UnityEngine;
-using Event = AutoEvent.Interfaces.Event;
 
 namespace AutoEvent.Games.Infection;
-public class Plugin : Event, IEventSound, IEventMap
+public class Plugin : Event<Config, Translation>, IEventSound, IEventMap
 {
     public override string Name { get; set; } = "Zombie Infection";
     public override string Description { get; set; } = "Zombie mode, the purpose of which is to infect all players";
     public override string Author { get; set; } = "RisottoMan";
     public override string CommandName { get; set; } = "zombie";
-    [EventConfig] 
-    public Config Config { get; set; }
-    [EventTranslation]
-    public Translation Translation { get; set; }
     public MapInfo MapInfo { get; set; } = new()
     {
         MapName = "Zombie", 
@@ -31,7 +26,6 @@ public class Plugin : Event, IEventSound, IEventMap
         SoundName = "Zombie_Run.ogg", 
         Volume = 15
     };
-    protected override float PostRoundDelay { get; set; } = 10f;
     private EventHandler _eventHandler { get; set; }
     private int _overtime = 30;
     internal List<GameObject> SpawnList;
@@ -117,7 +111,7 @@ public class Plugin : Event, IEventSound, IEventMap
             player.GiveLoadout(Config.ZombieLoadouts);
         }
         
-        Extensions.PlayPlayerAudio(player, Config.ZombieScreams.RandomItem(), 15);
+        //Extensions.PlayPlayerAudio(player, Config.ZombieScreams.RandomItem(), 15);
     }
 
     protected override bool IsRoundDone()

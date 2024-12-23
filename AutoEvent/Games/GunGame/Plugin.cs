@@ -1,5 +1,4 @@
 ﻿using MEC;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using AutoEvent.API.Enums;
@@ -7,10 +6,9 @@ using AutoEvent.Interfaces;
 using Exiled.API.Features;
 using UnityEngine;
 using Utils.NonAllocLINQ;
-using Event = AutoEvent.Interfaces.Event;
 
 namespace AutoEvent.Games.GunGame;
-public class Plugin : Event, IEventSound, IEventMap
+public class Plugin : Event<Config, Translation>, IEventSound, IEventMap
 {
     public override string Name { get; set; } = "Gun Game";
     public override string Description { get; set; } = "Cool GunGame on the Shipment map from MW19";
@@ -20,18 +18,17 @@ public class Plugin : Event, IEventSound, IEventMap
     public Config Config { get; set; }
     [EventTranslation]
     public Translation Translation { get; set; }
-    public MapInfo MapInfo { get; set; } = new MapInfo()
+    public MapInfo MapInfo { get; set; } = new()
     {
         MapName = "Shipment", 
         Position = new Vector3(93f, 1020f, -43f)
     };
-    public SoundInfo SoundInfo { get; set; } = new SoundInfo()
+    public SoundInfo SoundInfo { get; set; } = new()
     { 
         SoundName = "ClassicMusic.ogg", 
         Volume = 5
     };
     protected override FriendlyFireSettings ForceEnableFriendlyFire { get; set; } = FriendlyFireSettings.Enable;
-    protected override float PostRoundDelay { get; set; } = 10f;
     private EventHandler _eventHandler { get; set; }
     internal List<Vector3> SpawnPoints { get; private set; }
     internal Dictionary<Player, Stats> PlayerStats { get; set; }

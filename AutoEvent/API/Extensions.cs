@@ -123,7 +123,7 @@ public static class Extensions
                 role = AutoEvent.Singleton.Config.LobbyRole;
             }
 
-            player.Role.Set(role, RoleChangeReason.Respawn, respawnFlags);
+            player.Role.Set(role, respawnFlags);
         }
         if (!flags.HasFlag(LoadoutFlags.DontClearDefaultItems))
         {
@@ -167,8 +167,12 @@ public static class Extensions
             player.ReferenceHub.playerStats.GetModule<StaminaStat>().ModifyAmount(loadout.Stamina); 
             //player.StaminaRemaining = loadout.Stamina;
         }
-        if(loadout.Size != Vector3.one && !flags.HasFlag(LoadoutFlags.IgnoreSize))
-            player.SetPlayerScale(loadout.Size);
+
+        if (loadout.Size != Vector3.one && !flags.HasFlag(LoadoutFlags.IgnoreSize))
+        {
+            player.Scale = loadout.Size;
+        }
+        
         if (loadout.Effects is not null && loadout.Effects.Count > 0 && !flags.HasFlag(LoadoutFlags.IgnoreEffects))
         {
             foreach (var effect in loadout.Effects)

@@ -1,24 +1,18 @@
 ﻿using MEC;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using AutoEvent.API.Enums;
 using UnityEngine;
 using AutoEvent.Interfaces;
 using Exiled.API.Features;
-using Event = AutoEvent.Interfaces.Event;
 
 namespace AutoEvent.Games.Deathmatch;
-public class Plugin : Event, IEventMap, IEventSound
+public class Plugin : Event<Config, Translation>, IEventMap, IEventSound
 {
     public override string Name { get; set; } = "Team Death-Match";
     public override string Description { get; set; } = "Team Death-Match on the Shipment map from MW19";
     public override string Author { get; set; } = "RisottoMan/code & xleb.ik/map";
     public override string CommandName { get; set; } = "tdm";
-    [EventConfig]
-    public Config Config { get; set; }
-    [EventTranslation]
-    public Translation Translation { get; set; }
     public MapInfo MapInfo { get; set; } = new()
     {
         MapName = "Shipment", 
@@ -31,7 +25,6 @@ public class Plugin : Event, IEventMap, IEventSound
     };
     protected override FriendlyFireSettings ForceEnableFriendlyFire { get; set; } = FriendlyFireSettings.Disable;
     public override EventFlags EventHandlerSettings { get; set; } = EventFlags.IgnoreRagdoll;
-    protected override float PostRoundDelay { get; set; } = 10f;
     private EventHandler _eventHandler { get; set; }
     internal int MtfKills { get; set; }
     internal int ChaosKills { get; set; }

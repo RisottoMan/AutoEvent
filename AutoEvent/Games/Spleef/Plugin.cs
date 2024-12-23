@@ -7,28 +7,23 @@ using AutoEvent.Interfaces;
 using Exiled.API.Features;
 using MEC;
 using UnityEngine;
-using Event = AutoEvent.Interfaces.Event;
 
 namespace AutoEvent.Games.Spleef;
 
-public class Plugin : Event, IEventMap
+public class Plugin : Event<Config, Translation>, IEventMap
 {
     public override string Name { get; set; } = "Spleef";
     public override string Description { get; set; } = "Shoot at the platforms and don't fall into the void";
     public override string Author { get; set; } = "Redforce04 (created logic code) && RisottoMan (modified map)";
     public override string CommandName { get; set; } = "spleef";
     protected override FriendlyFireSettings ForceEnableFriendlyFire { get; set; } = FriendlyFireSettings.Disable;
-    [EventConfig]
-    public Config Config { get; set; }
-    [EventTranslation]
-    public Translation Translation { get; set; }
     public EventHandler _eventHandler { get; set; }
-    public MapInfo MapInfo { get; set; } = new MapInfo()
+    public MapInfo MapInfo { get; set; } = new()
     { 
         MapName = "Spleef",
         Position = new Vector3(76f, 1026.5f, -43.68f)
     };
-    public SoundInfo SoundInfo { get; set; } = new SoundInfo()
+    public SoundInfo SoundInfo { get; set; } = new()
     {
         SoundName = "Fall_Guys_Winter_Fallympics.ogg",
         Volume = 7

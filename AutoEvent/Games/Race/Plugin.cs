@@ -5,25 +5,20 @@ using System.Linq;
 using AutoEvent.Interfaces;
 using Exiled.API.Features;
 using UnityEngine;
-using Event = AutoEvent.Interfaces.Event;
 
 namespace AutoEvent.Games.Race;
-public class Plugin : Event, IEventSound, IEventMap
+public class Plugin : Event<Config, Translation>, IEventSound, IEventMap
 {
     public override string Name { get; set; } = "Race";
     public override string Description { get; set; } = "Get to the end of the map to win";
     public override string Author { get; set; } = "RisottoMan";
     public override string CommandName { get; set; } = "race";
-    [EventConfig]
-    public Config Config { get; set; }
-    [EventTranslation]
-    public Translation Translation { get; set; }
-    public MapInfo MapInfo { get; set; } = new MapInfo()
+    public MapInfo MapInfo { get; set; } = new()
     {
         MapName = "Race", 
         Position = new Vector3(115.5f, 1030f, -43.5f)
     };
-    public SoundInfo SoundInfo { get; set; } = new SoundInfo()
+    public SoundInfo SoundInfo { get; set; } = new()
     { 
         SoundName = "FinishWay.ogg", 
         Volume = 8, 

@@ -6,19 +6,14 @@ using UnityEngine;
 using AutoEvent.Interfaces;
 using Exiled.API.Features;
 using PlayerRoles;
-using Event = AutoEvent.Interfaces.Event;
 
 namespace AutoEvent.Games.Deathrun;
-public class Plugin : Event, IEventMap
+public class Plugin : Event<Config, Translation>, IEventMap
 {
     public override string Name { get; set; } = "Death Run";
     public override string Description { get; set; } = "Go to the end, avoiding death-activated trap along the way";
     public override string Author { get; set; } = "RisottoMan/code & xleb.ik/map";
     public override string CommandName { get; set; } = "deathrun";
-    [EventConfig]
-    public Config Config { get; set; }
-    [EventTranslation]
-    public Translation Translation { get; set; }
     public MapInfo MapInfo { get; set; } = new()
     { 
         MapName = "TempleMap", 

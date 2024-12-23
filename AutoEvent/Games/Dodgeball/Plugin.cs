@@ -7,19 +7,14 @@ using UnityEngine;
 using AutoEvent.Interfaces;
 using Exiled.API.Features;
 using PlayerRoles;
-using Event = AutoEvent.Interfaces.Event;
 
 namespace AutoEvent.Games.Dodgeball;
-public class Plugin : Event, IEventMap, IEventSound
+public class Plugin : Event<Config, Translation>, IEventMap, IEventSound
 {
     public override string Name { get; set; } = "Dodgeball";
     public override string Description { get; set; } = "Defeat the enemy with balls.";
     public override string Author { get; set; } = "RisottoMan & Моге-ко";
     public override string CommandName { get; set; } = "dodge";
-    [EventConfig]
-    public Config Config { get; set; }
-    [EventTranslation]
-    public Translation Translation { get; set; }
     public MapInfo MapInfo { get; set; } = new()
     {
         MapName = "Dodgeball",

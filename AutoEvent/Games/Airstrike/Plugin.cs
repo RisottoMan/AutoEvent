@@ -7,11 +7,10 @@ using UnityEngine;
 using PlayerRoles;
 using PluginAPI.Core;
 using AutoEvent.Interfaces;
-using Event = AutoEvent.Interfaces.Event;
 using Random = UnityEngine.Random;
 
 namespace AutoEvent.Games.Airstrike;
-public class Plugin : Event, IEventMap, IEventSound
+public class Plugin : Event<Config, Translation>, IEventMap, IEventSound
 {
     public override string Name { get; set; } = "Airstrike Party";
     public override string Description { get; set; } = "Survive as aistrikes rain down from above.";

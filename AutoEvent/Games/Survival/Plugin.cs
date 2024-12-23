@@ -5,19 +5,14 @@ using System.Linq;
 using UnityEngine;
 using AutoEvent.Interfaces;
 using Exiled.API.Features;
-using Event = AutoEvent.Interfaces.Event;
 
 namespace AutoEvent.Games.Survival;
-public class Plugin : Event, IEventSound, IEventMap
+public class Plugin : Event<Config, Translation>, IEventSound, IEventMap
 {
     public override string Name { get; set; } = "Zombie Survival";
     public override string Description { get; set; } = "Humans surviving from zombies";
     public override string Author { get; set; } = "RisottoMan";
     public override string CommandName { get; set; } = "zombie2";
-    [EventConfig]
-    public Config Config { get; set; }
-    [EventTranslation]
-    public Translation Translation { get; set; }
     public MapInfo MapInfo { get; set; } = new()
     { 
         MapName = "Survival", 
@@ -76,7 +71,7 @@ public class Plugin : Event, IEventSound, IEventMap
 
     protected override void CountdownFinished()
     {
-        Extensions.PlayAudio("Zombie2.ogg", 7, true);
+        //Extensions.PlayAudio("Zombie2.ogg", 7, true);
 
         List<Player> players = Config.Zombies.GetPlayers(true);
         foreach (Player x in players)
@@ -147,7 +142,7 @@ public class Plugin : Event, IEventSound, IEventMap
             text = Translation.SurvivalHumanWinTime;
         }
 
-        Extensions.PlayAudio(musicName, 7, false);
+        //Extensions.PlayAudio(musicName, 7, false);
         Extensions.Broadcast(text, 10);
     }
 }

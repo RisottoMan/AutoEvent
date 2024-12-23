@@ -1,25 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using MEC;
 using UnityEngine;
 using AutoEvent.Interfaces;
 using Exiled.API.Features;
-using Event = AutoEvent.Interfaces.Event;
 using Random = UnityEngine.Random;
 
 namespace AutoEvent.Games.Light;
-public class Plugin : Event, IEventMap
+public class Plugin : Event<Config, Translation>, IEventMap
 {
     public override string Name { get; set; } = "Red Light Green Light";
     public override string Description { get; set; } = "Reach the end of the finish line";
     public override string Author { get; set; } = "RisottoMan";
     public override string CommandName { get; set; } = "light";
-    [EventConfig]
-    public Config Config { get; set; }
-    [EventTranslation]
-    public Translation Translation { get; set; }
-    public MapInfo MapInfo { get; set; } = new MapInfo()
+    public MapInfo MapInfo { get; set; } = new()
     {
         MapName = "RedLight",
         Position = new Vector3(0f, 1030f, -43.5f),
@@ -86,7 +80,7 @@ public class Plugin : Event, IEventMap
     {
         _countdown = Random.Range(1.5f, 4);
         _doll.transform.rotation = Quaternion.identity;
-        GameObject.Destroy(_wall);
+        Object.Destroy(_wall);
     }
 
     protected override bool IsRoundDone()
@@ -133,7 +127,7 @@ public class Plugin : Event, IEventMap
         if (_countdown > 0)
             return;
 
-        Extensions.PlayAudio("RedLight.ogg", 10, false);
+        //Extensions.PlayAudio("RedLight.ogg", 10, false);
         _countdown = Random.Range(4, 8);
         _eventState++;
     }
@@ -190,7 +184,7 @@ public class Plugin : Event, IEventMap
         if (_countdown > 0)
             return;
 
-        Extensions.PlayAudio("GreenLight.ogg", 10, false);
+        //Extensions.PlayAudio("GreenLight.ogg", 10, false);
         _countdown = Random.Range(1.5f, 4f);
         _eventState++;
     }

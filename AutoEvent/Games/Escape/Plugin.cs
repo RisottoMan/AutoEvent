@@ -9,21 +9,16 @@ using UnityEngine;
 using Interactables.Interobjects.DoorUtils;
 using Interactables.Interobjects;
 using PluginAPI.Core;
-using Event = AutoEvent.Interfaces.Event;
 using Player = Exiled.API.Features.Player;
 using Warhead = Exiled.API.Features.Warhead;
 
 namespace AutoEvent.Games.Escape;
-public class Plugin : Event, IEventSound
+public class Plugin : Event<Config, Translation>, IEventSound
 {
     public override string Name { get; set; } = "Atomic Escape";
     public override string Description { get; set; } = "Escape from the facility behind SCP-173 at supersonic speed!";
     public override string Author { get; set; } = "RisottoMan";
     public override string CommandName { get; set; } = "escape";
-    [EventConfig]
-    public Config Config { get; set; }
-    [EventTranslation]
-    public Translation Translation { get; set; }
     public SoundInfo SoundInfo { get; set; } = new()
     { 
         SoundName = "Escape.ogg", 

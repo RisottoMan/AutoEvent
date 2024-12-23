@@ -7,9 +7,9 @@ using PlayerRoles;
 using UnityEngine;
 
 namespace AutoEvent.Games.Knives;
-public class KnivesConfig : EventConfig
+public class Config : EventConfig
 {
-    public KnivesConfig()
+    public Config()
     {
         if (AvailableMaps is null)
         {

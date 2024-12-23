@@ -8,19 +8,14 @@ using UnityEngine;
 using AutoEvent.Interfaces;
 using Exiled.API.Enums;
 using Exiled.API.Features;
-using Event = AutoEvent.Interfaces.Event;
 
 namespace AutoEvent.Games.HideAndSeek;
-public class Plugin : Event, IEventSound, IEventMap
+public class Plugin : Event<Config, Translation>, IEventSound, IEventMap
 {
     public override string Name { get; set; } = "Tag";
     public override string Description { get; set; } = "We need to catch up with all the players on the map";
     public override string Author { get; set; } = "RisottoMan";
     public override string CommandName { get; set; } = "tag";
-    [EventConfig]
-    public Config Config { get; set; }
-    [EventTranslation]
-    public Translation Translation { get; set; }
     protected override FriendlyFireSettings ForceEnableFriendlyFire { get; set; } = FriendlyFireSettings.Enable;
     public MapInfo MapInfo { get; set; } = new()
     { 

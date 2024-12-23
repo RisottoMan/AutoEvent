@@ -11,14 +11,18 @@ using AutoEvent.API.Season.Enum;
 
 namespace AutoEvent.Interfaces
 {
-    public abstract class Event : IEvent
+    public abstract class Event<TConfig, TTranslation> : IEvent
+        where TConfig : EventConfig, new()
+        where TTranslation : EventTranslation, new()
     {
+        public TConfig Config { get; }
+        public TTranslation Translation { get; }
+        
 #region Static Implementations // Static tools for registering and viewing events.
         /// <summary>
         /// A list of all registered events including external events and <see cref="IInternalEvent"/> events.
         /// </summary>
-        public static List<Event> Events { get; set; } = new List<Event>();
-
+        public static List<Event<TConfig, TTranslation>> Events { get; set; } = new();
 
         /// <summary>
         /// Registers all of the <see cref="IInternalEvent"/> Events.
@@ -38,7 +42,7 @@ namespace AutoEvent.Interfaces
                         continue;
                     
                     object evBase = Activator.CreateInstance(type);
-                        if(evBase is null || evBase is not Event ev)
+                        if(evBase is null || evBase is not Event<TConfig, TTranslation> ev)
                         continue;
 
                     if (!ev.AutoLoad)
@@ -73,9 +77,9 @@ namespace AutoEvent.Interfaces
         /// </summary>
         /// <param name="type">The name of the event to search for.</param>
         /// <returns>The first event found with the same name (Case-Insensitive).</returns>
-        public static Event GetEvent(string type)
+        public static Event<TConfig, TTranslation> GetEvent(string type)
         {
-            Event ev = null;
+            Event<TConfig, TTranslation> ev = null;
 
             if (int.TryParse(type, out int id))
                 return GetEvent(id);
@@ -91,9 +95,9 @@ namespace AutoEvent.Interfaces
         /// </summary>
         /// <param name="id">The ID of the event to search for.</param>
         /// <returns>The first event found with the same ID.</returns>
-        public static Event GetEvent(int id) => Events.FirstOrDefault(x => x.Id == id);
+        public static Event<TConfig, TTranslation> GetEvent(int id) => Events.FirstOrDefault(x => x.Id == id);
         
-        private static bool TryGetEventByCName(string type, out Event ev)
+        private static bool TryGetEventByCName(string type, out Event<TConfig, TTranslation> ev)
         {
             return (ev = Events.FirstOrDefault(x => x.CommandName == type)) != null;
         }
@@ -202,10 +206,10 @@ namespace AutoEvent.Interfaces
         if (this is IEventSound sound && !string.IsNullOrEmpty(sound.SoundInfo.SoundName) &&
             (!checkIfAutomatic || sound.SoundInfo.StartAutomatically))
         {
-            sound.SoundInfo.AudioPlayerBase = Extensions.PlayAudio(
-                sound.SoundInfo.SoundName,
-                sound.SoundInfo.Volume,
-                sound.SoundInfo.Loop);
+            //sound.SoundInfo.AudioPlayerBase = Extensions.PlayAudio(
+            //    sound.SoundInfo.SoundName,
+            //    sound.SoundInfo.Volume,
+            //    sound.SoundInfo.Loop);
         }
     }
 
@@ -215,7 +219,7 @@ namespace AutoEvent.Interfaces
     protected void StopAudio()
     {
         DebugLogger.LogDebug("Stopping Audio");
-        Extensions.StopAudio();
+        //Extensions.StopAudio();
     }
 
     /// <summary>
@@ -851,10 +855,5 @@ namespace AutoEvent.Interfaces
         public virtual event EventStoppedHandler EventStopped;
     #endregion
 #endregion
-
-public IEnumerator<Event> GetEnumerator()
-{
-    throw new NotImplementedException();
-}
     }
 }

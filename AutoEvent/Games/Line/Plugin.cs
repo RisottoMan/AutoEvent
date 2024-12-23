@@ -5,19 +5,14 @@ using System.Linq;
 using AutoEvent.Interfaces;
 using Exiled.API.Features;
 using UnityEngine;
-using Event = AutoEvent.Interfaces.Event;
 
 namespace AutoEvent.Games.Line;
-public class Plugin : Event, IEventSound, IEventMap
+public class Plugin : Event<Config, Translation>, IEventSound, IEventMap
 {
     public override string Name { get; set; } = "Death Line";
     public override string Description { get; set; } = "Avoid the spinning platform to survive";
     public override string Author { get; set; } = "Logic_Gun & RisottoMan";
     public override string CommandName { get; set; } = "line";
-    [EventConfig]
-    public Config Config { get; set; }
-    [EventTranslation]
-    public Translation Translation { get; set; }
     public MapInfo MapInfo { get; set; } = new()
     {
         MapName = "Line", 

@@ -7,10 +7,9 @@ using UnityEngine;
 using AutoEvent.Interfaces;
 using System.Text;
 using Exiled.API.Features;
-using Event = AutoEvent.Interfaces.Event;
 
 namespace AutoEvent.Games.AllDeathmatch;
-public class Plugin : Event, IEventMap, IEventSound
+public class Plugin : Event<Config, Translation>, IEventMap, IEventSound
 {
     public override string Name { get; set; } = "All Deathmatch";
     public override string Description { get; set; } = "Fight against each other in all deathmatch.";
@@ -18,10 +17,6 @@ public class Plugin : Event, IEventMap, IEventSound
     public override string CommandName { get; set; } = "dm";
     protected override FriendlyFireSettings ForceEnableFriendlyFire { get; set; } = FriendlyFireSettings.Enable;
     public override EventFlags EventHandlerSettings { get; set; } = EventFlags.IgnoreDroppingItem;
-    [EventConfig]
-    public Config Config { get; set; }
-    [EventTranslation]
-    public Translation Translation { get; set; }
     public MapInfo MapInfo { get; set; } = new()
     {
         MapName = "de_dust2",

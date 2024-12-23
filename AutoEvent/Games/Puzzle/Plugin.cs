@@ -12,18 +12,14 @@ using MapEditorReborn.API.Features.Objects;
 using MapEditorReborn.API.Features.Serializable;
 using Mirror;
 using Random = UnityEngine.Random;
-using Event = AutoEvent.Interfaces.Event;
 
 namespace AutoEvent.Games.Puzzle;
-public class Plugin : Event, IEventSound, IEventMap
+public class Plugin : Event<Config, Translation>, IEventSound, IEventMap
 {
     public override string Name { get; set; } = "Puzzle";
     public override string Description { get; set; } = "Get up the fastest on the right color";
     public override string Author { get; set; } = "RisottoMan && Redforce";
     public override string CommandName { get; set; } = "puzzle";
-    [EventConfig] public Config Config { get; set; }
-    [EventTranslation] public Translation Translation { get; set; }
-
     public MapInfo MapInfo { get; set; } = new()
     {
         MapName = "Puzzle",

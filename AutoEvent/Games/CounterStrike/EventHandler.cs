@@ -26,7 +26,7 @@ public class EventHandler
                 _plugin.BombObject.transform.position = ev.Pickup.Position;
                 _plugin.Buttons.ForEach(r => GameObject.Destroy(r));
 
-                Extensions.PlayAudio("BombPlanted.ogg", 5, false);
+                //Extensions.PlayAudio("BombPlanted.ogg", 5, false);
                 ev.Player.ShowHint(_plugin.Translation.YouPlanted);
             }
         }

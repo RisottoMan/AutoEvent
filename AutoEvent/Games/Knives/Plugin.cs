@@ -6,25 +6,20 @@ using AutoEvent.API.Enums;
 using UnityEngine;
 using AutoEvent.Interfaces;
 using Exiled.API.Features;
-using Event = AutoEvent.Interfaces.Event;
 
 namespace AutoEvent.Games.Knives;
-public class Plugin : Event, IEventSound, IEventMap
+public class Plugin : Event<Config, Translation>, IEventSound, IEventMap
 {
     public override string Name { get; set; } = "Knives of Death";
     public override string Description { get; set; } = "Knife players against each other on a 35hp map from cs 1.6";
     public override string Author { get; set; } = "RisottoMan/code & xleb.ik/map";
     public override string CommandName { get; set; } = "knives";
-    [EventConfig]
-    public KnivesConfig Config { get; set; }
-    [EventTranslation]
-    public Translation Translation { get; set; }
-    public MapInfo MapInfo { get; set; } = new MapInfo()
+    public MapInfo MapInfo { get; set; } = new()
     { 
         MapName = "35hp_2", 
         Position = new Vector3(5f, 1030f, -45f)
     };
-    public SoundInfo SoundInfo { get; set; } = new SoundInfo()
+    public SoundInfo SoundInfo { get; set; } = new()
     { 
         SoundName = "Knife.ogg", 
         Volume = 10
