@@ -1,20 +1,15 @@
 ﻿using HarmonyLib;
-using PluginAPI.Core;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using Exiled.API.Features;
 
 namespace AutoEvent.Patches
 {
-    [HarmonyPatch(typeof(Player))]
+    [HarmonyPatch(typeof(Player), nameof(Player.List))]
     public class PlayerList
     {
-        public static MethodInfo TargetMethod()
-        {
-            return typeof(Player).GetMethods().First(r => r.Name == "GetPlayers");
-        }
-
         public static void Postfix(ref List<Player> __result)
         {
             if (AutoEvent.Singleton.Config.IgnoredRoles is null || AutoEvent.Singleton.Config.IgnoredRoles.Count == 0)

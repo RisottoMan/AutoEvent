@@ -25,10 +25,8 @@ public class Config : EventConfig
         }
     }
 
-    [Description("Can players drop guns.")]
-    public bool PlayersCanDropGuns { get; set; } = true;
     [Description("A list of available loadouts that players can get.")]
-    public List<Loadout> Loadouts { get; set; } = new List<Loadout>()
+    public List<Loadout> Loadouts { get; set; } = new()
     {
         new Loadout()
         {
@@ -37,7 +35,7 @@ public class Config : EventConfig
     };
 
     [Description("A list of weapons / items that will spawn around the map, as well as the chance of that object spawning. If you leave this blank, the default map spawns will be used.")]
-    public Dictionary<ItemType, float> ItemsAndWeaponsToSpawn { get; set; } = new Dictionary<ItemType, float>()
+    public Dictionary<ItemType, float> ItemsAndWeaponsToSpawn { get; set; } = new()
     {
         { ItemType.GunCOM15,     25 },  // 25 
         { ItemType.GunCOM18,     25 },  // 50

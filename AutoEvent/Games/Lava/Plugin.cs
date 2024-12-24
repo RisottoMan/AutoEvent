@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using AutoEvent.API;
 using AutoEvent.API.Enums;
-using AutoEvent.Events;
 using AutoEvent.Interfaces;
 using Exiled.API.Features;
 using InventorySystem;
@@ -30,22 +29,19 @@ public class Plugin : Event<Config, Translation>, IEventSound, IEventMap
         Volume = 8, 
         Loop = false
     };
-    private EventHandler _eventHandler { get; set; }
+
+    private EventHandler _eventHandler;
     private GameObject _lava;
 
     protected override void RegisterEvents()
     {
         _eventHandler = new EventHandler(this);
         Exiled.Events.Handlers.Player.Hurting += _eventHandler.OnHurting;
-        Handlers.DropItem += _eventHandler.OnDropItem;
-        Handlers.PlayerDamage += _eventHandler.OnPlayerDamage;
     }
 
     protected override void UnregisterEvents()
     {
         Exiled.Events.Handlers.Player.Hurting -= _eventHandler.OnHurting;
-        Handlers.DropItem -= _eventHandler.OnDropItem;
-        Handlers.PlayerDamage -= _eventHandler.OnPlayerDamage;
         _eventHandler = null;
     }
 

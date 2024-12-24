@@ -1,7 +1,6 @@
 ﻿using System;
 using CommandSystem;
 using Exiled.API.Features;
-using SCPSLAudioApi.AudioCore;
 using Exiled.Permissions.Extensions;
 
 namespace AutoEvent.Commands;
@@ -27,11 +26,12 @@ public class Volume : ICommand, IUsageProvider
             }
 
             float newVolume = float.Parse(arguments.At(0));
+            /*
             AutoEvent.Singleton.Config.Volume = newVolume;
             if (Extensions.AudioBot is not null)
             {
                 var audioPlayer = AudioPlayerBase.Get(Extensions.AudioBot).Volume = newVolume;
-            }
+            }*/
 
             response = $"The volume has been set!";
             return true;
