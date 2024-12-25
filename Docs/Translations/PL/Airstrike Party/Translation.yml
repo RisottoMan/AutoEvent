@@ -1,0 +1,22 @@
+name: 'Nalot'
+description: 'Przetrwaj nalot z powietrza'
+command_name: 'airstrike'
+cycle: |-
+  <color=yellow>Unikaj nalotów!</color>
+  <color=green>Upłynęło: {time}s</color>
+  <color=red>Pozostało graczy: {count}</color>
+more_player: |-
+  <color=red>Death Party</color>
+  <color=yellow><color=red>{count}</color> graczy przetrwało.</color>
+  <color=#ffc0cb>{time}</color>
+one_player: |-
+  <color=red>Death Party</color>
+  <color=yellow>Zwycięzca - <color=red>{winner}</color></color>
+  <color=#ffc0cb>{time}</color>
+all_die: |-
+  <color=red>Death Party</color>
+  <color=yellow>Nikt nie przetrwał.(((</color>
+  <color=#ffc0cb>{time}</color>
+# DO NOT CHANGE THIS. IT WILL BREAK THINGS. AutoEvent will automatically manage these settings.
+version: '1.0.3'
+language: 'EN'

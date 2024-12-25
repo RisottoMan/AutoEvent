@@ -1,0 +1,27 @@
+name: 'Bitwa Kurczaków'
+description: 'Pojedynek graczy z 35HP na mapie z cs 1.6'
+command_name: 'versus'
+players_null: |-
+  <color=#D71868><b><i>{name}</i></b></color>
+  Wejdź na arenę żeby walczyć z innymi!
+  Pozostało: <color=red>{remain}</color>s
+class_d_null: |-
+  <color=#D71868><b><i>{name}</i></b></color>
+   Pozostali żywi gracze: <color=yellow>{scientist}</color>
+  Wejdź do środka w ciągu <color=orange>{remain}</color>s
+scientist_null: |-
+  <color=#D71868><b><i>{name}</i></b></color>
+   Pozostali żywi gracze: <color=orange>{classd}</color>
+  Wejdź do środka w ciągu <color=yellow>{remain}</color>s
+players_duel: |-
+  <color=#D71868><b><i>{name}</i></b></color>
+  <color=yellow><color=yellow>{scientist}</color> <color=red>VS</color> <color=orange>{classd}</color></color>
+class_d_win: |-
+  <color=#D71868><b><i>{name}</i></b></color>
+  <color=yellow>ZWYCIĘZCY: <color=red>CLASS D</color></color>
+scientist_win: |-
+  <color=#D71868><b><i>{name}</i></b></color>
+  <color=yellow>ZWYCIĘZCY: <color=red>SCIENTISTS</color></color>
+# DO NOT CHANGE THIS. IT WILL BREAK THINGS. AutoEvent will automatically manage these settings.
+version: '1.0.2'
+language: 'EN'

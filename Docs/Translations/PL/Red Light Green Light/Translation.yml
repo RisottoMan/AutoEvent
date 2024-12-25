@@ -1,0 +1,29 @@
+name: 'Czerwone/Zielone Światło'
+description: 'Dotrzyj do mety, uważaj na czerwone światło'
+command_name: 'light'
+start: |-
+  <color=#42aaff>Przygotuj się</color>
+  Gra zaczyna się za: <color=red>{time}</color>
+cycle: |-
+  <b><color=#42aaff>{name}</color></b>
+  <color=#aad9ff>{state}</color>
+  <color=red>Pozostało: {time}s</color>
+all_died: |-
+  <b><color=#42aaff>{name}</color></b>
+  <color=red>Nikt nie dotarł do mety</color>
+more_win: |-
+  <b><color=#42aaff>{name}</color></b>
+  <color=red>{count} graczy wygrało</color>
+player_win: |-
+  <b><color=#42aaff>{name}</color></b>
+  <color=green>Zwycięzca: {winner}</color>
+red_light: '<color=red>Nie ruszaj się</color>'
+green_light: '<color=green>Biegnij</color>'
+red_lose: '<color=red>Biegłeś na czerwonym świetle</color>'
+no_time: '<color=red>Nie dotarłeś do mety!</color>'
+hint: '<color=green>Naciśnij <color=yellow>[Alt]</color> by popchnąć gracza</color>'
+hint_wait: '<color=red>Poczekaj parę sekund</color>'
+hint_ready: '<color=green>Gotowe</color>'
+# DO NOT CHANGE THIS. IT WILL BREAK THINGS. AutoEvent will automatically manage these settings.
+version: '1.0.4'
+language: 'EN'

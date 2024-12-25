@@ -1,0 +1,27 @@
+name: 'Krzesła Muzyczne'
+description: 'Walcz z innymi graczami o swoje miejsca na krześle, zawsze ktoś odpanie :)'
+command_name: 'chair'
+start: |-
+  <color=#42aaff>Przygotuj się</color>
+  Gra zacznie się za: <color=red>{time}</color>
+cycle: |-
+  <b><color=#42aaff>{name}</color></b>
+  <color=#ffff00>{state}</color>
+  Pozostało: <color=#008000>{count}</color> graczy</color>
+run_dont_touch: 'Biegnij i nie dotykaj platform'
+stand_free: 'Stań na wolnej platformie'
+stop_running: '<color=red>Skończyłeś biec</color>'
+touch_ahead: '<color=red>Dotknąłeś platform przed czasem</color>'
+no_time: '<color=red>Nie stanąłeś na wolnej platformie w odpowiednim czasie</color>'
+more_players: |-
+  <b><color=#42aaff>{name}</color></b>
+  <color=red>Administrator anulował grę</color>
+winner: |-
+  <b><color=#42aaff>{name}</color></b>
+  <color=red>Zwycięzcy: {winner}</color>
+all_died: |-
+  <b><color=#42aaff>{name}</color></b>
+  <color=red>Wszyscy gracze umarli</color>
+# DO NOT CHANGE THIS. IT WILL BREAK THINGS. AutoEvent will automatically manage these settings.
+version: '1.0.4'
+language: 'EN'
