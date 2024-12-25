@@ -19,9 +19,9 @@ internal class Vote : ICommand, IUsageProvider
             response = "<color=red>You do not have permission to use this command!</color>";
             return false;
         }
-        if (AutoEvent.ActiveEvent != null)
+        if (AutoEvent.EventManager.CurrentEvent != null)
         {
-            response = $"The mini-game {AutoEvent.ActiveEvent.Name} is already running!";
+            response = $"The mini-game {AutoEvent.EventManager.CurrentEvent.Name} is already running!";
             return false;
         }
 
@@ -39,7 +39,7 @@ internal class Vote : ICommand, IUsageProvider
             return false;
         }*/
         
-        Event vote = Event.GetEvent("Vote");
+        Event vote = AutoEvent.EventManager.GetEvent("Vote");
         if (vote is null)
         {
             response = $"The vote is not found.";
@@ -65,13 +65,13 @@ internal class Vote : ICommand, IUsageProvider
 
                 Extensions.TeleportEnd();
                 vote.StartEvent();
-                AutoEvent.ActiveEvent = vote;
+                AutoEvent.EventManager.CurrentEvent = vote;
             });
         }
         else
         {
             vote.StartEvent();
-            AutoEvent.ActiveEvent = vote;
+            AutoEvent.EventManager.CurrentEvent = vote;
         }
 
         response = $"The vote NAME has started!"; //$"The vote {ev.Name} has started!"

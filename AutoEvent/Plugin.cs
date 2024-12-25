@@ -1,10 +1,8 @@
 ﻿using System;
 using System.IO;
-using AutoEvent.Interfaces;
 using HarmonyLib;
 using AutoEvent.API;
 using AutoEvent.API.Season;
-using Event = AutoEvent.Interfaces.Event;
 using Server = PluginAPI.Core.Server;
 using Exiled.API.Features;
 
@@ -16,10 +14,10 @@ public class AutoEvent : Plugin<Config>
     public override Version Version => Version.Parse("9.10.0");
     public override Version RequiredExiledVersion => new(9, 0, 0);
     public static string BaseConfigPath { get; set;}
-    public static IEvent ActiveEvent;
     public static AutoEvent Singleton;
     public static Harmony HarmonyPatch;
-    EventHandler eventHandler;
+    public static EventManager EventManager;
+    private EventHandler _eventHandler;
     
     public override void OnEnabled()
     {
@@ -59,9 +57,6 @@ public class AutoEvent : Plugin<Config>
                 DebugLogger.LogDebug($"{e}");
             }
 
-            eventHandler = new EventHandler(this);
-            SCPSLAudioApi.Startup.SetupDependencies();
-
             try
             {
                 DebugLogger.LogDebug($"Base Conf Path: {BaseConfigPath}");
@@ -89,14 +84,10 @@ public class AutoEvent : Plugin<Config>
                 Directory.Delete(opensourcePath, true);
             }
 
-            Event.RegisterInternalEvents();
-            Loader.LoadEvents();
-            Event.Events.AddRange(Loader.Events);
+            _eventHandler = new EventHandler(this);
+            EventManager = new EventManager();
+            EventManager.RegisterInternalEvents();
             SeasonMethod.GetSeasonStyle();
-
-            DebugLogger.LogDebug(Loader.Events.Count > 0
-                    ? $"[ExternalEventLoader] Loaded {Loader.Events.Count} external event{(Loader.Events.Count > 1 ? "s" : "")}."
-                    : "No external events were found.", LogLevel.Info);
             
             DebugLogger.LogDebug($"The mini-games are loaded.", LogLevel.Info, true);
         }
@@ -129,9 +120,10 @@ public class AutoEvent : Plugin<Config>
     
     public override void OnDisabled()
     {
-        eventHandler = null;
+        _eventHandler = null;
 
         HarmonyPatch.UnpatchAll();
+        EventManager = null;
         Singleton = null;
         
         base.OnDisabled();

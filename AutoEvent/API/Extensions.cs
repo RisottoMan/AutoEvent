@@ -1,15 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using Mirror;
 using UnityEngine;
 using PlayerRoles;
-using SCPSLAudioApi.AudioCore;
-using VoiceChat;
 using InventorySystem.Items.Pickups;
 using PlayerStatsSystem;
-using System.Reflection;
 using AutoEvent.API;
 using AutoEvent.API.Enums;
 using Exiled.API.Enums;
@@ -22,7 +18,6 @@ using InventorySystem.Items.Jailbird;
 using MapEditorReborn.API.Features;
 using MapEditorReborn.API.Features.Objects;
 using PlayerRoles.Ragdolls;
-using Item = PluginAPI.Core.Items.Item;
 using Object = UnityEngine.Object;
 
 namespace AutoEvent;
@@ -228,6 +223,7 @@ public static class Extensions
             player.IsGodModeEnabled = false;
             player.Scale = new Vector3(1, 1, 1);
             player.Position = new Vector3(39.332f, 1014.766f, -31.922f);
+            player.ClearInventory();
         }
     }
 

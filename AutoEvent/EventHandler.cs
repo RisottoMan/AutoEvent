@@ -42,14 +42,14 @@ internal class EventHandler
 
     private void OnRestarting()
     {
-        if (AutoEvent.ActiveEvent == null) return;
+        if (AutoEvent.EventManager.CurrentEvent is null) return;
 
         //ServerStatic.StopNextRound = ServerStatic.NextRoundAction.Restart;
     }
 
     private void OnRespawningTeam(RespawningTeamEventArgs ev)
     {
-        if (AutoEvent.ActiveEvent is Event activeEvent)
+        if (AutoEvent.EventManager.CurrentEvent is Event activeEvent)
         {
             if (!activeEvent.EventHandlerSettings.HasFlag(EventFlags.IgnoreRespawnTeam))
             {
@@ -60,7 +60,7 @@ internal class EventHandler
     
     private void OnDecontaminating(DecontaminatingEventArgs ev)
     {
-        if (AutoEvent.ActiveEvent is Event activeEvent)
+        if (AutoEvent.EventManager.CurrentEvent is Event activeEvent)
         {
             if (!activeEvent.EventHandlerSettings.HasFlag(EventFlags.IgnoreDecontaminating))
             {
@@ -71,7 +71,7 @@ internal class EventHandler
 
     private void OnPlacingBulletHole(PlacingBulletHoleEventArgs ev)
     {
-        if (AutoEvent.ActiveEvent is Event activeEvent)
+        if (AutoEvent.EventManager.CurrentEvent is Event activeEvent)
         {
             if (!activeEvent.EventHandlerSettings.HasFlag(EventFlags.IgnoreBulletHole))
             {
@@ -82,7 +82,7 @@ internal class EventHandler
 
     private void OnSpawningRagdoll(SpawningRagdollEventArgs ev)
     {
-        if (AutoEvent.ActiveEvent is Event activeEvent)
+        if (AutoEvent.EventManager.CurrentEvent is Event activeEvent)
         {
             if (!activeEvent.EventHandlerSettings.HasFlag(EventFlags.IgnoreRagdoll))
             {
@@ -93,7 +93,7 @@ internal class EventHandler
 
     private void OnShooting(ShootingEventArgs ev)
     {
-        if (AutoEvent.ActiveEvent is Event activeEvent)
+        if (AutoEvent.EventManager.CurrentEvent is Event activeEvent)
         {
             if (activeEvent.EventHandlerSettings.HasFlag(EventFlags.IgnoreInfiniteAmmo))
                 return;
@@ -108,7 +108,7 @@ internal class EventHandler
 
     private void OnDroppingAmmo(DroppingAmmoEventArgs ev)
     {
-        if (AutoEvent.ActiveEvent is Event activeEvent)
+        if (AutoEvent.EventManager.CurrentEvent is Event activeEvent)
         {
             if (!activeEvent.EventHandlerSettings.HasFlag(EventFlags.IgnoreDroppingAmmo))
             {
@@ -119,7 +119,7 @@ internal class EventHandler
 
     private void OnDroppingItem(DroppingItemEventArgs ev)
     {
-        if (AutoEvent.ActiveEvent is Event activeEvent)
+        if (AutoEvent.EventManager.CurrentEvent is Event activeEvent)
         {
             if (!activeEvent.EventHandlerSettings.HasFlag(EventFlags.IgnoreDroppingItem))
             {
@@ -130,7 +130,7 @@ internal class EventHandler
 
     private void OnHandcuffing(HandcuffingEventArgs ev)
     {
-        if (AutoEvent.ActiveEvent is Event activeEvent)
+        if (AutoEvent.EventManager.CurrentEvent is Event activeEvent)
         {
             if (!activeEvent.EventHandlerSettings.HasFlag(EventFlags.IgnoreHandcuffing))
             {
@@ -141,7 +141,7 @@ internal class EventHandler
 
     private void OnDying(DyingEventArgs ev)
     {
-        if (AutoEvent.ActiveEvent == null)
+        if (AutoEvent.EventManager.CurrentEvent is null)
             return;
         
         if (!ev.IsAllowed)

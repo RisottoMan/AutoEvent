@@ -1,17 +1,4 @@
-﻿// <copyright file="Log.cs" company="Redforce04#4091">
-// Copyright (c) Redforce04. All rights reserved.
-// </copyright>
-// -----------------------------------------
-//    Solution:         AutoEvent
-//    Project:          AutoEvent
-//    FileName:         EventConfig.cs
-//    Author:           Redforce04#4091
-//    Revision Date:    09/13/2023 3:32 PM
-//    Created Date:     09/13/2023 3:32 PM
-// -----------------------------------------
-
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
 using AutoEvent.API.Enums;
 using AutoEvent.API.Season.Enum;
@@ -21,10 +8,8 @@ namespace AutoEvent.Interfaces;
 
 public class EventConfig
 {
-    public EventConfig()
-    {
-        
-    }
+    public EventConfig() { }
+    
     [YamlIgnore]
     internal string PresetName { get; set; }
 

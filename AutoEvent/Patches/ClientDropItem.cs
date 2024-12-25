@@ -8,7 +8,7 @@ internal static class ClientDropItem
 {
     public static bool Prefix()
     {
-        if (AutoEvent.ActiveEvent != null)
+        if (AutoEvent.EventManager.CurrentEvent != null)
         {
             return false;
         }

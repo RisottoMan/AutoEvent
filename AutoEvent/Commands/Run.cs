@@ -20,9 +20,9 @@ internal class Run : ICommand, IUsageProvider
             return false;
         }
 
-        if (AutoEvent.ActiveEvent != null)
+        if (AutoEvent.EventManager.CurrentEvent != null)
         {
-            response = $"The mini-game {AutoEvent.ActiveEvent.Name} is already running!";
+            response = $"The mini-game {AutoEvent.EventManager.CurrentEvent.Name} is already running!";
             return false;
         }
 
@@ -32,7 +32,7 @@ internal class Run : ICommand, IUsageProvider
             return false;
         }
 
-        Event ev = Event.GetEvent(arguments.At(0));
+        Event ev = AutoEvent.EventManager.GetEvent(arguments.At(0));
         if (!(ev is IEventMap map && !string.IsNullOrEmpty(map.MapInfo.MapName) && map.MapInfo.MapName.ToLower() != "none"))
         {
             Log.Warn("No map has been specified for this event!");
@@ -58,13 +58,13 @@ internal class Run : ICommand, IUsageProvider
                 }
 
                 ev.StartEvent();
-                AutoEvent.ActiveEvent = ev;
+                AutoEvent.EventManager.CurrentEvent = ev;
             });
         }
         else
         {
             ev.StartEvent();
-            AutoEvent.ActiveEvent = ev;
+            AutoEvent.EventManager.CurrentEvent = ev;
         }
 
         response = $"The mini-game {ev.Name} has started!";

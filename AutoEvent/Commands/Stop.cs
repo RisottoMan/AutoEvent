@@ -18,13 +18,13 @@ internal class Stop : ICommand
             return false;
         }
 
-        if (AutoEvent.ActiveEvent == null)
+        if (AutoEvent.EventManager.CurrentEvent == null)
         {
             response = "The mini-game is not running!";
             return false;
         }
 
-        AutoEvent.ActiveEvent.StopEvent();
+        AutoEvent.EventManager.CurrentEvent.StopEvent();
 
         foreach (Player pl in Player.GetPlayers())
         {

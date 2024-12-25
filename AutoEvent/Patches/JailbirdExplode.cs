@@ -54,7 +54,7 @@ internal static class JailbirdPatch
     /// <returns> <see cref="bool"/>. </returns>
     private static bool HandleJailbird(JailbirdItem instance, JailbirdMessageType messageType)
     {
-        if (AutoEvent.ActiveEvent == null)
+        if (AutoEvent.EventManager.CurrentEvent == null)
             return true;
         if (Extensions.JailbirdIsInvincible || Extensions.InvincibleJailbirds.Contains(instance))
         {

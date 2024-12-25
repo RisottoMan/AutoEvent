@@ -19,13 +19,13 @@ internal class Lobby : ICommand
             return false;
         }
         
-        if (AutoEvent.ActiveEvent != null)
+        if (AutoEvent.EventManager.CurrentEvent != null)
         {
-            response = $"The mini-game {AutoEvent.ActiveEvent.Name} is already running!";
+            response = $"The mini-game {AutoEvent.EventManager.CurrentEvent.Name} is already running!";
             return false;
         }
 
-        Event lobby = Event.GetEvent("Lobby");
+        Event lobby = AutoEvent.EventManager.GetEvent("Lobby");
         if (lobby == null)
         {
             response = $"The lobby is not found.";
@@ -41,13 +41,13 @@ internal class Lobby : ICommand
             Timing.CallDelayed(2f, () => {
 
                 lobby.StartEvent();
-                AutoEvent.ActiveEvent = lobby;
+                AutoEvent.EventManager.CurrentEvent = lobby;
             });
         }
         else
         {
             lobby.StartEvent();
-            AutoEvent.ActiveEvent = lobby;
+            AutoEvent.EventManager.CurrentEvent = lobby;
         }
 
         response = $"The lobby event has started!";

@@ -14,10 +14,6 @@ public class Plugin : Event<Config, Translation>, IEventSound, IEventMap
     public override string Description { get; set; } = "Cool GunGame on the Shipment map from MW19";
     public override string Author { get; set; } = "RisottoMan/code & xleb.ik/map";
     public override string CommandName { get; set; } = "gungame";
-    [EventConfig]
-    public Config Config { get; set; }
-    [EventTranslation]
-    public Translation Translation { get; set; }
     public MapInfo MapInfo { get; set; } = new()
     {
         MapName = "Shipment", 

@@ -2,7 +2,6 @@
 using AutoEvent.Interfaces;
 using CommandSystem;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Exiled.Permissions.Extensions;
@@ -34,22 +33,18 @@ internal class List : ICommand
         }
 
         SeasonStyle style = SeasonMethod.GetSeasonStyle();
+        string color = style.PrimaryColor;
+        
         if (style.Text != null)
             builder.AppendLine(style.Text);
 
-        List<Event> eventList = Event.Events.Where(ev => ev is not IHiddenCommand).OrderBy(x => x.Name).ToList();
-        foreach (var eventItem in eventList)
+        var eventList = AutoEvent.EventManager.Events.Where(ev => ev is not IHiddenCommand).OrderBy(x => x.Name).ToList();
+        foreach (IEvent ev in eventList)
         {
-            string color = style.PrimaryColor;
-            builder.AppendLine($"{(!isConsole ? "<color=white>" : "")}[{(!isConsole ? $"<color={color}>" : "")}==AutoEvent Events=={(!isConsole ? "<color=white>" : "")}]");
-
-            foreach (Event ev in eventItem)
-            {
-                if (!isConsole)
-                    builder.AppendLine($"<color={color}>{ev.Name}</color> [<color=yellow>{ev.CommandName}</color>]: <color=white>{ev.Description}</color>");
-                else
-                    builder.AppendLine($"{ev.Name} [{ev.CommandName}]: {ev.Description}");
-            }
+            if (!isConsole)
+                builder.AppendLine($"<color={color}>{ev.Name}</color> [<color=yellow>{ev.CommandName}</color>]: <color=white>{ev.Description}</color>");
+            else
+                builder.AppendLine($"{ev.Name} [{ev.CommandName}]: {ev.Description}");
         }
 
         if (!isConsole)

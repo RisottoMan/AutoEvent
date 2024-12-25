@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Reflection;
 using AutoEvent.API.Enums;
 using AutoEvent.API;
 using MEC;
@@ -14,93 +12,6 @@ namespace AutoEvent.Interfaces
 {
     public abstract class Event : IEvent
     {
-        public EventConfig InternalConfig { get; protected set; }
-        public EventTranslation InternalTranslation { get; protected set; }
-        
-#region Static Implementations // Static tools for registering and viewing events.
-        /// <summary>
-        /// A list of all registered events including external events and <see cref="IInternalEvent"/> events.
-        /// </summary>
-        public static List<Event> Events { get; set; } = new();
-
-        /// <summary>
-        /// Registers all of the <see cref="IInternalEvent"/> Events.
-        /// </summary>
-        internal static void RegisterInternalEvents()
-        {
-            Assembly callingAssembly = Assembly.GetCallingAssembly();
-            Type[] types = callingAssembly.GetTypes();
-
-            foreach (Type type in types)
-            {
-                try
-                {
-                    if (type.IsAbstract ||
-                        type.IsEnum ||
-                        type.IsInterface || type.GetInterfaces().All(x => x != typeof(IEvent)))
-                        continue;
-                    
-                    object evBase = Activator.CreateInstance(type);
-                        if(evBase is null || evBase is not Event ev)
-                        continue;
-
-                    if (!ev.AutoLoad)
-                        continue;
-
-                    ev.Id = Events.Count;
-                    try
-                    {
-                        ev.VerifyEventInfo();
-                        ev.LoadConfigs();
-                        ev.LoadTranslation();
-                        ev.InstantiateEvent();
-                    }
-                    catch (Exception e)
-                    {
-                        DebugLogger.LogDebug($"[EventLoader] {ev.Name} encountered an error while registering.", LogLevel.Warn, true);
-                        DebugLogger.LogDebug($"[EventLoader] {e}");
-                    }
-                }
-                catch (MissingMethodException) { }
-                catch (Exception ex)
-                {
-                    DebugLogger.LogDebug($"[EventLoader] cannot register an event.", LogLevel.Error, true);
-                    DebugLogger.LogDebug($"{ex}", LogLevel.Debug);
-
-                }
-            }
-        }
-
-        /// <summary>
-        /// Gets an event by it's name.
-        /// </summary>
-        /// <param name="type">The name of the event to search for.</param>
-        /// <returns>The first event found with the same name (Case-Insensitive).</returns>
-        public static Event GetEvent(string type)
-        {
-            Event ev = null;
-
-            if (int.TryParse(type, out int id))
-                return GetEvent(id);
-
-            if (!TryGetEventByCName(type, out ev)) 
-                return Events.FirstOrDefault(ev => ev.Name.ToLower() == type.ToLower());
-            
-            return ev;
-        }
-
-        /// <summary>
-        /// Gets an event by it's ID.
-        /// </summary>
-        /// <param name="id">The ID of the event to search for.</param>
-        /// <returns>The first event found with the same ID.</returns>
-        public static Event GetEvent(int id) => Events.FirstOrDefault(x => x.Id == id);
-        
-        private static bool TryGetEventByCName(string type, out Event ev)
-        {
-            return (ev = Events.FirstOrDefault(x => x.CommandName == type)) != null;
-        }
-#endregion
 #region Abstract Implementations // Tools that have been abstracted into the event class.
     #region Event Information // Information that event authors can specify about the event.
         /// <summary>
@@ -190,6 +101,12 @@ namespace AutoEvent.Interfaces
         public virtual TimeSpan EventTime { get; protected set; }
 
     #endregion
+    #region Event Configs // Configs that can change event parameters.
+    
+        public EventConfig InternalConfig { get; protected set; }
+        public EventTranslation InternalTranslation { get; protected set; }
+    
+    #endregion
     #region Event API Methods // Methods that can be used as api calls such as starting music / spawning map. 
     /// <summary>
     /// Starts the defined Audio. Can be used to trigger a late audio cue. <seealso cref="SoundInfo.StartAutomatically">SoundInfo.StartAutomatically</seealso>
@@ -256,44 +173,6 @@ namespace AutoEvent.Interfaces
         {
             Extensions.UnLoadMap(eventMap.MapInfo.Map);
         }
-    }
-
-    /// <summary>
-    /// Can be used to get a list of each <see cref="EventConfig"/> defined in the plugin.
-    /// </summary>
-    /// <returns>Returns a list of the current values of each <see cref="EventConfig"/></returns>
-    public List<EventConfig> GetCurrentConfigsValues()
-    {
-        List<EventConfig> eventConfigs = new List<EventConfig>();
-        foreach (PropertyInfo propertyInfo in this.GetType().GetProperties())
-        {
-            var attr = propertyInfo.GetCustomAttribute<EventConfigAttribute>();
-            if (attr is null)
-                continue;
-            object value = propertyInfo.GetValue(this);
-            if(value is not EventConfig conf)
-                continue;
-            eventConfigs.Add(conf);
-        }
-
-        return eventConfigs;
-    }
-    
-    public List<EventTranslation> GetCurrentTranslationsValues()
-    {
-        List<EventTranslation> eventConfigs = new List<EventTranslation>();
-        foreach (PropertyInfo propertyInfo in this.GetType().GetProperties())
-        {
-            var attr = propertyInfo.GetCustomAttribute<EventTranslationAttribute>();
-            if (attr is null)
-                continue;
-            object value = propertyInfo.GetValue(this);
-            if(value is not EventTranslation conf)
-                continue;
-            eventConfigs.Add(conf);
-        }
-
-        return eventConfigs;
     }
 
     /// <summary>
@@ -381,57 +260,12 @@ namespace AutoEvent.Interfaces
         protected virtual void OnCleanup() { }
     #endregion
     #region Internal Event Methods // Methods that are for the internal use by the event system to call or modify other abstracted properties or methods.
-        private string GetConfigFolder() => Path.Combine(AutoEvent.Singleton.Config.EventConfigsDirectoryPath, this.Name);
-        private List<Type> _confTypes { get; set; } = new List<Type>();
-
         /// <summary>
         /// Ensures that information such as the command name is valid.
         /// </summary>
         internal void VerifyEventInfo()
         {
             this.CommandName = CommandName.ToCamelCase(true);
-        }
-    
-        /// <summary>
-        /// Validates and loads any configs and presets for the given event.
-        /// </summary>
-        internal void LoadConfigs()
-        {
-            var path = GetConfigFolder();
-            AutoEvent.CreateDirectoryIfNotExists(path);
-            
-            try
-            {
-                foreach (var property in this.GetType().GetProperties())
-                {
-                    var conf = property.GetCustomAttribute<EventConfigAttribute>();
-                    if (conf is null)
-                    {
-                        continue;
-                    }
-
-                    DebugLogger.LogDebug($"Config \"{property.Name}\" found for {Name}", LogLevel.Debug);
-
-                    object config = conf.Load(path, property.Name, property.PropertyType);
-                    if (config is not EventConfig evConfig)
-                    {
-                        DebugLogger.LogDebug($"Config was found that does not inherit Event Config. It will be skipped.", LogLevel.Warn, true);
-                        DebugLogger.LogDebug($"(Event {this.Name}) Config: {property.Name}.");
-                        continue;
-                    }
-
-                    _setRandomMap(evConfig);
-                    _setRandomSound(evConfig);
-            
-                    property.SetValue(this, config);
-                    _confTypes.Add(config.GetType());
-                }
-            }
-            catch (Exception e)
-            {
-                DebugLogger.LogDebug($"[EventLoader] LoadConfigs()->_loadValidConfigs(path) has caught an exception while loading configs for the plugin {Name}", LogLevel.Warn, true);
-                DebugLogger.LogDebug($"{e}", LogLevel.Debug);
-            }
         }
 
         /// <summary>
@@ -529,55 +363,6 @@ namespace AutoEvent.Interfaces
                 DebugLogger.LogDebug($"[{this.Name}] Sound {sound.SoundInfo.SoundName} selected.", LogLevel.Debug);
             }
         }
-    
-        /// <summary>
-        /// Loads any translations present
-        /// </summary>
-        internal void LoadTranslation()
-        {
-            try
-            {
-                _loadValidTranslations(GetConfigFolder());
-            }
-            catch (Exception e)
-            {
-                DebugLogger.LogDebug($"[EventLoader] LoadTranslation()->_loadValidConfigs(path) has caught an exception while loading configs for the plugin {Name}", LogLevel.Warn, true);
-                DebugLogger.LogDebug($"{e}", LogLevel.Debug);
-            }
-        }
-
-        /// <summary>
-        /// Loads translations.
-        /// </summary>
-        /// <param name="path">The base event path.</param>
-        private void _loadValidTranslations(string path)
-        {
-            foreach (var property in this.GetType().GetProperties())
-            {
-                var trans = property.GetCustomAttribute<EventTranslationAttribute>();
-                if (trans is null)
-                {
-                    continue;
-                }
-
-                DebugLogger.LogDebug($"Translation \"{property.Name}\" found for {Name}", LogLevel.Debug);
-                
-                object translation = trans.Load(path, property.PropertyType);
-                if (translation is not EventTranslation evTranslation)
-                {
-                    DebugLogger.LogDebug($"Translation was found that does not inherit Event Translation. It will be skipped.", LogLevel.Warn, true);
-                    DebugLogger.LogDebug($"(Event {this.Name}) Translation: {property.Name}.", LogLevel.Debug);
-                    continue;
-                }
-
-                property.SetValue(this, evTranslation);
-
-                // Replace all the main strings of the mini-game.
-                this.Name = evTranslation.Name;
-                this.Description = evTranslation.Description;
-                this.CommandName = evTranslation.CommandName;
-            }
-        }
 
         /// <summary>
         /// Triggers internal actions to stop an event.
@@ -615,7 +400,7 @@ namespace AutoEvent.Interfaces
         {
             KillLoop = false;
             _cleanupRun = false;
-            AutoEvent.ActiveEvent = this;
+            AutoEvent.EventManager.CurrentEvent = this;
             EventTime = new TimeSpan();
             StartTime = DateTime.UtcNow;
 
@@ -814,23 +599,8 @@ namespace AutoEvent.Interfaces
                 DebugLogger.LogDebug($"Caught an exception at Event.CleanupFinished.Invoke().", LogLevel.Warn, true);
                 DebugLogger.LogDebug($"{e}", LogLevel.Debug);
             }
-            AutoEvent.ActiveEvent = null;
-            try
-            {
-                EventConfig conf = this.GetCurrentConfigsValues().FirstOrDefault();
-                EventTranslation trans = this.GetCurrentTranslationsValues().FirstOrDefault();
-                if (conf is not null)
-                {
-                    this._setRandomMap(conf); 
-                    this._setRandomSound(conf);
-                }
-            }
-            catch (Exception e)
-            {
-                DebugLogger.LogDebug($"Caught an exception at Event._setMap.", LogLevel.Warn, true);
-                DebugLogger.LogDebug($"{e}", LogLevel.Debug);
-            }
-
+            
+            AutoEvent.EventManager.CurrentEvent = null;
         }
     #endregion
     #region Event Events // These events are triggered internally and can be used by an event manager to detect when certain stages are complete.

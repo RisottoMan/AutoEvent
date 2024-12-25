@@ -5,8 +5,8 @@ using System.Linq;
 using AutoEvent.API.Enums;
 using UnityEngine;
 using PlayerRoles;
-using PluginAPI.Core;
 using AutoEvent.Interfaces;
+using Exiled.API.Features;
 using Random = UnityEngine.Random;
 
 namespace AutoEvent.Games.Airstrike;
@@ -26,10 +26,6 @@ public class Plugin : Event<Config, Translation>, IEventMap, IEventSound
         SoundName = "DeathParty.ogg", 
         Volume = 5
     };
-    [EventConfig]
-    public Config Config { get; set; }
-    [EventTranslation]
-    public Translation Translation { get; set; }
     protected override float PostRoundDelay { get; set; } = 5f;
     protected override FriendlyFireSettings ForceEnableFriendlyFire { get; set; } = FriendlyFireSettings.Enable;
     protected override FriendlyFireSettings ForceEnableFriendlyFireAutoban { get; set; } = FriendlyFireSettings.Disable;
@@ -58,9 +54,9 @@ public class Plugin : Event<Config, Translation>, IEventMap, IEventSound
         Server.FriendlyFire = true;
 
         SpawnList = MapInfo.Map.AttachedBlocks.Where(x => x.name == "Spawnpoint").ToList();
-        foreach (Player player in Player.GetPlayers())
+        foreach (Player player in Player.List)
         {
-            player.SetRole(RoleTypeId.ClassD, RoleChangeReason.None);
+            player.Role.Set(RoleTypeId.ClassD, RoleSpawnFlags.None);
             player.Position = SpawnList.RandomItem().transform.position;
         }
     }
@@ -92,14 +88,14 @@ public class Plugin : Event<Config, Translation>, IEventMap, IEventSound
 
     protected override void ProcessFrame()
     {
-        var count = Player.GetPlayers().Count(r => r.IsAlive && r.Role != RoleTypeId.ChaosConscript).ToString();
+        var count = Player.List.Count(r => r.IsAlive && r.Role != RoleTypeId.ChaosConscript).ToString();
         var cycleTime = $"{EventTime.Minutes:00}:{EventTime.Seconds:00}";
         Extensions.Broadcast(Translation.Cycle.Replace("{count}", count).Replace("{time}", cycleTime), 1);
     }
 
     protected override bool IsRoundDone()
     {
-        int playerCount = Player.GetPlayers().Count(r => r.IsAlive && r.Role != RoleTypeId.ChaosConscript);
+        int playerCount = Player.List.Count(r => r.IsAlive && r.Role != RoleTypeId.ChaosConscript);
         return !(playerCount > (Config.LastPlayerAliveWins ? 1 : 0) 
             && Stage <= Config.Rounds);
     }
@@ -114,7 +110,7 @@ public class Plugin : Event<Config, Translation>, IEventMap, IEventSound
         float scale = 4;
         float radius = MapInfo.Map.AttachedBlocks.First(x => x.name == "Arena").transform.localScale.x / 2 - 6f;
 
-        while (Player.GetPlayers().Count(r => r.IsAlive) > (Config.LastPlayerAliveWins ? 1 : 0) && Stage <= Config.Rounds)
+        while (Player.List.Count(r => r.IsAlive) > (Config.LastPlayerAliveWins ? 1 : 0) && Stage <= Config.Rounds)
         {
             if (KillLoop)
             {
@@ -136,8 +132,7 @@ public class Plugin : Event<Config, Translation>, IEventMap, IEventSound
                     {
                         try
                         {
-                            Player randomPlayer = Player.GetPlayers().Where(x => x.Role == RoleTypeId.ClassD)
-                                .ToList().RandomItem();
+                            Player randomPlayer = Player.List.Where(x => x.Role == RoleTypeId.ClassD).ToList().RandomItem();
                             pos = randomPlayer.Position;
                             pos.y = height + MapInfo.Map.Position.y;
                         }
@@ -187,14 +182,14 @@ public class Plugin : Event<Config, Translation>, IEventMap, IEventSound
             });
         }
         var time = $"{EventTime.Minutes:00}:{EventTime.Seconds:00}";
-        int count = Player.GetPlayers().Count(r => r.IsAlive && r.Role != RoleTypeId.ChaosConscript);
+        int count = Player.List.Count(r => r.IsAlive && r.Role != RoleTypeId.ChaosConscript);
         if (count > 1)
         {
-            Extensions.Broadcast(Translation.MorePlayer.Replace("{count}", $"{Player.GetPlayers().Count(r => r.Role != RoleTypeId.ChaosConscript)}").Replace("{time}", time), 10);
+            Extensions.Broadcast(Translation.MorePlayer.Replace("{count}", $"{Player.List.Count(r => r.Role != RoleTypeId.ChaosConscript)}").Replace("{time}", time), 10);
         }
         else if (count == 1)
         {
-            var player = Player.GetPlayers().First(r => r.IsAlive && r.Role != RoleTypeId.ChaosConscript);
+            var player = Player.List.First(r => r.IsAlive && r.Role != RoleTypeId.ChaosConscript);
             player.Health = 1000;
             Extensions.Broadcast(Translation.OnePlayer.Replace("{winner}", player.Nickname).Replace("{time}", time), 10);
         }
