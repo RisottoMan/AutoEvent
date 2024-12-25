@@ -1,0 +1,21 @@
+name: 'Lobby'
+description: 'Una lobby in cui il giocatore più veloce sceglie un minigioco.'
+command_name: 'lobby'
+cycle: |-
+  Vote: Premi [Alt] Pro o [Alt]x2 Contro
+  {trueCount} di {allCount} players per {newName}
+  {time} secondi rimasti!
+global_message: |-
+  Lobby
+  {message}
+  {count} player nella lobby
+get_ready: 'Preparatevi a correre per scegliere il minigioco'
+run: 'CORRI'
+choosing: 'Attendi per {nickName} che sceglie il minigioco'
+finish_message: |-
+  La lobby è finità.
+  Il player {nickName} ha scelto {newName} minigioco.
+  Totale {count} players nella lobby
+# DO NOT CHANGE THIS. IT WILL BREAK THINGS. AutoEvent will automatically manage these settings.
+version: '1.0.0'
+language: 'IT'

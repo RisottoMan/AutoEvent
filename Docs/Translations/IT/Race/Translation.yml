@@ -1,0 +1,18 @@
+name: 'Gara'
+description: 'Raggiungi la fine della mappa per vincere'
+command_name: 'race'
+cycle: |-
+  {name}
+  <color=yellow>Passare la linea di traguardo per vincere!</color>
+  Tempo rimasto: {time}
+died: '<color=red>Non hai finito la gara</color>'
+players_survived: |-
+  <color=red>Gli umani vincono!</color>
+  Sopravvissuti {count}
+one_survived: |-
+  <color=red>Gli umani vincono!</color>
+  Vincitore: {player}
+no_survivors: '<color=red>Nessuno è sopravvissuto!</color>'
+# DO NOT CHANGE THIS. IT WILL BREAK THINGS. AutoEvent will automatically manage these settings.
+version: '1.0.1'
+language: 'IT'
