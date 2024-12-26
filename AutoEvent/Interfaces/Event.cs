@@ -103,8 +103,8 @@ namespace AutoEvent.Interfaces
     #endregion
     #region Event Configs // Configs that can change event parameters.
     
-        public EventConfig InternalConfig { get; protected set; }
-        public EventTranslation InternalTranslation { get; protected set; }
+        public EventConfig InternalConfig { get; set; }
+        public EventTranslation InternalTranslation { get; set; }
     
     #endregion
     #region Event API Methods // Methods that can be used as api calls such as starting music / spawning map. 
@@ -513,7 +513,7 @@ namespace AutoEvent.Interfaces
         /// <returns></returns>
         protected virtual IEnumerator<float> RunGameCoroutine()
         {            
-            while (!IsRoundDone() || DebugLogger.AntiEnd)
+            while (!IsRoundDone())
             {
                 if (KillLoop)
                 {

@@ -176,7 +176,6 @@ public static class Extensions
                     effect.AddDuration);
             }
         }
-
     }
     
     public static void SetPlayerAhp(this Player player, float amount, float limit = 75, float decay = 1.2f,

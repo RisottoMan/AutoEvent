@@ -39,6 +39,7 @@ public class AutoEvent : Plugin<Config>
             }
 
             FriendlyFireSystem.IsFriendlyFireEnabledByDefault = Server.FriendlyFire;
+
             var debugLogger = new DebugLogger(Config.AutoLogDebug);
             DebugLogger.Debug = Config.Debug;
             if (DebugLogger.Debug)
@@ -87,7 +88,6 @@ public class AutoEvent : Plugin<Config>
             _eventHandler = new EventHandler(this);
             EventManager = new EventManager();
             EventManager.RegisterInternalEvents();
-            SeasonMethod.GetSeasonStyle();
             
             DebugLogger.LogDebug($"The mini-games are loaded.", LogLevel.Info, true);
         }
@@ -100,7 +100,7 @@ public class AutoEvent : Plugin<Config>
         base.OnEnabled();
     }
     
-    public static void CreateDirectoryIfNotExists(string directory, string subPath = "")
+    private static void CreateDirectoryIfNotExists(string directory, string subPath = "")
     {
         string path = "";
         try

@@ -19,9 +19,7 @@ public class EventManager
         {
             try
             {
-                if (type.IsAbstract ||
-                    type.IsEnum ||
-                    type.IsInterface || type.GetInterfaces().All(x => x != typeof(IEvent)))
+                if (type.IsAbstract || type.IsEnum || type.IsInterface || type.GetInterfaces().All(x => x != typeof(IEvent)))
                     continue;
                     
                 object evBase = Activator.CreateInstance(type);
@@ -37,8 +35,6 @@ public class EventManager
                 try
                 {
                     ev.VerifyEventInfo();
-                    //ev.LoadConfigs(); //todo
-                    //ev.LoadTranslation(); //todo
                     ev.InstantiateEvent();
                 }
                 catch (Exception e)
@@ -54,6 +50,8 @@ public class EventManager
                 DebugLogger.LogDebug($"{ex}", LogLevel.Debug);
             }
         }
+
+        ConfigManager.RegisterConfigsAndTranslations();
     }
 
     /// <summary>

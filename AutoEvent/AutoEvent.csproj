@@ -123,6 +123,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="API\Season\Enum\" />
+    <Folder Include="Translations\" />
   </ItemGroup>
   <Target Name="RemoveFile" BeforeTargets="ReplaceFile">
     <Exec Command="if exist $(SolutionDir)VersionInfo.cs del $(SolutionDir)VersionInfo.cs" />
