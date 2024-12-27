@@ -5,10 +5,10 @@ using PlayerRoles;
 using System.Collections.Generic;
 using System.Linq;
 using AutoEvent.Interfaces;
+using Exiled.API.Features;
 using UnityEngine;
 using Interactables.Interobjects.DoorUtils;
 using Interactables.Interobjects;
-using PluginAPI.Core;
 using Player = Exiled.API.Features.Player;
 using Warhead = Exiled.API.Features.Warhead;
 
@@ -50,7 +50,7 @@ public class Plugin : Event<Config, Translation>, IEventSound
     protected override void OnStart()
     {
         GameObject _startPos = new GameObject();
-        _startPos.transform.parent = Facility.Rooms.First(r => r.Identifier.Name == RoomName.Lcz173).Transform;
+        _startPos.transform.parent = Room.List.First(r => r.Identifier.Name == RoomName.Lcz173).Transform;
         _startPos.transform.localPosition = new Vector3(16.5f, 13f, 8f);
 
         foreach (Player player in Player.List)

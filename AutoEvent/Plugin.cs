@@ -2,8 +2,6 @@
 using System.IO;
 using HarmonyLib;
 using AutoEvent.API;
-using AutoEvent.API.Season;
-using Server = PluginAPI.Core.Server;
 using Exiled.API.Features;
 
 namespace AutoEvent;
@@ -88,6 +86,7 @@ public class AutoEvent : Plugin<Config>
             _eventHandler = new EventHandler(this);
             EventManager = new EventManager();
             EventManager.RegisterInternalEvents();
+            ConfigManager.LoadConfigsAndTranslations();
             
             DebugLogger.LogDebug($"The mini-games are loaded.", LogLevel.Info, true);
         }

@@ -50,8 +50,6 @@ public class EventManager
                 DebugLogger.LogDebug($"{ex}", LogLevel.Debug);
             }
         }
-
-        ConfigManager.RegisterConfigsAndTranslations();
     }
 
     /// <summary>
