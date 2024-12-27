@@ -1,0 +1,15 @@
+name: 'Team Death-Match'
+description: 'Team Death-Match auf der Shipment-Karte aus MW19'
+command_name: 'tdm'
+cycle: |-
+  <color=#D71868><b><i>{name}</i></b></color>
+  <b><color=yellow><color=#42AAFF> {mtftext}> </color> <color=red>|</color> <color=green> <{chaostext}</color></color></b>
+chaos_win: |-
+  <color=#D71868><b><i>{name}</i></b></color>
+  <color=yellow>GEWINNER: <color=green>CHAOS</color></color>
+mtf_win: |-
+  <color=#D71868><b><i>{name}</i></b></color>
+  <color=yellow>GEWINNER: <color=#42AAFF>MTF</color></color>
+# ÄNDERE DAS NICHT. SONST GEHEN DINGE KAPUTT. AutoEvent verwaltet diese Einstellungen automatisch.
+version: '1.0.0'
+language: 'DE'
