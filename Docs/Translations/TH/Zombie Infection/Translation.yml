@@ -1,0 +1,23 @@
+name: 'ซอมบี้แพร่เชื้อ'
+description: 'โหมดซอมบี้ ทำการแพร่เชื้อใส่ผู้เล่นอื่น'
+command_name: 'zombie'
+start: |-
+  <color=#D71868><b><i>{name}</i></b></color>
+  <color=#ABF000>มีเวลาเหลืออีก <color=red>{time}</color> วินาทีก่อนการแพร่เชื้อครั้งแรกเกิดขึ้น</color>
+cycle: |-
+  <color=#D71868><b><i>{name}</i></b></color>
+  <color=yellow>คนรอด: <color=green>{count}</color></color>
+  <color=yellow>เริ่มไปแล้ว: <color=red>{time}</color></color>
+extra_time: |-
+  Extra time: {extratime}
+  <color=yellow>เหลือ <b><i>คน</i></b> สุดท้าย!</color>
+  <color=yellow>เริ่มไปแล้ว: <color=red>{time}</color></color>
+win: |-
+  <color=red>ซอมบี้ชนะ!</color>
+  <color=yellow>เริ่มไปแล้ว: <color=red>{time}</color></color>
+lose: |-
+  <color=yellow><color=#D71868><b><i>คน</i></b></color> ชนะ!</color>
+  <color=yellow>เริ่มไปแล้ว: <color=red>{time}</color></color>
+# DO NOT CHANGE THIS. IT WILL BREAK THINGS. AutoEvent will automatically manage these settings.
+version: '1.0.2'
+language: 'TH'

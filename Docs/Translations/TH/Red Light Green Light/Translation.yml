@@ -1,0 +1,29 @@
+name: 'ไฟแดง ไฟเขียว'
+description: 'วิ่งไปยังเส้นชัยก่อน หากขยับตอนไฟแดง ตาย'
+command_name: 'light'
+start: |-
+  <color=#42aaff>เตรียมวิ่งในอีก</color>
+  เกมจะเริ่มในอีก: <color=red>{time}</color>
+cycle: |-
+  <b><color=#42aaff>{name}</color></b>
+  <color=#aad9ff>{state}</color>
+  <color=red>{time} วินาที ที่เหลือ</color>
+all_died: |-
+  <b><color=#42aaff>{name}</color></b>
+  <color=red>ตายหมด</color>
+more_win: |-
+  <b><color=#42aaff>{name}</color></b>
+  <color=red>{count} รอดชีวิต</color>
+player_win: |-
+  <b><color=#42aaff>{name}</color></b>
+  <color=green>ผู้ชนะ: {winner}</color>
+red_light: '<color=red>อย่าขยับ ไม่งั้นตาย</color>'
+green_light: '<color=green>วิ่ง!!</color>'
+red_lose: '<color=red>คุณขยับตัวตอนไฟแดง</color>'
+no_time: '<color=red>คุณวิ่งไม่ทัน!</color>'
+hint: '<color=green>กด <color=yellow>[Alt]</color> เพื่อพลักผู้เล่นข้างหน้า</color>'
+hint_wait: '<color=red>รอสักครู่</color>'
+hint_ready: '<color=green>พร้อม</color>'
+# DO NOT CHANGE THIS. IT WILL BREAK THINGS. AutoEvent will automatically manage these settings.
+version: '1.0.4'
+language: 'TH'

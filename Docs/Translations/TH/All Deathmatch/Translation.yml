@@ -1,0 +1,20 @@
+name: 'Deathmatch แบบไม่มีทีม'
+description: 'สู้กันให้ตายกันไปโดยไม่นับฝ่าย คุณต้องเอาชนะ'
+command_name: 'dm'
+cycle: |-
+  <size=30><i><b>{name}</b>
+  <color=red>คุณต้องสังหาร - {kills}/{needKills} คน</color>
+  เวลา: {time}</i></size>
+no_players: |-
+  <color=red>เกมถูกจบโดยทีมงาน
+  คุณสังหาร {count}</color>
+time_end: |-
+  <color=red>หมดเวลา
+  คุณสังหาร{count}</color>
+winner_end: |-
+  <b><color=red>ผู้ชนะได้แก่ - <color=yellow>{winner}</color></color></b>
+  คุณสังหารไปทั้งหมด <color=red>{count}</color></color>
+  เวลา - <color=#008000>{time}</color></i>
+# DO NOT CHANGE THIS. IT WILL BREAK THINGS. AutoEvent will automatically manage these settings.
+version: '1.0.1'
+language: 'TH'
