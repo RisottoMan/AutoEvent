@@ -1,0 +1,16 @@
+name: 'Przetrwanie Zombie'
+description: 'Jako człowiek przetrwaj falę zombie'
+command_name: 'zombie2'
+survival_before_infection: |-
+  <b>{name}</b>
+  <color=yellow>Pozostało </color> {time} <color=yellow>s do rozpoczęcia gry.</color>
+survival_after_infection: |-
+  <b>{name}</b>
+  <color=#14AAF5>Ludzie:</color> {humanCount}
+  <color=#299438>Pozostały czas:</color> {time}
+survival_zombie_win: '<color=red>Zombie zainfekowały wszystkich ludzi i wygrały!</color>'
+survival_human_win: '<color=#14AAF5>Ludzie zabili wszystkie zombie zapobiegając infekcji</color>'
+survival_human_win_time: '<color=yellow>Ludzie przetrwali ale nie zapobiegli infekcji</color>'
+# DO NOT CHANGE THIS. IT WILL BREAK THINGS. AutoEvent will automatically manage these settings.
+version: '1.0.0'
+language: 'EN'

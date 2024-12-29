@@ -1,0 +1,20 @@
+name: 'Dead Jump'
+description: 'Skacz po szklanych platformach'
+command_name: 'glass'
+start: |-
+  <size=50>Dead Jump
+  Skacz po szklanych platformach</size>
+  <size=20>Pozostali żywi gracze: {plyAlive} 
+  Pozostało: {time}s</size>
+died: 'Wpadłeś do lawy'
+win_survived: '<color=yellow>Wygrana! Przetrwało {plyAlive} graczy</color>'
+winner: |-
+  <color=red>Dead Jump</color>
+  <color=yellow>Zwycięzca: {winner}</color>
+fail: |-
+  <color=red>Dead Jump</color>
+  <color=yellow>Wszyscy gracze zginęli</color>
+push: '<color=green>Naciśnij <color=yellow>[Alt]</color> by wypchnąć gracza</color>'
+# DO NOT CHANGE THIS. IT WILL BREAK THINGS. AutoEvent will automatically manage these settings.
+version: '1.0.5'
+language: 'EN'

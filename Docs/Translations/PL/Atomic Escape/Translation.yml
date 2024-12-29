@@ -1,0 +1,16 @@
+name: 'Atomowa Ucieczka'
+description: 'Ucieknij z placówki jako SCP-173 z ponaddźwiękową prędkością!'
+command_name: 'escape'
+before_start: |-
+  {name}
+  Przygotuj się do ucieczki z placówki, zanim wybuchnie!
+  <color=red>Gra zaczyna się za: {time}s</color>
+cycle: |-
+  {name}
+  <color=red>{time}</color> sekund do eksplozji!
+end: |-
+  {name}
+  <color=red>Z placówki uciekło {players} graczy</color>
+# DO NOT CHANGE THIS. IT WILL BREAK THINGS. AutoEvent will automatically manage these settings.
+version: '1.0.1'
+language: 'EN'
