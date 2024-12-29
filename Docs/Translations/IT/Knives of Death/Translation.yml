@@ -1,0 +1,15 @@
+name: 'Coltelli della morte'
+description: 'l''uno contro l''altro con 35hp su una mappa di cs 1.6'
+command_name: 'knives'
+cycle: |-
+  <color=#D71868><b><i>{name}</i></b></color>
+  <color=yellow><color=blue>{mtfcount} MTF</color> <color=red>VS</color> <color=green>{chaoscount} CHAOS</color></color>
+chaos_win: |-
+  <color=#D71868><b><i>{name}</i></b></color>
+  <color=yellow>VINCITORI: <color=green>CHAOS</color></color>
+mtf_win: |-
+  <color=#D71868><b><i>{name}</i></b></color>
+  <color=yellow>VINCITORI: <color=#42AAFF>MTF</color></color>
+# DO NOT CHANGE THIS. IT WILL BREAK THINGS. AutoEvent will automatically manage these settings.
+version: '1.0.2'
+language: 'IT'

@@ -1,0 +1,21 @@
+name: 'Spleef'
+description: 'Spara alle piattaforme e non cadere nel vuoto'
+command_name: 'spleef'
+start: '<color=red>Inzia tra </color>{time} secondi'
+cycle: |-
+  <color=red>{name}</color>
+  <color=yellow>Players vivi:</color> {players}
+  <color=#42aaff>Tempo rimanente:</color> {remaining}
+all_died: |-
+  <color=red>Tutti i player sono morti</color>
+  Minigioco finito
+some_survived: |-
+  <color=red>Diverse persone sono sopravvissute</color>
+  Minigioco finito
+winner: |-
+  <color=red>Vincitore: {winner}</color>
+  Minigioco finito
+died: '<color=red>Bruciato nella lava</color>'
+# DO NOT CHANGE THIS. IT WILL BREAK THINGS. AutoEvent will automatically manage these settings.
+version: '1.0.5'
+language: 'IT'

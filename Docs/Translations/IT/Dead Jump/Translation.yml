@@ -1,0 +1,20 @@
+name: 'Salto Falso'
+description: 'Salta in delle piattaforma ma possono essere fragili'
+command_name: 'glass'
+start: |-
+  <size=50>Salto Falso
+  Salta sulle piattaforme fragili</size>
+  <size=20>Player vivi: {plyAlive} 
+  Tempo rimasto: {time}</size>
+died: 'Sei caduto nella lava'
+win_survived: '<color=yellow>Gli umani vincono! Sopravvissuti {plyAlive} players</color>'
+winner: |-
+  <color=red>Salto Falso</color>
+  <color=yellow>Vincitore: {winner}</color>
+fail: |-
+  <color=red>Salto Falso</color>
+  <color=yellow>Tutti i players sono morti</color>
+push: '<color=green>Premi <color=yellow>[Alt]</color> per spingere una persona</color>'
+# DO NOT CHANGE THIS. IT WILL BREAK THINGS. AutoEvent will automatically manage these settings.
+version: '1.0.5'
+language: 'IT'

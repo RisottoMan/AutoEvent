@@ -1,0 +1,38 @@
+name: 'Counter-Strike'
+description: 'Combattimento tra terroristi e antiterroristi.'
+command_name: 'cs'
+cycle: |-
+  <size=60>{name}</size>
+  <size=25><i>{task}</i>
+  <i><color=#42AAFF>{ctCount} Antiterroristi</color> <b>/</b> <color=green>{tCount} Terroristi</color></i>
+  <i>Round Time: {time}</i></size>
+no_planted_counter: 'Proteggi gli stabilimenti A e B dai terroristi'
+no_planted_terror: 'Posiziona la bomba sull''impianto A o B'
+planted_counter: '<color=red>Disinnescare la bomba prima che esploda</color>'
+planted_terror: '<color=red>Proteggi la bomba finché non esplode</color>'
+draw: |-
+  <b><color=#808080>Pari</color></b>
+  <i>Tutti sono morti</i>
+time_ended: |-
+  <b><color=#808080>Pari</color></b>
+  <i>Tempo finito</i>
+counter_win: |-
+  <b><color=#42AAFF>Antiterroristi Vincono</color></b>
+  <i>Tutti i terroristi sono morti</i>
+terrorist_win: |-
+  <b><color=green>Terroristi Vincono</color></b>
+  <i>Tutti gli antiterroristi sono morti</i>
+planted_win: |-
+  <b><color=green>Terroristi Vincono</color></b>
+  <i>La bomba è esplosa</i>
+defused_win: |-
+  <b><color=#42AAFF>Antiterroristi Vincono</color></b>
+  <i>Bomba disinnescata</i>
+you_planted: '<b><color=#ff4c5b>Hai posizionato la bomba</color></b>'
+you_defused: '<b><color=#42aaff>Hai disinnescato la bomba</color></b>'
+hint_cycle: |-
+  <size=30><i><b>{name}</b>
+  {kills}
+# DO NOT CHANGE THIS. IT WILL BREAK THINGS. AutoEvent will automatically manage these settings.
+version: '1.0.0'
+language: 'IT'

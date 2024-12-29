@@ -1,0 +1,15 @@
+name: 'Il pavimento è lava'
+description: 'Sopravvivenza, in cui devi evitare la lava e sparare agli altri'
+command_name: 'lava'
+start: |-
+  <size=100><color=red>{time}</color></size>
+  Sali e prendi l''arma.
+cycle: '<size=20><color=red><b>Vivi: {count} players</b></color></size>'
+win: |-
+  <color=red><b>Vincitore
+  Player - {winner}</b></color>
+all_dead: '<color=red><b>Nessuno è sopravvissuto.</b></color>'
+died: '<color=red>Bruciato nella lava</color>'
+# DO NOT CHANGE THIS. IT WILL BREAK THINGS. AutoEvent will automatically manage these settings.
+version: '1.0.3'
+language: 'IT'

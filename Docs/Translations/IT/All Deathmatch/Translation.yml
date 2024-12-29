@@ -1,0 +1,20 @@
+name: 'Tutti contro tutti'
+description: 'Combatti in un deathmatch tutti contro tutti.'
+command_name: 'dm'
+cycle: |-
+  <size=30><i><b>{name}</b>
+  <color=red>Tu - {kills}/{needKills} kills</color>
+  Round Time: {time}</i></size>
+no_players: |-
+  <color=red>Il game è stato fermato da un admin
+  Le tue kills {count}</color>
+time_end: |-
+  <color=red>Il game è finito
+  Le tue kills {count}</color>
+winner_end: |-
+  <b><color=red>Vincitore - <color=yellow>{winner}</color></color></b>
+  Le tue Kills <color=red>{count}</color></color>
+  Tempo di Gioco - <color=#008000>{time}</color></i>
+# DO NOT CHANGE THIS. IT WILL BREAK THINGS. AutoEvent will automatically manage these settings.
+version: '1.0.1'
+language: 'IT'

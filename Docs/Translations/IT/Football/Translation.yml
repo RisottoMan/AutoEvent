@@ -1,0 +1,20 @@
+name: 'Calcio'
+description: 'Segna 3 gol per vincere'
+command_name: 'football'
+red_team: |-
+  <color=red>Il tuo team: Team Rosso
+  </color>
+blue_team: |-
+  <color=#14AAF5>Il tuo team: Team Blu
+  </color>
+time_left: |-
+  <color=#14AAF5>{BluePnt}</color> : <color=red>{RedPnt}</color>
+  Tempo rimasto: {time}
+red_wins: '<color=red>I Rossi vincono</color>'
+blue_wins: '<color=#14AAF5>I Blu vincono</color>'
+draw: |-
+  Pari
+  <color=#14AAF5>{BluePnt}</color> vs <color=red>{RedPnt}</color>
+# DO NOT CHANGE THIS. IT WILL BREAK THINGS. AutoEvent will automatically manage these settings.
+version: '1.0.0'
+language: 'IT'
