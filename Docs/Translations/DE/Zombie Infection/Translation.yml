@@ -1,0 +1,23 @@
+name: 'Zombie Infection'
+description: 'Zombie-Modus, bei dem das Ziel ist, alle Spieler zu infizieren.'
+command_name: 'zombie'
+start: |-
+  <color=#D71868><b><i>{name}</i></b></color>
+  <color=#ABF000>Es bleiben noch <color=red>{time}</color> Sekunden bis zum Spielbeginn.</color>
+cycle: |-
+  <color=#D71868><b><i>{name}</i></b></color>
+  <color=yellow>Verbleibende Menschen: <color=green>{count}</color></color>
+  <color=yellow>Verstrichene Zeit: <color=red>{time}</color></color>
+extra_time: |-
+  Zusätzliche Zeit: {extratime}
+  <color=yellow>Die <b><i>Letzte</i></b> Person ist übrig!</color>
+  <color=yellow>Verstrichene Zeit: <color=red>{time}</color></color>
+win: |-
+  <color=red>Zombie gewinnt!</color>
+  <color=yellow>Verstrichene Zeit: <color=red>{time}</color></color>
+lose: |-
+  <color=yellow><color=#D71868><b><i>Menschen</i></b></color> gewinnen!</color>
+  <color=yellow>Verstrichene Zeit: <color=red>{time}</color></color>
+# ÄNDERE DAS NICHT. SONST GEHEN DINGE KAPUTT. AutoEvent verwaltet diese Einstellungen automatisch.
+version: '1.0.2'
+language: 'DE'

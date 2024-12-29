@@ -1,0 +1,21 @@
+name: 'Lobby'
+description: 'Eine Lobby, in der ein schneller Spieler ein Mini-Spiel auswählt.'
+command_name: 'lobby'
+cycle: |-
+  Abstimmung: Drücke [Alt] für Pro oder [Alt]x2 für Contra
+  {trueCount} von {allCount} Spielern für {newName}
+  {time} Sekunden verbleibend!
+global_message: |-
+  Lobby
+  {message}
+  {count} Spieler in der Lobby
+get_ready: 'Mach dich bereit, in die Mitte zu rennen und ein Mini-Spiel auszuwählen'
+run: 'LAUF'
+choosing: 'Warten auf {nickName}, um das Mini-Spiel auszuwählen'
+finish_message: |-
+  Die Lobby ist beendet.
+  Der Spieler {nickName} wählte das Mini-Spiel {newName}.
+  Insgesamt {count} Spieler in der Lobby
+# ÄNDERE DAS NICHT. SONST GEHEN DINGE KAPUTT. AutoEvent verwaltet diese Einstellungen automatisch.
+version: '1.0.0'
+language: 'DE'

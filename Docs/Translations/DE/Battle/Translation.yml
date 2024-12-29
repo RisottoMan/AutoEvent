@@ -1,0 +1,16 @@
+name: 'Schlacht'
+description: 'MTF kämpfen gegen CI in einer Arena!'
+command_name: 'battle'
+time_left: '<size=100><color=red>Die Schlacht beginnt in {time}</color></size>'
+ci_win: |-
+  <color=#299438>Gewinner: Chaos Insurgency</color>
+  <color=red>Dauer: {time}</color>
+mtf_win: |-
+  <color=#14AAF5>Gewinner: Foundation-Kräfte</color>
+  <color=red>Dauer: {time}</color>
+counter: |-
+  <color=#14AAF5>MTF: {FoundationForces}</color> vs <color=#299438>CI: {ChaosForces}</color>
+   Vergangene Zeit: {time}
+# ÄNDERE DAS NICHT. SONST GEHEN DINGE KAPUTT. AutoEvent verwaltet diese Einstellungen automatisch.
+version: '1.0.0'
+language: 'DE'

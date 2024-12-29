@@ -1,0 +1,38 @@
+name: 'Counter-Strike'
+description: 'Kampf zwischen Terroristen und Anti-Terror-Einheiten.'
+command_name: 'cs'
+cycle: |-
+  <size=60>{name}</size>
+  <size=25><i>{task}</i>
+  <i><color=#42AAFF>{ctCount} Anti-Terror</color> <b>/</b> <color=green>{tCount} Terroristen</color></i>
+  <i>Rundenzeit: {time}</i></size>
+no_planted_counter: 'Schütze die Bombenplätze A und B vor den Terroristen'
+no_planted_terror: 'Platziere die Bombe auf Bombenplatz A oder B'
+planted_counter: '<color=red>Entschärfe die Bombe, bevor sie explodiert</color>'
+planted_terror: '<color=red>Beschütze die Bombe, bis sie explodiert</color>'
+draw: |-
+  <b><color=#808080>Unentschieden</color></b>
+  <i>Alle sind gestorben</i>
+time_ended: |-
+  <b><color=#808080>Unentschieden</color></b>
+  <i>Die Zeit ist abgelaufen.</i>
+counter_win: |-
+  <b><color=#42AAFF>Anti-Terror gewinnt</color></b>
+  <i>Alle Terroristen sind tot</i>
+terrorist_win: |-
+  <b><color=green>Terroristen gewinnen</color></b>
+  <i>Alle Anti-Terror-Einheiten sind tot</i>
+planted_win: |-
+  <b><color=green>Terroristen gewinnen</color></b>
+  <i>Bombe explodiert</i>
+defused_win: |-
+  <b><color=#42AAFF>Anti-Terror gewinnt</color></b>
+  <i>Bombe entschärft</i>
+you_planted: '<b><color=#ff4c5b>Du hast die Bombe platziert</color></b>'
+you_defused: '<b><color=#42aaff>Du hast die Bombe entschärft</color></b>'
+hint_cycle: |-
+  <size=30><i><b>{name}</b>
+  {kills}
+# ÄNDERE DAS NICHT. SONST GEHEN DINGE KAPUTT. AutoEvent verwaltet diese Einstellungen automatisch.
+version: '1.0.0'
+language: 'DE'

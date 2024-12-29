@@ -1,0 +1,15 @@
+name: 'Der Boden ist LAVA'
+description: 'Überleben, indem du Lava vermeidest und auf andere schießt.'
+command_name: 'lava'
+start: |-
+  <size=100><color=red>{time}</color></size>
+  Nimm Waffen und klettere hoch.
+cycle: '<size=20><color=red><b>Am Leben: {count} Spieler</b></color></size>'
+win: |-
+  <color=red><b>Gewinner
+  Spieler - {winner}</b></color>
+all_dead: '<color=red><b>Niemand hat es bis zum Ende überlebt.</b></color>'
+died: '<color=red>In Lava verbrannt</color>'
+# ÄNDERE DAS NICHT. SONST GEHEN DINGE KAPUTT. AutoEvent verwaltet diese Einstellungen automatisch.
+version: '1.0.3'
+language: 'DE'

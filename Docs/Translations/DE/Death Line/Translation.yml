@@ -1,0 +1,19 @@
+name: 'Todeslinie'
+description: 'Weiche der rotierenden Plattform aus, um zu überleben'
+command_name: 'line'
+cycle: |-
+  <color=#FF4242>{name}</color>
+  <color=#14AAF5>Verbleibende Zeit: {time}
+  <color=yellow>Verbleibende Spieler: {count}</color>
+more_players: |-
+  <color=#FF4242>{name}</color>
+  <color=yellow>{count} Spieler haben überlebt</color>
+  <color=red>Gratulation!</color>
+winner: |-
+  <color=#FF4242>{name}</color>
+  <color=yellow>Gewinner: {winner}</color>
+  <color=red>Gratulation!</color>
+all_died: '<color=red>Alle Spieler sind gestorben</color>'
+# ÄNDERE DAS NICHT. SONST GEHEN DINGE KAPUTT. AutoEvent verwaltet diese Einstellungen automatisch.
+version: '1.0.0'
+language: 'DE'

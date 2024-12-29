@@ -1,0 +1,21 @@
+name: 'Spleef'
+description: 'Schieße auf die Plattformen und falle nicht in das Nichts'
+command_name: 'spleef'
+start: '<color=red>Startet in: </color>{time}'
+cycle: |-
+  <color=red>{name}</color>
+  <color=yellow>Spieler am Leben:</color> {players}
+  <color=#42aaff>Verbleibende Zeit:</color> {remaining}
+all_died: |-
+  <color=red>Alle Spieler sind gestorben</color>
+  Mini-Game beendet
+some_survived: |-
+  <color=red>Mehrere Spieler haben überlebt</color>
+  Mini-Game beendet
+winner: |-
+  <color=red>Gewinner: {winner}</color>
+  Mini-Game beendet
+died: '<color=red>In Lava verbrannt</color>'
+# ÄNDERE DAS NICHT. SONST GEHEN DINGE KAPUTT. AutoEvent verwaltet diese Einstellungen automatisch.
+version: '1.0.5'
+language: 'DE'
