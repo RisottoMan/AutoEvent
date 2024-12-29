@@ -1,0 +1,20 @@
+name: 'Dead Jump'
+description: 'POV Squid game'
+command_name: 'glass'
+start: |-
+  <size=50>Dead Jump
+  Sautez sur des plaques en verre fragiles</size>
+  <size=20>Joueurs en vie: {plyAlive} 
+  Temps restant: {time}</size>
+died: 'Tu es tombé dans la lave'
+win_survived: '<color=yellow>Human wins! Survivant de l''épreuve, {plyAlive} joueurs</color>'
+winner: |-
+  <color=red>Dead Jump</color>
+  <color=yellow>Winner: {winner}</color>
+fail: |-
+  <color=red>Dead Jump</color>
+  <color=yellow>Tous les joueurs sont mort</color>
+push: '<color=green>Appuie sur <color=yellow>[Alt]</color> pour pousser les autres</color>'
+# DO NOT CHANGE THIS. IT WILL BREAK THINGS. AutoEvent will automatically manage these settings.
+version: '1.0.5'
+language: 'EN'

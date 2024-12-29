@@ -19,3 +19,5 @@
 ### This language must be set manually.
 ## > Brazilian [``View``](https://github.com/KoT0XleB/AutoEvent/tree/main/Docs/Translations/BR) [``Archive``](https://github.com/KoT0XleB/AutoEvent/blob/main/Docs/Translations/BR.7z)
 ### This language must be set manually.
+## > FRENCH [``View``](https://github.com/KoT0XleB/AutoEvent/tree/main/Docs/Translations/FR) [``Archive``](https://github.com/KoT0XleB/AutoEvent/blob/main/Docs/Translations/FR.7z)
+### This is a default language that can be easily changed.
