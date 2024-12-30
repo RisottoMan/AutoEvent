@@ -33,6 +33,12 @@ internal class Run : ICommand, IUsageProvider
         }
 
         Event ev = AutoEvent.EventManager.GetEvent(arguments.At(0));
+        if (ev == null)
+        {
+            response = $"The mini-game {arguments.At(0)} is not found.";
+            return false;
+        }
+        
         if (!(ev is IEventMap map && !string.IsNullOrEmpty(map.MapInfo.MapName) && map.MapInfo.MapName.ToLower() != "none"))
         {
             Log.Warn("No map has been specified for this event!");

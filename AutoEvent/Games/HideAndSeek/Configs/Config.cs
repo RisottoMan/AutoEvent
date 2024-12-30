@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using AutoEvent.API;
-using AutoEvent.API.Enums;
 using AutoEvent.API.Season.Enum;
 using AutoEvent.Interfaces;
 using Exiled.API.Enums;
@@ -23,7 +22,6 @@ public class Config : EventConfig
         {
             AvailableMaps.Add(new MapChance(50, new MapInfo("HideAndSeek", new Vector3(0, 30, 30))));
             AvailableMaps.Add(new MapChance(50, new MapInfo("HideAndSeek_Xmas2024", new Vector3(0, 30, 30)), SeasonFlags.Christmas));
-            AvailableMaps.Add(new MapChance(50, new MapInfo("HideAndSeek_Xmas2024", new Vector3(0, 30, 30)), SeasonFlags.NewYear));
             AvailableMaps.Add(new MapChance(50, new MapInfo("HideAndSeek_Halloween2024", new Vector3(0, 30, 30)), SeasonFlags.Halloween));
         }
     }

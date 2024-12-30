@@ -28,7 +28,6 @@ public class AutoEvent : Plugin<Config>
         try
         {
             Singleton = this;
-            SCPSLAudioApi.Startup.SetupDependencies();
             
             if (Config.IgnoredRoles.Contains(Config.LobbyRole))
             {
@@ -61,26 +60,20 @@ public class AutoEvent : Plugin<Config>
                 DebugLogger.LogDebug($"Base Conf Path: {BaseConfigPath}");
                 DebugLogger.LogDebug($"Configs paths: \n" +
                                      $"{Config.SchematicsDirectoryPath}\n" +
-                                     $"{Config.MusicDirectoryPath}\n" + 
-                                     $"{Config.ExternalEventsDirectoryPath}\n" +
-                                     $"{Config.EventConfigsDirectoryPath}\n");
-                CreateDirectoryIfNotExists(BaseConfigPath);
+                                     $"{Config.MusicDirectoryPath}\n");
+                CreateDirectoryIfNotExists(BaseConfigPath); 
                 CreateDirectoryIfNotExists(Config.SchematicsDirectoryPath);
                 CreateDirectoryIfNotExists(Config.MusicDirectoryPath);
-                CreateDirectoryIfNotExists(Config.ExternalEventsDirectoryPath);
-                CreateDirectoryIfNotExists(Config.EventConfigsDirectoryPath);
+                
+                // temporarily
+                DeleteDirectoryAndFiles(Config.ExternalEventsDirectoryPath);
+                DeleteDirectoryAndFiles(Config.EventConfigsDirectoryPath);
+                DeleteDirectoryAndFiles(Path.Combine(Config.SchematicsDirectoryPath, "All Source maps"));
             }
             catch (Exception e)
             {
                 DebugLogger.LogDebug($"An error has occured while trying to initialize directories.", LogLevel.Warn, true);
                 DebugLogger.LogDebug($"{e}");
-            }
-
-            // By mistake, I included all the open source maps in the archive Schematics.tar.gz
-            string opensourcePath = Path.Combine(Config.SchematicsDirectoryPath, "All Source maps");
-            if (Directory.Exists(opensourcePath))
-            {
-                Directory.Delete(opensourcePath, true);
             }
 
             _eventHandler = new EventHandler(this);
@@ -99,12 +92,10 @@ public class AutoEvent : Plugin<Config>
         base.OnEnabled();
     }
     
-    private static void CreateDirectoryIfNotExists(string directory, string subPath = "")
+    private static void CreateDirectoryIfNotExists(string path)
     {
-        string path = "";
         try
         {
-            path = subPath == "" ? directory : Path.Combine(directory, subPath);
             if (!Directory.Exists(path))
             {
                 Directory.CreateDirectory(path);
@@ -113,6 +104,22 @@ public class AutoEvent : Plugin<Config>
         catch (Exception e)
         {
             DebugLogger.LogDebug("An error has occured while trying to create a new directory.", LogLevel.Warn, true);
+            DebugLogger.LogDebug($"Path: {path}\n{e}");
+        }
+    }
+    
+    private static void DeleteDirectoryAndFiles(string path)
+    {
+        try
+        {
+            if (Directory.Exists(path))
+            {
+                Directory.Delete(path, true);
+            }
+        }
+        catch (Exception e)
+        {
+            DebugLogger.LogDebug("An error has occured while trying to delete a directory.", LogLevel.Warn, true);
             DebugLogger.LogDebug($"Path: {path}\n{e}");
         }
     }

@@ -5,6 +5,8 @@ using AutoEvent.API;
 using AutoEvent.API.Enums;
 using AutoEvent.Interfaces;
 using Exiled.API.Features;
+using Exiled.API.Features.Items;
+using Exiled.API.Features.Pickups;
 using InventorySystem;
 using InventorySystem.Items;
 using InventorySystem.Items.Pickups;
@@ -19,9 +21,9 @@ public class Plugin : Event<Config, Translation>, IEventSound, IEventMap
     public override string CommandName { get; set; } = "lava";
     public MapInfo MapInfo { get; set; } = new()
     { 
-        MapName = "Lava", 
+        MapName = "Lava_Remake", 
         Position = new Vector3(120f, 1020f, -43.5f),
-        IsStatic = false
+        IsStatic = false // ?
     };
     public SoundInfo SoundInfo { get; set; } = new()
     { 
@@ -45,80 +47,50 @@ public class Plugin : Event<Config, Translation>, IEventSound, IEventMap
         _eventHandler = null;
     }
 
-    private ItemType _getItemByChance()
-    {
-        if (Config.ItemsAndWeaponsToSpawn is not null && Config.ItemsAndWeaponsToSpawn.Count > 0)
-        {
-            if (Config.ItemsAndWeaponsToSpawn.Count == 1)
-            {
-                return Config.ItemsAndWeaponsToSpawn.FirstOrDefault().Key;
-            }
-
-            List<KeyValuePair<ItemType, float>> list = Config.ItemsAndWeaponsToSpawn.ToList();
-            float roleTotalChance = list.Sum(x => x.Value);
-            for (int i = 0; i < list.Count - 1; i++)
-            {
-                if (UnityEngine.Random.Range(0, roleTotalChance) <= list[i].Value)
-                {
-                    return list[i].Key;
-                }
-            }
-
-            return list[list.Count - 1].Key;
-        }
-
-        return ItemType.None;
-    }
     protected override void OnStart()
     {
-        if (Config.ItemsAndWeaponsToSpawn is not null && Config.ItemsAndWeaponsToSpawn.Count > 0)
+        var spawnpoints = new List<GameObject>();
+        var spawnguns = new List<GameObject>();
+        
+        foreach (var obj in MapInfo.Map.AttachedBlocks)
         {
-            DebugLogger.LogDebug($"Using Config for weapons.");
-            List<Vector3> itemPositions = new List<Vector3>();
-            foreach (var item in UnityEngine.Object.FindObjectsOfType<ItemPickupBase>())
+            switch (obj.name)
             {
-                if (item is null || item.Position.y < MapInfo.Position.y - 1)
-                    continue;
-                itemPositions.Add(item.Position);
-                ItemPickup.Remove(item);
-                item.DestroySelf();
-            }
-            
-            DebugLogger.LogDebug($"Positions found: {itemPositions.Count}");
-            foreach (Vector3 position in itemPositions)
-            {
-                // <<< An error occurred when creating the pickup. Maybe will fix it
-                //ItemPickup.Create(_getItemByChance(), position + new Vector3(0,0.5f,0), Quaternion.Euler(Vector3.zero)).Spawn();
-                // >>>
-                if (!InventoryItemLoader.AvailableItems.TryGetValue(_getItemByChance(), out ItemBase itemBase))
-                {
-                    continue;
-                }
-                else
-                {
-                    PickupSyncInfo pickupSyncInfo = new PickupSyncInfo()
-                    {
-                        ItemId = _getItemByChance(),
-                        Serial = ItemSerialGenerator.GenerateNext(),
-                        WeightKg = itemBase.Weight
-                    };
-                    ItemPickupBase itemPickupBase = InventoryExtensions.ServerCreatePickup(
-                        itemBase,
-                        pickupSyncInfo, position + new Vector3(0,0.5f,0),
-                        Quaternion.identity,
-                        false,
-                        null);
-                    new ItemPickup(itemPickupBase).Spawn();
-                }
-                // >>>
+                case "Spawnpoint": spawnpoints.Add(obj); break;
+                case "Spawngun": spawnguns.Add(obj); break;
             }
         }
+        
+        if (Config.ItemsAndWeaponsToSpawn is not null && Config.ItemsAndWeaponsToSpawn.Count > 0)
+        {
+            foreach (var goGun in spawnguns)
+            {
+                ItemType itemType = ItemType.None;
+                
+                if (Config.ItemsAndWeaponsToSpawn.Count == 1)
+                {
+                    itemType = Config.ItemsAndWeaponsToSpawn.FirstOrDefault().Key;
+                }
 
+                var list = Config.ItemsAndWeaponsToSpawn.ToList();
+                float roleTotalChance = list.Sum(x => x.Value);
+                for (int i = 0; i < list.Count - 1; i++)
+                {
+                    if (Random.Range(0, roleTotalChance) <= list[i].Value)
+                    {
+                        itemType = list[i].Key;
+                    }
+                }
 
+                Pickup pickup = Pickup.CreateAndSpawn(itemType, goGun.transform.position);
+                MapInfo.Map.AttachedBlocks.Add(pickup.GameObject);
+            }
+        }
+        
         foreach (var player in Player.List)
         {
             player.GiveLoadout(Config.Loadouts, LoadoutFlags.IgnoreGodMode);
-            player.Position = RandomClass.GetSpawnPosition(MapInfo.Map);
+            player.Position = spawnpoints.RandomItem().transform.position;
         }
     }
 
@@ -143,8 +115,6 @@ public class Plugin : Event<Config, Translation>, IEventSound, IEventMap
 
     protected override bool IsRoundDone()
     {
-        // If over one player is alive &&
-        // Time is under 10 minutes (+ countdown)
         return !(Player.List.Count(r => r.IsAlive) > 1 && EventTime.TotalSeconds < 600);
     }
 

@@ -101,8 +101,7 @@ internal class EventHandler
             if (!Extensions.InfiniteAmmoList.ContainsKey(ev.Player))
                 return;
 
-            ev.Firearm.Ammo += 1;
-            // todo -> shotgun x2
+            ev.Firearm.AmmoDrain = 0;
         }
     }
 

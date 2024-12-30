@@ -20,7 +20,6 @@ public class Config : EventConfig
         {
             AvailableMaps.Add(new MapChance(50, new MapInfo("MusicalChairs", new Vector3(115.5f, 1030f, -43.5f))));
             AvailableMaps.Add(new MapChance(50, new MapInfo("MusicalChairs_Xmas2024", new Vector3(115.5f, 1030f, -43.5f)), SeasonFlags.Christmas));
-            AvailableMaps.Add(new MapChance(50, new MapInfo("MusicalChairs_Xmas2024", new Vector3(115.5f, 1030f, -43.5f)), SeasonFlags.NewYear));
         }
     }
 

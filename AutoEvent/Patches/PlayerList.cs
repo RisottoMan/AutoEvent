@@ -6,7 +6,7 @@ using Exiled.API.Features;
 
 namespace AutoEvent.Patches
 {
-    [HarmonyPatch(typeof(Player), nameof(Player.List))]
+    //[HarmonyPatch(typeof(Player), nameof(Player.List))]
     public class PlayerList
     {
         public static void Postfix(ref List<Player> __result)

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Mirror;
 using UnityEngine;
@@ -11,20 +12,23 @@ using AutoEvent.API.Enums;
 using Exiled.API.Enums;
 using Exiled.API.Extensions;
 using Exiled.API.Features;
+using Exiled.API.Features.Items;
 using InventorySystem.Configs;
 using InventorySystem.Items.ThrowableProjectiles;
 using InventorySystem.Items;
 using InventorySystem.Items.Jailbird;
 using MapEditorReborn.API.Features;
 using MapEditorReborn.API.Features.Objects;
+using MapEditorReborn.API.Features.Serializable;
 using PlayerRoles.Ragdolls;
+using Utf8Json;
 using Object = UnityEngine.Object;
 
 namespace AutoEvent;
 public static class Extensions
 {
     public static bool JailbirdIsInvincible { get; set; } = true;
-    public static List<JailbirdItem> InvincibleJailbirds { get; set; } = new List<JailbirdItem>();
+    public static List<JailbirdItem> InvincibleJailbirds { get; set; } = new();
     public enum LoadoutCheckMethods
     {
         HasRole,
@@ -73,6 +77,7 @@ public static class Extensions
         assignLoadout:
         GiveLoadout(player, loadout, flags);
     }
+    
     public static void GiveLoadout(this Player player, Loadout loadout, LoadoutFlags flags = LoadoutFlags.None)
     {
         RoleTypeId role = RoleTypeId.None;
@@ -149,18 +154,16 @@ public static class Extensions
 
         if (loadout.ArtificialHealth is not null && loadout.ArtificialHealth.MaxAmount > 0 && !flags.HasFlag(LoadoutFlags.IgnoreAHP))
         {
-            //base.Owner.playerStats.GetModule<StaminaStat>().ModifyAmount(1f); 
-            // player.ReferenceHub.playerStats.GetModule<AhpStat>().ServerAddProcess(); - decay???
-            // player.ReferenceHub.playerStats.GetModule<HumeShieldStat>().TryGetHsModule(); - cant do this anymore :(
-
             loadout.ArtificialHealth.ApplyToPlayer(player);
-            //player.ReferenceHub.playerStats.GetModule<AhpStat>().ServerAddProcess(amount: loadout.ArtificialHealth.InitialAmount, limit: loadout.ArtificialHealth.MaxAmount, decay: loadout., efficacy: 100f, sustain: 5f, persistant: true);
-            // player.ArtificialHealth = loadout.ArtificialHealth;
         }
+        
         if (!flags.HasFlag(LoadoutFlags.IgnoreStamina) && loadout.Stamina != 0)
         {
-            player.ReferenceHub.playerStats.GetModule<StaminaStat>().ModifyAmount(loadout.Stamina); 
-            //player.StaminaRemaining = loadout.Stamina;
+            player.ReferenceHub.playerStats.GetModule<StaminaStat>().ModifyAmount(loadout.Stamina);
+        }
+        else
+        {
+            player.IsUsingStamina = false;
         }
 
         if (loadout.Size != Vector3.one && !flags.HasFlag(LoadoutFlags.IgnoreSize))
@@ -172,8 +175,7 @@ public static class Extensions
         {
             foreach (var effect in loadout.Effects)
             {
-                player.EffectsManager.ChangeState(effect.EffectType.ToString(), effect.Intensity, effect.Duration,
-                    effect.AddDuration);
+                player.EnableEffect(effect.Type, effect.Intensity, effect.Duration);
             }
         }
     }
@@ -230,15 +232,10 @@ public static class Extensions
     {
         try
         {
-            var data = MapUtils.GetSchematicDataByName(schematicName);
-            if (data == null)
-            {
+            if (MapUtils.GetSchematicDataByName(schematicName) is null)
                 return false;
-            }
-            else
-            {
-                return true;
-            }
+            
+            return true;
         }
         catch (Exception e)
         {
@@ -248,10 +245,20 @@ public static class Extensions
 
         return false;
     }
-
-    public static SchematicObject LoadMap(string nameSchematic, Vector3 pos, Quaternion rot, Vector3 scale, bool isStatic)
+    
+    public static SchematicObject LoadMap(string schematicName, Vector3 pos, Quaternion rot, Vector3 scale)
     {
-        return ObjectSpawner.SpawnSchematic(nameSchematic, pos, rot, scale, isStatic);
+        try
+        {
+            return ObjectSpawner.SpawnSchematic(schematicName, pos, rot, scale, null);
+        }
+        catch (Exception e)
+        {
+            DebugLogger.LogDebug("An error occured at LoadMap.", LogLevel.Warn, true);
+            DebugLogger.LogDebug($"{e}");
+        }
+
+        return null;
     }
 
     public static void UnLoadMap(SchematicObject scheme)
@@ -278,17 +285,83 @@ public static class Extensions
         Map.Broadcast(time, text);
     }
 
-    public static void GrenadeSpawn(float fuseTime, Vector3 pos, float scale)
+    public static void GrenadeSpawn(Vector3 pos, float scale = 1f, float fuseTime = 1f)
     {
-        var identifier = new ItemIdentifier(ItemType.GrenadeHE, ItemSerialGenerator.GenerateNext());
-        var item = ReferenceHub.HostHub.inventory.CreateItemInstance(identifier, false) as ThrowableItem;
+        ExplosiveGrenade grenade = (ExplosiveGrenade)Item.Create(ItemType.GrenadeHE);
+        grenade.FuseTime = fuseTime;
+        grenade.Base.transform.localScale = new Vector3(scale, scale, scale);
+        grenade.SpawnActive(pos);
+    }
 
-        TimeGrenade grenade = (TimeGrenade)Object.Instantiate(item.Projectile, pos, Quaternion.identity);
-        grenade._fuseTime = fuseTime;
-        grenade.NetworkInfo = new PickupSyncInfo(item.ItemTypeId, item.Weight, item.ItemSerial);
-        grenade.transform.localScale = new Vector3(scale, scale, scale);
+    public static AudioPlayer PlayAudio(string fileName, byte volume, bool isLoop, bool isStopAllClips)
+    {
+        if (!AudioClipStorage.AudioClips.ContainsKey(fileName))
+        {
+            string filePath = Path.Combine(AutoEvent.Singleton.Config.MusicDirectoryPath, fileName);
+            DebugLogger.LogDebug($"{filePath}");
+            if (!AudioClipStorage.LoadClip(filePath, fileName))
+            {
+                DebugLogger.LogDebug($"[PlayAudio] The music file {fileName} was not found for playback");
+                return null;
+            }
+        }
+        
+        if (isStopAllClips && AudioPlayer.AudioPlayerByName.TryGetValue("AutoEvent-Global", out AudioPlayer audioPly))
+        {
+            audioPly.Destroy();
+        }
+        
+        AudioPlayer audioPlayer = AudioPlayer.CreateOrGet($"AutoEvent-Global", onIntialCreation: (p) =>
+        {
+            Speaker speaker = p.AddSpeaker($"AutoEvent-Main-{fileName}", isSpatial: false, maxDistance: 5000f);
+            speaker.Volume = volume * (AutoEvent.Singleton.Config.Volume / 100f);
+        });
 
-        NetworkServer.Spawn(grenade.gameObject);
-        grenade.ServerActivate();
+        audioPlayer.SendSoundGlobally = true;
+        audioPlayer.AddClip(fileName, loop: isLoop);
+        
+        return audioPlayer;
+    }
+    
+    public static void PlayPlayerAudio(AudioPlayer audioPlayer, Player player, string audioFile, byte volume)
+    {
+        Speaker speaker = audioPlayer.AddSpeaker("AutoEvent-Zombie", isSpatial: false, minDistance: 1f, maxDistance: 100f);
+        speaker.Volume = volume * (AutoEvent.Singleton.Config.Volume / 100f);
+        speaker.transform.parent = player.GameObject.transform;
+        speaker.transform.localPosition = Vector3.zero;
+
+        audioPlayer.AddClip(audioFile);
+    }
+    
+    public static void PauseAudio(AudioPlayer audioPlayer)
+    {
+        int clipId = audioPlayer.ClipsById.Keys.First();
+        if (audioPlayer.TryGetClip(clipId, out AudioClipPlayback clip))
+        {
+            clip.IsPaused = true;
+        }
+    }
+    
+    public static void ResumeAudio(AudioPlayer audioPlayer)
+    {
+        int clipId = audioPlayer.ClipsById.Keys.First();
+        if (audioPlayer.TryGetClip(clipId, out AudioClipPlayback clip))
+        {
+            clip.IsPaused = false;
+        }
+    }
+    
+    public static void StopAudio(AudioPlayer audioPlayer)
+    {
+        try
+        {
+            audioPlayer.RemoveAllClips();
+            audioPlayer.Destroy();
+        }
+        catch (Exception e)
+        {
+            DebugLogger.LogDebug("An error occured at StopAudio.", LogLevel.Warn, true);
+            DebugLogger.LogDebug($"{e}");
+        }
     }
 }

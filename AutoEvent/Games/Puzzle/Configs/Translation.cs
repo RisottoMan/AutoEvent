@@ -3,9 +3,12 @@ using AutoEvent.Interfaces;
 namespace AutoEvent.Games.Puzzle;
 public class Translation : EventTranslation
 {
-    public override string Name { get; set; } = "Puzzle";
-    public override string Description { get; set; } = "Get on the correct platform before the others sink into lava";
-    public override string CommandName { get; set; } = "puzzle";
+    public Translation()
+    {
+        Name = "Puzzle";
+        Description = "Get on the correct platform before the others sink into lava";
+        CommandName = "puzzle";
+    }
     public string Start { get; set; } = "<b>{name}</b>\n<color=yellow>The mini-game will start in <color=red>{time}</color> seconds</color>";
     public string Stage { get; set; } = "<b>{name}</b>\n<color=red>Stage: </color>{stageNum}<color=red> / </color>{stageFinal}\n<color=yellow>Remaining players:</color> {count}";
     public string AllDied { get; set; } = "<b>{name}</b>\n<color=red>All players died</color>\nMini-game ended";

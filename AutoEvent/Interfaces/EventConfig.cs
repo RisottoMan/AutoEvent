@@ -2,7 +2,6 @@
 using System.ComponentModel;
 using AutoEvent.API.Enums;
 using AutoEvent.API.Season.Enum;
-using YamlDotNet.Serialization;
 
 namespace AutoEvent.Interfaces;
 
@@ -10,9 +9,6 @@ public class EventConfig
 {
     public EventConfig() { }
     
-    [YamlIgnore]
-    internal string PresetName { get; set; }
-
     [Description("A list of maps that can be used for this event.")]
     public List<MapChance> AvailableMaps { get; set; } = new List<MapChance>();
 
@@ -23,13 +19,7 @@ public class EventConfig
     public FriendlyFireSettings EnableFriendlyFireAutoban { get; set; } = FriendlyFireSettings.Default;
 
     [Description("Some plugins may override this out of necessity.")]
-    public FriendlyFireSettings EnableFriendlyFire { get; set; } = FriendlyFireSettings.Default;
-    
-    [Description("Should this plugin output debug logs.")]
-    public bool Debug { get; set; }
-    
-    [Description("DO NOT CHANGE THIS. IT WILL BREAK THINGS. AutoEvent will automatically manage this setting.")]
-    public virtual string ConfigVersion { get; set; }
+    public FriendlyFireSettings EnableFriendlyFire { get; set; } = FriendlyFireSettings.Default; 
 }
 public class MapChance
 {

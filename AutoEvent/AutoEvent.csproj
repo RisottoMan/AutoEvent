@@ -44,7 +44,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="ExMod.Exiled" Version="9.0.0-beta.1" />
+    <PackageReference Include="ExMod.Exiled" Version="9.1.1" />
     <PackageReference Include="Fody" Version="6.8.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -59,7 +59,7 @@
     <Reference Include="CedModV3" HintPath="$(SL_REFERENCES)\CedModV3.dll" />
     <Reference Include="MapEditorReborn" HintPath="$(SL_REFERENCES)\MapEditorReborn.dll" />
     <Reference Include="NWAPIPermissionSystem" HintPath="$(SL_REFERENCES)\NWAPIPermissionSystem.dll" />
-    <Reference Include="SCPSLAudioApi" HintPath="$(SL_REFERENCES)\SCPSLAudioApi.dll" />
+    <Reference Include="AudioPlayer" HintPath="$(SL_REFERENCES)\AudioPlayer.dll" />
     <Reference Include="Assembly-CSharp-Publicized" HintPath="$(SL_REFERENCES)\Assembly-CSharp-Halloween-Publicized.dll" />
     <Reference Include="Mirror" HintPath="$(SL_REFERENCES)\Mirror.dll" />
     <Reference Include="SchematicApi" HintPath="SchematicApi\bin\Release\net48\SchematicApi.dll" />
@@ -98,6 +98,10 @@
     <EmbeddedResource Remove="ReplaceTextWithVariables\*" />
     <EmbeddedResource Remove="InventoryMenu\**" />
     <EmbeddedResource Remove="InventoryMenu\*" />
+    <EmbeddedResource Include="Translations\russian.yml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <None Remove="Translations\russian.yml" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Games\Dodgeball\Features\**" />
@@ -123,7 +127,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="API\Season\Enum\" />
-    <Folder Include="Translations\" />
   </ItemGroup>
   <Target Name="RemoveFile" BeforeTargets="ReplaceFile">
     <Exec Command="if exist $(SolutionDir)VersionInfo.cs del $(SolutionDir)VersionInfo.cs" />

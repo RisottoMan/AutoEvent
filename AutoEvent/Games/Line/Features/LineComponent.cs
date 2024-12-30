@@ -23,7 +23,7 @@ public class LineComponent : MonoBehaviour
     
     void OnTriggerStay(Collider other)
     {
-        if (AutoEvent.ActiveEvent is IEventMap map && map.MapInfo.Map is not null)
+        if (AutoEvent.EventManager.CurrentEvent is IEventMap map && map.MapInfo.Map is not null)
         {
             if (Player.Get(other.gameObject) != null)
             {

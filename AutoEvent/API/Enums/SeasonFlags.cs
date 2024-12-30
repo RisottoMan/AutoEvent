@@ -3,7 +3,6 @@ public enum SeasonFlags
 {
     None,
     Christmas,
-    NewYear,
     ValentineDay,
     AprilFoolDay,
     EasterHolidays,

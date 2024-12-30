@@ -142,7 +142,7 @@ public class Plugin : Event<Config, Translation>, IEventMap, IEventSound
                             DebugLogger.LogDebug($"{e}");
                         }
                     }
-                    Extensions.GrenadeSpawn(fuse, pos, scale);
+                    Extensions.GrenadeSpawn(pos, scale, fuse);
                     yield return Timing.WaitForSeconds(timing);
                     playerIndex++;
                 }
@@ -150,7 +150,7 @@ public class Plugin : Event<Config, Translation>, IEventMap, IEventSound
             else // last round.
             {
                 Vector3 pos = MapInfo.Map.Position + new Vector3(Random.Range(-10, 10), 20, Random.Range(-10, 10));
-                Extensions.GrenadeSpawn(10, pos, 75);
+                Extensions.GrenadeSpawn(pos, 75, 10);
             }
 
             yield return Timing.WaitForSeconds(15f);

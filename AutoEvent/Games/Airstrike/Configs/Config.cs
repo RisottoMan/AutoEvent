@@ -20,7 +20,6 @@ public class Config : EventConfig
         {
             AvailableMaps.Add(new MapChance(50, new MapInfo("DeathParty", new Vector3(10f, 1012f, -40f))));
             AvailableMaps.Add(new MapChance(50, new MapInfo("DeathParty_Xmas2024", new Vector3(10f, 1012f, -40f)), SeasonFlags.Christmas));
-            AvailableMaps.Add(new MapChance(50, new MapInfo("DeathParty_Xmas2024", new Vector3(10f, 1012f, -40f)), SeasonFlags.NewYear));
         }
     }
     

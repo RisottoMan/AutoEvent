@@ -19,7 +19,6 @@ public class Config : EventConfig
         {
             AvailableMaps.Add(new MapChance(50, new MapInfo("FallDown", new Vector3(10f, 1020f, -43.68f))));
             AvailableMaps.Add(new MapChance(50, new MapInfo("FallDown_Xmas2024", new Vector3(10f, 1020f, -43.68f)), SeasonFlags.Christmas));
-            AvailableMaps.Add(new MapChance(50, new MapInfo("FallDown_Xmas2024", new Vector3(10f, 1020f, -43.68f)), SeasonFlags.NewYear));
         }
     }
 

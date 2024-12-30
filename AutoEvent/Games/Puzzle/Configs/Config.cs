@@ -19,7 +19,6 @@ public class Config : EventConfig
         {
             AvailableMaps.Add(new MapChance(50, new MapInfo("Puzzle", new Vector3(76f, 1026.5f, -43.68f))));
             AvailableMaps.Add(new MapChance(50, new MapInfo("Puzzle_Xmas2024", new Vector3(76f, 1026.5f, -43.68f)), SeasonFlags.Christmas));
-            AvailableMaps.Add(new MapChance(50, new MapInfo("Puzzle_Xmas2024", new Vector3(76f, 1026.5f, -43.68f)), SeasonFlags.NewYear));
         }
     }
 

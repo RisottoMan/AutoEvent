@@ -157,7 +157,7 @@ public class Plugin : Event<Config, Translation>, IEventSound, IEventMap
             // The player can run in any direction. The main thing is that the angle changes and is not the same
             if (Mathf.Approximately(PlayerDict[player].Angle, playerAngle))
             {
-                Extensions.GrenadeSpawn(0.1f, player.Position, 0.1f);
+                Extensions.GrenadeSpawn(player.Position, 0.1f, 0.1f);
                 player.Kill(Translation.StopRunning);
             }
             else
@@ -173,7 +173,7 @@ public class Plugin : Event<Config, Translation>, IEventSound, IEventMap
 
                 if (hit.collider.GetComponent<PrimitiveObjectToy>())
                 {
-                    Extensions.GrenadeSpawn(0.1f, player.Position, 0.1f);
+                    Extensions.GrenadeSpawn(player.Position, 0.1f, 0.1f);
                     player.Kill(Translation.TouchAhead);
                 }
             }
@@ -187,7 +187,7 @@ public class Plugin : Event<Config, Translation>, IEventSound, IEventMap
             platform.GetComponent<PrimitiveObjectToy>().NetworkMaterialColor = Color.black;
         }
 
-        //Extensions.PauseAudio();
+        Extensions.PauseAudio(SoundInfo.AudioPlayer);
         _countdown = new TimeSpan(0, 0, 3);
         _eventState++;
     }
@@ -236,7 +236,7 @@ public class Plugin : Event<Config, Translation>, IEventSound, IEventMap
         {
             if (!PlayerDict[player].IsStandUpPlatform)
             {
-                Extensions.GrenadeSpawn(0.1f, player.Position, 0.1f);
+                Extensions.GrenadeSpawn(player.Position, 0.1f, 0.1f);
                 player.Kill(Translation.NoTime);
             }
         }
@@ -261,7 +261,7 @@ public class Plugin : Event<Config, Translation>, IEventSound, IEventMap
             platform.GetComponent<PrimitiveObjectToy>().NetworkMaterialColor = Color.yellow;
         }
         
-        //Extensions.ResumeAudio();
+        Extensions.ResumeAudio(SoundInfo.AudioPlayer);
         _countdown = new TimeSpan(0, 0, 3);
         _eventState = 0;
     }

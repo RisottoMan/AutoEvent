@@ -36,13 +36,13 @@ public class EventHandler
             RoleTypeId zombieType = (RoleTypeId)Enum.Parse(typeof(RoleTypeId), "ZombieFlamingo");
             ev.Player.Role.Set(zombieType, RoleSpawnFlags.None);
             ev.Attacker.ShowHitMarker();
-            //Extensions.PlayPlayerAudio(ev.Player, _plugin.Config.ZombieScreams.RandomItem(), 15);
+            Extensions.PlayPlayerAudio(_plugin.SoundInfo.AudioPlayer, ev.Player, _plugin.Config.ZombieScreams.RandomItem(), 15);
         }
         else if (ev.Attacker != null && ev.Attacker.Role == RoleTypeId.Scp0492)
         {
             ev.Player.GiveLoadout(_plugin.Config.ZombieLoadouts);
             ev.Attacker.ShowHitMarker();
-            //Extensions.PlayPlayerAudio(ev.Player, _plugin.Config.ZombieScreams.RandomItem(), 15);
+            Extensions.PlayPlayerAudio(_plugin.SoundInfo.AudioPlayer, ev.Player, _plugin.Config.ZombieScreams.RandomItem(), 15);
         }
     }
 
@@ -55,7 +55,7 @@ public class EventHandler
         {
             ev.Player.GiveLoadout(_plugin.Config.ZombieLoadouts);
             ev.Player.Position = _plugin.SpawnList.RandomItem().transform.position;
-            //Extensions.PlayPlayerAudio(ev.Player, _plugin.Config.ZombieScreams.RandomItem(), 15);
+            Extensions.PlayPlayerAudio(_plugin.SoundInfo.AudioPlayer, ev.Player, _plugin.Config.ZombieScreams.RandomItem(), 15);
         }
         else
         {
@@ -85,7 +85,7 @@ public class EventHandler
             else
             {
                 ev.Player.GiveLoadout(_plugin.Config.ZombieLoadouts);
-                //Extensions.PlayPlayerAudio(ev.Player, _plugin.Config.ZombieScreams.RandomItem(), 15);
+                Extensions.PlayPlayerAudio(_plugin.SoundInfo.AudioPlayer, ev.Player, _plugin.Config.ZombieScreams.RandomItem(), 15);
             }
             
             ev.Player.Position = _plugin.SpawnList.RandomItem().transform.position;

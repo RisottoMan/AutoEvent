@@ -19,8 +19,7 @@ public class EventHandler
         if (ev.Attacker != null && ev.Player != null)
         {
             ev.Attacker.ShowHitMarker();
-            DebugLogger.LogDebug($"Applying Custom Weapon Effect. Damage: {ev.Amount}");
-            ev.IsAllowed = false;
+            ev.Amount = 10;
         }
     }
 }

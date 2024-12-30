@@ -11,9 +11,6 @@ public class Config : EventConfig
     [Description("How many lives each prisoner gets.")]
     public int PrisonerLives { get; set; } = 3;
 
-    [Description("A list of lockdown settings available.")]
-    public LockdownSettings LockdownSettings { get; set; } = new LockdownSettings();
-
     [Description("How many players will spawn as the jailors.")]
     public RoleCount JailorRoleCount { get; set; } = new RoleCount(1, 4, 15f);
     
@@ -48,7 +45,7 @@ public class Config : EventConfig
     
     [Description("What loadouts each locker can give.")]
     [YamlMember(DefaultValuesHandling = DefaultValuesHandling.OmitDefaults | DefaultValuesHandling.OmitNull | DefaultValuesHandling.OmitEmptyCollections)]
-    public List<Loadout> WeaponLockerLoadouts { get; set; } = new List<Loadout>()
+    public List<Loadout> WeaponLockerLoadouts { get; set; } = new()
     {
         new Loadout()
         {
@@ -71,7 +68,7 @@ public class Config : EventConfig
     };
 
     [YamlMember(DefaultValuesHandling = DefaultValuesHandling.OmitDefaults | DefaultValuesHandling.OmitNull | DefaultValuesHandling.OmitEmptyCollections)]
-    public List<Loadout> MedicalLoadouts { get; set; } = new List<Loadout>()
+    public List<Loadout> MedicalLoadouts { get; set; } = new()
     {
         new Loadout()
         {
@@ -80,20 +77,10 @@ public class Config : EventConfig
     };
     
     [YamlMember(DefaultValuesHandling = DefaultValuesHandling.OmitDefaults | DefaultValuesHandling.OmitNull | DefaultValuesHandling.OmitEmptyCollections)]
-    public List<Loadout> AdrenalineLoadouts { get; set; } = new List<Loadout>()
+    public List<Loadout> AdrenalineLoadouts { get; set; } = new()
     {
         new Loadout()
         {
-            ArtificialHealth = new ArtificialHealth()
-            {
-                InitialAmount = 100f,
-                MaxAmount = 100f,
-                RegenerationAmount = 0,
-                AbsorptionPercent = 70,
-                Permanent = false,
-                Duration = 0,
-                ClearOtherInstances = true,
-            }
         }
     };
 }

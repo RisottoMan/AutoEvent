@@ -3,9 +3,12 @@
 namespace AutoEvent.Games.Jail;
 public class Translation : EventTranslation
 {
-    public override string Name { get; set; } = "Simon's Prison";
-    public override string Description { get; set; } = "Jail mode from CS 1.6, in which you need to hold events [VERY HARD].";
-    public override string CommandName { get; set; } = "jail";
+    public Translation()
+    {
+        Name = "Simon's Prison";
+        Description = "Jail mode from CS 1.6, in which you need to hold events [VERY HARD].";
+        CommandName = "jail";
+    }
     public string Start { get; set; } = "<color=yellow><color=red><b><i>{name}</i></b></color>\n<i>Trigger or release a lockdown by shooting the big button</i>\nBefore the start: <color=red>{time}</color> seconds</color>";
     public string StartPrisoners { get; set; } = "<color=yellow><color=red><b><i>{name}</i></b></color>\n<i>Escape the prison at any cost or take it over. Be careful. Items are scattered around the map to help you survive.</i>\nBefore the start: <color=red>{time}</color> seconds</color>";
     public string Cycle { get; set; } = "<size=20><color=red>{name}</color>\n<color=yellow>Prisoners: {dclasscount}</color> || <color=#14AAF5>Jailers: {mtfcount}</color>\n<color=red>{time}</color></size>";

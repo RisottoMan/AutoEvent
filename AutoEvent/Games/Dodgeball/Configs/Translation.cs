@@ -3,9 +3,12 @@
 namespace AutoEvent.Games.Dodgeball;
 public class Translation : EventTranslation
 {
-    public override string Name { get; set; } = "Dodgeball";
-    public override string Description { get; set; } = "Defeat the enemy with balls.";
-    public override string CommandName { get; set; } = "dodge";
+    public Translation()
+    {
+        Name = "Dodgeball";
+        Description = "Defeat the enemy with balls.";
+        CommandName = "dodge";
+    }
     public string Start { get; set; } = "<color=#ffff00>Get ready to take a ball</color>\nThe game start in: <color=red>{time}</color>";
     public string Cycle { get; set; } = "<b><color=#ffff00>{name}</color></b>\n<color=#aad9ff>Throw balls at the players</color>\n<color=red>{time}</color>";
     public string AllDied { get; set; } = "<b><color=#ffff00>{name}</color></b>\n<color=red>All players died</color>\nTime: <color=red>{time}</color>";

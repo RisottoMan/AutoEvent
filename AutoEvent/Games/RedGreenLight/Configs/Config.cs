@@ -21,7 +21,6 @@ public class Config : EventConfig
         {
             AvailableMaps.Add(new MapChance(50, new MapInfo("RedLight", new Vector3(0f, 1030f, -43.5f), null, null, false)));
             AvailableMaps.Add(new MapChance(50, new MapInfo("RedLight_Xmas2024", new Vector3(0f, 1030f, -43.5f), null, null, false), SeasonFlags.Christmas));
-            AvailableMaps.Add(new MapChance(50, new MapInfo("RedLight_Xmas2024", new Vector3(0f, 1030f, -43.5f), null, null, false), SeasonFlags.NewYear));
         }
     }
 

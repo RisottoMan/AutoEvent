@@ -1,18 +1,16 @@
-﻿using SCPSLAudioApi.AudioCore;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using YamlDotNet.Serialization;
 
 namespace AutoEvent.Interfaces;
-
 public class SoundInfo
 {
     public SoundInfo() { }
-    public SoundInfo(string name, byte volume = 10, bool loop = true, AudioPlayerBase audioPlayerBase = null)
+    public SoundInfo(string name, byte volume = 10, bool loop = true, AudioPlayer audioPlayer = null)
     {
         SoundName = name;
         Volume = volume;
         Loop = loop;
-        AudioPlayerBase = audioPlayerBase;
+        AudioPlayer = audioPlayer;
     }
     [Description("The name of the sound.")]
     public string SoundName { get; set; }
@@ -24,7 +22,7 @@ public class SoundInfo
     public bool Loop { get; set; } = true;
 
     [Description("The object that plays music.")]
-    public AudioPlayerBase AudioPlayerBase { get; set; }
+    public AudioPlayer AudioPlayer { get; set; }
 
     [YamlIgnore]
     public bool StartAutomatically { get; set; } = true;

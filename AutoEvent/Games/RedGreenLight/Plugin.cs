@@ -176,7 +176,7 @@ public class Plugin : Event<Config, Translation>, IEventMap
                 Quaternion.Angle(_playerRotation[player], player.CameraTransform.rotation) < 10)
                 continue;
 
-            Extensions.GrenadeSpawn(0.1f, player.Position, 0.1f);
+            Extensions.GrenadeSpawn(player.Position, 0.1f, 0.1f);
             player.Kill(Translation.RedLose);
             _countdown++;
         }
@@ -212,7 +212,7 @@ public class Plugin : Event<Config, Translation>, IEventMap
         {
             if ((int)_redLine.transform.position.z > (int)player.Position.z)
             {
-                Extensions.GrenadeSpawn(0.1f, player.Position, 0.1f);
+                Extensions.GrenadeSpawn(player.Position, 0.1f, 0.1f);
                 player.Kill(Translation.NoTime);
             }
         }

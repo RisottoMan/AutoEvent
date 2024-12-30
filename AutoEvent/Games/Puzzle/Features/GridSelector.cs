@@ -51,10 +51,13 @@ public class GridSelector
         //bitMap.DrawFilledCircle(fillX, fillY, platformSpread, new Color(0.5f,0.5f,0.5f,0.5f));
         if (fillCenter)
         {
-            bitMap.DrawFilledCircle((int)Math.Ceiling(fillX * .75f), (int)Math.Ceiling(fillY * .75f), platformSpread, new Color(1,1,1,1));
+            //bitMap.DrawFilledCircle((int)Math.Ceiling(fillX * .75f), (int)Math.Ceiling(fillY * .75f), platformSpread, new Color(1,1,1,1));
         }
         else
-            bitMap.DrawCircle((int)Math.Ceiling(fillX * .75f), (int)Math.Ceiling(fillY * .75f), platformSpread, new Color(1,1,1,1));
+        {
+            //bitMap.DrawCircle((int)Math.Ceiling(fillX * .75f), (int)Math.Ceiling(fillY * .75f), platformSpread, new Color(1,1,1,1));
+        }
+            
         ushort id = 0;
         
         

@@ -49,14 +49,14 @@ public class SeasonMethod
             Text = "<size=80><color=#42aaff><b>🎄 MERRY CHRISTMAS 🎄</b></color></size>",
             PrimaryColor = "#42aaff",
             SeasonFlag = SeasonFlags.Christmas,
-            FirstDate = new DateTime(2024, 1, 1),
-            LastDate = new DateTime(2024, 1, 10)
+            FirstDate = new DateTime(2024, 12, 1),
+            LastDate = new DateTime(2024, 1, 30)
         },
         new SeasonStyle()
         {
             Text = "<size=80><color=#42aaff><b>🎄 HAPPY NEW YEAR 🎄</b></color></size>",
             PrimaryColor = "#77dde7",
-            SeasonFlag = SeasonFlags.NewYear,
+            SeasonFlag = SeasonFlags.Christmas,
             FirstDate = new DateTime(2024, 1, 11),
             LastDate = new DateTime(2024, 1, 30)
         },
@@ -120,7 +120,7 @@ public class SeasonMethod
         {
             Text = "<size=70><color=#42aaff><b>New year is coming...</b></color></size>",
             PrimaryColor = "#77dde7",
-            SeasonFlag = SeasonFlags.NewYear,
+            SeasonFlag = SeasonFlags.Christmas,
             FirstDate = new DateTime(2024, 12, 25),
             LastDate = new DateTime(2024, 12, 31)
         }

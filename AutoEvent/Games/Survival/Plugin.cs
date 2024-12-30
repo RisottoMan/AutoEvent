@@ -71,7 +71,7 @@ public class Plugin : Event<Config, Translation>, IEventSound, IEventMap
 
     protected override void CountdownFinished()
     {
-        //Extensions.PlayAudio("Zombie2.ogg", 7, true);
+        Extensions.PlayAudio("Zombie2.ogg", 7, true, true);
 
         List<Player> players = Config.Zombies.GetPlayers(true);
         foreach (Player x in players)
@@ -142,7 +142,7 @@ public class Plugin : Event<Config, Translation>, IEventSound, IEventMap
             text = Translation.SurvivalHumanWinTime;
         }
 
-        //Extensions.PlayAudio(musicName, 7, false);
+        Extensions.PlayAudio(musicName, 7, false, true);
         Extensions.Broadcast(text, 10);
     }
 }

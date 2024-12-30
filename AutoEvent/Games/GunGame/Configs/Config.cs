@@ -19,12 +19,13 @@ public class Config : EventConfig
         if (AvailableMaps.Count < 1)
         {
             AvailableMaps.Add(new MapChance(50, new MapInfo("Shipment", new Vector3(93f, 1020f, -43f) )));
+            AvailableMaps.Add(new MapChance(50, new MapInfo("Shipment_Xmas2025", new Vector3(93f, 1020f, -43f)), SeasonFlags.Christmas));
             AvailableMaps.Add(new MapChance(50, new MapInfo("Shipment_Halloween2024", new Vector3(93f, 1020f, -43f)), SeasonFlags.Halloween));
         }
     }
     
     [Description("A list of guns a player can get.")]
-    public List<GunRole> Guns { get; set; } = new List<GunRole>()
+    public List<GunRole> Guns { get; set; } = new()
     {
         new GunRole(ItemType.GunCOM15, 0),
         new GunRole(ItemType.GunCOM18, 2),
@@ -67,10 +68,7 @@ public class Config : EventConfig
 
 public class GunRole
 {
-    public GunRole()
-    {
-        
-    }
+    public GunRole() { }
 
     public GunRole(ItemType item, int killsRequired)
     {

@@ -115,17 +115,13 @@ namespace AutoEvent.Interfaces
     protected void StartAudio(bool checkIfAutomatic = false)
     {
         DebugLogger.LogDebug($"Starting Audio: " +
-                             $"{(this is IEventSound s ? "true, " + 
+                                 $"{(this is IEventSound s ? "true, " + 
                                  $"{(!string.IsNullOrEmpty(s.SoundInfo.SoundName)? "true" : "false")}, " +
                                  $"{(!checkIfAutomatic ? "true" : "false")}, " +
                                  $"{(s.SoundInfo.StartAutomatically ? "true" : "false")}" : "false")}");
-        if (this is IEventSound sound && !string.IsNullOrEmpty(sound.SoundInfo.SoundName) &&
-            (!checkIfAutomatic || sound.SoundInfo.StartAutomatically))
+        if (this is IEventSound sound && !string.IsNullOrEmpty(sound.SoundInfo.SoundName) && (!checkIfAutomatic || sound.SoundInfo.StartAutomatically))
         {
-            //sound.SoundInfo.AudioPlayerBase = Extensions.PlayAudio(
-            //    sound.SoundInfo.SoundName,
-            //    sound.SoundInfo.Volume,
-            //    sound.SoundInfo.Loop);
+            sound.SoundInfo.AudioPlayer = Extensions.PlayAudio(sound.SoundInfo.SoundName, sound.SoundInfo.Volume, sound.SoundInfo.Loop, false);
         }
     }
 
@@ -135,7 +131,10 @@ namespace AutoEvent.Interfaces
     protected void StopAudio()
     {
         DebugLogger.LogDebug("Stopping Audio");
-        //Extensions.StopAudio();
+        if (this is IEventSound sound && !string.IsNullOrEmpty(sound.SoundInfo.SoundName))
+        {
+            Extensions.StopAudio(sound.SoundInfo.AudioPlayer);
+        }
     }
 
     /// <summary>
@@ -150,16 +149,9 @@ namespace AutoEvent.Interfaces
                              $"{(!string.IsNullOrEmpty(m.MapInfo.MapName)? "true" : "false")}, " +
                              $"{(!checkIfAutomatic ? "true" : "false")}, " +
                              $"{(m.MapInfo.SpawnAutomatically ? "true" : "false")}" : "false")}");
-        if (this is IEventMap map && !string.IsNullOrEmpty(map.MapInfo.MapName) &&
-            (!checkIfAutomatic || map.MapInfo.SpawnAutomatically))
+        if (this is IEventMap map && !string.IsNullOrEmpty(map.MapInfo.MapName) && (!checkIfAutomatic || map.MapInfo.SpawnAutomatically))
         {
-            // load map
-            map.MapInfo.Map = Extensions.LoadMap(
-                map.MapInfo.MapName, 
-                map.MapInfo.Position, 
-                map.MapInfo.MapRotation, 
-                map.MapInfo.Scale,
-                map.MapInfo.IsStatic);
+            map.MapInfo.Map = Extensions.LoadMap(map.MapInfo.MapName, map.MapInfo.Position,  map.MapInfo.MapRotation, map.MapInfo.Scale);
         }
     }
 

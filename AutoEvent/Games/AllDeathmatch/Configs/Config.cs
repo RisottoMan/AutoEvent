@@ -39,7 +39,7 @@ public class Config : EventConfig
     };
 
     [Description("The weapons a player can get once the round starts.")]
-    public List<ItemType> AvailableWeapons = new List<ItemType>()
+    public List<ItemType> AvailableWeapons = new()
     {
         ItemType.GunAK,
         ItemType.GunCrossvec,
