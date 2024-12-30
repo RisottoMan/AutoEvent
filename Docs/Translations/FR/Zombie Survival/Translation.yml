@@ -1,16 +1,16 @@
 name: 'Zombie Survival'
-description: 'Humans surviving from zombies'
+description: 'Les humains doivent survire l\'attaque des zombies'
 command_name: 'zombie2'
 survival_before_infection: |-
   <b>{name}</b>
-  <color=yellow>There are </color> {time} <color=yellow>second before infection begins</color>
+  <color=yellow>Il y a </color> {time} <color=yellow>secondes avant le début de l''infection</color>
 survival_after_infection: |-
   <b>{name}</b>
-  <color=#14AAF5>Humans:</color> {humanCount}
-  <color=#299438>Time remaining:</color> {time}
-survival_zombie_win: '<color=red>Zombie infected all humans and wins!</color>'
-survival_human_win: '<color=#14AAF5>Humans killed all zombies and stopped infection</color>'
-survival_human_win_time: '<color=yellow>Humans survived, but infection is not stopped</color>'
+  <color=#14AAF5>Humains:</color> {humanCount}
+  <color=#299438>Temps restant:</color> {time}
+survival_zombie_win: '<color=red>Les zombies ont infecté tous les humains et gagne !</color>'
+survival_human_win: '<color=#14AAF5>Les humains ont tué tous les zombies et ont stoppé l\'infection</color>'
+survival_human_win_time: '<color=yellow>Les humains ont survecu mais l\'infection n'a pas été arrêté</color>'
 # DO NOT CHANGE THIS. IT WILL BREAK THINGS. AutoEvent will automatically manage these settings.
 version: '1.0.0'
 language: 'FR'
