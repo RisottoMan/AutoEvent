@@ -25,7 +25,6 @@ public class Plugin : Event<Config, Translation>, IEventSound
         Volume = 25, 
         Loop = false
     };
-    protected override float PostRoundDelay { get; set; } = 5f;
     private EventHandler _eventHandler { get; set; }
     protected override void RegisterEvents()
     {
@@ -55,9 +54,8 @@ public class Plugin : Event<Config, Translation>, IEventSound
 
         foreach (Player player in Player.List)
         {
-            player.Role.Set(RoleTypeId.Scp173, RoleSpawnFlags.None);
+            player.GiveLoadout(Config.Scp173Loadout);
             player.Position = _startPos.transform.position;
-            player.EnableEffect<Ensnared>(10);
         }
 
         AlphaWarheadController.Singleton.CurScenario.AdditionalTime = Config.EscapeResumeTime;
@@ -92,16 +90,19 @@ public class Plugin : Event<Config, Translation>, IEventSound
 
     protected override void OnFinished()
     {
+        string playeAlive = Player.List.Count(x => x.IsAlive).ToString();
+        
         foreach (Player player in Player.List)
         {
             player.EnableEffect<Flashed>(1);
+            
             if (player.Position.y < 980f)
             {
                 player.Kill("You didn't have time");
             }
         }
 
-        Extensions.Broadcast(Translation.End.Replace("{name}", Name).Replace("{players}", Player.List.Count(x => x.IsAlive).ToString()), 10);
+        Extensions.Broadcast(Translation.End.Replace("{name}", Name).Replace("{players}", playeAlive), 10);
     }
 
     protected override void OnCleanup()

@@ -4,7 +4,10 @@ using CommandSystem;
 using System;
 using System.Linq;
 using System.Text;
+using Exiled.API.Features;
 using Exiled.Permissions.Extensions;
+using PlayerRoles;
+using UnityEngine;
 
 namespace AutoEvent.Commands;
 internal class List : ICommand

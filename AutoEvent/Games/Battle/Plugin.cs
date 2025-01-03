@@ -125,8 +125,6 @@ public class Plugin : Event<Config, Translation>, IEventMap, IEventSound
         }        
     }
 
-    protected override float PostRoundDelay { get; set; } = 10f;
-
     protected override void OnCleanup()
     {
         // 10 seconds after finishing the round or once the round is stopped, this will be called.

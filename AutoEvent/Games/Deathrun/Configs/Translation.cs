@@ -3,12 +3,6 @@
 namespace AutoEvent.Games.Deathrun;
 public class Translation : EventTranslation
 {
-    public Translation()
-    {
-        Name = "Death Run";
-        Description = "Go to the end, avoiding death-activated trap along the way";
-        CommandName = "deathrun";
-    }
     public string BeforeStartBroadcast { get; set; } = "<color=#FFC618>{name}</color>\n" +
                                                        "<size=35><color=#ff4c5b>Warning! There are deadly traps ahead</color>\n" +
                                                        "<color=#20B2AA>Get ready to run in <b>{time}</b> seconds</color></size>";

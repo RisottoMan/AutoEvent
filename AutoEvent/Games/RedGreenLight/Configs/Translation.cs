@@ -3,12 +3,6 @@
 namespace AutoEvent.Games.Light;
 public class Translation : EventTranslation
 {
-    public Translation()
-    {
-        Name = "Red Light Green Light";
-        Description = "Reach the end while playing Red Light Green Light.";
-        CommandName = "light";
-    }
     public string Start { get; set; } = "<color=#42aaff>Get ready to run</color>\nThe game start in: <color=red>{time}</color>";
     public string Cycle { get; set; } = "<b><color=#42aaff>{name}</color></b>\n<color=#aad9ff>{state}</color>\n<color=red>{time} seconds remaining</color>";
     public string AllDied { get; set; } = "<b><color=#42aaff>{name}</color></b>\n<color=red>No one was able to reach the end</color>";

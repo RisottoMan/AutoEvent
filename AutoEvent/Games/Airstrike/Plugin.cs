@@ -26,7 +26,6 @@ public class Plugin : Event<Config, Translation>, IEventMap, IEventSound
         SoundName = "DeathParty.ogg", 
         Volume = 5
     };
-    protected override float PostRoundDelay { get; set; } = 5f;
     protected override FriendlyFireSettings ForceEnableFriendlyFire { get; set; } = FriendlyFireSettings.Enable;
     protected override FriendlyFireSettings ForceEnableFriendlyFireAutoban { get; set; } = FriendlyFireSettings.Disable;
     private EventHandler _eventHandler { get; set; }
@@ -71,7 +70,7 @@ public class Plugin : Event<Config, Translation>, IEventMap, IEventSound
             }
         });
     }
-
+    
     protected override IEnumerator<float> BroadcastStartCountdown()
     {
         for (int _time = 10; _time > 0; _time--)

@@ -193,11 +193,6 @@ namespace AutoEvent.Interfaces
         public Event(){ }
         
         /// <summary>
-        /// The method that is called when the event is registered. Should be used instead of a constructor to prevent type load exceptions.
-        /// </summary>
-        public virtual void InstantiateEvent() { }
-        
-        /// <summary>
         /// Called when the event is started.
         /// </summary>
         protected abstract void OnStart();
@@ -252,14 +247,6 @@ namespace AutoEvent.Interfaces
         protected virtual void OnCleanup() { }
     #endregion
     #region Internal Event Methods // Methods that are for the internal use by the event system to call or modify other abstracted properties or methods.
-        /// <summary>
-        /// Ensures that information such as the command name is valid.
-        /// </summary>
-        internal void VerifyEventInfo()
-        {
-            this.CommandName = CommandName.ToCamelCase(true);
-        }
-
         /// <summary>
         /// Assigns a random map.
         /// </summary>

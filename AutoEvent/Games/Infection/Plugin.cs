@@ -68,7 +68,7 @@ public class Plugin : Event<Config, Translation>, IEventSound, IEventMap
         {
             if (IsChristmasUpdate)
             {
-                RoleTypeId roleType = (RoleTypeId)Enum.Parse(typeof(RoleTypeId), "Flamingo");
+                RoleTypeId roleType = (RoleTypeId)Enum.Parse(typeof(RoleTypeId), "ZombieFlamingo");
                 player.Role.Set(roleType, RoleSpawnFlags.None);
             }
             else

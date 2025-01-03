@@ -3,12 +3,6 @@
 namespace AutoEvent.Games.Lava;
 public class Translation : EventTranslation
 {
-    public Translation()
-    {
-        Name = "The floor is LAVA";
-        Description = "Survival, in which you need to avoid the rising lava and shoot at others.";
-        CommandName = "lava";
-    }
     public string Start { get; set; } = "<size=100><color=red>{time}</color></size>\nTake weapons and climb up.";
     public string Cycle { get; set; } = "<size=20><color=red><b>Alive: {count} players</b></color></size>";
     public string Win { get; set; } = "<color=red><b>Winner\nPlayer - {winner}</b></color>";

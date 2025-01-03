@@ -3,12 +3,6 @@
 namespace AutoEvent.Games.HideAndSeek;
 public class Translation : EventTranslation
 {
-    public Translation()
-    {
-        Name = "Tag";
-        Description = "Tag other players with jailbirds.";
-        CommandName = "tag";
-    }
     public string Broadcast { get; set; } = "RUN\nTaggers are being selected. Hide now!\nTime remaining: {time}";
     public string Cycle { get; set; } = "Tag another player\n<color=yellow><b><i>{time}</i></b> seconds left</color>";
     public string Hurt { get; set; } = "You didn't tag someone else.";

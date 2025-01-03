@@ -31,17 +31,6 @@ public class EventManager
 
                 ev.Id = _events.Count;
                 _events.Add(ev.Name, ev);
-                
-                try
-                {
-                    ev.VerifyEventInfo();
-                    ev.InstantiateEvent();
-                }
-                catch (Exception e)
-                {
-                    DebugLogger.LogDebug($"[EventLoader] {ev.Name} encountered an error while registering.", LogLevel.Warn, true);
-                    DebugLogger.LogDebug($"[EventLoader] {e}");
-                }
             }
             catch (MissingMethodException) { }
             catch (Exception ex)

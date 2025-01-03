@@ -9,7 +9,6 @@ using AutoEvent.Interfaces;
 namespace AutoEvent;
 public static class ConfigManager
 {
-    private static string _configLanguage { get; set; } = "english";
     private static string _configPath { get; set; }
     private static string _translationPath { get; set; }
     public static void LoadConfigsAndTranslations()
@@ -22,32 +21,25 @@ public static class ConfigManager
         {
             if (!File.Exists(_configPath))
             {
-                ConfigFile file = new ConfigFile
-                {
-                    Configs = new Dictionary<string, EventConfig>(),
-                    Language = "english"
-                };
+                var configs = new Dictionary<string, EventConfig>();
                 
-                foreach (var ev in AutoEvent.EventManager.Events)
+                foreach (var ev in AutoEvent.EventManager.Events.OrderBy(r => r.Name))
                 {
-                    file.Configs.Add(ev.Name, ev.InternalConfig);
+                    configs.Add(ev.Name, ev.InternalConfig);
                 }
-
-                _configLanguage = file.Language;
-                Save(_configPath, file);
+                
+                Save(_configPath, configs);
             }
             else
             {
-                var eventConfigs = Load<ConfigFile>(_configPath);
+                var eventConfigs = Load<Dictionary<string, EventConfig>>(_configPath);
                 foreach (var ev in AutoEvent.EventManager.Events)
                 {
-                    if (eventConfigs.Configs.TryGetValue(ev.Name, out EventConfig config))
+                    if (eventConfigs.TryGetValue(ev.Name, out EventConfig config))
                     {
                         ev.InternalConfig = config;
                     }
                 }
-                
-                _configLanguage = eventConfigs.Language;
             }
             
             DebugLogger.LogDebug($"[ConfigManager] The configs of the mini-games are loaded.");
@@ -61,41 +53,33 @@ public static class ConfigManager
         // Load Translations
         try
         {
-            TranslationFile translationFile = new();
+            var translations = new Dictionary<string, EventTranslation>();
             
             // If the translation file is not found, then create a new one.
             if (!File.Exists(_translationPath))
             {
                 DebugLogger.LogDebug($"[ConfigManager] The translation.yml file was not found. Creating a new translation...");
                 string systemLanguage = CultureInfo.CurrentCulture.DisplayName.Split(' ')[0].ToLower();
+                systemLanguage = "english"; // todo
                 DebugLogger.LogDebug($"[ConfigManager] The system language is {systemLanguage}");
-                translationFile = LoadTranslationFromAssembly(systemLanguage);
+                translations = LoadTranslationFromAssembly(systemLanguage);
             }
             // Otherwise, check language of the translation with the language of the config.
             else
             {
-                translationFile = Load<TranslationFile>(_translationPath);
-                
-                // If the user has changed the language in the config, then create a new one.
-                if (translationFile.Language != _configLanguage)
-                {
-                    DebugLogger.LogDebug($"[ConfigManager] {translationFile.Language} language was not found in the assembly.");
-                    File.Delete(_translationPath);
-                    translationFile = LoadTranslationFromAssembly(_configLanguage);
-                }
+                translations = Load<Dictionary<string, EventTranslation>>(_translationPath);
             }
-            
-            // Change language in config
-            ConfigFile file = Load<ConfigFile>(_configPath);
-            file.Language = translationFile.Language;
-            Save(_configPath, file);
             
             // Move translations to each mini-games
             foreach (var ev in AutoEvent.EventManager.Events)
             {
-                if (translationFile.Translations.TryGetValue(ev.Name, out EventTranslation translation))
+                if (translations.TryGetValue(ev.Name, out EventTranslation translation))
                 {
                     ev.InternalTranslation = translation;
+                    
+                    ev.Name = translation.Name;
+                    ev.Description = translation.Description;
+                    ev.CommandName = translation.CommandName;
                 }
             }
             
@@ -108,29 +92,30 @@ public static class ConfigManager
         }
     }
 
-    private static TranslationFile LoadTranslationFromAssembly(string language)
+    private static Dictionary<string, EventTranslation> LoadTranslationFromAssembly(string language)
     {
-        TranslationFile file;
+        Dictionary<string, EventTranslation> translations;
         
         // Try to get a translation from an assembly
-        if (!TryGetTranslationFromAssembly(language, _translationPath, out file))
+        if (!TryGetTranslationFromAssembly(language, _translationPath, out translations))
         {
             // Otherwise, create default translations from all mini-games.
-            file = new TranslationFile { Language = "english" };
-            var translations = new Dictionary<string, EventTranslation>();
+            translations = new Dictionary<string, EventTranslation>();
             
             foreach (var ev in AutoEvent.EventManager.Events.OrderBy(r => r.Name))
             {
+                ev.InternalTranslation.Name = ev.Name;
+                ev.InternalTranslation.Description = ev.Description;
+                ev.InternalTranslation.CommandName = ev.CommandName;
+                
                 translations.Add(ev.Name, ev.InternalTranslation);
             }
 
-            file.Translations = translations;
-            
             // Save the translation file
-            Save(_translationPath, file);
+            Save(_translationPath, translations);
         }
         
-        return file;
+        return translations;
     }
 
     private static bool TryGetTranslationFromAssembly<T>(string language, string path, out T translationFile)

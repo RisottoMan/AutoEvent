@@ -3,12 +3,6 @@
 namespace AutoEvent.Games.Spleef;
 public class Translation : EventTranslation
 {
-    public Translation()
-    {
-        Name = "Spleef";
-        Description = "Shoot at the platforms and don't fall into the lava";
-        CommandName = "spleef";
-    }
     public string Start { get; set; } = "<color=red>Starts in: </color>{time}";
     public string Cycle { get; set; } = "<color=red>{name}</color>\n<color=yellow>Players Alive:</color> {players}\n<color=#42aaff>Time remaining:</color> {remaining}";
     public string AllDied { get; set; } = "<color=red>All players died</color>\nMini-game ended";

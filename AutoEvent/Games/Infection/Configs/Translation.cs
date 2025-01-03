@@ -3,12 +3,6 @@
 namespace AutoEvent.Games.Infection;
 public class Translation : EventTranslation
 {
-    public Translation()
-    {
-        Name = "Zombie Infection";
-        Description = "Zombie mode, the purpose of which is to infect all players.";
-        CommandName = "zombie";
-    }
     public string Start { get; set; } = "<color=#D71868><b><i>{name}</i></b></color>\n<color=#ABF000>There are <color=red>{time}</color> seconds left before the game starts.</color>";
     public string Cycle { get; set; } = "<color=#D71868><b><i>{name}</i></b></color>\n<color=yellow>Humans left: <color=green>{count}</color></color>\n<color=yellow>Elapsed Duration: <color=red>{time}</color></color>";
     public string ExtraTime { get; set; } = "Extra time: {extratime}\n<color=yellow>The <b><i>Last</i></b> person left!</color>\n<color=yellow>Elapsed Duration: <color=red>{time}</color></color>";

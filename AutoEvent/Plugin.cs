@@ -43,7 +43,7 @@ public class AutoEvent : Plugin<Config>
             {
                 DebugLogger.LogDebug($"Debug Mode Enabled", LogLevel.Info, true);
             }
-
+            
             try
             {
                 HarmonyPatch = new Harmony("autoevent");

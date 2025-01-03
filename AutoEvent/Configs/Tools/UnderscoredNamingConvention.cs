@@ -18,7 +18,7 @@ public class UnderscoredNamingConvention : INamingConvention
     /// <inheritdoc/>
     public string Apply(string value)
     {
-        string newValue = value.ToSnakeCase();
+        string newValue = value.ToSnakeCase(); 
         Properties.Add(newValue);
         return newValue;
     }

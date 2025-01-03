@@ -87,6 +87,13 @@
     <Content Include="..\Docs\Translations\*" Link="Docs\Translations\*" />
     <Content Include="..\README.md" Link="README.md" />
     <Content Include="FodyWeavers.xml" />
+    <EmbeddedResource Include="Translations\russian.yml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <None Remove="Translations\thai.yml" />
+    <EmbeddedResource Include="Translations\thai.yml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Remove="Games\Dodgeball\Features\**" />
@@ -98,10 +105,31 @@
     <EmbeddedResource Remove="ReplaceTextWithVariables\*" />
     <EmbeddedResource Remove="InventoryMenu\**" />
     <EmbeddedResource Remove="InventoryMenu\*" />
-    <EmbeddedResource Include="Translations\russian.yml">
+    <None Remove="Translations\russian.yml" />
+    <None Remove="Translations\chinese.yml" />
+    <EmbeddedResource Include="Translations\chinese.yml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
-    <None Remove="Translations\russian.yml" />
+    <None Remove="Translations\french.yml" />
+    <EmbeddedResource Include="Translations\french.yml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <None Remove="Translations\german.yml" />
+    <EmbeddedResource Include="Translations\german.yml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <None Remove="Translations\italian.yml" />
+    <EmbeddedResource Include="Translations\italian.yml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <None Remove="Translations\polish.yml" />
+    <EmbeddedResource Include="Translations\polish.yml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <None Remove="Translations\portuguese.yml" />
+    <EmbeddedResource Include="Translations\portuguese.yml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <None Remove="Games\Dodgeball\Features\**" />

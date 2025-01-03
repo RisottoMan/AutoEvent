@@ -57,6 +57,6 @@ public class Config : Exiled.API.Interfaces.IConfig
     [Description("Where the music directory is located. By default it is located in the AutoEvent folder.")]
     public string MusicDirectoryPath { get; set; }
     
-    [Description("Just shows the country of translation. [Default: english]")]
+    [Description("You can change the language. [Default: english]")]
     public string Language { get; set; } = "english";
 }

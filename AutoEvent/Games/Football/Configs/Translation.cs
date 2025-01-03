@@ -3,12 +3,6 @@
 namespace AutoEvent.Games.Football;
 public class Translation : EventTranslation
 {
-    public Translation()
-    {
-        Name = "Football";
-        Description = "Score 3 goals to win";
-        CommandName = "football";
-    }
     public string RedTeam { get; set; } = "<color=red>Your Team: Red Team\n</color>";
     public string BlueTeam { get; set; } = "<color=#14AAF5>You Team: Blue Team\n</color>";
     public string TimeLeft { get; set; } = "<color=#14AAF5>{BluePnt}</color> : <color=red>{RedPnt}</color>\nTime Remaining: {time}";
