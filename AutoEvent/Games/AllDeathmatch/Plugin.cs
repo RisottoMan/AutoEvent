@@ -53,6 +53,7 @@ public class Plugin : Event<Config, Translation>, IEventMap, IEventSound
         _winner = null;
         _needKills = 0;
         TotalKills = new();
+        SpawnList = new();
 
         switch (Player.List.Count)
         {
@@ -64,7 +65,7 @@ public class Plugin : Event<Config, Translation>, IEventMap, IEventSound
             case int n when (n > 35): _needKills = 100; break;
         }
 
-        foreach (GameObject gameObject in MapInfo.Map.AttachedBlocks)
+        foreach (var gameObject in MapInfo.Map.AttachedBlocks)
         {
             switch (gameObject.name)
             {

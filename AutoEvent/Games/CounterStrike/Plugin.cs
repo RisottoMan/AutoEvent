@@ -18,7 +18,7 @@ public class Plugin : Event<Config, Translation>, IEventMap, IEventSound
     public override string Author { get; set; } = "RisottoMan";
     public override string CommandName { get; set; } = "cs";
     protected override FriendlyFireSettings ForceEnableFriendlyFire { get; set; } = FriendlyFireSettings.Disable;
-    public override EventFlags EventHandlerSettings { get; set; } = EventFlags.IgnoreDroppingItem;
+    public override EventFlags EventHandlerSettings { get; set; } = EventFlags.Default | EventFlags.IgnoreDroppingItem;
     public MapInfo MapInfo { get; set; } = new()
     { 
         MapName = "de_dust2", 
@@ -35,7 +35,6 @@ public class Plugin : Event<Config, Translation>, IEventMap, IEventSound
     internal GameObject BombObject;
     internal TimeSpan RoundTime;
     internal List<GameObject> BombPoints;
-    internal List<string> KillInfo;
     internal List<GameObject> Buttons;
     protected override void RegisterEvents()
     {
@@ -51,7 +50,6 @@ public class Plugin : Event<Config, Translation>, IEventMap, IEventSound
 
     protected override void OnStart()
     {
-        KillInfo = new();
         BombObject = new();
         Buttons = new();
         BombState = BombState.NoPlanted;
@@ -183,22 +181,22 @@ public class Plugin : Event<Config, Translation>, IEventMap, IEventSound
             }
 
             text = Translation.PlantedWin;
-            //Extensions.PlayAudio("TBombWin.ogg", 15, false);
+            Extensions.PlayAudio("TBombWin.ogg", 15, false);
         }
         else if (BombState == BombState.Defused)
         {
             text = Translation.DefusedWin;
-            //Extensions.PlayAudio("CTWin.ogg", 10, false);
+            Extensions.PlayAudio("CTWin.ogg", 10, false);
         }
         else if (tCount == 0)
         {
             text = Translation.CounterWin;
-            //Extensions.PlayAudio("CTWin.ogg", 10, false);
+            Extensions.PlayAudio("CTWin.ogg", 10, false);
         }
         else if (ctCount == 0)
         {
             text = Translation.TerroristWin;
-            //Extensions.PlayAudio("TWin.ogg", 15, false);
+            Extensions.PlayAudio("TWin.ogg", 15, false);
         }
         else if (ctCount == 0 && tCount == 0)
         {

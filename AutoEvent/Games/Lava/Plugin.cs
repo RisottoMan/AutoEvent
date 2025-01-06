@@ -5,11 +5,6 @@ using AutoEvent.API;
 using AutoEvent.API.Enums;
 using AutoEvent.Interfaces;
 using Exiled.API.Features;
-using Exiled.API.Features.Items;
-using Exiled.API.Features.Pickups;
-using InventorySystem;
-using InventorySystem.Items;
-using InventorySystem.Items.Pickups;
 using UnityEngine;
 
 namespace AutoEvent.Games.Lava;
@@ -21,9 +16,9 @@ public class Plugin : Event<Config, Translation>, IEventSound, IEventMap
     public override string CommandName { get; set; } = "lava";
     public MapInfo MapInfo { get; set; } = new()
     { 
-        MapName = "Lava_Remake", 
+        MapName = "Lava", 
         Position = new Vector3(120f, 1020f, -43.5f),
-        IsStatic = false // ?
+        IsStatic = false
     };
     public SoundInfo SoundInfo { get; set; } = new()
     { 
@@ -50,40 +45,13 @@ public class Plugin : Event<Config, Translation>, IEventSound, IEventMap
     protected override void OnStart()
     {
         var spawnpoints = new List<GameObject>();
-        var spawnguns = new List<GameObject>();
         
         foreach (var obj in MapInfo.Map.AttachedBlocks)
         {
             switch (obj.name)
             {
                 case "Spawnpoint": spawnpoints.Add(obj); break;
-                case "Spawngun": spawnguns.Add(obj); break;
-            }
-        }
-        
-        if (Config.ItemsAndWeaponsToSpawn is not null && Config.ItemsAndWeaponsToSpawn.Count > 0)
-        {
-            foreach (var goGun in spawnguns)
-            {
-                ItemType itemType = ItemType.None;
-                
-                if (Config.ItemsAndWeaponsToSpawn.Count == 1)
-                {
-                    itemType = Config.ItemsAndWeaponsToSpawn.FirstOrDefault().Key;
-                }
-
-                var list = Config.ItemsAndWeaponsToSpawn.ToList();
-                float roleTotalChance = list.Sum(x => x.Value);
-                for (int i = 0; i < list.Count - 1; i++)
-                {
-                    if (Random.Range(0, roleTotalChance) <= list[i].Value)
-                    {
-                        itemType = list[i].Key;
-                    }
-                }
-
-                Pickup pickup = Pickup.CreateAndSpawn(itemType, goGun.transform.position);
-                MapInfo.Map.AttachedBlocks.Add(pickup.GameObject);
+                case "LavaObject": _lava = obj; break;
             }
         }
         
@@ -105,7 +73,6 @@ public class Plugin : Event<Config, Translation>, IEventSound, IEventMap
 
     protected override void CountdownFinished()
     {
-        _lava = MapInfo.Map.AttachedBlocks.First(x => x.name == "LavaObject");
         _lava.AddComponent<LavaComponent>().StartComponent(this);
         foreach (var player in Player.List)
         {
@@ -120,7 +87,7 @@ public class Plugin : Event<Config, Translation>, IEventSound, IEventMap
 
     protected override void ProcessFrame()
     {
-        string text = string.Empty;
+        string text;
         if (EventTime.TotalSeconds % 2 == 0)
         {
             text = "<size=90><color=red><b>《 ! 》</b></color></size>\n";

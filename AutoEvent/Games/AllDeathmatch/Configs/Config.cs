@@ -33,7 +33,8 @@ public class Config : EventConfig
                     Type = EffectType.Scp1853,
                     Intensity = 1,
                     Duration = 0,
-                }
+                },
+                new Effect(EffectType.FogControl, 0, 3)
             }
         }
     };

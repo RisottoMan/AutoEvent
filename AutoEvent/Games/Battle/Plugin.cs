@@ -95,7 +95,7 @@ public class Plugin : Event<Config, Translation>, IEventMap, IEventSound
     protected override bool IsRoundDone()
     {
         // Round finishes when either team has no more players.
-        return Player.List.Count(x => x.Role.Team == Team.FoundationForces) == 0 &&
+        return Player.List.Count(x => x.Role.Team == Team.FoundationForces) == 0 ||
                Player.List.Count(x => x.Role.Team == Team.ChaosInsurgency) == 0;
     }
     protected override float FrameDelayInSeconds { get; set; } = 1f;

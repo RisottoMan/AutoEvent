@@ -20,7 +20,7 @@ public class Plugin : Event<Config, Translation>, IEventMap
     public MapInfo MapInfo { get; set; } = new()
     {
         MapName = "Jail", 
-        Position = new Vector3(90f, 1030f, -43.5f),
+        Position = new Vector3(50, 40, 66),
         IsStatic = false
     };
     protected override FriendlyFireSettings ForceEnableFriendlyFire { get; set; } = FriendlyFireSettings.Enable;
@@ -54,6 +54,7 @@ public class Plugin : Event<Config, Translation>, IEventMap
     protected override void OnStart()
     {
         Deaths = new Dictionary<Player, int>();
+        SpawnPoints = new List<GameObject>();
         _doors = new List<GameObject>();
 
         foreach (var obj in MapInfo.Map.AttachedBlocks)

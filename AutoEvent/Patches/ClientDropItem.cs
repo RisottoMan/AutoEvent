@@ -1,4 +1,6 @@
-﻿using HarmonyLib;
+﻿using AutoEvent.API.Enums;
+using AutoEvent.Interfaces;
+using HarmonyLib;
 using InventorySystem;
 
 namespace AutoEvent.Patches;
@@ -8,9 +10,12 @@ internal static class ClientDropItem
 {
     public static bool Prefix()
     {
-        if (AutoEvent.EventManager.CurrentEvent != null)
+        if (AutoEvent.EventManager.CurrentEvent is Event activeEvent)
         {
-            return false;
+            if (!activeEvent.EventHandlerSettings.HasFlag(EventFlags.IgnoreDroppingItem))
+            {
+                return false;
+            }
         }
 
         return true;

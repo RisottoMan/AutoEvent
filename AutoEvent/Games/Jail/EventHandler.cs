@@ -6,6 +6,7 @@ using AutoEvent.API.Enums;
 using Exiled.API.Enums;
 using Exiled.API.Features;
 using Exiled.Events.EventArgs.Player;
+using MapGeneration.Distributors;
 using Utils.NonAllocLINQ;
 
 namespace AutoEvent.Games.Jail;
@@ -61,13 +62,14 @@ public class EventHandler
     public void OnInteractingLocker(InteractingLockerEventArgs ev)
     {
         ev.IsAllowed = false;
+        
         try
         {
-            if (ev.InteractingLocker.Type == LockerType.LargeGun)
+            if (Vector3.Distance(ev.Player.Position, _plugin.MapInfo.Map.Position + new Vector3(13.1f, -12.23f, -12.14f)) < 2)
             {
                 foreach (var item in ev.Player.Items)
                 {
-                    if (item.IsWeapon)
+                    if (item.IsFirearm)
                     {
                         ev.Player.RemoveItem(item);
                     }
@@ -75,12 +77,11 @@ public class EventHandler
 
                 ev.Player.GiveLoadout(_plugin.Config.WeaponLockerLoadouts,LoadoutFlags.IgnoreRole | LoadoutFlags.IgnoreGodMode | LoadoutFlags.DontClearDefaultItems);
             }
-
-            if (ev.InteractingLocker.Type == LockerType.Adrenaline)
+            else if (Vector3.Distance(ev.Player.Position, _plugin.MapInfo.Map.Position + new Vector3(17.855f, -12.43052f, -23.632f)) < 2)
             {
                 ev.Player.GiveLoadout(_plugin.Config.AdrenalineLoadouts,LoadoutFlags.IgnoreRole | LoadoutFlags.IgnoreGodMode | LoadoutFlags.IgnoreWeapons | LoadoutFlags.DontClearDefaultItems);
             }
-            else if (ev.InteractingLocker.Type == LockerType.Medkit)
+            else if (Vector3.Distance(ev.Player.Position, _plugin.MapInfo.Map.Position + new Vector3(9f, -12.43052f, -21.78f)) < 2)
             {
                 ev.Player.GiveLoadout(_plugin.Config.MedicalLoadouts,LoadoutFlags.IgnoreRole | LoadoutFlags.IgnoreGodMode | LoadoutFlags.IgnoreWeapons | LoadoutFlags.DontClearDefaultItems);
             }

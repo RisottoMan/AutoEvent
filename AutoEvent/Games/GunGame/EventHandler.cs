@@ -39,8 +39,8 @@ public class EventHandler
     public void OnDying(DyingEventArgs ev)
     {
         ev.IsAllowed = false;
-
-        ev.Player.Health = 100;
+        
+        ev.Player.Heal(100);
 
         if (_playerStats is null)
         {

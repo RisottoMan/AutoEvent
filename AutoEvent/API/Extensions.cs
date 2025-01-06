@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Mirror;
 using UnityEngine;
 using PlayerRoles;
 using InventorySystem.Items.Pickups;
@@ -14,14 +13,10 @@ using Exiled.API.Extensions;
 using Exiled.API.Features;
 using Exiled.API.Features.Items;
 using InventorySystem.Configs;
-using InventorySystem.Items.ThrowableProjectiles;
-using InventorySystem.Items;
 using InventorySystem.Items.Jailbird;
 using MapEditorReborn.API.Features;
 using MapEditorReborn.API.Features.Objects;
-using MapEditorReborn.API.Features.Serializable;
 using PlayerRoles.Ragdolls;
-using Utf8Json;
 using Object = UnityEngine.Object;
 
 namespace AutoEvent;
@@ -91,7 +86,6 @@ public static class Extensions
 
             if (loadout.Roles.Count == 1)
             {
-                // player.SetRole(loadout.Roles.First().Key, RoleChangeReason.Respawn, respawnFlags);
                 role = loadout.Roles.First().Key;
                 goto assignRole;
             }
@@ -104,12 +98,10 @@ public static class Extensions
                     if (UnityEngine.Random.Range(0, roleTotalChance) <= list[i].Value)
                     {
                         role = list[i].Key;
-                        // player.SetRole(list[i].Key, RoleChangeReason.Respawn, respawnFlags);
                         goto assignRole;
                     }
                 }
 
-                // player.SetRole(list[list.Count - 1].Key, RoleChangeReason.Respawn, respawnFlags);
                 role = list[list.Count - 1].Key;
                 goto assignRole;
             }
@@ -199,7 +191,7 @@ public static class Extensions
             InfiniteAmmoList.Remove(player);
             return;
         }
-
+        
         if (InfiniteAmmoList.ContainsKey(player))
         {
             InfiniteAmmoList[player] = ammoMode;
@@ -209,9 +201,12 @@ public static class Extensions
             InfiniteAmmoList.Add(player, ammoMode);
         }
         
-        foreach (var ammoLimit in InventoryLimits.Config.AmmoLimitsSync)
+        foreach (AmmoType ammoType in Enum.GetValues(typeof(AmmoType)))
         {
-            player.SetAmmo((AmmoType)ammoLimit.AmmoType, ammoLimit.Limit);
+            if (ammoType == AmmoType.None)
+                continue;
+            
+            player.SetAmmo(ammoType, 100);
         }
     }
 
@@ -228,6 +223,20 @@ public static class Extensions
         }
     }
 
+    public static bool IsExistsMER()
+    {
+        try
+        {
+        }
+        catch (Exception e)
+        {
+            DebugLogger.LogDebug("An error occured at IsExistsMER.", LogLevel.Warn, true);
+            DebugLogger.LogDebug($"{e}");
+        }
+        
+        return false;
+    }
+    
     public static bool IsExistsMap(string schematicName)
     {
         try
@@ -242,15 +251,21 @@ public static class Extensions
             DebugLogger.LogDebug("An error occured at IsExistsMap.", LogLevel.Warn, true);
             DebugLogger.LogDebug($"{e}");
         }
-
+        
         return false;
     }
     
-    public static SchematicObject LoadMap(string schematicName, Vector3 pos, Quaternion rot, Vector3 scale)
+    public static MapObject LoadMap(string schematicName, Vector3 pos, Quaternion rot, Vector3 scale)
     {
         try
         {
-            return ObjectSpawner.SpawnSchematic(schematicName, pos, rot, scale, null);
+            var schematicObject = ObjectSpawner.SpawnSchematic(schematicName, pos, rot, scale, null);
+
+            return new MapObject()
+            {
+                AttachedBlocks = schematicObject.AttachedBlocks,
+                GameObject = schematicObject.gameObject
+            };
         }
         catch (Exception e)
         {
@@ -261,9 +276,9 @@ public static class Extensions
         return null;
     }
 
-    public static void UnLoadMap(SchematicObject scheme)
+    public static void UnLoadMap(MapObject mapObject)
     {
-        scheme.Destroy();
+        mapObject.Destroy();
     }
 
     public static void CleanUpAll()
@@ -288,12 +303,12 @@ public static class Extensions
     public static void GrenadeSpawn(Vector3 pos, float scale = 1f, float fuseTime = 1f)
     {
         ExplosiveGrenade grenade = (ExplosiveGrenade)Item.Create(ItemType.GrenadeHE);
+        grenade.Scale = new Vector3(scale, scale, scale);
         grenade.FuseTime = fuseTime;
-        grenade.Base.transform.localScale = new Vector3(scale, scale, scale);
         grenade.SpawnActive(pos);
     }
 
-    public static AudioPlayer PlayAudio(string fileName, byte volume, bool isLoop, bool isStopAllClips)
+    public static AudioPlayer PlayAudio(string fileName, byte volume, bool isLoop)
     {
         if (!AudioClipStorage.AudioClips.ContainsKey(fileName))
         {
@@ -304,11 +319,6 @@ public static class Extensions
                 DebugLogger.LogDebug($"[PlayAudio] The music file {fileName} was not found for playback");
                 return null;
             }
-        }
-        
-        if (isStopAllClips && AudioPlayer.AudioPlayerByName.TryGetValue("AutoEvent-Global", out AudioPlayer audioPly))
-        {
-            audioPly.Destroy();
         }
         
         AudioPlayer audioPlayer = AudioPlayer.CreateOrGet($"AutoEvent-Global", onIntialCreation: (p) =>
@@ -323,18 +333,34 @@ public static class Extensions
         return audioPlayer;
     }
     
-    public static void PlayPlayerAudio(AudioPlayer audioPlayer, Player player, string audioFile, byte volume)
+    public static void PlayPlayerAudio(AudioPlayer audioPlayer, Player player, string fileName, byte volume)
     {
-        Speaker speaker = audioPlayer.AddSpeaker("AutoEvent-Zombie", isSpatial: false, minDistance: 1f, maxDistance: 100f);
-        speaker.Volume = volume * (AutoEvent.Singleton.Config.Volume / 100f);
-        speaker.transform.parent = player.GameObject.transform;
-        speaker.transform.localPosition = Vector3.zero;
-
-        audioPlayer.AddClip(audioFile);
+        if (audioPlayer is null)
+        {
+            DebugLogger.LogDebug($"[PlayPlayerAudio] The AudioPlayer is null");
+        }
+        
+        if (!AudioClipStorage.AudioClips.ContainsKey(fileName))
+        {
+            string filePath = Path.Combine(AutoEvent.Singleton.Config.MusicDirectoryPath, fileName);
+            DebugLogger.LogDebug($"{filePath}");
+            if (!AudioClipStorage.LoadClip(filePath, fileName))
+            {
+                DebugLogger.LogDebug($"[PlayPlayerAudio] The music file {fileName} was not found for playback");
+                return;
+            }
+        }
+        
+        audioPlayer.AddClip(fileName);
     }
     
     public static void PauseAudio(AudioPlayer audioPlayer)
     {
+        if (audioPlayer is null)
+        {
+            DebugLogger.LogDebug($"[PauseAudio] The AudioPlayer is null");
+        }
+        
         int clipId = audioPlayer.ClipsById.Keys.First();
         if (audioPlayer.TryGetClip(clipId, out AudioClipPlayback clip))
         {
@@ -344,6 +370,11 @@ public static class Extensions
     
     public static void ResumeAudio(AudioPlayer audioPlayer)
     {
+        if (audioPlayer is null)
+        {
+            DebugLogger.LogDebug($"[ResumeAudio] The AudioPlayer is null");
+        }
+        
         int clipId = audioPlayer.ClipsById.Keys.First();
         if (audioPlayer.TryGetClip(clipId, out AudioClipPlayback clip))
         {
@@ -353,6 +384,11 @@ public static class Extensions
     
     public static void StopAudio(AudioPlayer audioPlayer)
     {
+        if (audioPlayer is null)
+        {
+            DebugLogger.LogDebug($"[StopAudio] The AudioPlayer is null");
+        }
+        
         try
         {
             audioPlayer.RemoveAllClips();

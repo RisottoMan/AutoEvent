@@ -1,8 +1,10 @@
 ﻿using AutoEvent.API.Enums;
 using AutoEvent.Interfaces;
+using Exiled.API.Extensions;
 using Exiled.Events.EventArgs.Map;
 using Exiled.Events.EventArgs.Player;
 using Exiled.Events.EventArgs.Server;
+using InventorySystem.Items.Firearms.Attachments;
 
 namespace AutoEvent;
 internal class EventHandler
@@ -12,7 +14,6 @@ internal class EventHandler
     {
         _plugin = plugin;
 
-        Exiled.Events.Handlers.Server.RestartingRound += OnRestarting;
         Exiled.Events.Handlers.Server.RespawningTeam += OnRespawningTeam;
         Exiled.Events.Handlers.Map.Decontaminating += OnDecontaminating;
         Exiled.Events.Handlers.Map.PlacingBulletHole += OnPlacingBulletHole;
@@ -27,7 +28,6 @@ internal class EventHandler
 
     ~EventHandler()
     {
-        Exiled.Events.Handlers.Server.RestartingRound -= OnRestarting;
         Exiled.Events.Handlers.Server.RespawningTeam -= OnRespawningTeam;
         Exiled.Events.Handlers.Map.Decontaminating -= OnDecontaminating;
         Exiled.Events.Handlers.Map.PlacingBulletHole -= OnPlacingBulletHole;
@@ -38,13 +38,6 @@ internal class EventHandler
         Exiled.Events.Handlers.Player.Handcuffing -= OnHandcuffing;
         Exiled.Events.Handlers.Player.Dying -= OnDying;
         //Exiled.Events.Handlers.Player.Joined -= OnJoined;
-    }
-
-    private void OnRestarting()
-    {
-        if (AutoEvent.EventManager.CurrentEvent is null) return;
-
-        //ServerStatic.StopNextRound = ServerStatic.NextRoundAction.Restart;
     }
 
     private void OnRespawningTeam(RespawningTeamEventArgs ev)
@@ -101,7 +94,16 @@ internal class EventHandler
             if (!Extensions.InfiniteAmmoList.ContainsKey(ev.Player))
                 return;
 
-            ev.Firearm.AmmoDrain = 0;
+            if (ev.Firearm.Type is ItemType.ParticleDisruptor)
+                return;
+            
+            ushort amount = 1;
+            if (ev.Firearm.Type is ItemType.GunShotgun && ev.Firearm.HasAttachment(AttachmentName.ShotgunDoubleShot))
+            {
+                amount = 2;
+            }
+            
+            ev.Player.AddAmmo(ev.Firearm.AmmoType, amount);
         }
     }
 

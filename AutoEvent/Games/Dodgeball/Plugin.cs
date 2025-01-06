@@ -32,17 +32,21 @@ public class Plugin : Event<Config, Translation>, IEventMap, IEventSound
     private List<GameObject> _sciPoint;
     private GameObject _redLine;
     private TimeSpan _roundTime;
+    private ItemType _snowItemType;
+    internal bool IsChristmasUpdate { get; set; } = false;
     protected override void RegisterEvents()
     {
         _eventHandler = new EventHandler(this);
         Handlers.Scp018Update += _eventHandler.OnScp018Update;
         Handlers.Scp018Collision += _eventHandler.OnScp018Collision;
+        Exiled.Events.Handlers.Player.Hurting += _eventHandler.OnHurting;
     }
 
     protected override void UnregisterEvents()
     {
         Handlers.Scp018Update -= _eventHandler.OnScp018Update;
         Handlers.Scp018Collision -= _eventHandler.OnScp018Collision;
+        Exiled.Events.Handlers.Player.Hurting -= _eventHandler.OnHurting;
         _eventHandler = null;
     }
 
@@ -54,7 +58,17 @@ public class Plugin : Event<Config, Translation>, IEventMap, IEventSound
         _dPoint = new List<GameObject>();
         _sciPoint = new List<GameObject>();
         _roundTime = new TimeSpan(0, 0, Config.TotalTimeInSeconds);
+        _snowItemType = ItemType.SCP018;
 
+        // Christmas update
+        if (Enum.IsDefined(typeof(ItemType), "Snowball"))
+        {
+            if (Enum.TryParse("Snowball", out _snowItemType))
+            {
+                IsChristmasUpdate = true;
+            }
+        }
+        
         foreach (GameObject gameObject in MapInfo.Map.AttachedBlocks)
         {
             switch(gameObject.name)
@@ -138,10 +152,10 @@ public class Plugin : Event<Config, Translation>, IEventMap, IEventSound
             {
                 if (Vector3.Distance(ball.transform.position, player.Position) < 1.5f)
                 {
-                    var item = player.Items.FirstOrDefault(r => r.Type == ItemType.SCP018);
+                    var item = player.Items.FirstOrDefault(r => r.Type == _snowItemType);
                     if (item == null)
                     {
-                        item = player.AddItem(ItemType.SCP018);
+                        item = player.AddItem(_snowItemType);
                     }
 
                     Timing.CallDelayed(.1f, () =>
@@ -164,8 +178,8 @@ public class Plugin : Event<Config, Translation>, IEventMap, IEventSound
         TimeSpan totalTime = TimeSpan.FromSeconds(Config.TotalTimeInSeconds) - _roundTime;
         string time = $"{totalTime.Minutes:00}:{totalTime.Seconds:00}";
 
-        int classDCount = Player.List.Count(r => r.Role == RoleTypeId.ClassD);
-        int sciCount = Player.List.Count(r => r.Role == RoleTypeId.Scientist);
+        int classDCount = Player.List.Count(r => r.Role.Type == RoleTypeId.ClassD);
+        int sciCount = Player.List.Count(r => r.Role.Type == RoleTypeId.Scientist);
         string text = string.Empty;
 
         if (classDCount < 1 && sciCount < 1)

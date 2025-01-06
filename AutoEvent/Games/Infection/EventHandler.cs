@@ -1,7 +1,6 @@
 ﻿using System;
 using MEC;
 using PlayerRoles;
-using PlayerStatsSystem;
 using System.Linq;
 using Exiled.API.Enums;
 using Exiled.API.Features;
@@ -31,10 +30,15 @@ public class EventHandler
                 ev.Player.EnableEffect<MarshmallowEffect>();
             });
         }
-        else if (_plugin.IsChristmasUpdate)
+        else if (_plugin.IsChristmasUpdate && Enum.TryParse("ZombieFlamingo", out RoleTypeId roleTypeId))
         {
-            RoleTypeId zombieType = (RoleTypeId)Enum.Parse(typeof(RoleTypeId), "ZombieFlamingo");
-            ev.Player.Role.Set(zombieType, RoleSpawnFlags.None);
+            if (ev.Player.Role.Type == roleTypeId)
+            {
+                ev.IsAllowed = false;
+                return;
+            }
+            
+            ev.Player.Role.Set(roleTypeId, RoleSpawnFlags.None);
             ev.Attacker.ShowHitMarker();
             Extensions.PlayPlayerAudio(_plugin.SoundInfo.AudioPlayer, ev.Player, _plugin.Config.ZombieScreams.RandomItem(), 15);
         }
@@ -77,10 +81,9 @@ public class EventHandler
                     ev.Player.EnableEffect<MarshmallowEffect>();
                 });
             }
-            else if (_plugin.IsChristmasUpdate)
+            else if (_plugin.IsChristmasUpdate && Enum.TryParse("ZombieFlamingo", out RoleTypeId roleTypeId))
             {
-                RoleTypeId zombieType = (RoleTypeId)Enum.Parse(typeof(RoleTypeId), "ZombieFlamingo");
-                ev.Player.Role.Set(zombieType, RoleSpawnFlags.None);
+                ev.Player.Role.Set(roleTypeId, RoleSpawnFlags.None);
             }
             else
             {

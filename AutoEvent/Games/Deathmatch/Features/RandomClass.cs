@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using AutoEvent.API;
 using MapEditorReborn.API.Features.Objects;
 using UnityEngine;
 
@@ -6,7 +7,7 @@ namespace AutoEvent.Games.Deathmatch
 {
     internal class RandomClass
     {
-        public static Vector3 GetRandomPosition(SchematicObject GameMap)
+        public static Vector3 GetRandomPosition(MapObject GameMap)
         {
             if (GameMap is null)
             {

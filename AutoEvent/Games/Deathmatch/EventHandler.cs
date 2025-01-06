@@ -55,7 +55,7 @@ public class EventHandler
         ev.Player.EnableEffect<Flashed>(0.1f);
         ev.Player.Position = RandomClass.GetRandomPosition(_plugin.MapInfo.Map);
         ev.Player.IsGodModeEnabled = true;
-        ev.Player.Health = 100;
+        ev.Player.Heal(100);
 
         foreach (var itemBase in ev.Player.Items)
         {

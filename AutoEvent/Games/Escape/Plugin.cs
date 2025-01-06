@@ -28,7 +28,7 @@ public class Plugin : Event<Config, Translation>, IEventSound
     private EventHandler _eventHandler { get; set; }
     protected override void RegisterEvents()
     {
-        _eventHandler = new EventHandler();
+        _eventHandler = new EventHandler(this);
         Exiled.Events.Handlers.Player.Joined += _eventHandler.OnJoined;
         Exiled.Events.Handlers.Map.AnnouncingScpTermination += _eventHandler.OnAnnoucingScpTermination;
         Exiled.Events.Handlers.Scp173.PlacingTantrum += _eventHandler.OnPlacingTantrum;
@@ -90,8 +90,6 @@ public class Plugin : Event<Config, Translation>, IEventSound
 
     protected override void OnFinished()
     {
-        string playeAlive = Player.List.Count(x => x.IsAlive).ToString();
-        
         foreach (Player player in Player.List)
         {
             player.EnableEffect<Flashed>(1);
@@ -101,7 +99,8 @@ public class Plugin : Event<Config, Translation>, IEventSound
                 player.Kill("You didn't have time");
             }
         }
-
+        
+        string playeAlive = Player.List.Count(x => x.IsAlive).ToString();
         Extensions.Broadcast(Translation.End.Replace("{name}", Name).Replace("{players}", playeAlive), 10);
     }
 

@@ -1,4 +1,7 @@
-﻿using AutoEvent.Events.EventArgs;
+﻿using System;
+using AutoEvent.Events.EventArgs;
+using Exiled.API.Enums;
+using Exiled.Events.EventArgs.Player;
 using PluginAPI.Core;
 using UnityEngine;
 
@@ -34,5 +37,19 @@ public class EventHandler
     public void OnScp018Collision(Scp018CollisionArgs ev)
     {
         ev.Projectile.DestroySelf();
+    }
+
+    public void OnHurting(HurtingEventArgs ev)
+    {
+        if (ev.Attacker is null || ev.Player is null)
+            return;
+
+        if (_plugin.IsChristmasUpdate && Enum.TryParse("SnowBall", out DamageType damageType))
+        {
+            if (ev.DamageHandler.Type == damageType)
+            {
+                ev.Amount = 50;
+            }
+        }
     }
 }

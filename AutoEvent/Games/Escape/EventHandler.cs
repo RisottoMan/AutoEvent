@@ -1,11 +1,16 @@
 ﻿using Exiled.Events.EventArgs.Map;
 using Exiled.Events.EventArgs.Player;
 using Exiled.Events.EventArgs.Scp173;
-using PlayerRoles;
 
 namespace AutoEvent.Games.Escape;
 public class EventHandler
 {
+    Plugin _plugin;
+    public EventHandler(Plugin plugin)
+    {
+        _plugin = plugin;
+    }
+    
     public void OnAnnoucingScpTermination(AnnouncingScpTerminationEventArgs ev)
     {
         ev.IsAllowed = false;
@@ -13,7 +18,7 @@ public class EventHandler
     
     public void OnJoined(JoinedEventArgs ev)
     {
-        ev.Player.Role.Set(RoleTypeId.Scp173);
+        ev.Player.GiveLoadout(_plugin.Config.Scp173Loadout);
     }
 
     public void OnPlacingTantrum(PlacingTantrumEventArgs ev)

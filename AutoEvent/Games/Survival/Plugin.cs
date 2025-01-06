@@ -71,7 +71,7 @@ public class Plugin : Event<Config, Translation>, IEventSound, IEventMap
 
     protected override void CountdownFinished()
     {
-        Extensions.PlayAudio("Zombie2.ogg", 7, true, true);
+        Extensions.PlayAudio("Zombie2.ogg", 7, true);
 
         List<Player> players = Config.Zombies.GetPlayers(true);
         foreach (Player x in players)
@@ -97,7 +97,7 @@ public class Plugin : Event<Config, Translation>, IEventSound, IEventMap
         // round time under 5 minutes (+ countdown)
         bool a = Player.List.Any(ply => ply.HasLoadout(Config.PlayerLoadouts));
         bool b = Player.List.Any(ply => ply.HasLoadout(Config.ZombieLoadouts));
-        bool c = EventTime.TotalSeconds < Config.RoundDurationInSeconds;
+        bool c = EventTime.TotalSeconds < 10; //Config.RoundDurationInSeconds
         return !(a && b && c);
     }
 
@@ -142,7 +142,8 @@ public class Plugin : Event<Config, Translation>, IEventSound, IEventMap
             text = Translation.SurvivalHumanWinTime;
         }
 
-        Extensions.PlayAudio(musicName, 7, false, true);
+        Extensions.PauseAudio(SoundInfo.AudioPlayer);
+        Extensions.PlayAudio(musicName, 7, false);
         Extensions.Broadcast(text, 10);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using AutoEvent.API;
 using MapEditorReborn.API.Features.Objects;
 using UnityEngine;
 using YamlDotNet.Serialization;
@@ -40,7 +41,7 @@ public class MapInfo
     public bool IsStatic { get; set; } = true;
 
     [YamlIgnore]
-    public SchematicObject Map { get; set; }
+    public MapObject Map { get; set; }
     
     [YamlIgnore]
     public bool SpawnAutomatically { get; set; } = true;

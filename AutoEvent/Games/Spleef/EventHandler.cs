@@ -1,12 +1,11 @@
 ﻿using Exiled.Events.EventArgs.Player;
-using InventorySystem.Items.Firearms;
 using UnityEngine;
 
 namespace AutoEvent.Games.Spleef;
 
 public class EventHandler
 {
-    private Plugin _plugin { get; set; }
+    private Plugin _plugin;
     public EventHandler(Plugin plugin)
     {
         _plugin = plugin;
@@ -24,7 +23,7 @@ public class EventHandler
             return;
         }
 
-        if (ev.Player.CurrentItem.IsWeapon)
+        if (!ev.Player.CurrentItem.IsFirearm)
         {
             return;
         }

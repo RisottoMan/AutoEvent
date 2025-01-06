@@ -121,7 +121,7 @@ namespace AutoEvent.Interfaces
                                  $"{(s.SoundInfo.StartAutomatically ? "true" : "false")}" : "false")}");
         if (this is IEventSound sound && !string.IsNullOrEmpty(sound.SoundInfo.SoundName) && (!checkIfAutomatic || sound.SoundInfo.StartAutomatically))
         {
-            sound.SoundInfo.AudioPlayer = Extensions.PlayAudio(sound.SoundInfo.SoundName, sound.SoundInfo.Volume, sound.SoundInfo.Loop, false);
+            sound.SoundInfo.AudioPlayer = Extensions.PlayAudio(sound.SoundInfo.SoundName, sound.SoundInfo.Volume, sound.SoundInfo.Loop);
         }
     }
 

@@ -66,10 +66,9 @@ public class Plugin : Event<Config, Translation>, IEventSound, IEventMap
         SpawnList = MapInfo.Map.AttachedBlocks.Where(r => r.name == "Spawnpoint").ToList();
         foreach (Player player in Player.List)
         {
-            if (IsChristmasUpdate)
+            if (IsChristmasUpdate && Enum.TryParse("Flamingo", out RoleTypeId roleTypeId))
             {
-                RoleTypeId roleType = (RoleTypeId)Enum.Parse(typeof(RoleTypeId), "ZombieFlamingo");
-                player.Role.Set(roleType, RoleSpawnFlags.None);
+                player.Role.Set(roleTypeId, RoleSpawnFlags.None);
             }
             else
             {
@@ -101,10 +100,9 @@ public class Plugin : Event<Config, Translation>, IEventSound, IEventMap
             player.EnableEffect<MarshmallowEffect>();
             player.IsGodModeEnabled = true;
         }
-        else if (IsChristmasUpdate)
+        else if (IsChristmasUpdate && Enum.TryParse("ZombieFlamingo", out RoleTypeId roleTypeId))
         {
-            RoleTypeId roleType = (RoleTypeId)Enum.Parse(typeof(RoleTypeId), "Flamingo");
-            player.Role.Set(roleType, RoleSpawnFlags.None);
+            player.Role.Set(roleTypeId, RoleSpawnFlags.None);
         }
         else
         {
@@ -117,12 +115,12 @@ public class Plugin : Event<Config, Translation>, IEventSound, IEventMap
     protected override bool IsRoundDone()
     {
         RoleTypeId roleType = RoleTypeId.ClassD;
-        if (IsChristmasUpdate)
+        if (IsChristmasUpdate && Enum.TryParse("Flamingo", out roleType))
         {
-            roleType = (RoleTypeId)Enum.Parse(typeof(RoleTypeId), "Flamingo");
+            //nothing
         }
 
-        if (Player.List.Count(r => r.Role == roleType) > 0 && _overtime > 0)
+        if (Player.List.Count(r => r.Role.Type == roleType) > 0 && _overtime > 0)
         {
             return false;
         }
@@ -135,17 +133,15 @@ public class Plugin : Event<Config, Translation>, IEventSound, IEventMap
         RoleTypeId roleType = RoleTypeId.ClassD;
         string time = $"{EventTime.Minutes:00}:{EventTime.Seconds:00}";
         
-        if (IsChristmasUpdate)
+        if (IsChristmasUpdate && Enum.TryParse("Flamingo", out roleType))
         {
-            roleType = (RoleTypeId)Enum.Parse(typeof(RoleTypeId), "Flamingo");
+            //nothing
         }
         
         int count = Player.List.Count(r => r.Role == roleType);
-
         if (count > 1)
         {
-            Extensions.Broadcast(Translation.Cycle.
-                Replace("{name}", Name).
+            Extensions.Broadcast(Translation.Cycle.Replace("{name}", Name).
                 Replace("{count}", count.ToString()).
                 Replace("{time}", time), 1);
         }
@@ -154,16 +150,16 @@ public class Plugin : Event<Config, Translation>, IEventSound, IEventMap
             _overtime--;
             Extensions.Broadcast(Translation.ExtraTime
                     .Replace("{extratime}", _overtime.ToString("00"))
-                    .Replace("{time}", $"{EventTime.Minutes:00}:{EventTime.Seconds:00}"), 1);
+                    .Replace("{time}", $"{time}"), 1);
         }
     }
 
     protected override void OnFinished()
     {
         RoleTypeId roleType = RoleTypeId.ClassD;
-        if (IsChristmasUpdate)
+        if (IsChristmasUpdate && Enum.TryParse("Flamingo", out roleType))
         {
-            roleType = (RoleTypeId)Enum.Parse(typeof(RoleTypeId), "Flamingo");
+            //nothing
         }
         
         if (Player.List.Count(r => r.Role == roleType) == 0)

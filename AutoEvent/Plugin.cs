@@ -10,7 +10,7 @@ public class AutoEvent : Plugin<Config>
     public override string Name => "AutoEvent";
     public override string Author => "Created by a large community of programmers, map builders and just ordinary people, under the leadership of RisottoMan.";
     public override Version Version => Version.Parse("9.10.0");
-    public override Version RequiredExiledVersion => new(9, 0, 0);
+    public override Version RequiredExiledVersion => new(9, 2, 2);
     public static string BaseConfigPath { get; set;}
     public static AutoEvent Singleton;
     public static Harmony HarmonyPatch;
@@ -59,16 +59,15 @@ public class AutoEvent : Plugin<Config>
             {
                 DebugLogger.LogDebug($"Base Conf Path: {BaseConfigPath}");
                 DebugLogger.LogDebug($"Configs paths: \n" +
-                                     $"{Config.SchematicsDirectoryPath}\n" +
                                      $"{Config.MusicDirectoryPath}\n");
-                CreateDirectoryIfNotExists(BaseConfigPath); 
-                CreateDirectoryIfNotExists(Config.SchematicsDirectoryPath);
+                CreateDirectoryIfNotExists(BaseConfigPath);
                 CreateDirectoryIfNotExists(Config.MusicDirectoryPath);
                 
                 // temporarily
-                DeleteDirectoryAndFiles(Config.ExternalEventsDirectoryPath);
-                DeleteDirectoryAndFiles(Config.EventConfigsDirectoryPath);
-                DeleteDirectoryAndFiles(Path.Combine(Config.SchematicsDirectoryPath, "All Source maps"));
+                DeleteDirectoryAndFiles(Path.Combine(BaseConfigPath, "Configs"));
+                DeleteDirectoryAndFiles(Path.Combine(BaseConfigPath, "Events"));
+                DeleteDirectoryAndFiles(Path.Combine(BaseConfigPath, "Schematics"));
+                DeleteDirectoryAndFiles(Path.Combine(Path.Combine(BaseConfigPath, "Schematics"), "All Source maps"));
             }
             catch (Exception e)
             {
@@ -79,7 +78,7 @@ public class AutoEvent : Plugin<Config>
             _eventHandler = new EventHandler(this);
             EventManager = new EventManager();
             EventManager.RegisterInternalEvents();
-            ConfigManager.LoadConfigsAndTranslations();
+            //ConfigManager.LoadConfigsAndTranslations();
             
             DebugLogger.LogDebug($"The mini-games are loaded.", LogLevel.Info, true);
         }

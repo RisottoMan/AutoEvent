@@ -2,6 +2,8 @@
 using System.ComponentModel;
 using AutoEvent.API;
 using AutoEvent.Interfaces;
+using Exiled.API.Enums;
+using Exiled.API.Features;
 using PlayerRoles;
 using YamlDotNet.Serialization;
 
@@ -25,6 +27,10 @@ public class Config : EventConfig
             {
                 ItemType.GunE11SR,
                 ItemType.GunCOM18
+            },
+            Effects = new List<Effect>()
+            {
+                new Effect(EffectType.FogControl, 0, 3)
             }
         },
     };
@@ -35,11 +41,15 @@ public class Config : EventConfig
     {
         new Loadout()
         {
-            InfiniteAmmo = AmmoMode.InfiniteAmmo,
             Roles = new Dictionary<RoleTypeId, int>()
             {
                 { RoleTypeId.ClassD, 100 }
-            }
+            },
+            Effects = new List<Effect>()
+            {
+                new Effect(EffectType.FogControl, 0, 3)
+            },
+            InfiniteAmmo = AmmoMode.InfiniteAmmo
         }
     };
     
@@ -81,6 +91,15 @@ public class Config : EventConfig
     {
         new Loadout()
         {
+            ArtificialHealth = new ArtificialHealth()
+            {
+                InitialAmount = 100f,
+                MaxAmount = 100f,
+                RegenerationAmount = 0,
+                AbsorptionPercent = 70,
+                Permanent = false,
+                Duration = 0
+            }
         }
     };
 }

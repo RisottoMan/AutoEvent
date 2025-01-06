@@ -43,7 +43,7 @@ public class EventHandler
     {
         player.EnableEffect<Flashed>(0.1f);
         player.IsGodModeEnabled = true;
-        player.Health = 100;
+        player.Heal(100);
         player.ClearInventory();
 
         if (!player.IsAlive)

@@ -31,7 +31,7 @@ internal class Run : ICommand, IUsageProvider
             response = "Only 1 argument is needed - the command name of the event!";
             return false;
         }
-
+        
         Event ev = AutoEvent.EventManager.GetEvent(arguments.At(0));
         if (ev == null)
         {
@@ -39,17 +39,28 @@ internal class Run : ICommand, IUsageProvider
             return false;
         }
         
-        if (!(ev is IEventMap map && !string.IsNullOrEmpty(map.MapInfo.MapName) && map.MapInfo.MapName.ToLower() != "none"))
+        // Checking that MapEditorReborn has loaded on the server
+        try
         {
-            Log.Warn("No map has been specified for this event!");
+            if (!(ev is IEventMap map && !string.IsNullOrEmpty(map.MapInfo.MapName) && map.MapInfo.MapName.ToLower() != "none"))
+            {
+                Log.Warn("No map has been specified for this event!");
+            
+            }
+            else if (!Extensions.IsExistsMap(map.MapInfo.MapName))
+            {
+                response = $"You need to download the map {map.MapInfo.MapName} to run this mini-game.\n" +
+                           $"Download and install Schematics.tar.gz from the github.";
+                return false;
+            }
         }
-        else if (!Extensions.IsExistsMap(map.MapInfo.MapName))
+        catch (System.IO.FileNotFoundException _)
         {
-            response = $"You need to download the map {map.MapInfo.MapName} to run this mini game.\n" +
-                       $"Download and install Schematics.tar.gz from the github.";
+            response = $"You need to download the 'MapEditorReborn' to run mini-games.\n" +
+                       $"Read the installation instruction in the github.";
             return false;
         }
-
+        
         Round.IsLocked = true;
 
         if (!Round.IsStarted)
