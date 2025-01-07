@@ -17,13 +17,13 @@ internal class EventHandler
         Exiled.Events.Handlers.Server.RespawningTeam += OnRespawningTeam;
         Exiled.Events.Handlers.Map.Decontaminating += OnDecontaminating;
         Exiled.Events.Handlers.Map.PlacingBulletHole += OnPlacingBulletHole;
+        Exiled.Events.Handlers.Map.PickupAdded += OnPickupAdded;
         Exiled.Events.Handlers.Player.SpawningRagdoll += OnSpawningRagdoll;
         Exiled.Events.Handlers.Player.Shooting += OnShooting;
         Exiled.Events.Handlers.Player.DroppingAmmo += OnDroppingAmmo;
         Exiled.Events.Handlers.Player.DroppingItem += OnDroppingItem;
         Exiled.Events.Handlers.Player.Handcuffing += OnHandcuffing;
         Exiled.Events.Handlers.Player.Dying += OnDying;
-        //Exiled.Events.Handlers.Player.Joined += OnJoined; -> spectator
     }
 
     ~EventHandler()
@@ -31,13 +31,13 @@ internal class EventHandler
         Exiled.Events.Handlers.Server.RespawningTeam -= OnRespawningTeam;
         Exiled.Events.Handlers.Map.Decontaminating -= OnDecontaminating;
         Exiled.Events.Handlers.Map.PlacingBulletHole -= OnPlacingBulletHole;
+        Exiled.Events.Handlers.Map.PickupAdded -= OnPickupAdded;
         Exiled.Events.Handlers.Player.SpawningRagdoll -= OnSpawningRagdoll;
         Exiled.Events.Handlers.Player.Shooting -= OnShooting;
         Exiled.Events.Handlers.Player.DroppingAmmo -= OnDroppingAmmo;
         Exiled.Events.Handlers.Player.DroppingItem -= OnDroppingItem;
         Exiled.Events.Handlers.Player.Handcuffing -= OnHandcuffing;
         Exiled.Events.Handlers.Player.Dying -= OnDying;
-        //Exiled.Events.Handlers.Player.Joined -= OnJoined;
     }
 
     private void OnRespawningTeam(RespawningTeamEventArgs ev)
@@ -84,6 +84,17 @@ internal class EventHandler
         }
     }
 
+    private void OnPickupAdded(PickupAddedEventArgs ev)
+    {
+        if (AutoEvent.EventManager.CurrentEvent is Event activeEvent)
+        {
+            if (!activeEvent.EventHandlerSettings.HasFlag(EventFlags.IgnoreDroppingAmmo) && ev.Pickup.Type.IsAmmo())
+            {
+                ev.Pickup.Destroy();
+            }
+        }
+    }
+
     private void OnShooting(ShootingEventArgs ev)
     {
         if (AutoEvent.EventManager.CurrentEvent is Event activeEvent)
@@ -101,6 +112,10 @@ internal class EventHandler
             if (ev.Firearm.Type is ItemType.GunShotgun && ev.Firearm.HasAttachment(AttachmentName.ShotgunDoubleShot))
             {
                 amount = 2;
+            }
+            else if (ev.Firearm.Type is ItemType.GunCom45)
+            {
+                amount = 3;
             }
             
             ev.Player.AddAmmo(ev.Firearm.AmmoType, amount);

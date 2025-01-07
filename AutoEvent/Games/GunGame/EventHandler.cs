@@ -114,7 +114,7 @@ public class EventHandler
         }
         
         DebugLogger.LogDebug($"Getting player {player.Nickname} weapon.");
-        player.EnableEffect<SpawnProtected>(.5f);
+        player.EnableEffect<SpawnProtected>(.15f);
         player.ClearInventory();
         var item = player.AddItem(gun);
         Timing.CallDelayed(.1f, () =>

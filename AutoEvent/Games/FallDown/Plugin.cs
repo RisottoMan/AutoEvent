@@ -21,7 +21,7 @@ public class Plugin : Event<Config, Translation>, IEventSound, IEventMap
     };
     public SoundInfo SoundInfo { get; set; } = new()
     { 
-        SoundName = "ChristmasMusic.ogg", 
+        SoundName = "Fall_Guys_Winter_Fallympics.ogg",
         Volume = 7
     };
     protected override float FrameDelayInSeconds { get; set; } = 0.9f;

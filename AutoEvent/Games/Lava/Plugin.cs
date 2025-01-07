@@ -26,6 +26,7 @@ public class Plugin : Event<Config, Translation>, IEventSound, IEventMap
         Volume = 8, 
         Loop = false
     };
+    protected override FriendlyFireSettings ForceEnableFriendlyFire { get; set; } = FriendlyFireSettings.Enable;
 
     private EventHandler _eventHandler;
     private GameObject _lava;

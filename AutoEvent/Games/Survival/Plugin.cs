@@ -97,7 +97,7 @@ public class Plugin : Event<Config, Translation>, IEventSound, IEventMap
         // round time under 5 minutes (+ countdown)
         bool a = Player.List.Any(ply => ply.HasLoadout(Config.PlayerLoadouts));
         bool b = Player.List.Any(ply => ply.HasLoadout(Config.ZombieLoadouts));
-        bool c = EventTime.TotalSeconds < 10; //Config.RoundDurationInSeconds
+        bool c = EventTime.TotalSeconds < Config.RoundDurationInSeconds;
         return !(a && b && c);
     }
 

@@ -2,6 +2,7 @@
 using System.IO;
 using HarmonyLib;
 using AutoEvent.API;
+using AutoEvent.API.Season;
 using Exiled.API.Features;
 
 namespace AutoEvent;
@@ -59,14 +60,15 @@ public class AutoEvent : Plugin<Config>
             {
                 DebugLogger.LogDebug($"Base Conf Path: {BaseConfigPath}");
                 DebugLogger.LogDebug($"Configs paths: \n" +
+                                     $"{Config.SchematicsDirectoryPath}\n" +
                                      $"{Config.MusicDirectoryPath}\n");
                 CreateDirectoryIfNotExists(BaseConfigPath);
+                CreateDirectoryIfNotExists(Config.SchematicsDirectoryPath);
                 CreateDirectoryIfNotExists(Config.MusicDirectoryPath);
                 
                 // temporarily
                 DeleteDirectoryAndFiles(Path.Combine(BaseConfigPath, "Configs"));
                 DeleteDirectoryAndFiles(Path.Combine(BaseConfigPath, "Events"));
-                DeleteDirectoryAndFiles(Path.Combine(BaseConfigPath, "Schematics"));
                 DeleteDirectoryAndFiles(Path.Combine(Path.Combine(BaseConfigPath, "Schematics"), "All Source maps"));
             }
             catch (Exception e)

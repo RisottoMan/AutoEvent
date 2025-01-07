@@ -43,4 +43,30 @@ public class Config : EventConfig
             Chance = 100
         }
     };
+    
+    [Description("Weapon loadouts for finish")]
+    public List<Loadout> WeaponLoadouts { get; set; } = new()
+    {
+        new Loadout()
+        {
+            Items = new List<ItemType>() { ItemType.GunE11SR, ItemType.Jailbird },
+            Effects = new List<Effect>()
+            {
+                new() { Type = EffectType.MovementBoost, Intensity = 50, Duration = 0 }
+            },
+            InfiniteAmmo = AmmoMode.InfiniteAmmo
+        }
+    };
+    
+    [Description("Poison loadouts")]
+    public List<Loadout> PoisonLoadouts { get; set; } = new()
+    {
+        new Loadout()
+        {
+            Effects = new List<Effect>()
+            {
+                new() { Type = EffectType.CardiacArrest, Intensity = 1, Duration = 15 }
+            },
+        }
+    };
 }

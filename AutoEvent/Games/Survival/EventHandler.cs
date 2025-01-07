@@ -22,7 +22,7 @@ public class EventHandler
             ev.IsAllowed = false;
         }
 
-        if (ev.Attacker == null && ev.Player == null)
+        if (ev.Attacker == null || ev.Player == null)
             return;
             
         if (ev.Attacker.IsScp && !ev.Player.IsScp)

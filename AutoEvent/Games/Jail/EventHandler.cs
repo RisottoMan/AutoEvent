@@ -67,14 +67,7 @@ public class EventHandler
         {
             if (Vector3.Distance(ev.Player.Position, _plugin.MapInfo.Map.Position + new Vector3(13.1f, -12.23f, -12.14f)) < 2)
             {
-                foreach (var item in ev.Player.Items)
-                {
-                    if (item.IsFirearm)
-                    {
-                        ev.Player.RemoveItem(item);
-                    }
-                }
-
+                ev.Player.ClearInventory();
                 ev.Player.GiveLoadout(_plugin.Config.WeaponLockerLoadouts,LoadoutFlags.IgnoreRole | LoadoutFlags.IgnoreGodMode | LoadoutFlags.DontClearDefaultItems);
             }
             else if (Vector3.Distance(ev.Player.Position, _plugin.MapInfo.Map.Position + new Vector3(17.855f, -12.43052f, -23.632f)) < 2)

@@ -149,7 +149,7 @@ public class Plugin : Event<Config, Translation>, IEventMap, IEventSound
             else // last round.
             {
                 Vector3 pos = MapInfo.Map.Position + new Vector3(Random.Range(-10, 10), 20, Random.Range(-10, 10));
-                Extensions.GrenadeSpawn(pos, 75, 10);
+                Extensions.GrenadeSpawn(pos, 75, 10, 0);
             }
 
             yield return Timing.WaitForSeconds(15f);

@@ -15,25 +15,41 @@ public class Plugin : Event<Config, Translation>, IEventMap
     public override string Description { get; set; } = "Go to the end, avoiding death-activated trap along the way";
     public override string Author { get; set; } = "RisottoMan/code & xleb.ik/map";
     public override string CommandName { get; set; } = "deathrun";
+    public override EventFlags EventHandlerSettings { get; set; } = EventFlags.IgnoreRagdoll;
     public MapInfo MapInfo { get; set; } = new()
     { 
         MapName = "TempleMap", 
         Position = new Vector3(0, 30, 30)
     };
+    private EventHandler _eventHandler;
     private GameObject _wall { get; set; }
-    private List<GameObject> runnerSpawns { get; set; }
-    
+    private List<GameObject> _runnerSpawns { get; set; }
+    protected override void RegisterEvents()
+    {
+        _eventHandler = new EventHandler();
+        Exiled.Events.Handlers.Player.SearchingPickup += _eventHandler.OnSearchingPickup;
+    }
+
+    protected override void UnregisterEvents()
+    {
+        Exiled.Events.Handlers.Player.SearchingPickup -= _eventHandler.OnSearchingPickup;
+        _eventHandler = null;
+    }
     protected override void OnStart()
     {
-        runnerSpawns = new();
+        _runnerSpawns = new();
         List<GameObject> deathSpawns = new();
         foreach (var block in MapInfo.Map.AttachedBlocks)
         {
             switch (block.name)
             {
-                case "Spawnpoint": runnerSpawns.Add(block); break;
+                case "Spawnpoint": _runnerSpawns.Add(block); break;
                 case "Spawnpoint1": deathSpawns.Add(block); break;
                 case "Wall": _wall = block; break;
+                case "KillTrigger": block.AddComponent<KillComponent>(); break;
+                case "ColliderTrigger": block.AddComponent<ColliderComponent>(); break;
+                case "WeaponTrigger": block.AddComponent<WeaponComponent>().StartComponent(this); break;
+                case "PoisonTrigger": block.AddComponent<PoisonComponent>().StartComponent(this); break;
             }
         }
         
@@ -49,7 +65,7 @@ public class Plugin : Event<Config, Translation>, IEventMap
         foreach (Player runner in Player.List.Where(r => r.Role != RoleTypeId.Scientist))
         {
             runner.GiveLoadout(Config.PlayerLoadouts);
-            runner.Position = runnerSpawns.RandomItem().transform.position;
+            runner.Position = _runnerSpawns.RandomItem().transform.position;
         }
     }
 
@@ -104,7 +120,7 @@ public class Plugin : Event<Config, Translation>, IEventMap
             foreach (Player player in Player.List.Where(r => r.Role.Type is RoleTypeId.Spectator))
             {
                 player.Role.Set(RoleTypeId.ClassD, RoleSpawnFlags.None);
-                player.Position = runnerSpawns.RandomItem().transform.position;
+                player.Position = _runnerSpawns.RandomItem().transform.position;
                 player.ShowHint(Translation.SecondLifeHint, 5);
             }
         }

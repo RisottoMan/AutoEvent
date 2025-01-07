@@ -300,11 +300,12 @@ public static class Extensions
         Map.Broadcast(time, text);
     }
 
-    public static void GrenadeSpawn(Vector3 pos, float scale = 1f, float fuseTime = 1f)
+    public static void GrenadeSpawn(Vector3 pos, float scale = 1f, float fuseTime = 1f, float radius = 1f)
     {
         ExplosiveGrenade grenade = (ExplosiveGrenade)Item.Create(ItemType.GrenadeHE);
         grenade.Scale = new Vector3(scale, scale, scale);
         grenade.FuseTime = fuseTime;
+        grenade.MaxRadius = radius;
         grenade.SpawnActive(pos);
     }
 

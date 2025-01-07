@@ -9,10 +9,7 @@ public class Config : Exiled.API.Interfaces.IConfig
     public Config()
     {
         string basePath = Path.Combine(Exiled.API.Features.Paths.Configs, "AutoEvent");
-
-        //EventConfigsDirectoryPath = Path.Combine(basePath, "Configs");
-        //ExternalEventsDirectoryPath = Path.Combine(basePath, "Events");
-        //SchematicsDirectoryPath = Path.Combine(basePath, "Schematics");
+        SchematicsDirectoryPath = Path.Combine(basePath, "Schematics");
         MusicDirectoryPath = Path.Combine(basePath, "Music");
     }
 
@@ -38,15 +35,9 @@ public class Config : Exiled.API.Interfaces.IConfig
 
     [Description("The players will be set once an event is done. **DO NOT USE A ROLE THAT IS ALSO IN IgnoredRoles**")]
     public RoleTypeId LobbyRole { get; set; } = RoleTypeId.ClassD;
-
-    //[Description("Where the configs directory is located. By default it is located in the AutoEvent folder.")]
-    //public string EventConfigsDirectoryPath { get; set; }
     
-    //[Description("Where the external events directory is located. By default it is located in the AutoEvent folder.")]
-    //public string ExternalEventsDirectoryPath { get; set; }
-    
-    //[Description("Where the schematics directory is located. By default it is located in the AutoEvent folder.")]
-    //public string SchematicsDirectoryPath { get; set; }
+    [Description("Where the schematics directory is located. By default it is located in the AutoEvent folder.")]
+    public string SchematicsDirectoryPath { get; set; }
     
     [Description("Where the music directory is located. By default it is located in the AutoEvent folder.")]
     public string MusicDirectoryPath { get; set; }

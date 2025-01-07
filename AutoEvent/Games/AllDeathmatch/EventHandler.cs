@@ -39,24 +39,22 @@ public class EventHandler
         SpawnPlayerAfterDeath(ev.Player);
     }
 
-    public void SpawnPlayerAfterDeath(Player player)
+    private void SpawnPlayerAfterDeath(Player player)
     {
         player.EnableEffect<Flashed>(0.1f);
-        player.IsGodModeEnabled = true;
+        player.EnableEffect<SpawnProtected>(.15f);
         player.Heal(100);
         player.ClearInventory();
-
+        player.Position = _plugin.SpawnList.RandomItem().transform.position;
+        
         if (!player.IsAlive)
         {
             player.GiveLoadout(_plugin.Config.NTFLoadouts, LoadoutFlags.ForceInfiniteAmmo | LoadoutFlags.IgnoreGodMode | LoadoutFlags.IgnoreWeapons);
         }
 
-        player.Position = _plugin.SpawnList.RandomItem().transform.position;
-
         var item = player.AddItem(_plugin.Config.AvailableWeapons.RandomItem());
         Timing.CallDelayed(.1f, () =>
         {
-            player.IsGodModeEnabled = false;
             if (item != null)
             {
                 player.CurrentItem = item;

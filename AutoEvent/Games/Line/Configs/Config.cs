@@ -18,12 +18,4 @@ public class Config : EventConfig
             }
         }
     };
-
-    // public DifficultyItem LineDifficulty = new DifficultyItem();
-    // public DifficultyItem WallDifficulty = new DifficultyItem();
-    // public DifficultyItem DotsDifficulty = new DifficultyItem();
-    // public DifficultyItem MiniWallsDifficulty = new DifficultyItem();
-    /* todo
-     * Eventually I hope to add difficulties to the objects 
-     */
 }

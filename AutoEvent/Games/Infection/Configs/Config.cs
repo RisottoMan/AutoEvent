@@ -15,11 +15,6 @@ public class Config : EventConfig
             AvailableMaps = new List<MapChance>();
         }
 
-        if (AvailableSounds is null)
-        {
-            AvailableSounds = new List<SoundChance>();
-        }
-
         if (AvailableMaps.Count < 1)
         {
             AvailableMaps.Add(new MapChance(50, new MapInfo("Zombie", new Vector3(115.5f, 1030f, -43.5f) )));
@@ -28,13 +23,6 @@ public class Config : EventConfig
             AvailableMaps.Add(new MapChance(50, new MapInfo("ZombieRework_Xmas2024", new Vector3(115.5f, 1030f, -43.5f)), SeasonFlags.Christmas));
             AvailableMaps.Add(new MapChance(50, new MapInfo("Zombie_Halloween2024", new Vector3(115.5f, 1030f, -43.5f)), SeasonFlags.Halloween));
             AvailableMaps.Add(new MapChance(50, new MapInfo("ZombieRework_Halloween2024", new Vector3(115.5f, 1030f, -43.5f)), SeasonFlags.Halloween));
-        }
-
-        if (AvailableSounds.Count < 1)
-        {
-            AvailableSounds.Add(new SoundChance(33, new SoundInfo("Zombie.ogg", 7)));
-            AvailableSounds.Add(new SoundChance(33, new SoundInfo("Zombie2.ogg", 7)));
-            AvailableSounds.Add(new SoundChance(33, new SoundInfo("Zombie_Run.ogg", 7)));
         }
     }
 

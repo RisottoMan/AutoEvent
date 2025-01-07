@@ -42,15 +42,15 @@ public class SeasonMethod
     /// <summary>
     /// All styles are located here
     /// </summary>
-    private static SeasonStyle[] _styles { get; set; } =
-{
+    private static SeasonStyle[] _styles { get; } =
+    {
         new SeasonStyle()
         {
             Text = "<size=80><color=#42aaff><b>🎄 MERRY CHRISTMAS 🎄</b></color></size>",
             PrimaryColor = "#42aaff",
             SeasonFlag = SeasonFlags.Christmas,
-            FirstDate = new DateTime(2024, 12, 1),
-            LastDate = new DateTime(2024, 1, 30)
+            FirstDate = new DateTime(2024, 1, 1),
+            LastDate = new DateTime(2024, 1, 10)
         },
         new SeasonStyle()
         {

@@ -157,7 +157,7 @@ public class Plugin : Event<Config, Translation>, IEventSound, IEventMap
             // The player can run in any direction. The main thing is that the angle changes and is not the same
             if (Mathf.Approximately(PlayerDict[player].Angle, playerAngle))
             {
-                Extensions.GrenadeSpawn(player.Position, 0.1f, 0.1f);
+                Extensions.GrenadeSpawn(player.Position, 0.1f, 0.1f, 0);
                 player.Kill(Translation.StopRunning);
             }
             else
@@ -173,7 +173,7 @@ public class Plugin : Event<Config, Translation>, IEventSound, IEventMap
 
                 if (hit.collider.GetComponent<PrimitiveObjectToy>())
                 {
-                    Extensions.GrenadeSpawn(player.Position, 0.1f, 0.1f);
+                    Extensions.GrenadeSpawn(player.Position, 0.1f, 0.1f, 0);
                     player.Kill(Translation.TouchAhead);
                 }
             }
@@ -236,7 +236,7 @@ public class Plugin : Event<Config, Translation>, IEventSound, IEventMap
         {
             if (!PlayerDict[player].IsStandUpPlatform)
             {
-                Extensions.GrenadeSpawn(player.Position, 0.1f, 0.1f);
+                Extensions.GrenadeSpawn(player.Position, 0.1f, 0.1f, 0);
                 player.Kill(Translation.NoTime);
             }
         }

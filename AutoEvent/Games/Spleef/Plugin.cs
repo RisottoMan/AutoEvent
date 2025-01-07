@@ -21,7 +21,7 @@ public class Plugin : Event<Config, Translation>, IEventMap
     public MapInfo MapInfo { get; set; } = new()
     { 
         MapName = "Spleef",
-        Position = new Vector3(76f, 1026.5f, -43.68f)
+        Position = new Vector3(0f, 40f, 0f)
     };
     public SoundInfo SoundInfo { get; set; } = new()
     {

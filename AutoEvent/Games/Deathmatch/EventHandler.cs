@@ -28,6 +28,7 @@ public class EventHandler
             ev.Player.GiveLoadout(_plugin.Config.NTFLoadouts);
         }
         
+        ev.Player.EnableEffect<SpawnProtected>(.15f);
         ev.Player.Position = RandomClass.GetRandomPosition(_plugin.MapInfo.Map);
 
         Timing.CallDelayed(.1f, () =>
@@ -54,21 +55,13 @@ public class EventHandler
 
         ev.Player.EnableEffect<Flashed>(0.1f);
         ev.Player.Position = RandomClass.GetRandomPosition(_plugin.MapInfo.Map);
-        ev.Player.IsGodModeEnabled = true;
+        ev.Player.EnableEffect<SpawnProtected>(.15f);
         ev.Player.Heal(100);
-
-        foreach (var itemBase in ev.Player.Items)
-        {
-            if (itemBase.IsWeapon)
-            {
-                ev.Player.RemoveItem(itemBase);
-            }
-        }
+        ev.Player.ClearInventory();
         
         var item = ev.Player.AddItem(_plugin.Config.AvailableWeapons.RandomItem());
         Timing.CallDelayed(.1f, () =>
         {
-            ev.Player.IsGodModeEnabled = false;
             if (item != null)
             {
                 ev.Player.CurrentItem = item;

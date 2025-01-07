@@ -251,22 +251,22 @@ namespace AutoEvent.Interfaces
         /// Assigns a random map.
         /// </summary>
         /// <param name="conf"></param>
-        private void _setRandomMap(EventConfig conf)
+        private void SetRandomMap()
         {
-            if (conf.AvailableMaps is null || conf.AvailableMaps.Count == 0)
+            if (this.InternalConfig.AvailableMaps is null || this.InternalConfig.AvailableMaps.Count == 0)
                 return;
 
             // We get the current style and check the maps by their style
             SeasonFlags seasonFlags = SeasonMethod.GetSeasonStyle().SeasonFlag;
             
             // If there are no seasonal maps, then choose the default maps
-            if (conf.AvailableMaps.Count(r => r.SeasonFlag == seasonFlags) == 0)
+            if (this.InternalConfig.AvailableMaps.Count(r => r.SeasonFlag == seasonFlags) == 0)
             {
                 seasonFlags = 0;
             }
             
             List<MapChance> maps = new();
-            foreach (var map in conf.AvailableMaps)
+            foreach (var map in this.InternalConfig.AvailableMaps)
             {
                 if (map.SeasonFlag == seasonFlags)
                 {
@@ -305,42 +305,6 @@ namespace AutoEvent.Interfaces
                 DebugLogger.LogDebug($"[{this.Name}] Map {eventMap.MapInfo.MapName} selected.", LogLevel.Debug);
             }
         
-        }
-        /// <summary>
-        /// Assigns a random sound.
-        /// </summary>
-        /// <param name="conf"></param>
-        private void _setRandomSound(EventConfig conf)
-        {
-            if (this is IEventSound sound && conf.AvailableSounds is not null && conf.AvailableSounds.Count > 0)
-            {
-                bool startAutomatically = sound.SoundInfo.StartAutomatically;
-                if (conf.AvailableSounds.Count == 1)
-                {
-                    sound.SoundInfo = conf.AvailableSounds[0].Sound;
-                    sound.SoundInfo.StartAutomatically = startAutomatically;
-                    goto Message;
-                }
-
-                foreach (var soundItem in conf.AvailableSounds.Where(x => x.Chance <= 0))
-                    soundItem.Chance = 1;
-            
-                float totalChance = conf.AvailableSounds.Sum(x => x.Chance);
-            
-                for (int i = 0; i < conf.AvailableSounds.Count - 1; i++)
-                {
-                    if (UnityEngine.Random.Range(0, totalChance) <= conf.AvailableSounds[i].Chance)
-                    {
-                        sound.SoundInfo = conf.AvailableSounds[i].Sound;
-                        sound.SoundInfo.StartAutomatically = startAutomatically;
-                        goto Message;
-                    }
-                }
-                sound.SoundInfo = conf.AvailableSounds[conf.AvailableSounds.Count - 1].Sound;
-                sound.SoundInfo.StartAutomatically = startAutomatically;
-                Message:
-                DebugLogger.LogDebug($"[{this.Name}] Sound {sound.SoundInfo.SoundName} selected.", LogLevel.Debug);
-            }
         }
 
         /// <summary>
@@ -412,7 +376,9 @@ namespace AutoEvent.Interfaces
                 DebugLogger.LogDebug($"{e}");
             }
             
+            SetRandomMap();
             SpawnMap(true);
+            
             try
             {
                 RegisterEvents();
@@ -435,6 +401,7 @@ namespace AutoEvent.Interfaces
                 DebugLogger.LogDebug($"Caught an exception at Event.OnStart().", LogLevel.Warn, true);
                 DebugLogger.LogDebug($"{e}", LogLevel.Debug);
             }
+            
             EventStarted?.Invoke(Name);
             StartAudio(true);
             Timing.RunCoroutine(RunTimingCoroutine(), "TimingCoroutine");
