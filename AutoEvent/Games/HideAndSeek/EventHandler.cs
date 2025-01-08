@@ -65,16 +65,15 @@ public class EventHandler
         player.GiveLoadout(_plugin.Config.TaggerLoadouts, LoadoutFlags.IgnoreItems | LoadoutFlags.IgnoreWeapons | LoadoutFlags.IgnoreGodMode);
         player.ClearInventory();
 
-        var item = player.AddItem(_plugin.Config.TaggerWeapon);
         if (isLast)
         {
             player.EnableEffect(EffectType.Scanned, 0, 1f);
         }
-
-        Timing.CallDelayed(0.1f, () =>
+        
+        if (player.CurrentItem == null)
         {
-            player.CurrentItem = item;
-        });
+            player.CurrentItem = player.AddItem(_plugin.Config.TaggerWeapon);
+        }
     }
     
     public void OnJailbirdCharge(ChargingJailbirdEventArgs ev) => ev.IsAllowed = _plugin.Config.JailbirdCanCharge;

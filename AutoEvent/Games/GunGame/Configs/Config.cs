@@ -34,7 +34,7 @@ public class Config : EventConfig
         new GunRole(ItemType.GunFSP9, 8),
         new GunRole(ItemType.GunCrossvec, 10),
         new GunRole(ItemType.GunAK, 12),
-        new GunRole(ItemType.GunShotgun, 14),
+        new GunRole(ItemType.Jailbird, 14),
         new GunRole(ItemType.GunE11SR, 16),
         new GunRole(ItemType.GunRevolver, 18),
         new GunRole(ItemType.GunA7, 20),

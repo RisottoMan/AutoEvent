@@ -1,7 +1,6 @@
-﻿using PlayerRoles;
-using PluginAPI.Core;
-using System.Linq;
+﻿using System.Linq;
 using AutoEvent.Interfaces;
+using Exiled.API.Features;
 using UnityEngine;
 
 namespace AutoEvent.Games.Line;
@@ -28,7 +27,7 @@ public class LineComponent : MonoBehaviour
             if (Player.Get(other.gameObject) != null)
             {
                 var pl = Player.Get(other.gameObject);
-                pl.SetRole(AutoEvent.Singleton.Config.LobbyRole, RoleChangeReason.None);
+                pl.GiveLoadout(_plugin.Config.FailureLoadouts);
                 pl.Position = map.MapInfo.Map.AttachedBlocks.First(x => x.name == "SpawnPoint_spec").transform.position;
             }
         }

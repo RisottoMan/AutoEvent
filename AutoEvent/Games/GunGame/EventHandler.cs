@@ -1,12 +1,9 @@
-﻿using AutoEvent.Events.EventArgs;
-using MEC;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using AutoEvent.API.Enums;
 using CustomPlayerEffects;
 using Exiled.API.Features;
 using Exiled.Events.EventArgs.Player;
-using InventorySystem.Items.Firearms;
 
 namespace AutoEvent.Games.GunGame;
 public class EventHandler
@@ -39,8 +36,6 @@ public class EventHandler
     public void OnDying(DyingEventArgs ev)
     {
         ev.IsAllowed = false;
-        
-        ev.Player.Heal(100);
 
         if (_playerStats is null)
         {
@@ -51,78 +46,65 @@ public class EventHandler
             if (!_playerStats.TryGetValue(ev.Attacker, out Stats statsAttacker))
             {
                 _playerStats.Add(ev.Attacker, new Stats(1));
-                GetWeaponForPlayer(ev.Attacker);
+                GetWeaponForPlayer(ev.Attacker, true);
             }
             else
             {
                 statsAttacker.kill++;
-                GetWeaponForPlayer(ev.Attacker);
+                GetWeaponForPlayer(ev.Attacker, true);
             }
         }
 
         if (ev.Player != null)
         {
             ev.Player.Position = _plugin.SpawnPoints.RandomItem();
-            GetWeaponForPlayer(ev.Player);
+            GetWeaponForPlayer(ev.Player, true);
         }
     }
 
-    public void GetWeaponForPlayer(Player player)
+    public void GetWeaponForPlayer(Player player, bool isHeal = false)
     {
         if (player is null)
-        {
-            DebugLogger.LogDebug("GetWeapon - Player is null");
             return;
-        }
         
         if (_plugin.Config.Guns is null)
         {
             Config conf = new Config();
             _plugin.Config.Guns = conf.Guns;
-            DebugLogger.LogDebug("GetWeapon - Gun By Level is null. Setting new Defaults.");
-            //return;
         }
 
         if (_playerStats is null)
         {
             _playerStats = new Dictionary<Player, Stats>();
-            // DebugLogger.LogDebug("GetWeapon - Player stats is null");
-            // return;
         }
         
         if (!_playerStats.ContainsKey(player))
         {
             _playerStats.Add(player, new Stats(0));
-            //DebugLogger.LogDebug("GetWeapon - Player stats doesnt contain player");
-            //return;
         }
 
         if (_playerStats[player] is null)
         {
             _playerStats[player] = new Stats(0);
-            //DebugLogger.LogDebug("GetWeapon - Player level is null");
-            //return;
         }
 
-        var gun = _plugin.Config.Guns.OrderByDescending(y => y.KillsRequired)
+        var itemType = _plugin.Config.Guns.OrderByDescending(y => y.KillsRequired)
             .FirstOrDefault(x => _playerStats[player].kill >= x.KillsRequired)!.Item;
-        if (gun is ItemType.None)
+        
+        if (itemType is ItemType.None)
         {
             DebugLogger.LogDebug("GetWeapon - Gun by level is null");
-            // return;
-            gun = ItemType.GunCOM15;
+            itemType = ItemType.GunCOM15;
         }
         
         DebugLogger.LogDebug($"Getting player {player.Nickname} weapon.");
-        player.EnableEffect<SpawnProtected>(.15f);
-        player.ClearInventory();
-        var item = player.AddItem(gun);
-        Timing.CallDelayed(.1f, () =>
+        player.EnableEffect<SpawnProtected>(.1f);
+        player.Heal(100);
+        player.ClearItems();
+        
+        if (player.CurrentItem == null)
         {
-            if (item != null)
-            {
-                player.CurrentItem = item;
-            }
-        });
+            player.CurrentItem = player.AddItem(itemType);
+        }
     }
 }

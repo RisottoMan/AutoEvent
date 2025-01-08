@@ -2,7 +2,6 @@
 using System.IO;
 using HarmonyLib;
 using AutoEvent.API;
-using AutoEvent.API.Season;
 using Exiled.API.Features;
 
 namespace AutoEvent;

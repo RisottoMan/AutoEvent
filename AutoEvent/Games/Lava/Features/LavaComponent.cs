@@ -36,7 +36,7 @@ public class LavaComponent : MonoBehaviour
             if (Player.Get(other.gameObject) is Player)
             {
                 var pl = Player.Get(other.gameObject);
-                pl.Damage(new CustomReasonDamageHandler(_plugin.Translation.Died, 10));
+                pl.Damage(new CustomReasonDamageHandler(_plugin.Translation.Died, 30));
             }
         }
     }

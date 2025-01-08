@@ -5,12 +5,12 @@ namespace AutoEvent.Interfaces;
 public class SoundInfo
 {
     public SoundInfo() { }
-    public SoundInfo(string name, byte volume = 10, bool loop = true, AudioPlayer audioPlayer = null)
+    public SoundInfo(string name, byte volume = 10, bool loop = true, AudioPlayer audioPlayerApi = null)
     {
         SoundName = name;
         Volume = volume;
         Loop = loop;
-        AudioPlayer = audioPlayer;
+        AudioPlayer = audioPlayerApi;
     }
     [Description("The name of the sound.")]
     public string SoundName { get; set; }

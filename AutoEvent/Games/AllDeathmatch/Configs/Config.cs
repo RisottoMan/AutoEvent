@@ -44,7 +44,7 @@ public class Config : EventConfig
     {
         ItemType.GunAK,
         ItemType.GunCrossvec,
-        ItemType.GunShotgun,
+        ItemType.GunFSP9,
         ItemType.GunE11SR
     };
 }

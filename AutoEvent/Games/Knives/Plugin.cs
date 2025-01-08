@@ -56,8 +56,10 @@ public class Plugin : Event<Config, Translation>, IEventSound, IEventMap
             }
             count++;
 
-            var item = player.AddItem(ItemType.Jailbird);
-            Timing.CallDelayed(0.1f, () => { player.CurrentItem = item; });
+            if (player.CurrentItem == null)
+            {
+                player.CurrentItem = player.AddItem(ItemType.Jailbird);
+            }
         }
     }
 

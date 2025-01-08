@@ -95,14 +95,10 @@ public class Plugin : Event<Config, Translation>, IEventSound, IEventMap
         foreach (Player ply in Config.TaggerCount.GetPlayers(true, playersToChoose))
         {
             ply.GiveLoadout(Config.TaggerLoadouts);
-            var item = ply.AddItem(Config.TaggerWeapon);
-            Timing.CallDelayed(0.1f, () =>
+            if (ply.CurrentItem == null)
             {
-                if (item != null)
-                {
-                    ply.CurrentItem = item;
-                }
-            });
+                ply.CurrentItem = ply.AddItem(Config.TaggerWeapon);
+            }
         }
 
         if (Player.List.Count(ply => ply.HasLoadout(Config.PlayerLoadouts)) <= Config.PlayersRequiredForBreachScannerEffect)

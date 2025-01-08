@@ -1,7 +1,6 @@
 ﻿using AutoEvent.API.Enums;
 using CustomPlayerEffects;
 using Exiled.API.Features;
-using MEC;
 using Exiled.Events.EventArgs.Player;
 
 namespace AutoEvent.Games.AllDeathmatch;
@@ -42,23 +41,20 @@ public class EventHandler
     private void SpawnPlayerAfterDeath(Player player)
     {
         player.EnableEffect<Flashed>(0.1f);
-        player.EnableEffect<SpawnProtected>(.15f);
+        player.EnableEffect<SpawnProtected>(.1f);
         player.Heal(100);
-        player.ClearInventory();
-        player.Position = _plugin.SpawnList.RandomItem().transform.position;
+        player.ClearItems();
         
         if (!player.IsAlive)
         {
             player.GiveLoadout(_plugin.Config.NTFLoadouts, LoadoutFlags.ForceInfiniteAmmo | LoadoutFlags.IgnoreGodMode | LoadoutFlags.IgnoreWeapons);
         }
 
-        var item = player.AddItem(_plugin.Config.AvailableWeapons.RandomItem());
-        Timing.CallDelayed(.1f, () =>
+        if (player.CurrentItem == null)
         {
-            if (item != null)
-            {
-                player.CurrentItem = item;
-            }
-        });
+            player.CurrentItem = player.AddItem(_plugin.Config.AvailableWeapons.RandomItem());
+        }
+        
+        player.Position = _plugin.SpawnList.RandomItem().transform.position;
     }
 }

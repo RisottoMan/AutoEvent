@@ -86,16 +86,10 @@ public class Plugin : Event<Config, Translation>, IEventMap, IEventSound
     {
         foreach(Player player in Player.List)
         {
-            var item = player.AddItem(Config.AvailableWeapons.RandomItem());
-            player.AddItem(ItemType.ArmorCombat);
-
-            Timing.CallDelayed(.1f, () =>
+            if (player.CurrentItem == null)
             {
-                if (item != null)
-                {
-                    player.CurrentItem = item;
-                }
-            });
+                player.CurrentItem = player.AddItem(Config.AvailableWeapons.RandomItem());
+            }
         }
     }
 

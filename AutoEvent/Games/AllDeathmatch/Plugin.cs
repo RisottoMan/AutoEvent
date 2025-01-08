@@ -96,14 +96,10 @@ public class Plugin : Event<Config, Translation>, IEventMap, IEventSound
     {
         foreach(Player player in Player.List)
         {
-            var item = player.AddItem(Config.AvailableWeapons.RandomItem());
-            Timing.CallDelayed(.1f, () =>
+            if (player.CurrentItem == null)
             {
-                if (item != null)
-                {
-                    player.CurrentItem = item;
-                }
-            });
+                player.CurrentItem = player.AddItem(Config.AvailableWeapons.RandomItem());
+            }
         }
     }
 
@@ -169,7 +165,7 @@ public class Plugin : Event<Config, Translation>, IEventMap, IEventSound
         foreach (Player player in Player.List)
         {
             string text = string.Empty;
-            if (Player.List.Count(r => r.IsAlive) == 0)
+            if (Player.List.Count(r => r.IsAlive) <= 1)
             {
                 text = Translation.NoPlayers;
             }

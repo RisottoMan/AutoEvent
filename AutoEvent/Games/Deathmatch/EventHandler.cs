@@ -1,7 +1,5 @@
 ﻿using CustomPlayerEffects;
-using MEC;
 using PlayerRoles;
-using System.Collections.Generic;
 using System.Linq;
 using Exiled.API.Features;
 using Exiled.Events.EventArgs.Player;
@@ -28,16 +26,14 @@ public class EventHandler
             ev.Player.GiveLoadout(_plugin.Config.NTFLoadouts);
         }
         
-        ev.Player.EnableEffect<SpawnProtected>(.15f);
-        ev.Player.Position = RandomClass.GetRandomPosition(_plugin.MapInfo.Map);
-
-        Timing.CallDelayed(.1f, () =>
+        ev.Player.EnableEffect<SpawnProtected>(.1f);
+        
+        if (ev.Player.CurrentItem == null)
         {
-            if (ev.Player.Items.First() != null)
-            {
-                ev.Player.CurrentItem = ev.Player.Items.First();
-            }
-        });
+            ev.Player.CurrentItem = ev.Player.AddItem(_plugin.Config.AvailableWeapons.RandomItem());
+        }
+        
+        ev.Player.Position = RandomClass.GetRandomPosition(_plugin.MapInfo.Map);
     }
 
     public void OnDying(DyingEventArgs ev)
@@ -54,18 +50,15 @@ public class EventHandler
         }
 
         ev.Player.EnableEffect<Flashed>(0.1f);
-        ev.Player.Position = RandomClass.GetRandomPosition(_plugin.MapInfo.Map);
-        ev.Player.EnableEffect<SpawnProtected>(.15f);
+        ev.Player.EnableEffect<SpawnProtected>(.1f);
         ev.Player.Heal(100);
-        ev.Player.ClearInventory();
+        ev.Player.ClearItems();
         
-        var item = ev.Player.AddItem(_plugin.Config.AvailableWeapons.RandomItem());
-        Timing.CallDelayed(.1f, () =>
+        if (ev.Player.CurrentItem == null)
         {
-            if (item != null)
-            {
-                ev.Player.CurrentItem = item;
-            }
-        });
+            ev.Player.CurrentItem = ev.Player.AddItem(_plugin.Config.AvailableWeapons.RandomItem());
+        }
+        
+        ev.Player.Position = RandomClass.GetRandomPosition(_plugin.MapInfo.Map);
     }
 }

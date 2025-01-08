@@ -83,12 +83,9 @@ public class Plugin : Event<Config, Translation>, IEventSound, IEventMap
 
     protected override void CountdownFinished()
     {
-        foreach (var player in Player.List)
+        foreach (var player in Player.List.Where(r => r.IsAlive))
         {
-            if (player is not null)
-            {
-                _eventHandler.GetWeaponForPlayer(player);
-            }
+            _eventHandler.GetWeaponForPlayer(player);
         }
     }
 
@@ -159,6 +156,7 @@ public class Plugin : Event<Config, Translation>, IEventSound, IEventMap
                 Replace("{winner}", Player.List.First(r => r.IsAlive).Nickname);
             Extensions.Broadcast(text, 10);
         }
+        
         foreach (var player in Player.List)
         {
             player.ClearInventory();

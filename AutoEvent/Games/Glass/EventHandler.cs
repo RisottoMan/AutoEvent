@@ -1,5 +1,4 @@
-﻿using AutoEvent.Events.EventArgs;
-using MEC;
+﻿using MEC;
 using System.Collections.Generic;
 using Exiled.API.Features;
 using Exiled.Events.EventArgs.Player;

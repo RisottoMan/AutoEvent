@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using AutoEvent.API.Enums;
 using AutoEvent.Events;
 using MEC;
 using UnityEngine;
@@ -15,6 +16,7 @@ public class Plugin : Event<Config, Translation>, IEventMap, IEventSound
     public override string Description { get; set; } = "Defeat the enemy with balls.";
     public override string Author { get; set; } = "RisottoMan & Моге-ко";
     public override string CommandName { get; set; } = "dodge";
+    protected override FriendlyFireSettings ForceEnableFriendlyFire { get; set; } = FriendlyFireSettings.Disable;
     public MapInfo MapInfo { get; set; } = new()
     {
         MapName = "Dodgeball",
@@ -133,7 +135,7 @@ public class Plugin : Event<Config, Translation>, IEventMap, IEventSound
         foreach (Player player in Player.List)
         {
             // If a player tries to go to the other half of the field, he takes damage and teleports him back
-            if ((int)_redLine.transform.position.z == (int)player.Position.z)
+            if (Mathf.Approximately((int)_redLine.transform.position.z, (int)player.Position.z))
             {
                 if (player.Role == RoleTypeId.ClassD)
                 {
@@ -152,19 +154,10 @@ public class Plugin : Event<Config, Translation>, IEventMap, IEventSound
             {
                 if (Vector3.Distance(ball.transform.position, player.Position) < 1.5f)
                 {
-                    var item = player.Items.FirstOrDefault(r => r.Type == _snowItemType);
-                    if (item == null)
+                    if (player.CurrentItem == null)
                     {
-                        item = player.AddItem(_snowItemType);
+                        player.CurrentItem = player.AddItem(_snowItemType);
                     }
-
-                    Timing.CallDelayed(.1f, () =>
-                    {
-                        if (item != null)
-                        {
-                            player.CurrentItem = item;
-                        }
-                    });
                 }
             }
 
