@@ -7,3 +7,8 @@
 ##### Here are all the maps and mini-games that were changed in the New Year update.
 ##### (Click on the snow logo)
 [![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/MiniGames%20Winter(mini).png)](https://github.com/KoT0XleB/AutoEvent/blob/main/Docs/NewYearMiniGames.md)
+
+### Halloween Mini-Games
+##### Here are all the maps and mini-games that were changed in the Halloween update.
+##### (Click on the blood logo)
+[![](https://github.com/RisottoMan/AutoEvent/blob/main/Photos/MiniGames%20Halloween(mini).png)](https://github.com/KoT0XleB/AutoEvent/blob/main/Docs/NewYearMiniGames.md)
