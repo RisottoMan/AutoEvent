@@ -1,7 +1,9 @@
-# Winter Season Mini-Games               
-### Race
-#### You have to pass a short test to win.
-![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/Race-winter.png) 
+# Winter Season Mini-Games     
+
+### Zombie Infection.
+#### Zombie infestation. the goal of which is to infect all players.
+![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/Zombie_Winter2.png)
+![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/ZombieRemake_Winter2.png)
 
 ### Airstrike
 #### Grenades begin to spawn on the map.
@@ -27,11 +29,6 @@
 #### Run and hide from the players, otherwise you yourself will become caught up.
 #### To survive, pass the bat to another player.
 ![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/Tag-winter.png)
-
-### Zombie Infection.
-#### Zombie infestation. the goal of which is to infect all players.
-![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/Zombie_Winter2.png)
-![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/ZombieRemake_Winter2.png)
 
 ### Red Light Green Light 
 #### Red light, Green light. the goal is to run behind Santa Claus, who will simultaneously turn around and watch so that you don’t move.
