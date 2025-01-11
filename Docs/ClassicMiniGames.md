@@ -101,6 +101,5 @@
 ![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/Boss.png)
 
 ### Deathrun [deathrun]
-##### The boss appeared on the map. He wants to kill everyone.
-##### Kill him faster before he does it for you.
-![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/Boss.png)
+##### Go to the end, avoiding death-activated trap along the way
+![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/Deathrun.png)
