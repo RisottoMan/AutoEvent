@@ -80,3 +80,7 @@
 ### Spleef
 #### Shoot at the platforms and don't fall into the void
 ![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/Spleef_Winter.png)
+
+### Survival
+#### Humans surviving from zombies
+![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/Survival_Winter.png)
