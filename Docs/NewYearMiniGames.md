@@ -8,11 +8,6 @@
 #### Survive to win.
 ![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/DeathParty-winter.png)
 
-### Boss
-#### A boss appears on the map and wants to kill everyone.
-#### Kill him to win.
-![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/Boss-winter.png)
-
 ### SnowBall
 #### Both teams have balls.
 #### Your task is to kill the opposite team, the team that stays alive wins.
