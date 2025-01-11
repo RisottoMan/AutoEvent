@@ -30,12 +30,13 @@
 
 ### Zombie Infection.
 #### Zombie infestation. the goal of which is to infect all players.
-![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/Zombie-winter.png)
+![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/Zombie_Winter2.png)
+![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/ZombieRemake_Winter2.png)
 
 ### Red Light Green Light 
 #### Red light, Green light. the goal is to run behind Santa Claus, who will simultaneously turn around and watch so that you don’t move.
 #### When Santa Claus is looking at you you can’t walk, when he’s not looking at you you can.
-![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/Light-winter.png)
+![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/GreenLightWinterLight.png)
 
 ### Knives
 #### Knife fight between two teams.
@@ -65,3 +66,22 @@
 #### Find a suitable platform based on the color indicated on the walls to survive.
 ![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/Puzzle-winter.png)
 
+### Battle
+#### MTF fight against CI in an arena
+![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/Battle_Winter.png)
+
+### DeathMatch
+#### Team Death-Match on the Shipment map from MW19
+![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/Deathmatch_Winter.png)
+
+### Deathrun
+#### Go to the end, avoiding death-activated trap along the way
+![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/Deathrun_Winter.png)
+
+### Football
+#### Score 3 goals to win
+![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/Football_Winter.png)
+
+### Spleef
+#### Shoot at the platforms and don't fall into the void
+![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/Spleef_Winter.png)
