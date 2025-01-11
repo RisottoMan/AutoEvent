@@ -175,11 +175,11 @@ Death Run:
   runner_win_broadcast: |-
     <color=#FFC618>{name}</color>
     <b><color=yellow>Les coureurs gagnent</color></b>
-  died: '<color=red>Vous n'avez pas eu le temps de tuer les piégeurs</color>'
+  died: '<color=red>Vous navez pas eu le temps de tuer les piégeurs</color>'
   over_time_broadcast: "<b><color=red>Le temps de tuer <i>Les piégeurs</i> \U0001F638</color></b>"
   second_life_hint: '<b><color=green>Vous avez une seconde vie.</color></b>'
   name: 'Deathrun'
-  description: 'Allez jusqu'au bout, en évitant les pièges activés par les piégeurs'
+  description: 'Allez jusquau bout, en évitant les pièges activés par les piégeurs'
   command_name: 'deathrun'
 Dodgeball:
   start: |-
@@ -208,7 +208,7 @@ Dodgeball:
   redline: '<color=red>Vous ne pouvez pas franchir la ligne rouge</color>'
   knocked: '<color=red>Vous avez été assommé par {killer}</color>'
   name: 'Balle au prisonnier'
-  description: 'Vaincre l'ennemi avec des balles.'
+  description: 'Vaincre lennemi avec des balles.'
   command_name: 'dodge'
 FallDown:
   broadcast: |-
@@ -230,13 +230,13 @@ Football:
   time_left: |-
     <color=#14AAF5>{BluePnt}</color> : <color=red>{RedPnt}</color>
     Temps restant: {time}
-  red_wins: '<color=red>L''équipe rouge gagne !</color>'
+  red_wins: '<color=red>Léquipe rouge gagne !</color>'
   blue_wins: '<color=#14AAF5>L''équipe bleu gagne !</color>'
   draw: |-
     Égalité
     <color=#14AAF5>{BluePnt}</color> vs <color=red>{RedPnt}</color>
   name: 'Football'
-  description: '3 buts et c'est gagné !'
+  description: '3 buts et cest gagné!'
   command_name: 'football'
 Gun Game:
   cycle: |-
@@ -473,8 +473,8 @@ Zombie Survival:
     <color=#14AAF5>Humains:</color> {humanCount}
     <color=#299438>Temps restant:</color> {time}
   survival_zombie_win: '<color=red>Les zombies ont infecté tous les humains et gagne la partie !</color>'
-  survival_human_win: '<color=#14AAF5>Les humains ont tué tous les zombies et ont stoppé l\'infection</color>'
-  survival_human_win_time: '<color=yellow>Les humains ont survecu mais l\'infection n'a pas été arrêté</color>'
+  survival_human_win: '<color=#14AAF5>Les humains ont tué tous les zombies et ont stoppé infection</color>'
+  survival_human_win_time: '<color=yellow>Les humains ont survecu mais infection na pas été arrêté</color>'
   name: 'Zombie Survival'
-  description: 'Les humains doivent survire l\'attaque des zombies'
+  description: 'Les humains doivent survire attaque des zombies'
   command_name: 'zombie2'
