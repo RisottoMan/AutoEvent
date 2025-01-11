@@ -1,6 +1,6 @@
 ### Classic Mini-Games
 ##### Here are all the classic maps for mini-games
-##### (Click on the snow logo)
+##### (Click on the logo)
 [![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/MiniGames(mini).png)](https://github.com/KoT0XleB/AutoEvent/blob/main/Docs/ClassicMiniGames.md)
 
 ### Winter Mini-Games
