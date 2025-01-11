@@ -32,7 +32,7 @@ public class Config : EventConfig
         new Loadout()
         {
             Roles = new Dictionary<RoleTypeId, int>() { { RoleTypeId.NtfCaptain, 100 } },
-            Effects = new List<Effect>() { new(EffectType.FogControl, 0) },
+            Effects = new List<Effect>() { new(EffectType.FogControl, 0, 3) },
         }
     };
 
@@ -42,7 +42,7 @@ public class Config : EventConfig
         new Loadout()
         {
             Roles = new Dictionary<RoleTypeId, int>() { { RoleTypeId.ChaosRepressor, 100 } },
-            Effects = new List<Effect>() { new(EffectType.FogControl, 0) },
+            Effects = new List<Effect>() { new(EffectType.FogControl, 0, 3) },
         }
     };
 }

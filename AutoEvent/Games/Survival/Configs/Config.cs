@@ -74,14 +74,13 @@ public class Config : EventConfig
     {
         new Loadout()
         {
-            Roles = new Dictionary<RoleTypeId, int>() { { RoleTypeId.Scp0492, 100 } },
+            Roles = new Dictionary<RoleTypeId, int>() { { RoleTypeId.Scp0492, 3000 } },
             Effects = new List<Effect>()
             {
                 new(EffectType.Disabled, 0),
                 new(EffectType.Scp1853, 0),
                 new(EffectType.FogControl, 0)
-            },
-            Health = 5000,
+            }
         }
     };
     

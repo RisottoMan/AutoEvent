@@ -1,5 +1,4 @@
-﻿using MEC;
-using PlayerRoles;
+﻿using PlayerRoles;
 using CustomPlayerEffects;
 using System.Linq;
 using Exiled.API.Enums;
@@ -29,7 +28,7 @@ public class EventHandler
         {
             if (ev.Player.Health <= 50)
             {
-                ev.Player.GiveLoadout(_plugin.Config.ZombieLoadouts);
+                SpawnZombie(ev.Player);
             }
             else
             {
@@ -52,39 +51,31 @@ public class EventHandler
         }
     }
 
-    public void OnDying(DyingEventArgs ev) // Timing.CallDelayed 2sec
+    public void OnDying(DyingEventArgs ev)
     {
         ev.IsAllowed = false;
-        SpawnZombie(ev.Player, 3000);
+        SpawnZombie(ev.Player);
     }
 
     public void OnJoined(JoinedEventArgs ev)
     {
         if (Player.List.Count(r => r.Role == RoleTypeId.Scp0492) > 0)
         {
-            SpawnZombie(ev.Player, 10000);
+            SpawnZombie(ev.Player);
         }
         else
         {
-            ev.Player.Role.Set(RoleTypeId.NtfSergeant, RoleSpawnFlags.AssignInventory);
+            ev.Player.GiveLoadout(_plugin.Config.PlayerLoadouts);
             ev.Player.Position = _plugin.SpawnList.RandomItem().transform.position;
+            ev.Player.CurrentItem = ev.Player.Items.ElementAt(1);
             Extensions.SetPlayerAhp(ev.Player, 100, 100, 0);
-
-            Timing.CallDelayed(0.1f, () =>
-            {
-                ev.Player.CurrentItem = ev.Player.Items.ElementAt(1);
-            });
         }
     }
 
-    public void SpawnZombie(Player player, float hp)
+    private void SpawnZombie(Player player)
     {
-        player.Role.Set(RoleTypeId.Scp0492, RoleSpawnFlags.AssignInventory);
+        player.GiveLoadout(_plugin.Config.ZombieLoadouts);
         player.Position = _plugin.SpawnList.RandomItem().transform.position;
-        player.EnableEffect<Disabled>(1, 1);
-        player.EnableEffect<Scp1853>(1, 1);
-        player.Health = hp;
-        
         Extensions.PlayPlayerAudio(_plugin.SoundInfo.AudioPlayer, player, _plugin.Config.ZombieScreams.RandomItem(), 15);
     }
 }

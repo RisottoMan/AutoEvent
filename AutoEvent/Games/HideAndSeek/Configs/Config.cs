@@ -54,7 +54,7 @@ public class Config : EventConfig
             Roles = new Dictionary<RoleTypeId, int>() { { RoleTypeId.ClassD, 100 } },
             Effects = new List<Effect>()
             {
-                new(EffectType.MovementBoost, 50, 0),
+                new(EffectType.MovementBoost, 0, 50),
                 new(EffectType.FogControl, 0),
             },
             Chance = 100,
@@ -69,7 +69,7 @@ public class Config : EventConfig
             Roles = new Dictionary<RoleTypeId, int>() { { RoleTypeId.Scientist, 100 } },
             Effects = new List<Effect>() 
             { 
-                new(EffectType.MovementBoost, 70, 0),
+                new(EffectType.MovementBoost, 0, 70),
                 new(EffectType.FogControl, 0),
             },
             Chance = 100,

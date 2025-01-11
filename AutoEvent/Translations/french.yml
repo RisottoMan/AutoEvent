@@ -294,7 +294,7 @@ Puzzle:
   stage: |-
     <b>{name}</b>
     <color=red>Stage: </color>{stageNum}<color=red> / </color>{stageFinal}
-    <color=yellow>Joueurs restant:</color> {plyCount}
+    <color=yellow>Joueurs restant:</color> {count}
   all_died: |-
     <b>{name}</b>
     <color=red>Tout les joueurs sont mort/color>

@@ -33,7 +33,7 @@ All Deathmatch:
     <b><color=red>ผู้ชนะได้แก่ - <color=yellow>{winner}</color></color></b>
     คุณสังหารไปทั้งหมด <color=red>{count}</color></color>
     เวลา - <color=#008000>{time}</color></i>
-  name: 'Deathmatch แบบไม่มีทีม'
+  name: 'แบบไม่มีทีม'
   description: 'สู้กันให้ตายกันไปโดยไม่นับฝ่าย คุณต้องเอาชนะ'
   command_name: 'dm'
 Atomic Escape:
@@ -122,7 +122,7 @@ Counter-Strike:
   hint_cycle: |-
     <size=30><i><b>{name}</b>
     {kills}
-  name: 'Counter-Strike'
+  name: 'ต่อต้านก่อการร้าย'
   description: 'การสู้ระหว่าง ผู้ก่อการร้าย กับ ผู้ต่อต้านก่อการร้าย'
   command_name: 'cs'
 Dead Jump:
@@ -178,7 +178,7 @@ Death Run:
   died: '<color=red>คุณไม่มีเวลาในการฆ่าฝ่ายผู้คุม</color>'
   over_time_broadcast: "<b><color=red>ถึงเวลาฆ่า <i>ฝ่ายผู้คุม</i> \U0001F638</color></b>"
   second_life_hint: '<b><color=green>คุณมีโอกาสแก้ตัวอีกครั้ง</color></b>'
-  name: 'Death Run'
+  name: 'วิ่งหลบกับดัก'
   description: 'ไปถึงจุดสิ้นสุด โดยหลีกเลี่ยงกับดักที่อันตรายตามทาง'
   command_name: 'deathrun'
 Dodgeball:
@@ -207,7 +207,7 @@ Dodgeball:
     เวลา: <color=red>{time}</color>
   redline: '<color=red>คุณไม่สามารถเดินผ่านเส้นแดง</color>'
   knocked: '<color=red>คุณถูกปาอัดโดย {killer}</color>'
-  name: 'Dodgeball'
+  name: 'หลบลูกบอล'
   description: 'หลบบอลจากอีกฝั่ง และหยิบไปปาฝั่งด้วย'
   command_name: 'dodge'
 FallDown:
@@ -246,7 +246,7 @@ Gun Game:
   winner: |-
     <color=#D71868><b><i>{name}</i></b></color>
     <color=yellow>ผู้ชนะได้แก่: <color=green>{winner}</color></color>
-  name: 'Gun Game'
+  name: 'เกมปืน'
   description: 'ยิงทุกคนเพื่อให้ได้แต้มคะแนนสูงสุด'
   command_name: 'gungame'
 Knives of Death:
@@ -260,7 +260,7 @@ Knives of Death:
     <color=#D71868><b><i>{name}</i></b></color>
     <color=yellow>ทีมชนะ: <color=#42AAFF>MTF</color></color>
   name: 'มีดแห่งความตาย'
-  description: 'Knife players against each other on a 35hp map from cs 1.6'
+  description: 'ประจันหน้าทั้งสองฝั่งในด่าน CS1.6'
   command_name: 'knives'
 Musical Chairs:
   start: |-
@@ -294,7 +294,7 @@ Puzzle:
   stage: |-
     <b>{name}</b>
     <color=red>ด่าน: </color>{stageNum}<color=red> / </color>{stageFinal}
-    <color=yellow>เหลือ:</color> {plyCount} คน
+    <color=yellow>เหลือ:</color> {count} คน
   all_died: |-
     <b>{name}</b>
     <color=red>ตายหมด</color>
@@ -308,7 +308,7 @@ Puzzle:
     <color=red>ผู้ชนะ: {winner}</color>
     เกมจบแล้ว
   died: '<color=red>ไหม้ลาวาตาย</color>'
-  name: 'Puzzle'
+  name: 'วิ่งตามสี'
   description: 'วิ่งไปจุดที่สีที่ถูกต้อง'
   command_name: 'puzzle'
 Race:
@@ -376,7 +376,7 @@ Simon's Prison:
   lockdown_on_cooldown: 'คุณไม่สามารถทำการ Lockdown ได้ เนื่องจากยังอยู่ในช่วงผ่อนเวลา เหลือเวลาอีก: {cooldown}'
   lives_remaining: 'คุณมี {lives} ชีวิตที่เหลือ'
   no_lives_remaining: 'คุณไม่มีชีวิตเหลือ'
-  name: 'คุกของไซม่อน'
+  name: 'โหมดคุก'
   description: 'โหมด Jail ของเกม CS1.6 ซึ่งคุณต้องจัดกิจกรรม [ยุ่งยาก]'
   command_name: 'jail'
 Spleef:
@@ -427,7 +427,7 @@ Team Death-Match:
   mtf_win: |-
     <color=#D71868><b><i>{name}</i></b></color>
     <color=yellow>ทีมชนะ: <color=#42AAFF>MTF</color></color>
-  name: 'Team Death-Match'
+  name: 'ทีมเดธแมตช์'
   description: 'ยิงอีกทีมในฉาก ทีมไหนสังหารเยอะสุด ชนะ'
   command_name: 'tdm'
 The floor is LAVA:

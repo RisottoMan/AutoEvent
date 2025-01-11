@@ -54,10 +54,10 @@ Battle:
   time_left: '<size=100><color=red>Битва начнётся через {time} </color></size>'
   ci_win: |-
     <color=green>Победа Повстанцев Хаоса </color>
-    <color=red>Duration: {time} </color>
+    <color=red>Время: {time} </color>
   mtf_win: |-
     <color=blue>Победа Фонда</color>
-    <color=red>Duration: {time} </color>
+    <color=red>Время: {time} </color>
   counter: |-
     <color=blue> МОГ: {FoundationForces} </color> vs <color=green> ПХ: {ChaosForces} </color> \n  
      Прошло: {time}
@@ -178,7 +178,7 @@ Death Run:
   died: '<color=red>Ты не успел одолеть Убийцу</color>'
   over_time_broadcast: "<b><color=red>Время одолеть <i>Убийцу</i> \U0001F638</color></b>"
   second_life_hint: '<b><color=green>Ты получил Вторую Жизнь</color></b>'
-  name: 'Death Run'
+  name: 'Смертельный забег'
   description: 'Бегите до конца, избегая смертельных ловушек'
   command_name: 'deathrun'
 Dodgeball:
@@ -294,7 +294,7 @@ Puzzle:
   stage: |-
     <b>{name}</b>
     <color=red>Уровень: </color>{stageNum}<color=red> / </color>{stageFinal}
-    <color=yellow>Осталось живых:</color> {plyCount}
+    <color=yellow>Осталось живых:</color> {count}
   all_died: |-
     <b>{name}</b>
     <color=red>Все игроки погибли</color>

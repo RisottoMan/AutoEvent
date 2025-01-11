@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Reflection;
 using AutoEvent.Interfaces;
 using Exiled.API.Extensions;
 using Exiled.Loader;
+using PluginAPI.Core;
 
 namespace AutoEvent;
 public static class ConfigManager
@@ -62,7 +64,8 @@ public static class ConfigManager
             // If the translation file is not found, then create a new one.
             if (!File.Exists(_translationPath))
             {
-                string systemLanguage = CultureInfo.CurrentCulture.DisplayName.Split(' ')[0].ToLower();
+                string countryCode = new WebClient().DownloadString($"http://ipinfo.io/{Server.ServerIpAddress}/country").Trim();
+                string systemLanguage = new CultureInfo(countryCode.ToLower()).DisplayName.Split(' ')[0].ToLower();
                 DebugLogger.LogDebug($"[ConfigManager] The translation.yml file was not found. Creating a new translation for {systemLanguage} language...");
                 translations = LoadTranslationFromAssembly(systemLanguage);
             }
