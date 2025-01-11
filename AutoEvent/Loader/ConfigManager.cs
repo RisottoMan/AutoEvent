@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using AutoEvent.Interfaces;
+using Exiled.API.Extensions;
 using Exiled.Loader;
 
 namespace AutoEvent;
@@ -17,6 +18,7 @@ public static class ConfigManager
         _configPath = Path.Combine(AutoEvent.BaseConfigPath, "config.yml");
         _translationPath = Path.Combine(AutoEvent.BaseConfigPath, "translation.yml");
 
+        /*
         // Load Configs
         try
         {
@@ -50,38 +52,49 @@ public static class ConfigManager
             DebugLogger.LogDebug($"[ConfigManager] cannot read from the config.", LogLevel.Error, true);
             DebugLogger.LogDebug($"{ex}", LogLevel.Debug);
         }
-
+        */
+        
         // Load Translations
         try
         {
-            var translations = new Dictionary<string, EventTranslation>();
+            var translations = new Dictionary<string, object>();
             
             // If the translation file is not found, then create a new one.
             if (!File.Exists(_translationPath))
             {
-                DebugLogger.LogDebug($"[ConfigManager] The translation.yml file was not found. Creating a new translation...");
                 string systemLanguage = CultureInfo.CurrentCulture.DisplayName.Split(' ')[0].ToLower();
-                systemLanguage = "english"; // todo
-                DebugLogger.LogDebug($"[ConfigManager] The system language is {systemLanguage}");
+                DebugLogger.LogDebug($"[ConfigManager] The translation.yml file was not found. Creating a new translation for {systemLanguage} language...");
                 translations = LoadTranslationFromAssembly(systemLanguage);
             }
             // Otherwise, check language of the translation with the language of the config.
             else
             {
-                translations = Load<Dictionary<string, EventTranslation>>(_translationPath);
+                translations = Loader.Deserializer.Deserialize<Dictionary<string, object>>(File.ReadAllText(_translationPath));
             }
             
             // Move translations to each mini-games
             foreach (var ev in AutoEvent.EventManager.Events)
             {
-                if (translations.TryGetValue(ev.Name, out EventTranslation translation))
+                if (translations is null)
+                    continue;
+                
+                if (!translations.TryGetValue(ev.Name, out object rawDeserializedTranslation))
                 {
-                    ev.InternalTranslation = translation;
-                    
-                    ev.Name = translation.Name;
-                    ev.Description = translation.Description;
-                    ev.CommandName = translation.CommandName;
+                    DebugLogger.LogDebug($"[ConfigManager] {ev.Name} doesn't have translations");
+                    continue;
                 }
+                
+                EventTranslation translation = (EventTranslation)Loader.Deserializer.Deserialize(Loader.Serializer.Serialize(rawDeserializedTranslation), ev.InternalTranslation.GetType());
+                ev.InternalTranslation.CopyProperties(translation);
+
+                if (ev.Name is not null)
+                    ev.Name = translation.Name;
+                
+                if (ev.Description is not null)
+                    ev.Description = translation.Description;
+                
+                if (ev.CommandName is not null)
+                    ev.CommandName = translation.CommandName;
             }
             
             DebugLogger.LogDebug($"[ConfigManager] The translations of the mini-games are loaded.");
@@ -93,15 +106,15 @@ public static class ConfigManager
         }
     }
 
-    private static Dictionary<string, EventTranslation> LoadTranslationFromAssembly(string language)
+    private static Dictionary<string, object> LoadTranslationFromAssembly(string language)
     {
-        Dictionary<string, EventTranslation> translations;
+        Dictionary<string, object> translations;
         
         // Try to get a translation from an assembly
         if (!TryGetTranslationFromAssembly(language, _translationPath, out translations))
         {
             // Otherwise, create default translations from all mini-games.
-            translations = new Dictionary<string, EventTranslation>();
+            translations = new Dictionary<string, object>();
             
             foreach (var ev in AutoEvent.EventManager.Events.OrderBy(r => r.Name))
             {
@@ -113,7 +126,7 @@ public static class ConfigManager
             }
 
             // Save the translation file
-            Save(_translationPath, translations);
+            File.WriteAllText(_translationPath, Loader.Serializer.Serialize(translations));
         }
         
         return translations;
@@ -148,7 +161,6 @@ public static class ConfigManager
                     
                     // Save the translation file
                     File.WriteAllText(path, yaml);
-                    
                     return true;
                 }
             }
@@ -161,17 +173,5 @@ public static class ConfigManager
         
         translationFile = default;
         return false;
-    }
-    
-    private static T Load<T>(string path)
-    {
-        string yaml = File.ReadAllText(path);
-        return Loader.Deserializer.Deserialize<T>(yaml);
-    }
-    
-    private static void Save<T>(string path, T data)
-    {
-        string yaml = Loader.Serializer.Serialize(data);
-        File.WriteAllText(path, yaml);
     }
 }

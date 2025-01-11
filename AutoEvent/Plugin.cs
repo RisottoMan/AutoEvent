@@ -79,7 +79,7 @@ public class AutoEvent : Plugin<Config>
             _eventHandler = new EventHandler(this);
             EventManager = new EventManager();
             EventManager.RegisterInternalEvents();
-            //ConfigManager.LoadConfigsAndTranslations();
+            ConfigManager.LoadConfigsAndTranslations();
             
             DebugLogger.LogDebug($"The mini-games are loaded.", LogLevel.Info, true);
         }
