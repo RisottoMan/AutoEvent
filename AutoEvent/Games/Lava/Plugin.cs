@@ -16,9 +16,8 @@ public class Plugin : Event<Config, Translation>, IEventSound, IEventMap
     public override string CommandName { get; set; } = "lava";
     public MapInfo MapInfo { get; set; } = new()
     { 
-        MapName = "Lava", 
-        Position = new Vector3(120f, 1020f, -43.5f),
-        IsStatic = false
+        MapName = "Lava",
+        Position = new Vector3(0f, 40f, 0f)
     };
     public SoundInfo SoundInfo { get; set; } = new()
     { 
@@ -27,7 +26,6 @@ public class Plugin : Event<Config, Translation>, IEventSound, IEventMap
         Loop = false
     };
     protected override FriendlyFireSettings ForceEnableFriendlyFire { get; set; } = FriendlyFireSettings.Enable;
-
     private EventHandler _eventHandler;
     private GameObject _lava;
 

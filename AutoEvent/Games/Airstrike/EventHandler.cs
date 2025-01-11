@@ -18,15 +18,9 @@ public class EventHandler
         if (!_plugin.Config.RespawnPlayersWithGrenades)
             return;
         
-        // Timing.CallDelayed -> 1f
-        ev.Player.Role.Set(RoleTypeId.ChaosConscript, RoleSpawnFlags.None);
+        ev.Player.GiveLoadout(_plugin.Config.FailureLoadouts);
         ev.Player.Position = _plugin.SpawnList.RandomItem().transform.position;
-        ev.Player.ClearInventory();
-        var item = ev.Player.AddItem(ItemType.GrenadeHE);
-        Timing.CallDelayed(.1f, () =>
-        {
-            ev.Player.CurrentItem = item;
-        });
+        ev.Player.CurrentItem = ev.Player.AddItem(ItemType.GrenadeHE);
         ev.Player.ShowHint("You have a grenade! Throw it at the people who are still alive!", 5f);
         ev.Player.IsGodModeEnabled = true;
     }
@@ -38,11 +32,7 @@ public class EventHandler
         
         Timing.CallDelayed(3f, () =>
         {
-            var item = ev.Player.AddItem(ItemType.GrenadeHE);
-            Timing.CallDelayed(.1f, () =>
-            {
-                ev.Player.CurrentItem = item;
-            });
+            ev.Player.CurrentItem = ev.Player.AddItem(ItemType.GrenadeHE);
         });
     }
 

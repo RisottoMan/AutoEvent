@@ -1,21 +1,37 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using AutoEvent.API;
+using AutoEvent.API.Season.Enum;
 using AutoEvent.Interfaces;
 using Exiled.API.Enums;
 using Exiled.API.Features;
 using PlayerRoles;
+using UnityEngine;
 
 namespace AutoEvent.Games.Survival;
 public class Config : EventConfig
 {
+    public Config()
+    {
+        if (AvailableMaps is null)
+        {
+            AvailableMaps = new List<MapChance>();
+        }
+
+        if (AvailableMaps.Count < 1)
+        {
+            AvailableMaps.Add(new MapChance(50, new MapInfo("Survival", new Vector3(0f, 40f, 0f))));
+            AvailableMaps.Add(new MapChance(50, new MapInfo("Survival_Xmas2025", new Vector3(0f, 40f, 0f)), SeasonFlags.Christmas));
+        }
+    }
+    
     [Description("How long the round should last in seconds.")]
     public int RoundDurationInSeconds { get; set; } = 300;
     
     [Description("A list of lodaouts players can get.")]
-    public List<Loadout> PlayerLoadouts { get; set; } = new List<Loadout>()
+    public List<Loadout> PlayerLoadouts { get; set; } = new()
     {
-        new Loadout()
+        new()
         {
             Roles = new Dictionary<RoleTypeId, int>() { { RoleTypeId.NtfSergeant, 100 } },
             Items = new List<ItemType>()
@@ -24,9 +40,10 @@ public class Config : EventConfig
                 ItemType.GunCOM18,
                 ItemType.ArmorCombat,
             },
+            Effects = new List<Effect>() { new(EffectType.FogControl, 0) },
             InfiniteAmmo = AmmoMode.InfiniteAmmo
         },
-        new Loadout()
+        new()
         {
             Roles = new Dictionary<RoleTypeId, int>() { { RoleTypeId.NtfSergeant, 100 } },
             Items = new List<ItemType>()
@@ -35,9 +52,10 @@ public class Config : EventConfig
                 ItemType.GunCOM18,
                 ItemType.ArmorCombat,
             },
+            Effects = new List<Effect>() { new(EffectType.FogControl, 0) },
             InfiniteAmmo = AmmoMode.InfiniteAmmo
         },
-        new Loadout()
+        new()
         {
             Roles = new Dictionary<RoleTypeId, int>() { { RoleTypeId.NtfSergeant, 100 } },
             Items = new List<ItemType>()
@@ -46,6 +64,7 @@ public class Config : EventConfig
                 ItemType.GunCOM18,
                 ItemType.ArmorCombat,
             },
+            Effects = new List<Effect>() { new(EffectType.FogControl, 0) },
             InfiniteAmmo = AmmoMode.InfiniteAmmo
         }
     };
@@ -58,8 +77,9 @@ public class Config : EventConfig
             Roles = new Dictionary<RoleTypeId, int>() { { RoleTypeId.Scp0492, 100 } },
             Effects = new List<Effect>()
             {
-                new() { Type = EffectType.Disabled },
-                new() { Type = EffectType.Scp1853 },
+                new(EffectType.Disabled, 0),
+                new(EffectType.Scp1853, 0),
+                new(EffectType.FogControl, 0)
             },
             Health = 5000,
         }
@@ -71,5 +91,12 @@ public class Config : EventConfig
         MinimumPlayers = 1,
         MaximumPlayers = 3,
         PlayerPercentage = 10,
+    };
+    
+    [Description("Zombie screams sounds.")]
+    public List<string> ZombieScreams { get; set; } = new()
+    {
+        "human_death_01.ogg",
+        "human_death_02.ogg"
     };
 }

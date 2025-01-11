@@ -84,5 +84,7 @@ public class EventHandler
         player.EnableEffect<Disabled>(1, 1);
         player.EnableEffect<Scp1853>(1, 1);
         player.Health = hp;
+        
+        Extensions.PlayPlayerAudio(_plugin.SoundInfo.AudioPlayer, player, _plugin.Config.ZombieScreams.RandomItem(), 15);
     }
 }

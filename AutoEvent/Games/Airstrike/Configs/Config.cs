@@ -1,7 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
+using AutoEvent.API;
 using AutoEvent.API.Season.Enum;
 using AutoEvent.Interfaces;
+using Exiled.API.Enums;
+using PlayerRoles;
 using UnityEngine;
 
 namespace AutoEvent.Games.Airstrike;
@@ -18,8 +21,8 @@ public class Config : EventConfig
 
         if (AvailableMaps.Count < 1)
         {
-            AvailableMaps.Add(new MapChance(50, new MapInfo("DeathParty", new Vector3(10f, 1012f, -40f))));
-            AvailableMaps.Add(new MapChance(50, new MapInfo("DeathParty_Xmas2024", new Vector3(10f, 1012f, -40f)), SeasonFlags.Christmas));
+            AvailableMaps.Add(new MapChance(50, new MapInfo("DeathParty", new Vector3(0f, 40f, 0f))));
+            AvailableMaps.Add(new MapChance(50, new MapInfo("DeathParty_Xmas2024", new Vector3(0f, 40f, 0f)), SeasonFlags.Christmas));
         }
     }
     
@@ -34,4 +37,30 @@ public class Config : EventConfig
 
     [Description("If enabled the minigame will end when there is only one player left. Otherwise it will end when everyone dies, or the rounds (configurable) are over.")] 
     public bool LastPlayerAliveWins { get; set; } = true;
+    
+    [Description("A list of loadouts.")]
+    public List<Loadout> Loadouts { get; set; } = new()
+    {
+        new Loadout()
+        {
+            Roles = new Dictionary<RoleTypeId, int>()
+            {
+                { RoleTypeId.ClassD, 100 },
+            },
+            Effects = new() { new (EffectType.FogControl, 0) }
+        }
+    };
+    
+    [Description("A list of failure loadouts.")]
+    public List<Loadout> FailureLoadouts { get; set; } = new()
+    {
+        new Loadout()
+        {
+            Roles = new Dictionary<RoleTypeId, int>()
+            {
+                { RoleTypeId.ChaosConscript, 100 },
+            },
+            Effects = new() { new (EffectType.FogControl, 0) }
+        }
+    };
 }

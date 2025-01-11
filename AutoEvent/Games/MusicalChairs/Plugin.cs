@@ -18,7 +18,7 @@ public class Plugin : Event<Config, Translation>, IEventSound, IEventMap
     public MapInfo MapInfo { get; set; } = new()
     {
         MapName = "MusicalChairs",
-        Position = new Vector3(0, 0, 30),
+        Position = new Vector3(0, 40, 0),
     };
     public SoundInfo SoundInfo { get; set; } = new()
     { 

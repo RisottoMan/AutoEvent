@@ -39,18 +39,9 @@ public class Config : EventConfig
             InfiniteAmmo = AmmoMode.InfiniteAmmo,
             Effects = new List<Effect>()
             {
-                new Effect()
-                {
-                    Type = EffectType.MovementBoost,
-                    Intensity = 10,
-                    Duration = 0,
-                },
-                new Effect()
-                {
-                    Type = EffectType.Scp1853,
-                    Intensity = 1,
-                    Duration = 0,
-                }
+                new (EffectType.MovementBoost, 10, 0),
+                new (EffectType.Scp1853, 1, 0),
+                new (EffectType.FogControl, 0)
             }
         }
     };
@@ -65,18 +56,9 @@ public class Config : EventConfig
             InfiniteAmmo = AmmoMode.InfiniteAmmo,
             Effects = new List<Effect>()
             {
-                new Effect()
-                {
-                    Type = EffectType.MovementBoost,
-                    Intensity = 10,
-                    Duration = 0,
-                },
-                new Effect()
-                {
-                    Type = EffectType.Scp1853,
-                    Intensity = 1,
-                    Duration = 0,
-                }
+                new (EffectType.MovementBoost, 10, 0),
+                new (EffectType.Scp1853, 1, 0),
+                new (EffectType.FogControl, 0)
             }
         }
     };

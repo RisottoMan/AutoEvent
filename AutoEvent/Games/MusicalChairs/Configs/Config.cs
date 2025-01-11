@@ -3,6 +3,8 @@ using System.ComponentModel;
 using AutoEvent.API;
 using AutoEvent.API.Season.Enum;
 using AutoEvent.Interfaces;
+using Exiled.API.Enums;
+using Exiled.API.Features;
 using PlayerRoles;
 using UnityEngine;
 
@@ -18,8 +20,8 @@ public class Config : EventConfig
 
         if (AvailableMaps.Count < 1)
         {
-            AvailableMaps.Add(new MapChance(50, new MapInfo("MusicalChairs", new Vector3(115.5f, 1030f, -43.5f))));
-            AvailableMaps.Add(new MapChance(50, new MapInfo("MusicalChairs_Xmas2024", new Vector3(115.5f, 1030f, -43.5f)), SeasonFlags.Christmas));
+            AvailableMaps.Add(new MapChance(50, new MapInfo("MusicalChairs", new Vector3(0f, 40f, 0f))));
+            AvailableMaps.Add(new MapChance(50, new MapInfo("MusicalChairs_Xmas2024", new Vector3(0f, 40f, 0f)), SeasonFlags.Christmas));
         }
     }
 
@@ -29,11 +31,12 @@ public class Config : EventConfig
         new Loadout()
         {
             Health = 100,
-            Roles = new Dictionary<RoleTypeId, int>()
+            Roles = new()
             {
                 { RoleTypeId.ClassD, 50 },
                 { RoleTypeId.Scientist, 50 }
             },
+            Effects = new List<Effect>() { new(EffectType.FogControl, 0) },
             Stamina = 0
         },
     };

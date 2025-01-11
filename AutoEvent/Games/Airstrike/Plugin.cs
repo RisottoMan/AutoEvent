@@ -19,7 +19,7 @@ public class Plugin : Event<Config, Translation>, IEventMap, IEventSound
     public MapInfo MapInfo { get; set; } = new()
     { 
         MapName = "DeathParty", 
-        Position = new Vector3(10f, 1012f, -40f)
+        Position = new Vector3(0f, 40f, 0f)
     };
     public SoundInfo SoundInfo { get; set; } = new()
     { 
@@ -55,7 +55,7 @@ public class Plugin : Event<Config, Translation>, IEventMap, IEventSound
         SpawnList = MapInfo.Map.AttachedBlocks.Where(x => x.name == "Spawnpoint").ToList();
         foreach (Player player in Player.List)
         {
-            player.Role.Set(RoleTypeId.ClassD, RoleSpawnFlags.None);
+            player.GiveLoadout(Config.Loadouts);
             player.Position = SpawnList.RandomItem().transform.position;
         }
     }

@@ -222,20 +222,6 @@ public static class Extensions
             player.ClearInventory();
         }
     }
-
-    public static bool IsExistsMER()
-    {
-        try
-        {
-        }
-        catch (Exception e)
-        {
-            DebugLogger.LogDebug("An error occured at IsExistsMER.", LogLevel.Warn, true);
-            DebugLogger.LogDebug($"{e}");
-        }
-        
-        return false;
-    }
     
     public static bool IsExistsMap(string schematicName)
     {

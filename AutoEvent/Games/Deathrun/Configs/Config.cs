@@ -22,7 +22,7 @@ public class Config : EventConfig
             Roles = new Dictionary<RoleTypeId, int>() { { RoleTypeId.ClassD, 100 } },
             Effects = new List<Effect>()
             {
-                new Effect() { Type = EffectType.FogControl, Intensity = 1, Duration = 0 }
+                new() { Type = EffectType.FogControl, Intensity = 1 }
             },
             Chance = 100,
             InfiniteAmmo = AmmoMode.InfiniteAmmo
@@ -37,8 +37,8 @@ public class Config : EventConfig
             Roles = new Dictionary<RoleTypeId, int>() { { RoleTypeId.Scientist, 100 } },
             Effects = new List<Effect>()
             {
-                new() { Type = EffectType.MovementBoost, Intensity = 50, Duration = 0 },
-                new() { Type = EffectType.FogControl, Intensity = 1, Duration = 0 }
+                new() { Type = EffectType.MovementBoost, Intensity = 50 },
+                new() { Type = EffectType.FogControl, Intensity = 1 }
             },
             Chance = 100
         }
@@ -52,7 +52,7 @@ public class Config : EventConfig
             Items = new List<ItemType>() { ItemType.GunE11SR, ItemType.Jailbird },
             Effects = new List<Effect>()
             {
-                new() { Type = EffectType.MovementBoost, Intensity = 50, Duration = 0 }
+                new() { Type = EffectType.MovementBoost, Intensity = 50 }
             },
             InfiniteAmmo = AmmoMode.InfiniteAmmo
         }

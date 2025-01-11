@@ -16,7 +16,7 @@ public class Plugin : Event<Config, Translation>, IEventSound, IEventMap
     public MapInfo MapInfo { get; set; } = new()
     { 
         MapName = "Survival", 
-        Position = new Vector3(15f, 1030f, -43.68f)
+        Position = new Vector3(0f, 40f, 0f)
     };
     public SoundInfo SoundInfo { get; set; } = new()
     { 
@@ -74,15 +74,18 @@ public class Plugin : Event<Config, Translation>, IEventSound, IEventMap
         Extensions.PlayAudio("Zombie2.ogg", 7, true);
 
         List<Player> players = Config.Zombies.GetPlayers(true);
-        foreach (Player x in players)
+        foreach (Player player in players)
         {
-            DebugLogger.LogDebug($"Making player {x.Nickname} a zombie.");
-            x.GiveLoadout(Config.ZombieLoadouts);
+            DebugLogger.LogDebug($"Making player {player.Nickname} a zombie.");
+            player.GiveLoadout(Config.ZombieLoadouts);
+            Extensions.PlayPlayerAudio(SoundInfo.AudioPlayer, player, Config.ZombieScreams.RandomItem(), 15);
+            
             if (Player.List.Count(r => r.IsScp) == 1)
             {
                 if (FirstZombie is not null)
                     continue;
-                FirstZombie = x;
+                
+                FirstZombie = player;
             }
         }
 

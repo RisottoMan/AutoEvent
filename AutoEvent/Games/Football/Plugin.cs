@@ -16,8 +16,7 @@ public class Plugin : Event<Config, Translation>, IEventSound, IEventMap
     public MapInfo MapInfo { get; set; } = new()
     {
         MapName = "Football", 
-        Position = new Vector3(76f, 1026.5f, -43.68f),
-        IsStatic = false
+        Position = new Vector3(0, 40f, 0f)
     };
     public SoundInfo SoundInfo { get; set; } = new()
     { 
@@ -40,12 +39,12 @@ public class Plugin : Event<Config, Translation>, IEventSound, IEventMap
         {
             if (count % 2 == 0)
             {
-                player.Role.Set(RoleTypeId.NtfCaptain, RoleSpawnFlags.None);
+                player.GiveLoadout(Config.BlueTeamLoadout);
                 player.Position = spawnList.ElementAt(0).transform.position;
             }
             else
             {
-                player.Role.Set(RoleTypeId.ClassD, RoleSpawnFlags.None);
+                player.GiveLoadout(Config.OrangeTeamLoadout);
                 player.Position = spawnList.ElementAt(1).transform.position;
             }
             count++;

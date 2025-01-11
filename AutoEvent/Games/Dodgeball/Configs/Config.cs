@@ -3,6 +3,8 @@ using System.ComponentModel;
 using AutoEvent.API;
 using AutoEvent.API.Season.Enum;
 using AutoEvent.Interfaces;
+using Exiled.API.Enums;
+using Exiled.API.Features;
 using PlayerRoles;
 using UnityEngine;
 
@@ -30,7 +32,8 @@ public class Config : EventConfig
     {
         new Loadout()
         {
-            Roles = new Dictionary<RoleTypeId, int>(){ { RoleTypeId.ClassD, 100 } }
+            Roles = new Dictionary<RoleTypeId, int>(){ { RoleTypeId.ClassD, 100 } },
+            Effects = new List<Effect>() { new(EffectType.FogControl, 0) },
         }
     };
 
@@ -39,7 +42,8 @@ public class Config : EventConfig
     {
         new Loadout()
         {
-            Roles = new Dictionary<RoleTypeId, int>(){ { RoleTypeId.Scientist, 100 } }
+            Roles = new Dictionary<RoleTypeId, int>(){ { RoleTypeId.Scientist, 100 } },
+            Effects = new List<Effect>() { new(EffectType.FogControl, 0) },
         }
     };
 }

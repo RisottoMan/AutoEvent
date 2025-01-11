@@ -15,6 +15,7 @@ internal class EventHandler
         _plugin = plugin;
 
         Exiled.Events.Handlers.Server.RespawningTeam += OnRespawningTeam;
+        Exiled.Events.Handlers.Server.SelectingRespawnTeam += OnSelectingRespawnTeam;
         Exiled.Events.Handlers.Map.Decontaminating += OnDecontaminating;
         Exiled.Events.Handlers.Map.PlacingBulletHole += OnPlacingBulletHole;
         Exiled.Events.Handlers.Map.PickupAdded += OnPickupAdded;
@@ -29,6 +30,7 @@ internal class EventHandler
     ~EventHandler()
     {
         Exiled.Events.Handlers.Server.RespawningTeam -= OnRespawningTeam;
+        Exiled.Events.Handlers.Server.SelectingRespawnTeam -= OnSelectingRespawnTeam;
         Exiled.Events.Handlers.Map.Decontaminating -= OnDecontaminating;
         Exiled.Events.Handlers.Map.PlacingBulletHole -= OnPlacingBulletHole;
         Exiled.Events.Handlers.Map.PickupAdded -= OnPickupAdded;
@@ -41,6 +43,17 @@ internal class EventHandler
     }
 
     private void OnRespawningTeam(RespawningTeamEventArgs ev)
+    {
+        if (AutoEvent.EventManager.CurrentEvent is Event activeEvent)
+        {
+            if (!activeEvent.EventHandlerSettings.HasFlag(EventFlags.IgnoreRespawnTeam))
+            {
+                ev.IsAllowed = false;
+            }
+        }
+    }
+
+    private void OnSelectingRespawnTeam(SelectingRespawnTeamEventArgs ev)
     {
         if (AutoEvent.EventManager.CurrentEvent is Event activeEvent)
         {

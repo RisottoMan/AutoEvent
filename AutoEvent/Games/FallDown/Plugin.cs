@@ -17,7 +17,7 @@ public class Plugin : Event<Config, Translation>, IEventSound, IEventMap
     public MapInfo MapInfo { get; set; } = new()
     { 
         MapName = "FallDown", 
-        Position = new Vector3(10f, 1020f, -43.68f)
+        Position = new Vector3(0f, 40f, 0f)
     };
     public SoundInfo SoundInfo { get; set; } = new()
     { 
@@ -37,7 +37,7 @@ public class Plugin : Event<Config, Translation>, IEventSound, IEventMap
         List<GameObject> spawnList = MapInfo.Map.AttachedBlocks.Where(r => r.name == "Spawnpoint").ToList();
         foreach (Player player in Player.List)
         {
-            player.Role.Set(RoleTypeId.ClassD, RoleSpawnFlags.None);
+            player.GiveLoadout(Config.Loadouts);
             player.Position = spawnList.RandomItem().transform.position;
         }
 

@@ -28,14 +28,9 @@ public class Config : EventConfig
 
     [Description("The item that the tagged player should get. Do not do Scp018 or Grenades for now. - They will break the event. (working on it - redforce)")]
     public ItemType TaggerWeapon { get; set; } = ItemType.Jailbird;
-    [Description("Enables the marshmello effect instead.")]
-    public bool HalloweenMelee { get; set; } = true;
     
     [Description("Players who are not the tagger will have the breach scanner effect applied to them, when there are less than or equal to this many non-taggers alive.")]
     public int PlayersRequiredForBreachScannerEffect { get; set; } = 2;
-
-    [Description("The range of the weapon. 0 to disable. [Default: 5]")]
-    public float Range { get; set; } = 5f;
 
     [Description("How long should the tagger get immunity.")]
     public float NoTagBackDuration { get; set; } = 3f;
@@ -59,20 +54,24 @@ public class Config : EventConfig
             Roles = new Dictionary<RoleTypeId, int>() { { RoleTypeId.ClassD, 100 } },
             Effects = new List<Effect>()
             {
-                new Effect() { Type = EffectType.MovementBoost, Intensity = 50, Duration = 0 },
-                new Effect() { Type = EffectType.FogControl, Intensity = 1, Duration = 0 }
+                new(EffectType.MovementBoost, 50, 0),
+                new(EffectType.FogControl, 0),
             },
             Chance = 100,
             InfiniteAmmo = AmmoMode.InfiniteAmmo
         }
     };
 
-    public List<Loadout> TaggerLoadouts { get; set; } = new List<Loadout>()
+    public List<Loadout> TaggerLoadouts { get; set; } = new()
     {
         new Loadout()
         {
             Roles = new Dictionary<RoleTypeId, int>() { { RoleTypeId.Scientist, 100 } },
-            Effects = new List<Effect>() { new Effect() { Type = EffectType.MovementBoost, Intensity = 70, Duration = 0 } },
+            Effects = new List<Effect>() 
+            { 
+                new(EffectType.MovementBoost, 70, 0),
+                new(EffectType.FogControl, 0),
+            },
             Chance = 100,
             InfiniteAmmo = AmmoMode.InfiniteAmmo
         }

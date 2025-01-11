@@ -17,7 +17,7 @@ public class Plugin : Event<Config, Translation>, IEventMap, IEventSound
     public MapInfo MapInfo { get; set; } = new()
     { 
         MapName = "Battle", 
-        Position = new Vector3(6f, 1030f, -43.5f)
+        Position = new Vector3(0f, 40f, 0f)
     };
     public SoundInfo SoundInfo { get; set; } = new()
     { 

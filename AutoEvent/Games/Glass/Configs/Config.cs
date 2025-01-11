@@ -1,7 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
+using AutoEvent.API;
 using AutoEvent.API.Season.Enum;
 using AutoEvent.Interfaces;
+using Exiled.API.Enums;
+using Exiled.API.Features;
+using PlayerRoles;
 using UnityEngine;
 
 namespace AutoEvent.Games.Glass;
@@ -37,4 +41,17 @@ public class Config : EventConfig
 
     [Description("How much time should I give the player in seconds to cool down to use the push?")]
     public float PushPlayerCooldown { get; set; } = 5;
+    
+    [Description("The loadouts a player can get.")]
+    public List<Loadout> Loadouts { get; set; } = new()
+    {
+        new Loadout()
+        {
+            Roles = new Dictionary<RoleTypeId, int>()
+            {
+                { RoleTypeId.ClassD, 100 },
+            },
+            Effects = new List<Effect>() { new(EffectType.FogControl, 0) },
+        }
+    };
 }

@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using AutoEvent.Interfaces;
+using Exiled.Loader;
 
 namespace AutoEvent;
 public static class ConfigManager
@@ -143,7 +144,7 @@ public static class ConfigManager
                 using (StreamReader reader = new StreamReader(stream))
                 {
                     string yaml = reader.ReadToEnd(); 
-                    translationFile = Configs.Serialization.Deserializer.Deserialize<T>(yaml);
+                    translationFile = Loader.Deserializer.Deserialize<T>(yaml);
                     
                     // Save the translation file
                     File.WriteAllText(path, yaml);
@@ -165,12 +166,12 @@ public static class ConfigManager
     private static T Load<T>(string path)
     {
         string yaml = File.ReadAllText(path);
-        return Configs.Serialization.Deserializer.Deserialize<T>(yaml);
+        return Loader.Deserializer.Deserialize<T>(yaml);
     }
     
     private static void Save<T>(string path, T data)
     {
-        string yaml = Configs.Serialization.Serializer.Serialize(data);
+        string yaml = Loader.Serializer.Serialize(data);
         File.WriteAllText(path, yaml);
     }
 }

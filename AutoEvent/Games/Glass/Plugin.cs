@@ -129,7 +129,7 @@ public class Plugin : Event<Config, Translation>, IEventSound, IEventMap
 
         foreach (Player player in Player.List)
         {
-            player.Role.Set(RoleTypeId.ClassD, RoleSpawnFlags.None);
+            player.GiveLoadout(Config.Loadouts);
             player.Position = _spawnpoints.transform.position;
         }
     }

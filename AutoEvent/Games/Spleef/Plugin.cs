@@ -72,7 +72,7 @@ public class Plugin : Event<Config, Translation>, IEventMap
     {
         for (int time = 10; time > 0; time--)
         {
-            Extensions.Broadcast($"{Translation.Description}\n{Translation.Start.Replace("{time}", $"{time}")}", 1);
+            Extensions.Broadcast($"{Translation.Start.Replace("{time}", $"{time}")}", 1);
             yield return Timing.WaitForSeconds(1f);
         }
     }

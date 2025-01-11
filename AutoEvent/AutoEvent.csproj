@@ -44,7 +44,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="ExMod.Exiled" Version="9.2.1" />
+    <PackageReference Include="ExMod.Exiled" Version="9.2.2" />
     <PackageReference Include="Fody" Version="6.8.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -53,7 +53,6 @@
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="Northwood.PluginAPI" Version="13.1.2" />
     <PackageReference Include="NVorbis" Version="0.10.5" />
-    <PackageReference Include="YamlDotNet" Version="13.7.1" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="CedModV3" HintPath="$(SL_REFERENCES)\CedModV3.dll" />
@@ -158,5 +157,8 @@
   </Target>
   <Target Name="ReplaceFile" BeforeTargets="ReplaceVars">
     <Exec Command="copy $(SolutionDir)BlankVersionInfo.txt $(SolutionDir)VersionInfo.cs" />
+  </Target>
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="xcopy &quot;$(TargetPath)&quot; &quot;%appdata%\EXILED\Plugins&quot; /y" />
   </Target>
 </Project>

@@ -8,9 +8,4 @@ public struct PlatformData
     }
     public int Placement { get; set; }
     public bool LeftSideIsDangerous { get; set; }
-    public bool RightSideIsDangerous
-    {
-        get => !LeftSideIsDangerous;
-        set => LeftSideIsDangerous = !value;
-    }
 }

@@ -3,6 +3,8 @@ using System.ComponentModel;
 using AutoEvent.API;
 using AutoEvent.API.Season.Enum;
 using AutoEvent.Interfaces;
+using Exiled.API.Enums;
+using Exiled.API.Features;
 using PlayerRoles;
 using UnityEngine;
 
@@ -52,16 +54,16 @@ public class Config : EventConfig
     {
         new Loadout()
         {
-            Health = 100,
-            InfiniteAmmo = AmmoMode.InfiniteAmmo,
             Roles = new Dictionary<RoleTypeId, int>()
             {
-                { RoleTypeId.ClassD, 20 },
-                { RoleTypeId.Scientist, 20 },
-                { RoleTypeId.NtfSergeant, 20 },
-                { RoleTypeId.ChaosRifleman, 20 },
-                { RoleTypeId.FacilityGuard, 20 },
-            }
+                { RoleTypeId.ClassD, 100 },
+                { RoleTypeId.Scientist, 100 },
+                { RoleTypeId.NtfSergeant, 100 },
+                { RoleTypeId.ChaosRifleman, 100 },
+                { RoleTypeId.FacilityGuard, 100 },
+            },
+            InfiniteAmmo = AmmoMode.InfiniteAmmo,
+            Effects = new List<Effect>() { new(EffectType.FogControl, 0) },
         }
     };
 }

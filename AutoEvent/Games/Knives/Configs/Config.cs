@@ -3,6 +3,8 @@ using System.ComponentModel;
 using AutoEvent.API;
 using AutoEvent.API.Season.Enum;
 using AutoEvent.Interfaces;
+using Exiled.API.Enums;
+using Exiled.API.Features;
 using PlayerRoles;
 using UnityEngine;
 
@@ -23,16 +25,14 @@ public class Config : EventConfig
             AvailableMaps.Add(new MapChance(50, new MapInfo("35hp_2_Halloween2024", new Vector3(5f, 1030f, -45f)), SeasonFlags.Halloween));
         }
     }
-
-    [Description("Enables the halloween effect melee instead of jailbird.")]
-    public bool HalloweenMelee { get; set; } = true;
     
     [Description("A list of loadouts that players on team 1 can get.")]
     public List<Loadout> Team1Loadouts { get; set; } = new()
     {
         new Loadout()
         {
-            Roles = new Dictionary<RoleTypeId, int>() { { RoleTypeId.NtfCaptain, 100 } }
+            Roles = new Dictionary<RoleTypeId, int>() { { RoleTypeId.NtfCaptain, 100 } },
+            Effects = new List<Effect>() { new(EffectType.FogControl, 0) },
         }
     };
 
@@ -41,7 +41,8 @@ public class Config : EventConfig
     {
         new Loadout()
         {
-            Roles = new Dictionary<RoleTypeId, int>() { { RoleTypeId.ChaosRepressor, 100 } }
+            Roles = new Dictionary<RoleTypeId, int>() { { RoleTypeId.ChaosRepressor, 100 } },
+            Effects = new List<Effect>() { new(EffectType.FogControl, 0) },
         }
     };
 }
