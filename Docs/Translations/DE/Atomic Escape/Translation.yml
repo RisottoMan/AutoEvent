@@ -1,0 +1,16 @@
+name: 'Atomare Flucht'
+description: 'Entkomme der Einrichtung hinter SCP-173 mit Überschallgeschwindigkeit!'
+command_name: 'escape'
+before_start: |-
+  {name}
+  Bereite dich darauf vor, aus der Einrichtung zu fliehen, bevor sie explodiert!
+  <color=red>Zeit bis zum Start der Runde: {time} Sekunden</color>
+cycle: |-
+  {name}
+  <color=red>{time}</color> Sekunden bis zur Explosion!
+end: |-
+  {name}
+  <color=red>{players} Spieler sind entkommen</color>
+# ÄNDERE DAS NICHT. SONST GEHEN DINGE KAPUTT. AutoEvent verwaltet diese Einstellungen automatisch.
+version: '1.0.1'
+language: 'DE'

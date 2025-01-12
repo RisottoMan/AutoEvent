@@ -1,0 +1,15 @@
+name: 'Messer des Todes'
+description: 'Messer-Duell zwischen Spielern auf einer 35hp-Karte aus CS 1.6'
+command_name: 'knives'
+cycle: |-
+  <color=#D71868><b><i>{name}</i></b></color>
+  <color=yellow><color=blue>{mtfcount} MTF</color> <color=red>VS</color> <color=green>{chaoscount} CHAOS</color></color>
+chaos_win: |-
+  <color=#D71868><b><i>{name}</i></b></color>
+  <color=yellow>GEWINNER: <color=green>CHAOS</color></color>
+mtf_win: |-
+  <color=#D71868><b><i>{name}</i></b></color>
+  <color=yellow>GEWINNER: <color=#42AAFF>MTF</color></color>
+# ÄNDERE DAS NICHT. SONST GEHEN DINGE KAPUTT. AutoEvent verwaltet diese Einstellungen automatisch.
+version: '1.0.2'
+language: 'DE'

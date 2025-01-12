@@ -1,0 +1,27 @@
+name: 'Buckshot Roulette'
+description: 'Battaglia uno contro uno nella roulette russa con i fucili'
+command_name: 'versus2'
+players_null: |-
+  <color=#D71868><b><i>{name}</i></b></color>
+  Entra nell'arena per combattere tra loro!
+  <color=red>{remain}</color> secondi rimasti
+class_d_null: |-
+  <color=#D71868><b><i>{name}</i></b></color>
+  I player rimasti <color=yellow>{scientist}</color>
+  vadano dentro la cella in <color=orange>{remain}</color> secondi
+scientist_null: |-
+  <color=#D71868><b><i>{name}</i></b></color>
+  I player rimasti <color=orange>{classd}</color>
+  vadano dentro la cella in <color=orange>{remain}</color> secondi
+players_duel: |-
+  <color=#D71868><b><i>{name}</i></b></color>
+  <color=yellow><color=yellow>{scientist}</color> <color=red>VS</color> <color=orange>{classd}</color></color>
+class_d_win: |-
+  <color=#D71868><b><i>{name}</i></b></color>
+  <color=yellow>VINCITORI: <color=red>CLASS D</color></color>
+scientist_win: |-
+  <color=#D71868><b><i>{name}</i></b></color>
+  <color=yellow>VINCITORI: <color=red>SCIENZIATI</color></color>
+# DO NOT CHANGE THIS. IT WILL BREAK THINGS. AutoEvent will automatically manage these settings.
+version: '1.0.2'
+language: 'IT'

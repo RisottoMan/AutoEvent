@@ -1,0 +1,20 @@
+name: 'All Deathmatch'
+description: 'Battez-vous entre vous dans un combat à mort'
+command_name: 'dm'
+cycle: |-
+  <size=30><i><b>{name}</b>
+  <color=red>Toi - {kills}/{needKills} kills</color>
+  Round Time: {time}</i></size>
+no_players: |-
+  <color=red>La partie a été interrompue par un administrateur
+  Ton nombre de kills {count}</color>
+time_end: |-
+  <color=red>Le timer a atteint zéro
+  Ton nombre de kills {count}</color>
+winner_end: |-
+  <b><color=red>Winner - <color=yellow>{winner}</color></color></b>
+  Ton nombre de kills <color=red>{count}</color></color>
+  Game Time - <color=#008000>{time}</color></i>
+# DO NOT CHANGE THIS. IT WILL BREAK THINGS. AutoEvent will automatically manage these settings.
+version: '1.0.1'
+language: 'FR'

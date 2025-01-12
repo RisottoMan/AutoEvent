@@ -1,0 +1,27 @@
+name: 'Simons Gefängnis'
+description: 'Gefängnismodus aus CS 1.6, in dem du Ereignisse abhalten musst [SEHR SCHWER].'
+command_name: 'jail'
+start: |-
+  <color=yellow><color=red><b><i>{name}</i></b></color>
+  <i>Auslösen oder Freigeben einer Sperre durch Schießen auf den großen Knopf</i>
+  Vor dem Start: <color=red>{time}</color> Sekunden</color>
+start_prisoners: |-
+  <color=yellow><color=red><b><i>{name}</i></b></color>
+  <i>Entkomme aus dem Gefängnis um jeden Preis. Sei vorsichtig. Gegenstände sind auf der Karte verteilt, um dir zu helfen zu überleben.</i>
+  Vor dem Start: <color=red>{time}</color> Sekunden</color>
+cycle: |-
+  <size=20><color=red>{name}</color>
+  <color=yellow>Gefangene: {dclasscount}</color> || <color=#14AAF5>Wächter: {mtfcount}</color>
+  <color=red>{time}</color></size>
+prisoners_win: |-
+  <color=red><b><i>Gefangene gewinnen</i></b></color>
+  <color=red>{time}</color>
+jailers_win: |-
+  <color=#14AAF5><b><i>Wächter gewinnen</i></b></color>
+  <color=red>{time}</color>
+lockdown_on_cooldown: 'Du kannst keine Sperre auslösen, während sie in Abklingzeit ist. Verbleibende Abklingzeit: {cooldown}'
+lives_remaining: 'Du hast noch {lives} Leben übrig.'
+no_lives_remaining: 'Du hast keine Leben mehr übrig.'
+# ÄNDERE DAS NICHT. SONST GEHEN DINGE KAPUTT. AutoEvent verwaltet diese Einstellungen automatisch.
+version: '1.0.0'
+language: 'DE'

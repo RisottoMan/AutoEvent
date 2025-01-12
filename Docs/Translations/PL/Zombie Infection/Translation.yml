@@ -1,0 +1,23 @@
+name: 'Zainfekowane Zombie'
+description: 'Tryb Zombie, którego celem jest zainfekowanie wszystkich graczy.'
+command_name: 'zombie'
+start: |-
+  <color=#D71868><b><i>{name}</i></b></color>
+  <color=#ABF000>Pozostało <color=red>{time}</color>s do rozpoczęcia gry.</color>
+cycle: |-
+  <color=#D71868><b><i>{name}</i></b></color>
+  <color=yellow>Pozostało ludzi: <color=green>{count}</color></color>
+  <color=yellow>Upłynęło: <color=red>{time}</color></color>
+extra_time: |-
+  Extra time: {extratime}
+  <color=yellow><b><i>Ostatnia</i></b> osoba opuściła grę!</color>
+  <color=yellow>Upłynęło: <color=red>{time}</color></color>
+win: |-
+  <color=red>Zombie Wygrały!</color>
+  <color=yellow>Upłynęło: <color=red>{time}</color></color>
+lose: |-
+  <color=yellow><color=#D71868><b><i>Ludzie</i></b></color> Wygrali!</color>
+  <color=yellow>Upłynęło: <color=red>{time}</color></color>
+# DO NOT CHANGE THIS. IT WILL BREAK THINGS. AutoEvent will automatically manage these settings.
+version: '1.0.2'
+language: 'EN'

@@ -1,4 +1,4 @@
-# Winter Season Mini-Games               
+# Winter Season Mini-Games      
 
 ### Zombie Infection.
 #### Zombie infestation. the goal of which is to infect all players.

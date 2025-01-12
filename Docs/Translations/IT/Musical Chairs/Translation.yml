@@ -1,0 +1,27 @@
+name: 'Gioco della sedia'
+description: 'Competi uno contro l''altro per la sedia al ritmo'
+command_name: 'chair'
+start: |-
+  <color=#42aaff>Preparati a correre</color>
+  Il minigioco inizia tra <color=red>{time}</color>
+cycle: |-
+  <b><color=#42aaff>{name}</color></b>
+  <color=#ffff00>{state}</color>
+  <color=#008000>{count}</color> player rimasti</color>
+run_dont_touch: 'Corri, non toccare le piattaforme'
+stand_free: 'Vai nella piattaforma libera'
+stop_running: '<color=red>Hai smesso di correre</color>'
+touch_ahead: '<color=red>Hai toccato le piattaforme in anticipo</color>'
+no_time: '<color=red>Non sei arrivato in tempo su una piattaforma libera</color>'
+more_players: |-
+  <b><color=#42aaff>{name}</color></b>
+  <color=red>Gli admin hanno fermato il minigioco</color>
+winner: |-
+  <b><color=#42aaff>{name}</color></b>
+  <color=red>Vincitore: {winner}</color>
+all_died: |-
+  <b><color=#42aaff>{name}</color></b>
+  <color=red>Tutti i player sono morti</color>
+# DO NOT CHANGE THIS. IT WILL BREAK THINGS. AutoEvent will automatically manage these settings.
+version: '1.0.4'
+language: 'IT'

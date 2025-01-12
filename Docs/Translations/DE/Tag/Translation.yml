@@ -1,0 +1,21 @@
+name: 'Fangen'
+description: 'Wir müssen alle Spieler auf der Karte fangen.'
+command_name: 'tag'
+broadcast: |-
+  RENN!
+  Die Fänger werden ausgewählt. Versteckt euch jetzt!
+  Verbleibende Zeit: {time}
+cycle: |-
+  Fang einen anderen Spieler
+  <color=yellow><b><i>{time}</i></b> Sekunden übrig</color>
+hurt: 'Du hattest keine Zeit, jemanden zu fangen.'
+one_player: |-
+  Der Spieler hat gewonnen {winner}
+  <color=yellow>Event-Zeit <color=red>{time}</color></color>
+all_die: |-
+  Niemand hat überlebt.
+  Ende des Spiels
+  <color=yellow>Event-Zeit <color=red>{time}</color></color>
+# ÄNDERE DAS NICHT. SONST GEHEN DINGE KAPUTT. AutoEvent verwaltet diese Einstellungen automatisch.
+version: '1.0.2'
+language: 'DE'

@@ -1,0 +1,38 @@
+name: 'Counter-Strike'
+description: 'Walka Antyterrorystów z Terrorystami'
+command_name: 'cs'
+cycle: |-
+  <size=60>{name}</size>
+  <size=25><i>{task}</i>
+  <i><color=#42AAFF>{ctCount} Antyterroryści</color> <b>/</b> <color=green>{tCount} Terroryści</color></i>
+  <i>Czas Rundy: {time}</i></size>
+no_planted_counter: 'Zabezpiecz bomsite A i B przed terrorystami'
+no_planted_terror: 'Zaplantuj bombe na bombsite A lub B'
+planted_counter: '<color=red>Rozbrój bombe przed wybuchem</color>'
+planted_terror: '<color=red>Zabezpiecz bombe przed rozbrojeniem</color>'
+draw: |-
+  <b><color=#808080>Remis</color></b>
+  <i>Wszyscy zginęli</i>
+time_ended: |-
+  <b><color=#808080>Draw</color></b>
+  <i>Czas się skończył.</i>
+counter_win: |-
+  <b><color=#42AAFF>Antyterroryści wygrali</color></b>
+  <i>Wszyscy terroryści nie żyją</i>
+terrorist_win: |-
+  <b><color=green>Terroryści wygrali</color></b>
+  <i>Wszyscy antyterroryści nie żyją</i>
+planted_win: |-
+  <b><color=green>Terroryści wygrali</color></b>
+  <i>Bomba wybuchła</i>
+defused_win: |-
+  <b><color=#42AAFF>Antyterroryści wygrali</color></b>
+  <i>Bomba rozbrojona</i>
+you_planted: '<b><color=#ff4c5b>Zaplantowałeś bombę</color></b>'
+you_defused: '<b><color=#42aaff>Rozbroiłeś bombę</color></b>'
+hint_cycle: |-
+  <size=30><i><b>{name}</b>
+  {kills}
+# DO NOT CHANGE THIS. IT WILL BREAK THINGS. AutoEvent will automatically manage these settings.
+version: '1.0.0'
+language: 'EN'

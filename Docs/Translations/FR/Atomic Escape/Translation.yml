@@ -1,0 +1,16 @@
+name: 'Atomic Escape'
+description: 'Échappe-toi du site en tant que SCP-173'
+command_name: 'escape'
+before_start: |-
+  {name}
+  Préparez-vous à fuir le site
+  <color=red>Début dans la partie dans: {time} seconds</color>
+cycle: |-
+  {name}
+  <color=red>{time}</color> secondes avant l'' explosion!
+end: |-
+  {name}
+  <color=red>{players} Survivant </color>
+# DO NOT CHANGE THIS. IT WILL BREAK THINGS. AutoEvent will automatically manage these settings.
+version: '1.0.1'
+language: 'FR'

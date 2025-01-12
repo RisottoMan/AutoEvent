@@ -1,0 +1,31 @@
+name: 'Dodgeball'
+description: 'Besiege den Feind mit dem Ball.'
+command_name: 'dodge'
+start: |-
+  <color=#ffff00>Sei bereit, den Ball zu werfen</color>
+  Spielstart in: <color=red>{time}</color>
+cycle: |-
+  <b><color=#ffff00>{name}</color></b>
+  <color=#aad9ff>Wirf den Ball auf die Spieler</color>
+  Zeit: <color=red>{time}</color>
+all_died: |-
+  <b><color=#ffff00>{name}</color></b>
+  <color=red>Alle Spieler wurden eliminiert</color>
+  Zeit: <color=red>{time}</color>
+class_d_win: |-
+  <b><color=#ffff00>{name}</color></b>
+  <color=#ffa500>ClassD gewinnt</color>
+  Zeit: <color=red>{time}</color>
+scientist_win: |-
+  <b><color=#ffff00>{name}</color></b>
+  <color=#ffff00>Wissenschaftler gewinnen</color>
+  Zeit: <color=red>{time}</color>
+draw: |-
+  <b><color=#ffff00>{name}</color></b>
+  <color=#808080>Unentschieden</color>
+  Zeit: <color=red>{time}</color>
+redline: '<color=red>Du darfst die rote Linie nicht überschreiten</color>'
+knocked: '<color=red>Du wurdest von {killer} ausgeschaltet</color>'
+# ÄNDERE DAS NICHT. SONST GEHEN DINGE KAPUTT. AutoEvent verwaltet diese Einstellungen automatisch.
+version: '1.0.2'
+language: 'DE'
