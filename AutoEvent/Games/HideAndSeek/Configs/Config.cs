@@ -43,6 +43,7 @@ public class Config : EventConfig
 
     [Description("The amount of taggers that should spawn.")]
     public RoleCount TaggerCount { get; set; } = new RoleCount(1, 6, 35);
+    
     [Description("Can be used to disable the jailbird charging attack.")]
     public bool JailbirdCanCharge { get; set; } = false;
 

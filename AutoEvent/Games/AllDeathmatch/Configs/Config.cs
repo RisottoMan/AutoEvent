@@ -13,7 +13,7 @@ public class Config : EventConfig
     public int TimeMinutesRound { get; set; } = 10;
     
     [Description("A list of loadouts for team NTF")]
-    public List<Loadout> NTFLoadouts = new()
+    public List<Loadout> NTFLoadouts { get; set; } = new()
     {
         new Loadout()
         {
@@ -30,7 +30,7 @@ public class Config : EventConfig
     };
 
     [Description("The weapons a player can get once the round starts.")]
-    public List<ItemType> AvailableWeapons = new()
+    public List<ItemType> AvailableWeapons { get; set; } = new()
     {
         ItemType.GunAK,
         ItemType.GunCrossvec,

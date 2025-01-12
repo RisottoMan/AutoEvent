@@ -13,7 +13,7 @@ public class Config : EventConfig
     public int TotalTimeInSeconds { get; set; } = 105;
     
     [Description("A list of loadouts for team NTF")]
-    public List<Loadout> NTFLoadouts = new()
+    public List<Loadout> NTFLoadouts { get; set; } = new()
     {
         new Loadout()
         {
@@ -25,7 +25,7 @@ public class Config : EventConfig
     };
 
     [Description("A list of loadouts for team Chaos Insurgency")]
-    public List<Loadout> ChaosLoadouts = new()
+    public List<Loadout> ChaosLoadouts { get; set; } = new()
     {
         new Loadout()
         {

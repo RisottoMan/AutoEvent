@@ -35,7 +35,7 @@ public class Config : EventConfig
     public float PushPlayerCooldown { get; set; } = 5;
 
     [Description("A list of loadouts for team ClassD")]
-    public List<Loadout> PlayerLoadout = new()
+    public List<Loadout> PlayerLoadout { get; set; } = new()
     {
         new Loadout()
         {

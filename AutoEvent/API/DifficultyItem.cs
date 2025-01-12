@@ -4,6 +4,11 @@ using UnityEngine;
 namespace AutoEvent.API;
 public class DifficultyItem
 {
+    public DifficultyItem()
+    {
+        
+    }
+    
     public DifficultyItem(float start, float end)
     {
         StartingValue = start;

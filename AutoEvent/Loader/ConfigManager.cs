@@ -13,38 +13,49 @@ using PluginAPI.Core;
 namespace AutoEvent;
 public static class ConfigManager
 {
-    private static string _configPath { get; set; }
-    private static string _translationPath { get; set; }
+    private static string _configPath { get; } = Path.Combine(AutoEvent.BaseConfigPath, "configs.yml");
+    private static string _translationPath { get; } = Path.Combine(AutoEvent.BaseConfigPath, "translation.yml");
     public static void LoadConfigsAndTranslations()
     {
-        _configPath = Path.Combine(AutoEvent.BaseConfigPath, "config.yml");
-        _translationPath = Path.Combine(AutoEvent.BaseConfigPath, "translation.yml");
+        LoadConfigs();
+        LoadTranslations();
+    }
 
-        /*
-        // Load Configs
+    private static void LoadConfigs()
+    {
         try
         {
+            var configs = new Dictionary<string, object>();
+            
             if (!File.Exists(_configPath))
             {
-                var configs = new Dictionary<string, EventConfig>();
-                
                 foreach (var ev in AutoEvent.EventManager.Events.OrderBy(r => r.Name))
                 {
                     configs.Add(ev.Name, ev.InternalConfig);
                 }
                 
-                Save(_configPath, configs);
+                // Save the config file
+                File.WriteAllText(_configPath, Loader.Serializer.Serialize(configs));
             }
             else
             {
-                var eventConfigs = Load<Dictionary<string, EventConfig>>(_configPath);
-                foreach (var ev in AutoEvent.EventManager.Events)
+                configs = Loader.Deserializer.Deserialize<Dictionary<string, object>>(File.ReadAllText(_configPath));
+            }
+            
+            // Move translations to each mini-games
+            foreach (var ev in AutoEvent.EventManager.Events)
+            {
+                if (configs is null)
+                    continue;
+                
+                if (!configs.TryGetValue(ev.Name, out object rawDeserializedConfig))
                 {
-                    if (eventConfigs.TryGetValue(ev.Name, out EventConfig config))
-                    {
-                        ev.InternalConfig = config;
-                    }
+                    DebugLogger.LogDebug($"[ConfigManager] {ev.Name} doesn't have configs");
+                    continue;
                 }
+                
+                EventConfig translation = (EventConfig)Loader.Deserializer.Deserialize(Loader.Serializer.Serialize(rawDeserializedConfig), ev.InternalConfig.GetType());
+                ev.InternalConfig.CopyProperties(translation);
             }
             
             DebugLogger.LogDebug($"[ConfigManager] The configs of the mini-games are loaded.");
@@ -54,9 +65,10 @@ public static class ConfigManager
             DebugLogger.LogDebug($"[ConfigManager] cannot read from the config.", LogLevel.Error, true);
             DebugLogger.LogDebug($"{ex}", LogLevel.Debug);
         }
-        */
-        
-        // Load Translations
+    }
+    
+    private static void LoadTranslations()
+    { 
         try
         {
             var translations = new Dictionary<string, object>();

@@ -41,7 +41,7 @@ public class Config : EventConfig
     public bool UseRandomPlatformColors { get; set; } = false;
     
     [Description("A list of loadouts for team NTF")]
-    public List<Loadout> Loadout = new()
+    public List<Loadout> Loadout { get; set; } = new()
     {
         new Loadout()
         {

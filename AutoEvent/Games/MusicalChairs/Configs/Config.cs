@@ -26,7 +26,7 @@ public class Config : EventConfig
     }
 
     [Description("A loadout for players")]
-    public List<Loadout> PlayerLoadout = new()
+    public List<Loadout> PlayerLoadout { get; set; } = new()
     {
         new Loadout()
         {

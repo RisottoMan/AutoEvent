@@ -38,7 +38,7 @@ public class Config : EventConfig
     };
 
     [Description("A list of loadouts for team Scientist")]
-    public List<Loadout> ScientistLoadouts = new()
+    public List<Loadout> ScientistLoadouts { get; set; } = new()
     {
         new Loadout()
         {
