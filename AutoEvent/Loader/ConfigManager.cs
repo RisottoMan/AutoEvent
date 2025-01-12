@@ -65,7 +65,7 @@ public static class ConfigManager
             if (!File.Exists(_translationPath))
             {
                 string countryCode = new WebClient().DownloadString($"http://ipinfo.io/{Server.ServerIpAddress}/country").Trim();
-                string systemLanguage = new CultureInfo(countryCode.ToLower()).DisplayName.Split(' ')[0].ToLower();
+                string systemLanguage = new RegionInfo(countryCode).EnglishName.ToLower();
                 DebugLogger.LogDebug($"[ConfigManager] The translation.yml file was not found. Creating a new translation for {systemLanguage} language...");
                 translations = LoadTranslationFromAssembly(systemLanguage);
             }
