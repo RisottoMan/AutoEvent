@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -77,9 +76,8 @@ public static class ConfigManager
             if (!File.Exists(_translationPath))
             {
                 string countryCode = new WebClient().DownloadString($"http://ipinfo.io/{Server.ServerIpAddress}/country").Trim();
-                string systemLanguage = new RegionInfo(countryCode).EnglishName.ToLower();
-                DebugLogger.LogDebug($"[ConfigManager] The translation.yml file was not found. Creating a new translation for {systemLanguage} language...");
-                translations = LoadTranslationFromAssembly(systemLanguage);
+                DebugLogger.LogDebug($"[ConfigManager] The translation.yml file was not found. Creating a new translation for {countryCode} language...");
+                translations = LoadTranslationFromAssembly(countryCode);
             }
             // Otherwise, check language of the translation with the language of the config.
             else
@@ -121,12 +119,24 @@ public static class ConfigManager
         }
     }
 
-    private static Dictionary<string, object> LoadTranslationFromAssembly(string language)
+    public static bool ChangeLanguageByName(string language)
+    {
+        if (File.Exists(_translationPath))
+        {
+            File.Delete(_translationPath);
+        }
+        
+        return TryGetTranslationFromAssembly(language, _translationPath, out EventTranslation _);
+    }
+
+    public static List<string> ShowListOfLanguages() => _getLanguageByCountryCode.Values.ToList();
+    
+    private static Dictionary<string, object> LoadTranslationFromAssembly(string countryCode)
     {
         Dictionary<string, object> translations;
         
         // Try to get a translation from an assembly
-        if (!TryGetTranslationFromAssembly(language, _translationPath, out translations))
+        if (!TryGetTranslationFromAssembly(countryCode, _translationPath, out translations))
         {
             // Otherwise, create default translations from all mini-games.
             translations = new Dictionary<string, object>();
@@ -147,9 +157,9 @@ public static class ConfigManager
         return translations;
     }
 
-    private static bool TryGetTranslationFromAssembly<T>(string language, string path, out T translationFile)
+    private static bool TryGetTranslationFromAssembly<T>(string countryCode, string path, out T translationFile)
     {
-        if (language == "english")
+        if (!_getLanguageByCountryCode.TryGetValue(countryCode, out string language))
         {
             translationFile = default;
             return false;
@@ -189,4 +199,23 @@ public static class ConfigManager
         translationFile = default;
         return false;
     }
+
+    private static Dictionary<string, string> _getLanguageByCountryCode = new()
+    {
+        ["CN"] = "chinese",
+        ["FR"] = "french",
+        ["DE"] = "german",
+        ["NL"] = "german", //sorry :)
+        ["IT"] = "italian",
+        ["PL"] = "polish",
+        ["BR"] = "portuguese",
+        ["PT"] = "portuguese",
+        ["RU"] = "russian",
+        ["KZ"] = "russian",
+        ["BY"] = "russian",
+        ["UA"] = "russian", //sorry :)
+        //["BY"] = "spain", // not yet
+        ["TH"] = "thai",
+        ["TR"] = "turkish",
+    };
 }

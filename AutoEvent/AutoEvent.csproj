@@ -86,46 +86,6 @@
     <Content Include="..\Docs\Translations\*" Link="Docs\Translations\*" />
     <Content Include="..\README.md" Link="README.md" />
     <Content Include="FodyWeavers.xml" />
-    <EmbeddedResource Include="Translations\brazil.yml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <None Remove="Translations\thai.yml" />
-    <None Remove="Translations\turkish.yml" />
-    <EmbeddedResource Include="Translations\turkey.yml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <None Remove="Translations\portugal.yml" />
-    <EmbeddedResource Include="Translations\portugal.yml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <None Remove="Translations\china.yml" />
-    <EmbeddedResource Include="Translations\china.yml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <None Remove="Translations\france.yml" />
-    <EmbeddedResource Include="Translations\france.yml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <None Remove="Translations\germany.yml" />
-    <EmbeddedResource Include="Translations\germany.yml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <None Remove="Translations\italy.yml" />
-    <EmbeddedResource Include="Translations\italy.yml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <None Remove="Translations\poland.yml" />
-    <EmbeddedResource Include="Translations\poland.yml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <None Remove="Translations\russia.yml" />
-    <EmbeddedResource Include="Translations\russia.yml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <None Remove="Translations\thailand.yml" />
-    <EmbeddedResource Include="Translations\thailand.yml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Remove="Games\Dodgeball\Features\**" />
@@ -137,13 +97,42 @@
     <EmbeddedResource Remove="ReplaceTextWithVariables\*" />
     <EmbeddedResource Remove="InventoryMenu\**" />
     <EmbeddedResource Remove="InventoryMenu\*" />
-    <None Remove="Translations\russian.yml" />
     <None Remove="Translations\chinese.yml" />
-    <None Remove="Translations\french.yml" />
-    <None Remove="Translations\german.yml" />
+    <EmbeddedResource Include="Translations\chinese.yml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
     <None Remove="Translations\italian.yml" />
-    <None Remove="Translations\polish.yml" />
+    <EmbeddedResource Include="Translations\italian.yml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
     <None Remove="Translations\portuguese.yml" />
+    <EmbeddedResource Include="Translations\portuguese.yml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <None Remove="Translations\polish.yml" />
+    <EmbeddedResource Include="Translations\polish.yml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <None Remove="Translations\german.yml" />
+    <EmbeddedResource Include="Translations\german.yml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <None Remove="Translations\turkish.yml" />
+    <EmbeddedResource Include="Translations\turkish.yml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <None Remove="Translations\thai.yml" />
+    <EmbeddedResource Include="Translations\thai.yml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <None Remove="Translations\russian.yml" />
+    <EmbeddedResource Include="Translations\russian.yml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <None Remove="Translations\french.yml" />
+    <EmbeddedResource Include="Translations\french.yml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <None Remove="Games\Dodgeball\Features\**" />
@@ -166,6 +155,9 @@
     <Compile Remove="ReplaceTextWithVariables\*" />
     <Compile Remove="InventoryMenu\**" />
     <Compile Remove="InventoryMenu\*" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Translations\" />
   </ItemGroup>
   <Target Name="RemoveFile" BeforeTargets="ReplaceFile">
     <Exec Command="if exist $(SolutionDir)VersionInfo.cs del $(SolutionDir)VersionInfo.cs" />

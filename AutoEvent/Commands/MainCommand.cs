@@ -21,6 +21,7 @@ public class MainCommand : ParentCommand
             RegisterCommand(new Stop());
             //RegisterCommand(new Vote());
             RegisterCommand(new Volume());
+            RegisterCommand(new Language());
         }
         catch (Exception e)
         {
