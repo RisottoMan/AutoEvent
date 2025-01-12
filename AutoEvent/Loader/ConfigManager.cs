@@ -14,6 +14,7 @@ public static class ConfigManager
 {
     private static string _configPath { get; } = Path.Combine(AutoEvent.BaseConfigPath, "configs.yml");
     private static string _translationPath { get; } = Path.Combine(AutoEvent.BaseConfigPath, "translation.yml");
+    
     public static void LoadConfigsAndTranslations()
     {
         LoadConfigs();
@@ -76,6 +77,7 @@ public static class ConfigManager
             if (!File.Exists(_translationPath))
             {
                 string countryCode = new WebClient().DownloadString($"http://ipinfo.io/{Server.ServerIpAddress}/country").Trim();
+                countryCode = "ES";
                 DebugLogger.LogDebug($"[ConfigManager] The translation.yml file was not found. Creating a new translation for {countryCode} language...");
                 translations = LoadTranslationFromAssembly(countryCode);
             }
@@ -118,18 +120,6 @@ public static class ConfigManager
             DebugLogger.LogDebug($"{ex}", LogLevel.Debug);
         }
     }
-
-    public static bool ChangeLanguageByName(string language)
-    {
-        if (File.Exists(_translationPath))
-        {
-            File.Delete(_translationPath);
-        }
-        
-        return TryGetTranslationFromAssembly(language, _translationPath, out EventTranslation _);
-    }
-
-    public static List<string> ShowListOfLanguages() => _getLanguageByCountryCode.Values.ToList();
     
     private static Dictionary<string, object> LoadTranslationFromAssembly(string countryCode)
     {
@@ -214,7 +204,7 @@ public static class ConfigManager
         ["KZ"] = "russian",
         ["BY"] = "russian",
         ["UA"] = "russian", //sorry :)
-        //["BY"] = "spain", // not yet
+        ["ES"] = "spanish",
         ["TH"] = "thai",
         ["TR"] = "turkish",
     };

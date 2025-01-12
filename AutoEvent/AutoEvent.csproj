@@ -133,6 +133,10 @@
     <EmbeddedResource Include="Translations\french.yml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
+    <None Remove="Translations\spanish.yml" />
+    <EmbeddedResource Include="Translations\spanish.yml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <None Remove="Games\Dodgeball\Features\**" />
