@@ -99,7 +99,7 @@ public class EventHandler
         
         DebugLogger.LogDebug($"Getting player {player.Nickname} weapon.");
         player.EnableEffect<SpawnProtected>(.1f);
-        player.Heal(100);
+        player.Heal(500); // Since the player does not die, his hp goes into negative hp, so need to completely heal the player.
         player.ClearItems();
         
         if (player.CurrentItem == null)

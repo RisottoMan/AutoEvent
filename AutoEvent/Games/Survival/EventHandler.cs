@@ -4,6 +4,7 @@ using System.Linq;
 using Exiled.API.Enums;
 using Exiled.API.Features;
 using Exiled.Events.EventArgs.Player;
+using MEC;
 
 namespace AutoEvent.Games.Survival;
 public class EventHandler
@@ -24,16 +25,15 @@ public class EventHandler
         if (ev.Attacker == null || ev.Player == null)
             return;
             
-        if (ev.Attacker.IsScp && !ev.Player.IsScp)
+        if (ev.Attacker.IsScp && ev.Player.IsHuman)
         {
-            if (ev.Player.Health <= 50)
+            if (ev.Player.ArtificialHealth <= 50)
             {
                 SpawnZombie(ev.Player);
             }
             else
             {
-                ev.Amount = 0;
-                ev.Player.Health -= 50;
+                ev.IsAllowed = false;
                 ev.Player.ArtificialHealth = 0;
             }
 
@@ -53,8 +53,14 @@ public class EventHandler
 
     public void OnDying(DyingEventArgs ev)
     {
-        ev.IsAllowed = false;
-        SpawnZombie(ev.Player);
+        Timing.CallDelayed(5f, () =>
+        {
+            // game not ended
+            if (Player.List.Count(r => r.IsScp) > 0 && Player.List.Count(r => r.IsHuman) > 0)
+            {
+                SpawnZombie(ev.Player);
+            }
+        });
     }
 
     public void OnJoined(JoinedEventArgs ev)
@@ -68,7 +74,6 @@ public class EventHandler
             ev.Player.GiveLoadout(_plugin.Config.PlayerLoadouts);
             ev.Player.Position = _plugin.SpawnList.RandomItem().transform.position;
             ev.Player.CurrentItem = ev.Player.Items.ElementAt(1);
-            Extensions.SetPlayerAhp(ev.Player, 100, 100, 0);
         }
     }
 

@@ -1,8 +1,10 @@
 ﻿using CustomPlayerEffects;
 using PlayerRoles;
 using System.Linq;
+using Exiled.API.Enums;
 using Exiled.API.Features;
 using Exiled.Events.EventArgs.Player;
+using MEC;
 
 namespace AutoEvent.Games.Deathmatch;
 public class EventHandler
@@ -48,10 +50,10 @@ public class EventHandler
         {
             _plugin.MtfKills++;
         }
-
+        
         ev.Player.EnableEffect<Flashed>(0.1f);
-        ev.Player.EnableEffect<SpawnProtected>(.1f);
-        ev.Player.Heal(100);
+        ev.Player.EnableEffect<SpawnProtected>(0.1f);
+        ev.Player.Heal(500); // Since the player does not die, his hp goes into negative hp, so need to completely heal the player.
         ev.Player.ClearItems();
         
         if (ev.Player.CurrentItem == null)

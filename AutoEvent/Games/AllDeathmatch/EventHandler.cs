@@ -42,7 +42,7 @@ public class EventHandler
     {
         player.EnableEffect<Flashed>(0.1f);
         player.EnableEffect<SpawnProtected>(.1f);
-        player.Heal(100);
+        player.Heal(500); // Since the player does not die, his hp goes into negative hp, so need to completely heal the player.
         player.ClearItems();
         
         if (!player.IsAlive)

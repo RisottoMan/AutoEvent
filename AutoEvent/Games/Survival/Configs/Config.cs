@@ -40,6 +40,12 @@ public class Config : EventConfig
                 ItemType.GunCOM18,
                 ItemType.ArmorCombat,
             },
+            ArtificialHealth = new ArtificialHealth()
+            {
+                InitialAmount = 100,
+                MaxAmount = 100,
+                Duration = 0
+            },
             Effects = new List<Effect>() { new(EffectType.FogControl, 0) },
             InfiniteAmmo = AmmoMode.InfiniteAmmo
         },
@@ -52,17 +58,11 @@ public class Config : EventConfig
                 ItemType.GunCOM18,
                 ItemType.ArmorCombat,
             },
-            Effects = new List<Effect>() { new(EffectType.FogControl, 0) },
-            InfiniteAmmo = AmmoMode.InfiniteAmmo
-        },
-        new()
-        {
-            Roles = new Dictionary<RoleTypeId, int>() { { RoleTypeId.NtfSergeant, 100 } },
-            Items = new List<ItemType>()
+            ArtificialHealth = new ArtificialHealth()
             {
-                ItemType.GunShotgun,
-                ItemType.GunCOM18,
-                ItemType.ArmorCombat,
+                InitialAmount = 100,
+                MaxAmount = 100,
+                Duration = 0
             },
             Effects = new List<Effect>() { new(EffectType.FogControl, 0) },
             InfiniteAmmo = AmmoMode.InfiniteAmmo
@@ -74,13 +74,14 @@ public class Config : EventConfig
     {
         new Loadout()
         {
-            Roles = new Dictionary<RoleTypeId, int>() { { RoleTypeId.Scp0492, 3000 } },
+            Roles = new Dictionary<RoleTypeId, int>() { { RoleTypeId.Scp0492, 100 } },
             Effects = new List<Effect>()
             {
                 new(EffectType.Disabled, 0),
                 new(EffectType.Scp1853, 0),
                 new(EffectType.FogControl, 0)
-            }
+            },
+            Health = 2000
         }
     };
     
