@@ -1,30 +1,16 @@
-﻿// <copyright file="Log.cs" company="Redforce04#4091">
-// Copyright (c) Redforce04. All rights reserved.
-// </copyright>
-// -----------------------------------------
-//    Solution:         AutoEvent
-//    Project:          AutoEvent
-//    FileName:         SoundInfo.cs
-//    Author:           Redforce04#4091
-//    Revision Date:    09/06/2023 5:04 PM
-//    Created Date:     09/06/2023 5:04 PM
-// -----------------------------------------
-
-using SCPSLAudioApi.AudioCore;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using YamlDotNet.Serialization;
 
 namespace AutoEvent.Interfaces;
-
 public class SoundInfo
 {
     public SoundInfo() { }
-    public SoundInfo(string name, byte volume = 10, bool loop = true, AudioPlayerBase audioPlayerBase = null)
+    public SoundInfo(string name, byte volume = 10, bool loop = true, AudioPlayer audioPlayerApi = null)
     {
         SoundName = name;
         Volume = volume;
         Loop = loop;
-        AudioPlayerBase = audioPlayerBase;
+        AudioPlayer = audioPlayerApi;
     }
     [Description("The name of the sound.")]
     public string SoundName { get; set; }
@@ -36,7 +22,7 @@ public class SoundInfo
     public bool Loop { get; set; } = true;
 
     [Description("The object that plays music.")]
-    public AudioPlayerBase AudioPlayerBase { get; set; }
+    public AudioPlayer AudioPlayer { get; set; }
 
     [YamlIgnore]
     public bool StartAutomatically { get; set; } = true;

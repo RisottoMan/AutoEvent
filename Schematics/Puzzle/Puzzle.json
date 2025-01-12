@@ -1,10 +1,10 @@
 {
-  "RootObjectId": 42310,
+  "RootObjectId": -32898,
   "Blocks": [
     {
       "Name": "Point Light",
-      "ObjectId": 72648,
-      "ParentId": 42310,
+      "ObjectId": -32904,
+      "ParentId": -32898,
       "Position": {
         "x": 0.0,
         "y": 16.0,
@@ -20,8 +20,8 @@
     },
     {
       "Name": "Spawnpoint",
-      "ObjectId": 61420,
-      "ParentId": 42310,
+      "ObjectId": -32910,
+      "ParentId": -32898,
       "Position": {
         "x": -0.34,
         "y": 12.44,
@@ -36,8 +36,8 @@
     },
     {
       "Name": "Lava",
-      "ObjectId": 44830,
-      "ParentId": 42310,
+      "ObjectId": -32914,
+      "ParentId": -32898,
       "Position": {
         "x": 0.025,
         "y": 2.284,
@@ -62,8 +62,8 @@
     },
     {
       "Name": "Quad",
-      "ObjectId": 33026,
-      "ParentId": 42310,
+      "ObjectId": -32924,
+      "ParentId": -32898,
       "Position": {
         "x": 12.0620012,
         "y": 8.848002,
@@ -88,8 +88,8 @@
     },
     {
       "Name": "Quad",
-      "ObjectId": 26730,
-      "ParentId": 42310,
+      "ObjectId": -32934,
+      "ParentId": -32898,
       "Position": {
         "x": -12.3779993,
         "y": 8.769002,
@@ -114,8 +114,8 @@
     },
     {
       "Name": "Quad",
-      "ObjectId": 50748,
-      "ParentId": 42310,
+      "ObjectId": -32944,
+      "ParentId": -32898,
       "Position": {
         "x": -0.1749978,
         "y": 8.853002,
@@ -140,8 +140,8 @@
     },
     {
       "Name": "Quad",
-      "ObjectId": 80992,
-      "ParentId": 42310,
+      "ObjectId": -32954,
+      "ParentId": -32898,
       "Position": {
         "x": -0.221000671,
         "y": 8.809001,
@@ -166,8 +166,8 @@
     },
     {
       "Name": "Quad",
-      "ObjectId": 53124,
-      "ParentId": 42310,
+      "ObjectId": -32964,
+      "ParentId": -32898,
       "Position": {
         "x": 0.0,
         "y": 0.0,
@@ -192,8 +192,8 @@
     },
     {
       "Name": "Quad",
-      "ObjectId": 52714,
-      "ParentId": 42310,
+      "ObjectId": -32974,
+      "ParentId": -32898,
       "Position": {
         "x": -0.07899857,
         "y": 17.8139248,
@@ -218,8 +218,8 @@
     },
     {
       "Name": "Indicator",
-      "ObjectId": 60322,
-      "ParentId": 42310,
+      "ObjectId": -32984,
+      "ParentId": -32898,
       "Position": {
         "x": -0.46,
         "y": 13.37,
@@ -244,8 +244,8 @@
     },
     {
       "Name": "Indicator",
-      "ObjectId": 87216,
-      "ParentId": 42310,
+      "ObjectId": -32994,
+      "ParentId": -32898,
       "Position": {
         "x": -0.46,
         "y": 13.37,
@@ -265,6 +265,656 @@
       "Properties": {
         "PrimitiveType": 3,
         "Color": "C600FFFF",
+        "PrimitiveFlags": 3
+      }
+    },
+    {
+      "Name": "Platform",
+      "ObjectId": -33004,
+      "ParentId": -32898,
+      "Position": {
+        "x": -0.200000286,
+        "y": 5.42,
+        "z": -0.1000011
+      },
+      "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "Scale": {
+        "x": 4.0,
+        "y": 5.0,
+        "z": 4.0
+      },
+      "BlockType": 1,
+      "Properties": {
+        "PrimitiveType": 3,
+        "Color": "00973FFF",
+        "PrimitiveFlags": 3
+      }
+    },
+    {
+      "Name": "Platform",
+      "ObjectId": -33014,
+      "ParentId": -32898,
+      "Position": {
+        "x": -0.200000048,
+        "y": 5.42,
+        "z": 4.46
+      },
+      "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "Scale": {
+        "x": 4.0,
+        "y": 5.0,
+        "z": 4.0
+      },
+      "BlockType": 1,
+      "Properties": {
+        "PrimitiveType": 3,
+        "Color": "00973FFF",
+        "PrimitiveFlags": 3
+      }
+    },
+    {
+      "Name": "Platform",
+      "ObjectId": -33024,
+      "ParentId": -32898,
+      "Position": {
+        "x": -0.200000286,
+        "y": 5.42,
+        "z": 8.970001
+      },
+      "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "Scale": {
+        "x": 4.0,
+        "y": 5.0,
+        "z": 4.0
+      },
+      "BlockType": 1,
+      "Properties": {
+        "PrimitiveType": 3,
+        "Color": "00973FFF",
+        "PrimitiveFlags": 3
+      }
+    },
+    {
+      "Name": "Platform",
+      "ObjectId": -33034,
+      "ParentId": -32898,
+      "Position": {
+        "x": 4.32,
+        "y": 5.42,
+        "z": -0.1000011
+      },
+      "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "Scale": {
+        "x": 4.0,
+        "y": 5.0,
+        "z": 4.0
+      },
+      "BlockType": 1,
+      "Properties": {
+        "PrimitiveType": 3,
+        "Color": "00973FFF",
+        "PrimitiveFlags": 3
+      }
+    },
+    {
+      "Name": "Platform",
+      "ObjectId": -33044,
+      "ParentId": -32898,
+      "Position": {
+        "x": 4.32,
+        "y": 5.42,
+        "z": 4.46
+      },
+      "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "Scale": {
+        "x": 4.0,
+        "y": 5.0,
+        "z": 4.0
+      },
+      "BlockType": 1,
+      "Properties": {
+        "PrimitiveType": 3,
+        "Color": "00973FFF",
+        "PrimitiveFlags": 3
+      }
+    },
+    {
+      "Name": "Platform",
+      "ObjectId": -33054,
+      "ParentId": -32898,
+      "Position": {
+        "x": 4.32,
+        "y": 5.42,
+        "z": 8.970001
+      },
+      "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "Scale": {
+        "x": 4.0,
+        "y": 5.0,
+        "z": 4.0
+      },
+      "BlockType": 1,
+      "Properties": {
+        "PrimitiveType": 3,
+        "Color": "00973FFF",
+        "PrimitiveFlags": 3
+      }
+    },
+    {
+      "Name": "Platform",
+      "ObjectId": -33064,
+      "ParentId": -32898,
+      "Position": {
+        "x": 8.75,
+        "y": 5.42,
+        "z": -0.1000011
+      },
+      "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "Scale": {
+        "x": 4.0,
+        "y": 5.0,
+        "z": 4.0
+      },
+      "BlockType": 1,
+      "Properties": {
+        "PrimitiveType": 3,
+        "Color": "00973FFF",
+        "PrimitiveFlags": 3
+      }
+    },
+    {
+      "Name": "Platform",
+      "ObjectId": -33074,
+      "ParentId": -32898,
+      "Position": {
+        "x": 8.75,
+        "y": 5.42,
+        "z": 4.46
+      },
+      "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "Scale": {
+        "x": 4.0,
+        "y": 5.0,
+        "z": 4.0
+      },
+      "BlockType": 1,
+      "Properties": {
+        "PrimitiveType": 3,
+        "Color": "00973FFF",
+        "PrimitiveFlags": 3
+      }
+    },
+    {
+      "Name": "Platform",
+      "ObjectId": -33084,
+      "ParentId": -32898,
+      "Position": {
+        "x": 8.75,
+        "y": 5.42,
+        "z": 8.970001
+      },
+      "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "Scale": {
+        "x": 4.0,
+        "y": 5.0,
+        "z": 4.0
+      },
+      "BlockType": 1,
+      "Properties": {
+        "PrimitiveType": 3,
+        "Color": "00973FFF",
+        "PrimitiveFlags": 3
+      }
+    },
+    {
+      "Name": "Platform",
+      "ObjectId": -33094,
+      "ParentId": -32898,
+      "Position": {
+        "x": -4.65,
+        "y": 5.42,
+        "z": -0.1000011
+      },
+      "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "Scale": {
+        "x": 4.0,
+        "y": 5.0,
+        "z": 4.0
+      },
+      "BlockType": 1,
+      "Properties": {
+        "PrimitiveType": 3,
+        "Color": "00973FFF",
+        "PrimitiveFlags": 3
+      }
+    },
+    {
+      "Name": "Platform",
+      "ObjectId": -33104,
+      "ParentId": -32898,
+      "Position": {
+        "x": -4.65,
+        "y": 5.42,
+        "z": 4.46
+      },
+      "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "Scale": {
+        "x": 4.0,
+        "y": 5.0,
+        "z": 4.0
+      },
+      "BlockType": 1,
+      "Properties": {
+        "PrimitiveType": 3,
+        "Color": "00973FFF",
+        "PrimitiveFlags": 3
+      }
+    },
+    {
+      "Name": "Platform",
+      "ObjectId": -33114,
+      "ParentId": -32898,
+      "Position": {
+        "x": -4.65,
+        "y": 5.42,
+        "z": 8.970001
+      },
+      "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "Scale": {
+        "x": 4.0,
+        "y": 5.0,
+        "z": 4.0
+      },
+      "BlockType": 1,
+      "Properties": {
+        "PrimitiveType": 3,
+        "Color": "00973FFF",
+        "PrimitiveFlags": 3
+      }
+    },
+    {
+      "Name": "Platform",
+      "ObjectId": -33124,
+      "ParentId": -32898,
+      "Position": {
+        "x": -0.200000286,
+        "y": 5.42,
+        "z": -4.59
+      },
+      "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "Scale": {
+        "x": 4.0,
+        "y": 5.0,
+        "z": 4.0
+      },
+      "BlockType": 1,
+      "Properties": {
+        "PrimitiveType": 3,
+        "Color": "00973FFF",
+        "PrimitiveFlags": 3
+      }
+    },
+    {
+      "Name": "Platform",
+      "ObjectId": -33134,
+      "ParentId": -32898,
+      "Position": {
+        "x": 4.32,
+        "y": 5.42,
+        "z": -4.59
+      },
+      "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "Scale": {
+        "x": 4.0,
+        "y": 5.0,
+        "z": 4.0
+      },
+      "BlockType": 1,
+      "Properties": {
+        "PrimitiveType": 3,
+        "Color": "00973FFF",
+        "PrimitiveFlags": 3
+      }
+    },
+    {
+      "Name": "Platform",
+      "ObjectId": -33144,
+      "ParentId": -32898,
+      "Position": {
+        "x": 8.75,
+        "y": 5.42,
+        "z": -4.59
+      },
+      "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "Scale": {
+        "x": 4.0,
+        "y": 5.0,
+        "z": 4.0
+      },
+      "BlockType": 1,
+      "Properties": {
+        "PrimitiveType": 3,
+        "Color": "00973FFF",
+        "PrimitiveFlags": 3
+      }
+    },
+    {
+      "Name": "Platform",
+      "ObjectId": -33154,
+      "ParentId": -32898,
+      "Position": {
+        "x": -4.65,
+        "y": 5.42,
+        "z": -4.59000063
+      },
+      "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "Scale": {
+        "x": 4.0,
+        "y": 5.0,
+        "z": 4.0
+      },
+      "BlockType": 1,
+      "Properties": {
+        "PrimitiveType": 3,
+        "Color": "00973FFF",
+        "PrimitiveFlags": 3
+      }
+    },
+    {
+      "Name": "Platform",
+      "ObjectId": -33164,
+      "ParentId": -32898,
+      "Position": {
+        "x": -0.200000286,
+        "y": 5.42,
+        "z": -9.16
+      },
+      "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "Scale": {
+        "x": 4.0,
+        "y": 5.0,
+        "z": 4.0
+      },
+      "BlockType": 1,
+      "Properties": {
+        "PrimitiveType": 3,
+        "Color": "00973FFF",
+        "PrimitiveFlags": 3
+      }
+    },
+    {
+      "Name": "Platform",
+      "ObjectId": -33174,
+      "ParentId": -32898,
+      "Position": {
+        "x": 4.32,
+        "y": 5.42,
+        "z": -9.16
+      },
+      "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "Scale": {
+        "x": 4.0,
+        "y": 5.0,
+        "z": 4.0
+      },
+      "BlockType": 1,
+      "Properties": {
+        "PrimitiveType": 3,
+        "Color": "00973FFF",
+        "PrimitiveFlags": 3
+      }
+    },
+    {
+      "Name": "Platform",
+      "ObjectId": -33184,
+      "ParentId": -32898,
+      "Position": {
+        "x": 8.75,
+        "y": 5.42,
+        "z": -9.16
+      },
+      "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "Scale": {
+        "x": 4.0,
+        "y": 5.0,
+        "z": 4.0
+      },
+      "BlockType": 1,
+      "Properties": {
+        "PrimitiveType": 3,
+        "Color": "00973FFF",
+        "PrimitiveFlags": 3
+      }
+    },
+    {
+      "Name": "Platform",
+      "ObjectId": -33194,
+      "ParentId": -32898,
+      "Position": {
+        "x": -4.65,
+        "y": 5.42,
+        "z": -9.16
+      },
+      "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "Scale": {
+        "x": 4.0,
+        "y": 5.0,
+        "z": 4.0
+      },
+      "BlockType": 1,
+      "Properties": {
+        "PrimitiveType": 3,
+        "Color": "00973FFF",
+        "PrimitiveFlags": 3
+      }
+    },
+    {
+      "Name": "Platform",
+      "ObjectId": -33204,
+      "ParentId": -32898,
+      "Position": {
+        "x": -9.18,
+        "y": 5.42,
+        "z": -0.1000011
+      },
+      "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "Scale": {
+        "x": 4.0,
+        "y": 5.0,
+        "z": 4.0
+      },
+      "BlockType": 1,
+      "Properties": {
+        "PrimitiveType": 3,
+        "Color": "00973FFF",
+        "PrimitiveFlags": 3
+      }
+    },
+    {
+      "Name": "Platform",
+      "ObjectId": -33214,
+      "ParentId": -32898,
+      "Position": {
+        "x": -9.18,
+        "y": 5.42,
+        "z": 4.46
+      },
+      "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "Scale": {
+        "x": 4.0,
+        "y": 5.0,
+        "z": 4.0
+      },
+      "BlockType": 1,
+      "Properties": {
+        "PrimitiveType": 3,
+        "Color": "00973FFF",
+        "PrimitiveFlags": 3
+      }
+    },
+    {
+      "Name": "Platform",
+      "ObjectId": -33224,
+      "ParentId": -32898,
+      "Position": {
+        "x": -9.18,
+        "y": 5.42,
+        "z": 8.970001
+      },
+      "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "Scale": {
+        "x": 4.0,
+        "y": 5.0,
+        "z": 4.0
+      },
+      "BlockType": 1,
+      "Properties": {
+        "PrimitiveType": 3,
+        "Color": "00973FFF",
+        "PrimitiveFlags": 3
+      }
+    },
+    {
+      "Name": "Platform",
+      "ObjectId": -33234,
+      "ParentId": -32898,
+      "Position": {
+        "x": -9.18,
+        "y": 5.42,
+        "z": -4.59000063
+      },
+      "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "Scale": {
+        "x": 4.0,
+        "y": 5.0,
+        "z": 4.0
+      },
+      "BlockType": 1,
+      "Properties": {
+        "PrimitiveType": 3,
+        "Color": "00973FFF",
+        "PrimitiveFlags": 3
+      }
+    },
+    {
+      "Name": "Platform",
+      "ObjectId": -33244,
+      "ParentId": -32898,
+      "Position": {
+        "x": -9.18,
+        "y": 5.42,
+        "z": -9.16
+      },
+      "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "Scale": {
+        "x": 4.0,
+        "y": 5.0,
+        "z": 4.0
+      },
+      "BlockType": 1,
+      "Properties": {
+        "PrimitiveType": 3,
+        "Color": "00973FFF",
         "PrimitiveFlags": 3
       }
     }

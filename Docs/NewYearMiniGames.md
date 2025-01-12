@@ -1,4 +1,4 @@
-# Winter Season Mini-Games     
+# Winter Season Mini-Games      
 
 ### Zombie Infection.
 #### Zombie infestation. the goal of which is to infect all players.
@@ -9,11 +9,6 @@
 #### Grenades begin to spawn on the map.
 #### Survive to win.
 ![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/DeathParty-winter.png)
-
-### Boss
-#### A boss appears on the map and wants to kill everyone.
-#### Kill him to win.
-![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/Boss-winter.png)
 
 ### SnowBall
 #### Both teams have balls.
@@ -33,7 +28,7 @@
 ### Red Light Green Light 
 #### Red light, Green light. the goal is to run behind Santa Claus, who will simultaneously turn around and watch so that you don’t move.
 #### When Santa Claus is looking at you you can’t walk, when he’s not looking at you you can.
-![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/Light-winter.png)
+![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/GreenLightWinterLight.png)
 
 ### Knives
 #### Knife fight between two teams.
@@ -79,10 +74,10 @@
 #### Score 3 goals to win
 ![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/Football_Winter.png)
 
-### Green Light Red Light
-#### Reach the end of the finish line
-![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/GreenLightWinterLight.png)
-
 ### Spleef
 #### Shoot at the platforms and don't fall into the void
 ![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/Spleef_Winter.png)
+
+### Survival
+#### Humans surviving from zombies
+![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/Survival_Winter.png)

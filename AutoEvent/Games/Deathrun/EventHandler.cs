@@ -1,19 +1,18 @@
-﻿using AutoEvent.Events.EventArgs;
-using PlayerRoles;
-using PluginAPI.Core.Attributes;
-using PluginAPI.Enums;
-using PluginAPI.Events;
+using Exiled.Events.EventArgs.Player;
+using UnityEngine;
 
 namespace AutoEvent.Games.Deathrun;
 public class EventHandler
 {
-    [PluginEvent(ServerEventType.PlayerJoined)]
-    public void OnJoin(PlayerJoinedEvent ev)
+    public void OnSearchingPickup(SearchingPickupEventArgs ev)
     {
-        ev.Player.SetRole(RoleTypeId.Spectator);
+        ev.IsAllowed = false;
+
+        // Start the animation when click on the button
+        Animator animator = ev.Pickup.GameObject.GetComponentInParent<Animator>();
+        if (animator != null)
+        {
+            animator.Play(animator.name + "action");
+        }
     }
-    
-    public void OnTeamRespawn(TeamRespawnArgs ev) => ev.IsAllowed = false;
-    public void OnDropItem(DropItemArgs ev) => ev.IsAllowed = false;
-    public void OnDropAmmo(DropAmmoArgs ev) => ev.IsAllowed = false;
 }

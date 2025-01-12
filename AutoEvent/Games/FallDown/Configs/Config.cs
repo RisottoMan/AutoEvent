@@ -3,6 +3,9 @@ using System.ComponentModel;
 using AutoEvent.API;
 using AutoEvent.API.Season.Enum;
 using AutoEvent.Interfaces;
+using Exiled.API.Enums;
+using Exiled.API.Features;
+using PlayerRoles;
 using UnityEngine;
 
 namespace AutoEvent.Games.FallDown;
@@ -17,9 +20,8 @@ public class Config : EventConfig
 
         if (AvailableMaps.Count < 1)
         {
-            AvailableMaps.Add(new MapChance(50, new MapInfo("FallDown", new Vector3(10f, 1020f, -43.68f))));
-            AvailableMaps.Add(new MapChance(50, new MapInfo("FallDown_Xmas2024", new Vector3(10f, 1020f, -43.68f)), SeasonFlag.Christmas));
-            AvailableMaps.Add(new MapChance(50, new MapInfo("FallDown_Xmas2024", new Vector3(10f, 1020f, -43.68f)), SeasonFlag.NewYear));
+            AvailableMaps.Add(new MapChance(50, new MapInfo("FallDown", new Vector3(0f, 40f, 0f))));
+            AvailableMaps.Add(new MapChance(50, new MapInfo("FallDown_Xmas2024", new Vector3(0f, 40f, 0f)), SeasonFlags.Christmas));
         }
     }
 
@@ -31,4 +33,14 @@ public class Config : EventConfig
     
     [Description("Should platforms have a color warning for when they are about to fall.")]
     public bool PlatformsHaveColorWarning { get; set; } = false;
+    
+    [Description("A List of Loadouts to use.")]
+    public List<Loadout> Loadouts { get; set; } = new()
+    {
+        new Loadout()
+        {
+            Roles = new Dictionary<RoleTypeId, int>(){ { RoleTypeId.ClassD, 100 } },
+            Effects = new List<Effect>() { new(EffectType.FogControl, 0) },
+        }
+    };
 }

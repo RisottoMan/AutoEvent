@@ -1,34 +1,27 @@
 ﻿using AutoEvent.Interfaces;
 using CommandSystem;
 using System;
-using System.Linq;
-using AutoEvent.API;
 using MEC;
 using PluginAPI.Core;
-using PlayerRoles;
-#if EXILED
 using Exiled.Permissions.Extensions;
-#endif
 
 namespace AutoEvent.Commands;
-internal class Vote : ICommand, IUsageProvider, IPermission
+internal class Vote : ICommand, IUsageProvider
 {
     public string Command => nameof(Vote);
     public string Description => "Starts voting for mini-game, 1 argument - the command name of the event";
-    public string[] Aliases => new string[] { };
-    public string[] Usage => new string[] { "Event Name" };
-    public string Permission { get; set; } = "ev.vote";
-    public bool SanitizeResponse => false;
+    public string[] Aliases => [];
+    public string[] Usage => ["Event Name"];
     public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
     {
-        if (!sender.CheckPermission(((IPermission)this).Permission, out bool IsConsoleCommandSender))
+        if (!sender.CheckPermission("ev.vote"))
         {
             response = "<color=red>You do not have permission to use this command!</color>";
             return false;
         }
-        if (AutoEvent.ActiveEvent != null)
+        if (AutoEvent.EventManager.CurrentEvent != null)
         {
-            response = $"The mini-game {AutoEvent.ActiveEvent.Name} is already running!";
+            response = $"The mini-game {AutoEvent.EventManager.CurrentEvent.Name} is already running!";
             return false;
         }
 
@@ -38,20 +31,22 @@ internal class Vote : ICommand, IUsageProvider, IPermission
             return false;
         }
 
+        /*
         Event ev = Event.GetEvent(arguments.At(0));
         if (ev == null || ev is IHidden)
         {
             response = $"The mini-game {arguments.At(0)} is not found.";
             return false;
-        }
+        }*/
         
-        Event vote = Event.GetEvent("Vote");
+        Event vote = AutoEvent.EventManager.GetEvent("Vote");
         if (vote is null)
         {
             response = $"The vote is not found.";
             return false;
         }
 
+        /*
         IVote comp = vote as IVote;
         if (comp == null)
         {
@@ -59,7 +54,7 @@ internal class Vote : ICommand, IUsageProvider, IPermission
             return false;
         }
 
-        comp.NewEvent = ev;
+        comp.NewEvent = ev;*/
         Round.IsLocked = true;
 
         if (!Round.IsRoundStarted)
@@ -70,16 +65,16 @@ internal class Vote : ICommand, IUsageProvider, IPermission
 
                 Extensions.TeleportEnd();
                 vote.StartEvent();
-                AutoEvent.ActiveEvent = vote;
+                AutoEvent.EventManager.CurrentEvent = vote;
             });
         }
         else
         {
             vote.StartEvent();
-            AutoEvent.ActiveEvent = vote;
+            AutoEvent.EventManager.CurrentEvent = vote;
         }
 
-        response = $"The vote {ev.Name} has started!";
+        response = $"The vote NAME has started!"; //$"The vote {ev.Name} has started!"
         return true;
     }
 }

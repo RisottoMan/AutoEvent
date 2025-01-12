@@ -1,0 +1,480 @@
+Airstrike Party:
+  cycle: |-
+    <color=yellow>Hava saldırılarından kaçının!</color>
+    <color=green>{time} saniye geçti</color>
+    <color=red>{count} oyuncu kaldı</color>
+  more_player: |-
+    <color=red>Ölüm Partisi</color>
+    <color=yellow><color=red>{count}</color> oyuncu hayatta kaldı.</color>
+    <color=#ffc0cb>{time}</color>
+  one_player: |-
+    <color=red>Ölüm Partisi</color>
+    <color=yellow>Kazanan - <color=red>{winner}</color></color>
+    <color=#ffc0cb>{time}</color>
+  all_die: |-
+    <color=red>Ölüm Partisi</color>
+    <color=yellow>Kimse sağ kalamadı.(((</color>
+    <color=#ffc0cb>{time}</color>
+  name: 'Bombardıman Partisi'
+  description: 'Üzerinize yağan hava saldırıları arasında hayatta kalmaya çalışın.'
+  command_name: 'airstrike'
+All Deathmatch:
+  cycle: |-
+    <size=30><i><b>{name}</b>
+    <color=red>Senin öldürmen - {kills}/{needKills}</color>
+    Round zamanı: {time}</i></size>
+  no_players: |-
+    <color=red>Oyun yönetici tarafından bitirildi
+    Öldürme sayın {count}</color>
+  time_end: |-
+    <color=red>Oyun zamanı bitti
+    Öldürme sayın {count}</color>
+  winner_end: |-
+    <b><color=red>Kazanan - <color=yellow>{winner}</color></color></b>
+    Öldürme sayın <color=red>{count}</color></color>
+    Oyun Süresi - <color=#008000>{time}</color></i>
+  name: 'Serbest Ölüm Maçı'
+  description: 'Herkesin birbirine karşı olduğu bir ölüm maçında savaşın.'
+  command_name: 'dm'
+Atomic Escape:
+  before_start: |-
+    {name}
+    Patlamadan önce tesisten kaçmaya hazırlan!
+    <color=red>Turun başlamasına {time} saniye</color>
+  cycle: |-
+    {name}
+    Patlamaya son <color=red>{time}</color>saniye!
+  end: |-
+    {name}
+    <color=red>{players} Oyuncu Kaçtı </color>
+  name: 'Atomik Kaçış'
+  description: 'SCP-173''ün süpersonik hızıyla tesisten kaçın!'
+  command_name: 'escape'
+Battle:
+  time_left: '<size=100><color=red>Çatışma {time} saniye içinde başlıyor</color></size>'
+  ci_win: |-
+    <color=#299438>Kazanan: Kaos İsyancıları </color>
+    <color=red>Süre: {time} </color>
+  mtf_win: |-
+    <color=#14AAF5>Kazanan: Tesis Güçleri</color>
+    <color=red>Süre: {time} </color>
+  counter: |-
+    <color=#14AAF5> MTF: {FoundationForces} </color> vs <color=#299438> CI: {ChaosForces} </color> 
+     Geçen Süre: {time}
+  name: 'Çatışma'
+  description: 'MTF vs Kaos arenada çatışma'
+  command_name: 'battle'
+Cock Fights:
+  players_null: |-
+    <color=#D71868><b><i>{name}</i></b></color>
+    Arenaya gir ve birileriyle dövüş!
+    <color=red>{remain}</color> saniye kaldı
+  class_d_null: |-
+    <color=#D71868><b><i>{name}</i></b></color>
+    Hayatta kalan oyuncu <color=yellow>{scientist}</color>
+    <color=orange>{remain}</color> saniye içinde içeri gir
+  scientist_null: |-
+    <color=#D71868><b><i>{name}</i></b></color>
+    Hayatta kalan oyuncu <color=orange>{classd}</color>
+    <color=yellow>{remain}</color> saniye içinde içeri gir
+  players_duel: |-
+    <color=#D71868><b><i>{name}</i></b></color>
+    <color=yellow><color=yellow>{scientist}</color> <color=red>VS</color> <color=orange>{classd}</color></color>
+  class_d_win: |-
+    <color=#D71868><b><i>{name}</i></b></color>
+    <color=yellow>KAZANANLAR: <color=red>D SINIFLARI</color></color>
+  scientist_win: |-
+    <color=#D71868><b><i>{name}</i></b></color>
+    <color=yellow>KAZANANLAR: <color=red>BİLİM İNSANLARI</color></color>
+  name: 'Sapların Savaşı'
+  description: 'Cs 1.6''dan 35hp haritasındaki oyuncuların düellosu'
+  command_name: 'versus'
+Counter-Strike:
+  cycle: |-
+    <size=60>{name}</size>
+    <size=25><i>{task}</i>
+    <i><color=#42AAFF>{ctCount} Anti-Teröristler </color> <b>/</b> <color=green>{tCount} Teröristler</color></i>
+    <i>Round Time: {time}</i></size>
+  no_planted_counter: 'A ve B bölgelerini teröristlerden koruyun'
+  no_planted_terror: 'Bombayı A veya B noktasına yerleştirin'
+  planted_counter: '<color=red>Bombayı patlamadan önce imha edin</color>'
+  planted_terror: '<color=red>Bombayı patlayana kadar koruyun</color>'
+  draw: |-
+    <b><color=#808080>Beraberlik</color></b>
+    <i>Herkes öldü</i>
+  time_ended: |-
+    <b><color=#808080>Beraberlik</color></b>
+    <i>Tur süresi bitti.</i>
+  counter_win: |-
+    <b><color=#42AAFF>Anti-Teröristler Kazandı</color></b>
+    <i>Tüm teröristler öldürüldü</i>
+  terrorist_win: |-
+    <b><color=green>Teröristler Kazandı</color></b>
+    <i>Tüm Anti-Teröristler öldü</i>
+  planted_win: |-
+    <b><color=green>Teröristler Kazandı</color></b>
+    <i>Bomba patladı</i>
+  defused_win: |-
+    <b><color=#42AAFF>Anti-Teröristler Kazandı</color></b>
+    <i>Bomba imha edildi</i>
+  you_planted: '<b><color=#ff4c5b>Bombayı yerleştirdin</color></b>'
+  you_defused: '<b><color=#42aaff>Bombayı imha ettin</color></b>'
+  hint_cycle: |-
+    <size=30><i><b>{name}</b>
+    {kills}
+  name: 'Counter-Strike'
+  description: 'Teröristler ve Anti-Teröristler arasındaki mücadele'
+  command_name: 'cs'
+Dead Jump:
+  start: |-
+    <size=50>Ölüm Zıplayışı
+    Kırılgan platformları geçmeye çalışın</size>
+    <size=20>Hayattaki oyuncular: {plyAlive} 
+    Kalan Süre: {time}</size>
+  died: 'Lava düştün'
+  win_survived: '<color=yellow>İnsanlar kazandı! {plyAlive} oyuncu hayatta kaldı</color>'
+  winner: |-
+    <color=red>Ölüm Atlayışı</color>
+    <color=yellow>Kazanan: {winner}</color>
+  fail: |-
+    <color=red>Ölüm Atlayışı</color>
+    <color=yellow>Tüm Oyuncular Öldü</color>
+  push: '<color=green>Oyuncuları itmek için <color=yellow>[Alt]</color> tuşuna bas</color>'
+  name: 'Ölüm Zıplayışı'
+  description: 'Kırılgan platformları zıplayarak geçmeye çalışın'
+  command_name: 'glass'
+Death Line:
+  cycle: |-
+    <color=#FF4242>{name}</color>
+    <color=#14AAF5>Kalan Süre: {time}
+    <color=yellow>Hayattaki Oyuncular: {count}</color>
+  more_players: |-
+    <color=#FF4242>{name}</color>
+    <color=yellow>{count} kişi hayatta kaldı</color>
+    <color=red>Tebrikler!</color>
+  winner: |-
+    <color=#FF4242>{name}</color>
+    <color=yellow>Kazanan: {winner}</color>
+    <color=red>Tebrikler!</color>
+  all_died: '<color=red>Tüm oyuncular öldü</color>'
+  name: 'Ölüm Hattı'
+  description: 'Hayatta kalmak için dönen platformdan kaçının'
+  command_name: 'line'
+Death Run:
+  before_start_broadcast: |-
+    <color=#FFC618>{name}</color>
+    <size=35><color=#ff4c5b>Dikkat! Önünüzde ölümcül tuzaklar var</color>
+    <color=#20B2AA>Koşmaya hazır olun son <b>{time}</b> saniye</color></size>
+  cycle_broadcast: |-
+    <color=#FFC618>{name}</color>
+    <size=35><color=yellow>😃 Koşucular [{runnerCount}]</color> | <color=#ff4c5b>[{deathCount}] Cellatlar 😈</color>
+    <color=#20B2AA>Kalan Süre: <b>{time}</b></color></size>
+  death_win_broadcast: |-
+    <color=#FFC618>{name}</color>
+    <b><color=#ff4c5b>Cellatlar kazandı</color></b>
+  runner_win_broadcast: |-
+    <color=#FFC618>{name}</color>
+    <b><color=yellow>Koşucular kazandı</color></b>
+  died: '<color=red>Cellatı öldürmek için zamanın yoktu.</color>'
+  over_time_broadcast: "<b><color=red>Şimdi cellatın <i>CELLLATI</i> olma zamanı😸</color></b>"
+  second_life_hint: '<b><color=green>Son bir şansın daha var.</color></b>'
+  name: 'Ölüm Koşuşu'
+  description: 'Yol boyunca cellatların aktifleştirdiği tuzaklardan kaçarak sonuna kadar gidin'
+  command_name: 'deathrun'
+Dodgeball:
+  start: |-
+    <color=#ffff00>Yakar Top başlıyor hazır ol</color>
+    Oyun <color=red>{time}</color> saniye içinde başlıyor
+  cycle: |-
+    <b><color=#ffff00>{name}</color></b>
+    <color=#aad9ff>Oyunculara top at</color>
+    <color=red>{time}</color>
+  all_died: |-
+    <b><color=#ffff00>{name}</color></b>
+    <color=red>Tüm oyuncular öldü</color>
+    Süre: <color=red>{time}</color>
+  class_d_win: |-
+    <b><color=#ffff00>{name}</color></b>
+    <color=#ffa500>D Sınıfları KAZANDI</color>
+    Süre: <color=red>{time}</color>
+  scientist_win: |-
+    <b><color=#ffff00>{name}</color></b>
+    <color=#ffff00>Bilim Adamları KAZANDI</color>
+    Süre: <color=red>{time}</color>
+  draw: |-
+    <b><color=#ffff00>{name}</color></b>
+    <color=#808080>Berabere</color>
+    Süre: <color=red>{time}</color>
+  redline: '<color=red>Kırmzı çizgiyi geçemezsin</color>'
+  knocked: '<color=red>{killer} tarafından haklandın</color>'
+  name: 'Yakar Top'
+  description: 'Karşı takımı top yağmuruna tut.'
+  command_name: 'dodge'
+FallDown:
+  broadcast: |-
+    {name}
+    {time}
+    <color=yellow>Hayatta: </color>{count}<color=yellow> oyuncu</color>
+  winner: '<color=red>Kazanan:</color> {winner}'
+  died: '<color=red>Tüm oyuncular öldü</color>'
+  name: 'Düşüş'
+  description: 'Tüm platformlar yok oldu. Artık hayatta kalamazsın'
+  command_name: 'fall'
+Football:
+  red_team: |-
+    <color=red>Takımın: Kırmızı Takım
+    </color>
+  blue_team: |-
+    <color=#14AAF5>Takımın: Mavi Takım
+    </color>
+  time_left: |-
+    <color=#14AAF5>{BluePnt}</color> : <color=red>{RedPnt}</color>
+    Kalan Süre: {time}
+  red_wins: '<color=red>Kırmızı Takım Kazandı</color>'
+  blue_wins: '<color=#14AAF5>Mavi Takım Kazandı</color>'
+  draw: |-
+    Berabere
+    <color=#14AAF5>{BluePnt}</color> vs <color=red>{RedPnt}</color>
+  name: 'Futbol'
+  description: 'Kazanmak için 3 gol at'
+  command_name: 'football'
+Gun Game:
+  cycle: |-
+    <color=#D71868><b><i>{name}</i></b></color>
+    <b><color=yellow>Sıradaki silah <color=#D71868>{gun}</color> <color=#D71868>||</color> Gereken <color=#D71868>{kills}</color> öldürme</color>
+    <color=#D71868>Şampiyon: <color=yellow>{leadnick}</color> LVL <color=yellow>{leadgun}</color></color></b>
+  winner: |-
+    <color=#D71868><b><i>{name}</i></b></color>
+    <color=yellow>Oyunun kazananı: <color=green>{winner}</color></color>
+  name: 'Silah Yarışı'
+  description: 'MW19''daki Shipment haritasında harika bir Silah Yarışı'
+  command_name: 'gungame'
+Knives of Death:
+  cycle: |-
+    <color=#D71868><b><i>{name}</i></b></color>
+    <color=yellow><color=blue>{mtfcount} MTF</color> <color=red>VS</color> <color=green>{chaoscount} Kaos</color></color>
+  chaos_win: |-
+    <color=#D71868><b><i>{name}</i></b></color>
+    <color=yellow>KAZANANLAR: <color=green>KAOS İSYANCILARI</color></color>
+  mtf_win: |-
+    <color=#D71868><b><i>{name}</i></b></color>
+    <color=yellow>KAZANANLAR: <color=#42AAFF>MTF</color></color>
+  name: 'Ölümüne Bıçakla'
+  description: 'Cs 1.6''da ki 35hp''lik bir haritada birbirini deş'
+  command_name: 'knives'
+Musical Chairs:
+  start: |-
+    <color=#42aaff>Koşmaya hazırlan</color>
+    Oyun <color=red>{time}</color> saniye içinde başlıyor
+  cycle: |-
+    <b><color=#42aaff>{name}</color></b>
+    <color=#ffff00>{state}</color>
+    <color=#008000>{count}</color> oyuncu</color>
+  run_dont_touch: 'Koş ve hiçbir platforma dokunma'
+  stand_free: 'Bir platformun üstünde dur'
+  stop_running: '<color=red>Koşmayı bıraktın</color>'
+  touch_ahead: '<color=red>Yanlış zamanda platforma dokundun</color>'
+  no_time: '<color=red>Zamanında platforma dokunamadın</color>'
+  more_players: |-
+    <b><color=#42aaff>{name}</color></b>
+    <color=red>Yönetici oyunu iptal etti</color>
+  winner: |-
+    <b><color=#42aaff>{name}</color></b>
+    <color=red>Kazanan: {winner}</color>
+  all_died: |-
+    <b><color=#42aaff>{name}</color></b>
+    <color=red>Tüm Oyuncular Öldü</color>
+  name: 'Sandalye Kapmaca'
+  description: 'Komik müzik eşliğinde diğer oyuncularla sandalye kapma yarışı'
+  command_name: 'chair'
+Puzzle:
+  start: |-
+    <b>{name}</b>
+    <color=yellow>Mini oyun <color=red>{time}</color> saniye içinde başlıyor</color>
+  stage: |-
+    <b>{name}</b>
+    <color=red>Aşama: </color>{stageNum}<color=red> / </color>{stageFinal}
+    <color=yellow>Kalan Oyuncular:</color> {count}
+  all_died: |-
+    <b>{name}</b>
+    <color=red>Tüm oyuncular öldü</color>
+    Mini-oyun bitti
+  some_survived: |-
+    <b>{name}</b>
+    <color=green>{count} oyuncu hayatta kaldı</color>
+    Mini-oyun bitti
+  winner: |-
+    <b>{name}</b>
+    <color=green>Oyuncu {winner} kazandı</color>
+    Mini-oyun bitti
+  died: '<color=red>Lava düştün</color>'
+  name: 'Yapboz'
+  description: 'Doğru renge en hızlı şekilde ulaşın'
+  command_name: 'puzzle'
+Race:
+  cycle: |-
+    {name}
+    <color=yellow>Kazanmak için son platforma ulaşın!</color>
+    Kalan Süre: {time}
+  died: '<color=red>Yarışı bitiremedin</color>'
+  players_survived: |-
+    <color=red>İnsanlar Kazandı!</color>
+    Hayatta kalan sayısı {count}
+  one_survived: |-
+    <color=red>Bir kişi kazandı!</color>
+    Kazanan: {player}
+  no_survivors: '<color=red>Kimse Kazanamadı!</color>'
+  name: 'Yarış'
+  description: 'Kazanmak için haritanın sonuna gidin'
+  command_name: 'race'
+Red Light Green Light:
+  start: |-
+    <color=#42aaff>Koşmaya hazırlan</color>
+    Oyun <color=red>{time}</color> saniye içerisinde başlıyor
+  cycle: |-
+    <b><color=#42aaff>{name}</color></b>
+    <color=#aad9ff>{state}</color>
+    <color=red>{time} saniye kaldı</color>
+  all_died: |-
+    <b><color=#42aaff>{name}</color></b>
+    <color=red>Kimse sona kadar ulaşamadı</color>
+  more_win: |-
+    <b><color=#42aaff>{name}</color></b>
+    <color=red>{count} oyuncu kazandı</color>
+  player_win: |-
+    <b><color=#42aaff>{name}</color></b>
+    <color=green>Kazanan: {winner}</color>
+  red_light: '<color=red>Hareket etme</color>'
+  green_light: '<color=green>Koşşş!!!</color>'
+  red_lose: '<color=red>Kırmızı ışıkta koştun</color>'
+  no_time: '<color=red>Süre bitti sonuna kadar gidemedin!</color>'
+  hint: '<color=green><color=yellow>[Alt]</color> tuşuna basarak oyuncuları it</color>'
+  hint_wait: '<color=red>Birkaç saniye bekle</color>'
+  hint_ready: '<color=green>Hazır</color>'
+  name: 'Kırmızı ışık yeşil ışık'
+  description: 'Bitiş çizgisinin sonuna ulaşın'
+  command_name: 'light'
+Simon's Prison:
+  start: |-
+    <color=yellow><color=red><b><i>{name}</i></b></color>
+    <i>Büyük düğmeye sıkarak kilitleri açın yada kilitleyin.</i>
+    Turun başlamasına: <color=red>{time}</color> saniye</color>
+  start_prisoners: |-
+    <color=yellow><color=red><b><i>{name}</i></b></color>
+    <i>Ne pahasına olursa olsun bu hapsenden kaç. Dikkatli ol. Haritanın etrafında hayatta kalmanıza yardımcı olacak gizli eşyalar var</i>
+    Turun başlamasına: <color=red>{time}</color> saniye</color>
+  cycle: |-
+    <size=20><color=red>{name}</color>
+    <color=yellow>Mahkumlar: {dclasscount}</color> || <color=#14AAF5>Gardiyanlar: {mtfcount}</color>
+    <color=red>{time}</color></size>
+  prisoners_win: |-
+    <color=red><b><i>Mahkumlar Kazandı</i></b></color>
+    <color=red>{time}</color>
+  jailers_win: |-
+    <color=#14AAF5><b><i>Gardiyanlar Kazandı</i></b></color>
+    <color=red>{time}</color>
+  lockdown_on_cooldown: 'Bekleme süresi dolmadan kilitleme başlatılamaz. Kalan Süre: {cooldown}'
+  lives_remaining: '{lives} canın var.'
+  no_lives_remaining: 'Başka hiç canın kalmadı.'
+  name: 'Simon''un Hapishanesi'
+  description: 'CS 1.6 dan jailbreak modu [BAYA ZOR VE UZUN]'
+  command_name: 'jail'
+Spleef:
+  start: '<color=red>Başlamaya: </color>{time} saniye'
+  cycle: |-
+    <color=red>{name}</color>
+    <color=yellow>Hayattaki Oyuncular:</color> {players}
+    <color=#42aaff>Kalan Süre:</color> {remaining}
+  all_died: |-
+    <color=red>Tüm oyuncular öldü</color>
+    Mini-oyun bitti
+  some_survived: |-
+    <color=red>Bir kaç kişi hayata kaldı</color>
+    Mini-oyun bitti
+  winner: |-
+    <color=red>Kazanan: {winner}</color>
+    Mini-oyun bitti
+  died: '<color=red>Lava düştün</color>'
+  name: 'Zemin Çöküşü'
+  description: 'Platformlara ateş edin ve lava düşmeyin'
+  command_name: 'spleef'
+Tag:
+  broadcast: |-
+    KOŞ
+    Ebeler seçildi. Saklan!
+    Kalan Süre: {time}
+  cycle: |-
+    Başka birini ebele
+    <color=yellow><b><i>{time}</i></b> saniye kaldı</color>
+  hurt: 'Kimseyi ebeleyemedin.'
+  one_player: |-
+    Kazanan Oyuncu {winner}
+    <color=yellow>Etkinlik süresi <color=red>{time}</color> saniye</color>
+  all_die: |-
+    Kimse kurtulamadı.
+    Oyun bitti
+    <color=yellow>Etkinlik süresi <color=red>{time}</color> saniye</color>
+  name: 'Ebelemece'
+  description: 'Tüm oyuncuları ebelememiz lazım'
+  command_name: 'tag'
+Team Death-Match:
+  cycle: |-
+    <color=#D71868><b><i>{name}</i></b></color>
+    <b><color=yellow><color=#42AAFF> {mtftext}> </color> <color=red>|</color> <color=green> <{chaostext}</color></color></b>
+  chaos_win: |-
+    <color=#D71868><b><i>{name}</i></b></color>
+    <color=yellow>KAZANANLAR: <color=green>KAOS İSYANCILARI</color></color>
+  mtf_win: |-
+    <color=#D71868><b><i>{name}</i></b></color>
+    <color=yellow>KAZANAN TAKIM: <color=#42AAFF>MTF</color></color>
+  name: 'Takımlı Ölüm-Maçı'
+  description: 'MW19''daki Shipment haritasında Takımlı Ölüm-Maçı'
+  command_name: 'tdm'
+The floor is LAVA:
+  start: |-
+    <size=100><color=red>{time}</color></size>
+    Bir silah kap ve tırmanmaya başla.
+  cycle: '<size=20><color=red><b>Hayattaki oyuncular: {count}</b></color></size>'
+  win: |-
+    <color=red><b>Kazanan
+    Oyuncu - {winner}</b></color>
+  all_dead: '<color=red><b>Sonda kimse hayatta kalamadı.</b></color>'
+  died: '<color=red>Lava düştün</color>'
+  name: 'Zemin Lav'
+  description: 'Lavlardan kaçınmanız ve diğerlerine ateş etmeniz gereken hayatta kalma oyunu'
+  command_name: 'lava'
+Zombie Infection:
+  start: |-
+    <color=#D71868><b><i>{name}</i></b></color>
+    <color=#ABF000>Oyunun başlamasına <color=red>{time}</color> saniye kaldı.</color>
+  cycle: |-
+    <color=#D71868><b><i>{name}</i></b></color>
+    <color=yellow>Kalan insanlar: <color=green>{count}</color></color>
+    <color=yellow>Geçen Süre: <color=red>{time}</color></color>
+  extra_time: |-
+    Fazladan süre: {extratime}
+    <color=yellow><b><i>TEK</i></b> kişi kaldı!</color>
+    <color=yellow>Geçen Süre: <color=red>{time}</color></color>
+  win: |-
+    <color=red>Zombiler Kazandı!</color>
+    <color=yellow>Geçen Süre: <color=red>{time}</color></color>
+  lose: |-
+    <color=yellow><color=#D71868><b><i>İnsanlar</i></b></color> Kazandı!</color>
+    <color=yellow>Geçen Süre: <color=red>{time}</color></color>
+  name: 'Zombi Enfeksiyonu'
+  description: 'Amacı tüm oyunculara virüs bulaştırmak olan zombi modu'
+  command_name: 'zombie'
+Zombie Survival:
+  survival_before_infection: |-
+    <b>{name}</b>
+    <color=yellow>Enfeksiyonun yayılmasına </color> {time} <color=yellow>saniye kaldı</color>
+  survival_after_infection: |-
+    <b>{name}</b>
+    <color=#14AAF5>İnsanlar:</color> {humanCount}
+    <color=#299438>Kalan süre:</color> {time}
+  survival_zombie_win: '<color=red>Zombiler enfeksiyonu tüm insanlara bulaştırdı ve kazandı!</color>'
+  survival_human_win: '<color=#14AAF5>İnsanlar tüm zombileri öldürdü ve enfeksiyonu durdudu</color>'
+  survival_human_win_time: '<color=yellow>İnsanlar hayatta kaldı, ama enfeksiyonun yayılmasını durduramadılar</color>'
+  name: 'Zombilerden kaçış'
+  description: 'Zombilerden kaçmaya çalışan insanlar'
+  command_name: 'zombie2'

@@ -1,105 +1,60 @@
 ﻿using AutoEvent.API.Enums;
-using AutoEvent.Events.EventArgs;
 using CustomPlayerEffects;
-using InventorySystem.Configs;
-using MEC;
-using PluginAPI.Core.Attributes;
-using PluginAPI.Enums;
-using PluginAPI.Events;
-using System.Collections.Generic;
-using Player = PluginAPI.Core.Player;
+using Exiled.API.Features;
+using Exiled.Events.EventArgs.Player;
 
-namespace AutoEvent.Games.AllDeathmatch
+namespace AutoEvent.Games.AllDeathmatch;
+public class EventHandler
 {
-    public class EventHandler
+    Plugin _plugin;
+    public EventHandler(Plugin plugin)
     {
-        Plugin _plugin;
-        public EventHandler(Plugin plugin)
+        _plugin = plugin;
+    }
+
+    public void OnJoined(JoinedEventArgs ev)
+    {
+        if (!_plugin.TotalKills.ContainsKey(ev.Player))
         {
-            _plugin = plugin;
+            _plugin.TotalKills.Add(ev.Player, 0);
         }
 
-        [PluginEvent(ServerEventType.PlayerJoined)]
-        public void OnJoin(PlayerJoinedEvent ev)
-        {
-            if (!_plugin.TotalKills.ContainsKey(ev.Player))
-            {
-                _plugin.TotalKills.Add(ev.Player, 0);
-            }
+        SpawnPlayerAfterDeath(ev.Player);
+    }
 
-            SpawnPlayerAfterDeath(ev.Player);
+    public void OnLeft(LeftEventArgs ev)
+    {
+        if (_plugin.TotalKills.ContainsKey(ev.Player))
+        {
+            _plugin.TotalKills.Remove(ev.Player);
+        }
+    }
+
+    public void OnPlayerDying(DyingEventArgs ev)
+    {
+        ev.IsAllowed = false;
+        _plugin.TotalKills[ev.Attacker]++;
+
+        SpawnPlayerAfterDeath(ev.Player);
+    }
+
+    private void SpawnPlayerAfterDeath(Player player)
+    {
+        player.EnableEffect<Flashed>(0.1f);
+        player.EnableEffect<SpawnProtected>(.1f);
+        player.Heal(500); // Since the player does not die, his hp goes into negative hp, so need to completely heal the player.
+        player.ClearItems();
+        
+        if (!player.IsAlive)
+        {
+            player.GiveLoadout(_plugin.Config.NTFLoadouts, LoadoutFlags.ForceInfiniteAmmo | LoadoutFlags.IgnoreGodMode | LoadoutFlags.IgnoreWeapons);
         }
 
-
-        [PluginEvent(ServerEventType.PlayerLeft)]
-        public void OnLeft(PlayerLeftEvent ev)
+        if (player.CurrentItem == null)
         {
-            if (_plugin.TotalKills.ContainsKey(ev.Player))
-            {
-                _plugin.TotalKills.Remove(ev.Player);
-            }
-
+            player.CurrentItem = player.AddItem(_plugin.Config.AvailableWeapons.RandomItem());
         }
-
-        [PluginEvent(ServerEventType.PlayerReloadWeapon)]
-        public void OnReloading(PlayerReloadWeaponEvent ev)
-        {
-            SetMaxAmmo(ev.Player);
-        }
-
-        [PluginEvent(ServerEventType.PlayerSpawn)]
-        public void OnSpawning(PlayerSpawnEvent ev)
-        {
-            SetMaxAmmo(ev.Player);
-        }
-
-        private void SetMaxAmmo(Player pl)
-        {
-            foreach (KeyValuePair<ItemType, ushort> AmmoLimit in InventoryLimits.StandardAmmoLimits)
-            {
-                pl.SetAmmo(AmmoLimit.Key, AmmoLimit.Value);
-            }
-        }
-
-        public void OnPlayerDying(PlayerDyingArgs ev)
-        {
-            ev.IsAllowed = false;
-            _plugin.TotalKills[ev.Attacker]++;
-
-            SpawnPlayerAfterDeath(ev.Target);
-        }
-
-        public void SpawnPlayerAfterDeath(Player player)
-        {
-            player.EffectsManager.EnableEffect<Flashed>(0.1f);
-            player.IsGodModeEnabled = true;
-            player.Health = 100;
-            player.ClearInventory();
-
-            if (!player.IsAlive)
-            {
-                player.GiveLoadout(_plugin.Config.NTFLoadouts, LoadoutFlags.ForceInfiniteAmmo | LoadoutFlags.IgnoreGodMode | LoadoutFlags.IgnoreWeapons);
-            }
-
-            player.Position = _plugin.Points.RandomItem().transform.position;
-
-            var item = player.AddItem(_plugin.Config.AvailableWeapons.RandomItem());
-            Timing.CallDelayed(.1f, () =>
-            {
-                player.IsGodModeEnabled = false;
-                if (item != null)
-                {
-                    player.CurrentItem = item;
-                }
-            });
-        }
-
-        public void OnHandCuff(HandCuffArgs ev) => ev.IsAllowed = false;
-        public void OnTeamRespawn(TeamRespawnArgs ev) => ev.IsAllowed = false;
-        public void OnSpawnRagdoll(SpawnRagdollArgs ev) => ev.IsAllowed = false;
-        public void OnPlaceBullet(PlaceBulletArgs ev) => ev.IsAllowed = false;
-        public void OnPlaceBlood(PlaceBloodArgs ev) => ev.IsAllowed = false;
-        public void OnDropItem(DropItemArgs ev) => ev.IsAllowed = false;
-        public void OnDropAmmo(DropAmmoArgs ev) => ev.IsAllowed = false;
+        
+        player.Position = _plugin.SpawnList.RandomItem().transform.position;
     }
 }

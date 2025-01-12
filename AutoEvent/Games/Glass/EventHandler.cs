@@ -1,11 +1,7 @@
-﻿using AutoEvent.Events.EventArgs;
-using MEC;
-using PlayerRoles;
-using PluginAPI.Core;
-using PluginAPI.Core.Attributes;
-using PluginAPI.Enums;
-using PluginAPI.Events;
+﻿using MEC;
 using System.Collections.Generic;
+using Exiled.API.Features;
+using Exiled.Events.EventArgs.Player;
 using UnityEngine;
 
 namespace AutoEvent.Games.Glass;
@@ -17,12 +13,12 @@ public class EventHandler
         _plugin = plugin;
     }
 
-    public void OnPlayerNoclip(PlayerNoclipArgs ev)
+    public void OnTogglingNoClip(TogglingNoClipEventArgs ev)
     {
         if (!_plugin.Config.IsEnablePush)
             return;
 
-        Transform transform = ev.Player.Camera.transform;
+        Transform transform = ev.Player.CameraTransform.transform;
         var ray = new Ray(transform.position + (transform.forward * 0.1f), transform.forward);
 
         if (!Physics.Raycast(ray, out RaycastHit hit, 1.7f))
@@ -41,7 +37,7 @@ public class EventHandler
 
     private IEnumerator<float> PushPlayer(Player player, Player target)
     {
-        Vector3 pushed = player.Camera.transform.forward * 1.7f;
+        Vector3 pushed = player.CameraTransform.transform.forward * 1.7f;
         Vector3 endPos = target.Position + new Vector3(pushed.x, 0, pushed.z);
         int layerAsLayerMask = 0;
 
@@ -60,15 +56,4 @@ public class EventHandler
             yield return Timing.WaitForOneFrame;
         }
     }
-
-    [PluginEvent(ServerEventType.PlayerJoined)]
-    public void OnJoin(PlayerJoinedEvent ev)
-    {
-        ev.Player.SetRole(RoleTypeId.Spectator);
-    }
-
-    public void OnDropItem(DropItemArgs ev) => ev.IsAllowed = false;
-    public void OnTeamRespawn(TeamRespawnArgs ev) => ev.IsAllowed = false;
-    public void OnSpawnRagdoll(SpawnRagdollArgs ev) => ev.IsAllowed = false;
-    public void OnJailbirdCharge(ChargingJailbirdEventArgs ev) => ev.IsAllowed = false;
 }

@@ -1,9 +1,9 @@
-﻿using MER.Lite;
-using MER.Lite.Objects;
-using MER.Lite.Serializable;
-using Mirror;
+﻿using Mirror;
 using System.Collections.Generic;
 using System.Linq;
+using MapEditorReborn.API.Features;
+using MapEditorReborn.API.Features.Objects;
+using MapEditorReborn.API.Features.Serializable;
 using UnityEngine;
 
 namespace AutoEvent.Games.MusicalChairs;

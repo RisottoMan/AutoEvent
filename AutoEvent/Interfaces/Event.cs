@@ -1,119 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Reflection;
 using AutoEvent.API.Enums;
 using AutoEvent.API;
-using AutoEvent.API.AdvancedMERTool;
 using MEC;
 using AutoEvent.API.Season;
 using AutoEvent.API.Season.Enum;
-using GameCore;
-using Version = System.Version;
+using AutoEvent.Interfaces;
 
 namespace AutoEvent.Interfaces
 {
     public abstract class Event : IEvent
     {
-#region Static Implementations // Static tools for registering and viewing events.
-        /// <summary>
-        /// A list of all registered events including external events and <see cref="IInternalEvent"/> events.
-        /// </summary>
-        public static List<Event> Events { get; set; } = new List<Event>();
-
-
-        /// <summary>
-        /// Registers all of the <see cref="IInternalEvent"/> Events.
-        /// </summary>
-        internal static void RegisterInternalEvents()
-        {
-            Assembly callingAssembly = Assembly.GetCallingAssembly();
-            Type[] types = callingAssembly.GetTypes();
-
-            foreach (Type type in types)
-            {
-                try
-                {
-                    if (type.IsAbstract ||
-                        type.IsEnum ||
-                        type.IsInterface || type.GetInterfaces().All(x => x != typeof(IEvent)))
-                        continue;
-                    
-                    object evBase = Activator.CreateInstance(type);
-                        if(evBase is null || evBase is not Event ev)
-                        continue;
-
-                    if (!ev.AutoLoad)
-                        continue;
-
-                    if (ev is IHidden)
-                    {
-                        DebugLogger.LogDebug($"Skip registration \"{ev.Name}\" mini-game. The game is hidden", LogLevel.Debug);
-                        continue;
-                    }
-
-                    ev.Id = Events.Count;
-                    try
-                    {
-                        ev.VerifyEventInfo();
-                        ev.LoadConfigs();
-                        ev.LoadTranslation();
-                        ev.InstantiateEvent();
-                    }
-                    catch (Exception e)
-                    {
-                        DebugLogger.LogDebug($"[EventLoader] {ev.Name} encountered an error while registering.", LogLevel.Warn, true);
-                        DebugLogger.LogDebug($"[EventLoader] {e}", LogLevel.Debug);
-                    }
-                    string confs = "";
-                    foreach (var conf in ev.ConfigPresets)
-                    {
-                        confs += $"{conf.PresetName}, ";
-                    }
-                    Events.Add(ev);
-                    DebugLogger.LogDebug($"[EventLoader] {ev.Name} has been registered. Presets: {(confs + ",").Replace(", ,", "")}", LogLevel.Info); // , true);
-                }
-                catch (MissingMethodException) { }
-                catch (Exception ex)
-                {
-                    DebugLogger.LogDebug($"[EventLoader] cannot register an event.", LogLevel.Error, true);
-                    DebugLogger.LogDebug($"{ex}", LogLevel.Debug);
-
-                }
-            }
-        }
-
-        /// <summary>
-        /// Gets an event by it's name.
-        /// </summary>
-        /// <param name="type">The name of the event to search for.</param>
-        /// <returns>The first event found with the same name (Case-Insensitive).</returns>
-        public static Event GetEvent(string type)
-        {
-            Event ev = null;
-
-            if (int.TryParse(type, out int id))
-                return GetEvent(id);
-
-            if (!TryGetEventByCName(type, out ev)) 
-                return Events.FirstOrDefault(ev => ev.Name.ToLower() == type.ToLower());
-            
-            return ev;
-        }
-
-        /// <summary>
-        /// Gets an event by it's ID.
-        /// </summary>
-        /// <param name="id">The ID of the event to search for.</param>
-        /// <returns>The first event found with the same ID.</returns>
-        public static Event GetEvent(int id) => Events.FirstOrDefault(x => x.Id == id);
-        
-        private static bool TryGetEventByCName(string type, out Event ev)
-        {
-            return (ev = Events.FirstOrDefault(x => x.CommandName == type)) != null;
-        }
-#endregion
 #region Abstract Implementations // Tools that have been abstracted into the event class.
     #region Event Information // Information that event authors can specify about the event.
         /// <summary>
@@ -140,11 +38,6 @@ namespace AutoEvent.Interfaces
         /// The name of the map that is used to run the map via command.
         /// </summary> 
         public abstract string CommandName { get; set; }
-
-        /// <summary>
-        /// A version of the mini-game.
-        /// </summary>
-        public abstract Version Version { get; set; }
     #endregion
     #region Event Settings // Settings that event authors can define to modify the abstracted implementations
         /// <summary>
@@ -178,10 +71,14 @@ namespace AutoEvent.Interfaces
         /// </summary>
         protected virtual FriendlyFireSettings ForceEnableFriendlyFireAutoban { get; set; } = FriendlyFireSettings.Default;
         
+        /// <summary>
+        /// Use this to change the settings of the event handlers.
+        /// </summary>
+        public virtual EventFlags EventHandlerSettings { get; set; } = EventFlags.Default;
+        
     #endregion
     #region Event Variables // Variables that the event author has access too, which are abstracted into the event system.
-        
-        
+    
         /// <summary>
         /// The coroutine handle of the main event thread which calls ProcessFrame().
         /// </summary>
@@ -202,9 +99,13 @@ namespace AutoEvent.Interfaces
         /// The elapsed time since the plugin started.
         /// </summary>
         public virtual TimeSpan EventTime { get; protected set; }
-        
-        public virtual AdvancedMERTools AdvancedMERObject { get; protected set; }
 
+    #endregion
+    #region Event Configs // Configs that can change event parameters.
+    
+        public EventConfig InternalConfig { get; set; }
+        public EventTranslation InternalTranslation { get; set; }
+    
     #endregion
     #region Event API Methods // Methods that can be used as api calls such as starting music / spawning map. 
     /// <summary>
@@ -214,18 +115,13 @@ namespace AutoEvent.Interfaces
     protected void StartAudio(bool checkIfAutomatic = false)
     {
         DebugLogger.LogDebug($"Starting Audio: " +
-                             $"{(this is IEventSound s ? "true, " + 
+                                 $"{(this is IEventSound s ? "true, " + 
                                  $"{(!string.IsNullOrEmpty(s.SoundInfo.SoundName)? "true" : "false")}, " +
                                  $"{(!checkIfAutomatic ? "true" : "false")}, " +
-                                 $"{(s.SoundInfo.StartAutomatically ? "true" : "false")}" : "false")}",
-            LogLevel.Debug);
-        if (this is IEventSound sound && !string.IsNullOrEmpty(sound.SoundInfo.SoundName) &&
-            (!checkIfAutomatic || sound.SoundInfo.StartAutomatically))
+                                 $"{(s.SoundInfo.StartAutomatically ? "true" : "false")}" : "false")}");
+        if (this is IEventSound sound && !string.IsNullOrEmpty(sound.SoundInfo.SoundName) && (!checkIfAutomatic || sound.SoundInfo.StartAutomatically))
         {
-            sound.SoundInfo.AudioPlayerBase = Extensions.PlayAudio(
-                sound.SoundInfo.SoundName,
-                sound.SoundInfo.Volume,
-                sound.SoundInfo.Loop);
+            sound.SoundInfo.AudioPlayer = Extensions.PlayAudio(sound.SoundInfo.SoundName, sound.SoundInfo.Volume, sound.SoundInfo.Loop);
         }
     }
 
@@ -234,8 +130,11 @@ namespace AutoEvent.Interfaces
     /// </summary>
     protected void StopAudio()
     {
-        DebugLogger.LogDebug("Stopping Audio", LogLevel.Debug);
-        Extensions.StopAudio();
+        DebugLogger.LogDebug("Stopping Audio");
+        if (this is IEventSound sound && !string.IsNullOrEmpty(sound.SoundInfo.SoundName))
+        {
+            Extensions.StopAudio(sound.SoundInfo.AudioPlayer);
+        }
     }
 
     /// <summary>
@@ -247,26 +146,12 @@ namespace AutoEvent.Interfaces
     {
         DebugLogger.LogDebug($"Spawning Map: " +
                              $"{(this is IEventMap m ? "true, " + 
-                                                         $"{(!string.IsNullOrEmpty(m.MapInfo.MapName)? "true" : "false")}, " +
-                                                         $"{(!checkIfAutomatic ? "true" : "false")}, " +
-                                                         $"{(m.MapInfo.SpawnAutomatically ? "true" : "false")}" : "false")}",
-            LogLevel.Debug);
-        if (this is IEventMap map && !string.IsNullOrEmpty(map.MapInfo.MapName) &&
-            (!checkIfAutomatic || map.MapInfo.SpawnAutomatically))
+                             $"{(!string.IsNullOrEmpty(m.MapInfo.MapName)? "true" : "false")}, " +
+                             $"{(!checkIfAutomatic ? "true" : "false")}, " +
+                             $"{(m.MapInfo.SpawnAutomatically ? "true" : "false")}" : "false")}");
+        if (this is IEventMap map && !string.IsNullOrEmpty(map.MapInfo.MapName) && (!checkIfAutomatic || map.MapInfo.SpawnAutomatically))
         {
-            // load map
-            map.MapInfo.Map = Extensions.LoadMap(
-                map.MapInfo.MapName, 
-                map.MapInfo.Position, 
-                map.MapInfo.MapRotation, 
-                map.MapInfo.Scale,
-                map.MapInfo.IsStatic);
-            
-            Timing.CallDelayed(0.05f, () =>
-            {
-                AdvancedMERObject = new AdvancedMERTools();
-                AdvancedMERObject.OnEnabled(map.MapInfo.Map);
-            });
+            map.MapInfo.Map = Extensions.LoadMap(map.MapInfo.MapName, map.MapInfo.Position,  map.MapInfo.MapRotation, map.MapInfo.Scale);
         }
     }
 
@@ -279,46 +164,7 @@ namespace AutoEvent.Interfaces
         if (this is IEventMap eventMap)
         {
             Extensions.UnLoadMap(eventMap.MapInfo.Map);
-            AdvancedMERObject.OnDisabled();
         }
-    }
-
-    /// <summary>
-    /// Can be used to get a list of each <see cref="EventConfig"/> defined in the plugin.
-    /// </summary>
-    /// <returns>Returns a list of the current values of each <see cref="EventConfig"/></returns>
-    public List<EventConfig> GetCurrentConfigsValues()
-    {
-        List<EventConfig> eventConfigs = new List<EventConfig>();
-        foreach (PropertyInfo propertyInfo in this.GetType().GetProperties())
-        {
-            var attr = propertyInfo.GetCustomAttribute<EventConfigAttribute>();
-            if (attr is null)
-                continue;
-            object value = propertyInfo.GetValue(this);
-            if(value is not EventConfig conf)
-                continue;
-            eventConfigs.Add(conf);
-        }
-
-        return eventConfigs;
-    }
-    
-    public List<EventTranslation> GetCurrentTranslationsValues()
-    {
-        List<EventTranslation> eventConfigs = new List<EventTranslation>();
-        foreach (PropertyInfo propertyInfo in this.GetType().GetProperties())
-        {
-            var attr = propertyInfo.GetCustomAttribute<EventTranslationAttribute>();
-            if (attr is null)
-                continue;
-            object value = propertyInfo.GetValue(this);
-            if(value is not EventTranslation conf)
-                continue;
-            eventConfigs.Add(conf);
-        }
-
-        return eventConfigs;
     }
 
     /// <summary>
@@ -345,11 +191,6 @@ namespace AutoEvent.Interfaces
         /// Base constructor for an event.
         /// </summary>
         public Event(){ }
-        
-        /// <summary>
-        /// The method that is called when the event is registered. Should be used instead of a constructor to prevent type load exceptions.
-        /// </summary>
-        public virtual void InstantiateEvent() { }
         
         /// <summary>
         /// Called when the event is started.
@@ -406,142 +247,28 @@ namespace AutoEvent.Interfaces
         protected virtual void OnCleanup() { }
     #endregion
     #region Internal Event Methods // Methods that are for the internal use by the event system to call or modify other abstracted properties or methods.
-        private string CreateConfigFolder()
-        {
-            string path = GetConfigFolder();
-            AutoEvent.CreateDirectoryIfNotExists(path);
-            AutoEvent.CreateDirectoryIfNotExists(Path.Combine(path, "Presets"));
-            return path;
-        }
-
-        private string GetConfigFolder() => Path.Combine(AutoEvent.Singleton.Config.EventConfigsDirectoryPath, this.Name);
-
-        /// <summary>
-        /// A list of available config presets. WIP
-        /// </summary>
-        public List<EventConfig> ConfigPresets { get; set; } = new List<EventConfig>();
-
-        private List<Type> _confTypes { get; set; } = new List<Type>();
-
-        /// <summary>
-        /// Ensures that information such as the command name is valid.
-        /// </summary>
-        internal void VerifyEventInfo()
-        {
-            this.CommandName = CommandName.ToCamelCase(true);
-        }
-    
-        /// <summary>
-        /// Validates and loads any configs and presets for the given event.
-        /// </summary>
-        internal void LoadConfigs()
-        {
-            if (this.ConfigPresets is not null)
-                this.ConfigPresets.Clear();
-            else
-                this.ConfigPresets = new List<EventConfig>();
-        
-            int loadedConfigs = 0;
-            var path = CreateConfigFolder();
-            try
-            {
-                loadedConfigs = _loadValidConfigs(path);
-            }
-            catch (Exception e)
-            {
-                DebugLogger.LogDebug($"[EventLoader] LoadConfigs()->_loadValidConfigs(path) has caught an exception while loading configs for the plugin {Name}", LogLevel.Warn, true);
-                DebugLogger.LogDebug($"{e}", LogLevel.Debug);
-            }
-
-            try
-            {
-                _createPresets(Path.Combine(path, "Presets"));
-            }
-            catch (Exception e)
-            {
-                DebugLogger.LogDebug($"[EventLoader] LoadConfigs()->_createPresets(path) has caught an exception while loading configs for the plugin {Name}", LogLevel.Warn, true);
-                DebugLogger.LogDebug($"{e}", LogLevel.Debug);
-            }
-
-            try
-            {
-                _loadPresets(Path.Combine(path, "Presets"));
-            }
-            catch (Exception e)
-            {
-                DebugLogger.LogDebug($"[EventLoader] LoadConfigs()->_loadPresets(path) has caught an exception while loading configs for the plugin {Name}", LogLevel.Warn, true);
-                DebugLogger.LogDebug($"{e}", LogLevel.Debug);
-            }
-        }
-    
-        /// <summary>
-        /// Loads any configs.
-        /// </summary>
-        /// <param name="path">The base event path.</param>
-        private int _loadValidConfigs(string path)
-        {
-            int i = 0;
-            foreach (var property in this.GetType().GetProperties())
-            {
-                var conf = property.GetCustomAttribute<EventConfigAttribute>();
-                if (conf is EventConfigPresetAttribute)
-                {
-                    continue;
-                }
-                if (conf is null)
-                {
-                    continue;
-                }
-
-                DebugLogger.LogDebug($"Config \"{property.Name}\" found for {Name}", LogLevel.Debug);
-
-                object config = conf.Load(path, property.Name, property.PropertyType, this.Version);
-                if (config is not EventConfig evConfig)
-                {
-                    DebugLogger.LogDebug($"Config was found that does not inherit Event Config. It will be skipped.", LogLevel.Warn, true);
-                    DebugLogger.LogDebug($"(Event {this.Name}) Config: {property.Name}.", LogLevel.Debug);
-                    continue;
-                }
-
-                if (ConfigPresets.Count > 0)
-                    evConfig.PresetName = $"Default-{ConfigPresets.Count - 1}";
-                else
-                    evConfig.PresetName = "Default";
-                _setRandomMap(evConfig);
-                _setRandomSound(evConfig);
-            
-                property.SetValue(this, config);
-                ConfigPresets.Add((EventConfig)config);
-                _confTypes.Add(config.GetType());
-
-                i++;
-            }
-
-            return i;
-        }
-
         /// <summary>
         /// Assigns a random map.
         /// </summary>
         /// <param name="conf"></param>
-        private void _setRandomMap(EventConfig conf)
+        private void SetRandomMap()
         {
-            if (conf.AvailableMaps is null || conf.AvailableMaps.Count == 0)
+            if (this.InternalConfig.AvailableMaps is null || this.InternalConfig.AvailableMaps.Count == 0)
                 return;
 
             // We get the current style and check the maps by their style
-            SeasonFlag seasonFlag = SeasonMethod.GetSeasonStyle().SeasonFlag;
+            SeasonFlags seasonFlags = SeasonMethod.GetSeasonStyle().SeasonFlag;
             
             // If there are no seasonal maps, then choose the default maps
-            if (conf.AvailableMaps.Count(r => r.SeasonFlag == seasonFlag) == 0)
+            if (this.InternalConfig.AvailableMaps.Count(r => r.SeasonFlag == seasonFlags) == 0)
             {
-                seasonFlag = 0;
+                seasonFlags = 0;
             }
             
             List<MapChance> maps = new();
-            foreach (var map in conf.AvailableMaps)
+            foreach (var map in this.InternalConfig.AvailableMaps)
             {
-                if (map.SeasonFlag == seasonFlag)
+                if (map.SeasonFlag == seasonFlags)
                 {
                     maps.Add(map);
                 }
@@ -578,132 +305,6 @@ namespace AutoEvent.Interfaces
                 DebugLogger.LogDebug($"[{this.Name}] Map {eventMap.MapInfo.MapName} selected.", LogLevel.Debug);
             }
         
-        }
-        /// <summary>
-        /// Assigns a random sound.
-        /// </summary>
-        /// <param name="conf"></param>
-        private void _setRandomSound(EventConfig conf)
-        {
-            if (this is IEventSound sound && conf.AvailableSounds is not null && conf.AvailableSounds.Count > 0)
-            {
-                bool startAutomatically = sound.SoundInfo.StartAutomatically;
-                if (conf.AvailableSounds.Count == 1)
-                {
-                    sound.SoundInfo = conf.AvailableSounds[0].Sound;
-                    sound.SoundInfo.StartAutomatically = startAutomatically;
-                    goto Message;
-                }
-
-                foreach (var soundItem in conf.AvailableSounds.Where(x => x.Chance <= 0))
-                    soundItem.Chance = 1;
-            
-                float totalChance = conf.AvailableSounds.Sum(x => x.Chance);
-            
-                for (int i = 0; i < conf.AvailableSounds.Count - 1; i++)
-                {
-                    if (UnityEngine.Random.Range(0, totalChance) <= conf.AvailableSounds[i].Chance)
-                    {
-                        sound.SoundInfo = conf.AvailableSounds[i].Sound;
-                        sound.SoundInfo.StartAutomatically = startAutomatically;
-                        goto Message;
-                    }
-                }
-                sound.SoundInfo = conf.AvailableSounds[conf.AvailableSounds.Count - 1].Sound;
-                sound.SoundInfo.StartAutomatically = startAutomatically;
-                Message:
-                DebugLogger.LogDebug($"[{this.Name}] Sound {sound.SoundInfo.SoundName} selected.", LogLevel.Debug);
-            }
-        }
-        /// <summary>
-        /// Creates a preset.yml file for each preset found.
-        /// </summary>
-        /// <param name="path">The base event path.</param>
-        private void _createPresets(string path)
-        {
-            foreach (var property in this.GetType().GetProperties())
-            {
-                var conf = property.GetCustomAttribute<EventConfigPresetAttribute>();
-                if (conf is null || conf.IsLoaded)
-                {
-                    continue;
-                }
-                // DebugLogger.LogDebug($"Embedded Config Preset \"{property.Name}\" found for {Name}", LogLevel.Debug);
-
-                conf.Load(path, property, property.GetValue(this));
-            }
-        }
-
-        /// <summary>
-        /// Loads all config presets to the preset List.
-        /// </summary>
-        /// <param name="path">The base event path.</param>
-        private void _loadPresets(string path)
-        {
-            foreach (string file in Directory.GetFiles(path, "*.yml"))
-            {
-                string fileName = Path.GetFileNameWithoutExtension(file);
-            
-                object conf = Configs.Serialization.Deserializer.Deserialize(File.ReadAllText(file), _confTypes.FirstOrDefault() ?? typeof(EventConfig));
-                if (conf is not EventConfig)
-                {
-                    DebugLogger.LogDebug("Not Event Config.");
-                    continue;
-                }
-                // DebugLogger.LogDebug($"Config Preset \"{file}\" loaded for {Name}", LogLevel.Debug);
-                ((EventConfig)conf).PresetName = fileName;
-                ConfigPresets.Add((EventConfig)conf);
-                DebugLogger.LogDebug($"Config Preset: {conf.GetType().Name}, BaseType: {conf.GetType().BaseType?.Name}");
-            }
-        }
-    
-        /// <summary>
-        /// Loads any translations present
-        /// </summary>
-        internal void LoadTranslation()
-        {
-            try
-            {
-                _loadValidTranslations(GetConfigFolder());
-            }
-            catch (Exception e)
-            {
-                DebugLogger.LogDebug($"[EventLoader] LoadTranslation()->_loadValidConfigs(path) has caught an exception while loading configs for the plugin {Name}", LogLevel.Warn, true);
-                DebugLogger.LogDebug($"{e}", LogLevel.Debug);
-            }
-        }
-
-        /// <summary>
-        /// Loads translations.
-        /// </summary>
-        /// <param name="path">The base event path.</param>
-        private void _loadValidTranslations(string path)
-        {
-            foreach (var property in this.GetType().GetProperties())
-            {
-                var trans = property.GetCustomAttribute<EventTranslationAttribute>();
-                if (trans is null)
-                {
-                    continue;
-                }
-
-                DebugLogger.LogDebug($"Translation \"{property.Name}\" found for {Name}", LogLevel.Debug);
-                
-                object translation = trans.Load(path, property.PropertyType, this.Version);
-                if (translation is not EventTranslation evTranslation)
-                {
-                    DebugLogger.LogDebug($"Translation was found that does not inherit Event Translation. It will be skipped.", LogLevel.Warn, true);
-                    DebugLogger.LogDebug($"(Event {this.Name}) Translation: {property.Name}.", LogLevel.Debug);
-                    continue;
-                }
-
-                property.SetValue(this, evTranslation);
-
-                // Replace all the main strings of the mini-game.
-                this.Name = evTranslation.Name;
-                this.Description = evTranslation.Description;
-                this.CommandName = evTranslation.CommandName;
-            }
         }
 
         /// <summary>
@@ -742,7 +343,7 @@ namespace AutoEvent.Interfaces
         {
             KillLoop = false;
             _cleanupRun = false;
-            AutoEvent.ActiveEvent = this;
+            AutoEvent.EventManager.CurrentEvent = this;
             EventTime = new TimeSpan();
             StartTime = DateTime.UtcNow;
 
@@ -775,7 +376,9 @@ namespace AutoEvent.Interfaces
                 DebugLogger.LogDebug($"{e}");
             }
             
+            SetRandomMap();
             SpawnMap(true);
+            
             try
             {
                 RegisterEvents();
@@ -798,6 +401,7 @@ namespace AutoEvent.Interfaces
                 DebugLogger.LogDebug($"Caught an exception at Event.OnStart().", LogLevel.Warn, true);
                 DebugLogger.LogDebug($"{e}", LogLevel.Debug);
             }
+            
             EventStarted?.Invoke(Name);
             StartAudio(true);
             Timing.RunCoroutine(RunTimingCoroutine(), "TimingCoroutine");
@@ -855,7 +459,7 @@ namespace AutoEvent.Interfaces
         /// <returns></returns>
         protected virtual IEnumerator<float> RunGameCoroutine()
         {            
-            while (!IsRoundDone() || DebugLogger.AntiEnd)
+            while (!IsRoundDone())
             {
                 if (KillLoop)
                 {
@@ -932,8 +536,6 @@ namespace AutoEvent.Interfaces
                 DebugLogger.LogDebug($"{e}", LogLevel.Debug);
             }
 
-            // StartTime = null;
-            // EventTime = null;
             try
             {
                 CleanupFinished?.Invoke(Name);
@@ -943,23 +545,8 @@ namespace AutoEvent.Interfaces
                 DebugLogger.LogDebug($"Caught an exception at Event.CleanupFinished.Invoke().", LogLevel.Warn, true);
                 DebugLogger.LogDebug($"{e}", LogLevel.Debug);
             }
-            AutoEvent.ActiveEvent = null;
-            try
-            {
-                EventConfig conf = this.GetCurrentConfigsValues().FirstOrDefault();
-                EventTranslation trans = this.GetCurrentTranslationsValues().FirstOrDefault();
-                if (conf is not null)
-                {
-                    this._setRandomMap(conf); 
-                    this._setRandomSound(conf);
-                }
-            }
-            catch (Exception e)
-            {
-                DebugLogger.LogDebug($"Caught an exception at Event._setMap.", LogLevel.Warn, true);
-                DebugLogger.LogDebug($"{e}", LogLevel.Debug);
-            }
-
+            
+            AutoEvent.EventManager.CurrentEvent = null;
         }
     #endregion
     #region Event Events // These events are triggered internally and can be used by an event manager to detect when certain stages are complete.
@@ -984,4 +571,17 @@ namespace AutoEvent.Interfaces
     #endregion
 #endregion
     }
+}
+
+public abstract class Event<TConfig, TTranslation> : Event
+    where TConfig : EventConfig, new()
+    where TTranslation : EventTranslation, new()
+{
+    public Event()
+    {
+        InternalConfig = new TConfig();
+        InternalTranslation = new TTranslation();
+    }
+    public TConfig Config => (TConfig)InternalConfig;
+    public TTranslation Translation => (TTranslation)InternalTranslation;
 }

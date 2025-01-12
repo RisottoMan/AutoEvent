@@ -1,252 +1,137 @@
 ﻿using System;
 using System.IO;
-using AutoEvent.Commands;
-using AutoEvent.Interfaces;
 using HarmonyLib;
-using PluginAPI.Events;
-using MEC;
 using AutoEvent.API;
-using AutoEvent.API.Season;
-using PluginAPI.Core.Attributes;
-using PluginAPI.Enums;
-using PluginAPI.Helpers;
-using Event = AutoEvent.Interfaces.Event;
-using Log = PluginAPI.Core.Log;
-using Map = PluginAPI.Core.Map;
-using Player = PluginAPI.Core.Player;
-using Server = PluginAPI.Core.Server;
-using Console = GameCore.Console;
-#if EXILED
-using AutoEvent.Events.EventArgs;
 using Exiled.API.Features;
-using Exiled.Events.EventArgs.Player;
 
-#endif
-namespace AutoEvent
+namespace AutoEvent;
+public class AutoEvent : Plugin<Config>
 {
-#if EXILED
-    public class AutoEvent : Plugin<Config>
+    public override string Name => "AutoEvent";
+    public override string Author => "Created by a large community of programmers, map builders and just ordinary people, under the leadership of RisottoMan.";
+    public override Version Version => Version.Parse("9.10.0");
+    public override Version RequiredExiledVersion => new(9, 3, 0);
+    public static string BaseConfigPath { get; set;}
+    public static AutoEvent Singleton;
+    public static Harmony HarmonyPatch;
+    public static EventManager EventManager;
+    private EventHandler _eventHandler;
+    
+    public override void OnEnabled()
     {
-        public override Version Version => Version.Parse(PluginVersion);
-        public override Version RequiredExiledVersion => new Version(8, 14, 0);
-        public override string Name => "AutoEvent";
-        public override string Author => "Created by a large community of programmers, map builders and just ordinary people, under the leadership of RisottoMan.";
+        if (!Config.IsEnabled) return;
 
-#else
-    public class AutoEvent
-    {
-        [PluginConfig("Configs/autoevent.yml")]
-        public Config Config;
-#endif
-        public const string PluginVersion = "9.9.3";
-        public const bool BetaRelease = false; // todo set beta to false before main release
-        /// <summary>
-        /// The location of the AutoEvent folder for schematics, music, external events and event config / translations.
-        /// </summary>
-        /// <example>/home/container/.config/SCP Secret Laboratory/PluginAPI/plugins/global/AutoEvent/</example>
-        public static string BaseConfigPath { get; set;}
-        public static IEvent ActiveEvent;
-        public static AutoEvent Singleton;
-        public static Harmony HarmonyPatch;
-        public static bool Debug => DebugLogger.Debug;
-        EventHandler eventHandler;
+        CosturaUtility.Initialize();
         
-#if EXILED
-        public override void OnEnabled()
-#else
-        [PluginPriority(LoadPriority.Low)]
-        [PluginEntryPoint("AutoEvent", PluginVersion, "An event manager plugin that allows you to run mini-games.", "KoT0XleB and Redforce04")]
-        void OnEnabled()
-#endif
+        BaseConfigPath = Path.Combine(Paths.Configs, "AutoEvent");
+        
+        try
         {
-            if (!Config.IsEnabled) return;
-            if (BetaRelease)
+            Singleton = this;
+            
+            if (Config.IgnoredRoles.Contains(Config.LobbyRole))
             {
-                Log.Warning("Warning: This release of AutoEvent is a Beta-Release." +
-                            " If you encounter any bugs, please reach out to Redforce04 (redforce04) or KoT0XleB (spagettimen) via discord." +
-                            " Alternatively, make an issue on our github (https://github.com/KoT0XleB/AutoEvent/). Have fun!");
+                DebugLogger.LogDebug("The Lobby Role is also in ignored roles. This will break the game if not changed. The plugin will remove the lobby role from ignored roles.", LogLevel.Error, true);
+                Config.IgnoredRoles.Remove(Config.LobbyRole);
             }
 
-            // Call Costura first just to ensure dependencies are loaded.
-            // Also make sure there isn't anything that needs a dependency in this method.
-            CosturaUtility.Initialize();
-            
-#if !EXILED
-            // Root plugin path
-            AutoEvent.BaseConfigPath = Path.Combine(Paths.GlobalPlugins.Plugins, "AutoEvent");
-#else
-            AutoEvent.BaseConfigPath = Path.Combine(Exiled.API.Features.Paths.Configs, "AutoEvent");
-#endif
-            _startup();
-        }
+            FriendlyFireSystem.IsFriendlyFireEnabledByDefault = Server.FriendlyFire;
 
-        private void _startup()
-        {
+            var debugLogger = new DebugLogger(Config.AutoLogDebug);
+            DebugLogger.Debug = Config.Debug;
+            if (DebugLogger.Debug)
+            {
+                DebugLogger.LogDebug($"Debug Mode Enabled", LogLevel.Info, true);
+            }
+            
             try
             {
-                Singleton = this;
-                MER.Lite.API.Initialize(AutoEvent.Singleton.Config.SchematicsDirectoryPath, Config.Debug);
-                SCPSLAudioApi.Startup.SetupDependencies();
-
-#if EXILED
-                Exiled.Events.Handlers.Player.Shot += (Exiled.Events.EventArgs.Player.ShotEventArgs ev) =>
-                {
-                    var args = new NewShotEventArgs(Player.Get(ev.Player.ReferenceHub), ev.RaycastHit, ev.Hitbox, ev.Damage);
-                    global::AutoEvent.Events.Handlers.Players.OnShot(args);
-                    ev.Damage = args.Damage;
-                    ev.CanHurt = args.CanHurt;
-                };
-#endif
-                
-                if (Config.IgnoredRoles.Contains(Config.LobbyRole))
-                {
-                    DebugLogger.LogDebug("The Lobby Role is also in ignored roles. This will break the game if not changed. The plugin will remove the lobby role from ignored roles.", LogLevel.Error, true);
-                    Config.IgnoredRoles.Remove(Config.LobbyRole);
-                }
-
-                FriendlyFireSystem.IsFriendlyFireEnabledByDefault = Server.FriendlyFire;
-                var debugLogger = new DebugLogger(Config.AutoLogDebug);
-                DebugLogger.Debug = Config.Debug;
-                if (DebugLogger.Debug)
-                {
-                    DebugLogger.LogDebug($"Debug Mode Enabled", LogLevel.Info, true);
-                }
-
-                try
-                {
-                    HarmonyPatch = new Harmony("autoevent");
-                    HarmonyPatch.PatchAll();
-                }
-                catch (Exception e)
-                {
-                    Log.Warning("Could not patch harmony methods.");
-                    Log.Debug($"{e}");
-                }
-
-                eventHandler = new EventHandler();
-                EventManager.RegisterEvents(eventHandler);
-                EventManager.RegisterEvents(this);
-                SCPSLAudioApi.Startup.SetupDependencies();
-
-                try
-                {
-                    DebugLogger.LogDebug($"Base Conf Path: {BaseConfigPath}");
-                    DebugLogger.LogDebug($"Configs paths: \n" +
-                                         $"{Config.SchematicsDirectoryPath}\n" +
-                                         $"{Config.MusicDirectoryPath}\n" + 
-                                         $"{Config.ExternalEventsDirectoryPath}\n" +
-                                         $"{Config.EventConfigsDirectoryPath}\n");
-                    CreateDirectoryIfNotExists(BaseConfigPath);
-                    CreateDirectoryIfNotExists(Config.SchematicsDirectoryPath);
-                    CreateDirectoryIfNotExists(Config.MusicDirectoryPath);
-                    CreateDirectoryIfNotExists(Config.ExternalEventsDirectoryPath);
-                    CreateDirectoryIfNotExists(Config.EventConfigsDirectoryPath);
-                }
-                catch (Exception e)
-                {
-                    DebugLogger.LogDebug($"An error has occured while trying to initialize directories.", LogLevel.Warn, true);
-                    DebugLogger.LogDebug($"{e}");
-                }
-
-                // By mistake, I included all the open source maps in the archive Schematics.tar.gz
-                string opensourcePath = Path.Combine(Config.SchematicsDirectoryPath, "All Source maps");
-                if (Directory.Exists(opensourcePath))
-                {
-                    Directory.Delete(opensourcePath, true);
-                }
-
-                Event.RegisterInternalEvents();
-                Loader.LoadEvents();
-                Event.Events.AddRange(Loader.Events);
-                SeasonMethod.GetSeasonStyle();
-
-                DebugLogger.LogDebug(
-                    Loader.Events.Count > 0
-                        ? $"[ExternalEventLoader] Loaded {Loader.Events.Count} external event{(Loader.Events.Count > 1 ? "s" : "")}."
-                        : "No external events were found.", LogLevel.Info);
-
-                DebugLogger.LogDebug($"The mini-games are loaded.", LogLevel.Info, true);
+                HarmonyPatch = new Harmony("autoevent");
+                HarmonyPatch.PatchAll();
             }
             catch (Exception e)
             {
-                Log.Warning("Caught an exception while starting plugin.");
-                Log.Debug($"{e}");
-
-            }
-
-            Timing.CallDelayed(3f, () =>
-            {
-                PermissionSystem.Load();
-            });
-            
-#if EXILED
-            base.OnEnabled();
-#endif
-        }
-        public static void CreateDirectoryIfNotExists(string directory, string subPath = "")
-        {
-            string path = "";
-            try
-            {
-                path = subPath == "" ? directory : Path.Combine(directory, subPath);
-                // DebugLogger.LogDebug($"Filepath: {path}");
-                if (!Directory.Exists(path))
-                {
-                    Directory.CreateDirectory(path);
-                }
-            }
-            catch (Exception e)
-            {
-                DebugLogger.LogDebug($"An error has occured while trying to create a new directory.", LogLevel.Warn, true);
-                DebugLogger.LogDebug($"Path: {path}");
+                DebugLogger.LogDebug("Could not patch harmony methods.", LogLevel.Warn, true);
                 DebugLogger.LogDebug($"{e}");
             }
-        }
-#if !EXILED
-        [PluginUnload]
-        void OnDisabled()
-#else
-        public override void OnDisabled()
-#endif
-        {
-            eventHandler = null;
 
-            EventManager.UnregisterEvents(this);
-            HarmonyPatch.UnpatchAll();
-            Singleton = null;
-#if EXILED
-            base.OnDisabled();
-#endif
-        }
-
-        public void OnEventFinished()
-        {
-            if (Config.RestartAfterRoundFinish && !DebugLogger.NoRestartEnabled)
+            try
             {
-                foreach (Player ply in Player.GetPlayers())
-                {
-                    if (ply.CheckPermission("ev.norestart", out bool isConsole))
-                    {
-                        ply.ClearBroadcasts();
-                        ply.SendBroadcast($"The server is going to restart in 10 seconds. Use the `Ev NoRestart` command to prevent this.", 10);
-                    }
-                }
-                Timing.CallDelayed(7f, () =>
-                {
-                    if (Config.RestartAfterRoundFinish && !DebugLogger.NoRestartEnabled)
-                    {
-                        Map.ClearBroadcasts();
-                        Map.Broadcast(5, Config.ServerRestartMessage);
-                    }
-                });
-                Timing.CallDelayed(10f, () =>
-                {
-                    if (Config.RestartAfterRoundFinish && !DebugLogger.NoRestartEnabled)
-                    {
-                        Server.Restart();
-                    }
-                });
+                DebugLogger.LogDebug($"Base Conf Path: {BaseConfigPath}");
+                DebugLogger.LogDebug($"Configs paths: \n" +
+                                     $"{Config.SchematicsDirectoryPath}\n" +
+                                     $"{Config.MusicDirectoryPath}\n");
+                CreateDirectoryIfNotExists(BaseConfigPath);
+                CreateDirectoryIfNotExists(Config.SchematicsDirectoryPath);
+                CreateDirectoryIfNotExists(Config.MusicDirectoryPath);
+                
+                // temporarily
+                DeleteDirectoryAndFiles(Path.Combine(BaseConfigPath, "Configs"));
+                DeleteDirectoryAndFiles(Path.Combine(BaseConfigPath, "Events"));
+                DeleteDirectoryAndFiles(Path.Combine(Path.Combine(BaseConfigPath, "Schematics"), "All Source maps"));
+            }
+            catch (Exception e)
+            {
+                DebugLogger.LogDebug($"An error has occured while trying to initialize directories.", LogLevel.Warn, true);
+                DebugLogger.LogDebug($"{e}");
+            }
+
+            _eventHandler = new EventHandler(this);
+            EventManager = new EventManager();
+            EventManager.RegisterInternalEvents();
+            ConfigManager.LoadConfigsAndTranslations();
+            
+            DebugLogger.LogDebug($"The mini-games are loaded.", LogLevel.Info, true);
+        }
+        catch (Exception e)
+        {
+            DebugLogger.LogDebug("Caught an exception while starting plugin.", LogLevel.Warn, true);
+            DebugLogger.LogDebug($"{e}");
+        }
+        
+        base.OnEnabled();
+    }
+    
+    private static void CreateDirectoryIfNotExists(string path)
+    {
+        try
+        {
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
             }
         }
+        catch (Exception e)
+        {
+            DebugLogger.LogDebug("An error has occured while trying to create a new directory.", LogLevel.Warn, true);
+            DebugLogger.LogDebug($"Path: {path}\n{e}");
+        }
+    }
+    
+    private static void DeleteDirectoryAndFiles(string path)
+    {
+        try
+        {
+            if (Directory.Exists(path))
+            {
+                Directory.Delete(path, true);
+            }
+        }
+        catch (Exception e)
+        {
+            DebugLogger.LogDebug("An error has occured while trying to delete a directory.", LogLevel.Warn, true);
+            DebugLogger.LogDebug($"Path: {path}\n{e}");
+        }
+    }
+    
+    public override void OnDisabled()
+    {
+        _eventHandler = null;
+
+        HarmonyPatch.UnpatchAll();
+        EventManager = null;
+        Singleton = null;
+        
+        base.OnDisabled();
     }
 }

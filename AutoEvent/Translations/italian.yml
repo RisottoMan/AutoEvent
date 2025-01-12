@@ -1,0 +1,480 @@
+Airstrike Party:
+  cycle: |-
+    <color=yellow>Schiva le bombe!</color>
+    <color=green>sono trascorsi {time} secondi</color>
+    <color=red>{count} players rimasti</color>
+  more_player: |-
+    <color=red>Schiva le bombe</color>
+    <color=yellow><color=red>{count}</color> players sopravvissuti.</color>
+    <color=#ffc0cb>{time}</color>
+  one_player: |-
+    <color=red>Schiva le bombe</color>
+    <color=yellow>Vincitore - <color=red>{winner}</color></color>
+    <color=#ffc0cb>{time}</color>
+  all_die: |-
+    <color=red>Schiva le bombe</color>
+    <color=yellow>Nessuno è sopravvissuto.(((</color>
+    <color=#ffc0cb>{time}</color>
+  name: 'Festa dell''attacco aereo'
+  description: 'Sopravvivi al bombardamento.'
+  command_name: 'airstrike'
+All Deathmatch:
+  cycle: |-
+    <size=30><i><b>{name}</b>
+    <color=red>Tu - {kills}/{needKills} kills</color>
+    Round Time: {time}</i></size>
+  no_players: |-
+    <color=red>Il game è stato fermato da un admin
+    Le tue kills {count}</color>
+  time_end: |-
+    <color=red>Il game è finito
+    Le tue kills {count}</color>
+  winner_end: |-
+    <b><color=red>Vincitore - <color=yellow>{winner}</color></color></b>
+    Le tue Kills <color=red>{count}</color></color>
+    Tempo di Gioco - <color=#008000>{time}</color></i>
+  name: 'Tutti contro tutti'
+  description: 'Combatti in un deathmatch tutti contro tutti.'
+  command_name: 'dm'
+Atomic Escape:
+  before_start: |-
+    {name}
+    Preparati a fuggire dalla struttura prima che esploda!
+    <color=red>Tempo prima che inizia il round: {time} seconds</color>
+  cycle: |-
+    {name}
+    <color=red>{time}</color> secondi prima delle esplosione!
+  end: |-
+    {name}
+    <color=red>{players} Player Fuggiti </color>
+  name: 'Fuga atomica'
+  description: 'Fuggi dalla struttura come SCP-173 a velocità supersonica!'
+  command_name: 'escape'
+Battle:
+  time_left: '<size=100><color=red>La battaglia inizia in {time} </color></size>'
+  ci_win: |-
+    <color=#299438>Vincitori: Chaos Insurgency </color>
+    <color=red>Durata: {time} </color>
+  mtf_win: |-
+    <color=#14AAF5>Vincitori: Forze della Fondazione</color>
+    <color=red>Durata: {time} </color>
+  counter: |-
+    <color=#14AAF5> MTF: {FoundationForces} </color> vs <color=#299438> CI: {ChaosForces} </color> 
+     Durata: {time}
+  name: 'Battaglia'
+  description: 'MTF contro CI in un arena!'
+  command_name: 'battle'
+Cock Fights:
+  players_null: |-
+    <color=#D71868><b><i>{name}</i></b></color>
+    Entrate nella arena per combattervi!
+    <color=red>{remain}</color> secondi rimasti
+  class_d_null: |-
+    <color=#D71868><b><i>{name}</i></b></color>
+    I player rimasti <color=yellow>{scientist}</color>
+    vadano dentro la cella in <color=orange>{remain}</color> secondi
+  scientist_null: |-
+    <color=#D71868><b><i>{name}</i></b></color>
+    I player rimasti <color=orange>{classd}</color>
+    vadano dentro la cella in <color=orange>{remain}</color> secondi
+  players_duel: |-
+    <color=#D71868><b><i>{name}</i></b></color>
+    <color=yellow><color=yellow>{scientist}</color> <color=red>VS</color> <color=orange>{classd}</color></color>
+  class_d_win: |-
+    <color=#D71868><b><i>{name}</i></b></color>
+    <color=yellow>VINCITORI: <color=red>CLASS D</color></color>
+  scientist_win: |-
+    <color=#D71868><b><i>{name}</i></b></color>
+    <color=yellow>VINCITORI: <color=red>SCIENZIATI</color></color>
+  name: 'Combattimenti di galli'
+  description: 'Duello tra player con 35hp nella mappa di cs 1.6'
+  command_name: 'versus'
+Counter-Strike:
+  cycle: |-
+    <size=60>{name}</size>
+    <size=25><i>{task}</i>
+    <i><color=#42AAFF>{ctCount} Antiterroristi</color> <b>/</b> <color=green>{tCount} Terroristi</color></i>
+    <i>Round Time: {time}</i></size>
+  no_planted_counter: 'Proteggi gli stabilimenti A e B dai terroristi'
+  no_planted_terror: 'Posiziona la bomba sull''impianto A o B'
+  planted_counter: '<color=red>Disinnescare la bomba prima che esploda</color>'
+  planted_terror: '<color=red>Proteggi la bomba finché non esplode</color>'
+  draw: |-
+    <b><color=#808080>Pari</color></b>
+    <i>Tutti sono morti</i>
+  time_ended: |-
+    <b><color=#808080>Pari</color></b>
+    <i>Tempo finito</i>
+  counter_win: |-
+    <b><color=#42AAFF>Antiterroristi Vincono</color></b>
+    <i>Tutti i terroristi sono morti</i>
+  terrorist_win: |-
+    <b><color=green>Terroristi Vincono</color></b>
+    <i>Tutti gli antiterroristi sono morti</i>
+  planted_win: |-
+    <b><color=green>Terroristi Vincono</color></b>
+    <i>La bomba è esplosa</i>
+  defused_win: |-
+    <b><color=#42AAFF>Antiterroristi Vincono</color></b>
+    <i>Bomba disinnescata</i>
+  you_planted: '<b><color=#ff4c5b>Hai posizionato la bomba</color></b>'
+  you_defused: '<b><color=#42aaff>Hai disinnescato la bomba</color></b>'
+  hint_cycle: |-
+    <size=30><i><b>{name}</b>
+    {kills}
+  name: 'Counter-Strike'
+  description: 'Combattimento tra terroristi e antiterroristi.'
+  command_name: 'cs'
+Dead Jump:
+  start: |-
+    <size=50>Salto Falso
+    Salta sulle piattaforme fragili</size>
+    <size=20>Player vivi: {plyAlive} 
+    Tempo rimasto: {time}</size>
+  died: 'Sei caduto nella lava'
+  win_survived: '<color=yellow>Gli umani vincono! Sopravvissuti {plyAlive} players</color>'
+  winner: |-
+    <color=red>Salto Falso</color>
+    <color=yellow>Vincitore: {winner}</color>
+  fail: |-
+    <color=red>Salto Falso</color>
+    <color=yellow>Tutti i players sono morti</color>
+  push: '<color=green>Premi <color=yellow>[Alt]</color> per spingere una persona</color>'
+  name: 'Salto Falso'
+  description: 'Salta in delle piattaforma ma possono essere fragili'
+  command_name: 'glass'
+Death Line:
+  cycle: |-
+    <color=#FF4242>{name}</color>
+    <color=#14AAF5>Tempo rimasto: {time}
+    <color=yellow>Players rimasti: {count}</color>
+  more_players: |-
+    <color=#FF4242>{name}</color>
+    <color=yellow>{count} players sopravvissuti</color>
+    <color=red>Congratulate!</color>
+  winner: |-
+    <color=#FF4242>{name}</color>
+    <color=yellow>Vincitore: {winner}</color>
+    <color=red>Congratulazione!</color>
+  all_died: '<color=red>Tutti i player sono morti</color>'
+  name: 'Linea della Morte'
+  description: 'Evita le piattaforme rotanti per sopravvivere'
+  command_name: 'line'
+Death Run:
+  before_start_broadcast: |-
+    <color=#FFC618>{name}</color>
+    <size=35><color=#ff4c5b>Attenzione! Ci sono delle trappole mortali</color>
+    <color=#20B2AA>Preparati a correrre in <b>{time}</b> secondi</color></size>
+  cycle_broadcast: |-
+    <color=#FFC618>{name}</color>
+    <size=35><color=yellow>😃 Corridori [{runnerCount}]</color> | <color=#ff4c5b>[{deathCount}] Death 😈</color>
+    <color=#20B2AA>Tempo rimasto: <b>{time}</b></color></size>
+  death_win_broadcast: |-
+    <color=#FFC618>{name}</color>
+    <b><color=#ff4c5b>Death vince</color></b>
+  runner_win_broadcast: |-
+    <color=#FFC618>{name}</color>
+    <b><color=yellow>I Corridori vincono</color></b>
+  died: '<color=red>Non sei riuscito ad uccidere i death</color>'
+  over_time_broadcast: "<b><color=red>Tempo di uccidere i <i>Death</i> \U0001F638</color></b>"
+  second_life_hint: '<b><color=green>Hai avuto una seconda vita.</color></b>'
+  name: 'Gara della Morte'
+  description: 'Arriva al traguardo, evitando le trapolle attivate'
+  command_name: 'deathrun'
+Dodgeball:
+  start: |-
+    <color=#ffff00>Preparati a prendere le palle</color>
+    Il game inizia tra: <color=red>{time}</color>
+  cycle: |-
+    <b><color=#ffff00>{name}</color></b>
+    <color=#aad9ff>Tira la palla ai giocatori</color>
+    <color=red>{time}</color>
+  all_died: |-
+    <b><color=#ffff00>{name}</color></b>
+    <color=red>Tutti i player sono morti</color>
+    Time: <color=red>{time}</color>
+  class_d_win: |-
+    <b><color=#ffff00>{name}</color></b>
+    <color=#ffa500>ClassD Vincono</color>
+    Time: <color=red>{time}</color>
+  scientist_win: |-
+    <b><color=#ffff00>{name}</color></b>
+    <color=#ffff00>Scienziati Vincono</color>
+    Time: <color=red>{time}</color>
+  draw: |-
+    <b><color=#ffff00>{name}</color></b>
+    <color=#808080>Pari</color>
+    Time: <color=red>{time}</color>
+  redline: '<color=red>Non puoi attraversare la linea rossa</color>'
+  knocked: '<color=red>Sei stato colpito da {killer}</color>'
+  name: 'Dodgeball'
+  description: 'Sconfiggi il nemico con le palle da dodgeball.'
+  command_name: 'dodge'
+FallDown:
+  broadcast: |-
+    {name}
+    {time}
+    <color=yellow>Rimasti: </color>{count}<color=yellow> players</color>
+  winner: '<color=red>Vincitore:</color> {winner}'
+  died: '<color=red>Tutti i players sono morti</color>'
+  name: 'Caduta Libera'
+  description: 'Tutte le piattaforme vengono distrutte. È necessario sopravvivere'
+  command_name: 'fall'
+Football:
+  red_team: |-
+    <color=red>Il tuo team: Team Rosso
+    </color>
+  blue_team: |-
+    <color=#14AAF5>Il tuo team: Team Blu
+    </color>
+  time_left: |-
+    <color=#14AAF5>{BluePnt}</color> : <color=red>{RedPnt}</color>
+    Tempo rimasto: {time}
+  red_wins: '<color=red>I Rossi vincono</color>'
+  blue_wins: '<color=#14AAF5>I Blu vincono</color>'
+  draw: |-
+    Pari
+    <color=#14AAF5>{BluePnt}</color> vs <color=red>{RedPnt}</color>
+  name: 'Calcio'
+  description: 'Segna 3 gol per vincere'
+  command_name: 'football'
+Gun Game:
+  cycle: |-
+    <color=#D71868><b><i>{name}</i></b></color>
+    <b><color=yellow>Prossima <color=#D71868>{gun}</color> <color=#D71868>||</color> Bisogna avere <color=#D71868>{kills}</color> kills</color>
+    <color=#D71868>Leader: <color=yellow>{leadnick}</color> LVL <color=yellow>{leadgun}</color></color></b>
+  winner: |-
+    <color=#D71868><b><i>{name}</i></b></color>
+    <color=yellow>Il vincitore del gioco è <color=green>{winner}</color></color>
+  name: 'Gioco delle armi'
+  description: 'Gioco delle armi sulla mappa Shipment di MW19.'
+  command_name: 'gungame'
+Knives of Death:
+  cycle: |-
+    <color=#D71868><b><i>{name}</i></b></color>
+    <color=yellow><color=blue>{mtfcount} MTF</color> <color=red>VS</color> <color=green>{chaoscount} CHAOS</color></color>
+  chaos_win: |-
+    <color=#D71868><b><i>{name}</i></b></color>
+    <color=yellow>VINCITORI: <color=green>CHAOS</color></color>
+  mtf_win: |-
+    <color=#D71868><b><i>{name}</i></b></color>
+    <color=yellow>VINCITORI: <color=#42AAFF>MTF</color></color>
+  name: 'Coltelli della morte'
+  description: 'l''uno contro l''altro con 35hp su una mappa di cs 1.6'
+  command_name: 'knives'
+Musical Chairs:
+  start: |-
+    <color=#42aaff>Preparati a correre</color>
+    Il minigioco inizia tra <color=red>{time}</color>
+  cycle: |-
+    <b><color=#42aaff>{name}</color></b>
+    <color=#ffff00>{state}</color>
+    <color=#008000>{count}</color> player rimasti</color>
+  run_dont_touch: 'Corri, non toccare le piattaforme'
+  stand_free: 'Vai nella piattaforma libera'
+  stop_running: '<color=red>Hai smesso di correre</color>'
+  touch_ahead: '<color=red>Hai toccato le piattaforme in anticipo</color>'
+  no_time: '<color=red>Non sei arrivato in tempo su una piattaforma libera</color>'
+  more_players: |-
+    <b><color=#42aaff>{name}</color></b>
+    <color=red>Gli admin hanno fermato il minigioco</color>
+  winner: |-
+    <b><color=#42aaff>{name}</color></b>
+    <color=red>Vincitore: {winner}</color>
+  all_died: |-
+    <b><color=#42aaff>{name}</color></b>
+    <color=red>Tutti i player sono morti</color>
+  name: 'Gioco della sedia'
+  description: 'Competi uno contro l''altro per la sedia al ritmo'
+  command_name: 'chair'
+Puzzle:
+  start: |-
+    <b>{name}</b>
+    <color=yellow>Il minigioco inizierà tra <color=red>{time}</color> secondi</color>
+  stage: |-
+    <b>{name}</b>
+    <color=red>Stadio: </color>{stageNum}<color=red> / </color>{stageFinal}
+    <color=yellow>Player rimanenti:</color> {count}
+  all_died: |-
+    <b>{name}</b>
+    <color=red>Tutti i player sono morti</color>
+    Minigioco finito
+  some_survived: |-
+    <b>{name}</b>
+    <color=red>Diverse persone sono sopravvissute</color>
+    Minigioco finito
+  winner: |-
+    <b>{name}</b>
+    <color=red>Vincitore: {winner}</color>
+    Minigioco finito
+  died: '<color=red>Bruciato nella lava</color>'
+  name: 'Puzzle'
+  description: 'Vai nel colore giusto prima che cade'
+  command_name: 'puzzle'
+Race:
+  cycle: |-
+    {name}
+    <color=yellow>Passare la linea di traguardo per vincere!</color>
+    Tempo rimasto: {time}
+  died: '<color=red>Non hai finito la gara</color>'
+  players_survived: |-
+    <color=red>Gli umani vincono!</color>
+    Sopravvissuti {count}
+  one_survived: |-
+    <color=red>Gli umani vincono!</color>
+    Vincitore: {player}
+  no_survivors: '<color=red>Nessuno è sopravvissuto!</color>'
+  name: 'Gara'
+  description: 'Raggiungi la fine della mappa per vincere'
+  command_name: 'race'
+Red Light Green Light:
+  start: |-
+    <color=#42aaff>Preparati a correre</color>
+    Il game inizia tra <color=red>{time}</color> secondi
+  cycle: |-
+    <b><color=#42aaff>{name}</color></b>
+    <color=#aad9ff>{state}</color>
+    <color=red>{time} secondi rimasti</color>
+  all_died: |-
+    <b><color=#42aaff>{name}</color></b>
+    <color=red>Nessuno è riuscito a raggiungere il traguardo</color>
+  more_win: |-
+    <b><color=#42aaff>{name}</color></b>
+    <color=red>{count} players vincono</color>
+  player_win: |-
+    <b><color=#42aaff>{name}</color></b>
+    <color=green>Vincitore: {winner}</color>
+  red_light: '<color=red>Non muoverti</color>'
+  green_light: '<color=green>Corri</color>'
+  red_lose: '<color=red>Hai camminato mentre c''è il rosso</color>'
+  no_time: '<color=red>Non sei arrivato al traguardo!</color>'
+  hint: '<color=green>Premi <color=yellow>[Alt]</color> per spingere i player</color>'
+  hint_wait: '<color=red>Aspetta qualche secondo</color>'
+  hint_ready: '<color=green>Pronti</color>'
+  name: 'Luce rossa, Luce verde'
+  description: 'Raggiungi la fine del traguardo'
+  command_name: 'light'
+Simon's Prison:
+  start: |-
+    <color=yellow><color=red><b><i>{name}</i></b></color>
+    <i>Attiva o rilascia un blocco premendo il pulsante grande</i>
+    Prima dell'inizio: <color=red>{time}</color> secondi</color>
+  start_prisoners: |-
+    <color=yellow><color=red><b><i>{name}</i></b></color>
+    <i>Fuggi dalla prigione a tutti i costi. Stai attento. Gli oggetti sono sparsi sulla mappa per aiutarti a sopravvivere.</i>
+    Prima dell'inizio: <color=red>{time}</color> secondi</color>
+  cycle: |-
+    <size=20><color=red>{name}</color>
+    <color=yellow>Prigionieri: {dclasscount}</color> || <color=#14AAF5>Guardie: {mtfcount}</color>
+    <color=red>{time}</color></size>
+  prisoners_win: |-
+    <color=red><b><i>Prigionieri vincono</i></b></color>
+    <color=red>{time}</color>
+  jailers_win: |-
+    <color=#14AAF5><b><i>Guardie vincono</i></b></color>
+    <color=red>{time}</color>
+  lockdown_on_cooldown: 'Non è possibile attivare il lockdown mentre è in fase di recupero. Recupero rimanente: {cooldown}'
+  lives_remaining: 'Hai {lives} vite rimanenti.'
+  no_lives_remaining: 'Non hai più nessuna vita.'
+  name: 'Prigione di Simon'
+  description: 'Modalità jail da CS 1.6, in cui è necessario organizzare eventi [MOLTO DIFFICILE].'
+  command_name: 'jail'
+Spleef:
+  start: '<color=red>Inzia tra </color>{time} secondi'
+  cycle: |-
+    <color=red>{name}</color>
+    <color=yellow>Players vivi:</color> {players}
+    <color=#42aaff>Tempo rimanente:</color> {remaining}
+  all_died: |-
+    <color=red>Tutti i player sono morti</color>
+    Minigioco finito
+  some_survived: |-
+    <color=red>Diverse persone sono sopravvissute</color>
+    Minigioco finito
+  winner: |-
+    <color=red>Vincitore: {winner}</color>
+    Minigioco finito
+  died: '<color=red>Bruciato nella lava</color>'
+  name: 'Spleef'
+  description: 'Spara alle piattaforme e non cadere nel vuoto'
+  command_name: 'spleef'
+Tag:
+  broadcast: |-
+    CORRI
+    I giocatori cacciatori sono in fase di selezione. Nasconditi adesso!
+    Tempo rimasto: {time}
+  cycle: |-
+    Tocca un'altro player
+    <color=yellow><b><i>{time}</i></b> secondi rimasti</color>
+  hurt: 'Non hai preso un altro giocatore.'
+  one_player: |-
+    Il player {winner} ha vinto
+    <color=yellow>Durata dell''evento <color=red>{time}</color></color>
+  all_die: |-
+    Nessuno è sopravvissuto.
+    Fine del gioco
+    <color=yellow>Durata dell''evento <color=red>{time}</color></color>
+  name: 'Acchiapparella'
+  description: 'Devi toccare tutti i player nella mappa.'
+  command_name: 'tag'
+Team Death-Match:
+  cycle: |-
+    <color=#D71868><b><i>{name}</i></b></color>
+    <b><color=yellow><color=#42AAFF> {mtftext}> </color> <color=red>|</color> <color=green> <{chaostext}</color></color></b>
+  chaos_win: |-
+    <color=#D71868><b><i>{name}</i></b></color>
+    <color=yellow>VINCITORI: <color=green>CHAOS</color></color>
+  mtf_win: |-
+    <color=#D71868><b><i>{name}</i></b></color>
+    <color=yellow>VINCITORI: <color=#42AAFF>MTF</color></color>
+  name: 'Team DeathMatch'
+  description: 'Team DeathMatch sulla mappa Shipment di MW19'
+  command_name: 'tdm'
+The floor is LAVA:
+  start: |-
+    <size=100><color=red>{time}</color></size>
+    Sali e prendi l''arma.
+  cycle: '<size=20><color=red><b>Vivi: {count} players</b></color></size>'
+  win: |-
+    <color=red><b>Vincitore
+    Player - {winner}</b></color>
+  all_dead: '<color=red><b>Nessuno è sopravvissuto.</b></color>'
+  died: '<color=red>Bruciato nella lava</color>'
+  name: 'Il pavimento è lava'
+  description: 'Sopravvivenza, in cui devi evitare la lava e sparare agli altri'
+  command_name: 'lava'
+Zombie Infection:
+  start: |-
+    <color=#D71868><b><i>{name}</i></b></color>
+    <color=#ABF000>Ci sono <color=red>{time}</color> secondi rimasti prima che inizia il game.</color>
+  cycle: |-
+    <color=#D71868><b><i>{name}</i></b></color>
+    <color=yellow>Umani rimasti: <color=green>{count}</color></color>
+    <color=yellow>Durata trascorsa: <color=red>{time}</color></color>
+  extra_time: |-
+    Extra time: {extratime}
+    <color=yellow>L''<b><i>ultima</i></b> persona è rimasta!</color>
+    <color=yellow>Durata trascorsa: <color=red>{time}</color></color>
+  win: |-
+    <color=red>Gli zombie vincono!</color>
+    <color=yellow>Durata trascorsa: <color=red>{time}</color></color>
+  lose: |-
+    <color=yellow>Gli <color=#D71868><b><i>Umani</i></b></color> Vincono!</color>
+    <color=yellow>Durata trascorsa: <color=red>{time}</color></color>
+  name: 'Infezione Zombie'
+  description: 'Modalità Zombie, il cui scopo è infettare tutti i giocatori.'
+  command_name: 'zombie'
+Zombie Survival:
+  survival_before_infection: |-
+    <b>{name}</b>
+    <color=yellow>Ci sono </color> {time} <color=yellow>secondi rimasti prima che inizia il round</color>
+  survival_after_infection: |-
+    <b>{name}</b>
+    <color=#14AAF5>Umani:</color> {humanCount}
+    <color=#299438>Tempo rimanente:</color> {time}
+  survival_zombie_win: '<color=red>Gli zombie hanno infettato tutti gli umani!</color>'
+  survival_human_win: '<color=#14AAF5>Gli umani hanno fermato l''infezione</color>'
+  survival_human_win_time: '<color=yellow>Gli umani vincono, ma non hanno fermato l''infezione</color>'
+  name: 'Sopravvivenza zombi'
+  description: 'Umani sopravvissuti agli zombi'
+  command_name: 'zombie2'

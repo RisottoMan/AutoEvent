@@ -1,32 +1,28 @@
-﻿using AutoEvent.Events.EventArgs;
-using PlayerRoles;
-using PluginAPI.Core.Attributes;
-using PluginAPI.Enums;
-using PluginAPI.Events;
+﻿using Exiled.Events.EventArgs.Map;
+using Exiled.Events.EventArgs.Player;
+using Exiled.Events.EventArgs.Scp173;
 
-namespace AutoEvent.Games.Escape
+namespace AutoEvent.Games.Escape;
+public class EventHandler
 {
-    public class EventHandler
+    Plugin _plugin;
+    public EventHandler(Plugin plugin)
     {
-        [PluginEvent(ServerEventType.PlayerJoined)]
-        public void OnPlayerJoin(PlayerJoinedEvent ev)
-        {
-            ev.Player.SetRole(RoleTypeId.Scp173);
-        }
+        _plugin = plugin;
+    }
+    
+    public void OnAnnoucingScpTermination(AnnouncingScpTerminationEventArgs ev)
+    {
+        ev.IsAllowed = false;
+    }
+    
+    public void OnJoined(JoinedEventArgs ev)
+    {
+        ev.Player.GiveLoadout(_plugin.Config.Scp173Loadout);
+    }
 
-        public void OnSendCassie(CassieScpArgs ev)
-        {
-            ev.IsAllowed = false;
-        }
-
-        public void OnTeamRespawn(TeamRespawnArgs ev)
-        {
-            ev.IsAllowed = false;
-        }
-
-        public void OnPlaceTantrum(PlaceTantrumArgs ev)
-        {
-            ev.IsAllowed = false;
-        }
+    public void OnPlacingTantrum(PlacingTantrumEventArgs ev)
+    {
+        ev.IsAllowed = false;
     }
 }

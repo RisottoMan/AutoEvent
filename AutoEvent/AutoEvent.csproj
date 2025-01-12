@@ -44,7 +44,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="ExMod.Exiled" Version="8.13.1" />
+    <PackageReference Include="ExMod.Exiled" Version="9.2.2" />
     <PackageReference Include="Fody" Version="6.8.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -53,16 +53,15 @@
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="Northwood.PluginAPI" Version="13.1.2" />
     <PackageReference Include="NVorbis" Version="0.10.5" />
-    <PackageReference Include="YamlDotNet" Version="13.7.1" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="CedModV3" HintPath="$(SL_REFERENCES)\CedModV3.dll" />
     <Reference Include="MapEditorReborn" HintPath="$(SL_REFERENCES)\MapEditorReborn.dll" />
     <Reference Include="NWAPIPermissionSystem" HintPath="$(SL_REFERENCES)\NWAPIPermissionSystem.dll" />
-    <Reference Include="SCPSLAudioApi" HintPath="$(SL_REFERENCES)\SCPSLAudioApi.dll" />
+    <Reference Include="AdvancedMERTools" HintPath="$(SL_REFERENCES)\AdvancedMERTools.dll" />
+    <Reference Include="AudioPlayerApi" HintPath="$(SL_REFERENCES)\AudioPlayerApi.dll" />
     <Reference Include="Assembly-CSharp-Publicized" HintPath="$(SL_REFERENCES)\Assembly-CSharp-Halloween-Publicized.dll" />
     <Reference Include="Mirror" HintPath="$(SL_REFERENCES)\Mirror.dll" />
-    <Reference Include="SchematicApi" HintPath="SchematicApi\bin\Release\net48\SchematicApi.dll" />
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" HintPath="$(SL_REFERENCES)\System.ComponentModel.DataAnnotations.dll" />
     <Reference Include="UnityEngine" HintPath="$(SL_REFERENCES)\UnityEngine.dll" />
@@ -98,6 +97,46 @@
     <EmbeddedResource Remove="ReplaceTextWithVariables\*" />
     <EmbeddedResource Remove="InventoryMenu\**" />
     <EmbeddedResource Remove="InventoryMenu\*" />
+    <None Remove="Translations\chinese.yml" />
+    <EmbeddedResource Include="Translations\chinese.yml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <None Remove="Translations\italian.yml" />
+    <EmbeddedResource Include="Translations\italian.yml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <None Remove="Translations\portuguese.yml" />
+    <EmbeddedResource Include="Translations\portuguese.yml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <None Remove="Translations\polish.yml" />
+    <EmbeddedResource Include="Translations\polish.yml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <None Remove="Translations\german.yml" />
+    <EmbeddedResource Include="Translations\german.yml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <None Remove="Translations\turkish.yml" />
+    <EmbeddedResource Include="Translations\turkish.yml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <None Remove="Translations\thai.yml" />
+    <EmbeddedResource Include="Translations\thai.yml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <None Remove="Translations\russian.yml" />
+    <EmbeddedResource Include="Translations\russian.yml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <None Remove="Translations\french.yml" />
+    <EmbeddedResource Include="Translations\french.yml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <None Remove="Translations\spanish.yml" />
+    <EmbeddedResource Include="Translations\spanish.yml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <None Remove="Games\Dodgeball\Features\**" />
@@ -121,10 +160,16 @@
     <Compile Remove="InventoryMenu\**" />
     <Compile Remove="InventoryMenu\*" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Translations\" />
+  </ItemGroup>
   <Target Name="RemoveFile" BeforeTargets="ReplaceFile">
     <Exec Command="if exist $(SolutionDir)VersionInfo.cs del $(SolutionDir)VersionInfo.cs" />
   </Target>
   <Target Name="ReplaceFile" BeforeTargets="ReplaceVars">
     <Exec Command="copy $(SolutionDir)BlankVersionInfo.txt $(SolutionDir)VersionInfo.cs" />
+  </Target>
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="xcopy &quot;$(TargetPath)&quot; &quot;%appdata%\EXILED\Plugins&quot; /y" />
   </Target>
 </Project>

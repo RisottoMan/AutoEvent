@@ -3,9 +3,6 @@
 namespace AutoEvent.Games.MusicalChairs;
 public class Translation : EventTranslation
 {
-    public override string Name { get; set; } = "Musical Chairs";
-    public override string Description { get; set; } = "Compete with other players for chairs with funny music";
-    public override string CommandName { get; set; } = "chair";
     public string Start { get; set; } = "<color=#42aaff>Get ready to run</color>\nThe game start in: <color=red>{time}</color>";
     public string Cycle { get; set; } = "<b><color=#42aaff>{name}</color></b>\n<color=#ffff00>{state}</color>\n<color=#008000>{count}</color> players remaining</color>";
     public string RunDontTouch { get; set; } = "Run and dont touch the platforms";

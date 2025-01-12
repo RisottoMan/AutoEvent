@@ -1,13 +1,10 @@
 ﻿using System;
-using AutoEvent.Events.EventArgs;
 using MEC;
 using PlayerRoles;
-using PlayerStatsSystem;
-using PluginAPI.Core;
-using PluginAPI.Core.Attributes;
-using PluginAPI.Enums;
-using PluginAPI.Events;
 using System.Linq;
+using Exiled.API.Enums;
+using Exiled.API.Features;
+using Exiled.Events.EventArgs.Player;
 using InventorySystem.Items.MarshmallowMan;
 
 namespace AutoEvent.Games.Infection;
@@ -19,87 +16,82 @@ public class EventHandler
         _plugin = plugin;
     }
 
-    public void OnPlayerDamage(PlayerDamageArgs ev)
+    public void OnHurting(HurtingEventArgs ev)
     {
-        if (ev.DamageType == DeathTranslations.Falldown.Id)
+        if (ev.DamageHandler.Type == DamageType.Falldown)
             ev.IsAllowed = false;
         
         if (_plugin.IsHalloweenUpdate)
         {
-            ev.Target.SetRole(RoleTypeId.Scientist, RoleSpawnFlags.None);
-            ev.Target.IsGodModeEnabled = true;
+            ev.Player.Role.Set(RoleTypeId.Scientist, RoleSpawnFlags.None);
+            ev.Player.IsGodModeEnabled = true;
             Timing.CallDelayed(0.1f, () =>
             {
-                ev.Target.EffectsManager.EnableEffect<MarshmallowEffect>();
+                ev.Player.EnableEffect<MarshmallowEffect>();
             });
         }
-        else if (_plugin.IsChristmasUpdate)
+        else if (_plugin.IsChristmasUpdate && Enum.TryParse("ZombieFlamingo", out RoleTypeId roleTypeId))
         {
-            RoleTypeId zombieType = (RoleTypeId)Enum.Parse(typeof(RoleTypeId), "ZombieFlamingo");
-            ev.Target.SetRole(zombieType, RoleSpawnFlags.None);
-            ev.Attacker.ReceiveHitMarker(1f);
-            Extensions.PlayPlayerAudio(ev.Target, _plugin.Config.ZombieScreams.RandomItem(), 15);
+            if (ev.Player.Role.Type == roleTypeId)
+            {
+                ev.IsAllowed = false;
+                return;
+            }
+            
+            ev.Player.Role.Set(roleTypeId, RoleSpawnFlags.None);
+            ev.Attacker.ShowHitMarker();
+            Extensions.PlayPlayerAudio(_plugin.SoundInfo.AudioPlayer, ev.Player, _plugin.Config.ZombieScreams.RandomItem(), 15);
         }
         else if (ev.Attacker != null && ev.Attacker.Role == RoleTypeId.Scp0492)
         {
-            ev.Target.GiveLoadout(_plugin.Config.ZombieLoadouts);
-            ev.Attacker.ReceiveHitMarker();
-            Extensions.PlayPlayerAudio(ev.Target, _plugin.Config.ZombieScreams.RandomItem(), 15);
+            ev.Player.GiveLoadout(_plugin.Config.ZombieLoadouts);
+            ev.Attacker.ShowHitMarker();
+            Extensions.PlayPlayerAudio(_plugin.SoundInfo.AudioPlayer, ev.Player, _plugin.Config.ZombieScreams.RandomItem(), 15);
         }
     }
 
-    [PluginEvent(ServerEventType.PlayerJoined)]
-    public void OnPlayerJoin(PlayerJoinedEvent ev)
+    public void OnJoined(JoinedEventArgs ev)
     {
         if (_plugin.IsHalloweenUpdate || _plugin.IsChristmasUpdate)
             return;
         
-        if (Player.GetPlayers().Count(r => r.Role == RoleTypeId.Scp0492) > 0)
+        if (Player.List.Count(r => r.Role == RoleTypeId.Scp0492) > 0)
         {
             ev.Player.GiveLoadout(_plugin.Config.ZombieLoadouts);
-            ev.Player.Position = RandomPosition.GetSpawnPosition(_plugin.MapInfo.Map);
-            Extensions.PlayPlayerAudio(ev.Player, _plugin.Config.ZombieScreams.RandomItem(), 15);
+            ev.Player.Position = _plugin.SpawnList.RandomItem().transform.position;
+            Extensions.PlayPlayerAudio(_plugin.SoundInfo.AudioPlayer, ev.Player, _plugin.Config.ZombieScreams.RandomItem(), 15);
         }
         else
         {
             ev.Player.GiveLoadout(_plugin.Config.PlayerLoadouts);
-            ev.Player.Position = RandomPosition.GetSpawnPosition(_plugin.MapInfo.Map);
+            ev.Player.Position = _plugin.SpawnList.RandomItem().transform.position;
         }
     }
 
-    [PluginEvent(ServerEventType.PlayerDeath)]
-    public void OnPlayerDeath(PlayerDeathEvent ev)
+    public void OnDied(DiedEventArgs ev)
     {
         Timing.CallDelayed(2f, () =>
         {
             if (_plugin.IsHalloweenUpdate)
             {
-                ev.Player.SetRole(RoleTypeId.Scientist, RoleSpawnFlags.None);
+                ev.Player.Role.Set(RoleTypeId.Scientist, RoleSpawnFlags.None);
                 ev.Player.IsGodModeEnabled = true;
                 Timing.CallDelayed(0.1f, () =>
                 {
-                    ev.Player.EffectsManager.EnableEffect<MarshmallowEffect>();
+                    ev.Player.EnableEffect<MarshmallowEffect>();
                 });
             }
-            else if (_plugin.IsChristmasUpdate)
+            else if (_plugin.IsChristmasUpdate && Enum.TryParse("ZombieFlamingo", out RoleTypeId roleTypeId))
             {
-                RoleTypeId zombieType = (RoleTypeId)Enum.Parse(typeof(RoleTypeId), "ZombieFlamingo");
-                ev.Player.SetRole(zombieType, RoleSpawnFlags.None);
+                ev.Player.Role.Set(roleTypeId, RoleSpawnFlags.None);
             }
             else
             {
                 ev.Player.GiveLoadout(_plugin.Config.ZombieLoadouts);
-                Extensions.PlayPlayerAudio(ev.Player, _plugin.Config.ZombieScreams.RandomItem(), 15);
+                Extensions.PlayPlayerAudio(_plugin.SoundInfo.AudioPlayer, ev.Player, _plugin.Config.ZombieScreams.RandomItem(), 15);
             }
             
-            ev.Player.Position = RandomPosition.GetSpawnPosition(_plugin.MapInfo.Map);
+            ev.Player.Position = _plugin.SpawnList.RandomItem().transform.position;
         });
     }
-
-    public void OnTeamRespawn(TeamRespawnArgs ev) => ev.IsAllowed = false;
-    public void OnSpawnRagdoll(SpawnRagdollArgs ev) => ev.IsAllowed = false;
-    public void OnPlaceBullet(PlaceBulletArgs ev) => ev.IsAllowed = false;
-    public void OnPlaceBlood(PlaceBloodArgs ev) => ev.IsAllowed = false;
-    public void OnDropItem(DropItemArgs ev) => ev.IsAllowed = false;
-    public void OnDropAmmo(DropAmmoArgs ev) => ev.IsAllowed = false;
 }

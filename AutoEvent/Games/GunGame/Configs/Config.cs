@@ -3,6 +3,8 @@ using System.ComponentModel;
 using AutoEvent.API;
 using AutoEvent.API.Season.Enum;
 using AutoEvent.Interfaces;
+using Exiled.API.Enums;
+using Exiled.API.Features;
 using PlayerRoles;
 using UnityEngine;
 
@@ -19,12 +21,13 @@ public class Config : EventConfig
         if (AvailableMaps.Count < 1)
         {
             AvailableMaps.Add(new MapChance(50, new MapInfo("Shipment", new Vector3(93f, 1020f, -43f) )));
-            AvailableMaps.Add(new MapChance(50, new MapInfo("Shipment_Halloween2024", new Vector3(93f, 1020f, -43f)), SeasonFlag.Halloween));
+            AvailableMaps.Add(new MapChance(50, new MapInfo("Shipment_Xmas2025", new Vector3(93f, 1020f, -43f)), SeasonFlags.Christmas));
+            AvailableMaps.Add(new MapChance(50, new MapInfo("Shipment_Halloween2024", new Vector3(93f, 1020f, -43f)), SeasonFlags.Halloween));
         }
     }
     
     [Description("A list of guns a player can get.")]
-    public List<GunRole> Guns { get; set; } = new List<GunRole>()
+    public List<GunRole> Guns { get; set; } = new()
     {
         new GunRole(ItemType.GunCOM15, 0),
         new GunRole(ItemType.GunCOM18, 2),
@@ -33,7 +36,7 @@ public class Config : EventConfig
         new GunRole(ItemType.GunFSP9, 8),
         new GunRole(ItemType.GunCrossvec, 10),
         new GunRole(ItemType.GunAK, 12),
-        new GunRole(ItemType.GunShotgun, 14),
+        new GunRole(ItemType.Jailbird, 14),
         new GunRole(ItemType.GunE11SR, 16),
         new GunRole(ItemType.GunRevolver, 18),
         new GunRole(ItemType.GunA7, 20),
@@ -47,30 +50,27 @@ public class Config : EventConfig
     };
 
     [Description("The loadouts a player can get.")]
-    public List<Loadout> Loadouts { get; set; } = new List<Loadout>()
+    public List<Loadout> Loadouts { get; set; } = new()
     {
         new Loadout()
         {
-            Health = 100,
-            InfiniteAmmo = AmmoMode.InfiniteAmmo,
             Roles = new Dictionary<RoleTypeId, int>()
             {
-                { RoleTypeId.ClassD, 20 },
-                { RoleTypeId.Scientist, 20 },
-                { RoleTypeId.NtfSergeant, 20 },
-                { RoleTypeId.ChaosRifleman, 20 },
-                { RoleTypeId.FacilityGuard, 20 },
-            }
+                { RoleTypeId.ClassD, 100 },
+                { RoleTypeId.Scientist, 100 },
+                { RoleTypeId.NtfSergeant, 100 },
+                { RoleTypeId.ChaosRifleman, 100 },
+                { RoleTypeId.FacilityGuard, 100 },
+            },
+            InfiniteAmmo = AmmoMode.InfiniteAmmo,
+            Effects = new List<Effect>() { new(EffectType.FogControl, 0) },
         }
     };
 }
 
 public class GunRole
 {
-    public GunRole()
-    {
-        
-    }
+    public GunRole() { }
 
     public GunRole(ItemType item, int killsRequired)
     {

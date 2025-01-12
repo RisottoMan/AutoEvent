@@ -3,9 +3,6 @@
 namespace AutoEvent.Games.CounterStrike;
 public class Translation : EventTranslation
 {
-    public override string Name { get; set; } = "Counter-Strike";
-    public override string Description { get; set; } = "A fight between terrorists and counter-terrorists on Dust2.";
-    public override string CommandName { get; set; } = "cs";
     public string Cycle { get; set; } = "<size=60>{name}</size>\n<size=25><i>{task}</i>\n<i><color=#42AAFF>{ctCount} Counters</color> <b>/</b> <color=green>{tCount} Terrorists</color></i>\n<i>Round Time: {time}</i></size>";
     public string NoPlantedCounter { get; set; } = "Protect plants A and B from terrorists";
     public string NoPlantedTerror { get; set; } = "Plant the bomb at site A or B";

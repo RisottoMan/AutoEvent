@@ -1,128 +1,86 @@
-﻿using MEC;
-using PlayerRoles;
-using InventorySystem.Configs;
-using System.Collections.Generic;
+﻿using PlayerRoles;
 using CustomPlayerEffects;
 using System.Linq;
-using AutoEvent.Events.EventArgs;
-using PluginAPI.Core.Attributes;
-using PluginAPI.Enums;
-using PluginAPI.Events;
-using PluginAPI.Core;
-using PlayerStatsSystem;
+using Exiled.API.Enums;
+using Exiled.API.Features;
+using Exiled.Events.EventArgs.Player;
+using MEC;
 
-namespace AutoEvent.Games.Survival
+namespace AutoEvent.Games.Survival;
+public class EventHandler
 {
-    public class EventHandler
+    Plugin _plugin;
+    public EventHandler(Plugin plugin)
     {
-        Plugin _plugin;
-        public EventHandler(Plugin plugin)
+        _plugin = plugin;
+    }
+    
+    public void OnHurting(HurtingEventArgs ev)
+    {
+        if (ev.DamageHandler.Type == DamageType.Falldown)
         {
-            _plugin = plugin;
+            ev.IsAllowed = false;
         }
-        
-        public void OnPlayerDamage(PlayerDamageArgs ev)
-        {
-            if (ev.DamageType == DeathTranslations.Falldown.Id)
-            {
-                ev.IsAllowed = false;
-            }
 
-            if (ev.Attacker != null && ev.Target != null)
-            {
-                if (ev.Attacker.IsSCP && !ev.Target.IsSCP)
-                {
-                    if (ev.Target.Health <= 50)
-                    {
-                        /*ev.Target.SetRole(RoleTypeId.Scp0492);
-                        ev.Target.Health = 3000;*/
-                        ev.Target.GiveLoadout(_plugin.Config.ZombieLoadouts);
-                    }
-                    else
-                    {
-                        ev.Amount = 0;
-                        ev.Target.Health -= 50;
-                        ev.Target.ReferenceHub.playerStats.GetModule<AhpStat>().ServerKillProcess(0);
-                    }
-
-                    ev.Attacker.ReceiveHitMarker();
-                }
-
-                if (ev.Attacker.IsHuman && ev.Target.IsSCP && ev.Target != _plugin.FirstZombie)
-                {
-                    _plugin.Config.WeaponEffect.ApplyGunEffect(ref ev);
-                }
-
-                if (ev.Target == _plugin.FirstZombie)
-                {
-                    ev.Amount = 1;
-                }
-            }
+        if (ev.Attacker == null || ev.Player == null)
+            return;
             
-        }
-
-        [PluginEvent(ServerEventType.PlayerDeath)]
-        public void OnPlayerDeath(PlayerDeathEvent ev)
+        if (ev.Attacker.IsScp && ev.Player.IsHuman)
         {
-            Timing.CallDelayed(2f, () =>
+            if (ev.Player.ArtificialHealth <= 50)
             {
-                Extensions.SetRole(ev.Player, RoleTypeId.Scp0492, RoleSpawnFlags.AssignInventory);
-                ev.Player.Position = RandomClass.GetSpawnPosition(_plugin.MapInfo.Map);
-                ev.Player.EffectsManager.EnableEffect<Disabled>();
-                ev.Player.EffectsManager.EnableEffect<Scp1853>();
-                ev.Player.Health = 3000;
-            });
-        }
-
-        [PluginEvent(ServerEventType.PlayerJoined)]
-        public void OnPlayerJoin(PlayerJoinedEvent ev)
-        {
-            if (Player.GetPlayers().Count(r => r.Role == RoleTypeId.Scp0492) > 0)
-            {
-                Extensions.SetRole(ev.Player, RoleTypeId.Scp0492, RoleSpawnFlags.AssignInventory);
-                ev.Player.Position = RandomClass.GetSpawnPosition(_plugin.MapInfo.Map);
-                ev.Player.EffectsManager.EnableEffect<Disabled>();
-                ev.Player.EffectsManager.EnableEffect<Scp1853>();
-                ev.Player.Health = 10000;
+                SpawnZombie(ev.Player);
             }
             else
             {
-                Extensions.SetRole(ev.Player, RoleTypeId.NtfSergeant, RoleSpawnFlags.AssignInventory);
-                ev.Player.Position = RandomClass.GetSpawnPosition(_plugin.MapInfo.Map);
-                Extensions.SetPlayerAhp(ev.Player, 100, 100, 0);
-
-                Timing.CallDelayed(0.1f, () =>
-                {
-                    ev.Player.CurrentItem = ev.Player.Items.ElementAt(1);
-                });
+                ev.IsAllowed = false;
+                ev.Player.ArtificialHealth = 0;
             }
-        }
 
-        [PluginEvent(ServerEventType.PlayerReloadWeapon)]
-        public void OnReloading(PlayerReloadWeaponEvent ev)
-        {
-            SetMaxAmmo(ev.Player);
+            ev.Attacker.ShowHitMarker();
         }
-
-        [PluginEvent(ServerEventType.PlayerSpawn)]
-        public void OnSpawning(PlayerSpawnEvent ev)
+        else if (ev.Attacker.IsHuman && ev.Player.IsScp)
         {
-            SetMaxAmmo(ev.Player);
+            ev.Player.EnableEffect<Disabled>(1, 1);
+            ev.Player.EnableEffect<Scp1853>(1, 1);
         }
-
-        private void SetMaxAmmo(Player pl)
+            
+        if (ev.Player == _plugin.FirstZombie)
         {
-            foreach (KeyValuePair<ItemType, ushort> AmmoLimit in InventoryLimits.StandardAmmoLimits)
+            ev.Amount = 1;
+        }
+    }
+
+    public void OnDying(DyingEventArgs ev)
+    {
+        Timing.CallDelayed(5f, () =>
+        {
+            // game not ended
+            if (Player.List.Count(r => r.IsScp) > 0 && Player.List.Count(r => r.IsHuman) > 0)
             {
-                pl.SetAmmo(AmmoLimit.Key, AmmoLimit.Value);
+                SpawnZombie(ev.Player);
             }
-        }
+        });
+    }
 
-        public void OnTeamRespawn(TeamRespawnArgs ev) => ev.IsAllowed = false;
-        public void OnSpawnRagdoll(SpawnRagdollArgs ev) => ev.IsAllowed = false;
-        public void OnPlaceBullet(PlaceBulletArgs ev) => ev.IsAllowed = false;
-        public void OnPlaceBlood(PlaceBloodArgs ev) => ev.IsAllowed = false;
-        public void OnDropItem(DropItemArgs ev) => ev.IsAllowed = false;
-        public void OnDropAmmo(DropAmmoArgs ev) => ev.IsAllowed = false;
+    public void OnJoined(JoinedEventArgs ev)
+    {
+        if (Player.List.Count(r => r.Role == RoleTypeId.Scp0492) > 0)
+        {
+            SpawnZombie(ev.Player);
+        }
+        else
+        {
+            ev.Player.GiveLoadout(_plugin.Config.PlayerLoadouts);
+            ev.Player.Position = _plugin.SpawnList.RandomItem().transform.position;
+            ev.Player.CurrentItem = ev.Player.Items.ElementAt(1);
+        }
+    }
+
+    private void SpawnZombie(Player player)
+    {
+        player.GiveLoadout(_plugin.Config.ZombieLoadouts);
+        player.Position = _plugin.SpawnList.RandomItem().transform.position;
+        Extensions.PlayPlayerAudio(_plugin.SoundInfo.AudioPlayer, player, _plugin.Config.ZombieScreams.RandomItem(), 15);
     }
 }

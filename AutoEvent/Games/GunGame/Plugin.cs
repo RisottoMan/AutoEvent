@@ -1,74 +1,48 @@
-﻿using MER.Lite.Objects;
-using AutoEvent.Events.Handlers;
-using MEC;
-using PluginAPI.Core;
-using PluginAPI.Events;
-using System;
+﻿using MEC;
 using System.Collections.Generic;
 using System.Linq;
 using AutoEvent.API.Enums;
 using AutoEvent.Interfaces;
+using Exiled.API.Features;
 using UnityEngine;
 using Utils.NonAllocLINQ;
-using Event = AutoEvent.Interfaces.Event;
 
 namespace AutoEvent.Games.GunGame;
-public class Plugin : Event, IEventSound, IEventMap, IInternalEvent
+public class Plugin : Event<Config, Translation>, IEventSound, IEventMap
 {
     public override string Name { get; set; } = "Gun Game";
     public override string Description { get; set; } = "Cool GunGame on the Shipment map from MW19";
     public override string Author { get; set; } = "RisottoMan/code & xleb.ik/map";
     public override string CommandName { get; set; } = "gungame";
-    public override Version Version { get; set; } = new Version(1, 0, 1);
-    [EventConfig]
-    public Config Config { get; set; }
-    [EventConfigPreset]
-    public Config EasyGunsFirst => Preset.EasyGunsFirst;
-    [EventTranslation]
-    public Translation Translation { get; set; }
-    public MapInfo MapInfo { get; set; } = new MapInfo()
+    public MapInfo MapInfo { get; set; } = new()
     {
         MapName = "Shipment", 
         Position = new Vector3(93f, 1020f, -43f)
     };
-    public SoundInfo SoundInfo { get; set; } = new SoundInfo()
+    public SoundInfo SoundInfo { get; set; } = new()
     { 
         SoundName = "ClassicMusic.ogg", 
         Volume = 5
     };
     protected override FriendlyFireSettings ForceEnableFriendlyFire { get; set; } = FriendlyFireSettings.Enable;
-    protected override float PostRoundDelay { get; set; } = 10f;
     private EventHandler _eventHandler { get; set; }
     internal List<Vector3> SpawnPoints { get; private set; }
     internal Dictionary<Player, Stats> PlayerStats { get; set; }
     private Player _winner;
-    private IEventTag _eventTagImplementation;
 
     protected override void RegisterEvents()
     {
         PlayerStats = new Dictionary<Player, Stats>();
 
         _eventHandler = new EventHandler(this);
-        EventManager.RegisterEvents(_eventHandler);
-        Servers.TeamRespawn += _eventHandler.OnTeamRespawn;
-        Servers.SpawnRagdoll += _eventHandler.OnSpawnRagdoll;
-        Servers.PlaceBullet += _eventHandler.OnPlaceBullet;
-        Servers.PlaceBlood += _eventHandler.OnPlaceBlood;
-        Players.DropItem += _eventHandler.OnDropItem;
-        Players.DropAmmo += _eventHandler.OnDropAmmo;
-        Players.PlayerDying += _eventHandler.OnPlayerDying;
+        Exiled.Events.Handlers.Player.Dying += _eventHandler.OnDying;
+        Exiled.Events.Handlers.Player.Joined += _eventHandler.OnJoined;
     }
 
     protected override void UnregisterEvents()
     {
-        EventManager.UnregisterEvents(_eventHandler);
-        Servers.TeamRespawn -= _eventHandler.OnTeamRespawn;
-        Servers.SpawnRagdoll -= _eventHandler.OnSpawnRagdoll;
-        Servers.PlaceBullet -= _eventHandler.OnPlaceBullet;
-        Servers.PlaceBlood -= _eventHandler.OnPlaceBlood;
-        Players.DropItem -= _eventHandler.OnDropItem;
-        Players.DropAmmo -= _eventHandler.OnDropAmmo;
-        Players.PlayerDying -= _eventHandler.OnPlayerDying;
+        Exiled.Events.Handlers.Player.Dying -= _eventHandler.OnDying;
+        Exiled.Events.Handlers.Player.Joined -= _eventHandler.OnJoined;
         _eventHandler = null;
     }
 
@@ -83,7 +57,7 @@ public class Plugin : Event, IEventSound, IEventMap, IInternalEvent
         }
 
         var count = 0;
-        foreach (Player player in Player.GetPlayers())
+        foreach (Player player in Player.List)
         {
             if (!PlayerStats.ContainsKey(player))
             {
@@ -91,7 +65,6 @@ public class Plugin : Event, IEventSound, IEventMap, IInternalEvent
             }
 
             player.ClearInventory();
-            //Extensions.SetRole(player, GunGameRandom.GetRandomRole(), RoleSpawnFlags.None);
             player.GiveLoadout(Config.Loadouts, LoadoutFlags.IgnoreWeapons | LoadoutFlags.IgnoreGodMode);
             player.Position = SpawnPoints.RandomItem();
 
@@ -110,12 +83,9 @@ public class Plugin : Event, IEventSound, IEventMap, IInternalEvent
 
     protected override void CountdownFinished()
     {
-        foreach (var player in Player.GetPlayers())
+        foreach (var player in Player.List.Where(r => r.IsAlive))
         {
-            if (player is not null)
-            {
-                _eventHandler.GetWeaponForPlayer(player);
-            }
+            _eventHandler.GetWeaponForPlayer(player);
         }
     }
 
@@ -124,7 +94,7 @@ public class Plugin : Event, IEventSound, IEventMap, IInternalEvent
         // Winner is not null &&
         // Over one player is alive && 
         // Elapsed time is smaller than 10 minutes (+ countdown)
-        return !(_winner == null && Enumerable.Count(Player.GetPlayers(), r => r.IsAlive) > 1 && EventTime.TotalSeconds < 600);
+        return !(_winner == null && Enumerable.Count(Player.List, r => r.IsAlive) > 1 && EventTime.TotalSeconds < 600);
     }
         
     protected override void ProcessFrame()
@@ -132,7 +102,7 @@ public class Plugin : Event, IEventSound, IEventMap, IInternalEvent
         var leaderStat = PlayerStats.OrderByDescending(r => r.Value.kill).FirstOrDefault();
         List<GunRole> gunsInOrder = Config.Guns.OrderByDescending(x => x.KillsRequired).ToList();
         GunRole leadersWeapon = gunsInOrder.FirstOrDefault(x => leaderStat.Value.kill >= x.KillsRequired);
-        foreach (Player pl in Player.GetPlayers())
+        foreach (Player pl in Player.List)
         {
             PlayerStats.TryGetValue(pl, out Stats stats);
             if (stats.kill >= Config.Guns.OrderByDescending(x => x.KillsRequired).FirstOrDefault()!.KillsRequired)
@@ -162,10 +132,11 @@ public class Plugin : Event, IEventSound, IEventMap, IInternalEvent
                 nextGun = gunsInOrder[indexOfFirst - 1].Item.ToString();
             }
             pl.ClearBroadcasts();
-            pl.SendBroadcast(
-                Translation.Cycle.Replace("{name}", Name).Replace("{gun}", nextGun )
-                    .Replace("{kills}", $"{killsNeeded}").Replace("{leadnick}", leaderStat.Key.Nickname)
-                    .Replace("{leadgun}", $"{(leadersWeapon is null ? nextGun : leadersWeapon.Item)}"), 1);
+            pl.Broadcast(1, Translation.Cycle.
+                Replace("{name}", Name).
+                Replace("{gun}", nextGun).
+                Replace("{kills}", $"{killsNeeded}").Replace("{leadnick}", leaderStat.Key.Nickname).
+                Replace("{leadgun}", $"{(leadersWeapon is null ? nextGun : leadersWeapon.Item)}"));
         }
     }
 
@@ -173,11 +144,20 @@ public class Plugin : Event, IEventSound, IEventMap, IInternalEvent
     {
         if (_winner != null)
         {
-            Extensions.Broadcast(
-                Translation.Winner.Replace("{name}", Name).Replace("{winner}", _winner.Nickname), 10);
+            string text = Translation.Winner.
+                Replace("{name}", Name).
+                Replace("{winner}", _winner.Nickname);
+            Extensions.Broadcast(text, 10);
         }
-
-        foreach (var player in Player.GetPlayers())
+        else
+        {
+            string text = Translation.Winner.
+                Replace("{name}", Name).
+                Replace("{winner}", Player.List.First(r => r.IsAlive).Nickname);
+            Extensions.Broadcast(text, 10);
+        }
+        
+        foreach (var player in Player.List)
         {
             player.ClearInventory();
         }

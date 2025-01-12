@@ -1,6 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
+using AutoEvent.API;
 using AutoEvent.Interfaces;
+using Exiled.API.Enums;
+using Exiled.API.Features;
+using PlayerRoles;
 
 namespace AutoEvent.Games.Escape;
 public class Config : EventConfig
@@ -10,4 +14,14 @@ public class Config : EventConfig
 
     [Description("The time of the start and resume of the warhead in seconds. [Default: 100]")]
     public int EscapeResumeTime { get; set; } = 100;
+    
+    [Description("A list of loadouts for team Chaos Insurgency")]
+    public List<Loadout> Scp173Loadout { get; set; } = new()
+    {
+        new Loadout()
+        {
+            Roles = new Dictionary<RoleTypeId, int>(){ { RoleTypeId.Scp173, 100 } },
+            Effects = new List<Effect>() { new(EffectType.Ensnared, 1, 10) }
+        }
+    };
 }

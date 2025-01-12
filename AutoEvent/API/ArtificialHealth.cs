@@ -1,22 +1,7 @@
-﻿// <copyright file="Log.cs" company="Redforce04#4091">
-// Copyright (c) Redforce04. All rights reserved.
-// </copyright>
-// -----------------------------------------
-//    Solution:         AutoEvent
-//    Project:          AutoEvent
-//    FileName:         ArtificialHealth.cs
-//    Author:           Redforce04#4091
-//    Revision Date:    09/23/2023 11:15 PM
-//    Created Date:     09/23/2023 11:15 PM
-// -----------------------------------------
-
-using System;
 using System.ComponentModel;
-using PlayerStatsSystem;
-using PluginAPI.Core;
+using Exiled.API.Features;
 
 namespace AutoEvent.API;
-
 public class ArtificialHealth
 {
     public ArtificialHealth(){}
@@ -31,21 +16,12 @@ public class ArtificialHealth
         Duration = duration;
     }
 
-    public void ApplyToPlayer(Player ply)
+    public void ApplyToPlayer(Player player)
     {
         if (MaxAmount <= 0)
-        {
             return;
-        }
-        if(ClearOtherInstances)
-            ply.GetStatModule<AhpStat>()._activeProcesses.Clear();
-        ply.GetStatModule<AhpStat>().ServerAddProcess(
-            amount: InitialAmount, 
-            limit: MaxAmount, 
-            decay: -1*RegenerationAmount, 
-            efficacy: AbsorptionPercent / 100f,
-            sustain: Duration,
-            persistant: Permanent);
+        
+        player.AddAhp(InitialAmount, MaxAmount, -1 * RegenerationAmount, AbsorptionPercent / 100f, Duration, Permanent);
     }
     [Description("How much AHP the player will get at first.")]
     public float InitialAmount { get; set; } = 0f;
@@ -64,7 +40,4 @@ public class ArtificialHealth
 
     [Description("How long to wait before regenerating.")]
     public float Duration { get; set; } = 30f;
-
-    [Description("Should other instances of AHP, be removed from the player.")]
-    public bool ClearOtherInstances { get; set; } = true;
 }
