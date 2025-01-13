@@ -4,15 +4,15 @@ Airstrike Party:
     <color=green>{time} saniye geçti</color>
     <color=red>{count} oyuncu kaldı</color>
   more_player: |-
-    <color=red>Ölüm Partisi</color>
+    <color=red>Bombardıman</color>
     <color=yellow><color=red>{count}</color> oyuncu hayatta kaldı.</color>
     <color=#ffc0cb>{time}</color>
   one_player: |-
-    <color=red>Ölüm Partisi</color>
+    <color=red>Bombardıman</color>
     <color=yellow>Kazanan - <color=red>{winner}</color></color>
     <color=#ffc0cb>{time}</color>
   all_die: |-
-    <color=red>Ölüm Partisi</color>
+    <color=red>Bombardıman</color>
     <color=yellow>Kimse sağ kalamadı.(((</color>
     <color=#ffc0cb>{time}</color>
   name: 'Bombardıman Partisi'
@@ -21,7 +21,7 @@ Airstrike Party:
 All Deathmatch:
   cycle: |-
     <size=30><i><b>{name}</b>
-    <color=red>Senin öldürmen - {kills}/{needKills}</color>
+    <color=red>Öldürme sayın - {kills}/{needKills}</color>
     Round zamanı: {time}</i></size>
   no_players: |-
     <color=red>Oyun yönetici tarafından bitirildi
@@ -47,7 +47,7 @@ Atomic Escape:
   end: |-
     {name}
     <color=red>{players} Oyuncu Kaçtı </color>
-  name: 'Atomik Kaçış'
+  name: 'Nükleer Kaçış'
   description: 'SCP-173''ün süpersonik hızıyla tesisten kaçın!'
   command_name: 'escape'
 Battle:
@@ -86,7 +86,7 @@ Cock Fights:
   scientist_win: |-
     <color=#D71868><b><i>{name}</i></b></color>
     <color=yellow>KAZANANLAR: <color=red>BİLİM İNSANLARI</color></color>
-  name: 'Sapların Savaşı'
+  name: 'Horoz Dövüşü'
   description: 'Cs 1.6''dan 35hp haritasındaki oyuncuların düellosu'
   command_name: 'versus'
 Counter-Strike:
@@ -127,20 +127,20 @@ Counter-Strike:
   command_name: 'cs'
 Dead Jump:
   start: |-
-    <size=50>Ölüm Zıplayışı
+    <size=50>Cam Köprü
     Kırılgan platformları geçmeye çalışın</size>
     <size=20>Hayattaki oyuncular: {plyAlive} 
     Kalan Süre: {time}</size>
   died: 'Lava düştün'
   win_survived: '<color=yellow>İnsanlar kazandı! {plyAlive} oyuncu hayatta kaldı</color>'
   winner: |-
-    <color=red>Ölüm Atlayışı</color>
+    <color=red>Cam Köprü</color>
     <color=yellow>Kazanan: {winner}</color>
   fail: |-
-    <color=red>Ölüm Atlayışı</color>
+    <color=red>Cam Köprü</color>
     <color=yellow>Tüm Oyuncular Öldü</color>
   push: '<color=green>Oyuncuları itmek için <color=yellow>[Alt]</color> tuşuna bas</color>'
-  name: 'Ölüm Zıplayışı'
+  name: 'Cam Köprü'
   description: 'Kırılgan platformları zıplayarak geçmeye çalışın'
   command_name: 'glass'
 Death Line:
@@ -167,19 +167,19 @@ Death Run:
     <color=#20B2AA>Koşmaya hazır olun son <b>{time}</b> saniye</color></size>
   cycle_broadcast: |-
     <color=#FFC618>{name}</color>
-    <size=35><color=yellow>😃 Koşucular [{runnerCount}]</color> | <color=#ff4c5b>[{deathCount}] Cellatlar 😈</color>
+    <size=35><color=yellow>😃 Koşucular [{runnerCount}]</color> | <color=#ff4c5b>[{deathCount}] Katiller 😈</color>
     <color=#20B2AA>Kalan Süre: <b>{time}</b></color></size>
   death_win_broadcast: |-
     <color=#FFC618>{name}</color>
-    <b><color=#ff4c5b>Cellatlar kazandı</color></b>
+    <b><color=#ff4c5b>Katiller kazandı</color></b>
   runner_win_broadcast: |-
     <color=#FFC618>{name}</color>
     <b><color=yellow>Koşucular kazandı</color></b>
-  died: '<color=red>Cellatı öldürmek için zamanın yoktu.</color>'
-  over_time_broadcast: "<b><color=red>Şimdi cellatın <i>CELLLATI</i> olma zamanı😸</color></b>"
+  died: '<color=red>Katili öldürmek için zamanın yoktu.</color>'
+  over_time_broadcast: "<b><color=red>Şimdi Katilin <i>KATİLİ</i> olma zamanı😸</color></b>"
   second_life_hint: '<b><color=green>Son bir şansın daha var.</color></b>'
   name: 'Ölüm Koşuşu'
-  description: 'Yol boyunca cellatların aktifleştirdiği tuzaklardan kaçarak sonuna kadar gidin'
+  description: 'Yol boyunca Katillerin aktifleştirdiği tuzaklardan kaçarak sonuna kadar ulaş'
   command_name: 'deathrun'
 Dodgeball:
   start: |-
@@ -206,7 +206,7 @@ Dodgeball:
     <color=#808080>Berabere</color>
     Süre: <color=red>{time}</color>
   redline: '<color=red>Kırmzı çizgiyi geçemezsin</color>'
-  knocked: '<color=red>{killer} tarafından haklandın</color>'
+  knocked: '<color=red>{killer} tarafından vuruldun!</color>'
   name: 'Yakar Top'
   description: 'Karşı takımı top yağmuruna tut.'
   command_name: 'dodge'
@@ -242,7 +242,7 @@ Gun Game:
   cycle: |-
     <color=#D71868><b><i>{name}</i></b></color>
     <b><color=yellow>Sıradaki silah <color=#D71868>{gun}</color> <color=#D71868>||</color> Gereken <color=#D71868>{kills}</color> öldürme</color>
-    <color=#D71868>Şampiyon: <color=yellow>{leadnick}</color> LVL <color=yellow>{leadgun}</color></color></b>
+    <color=#D71868>Şampiyon: <color=yellow>{leadnick}</color> Seviye: <color=yellow>{leadgun}</color></color></b>
   winner: |-
     <color=#D71868><b><i>{name}</i></b></color>
     <color=yellow>Oyunun kazananı: <color=green>{winner}</color></color>
@@ -259,7 +259,7 @@ Knives of Death:
   mtf_win: |-
     <color=#D71868><b><i>{name}</i></b></color>
     <color=yellow>KAZANANLAR: <color=#42AAFF>MTF</color></color>
-  name: 'Ölümüne Bıçakla'
+  name: 'Horoz Savaşları'
   description: 'Cs 1.6''da ki 35hp''lik bir haritada birbirini deş'
   command_name: 'knives'
 Musical Chairs:
@@ -290,25 +290,25 @@ Musical Chairs:
 Puzzle:
   start: |-
     <b>{name}</b>
-    <color=yellow>Mini oyun <color=red>{time}</color> saniye içinde başlıyor</color>
+    <color=yellow>Oyun <color=red>{time}</color> saniye içinde başlıyor</color>
   stage: |-
     <b>{name}</b>
-    <color=red>Aşama: </color>{stageNum}<color=red> / </color>{stageFinal}
+    <color=red>Seviye: </color>{stageNum}<color=red> / </color>{stageFinal}
     <color=yellow>Kalan Oyuncular:</color> {count}
   all_died: |-
     <b>{name}</b>
     <color=red>Tüm oyuncular öldü</color>
-    Mini-oyun bitti
+    Oyun bitti
   some_survived: |-
     <b>{name}</b>
     <color=green>{count} oyuncu hayatta kaldı</color>
-    Mini-oyun bitti
+    Oyun bitti
   winner: |-
     <b>{name}</b>
     <color=green>Oyuncu {winner} kazandı</color>
     Mini-oyun bitti
   died: '<color=red>Lava düştün</color>'
-  name: 'Yapboz'
+  name: 'Renk Oyunu'
   description: 'Doğru renge en hızlı şekilde ulaşın'
   command_name: 'puzzle'
 Race:
@@ -346,8 +346,8 @@ Red Light Green Light:
     <color=green>Kazanan: {winner}</color>
   red_light: '<color=red>Hareket etme</color>'
   green_light: '<color=green>Koşşş!!!</color>'
-  red_lose: '<color=red>Kırmızı ışıkta koştun</color>'
-  no_time: '<color=red>Süre bitti sonuna kadar gidemedin!</color>'
+  red_lose: '<color=red>Kırmızı ışıkta hareket ettin!</color>'
+  no_time: '<color=red>Süre bitti oyunun sonuna ulaşamadın!</color>'
   hint: '<color=green><color=yellow>[Alt]</color> tuşuna basarak oyuncuları it</color>'
   hint_wait: '<color=red>Birkaç saniye bekle</color>'
   hint_ready: '<color=green>Hazır</color>'
@@ -361,7 +361,7 @@ Simon's Prison:
     Turun başlamasına: <color=red>{time}</color> saniye</color>
   start_prisoners: |-
     <color=yellow><color=red><b><i>{name}</i></b></color>
-    <i>Ne pahasına olursa olsun bu hapsenden kaç. Dikkatli ol. Haritanın etrafında hayatta kalmanıza yardımcı olacak gizli eşyalar var</i>
+    <i>Ne pahasına olursa olsun bu hapishaneden kaç. Dikkatli ol. Haritanın etrafında hayatta kalmanıza yardımcı olacak gizli eşyalar var</i>
     Turun başlamasına: <color=red>{time}</color> saniye</color>
   cycle: |-
     <size=20><color=red>{name}</color>
@@ -387,15 +387,15 @@ Spleef:
     <color=#42aaff>Kalan Süre:</color> {remaining}
   all_died: |-
     <color=red>Tüm oyuncular öldü</color>
-    Mini-oyun bitti
+    Oyun bitti
   some_survived: |-
     <color=red>Bir kaç kişi hayata kaldı</color>
-    Mini-oyun bitti
+    Oyun bitti
   winner: |-
     <color=red>Kazanan: {winner}</color>
-    Mini-oyun bitti
+    Oyun bitti
   died: '<color=red>Lava düştün</color>'
-  name: 'Zemin Çöküşü'
+  name: 'Kaz ve Düşür'
   description: 'Platformlara ateş edin ve lava düşmeyin'
   command_name: 'spleef'
 Tag:
@@ -449,11 +449,11 @@ Zombie Infection:
     <color=#ABF000>Oyunun başlamasına <color=red>{time}</color> saniye kaldı.</color>
   cycle: |-
     <color=#D71868><b><i>{name}</i></b></color>
-    <color=yellow>Kalan insanlar: <color=green>{count}</color></color>
+    <color=yellow>Hayatta Kalanlar: <color=green>{count}</color></color>
     <color=yellow>Geçen Süre: <color=red>{time}</color></color>
   extra_time: |-
     Fazladan süre: {extratime}
-    <color=yellow><b><i>TEK</i></b> kişi kaldı!</color>
+    <color=yellow><b><i>TEK</i></b> bir kişi kaldı!</color>
     <color=yellow>Geçen Süre: <color=red>{time}</color></color>
   win: |-
     <color=red>Zombiler Kazandı!</color>

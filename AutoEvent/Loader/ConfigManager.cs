@@ -77,7 +77,6 @@ public static class ConfigManager
             if (!File.Exists(_translationPath))
             {
                 string countryCode = new WebClient().DownloadString($"http://ipinfo.io/{Server.ServerIpAddress}/country").Trim();
-                countryCode = "ES";
                 DebugLogger.LogDebug($"[ConfigManager] The translation.yml file was not found. Creating a new translation for {countryCode} language...");
                 translations = LoadTranslationFromAssembly(countryCode);
             }
