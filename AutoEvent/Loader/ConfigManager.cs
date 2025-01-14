@@ -100,7 +100,14 @@ public static class ConfigManager
                     continue;
                 }
 
-                EventTranslation translation = (EventTranslation)Loader.Deserializer.Deserialize(Loader.Serializer.Serialize(rawDeserializedTranslation), ev.InternalTranslation.GetType())!;
+                object? obj = Loader.Deserializer.Deserialize(Loader.Serializer.Serialize(rawDeserializedTranslation),
+                    ev.InternalTranslation.GetType());
+                if (obj is not EventTranslation translation)
+                {
+                    DebugLogger.LogDebug($"[ConfigManager] {ev.Name} malformed translation.");
+                    continue;
+                }
+
                 ev.InternalTranslation.CopyProperties(translation);
 
                 // Expressions were always true
@@ -204,7 +211,6 @@ public static class ConfigManager
         ["ES"] = "spanish",
         ["TH"] = "thai",
         ["TR"] = "turkish",
-        ["US"] = "english", //fnuuy
-        ["UK"] = "english",
+        ["EN"] = "english"
     };
 }
