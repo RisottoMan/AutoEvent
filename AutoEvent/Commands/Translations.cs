@@ -11,13 +11,13 @@ public class Translations : ICommand, IUsageProvider
 {
     public string Command => "Lang"; // I've been explicitly asked to change this to "Lang" instead of using default nameof
     public string[] Aliases { get; } = [];
-    public string Description => "Translations managemenent";
+    public string Description => "Change plugin's language.";
 
     public string[] Usage { get; } = [];
 
     public bool Execute(ArraySegment<string> arguments, ICommandSender sender, [UnscopedRef] out string response)
     {
-        if (!sender.CheckPermission("ev.list"))
+        if (!sender.CheckPermission("ev.lang"))
         {
             response = "<color=red>You do not have permission to use this command!</color>";
             return false;
