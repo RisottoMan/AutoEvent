@@ -4,7 +4,7 @@
 ![Logo](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/MiniGames(mini).png)
 
 # Guides:
-[![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/Message.png)](https://github.com/KoT0XleB/AutoEvent-Exiled/blob/main/Docs/MiniGames.md)
+[![](https://github.com/RisottoMan/AutoEvent/blob/main/Photos/Message.png)](https://github.com/KoT0XleB/AutoEvent-Exiled/blob/main/Docs/MiniGames.md)
 [![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/Message1.png)](https://github.com/KoT0XleB/AutoEvent-Exiled/blob/main/Docs/Installation.md)
 [![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/Message2.png)](https://github.com/KoT0XleB/AutoEvent-Exiled/blob/main/Docs/Commands.md)
 [![](https://github.com/KoT0XleB/AutoEvent/blob/main/Photos/Message3.png)](https://github.com/KoT0XleB/AutoEvent-Exiled/blob/main/Docs/Language.md)
