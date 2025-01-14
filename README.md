@@ -16,5 +16,5 @@
 - Thanks to **ART0022VI** for a little help in fixing plugins.
 - Thanks to **Alexander666** for the help at the initial stage of creating the plugin.
 - Thanks to **art15** for writing the command code to run the mini-game.
-- Special thanks to **Michal78900** for the opportunity to borrow [MapEditorReborn](https://github.com/Michal78900/MapEditorReborn) code for NWApi.
+- Special thanks to **Michal78900** for the plugin [MapEditorReborn](https://github.com/Michal78900/MapEditorReborn).
 - Special thanks to **Killers0992** for the plugin [AudioPlayerApi](https://github.com/Killers0992/AudioPlayerApi) for playing music and audio clips.
