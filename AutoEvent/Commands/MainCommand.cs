@@ -20,6 +20,7 @@ public class MainCommand : ParentCommand
             RegisterCommand(new Run());
             RegisterCommand(new Stop());
             RegisterCommand(new Volume());
+            RegisterCommand(new Translations());
         }
         catch (Exception e)
         {
