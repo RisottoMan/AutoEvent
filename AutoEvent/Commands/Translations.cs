@@ -65,6 +65,14 @@ public class Translations : ICommand, IUsageProvider
             try
             {
                 string language = arguments.At(1).ToLower();
+                if (language == "english" || language == "default")
+                {
+                    ConfigManager.GenerateDefaultTranslations();
+                    response = "Default translation loaded!\n" +
+                               "Server restart is required to apply changes.";
+                    return true;
+                }
+
                 if (!ConfigManager.LanguageByCountryCodeDictionary.ContainsValue(language))
                 {
                     response = "Language not found!";

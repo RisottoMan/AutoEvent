@@ -132,22 +132,28 @@ public static class ConfigManager
         // Try to get a translation from an assembly
         if (!TryGetTranslationFromAssembly(countryCode, TranslationPath, out translations))
         {
-            // Otherwise, create default translations from all mini-games.
-            translations = new Dictionary<string, object>();
-
-            foreach (var ev in AutoEvent.EventManager.Events.OrderBy(r => r.Name))
-            {
-                ev.InternalTranslation.Name = ev.Name;
-                ev.InternalTranslation.Description = ev.Description;
-                ev.InternalTranslation.CommandName = ev.CommandName;
-
-                translations.Add(ev.Name, ev.InternalTranslation);
-            }
-
-            // Save the translation file
-            File.WriteAllText(TranslationPath, Loader.Serializer.Serialize(translations));
+            translations = GenerateDefaultTranslations();
         }
 
+        return translations;
+    }
+
+    internal static Dictionary<string, object> GenerateDefaultTranslations()
+    {
+        // Otherwise, create default translations from all mini-games.
+        Dictionary<string, object> translations = new Dictionary<string, object>();
+
+        foreach (var ev in AutoEvent.EventManager.Events.OrderBy(r => r.Name))
+        {
+            ev.InternalTranslation.Name = ev.Name;
+            ev.InternalTranslation.Description = ev.Description;
+            ev.InternalTranslation.CommandName = ev.CommandName;
+
+            translations.Add(ev.Name, ev.InternalTranslation);
+        }
+
+        // Save the translation file
+        File.WriteAllText(TranslationPath, Loader.Serializer.Serialize(translations));
         return translations;
     }
 
