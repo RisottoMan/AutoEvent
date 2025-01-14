@@ -50,7 +50,7 @@ public class Translations : ICommand, IUsageProvider
                 return false;
             }
 
-            response += "Use ev_translations load [countryCode] to load a translation.";
+            response += "Use ev lang load [countryCode] to load a translation.";
             return true;
         }
 
