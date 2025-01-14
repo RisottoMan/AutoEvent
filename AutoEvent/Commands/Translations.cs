@@ -89,8 +89,8 @@ public class Translations : ICommand, IUsageProvider
 
         syntax:
         response = "Translations management:\n" +
-                   "ev lang list - list all translations\n" +
-                   "ev lang load [language] - load translation\n";
+                   "ev lang list - list all available plugin localisations\n" +
+                   "ev lang load [language] - set language (restart will be required)\n";
         return true;
     }
 
