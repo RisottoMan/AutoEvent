@@ -2,7 +2,7 @@
 ### *You may encounter a problem because of which the mini-games will not run.*
 ### *So I left hints on how to fix the problems:*
 ----
- >  You need a map to run a mini-game.
+ >  You need a map to run a mini-game.1
  - You need to download *``Schematics.tar.gz``* from the [latest release](https://github.com/KoT0XleB/AutoEvent-Exiled/releases/latest) and ``unzip it to the folder`` where the schematics should be located.
  - If you are using ``Exiled``, then unzip the archive in ``EXILED/Configs/AutoEvent/Schematics``
  - If you are using ``NWApi``, then unzip the archive in ``PluginAPI/plugins/global/AutoEvent/Schematics``
