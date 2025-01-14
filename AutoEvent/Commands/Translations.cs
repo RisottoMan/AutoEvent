@@ -11,7 +11,7 @@ public class Translations : ICommand, IUsageProvider
 {
     public string Command => "Lang"; // I've been explicitly asked to change this to "Lang" instead of using default nameof
     public string[] Aliases { get; } = [];
-    public string Description => "Change plugin's language.";
+    public string Description => "Change plugin's language";
 
     public string[] Usage { get; } = [];
 
@@ -50,7 +50,7 @@ public class Translations : ICommand, IUsageProvider
                 return false;
             }
 
-            response += "Use ev lang load [countryCode] to load a translation.";
+            response += "Use ev lang load [language] to load a translation.";
             return true;
         }
 
@@ -93,14 +93,4 @@ public class Translations : ICommand, IUsageProvider
                    "ev lang load [language] - set language (restart will be required)\n";
         return true;
     }
-
-    // Remember, when these stars align.
-    // We will find our sign.
-    // Through this orb,
-    // Sights of dreams,
-    // Shades of Space,
-    // Eternal Grace,
-    // Sense of Might,
-    // Blazing light,
-    // These new Worlds.
 }
