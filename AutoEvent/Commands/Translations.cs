@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using CommandSystem;
 using Exiled.Permissions.Extensions;
 
@@ -8,7 +9,7 @@ namespace AutoEvent.Commands;
 
 public class Translations : ICommand, IUsageProvider
 {
-    public string Command => nameof(Translations);
+    public string Command => "Lang"; // I've been explicitly asked to change this to "Lang" instead of using default nameof
     public string[] Aliases { get; } = [];
     public string Description => "Translations managemenent";
 
@@ -22,6 +23,9 @@ public class Translations : ICommand, IUsageProvider
             return false;
         }
 
+        if (arguments.Count == 0)
+            goto syntax;
+
         string arg0 = arguments.At(0).ToLower();
         if (arg0 == "list")
         {
@@ -34,14 +38,10 @@ public class Translations : ICommand, IUsageProvider
             response = "List of translations:\n";
             try
             {
-                List<string> displayedValues = new List<string>();
-                foreach (KeyValuePair<string, string> pair in ConfigManager.LanguageByCountryCodeDictionary)
+                foreach (string language in ConfigManager.LanguageByCountryCodeDictionary.Values.Distinct()
+                             .ToList())
                 {
-                    if (displayedValues.Contains(pair.Value))
-                        continue;
-                    displayedValues.Add(pair.Value);
-
-                    response += $"{pair.Value} ({pair.Key})\n";
+                    response += $"{language}\n";
                 }
             }
             catch (Exception e)
@@ -53,29 +53,31 @@ public class Translations : ICommand, IUsageProvider
             response += "Use ev_translations load [countryCode] to load a translation.";
             return true;
         }
+
         if (arg0 == "load")
         {
             if (arguments.Count != 2)
             {
-                response = "Usage: ev_translations load [countryCode]";
+                response = "Usage: ev_translations lang [language]";
                 return false;
             }
 
             try
             {
-                string countryCode = arguments.At(1).ToUpper();
-                if (!ConfigManager.LanguageByCountryCodeDictionary.ContainsKey(countryCode))
+                string language = arguments.At(1).ToLower();
+                if (!ConfigManager.LanguageByCountryCodeDictionary.ContainsValue(language))
                 {
-                    response = "Invalid country code!";
+                    response = "Language not found!";
                     return false;
                 }
 
-                // All we need is to create a new translation file, and nuke the old one. This is a hacky way, but this is reusing existing code.
-                _ = ConfigManager.LoadTranslationFromAssembly(countryCode);
+                string countryCode = ConfigManager.LanguageByCountryCodeDictionary
+                    .FirstOrDefault(x => x.Value == language).Key;
 
-                // Force translation reload
+                _ = ConfigManager.LoadTranslationFromAssembly(countryCode);
                 ConfigManager.LoadTranslations();
-                response = "Translation loaded!";
+                response = "Translation loaded!\n" +
+                           "Server restart is required to apply changes.";
                 return true;
             }
             catch (Exception e)
@@ -85,9 +87,10 @@ public class Translations : ICommand, IUsageProvider
             }
         }
 
+        syntax:
         response = "Translations management:\n" +
-                   "ev_translations list - list all translations\n" +
-                   "ev_translations load [countryCode] - load translation\n";
+                   "ev lang list - list all translations\n" +
+                   "ev lang load [language] - load translation\n";
         return true;
     }
 

@@ -196,6 +196,7 @@ public static class ConfigManager
 
     internal static Dictionary<string, string> LanguageByCountryCodeDictionary { get; } = new()
     {
+        ["EN"] = "english",
         ["CN"] = "chinese",
         ["FR"] = "french",
         ["DE"] = "german",
@@ -211,6 +212,5 @@ public static class ConfigManager
         ["ES"] = "spanish",
         ["TH"] = "thai",
         ["TR"] = "turkish",
-        ["EN"] = "english"
     };
 }
