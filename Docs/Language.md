@@ -11,7 +11,7 @@
 ### If you want to set the Russian language, then replace the current translations.
 
 Credit
-> English: Changes SnivyFilms, RedForce
+### > English: Changes SnivyFilms, RedForce
 ## > Russian: RisottoMan
 ## > Polish: Vretu, Changes Tksemdem
 ## > French: RoboCnop
