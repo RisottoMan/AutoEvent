@@ -18,3 +18,4 @@
 - Thanks to **art15** for writing the command code to run the mini-game.
 - Special thanks to **Michal78900** for the plugin [MapEditorReborn](https://github.com/Michal78900/MapEditorReborn) for spawning maps.
 - Special thanks to **Killers0992** for the plugin [AudioPlayerApi](https://github.com/Killers0992/AudioPlayerApi) for playing music.
+- The plugin supports the ExMod-Exiled framework.
