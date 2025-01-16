@@ -16,6 +16,7 @@ List of available languages:
 ### How to change language?
 - Write command ``ev language list`` to find all languages.
 - Write command ``ev language load [name]`` to load translation, for example, ``ev language load english``.
+- The translation will replace the old one. You must wait for the server to restart completely.
 
 ### If my language is not on the list?
 - You can create a translation and add your language to the repository.
