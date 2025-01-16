@@ -35,20 +35,10 @@ owner:
 ```
 Available Permission Tress:
 ```
-ev.*  /   - Main Permission for all AutoEvent commands.
-  - ev.list   - View the available events.
-  - ev.run    - Run an event.
-  - ev.stop   - Stop an event.
-  - ev.volume - Change the volume of all events.
-  
-  - ev.config.* /  - Main permission for all config commands.
-      - ev.config.list    - List all available config presets for an event.
-      - ev.config.select  - Select a different config preset for an event.
-  
-  - ev.reload.* /  - Main permission for all reload commands.
-      - ev.reload.configs       - Reload configs / config presets for all events.
-      - ev.reload.events        - Reload all events.
-      - ev.reload.translations  - Reload all translations.
-      
-  - ev.debug - Main permission for all debug commands.
+ev.*  /        - Main Permission for all AutoEvent commands.
+  - ev.list    - View the available events.
+  - ev.run      - Run an event.
+  - ev.stop     - Stop an event.
+  - ev.volume   - Change the volume of all events.
+  - ev.language - Change language for translations.
 ```
