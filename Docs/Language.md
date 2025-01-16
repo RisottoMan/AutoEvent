@@ -1,6 +1,4 @@
 # Language :rocket:
-### We already have several different translations that you can use. :moyai:
-### If you have a translation for your country, then we can add it to the repository. :monocle_face:
 
 List of available languages:
 - [English](https://github.com/RisottoMan/AutoEvent/blob/main/AutoEvent/Translations/english.yml) created by SnivyFilms, RedForce
@@ -14,3 +12,5 @@ List of available languages:
 - [Portuguese](https://github.com/RisottoMan/AutoEvent/blob/main/AutoEvent/Translations/portuguese.yml) created by FireThing
 - [Turkish](https://github.com/RisottoMan/AutoEvent/blob/main/AutoEvent/Translations/turkish.yml) created by zurna_sever_58, Rooster
 - [Spanish](https://github.com/RisottoMan/AutoEvent/blob/main/AutoEvent/Translations/spanish.yml) created by EnderZ024, ZrNoxb
+
+### If you have a translation for your country, then we can add it to the repository. :monocle_face:
