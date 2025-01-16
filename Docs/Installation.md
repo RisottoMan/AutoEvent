@@ -1,5 +1,5 @@
 # Installation
-## Select only one framework where you install the plugin.
+
 # Exiled
 ## 1. Download and Setup :moyai:
 ### *You need to download the latest release:*
