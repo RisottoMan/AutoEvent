@@ -6,11 +6,11 @@ List of available languages:
 - english created by SnivyFilms, RedForce
 - russian created by RisottoMan
 - polish created by Vretu, Tksemdem
-- french: RoboCnop
-- italian: NotZer0Two (Zer0Two)
-- deutsch: SeekEDstroy
-- thai: karorogunso
-- chinese: kldhsh123
-- portuguese/brazilian: FireThing
-- turkish: zurna_sever_58, Rooster
-- spanish: EnderZ024, ZrNoxb
+- french created by RoboCnop
+- italian created by NotZer0Two
+- deutsch created by SeekEDstroy
+- thai created by karorogunso
+- chinese created by kldhsh123
+- portuguese/brazilian created by FireThing
+- turkish created by zurna_sever_58, Rooster
+- spanish created by EnderZ024, ZrNoxb
