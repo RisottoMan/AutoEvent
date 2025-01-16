@@ -3,17 +3,14 @@
 ### If you have a translation for your country, then we can add it to the repository. :monocle_face:
 
 List of available languages:
-- ...
-
-# Credit
-- English: Changes SnivyFilms, RedForce
-## > Russian: RisottoMan
-## > Polish: Vretu, Changes Tksemdem
-## > French: RoboCnop
-## > Italian: NotZer0Two (Zer0Two)
-## > Deutsch: SeekEDstroy
-## > Thai: karorogunso
-## > Chinese: kldhsh123
-## > Portuguese/Brazilian: FireThing
-## > Turkish: zurna_sever_58, Rooster
-## > Spain: EnderZ024, ZrNoxb
+- english: Changes SnivyFilms, RedForce
+- russian: RisottoMan
+- polish: Vretu, Changes Tksemdem
+- french: RoboCnop
+- italian: NotZer0Two (Zer0Two)
+- deutsch: SeekEDstroy
+- thai: karorogunso
+- chinese: kldhsh123
+- portuguese/brazilian: FireThing
+- turkish: zurna_sever_58, Rooster
+- spanish: EnderZ024, ZrNoxb
