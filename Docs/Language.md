@@ -16,3 +16,9 @@ List of available languages:
 ### How to change language?
 - Write command ``ev language [name]``, for example, ``ev language english``.
 
+### If my language is not on the list?
+- You can create a translation and add your language to the repository.
+
+### I found a mistake in the translation, what can I do?
+- Go to the selected translation and correct it. We will include the change in the latest release.
+
