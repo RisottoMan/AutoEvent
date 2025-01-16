@@ -8,7 +8,7 @@ List of available languages:
 - polish created by Vretu, Tksemdem
 - french created by RoboCnop
 - italian created by NotZer0Two
-- deutsch created by SeekEDstroy
+- deutsche created by SeekEDstroy
 - thai created by karorogunso
 - chinese created by kldhsh123
 - portuguese/brazilian created by FireThing
