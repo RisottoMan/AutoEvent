@@ -3,9 +3,9 @@
 ### If you have a translation for your country, then we can add it to the repository. :monocle_face:
 
 List of available languages:
-- english: Changes SnivyFilms, RedForce
-- russian: RisottoMan
-- polish: Vretu, Changes Tksemdem
+- english created by SnivyFilms, RedForce
+- russian created by RisottoMan
+- polish created by Vretu, Tksemdem
 - french: RoboCnop
 - italian: NotZer0Two (Zer0Two)
 - deutsch: SeekEDstroy
