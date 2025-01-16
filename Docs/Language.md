@@ -20,5 +20,5 @@ Credit
 ## > Thai: karorogunso
 ## > Chinese: kldhsh123
 ## > Portuguese/Brazilian: FireThing
-## > Turkish: zurna_sever_58 (kebab), Rooster
-## > Spain: not yet
+## > Turkish: zurna_sever_58, Rooster
+## > Spain: EnderZ024, ZrNoxb
