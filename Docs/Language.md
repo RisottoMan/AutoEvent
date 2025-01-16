@@ -1,5 +1,5 @@
 # Language :rocket:
-
+### The language for the mini-games is loaded automatically by the server location.
 List of available languages:
 - [English](https://github.com/RisottoMan/AutoEvent/blob/main/AutoEvent/Translations/english.yml) created by SnivyFilms, RedForce
 - [Russian](https://github.com/RisottoMan/AutoEvent/blob/main/AutoEvent/Translations/russian.yml) created by RisottoMan
@@ -13,4 +13,4 @@ List of available languages:
 - [Turkish](https://github.com/RisottoMan/AutoEvent/blob/main/AutoEvent/Translations/turkish.yml) created by zurna_sever_58, Rooster
 - [Spanish](https://github.com/RisottoMan/AutoEvent/blob/main/AutoEvent/Translations/spanish.yml) created by EnderZ024, ZrNoxb
 
-### If you have a translation for your country, then we can add it to the repository. :monocle_face:
+### How to change language?
