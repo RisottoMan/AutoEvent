@@ -4,7 +4,9 @@
 ## 1. Download and Setup :moyai:
 ### *You need to download the latest release:*
 
-- [``AutoEvent.dll``](https://github.com/KoT0XleB/AutoEvent-Exiled/releases/latest) move to => ``EXILED/Plugins``
+- [``AutoEvent.dll``](https://github.com/RisottoMan/AutoEvent/releases/latest) move to => ``EXILED/Plugins``
+
+- [``MapEditorReborn.dll``](https://github.com/RisottoMan/AutoEvent/releases/latest) move to => ``EXILED/Plugins``
 
 - [``Music``](https://github.com/KoT0XleB/AutoEvent-Exiled/tree/main/Music) files move to => ``EXILED/Configs/AutoEvent/Music``
 
