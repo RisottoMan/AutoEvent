@@ -1,6 +1,6 @@
 # Installation
 
-# Exiled
+## Exiled setup
 ## 1. Download and Setup :moyai:
 ### *You need to download the latest release:*
 
