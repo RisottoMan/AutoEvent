@@ -14,5 +14,5 @@ List of available languages:
 - [Spanish](https://github.com/RisottoMan/AutoEvent/blob/main/AutoEvent/Translations/spanish.yml) created by EnderZ024, ZrNoxb
 
 ### How to change language?
-- Write command ``ev language [name from list]``
+- Write command ``ev language [name]``, for example, ``ev language english``.
 
