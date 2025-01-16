@@ -7,7 +7,7 @@
 - [``AutoEvent.dll``](https://github.com/RisottoMan/AutoEvent/releases/latest) move to => ``EXILED/Plugins``
 
 - [``MapEditorReborn.dll``](https://github.com/RisottoMan/AutoEvent/releases/latest) move to => ``EXILED/Plugins``
-> Usually, the MER developer posts the latest release to github, but sometimes he posts it to his discord and forgets about it. Therefore, if you encounter any errors, download the latest release from here.
+> If the latest MER release is causing you problems, then download it here.
 
 - [``Music.tar.gz``](https://github.com/RisottoMan/AutoEvent/releases/latest) unzip files to => ``EXILED/Configs/AutoEvent/Music``
 
