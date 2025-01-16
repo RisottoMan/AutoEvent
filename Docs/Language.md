@@ -6,7 +6,7 @@ List of available languages:
 - ...
 
 # Credit
-> English: Changes SnivyFilms, RedForce
+- English: Changes SnivyFilms, RedForce
 ## > Russian: RisottoMan
 ## > Polish: Vretu, Changes Tksemdem
 ## > French: RoboCnop
