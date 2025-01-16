@@ -3,7 +3,7 @@
 ### If you have a translation for your country, then we can add it to the repository. :monocle_face:
 
 List of available languages:
-- english created by SnivyFilms, RedForce
+- [english](https://github.com/RisottoMan/AutoEvent/blob/main/AutoEvent/Translations/english.yml) created by SnivyFilms, RedForce
 - russian created by RisottoMan
 - polish created by Vretu, Tksemdem
 - french created by RoboCnop
