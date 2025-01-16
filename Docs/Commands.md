@@ -12,14 +12,12 @@
 ----
 
 # Description :frog:
-## *To see all the mini-games, enter the command in the admin console:*
-``ev list``
+## ``ev list`` => *To see all the mini-games, enter the command in the admin console:*
 #### This command will show all the mini-games.
 #### For example, ``[escape] <= Escape from the facility behind SCP-173 at supersonic speed!``
 #### The square brackets indicate the argument that can be used in the command ``ev run``
 
-## *To start the mini-game, enter the command:*
-``ev run [name]``
+## ``ev run [name]`` => *To start the mini-game, enter the command:*
 #### This command starts the mini-game via the specified argument.
 #### For example, ``ev run escape``
 
