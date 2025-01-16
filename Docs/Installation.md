@@ -12,10 +12,6 @@
 
 - Ensure that the Config has the following directories, and that they can be accessed to the server.
 ```yml
-# Where the configs directory is located. By default it is located in the AutoEvent folder.
-event_configs_directory_path: /home/container/.config/EXILED/Configs/AutoEvent/Configs
-# Where the external events directory is located. By default it is located in the AutoEvent folder.
-external_events_directory_path: /home/container/.config/EXILED/Configs/AutoEvent/Events
 # Where the schematics directory is located. By default it is located in the AutoEvent folder.
 schematics_directory_path: /home/container/.config/EXILED/Configs/AutoEvent/Schematics
 # Where the music directory is located. By default it is located in the AutoEvent folder.
@@ -35,7 +31,7 @@ owner:
 ```
 Available Permission Tress:
 ```
-ev.*  /        - Main Permission for all AutoEvent commands.
+ev.*           - Main Permission for all AutoEvent commands.
   - ev.list    - View the available events.
   - ev.run      - Run an event.
   - ev.stop     - Stop an event.
