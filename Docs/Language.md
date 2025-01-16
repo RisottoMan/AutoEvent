@@ -2,7 +2,7 @@
 ### We already have several different translations that you can use. :moyai:
 ### If you have a translation for your country, then we can add it to the repository. :monocle_face:
 
-Credit
+# Credit
 ## > English: Changes SnivyFilms, RedForce
 ## > Russian: RisottoMan
 ## > Polish: Vretu, Changes Tksemdem
