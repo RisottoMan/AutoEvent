@@ -24,13 +24,13 @@ public class GlassComponent : MonoBehaviour
     {
         if (Player.Get(other.gameObject) is Player)
         {
-            Methods.ChangePosition(other.gameObject, Vector3.down * 5);
+            Methods.ChangePosition(gameObject, Vector3.down * 5);
                 
             if (RegenerationDelay > 0)
             {
                 Timing.CallDelayed(RegenerationDelay, () =>
                 {
-                    Methods.ChangePosition(other.gameObject, Vector3.up * 5);
+                    Methods.ChangePosition(gameObject, Vector3.up * 5);
                 });
             }
         }

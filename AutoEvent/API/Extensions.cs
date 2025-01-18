@@ -339,6 +339,11 @@ public static class Extensions
         {
             DebugLogger.LogDebug($"[PlayPlayerAudio] The AudioPlayer is null");
         }
+
+        if (player is null)
+        {
+            DebugLogger.LogDebug($"[PlayPlayerAudio] The player is null");
+        }
         
         if (!AudioClipStorage.AudioClips.ContainsKey(fileName))
         {
