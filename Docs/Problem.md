@@ -37,7 +37,7 @@
 
 ![image](https://github.com/user-attachments/assets/1797ee0b-ed3d-42a5-9fea-546bdf8bca12)
 ---
-## 6) Caught an exception at Event.OnStart().
+## 6) If you start a mini-game and appear on the map, but something is wrong.
 
 ![image](https://github.com/user-attachments/assets/934b43a1-8802-48be-9c95-b84fe25103b9)
 - If earlier errors referred to the fact that you did not install something correctly and all responsibility lay with you as a plugin user, now this error refers to me as a plugin developer.
