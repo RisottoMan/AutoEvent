@@ -59,10 +59,7 @@ public class Plugin : Event<Config, Translation>, IEventMap, IEventSound
             count++;
 
             player.GiveLoadout(Config.Loadouts, LoadoutFlags.IgnoreRole);
-            Timing.CallDelayed(0.1f, () =>
-            {
-                player.CurrentItem = player.Items.FirstOrDefault();
-            });
+            player.CurrentItem = player.Items.FirstOrDefault(r => r.IsWeapon);
         }
 
     }

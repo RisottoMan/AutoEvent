@@ -28,7 +28,8 @@ public class Functions
             {
                 PrimitiveType = PrimitiveType.Cylinder,
                 Position = parent.transform.position,
-                Color = "yellow"
+                Color = "yellow",
+                Static = false
             },
             pos, 
             parent.transform.rotation, 
@@ -66,7 +67,10 @@ public class Functions
             float z = position.z + radius * Mathf.Sin(radians);
             Vector3 pos = new Vector3(x, platforms[i].transform.position.y, z);
 
-            platforms[i].transform.position = pos;
+            if (platforms[i].TryGetComponent(out PrimitiveObject primitiveObject))
+            {
+                primitiveObject.Position = pos;
+            }
         }
 
         return platforms;

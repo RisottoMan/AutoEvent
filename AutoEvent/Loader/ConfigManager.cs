@@ -12,7 +12,6 @@ using PluginAPI.Core;
 namespace AutoEvent;
 public static class ConfigManager
 {
-    // Internalised because I didn't want to make some hacky way to access the paths. Same goes for methods.
     internal static string ConfigPath { get; } = Path.Combine(AutoEvent.BaseConfigPath, "configs.yml");
 
     internal static string TranslationPath { get; } = Path.Combine(AutoEvent.BaseConfigPath, "translation.yml");
@@ -110,7 +109,6 @@ public static class ConfigManager
 
                 ev.InternalTranslation.CopyProperties(translation);
 
-                // Expressions were always true
                 ev.Name = translation.Name;
                 ev.Description = translation.Description;
                 ev.CommandName = translation.CommandName;

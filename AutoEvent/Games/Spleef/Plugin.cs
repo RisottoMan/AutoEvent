@@ -88,8 +88,7 @@ public class Plugin : Event<Config, Translation>, IEventMap
     protected override bool IsRoundDone()
     {
         _countdown = _countdown.TotalSeconds > 0 ? _countdown.Subtract(new TimeSpan(0, 0, 1)) : TimeSpan.Zero;
-        return !(Player.List.Count(ply => ply.IsAlive) > 1) &&
-             EventTime.TotalSeconds < Config.RoundDurationInSeconds;
+        return !(Player.List.Count(ply => ply.IsAlive) > 1 && _countdown != TimeSpan.Zero);
     }
 
     protected override void ProcessFrame()
