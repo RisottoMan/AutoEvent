@@ -9,6 +9,10 @@
 - Install the MapEditorReborn plugin so that the plugin can load maps: [(Github MER)](https://github.com/Michal78900/MapEditorReborn/releases/latest)
 
 ![image](https://github.com/user-attachments/assets/312135a9-9106-4b86-805f-5c74d8024ff2)
+
+- I do not know how to install MER. What should I do?
+![image](https://github.com/user-attachments/assets/7b5eca02-a64c-4476-b138-e30c98881a5f)
+
 ---
 ## 3) MapEditorReborn was not detected. AutoEvent will not be loaded until you install MapEditorReborn.
 ![image](https://github.com/user-attachments/assets/818a486e-d6f2-4a32-80af-434f24515625)
