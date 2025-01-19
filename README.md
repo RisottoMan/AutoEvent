@@ -9,6 +9,7 @@
 [![](https://github.com/RisottoMan/AutoEvent/blob/main/Photos/Message2.png)](https://github.com/RisottoMan/AutoEvent/blob/main/Docs/Commands.md)
 [![](https://github.com/RisottoMan/AutoEvent/blob/main/Photos/Message3.png)](https://github.com/RisottoMan/AutoEvent/blob/main/Docs/Language.md)
 [![](https://github.com/RisottoMan/AutoEvent/blob/main/Photos/Message4.png)](https://github.com/RisottoMan/AutoEvent/blob/main/Docs/Problem.md)
+[![](https://github.com/RisottoMan/AutoEvent/blob/main/Photos/Message5.png)](https://docs.google.com/document/d/1acRD2O9u4-THUEaXenFLF97Lkqt4uQ0mOEAThVNROJs/)
 [![](https://github.com/RisottoMan/AutoEvent/blob/main/Photos/Message6.png)](https://github.com/RisottoMan/AutoEvent/blob/main/Docs/Configuration.md)
 
 # Credits
