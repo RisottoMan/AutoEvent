@@ -40,6 +40,8 @@
 - Unzip *``Schematics.tar.gz``* to ``EXILED/Configs/AutoEvent/Schematics`` folder.
 
 ![image](https://github.com/user-attachments/assets/1797ee0b-ed3d-42a5-9fea-546bdf8bca12)
+
+![image](https://github.com/user-attachments/assets/02185f33-dbee-4b56-ae6d-73b7910cd0ef)
 ---
 ## 6) If you start a mini-game and appear on the map, but something is wrong.
 
