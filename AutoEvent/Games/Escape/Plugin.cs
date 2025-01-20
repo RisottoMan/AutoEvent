@@ -92,7 +92,7 @@ public class Plugin : Event<Config, Translation>, IEventSound
     {
         foreach (Player player in Player.List)
         {
-            player.EnableEffect<Flashed>(1);
+            player.EnableEffect<Flashed>(1, 1);
             
             if (player.Position.y < 980f)
             {

@@ -6,7 +6,10 @@ using AutoEvent.Events;
 using MEC;
 using UnityEngine;
 using AutoEvent.Interfaces;
+using CommandSystem.Commands.RemoteAdmin.Inventory;
 using Exiled.API.Features;
+using InventorySystem;
+using InventorySystem.Items;
 using PlayerRoles;
 
 namespace AutoEvent.Games.Dodgeball;
@@ -34,7 +37,7 @@ public class Plugin : Event<Config, Translation>, IEventMap, IEventSound
     private List<GameObject> _sciPoint;
     private GameObject _redLine;
     private TimeSpan _roundTime;
-    private ItemType _snowItemType;
+    private ItemType _ballItemType;
     internal bool IsChristmasUpdate { get; set; } = false;
     protected override void RegisterEvents()
     {
@@ -60,14 +63,16 @@ public class Plugin : Event<Config, Translation>, IEventMap, IEventSound
         _dPoint = new List<GameObject>();
         _sciPoint = new List<GameObject>();
         _roundTime = new TimeSpan(0, 0, Config.TotalTimeInSeconds);
-        _snowItemType = ItemType.SCP018;
+        _ballItemType = ItemType.SCP018;
 
-        // Christmas update
-        if (Enum.IsDefined(typeof(ItemType), "Snowball"))
+        // Christmas update -> check that the snowball item exists and not null
+        if (Enum.TryParse("Snowball", out ItemType snowItemType))
         {
-            if (Enum.TryParse("Snowball", out _snowItemType))
+            InventoryItemLoader.AvailableItems.TryGetValue(snowItemType, out ItemBase itemBase);
+            if ((UnityEngine.Object)itemBase != (UnityEngine.Object)null)
             {
                 IsChristmasUpdate = true;
+                _ballItemType = snowItemType;
             }
         }
         
@@ -156,7 +161,7 @@ public class Plugin : Event<Config, Translation>, IEventMap, IEventSound
                 {
                     if (player.CurrentItem == null)
                     {
-                        player.CurrentItem = player.AddItem(_snowItemType);
+                        player.CurrentItem = player.AddItem(_ballItemType);
                     }
                 }
             }

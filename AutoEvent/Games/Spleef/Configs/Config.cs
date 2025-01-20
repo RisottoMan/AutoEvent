@@ -26,7 +26,7 @@ public class Config : EventConfig
     }
     
     [Description("How long the round should last.")]
-    public int RoundDurationInSeconds { get; set; } = 80;
+    public int RoundDurationInSeconds { get; set; } = 120;
 
     [Description("How many platforms on the x and y axis. Total Platforms = PlatformAxisCount * PlatformAxisCount * LayerCount. Size is automatically determined.")]
     public int PlatformAxisCount { get; set; } = 20;

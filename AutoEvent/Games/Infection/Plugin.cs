@@ -5,7 +5,10 @@ using System.Collections.Generic;
 using System.Linq;
 using AutoEvent.API.Enums;
 using AutoEvent.Interfaces;
+using CommandSystem.Commands.RemoteAdmin;
 using Exiled.API.Features;
+using InventorySystem;
+using InventorySystem.Items;
 using InventorySystem.Items.MarshmallowMan;
 using UnityEngine;
 
@@ -51,16 +54,23 @@ public class Plugin : Event<Config, Translation>, IEventSound, IEventMap
     protected override void OnStart()
     {
         _overtime = 30;
-        // Halloween update
-        if (Enum.IsDefined(typeof(ItemType), "Marshmallow"))
+        // Halloween update -> check that the marshmallow item exists and not null
+        if (Enum.TryParse("Marshmallow", out ItemType marshmallowItemType))
         {
-            IsHalloweenUpdate = true;
-            ForceEnableFriendlyFire = FriendlyFireSettings.Enable;
+            InventoryItemLoader.AvailableItems.TryGetValue(marshmallowItemType, out ItemBase itemBase);
+            if ((UnityEngine.Object)itemBase != (UnityEngine.Object)null)
+            {
+                IsHalloweenUpdate = true;
+                ForceEnableFriendlyFire = FriendlyFireSettings.Enable;
+            }
         }
-        // Christmas update
-        else if (Enum.IsDefined(typeof(RoleTypeId), "ZombieFlamingo"))
+        // Christmas update -> check that the role exists and it can be obtained
+        else if (Enum.TryParse("ZombieFlamingo", out RoleTypeId flamingoRoleType))
         {
-            IsChristmasUpdate = true;
+            if (PlayerRoleLoader.AllRoles.Keys.Contains(flamingoRoleType))
+            {
+                IsChristmasUpdate = true;
+            }
         }
 
         SpawnList = MapInfo.Map.AttachedBlocks.Where(r => r.name == "Spawnpoint").ToList();

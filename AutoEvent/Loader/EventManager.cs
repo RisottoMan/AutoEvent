@@ -12,6 +12,13 @@ public class EventManager
 
     public void RegisterInternalEvents()
     {
+        bool isMerLoaded = true;
+        if (!AppDomain.CurrentDomain.GetAssemblies().Any(x => x.FullName.ToLower().Contains("mapeditorreborn")))
+        {
+            DebugLogger.LogDebug("MapEditorReborn was not detected. AutoEvent will not be loaded until you install MapEditorReborn.", LogLevel.Error);
+            isMerLoaded = false;
+        }
+        
         Assembly callingAssembly = Assembly.GetCallingAssembly();
         Type[] types = callingAssembly.GetTypes();
 
@@ -29,6 +36,9 @@ public class EventManager
                 if (!ev.AutoLoad)
                     continue;
 
+                if (ev is IEventMap && !isMerLoaded)
+                    continue;
+                
                 ev.Id = _events.Count;
                 _events.Add(ev.Name, ev);
             }

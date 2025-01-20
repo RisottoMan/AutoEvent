@@ -12,10 +12,8 @@ using Exiled.API.Enums;
 using Exiled.API.Extensions;
 using Exiled.API.Features;
 using Exiled.API.Features.Items;
-using InventorySystem.Configs;
 using InventorySystem.Items.Jailbird;
 using MapEditorReborn.API.Features;
-using MapEditorReborn.API.Features.Objects;
 using PlayerRoles.Ragdolls;
 using Object = UnityEngine.Object;
 
@@ -223,21 +221,36 @@ public static class Extensions
         }
     }
     
-    public static bool IsExistsMap(string schematicName)
+    public static bool IsExistsMap(string schematicName, out string response)
     {
         try
         {
             if (MapUtils.GetSchematicDataByName(schematicName) is null)
+            {
+                // Map is not installed for MER
+                response = $"You need to download the map {schematicName} to run this mini-game.\n" +
+                           $"Download and install Schematics.tar.gz from the github.";
                 return false;
-            
+            }
+
+            // The latest MER and Schematics are installed
+            response = $"The map {schematicName} exist and can be used.";
             return true;
         }
-        catch (Exception e)
+        catch (Exception _)
         {
-            DebugLogger.LogDebug("An error occured at IsExistsMap.", LogLevel.Warn, true);
-            DebugLogger.LogDebug($"{e}");
+            // The old version of MER is installed
+            if (AppDomain.CurrentDomain.GetAssemblies().Any(x => x.FullName.ToLower().Contains("mapeditorreborn")))
+            {
+                response = $"You have installed the old version of 'MapEditorReborn' and cannot run this mini-game.\n" +
+                           $"Install the latest version of 'MapEditorReborn'.";
+                return false;
+            }
         }
         
+        // The MER is not installed
+        response = $"You need to download the 'MapEditorReborn' to run this mini-game.\n" +
+                   $"Read the installation instruction in the github.";
         return false;
     }
     
@@ -325,6 +338,11 @@ public static class Extensions
         if (audioPlayer is null)
         {
             DebugLogger.LogDebug($"[PlayPlayerAudio] The AudioPlayer is null");
+        }
+
+        if (player is null)
+        {
+            DebugLogger.LogDebug($"[PlayPlayerAudio] The player is null");
         }
         
         if (!AudioClipStorage.AudioClips.ContainsKey(fileName))

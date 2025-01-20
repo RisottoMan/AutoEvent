@@ -101,7 +101,7 @@ public class Plugin : Event<Config, Translation>, IEventSound, IEventMap
         _countdown = _countdown.TotalSeconds > 0 ? _countdown.Subtract(TimeSpan.FromSeconds(FrameDelayInSeconds)) : TimeSpan.Zero;
         return !(Player.List.Count(r => r.IsAlive) > 1);
     }
-    protected override float FrameDelayInSeconds { get; set; } = 0.5f;
+    protected override float FrameDelayInSeconds { get; set; } = 0.1f;
     protected override void ProcessFrame()
     {
         string text = string.Empty;

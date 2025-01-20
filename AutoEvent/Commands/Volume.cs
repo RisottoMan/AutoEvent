@@ -1,4 +1,5 @@
 ﻿using System;
+using AutoEvent.Interfaces;
 using CommandSystem;
 using Exiled.API.Features;
 using Exiled.Permissions.Extensions;
@@ -19,19 +20,25 @@ public class Volume : ICommand, IUsageProvider
                 response = "<color=red>You do not have permission to use this command!</color>";
                 return false;
             }
+            
             if (arguments.Count != 1)
             {
                 response = $"The current volume is {AutoEvent.Singleton.Config.Volume}%. Please specify the new volume from 0% - 200% to set it!";
                 return false;
             }
 
-            float newVolume = float.Parse(arguments.At(0));
-            /*
-            AutoEvent.Singleton.Config.Volume = newVolume;
-            if (Extensions.AudioBot is not null)
+            if (AutoEvent.EventManager.CurrentEvent == null)
             {
-                var audioPlayer = AudioPlayerBase.Get(Extensions.AudioBot).Volume = newVolume;
-            }*/
+                response = "The mini-game is not running!";
+                return false;
+            }
+            
+            float newVolume = float.Parse(arguments.At(0));
+            if (AutoEvent.EventManager.CurrentEvent is IEventSound eventSound)
+            {
+                eventSound.SoundInfo.AudioPlayer.TryGetSpeaker($"AutoEvent-Main-{eventSound.SoundInfo.SoundName}", out Speaker speaker);
+                speaker.Volume *= newVolume;
+            }
 
             response = $"The volume has been set!";
             return true;
