@@ -58,7 +58,7 @@ public class SeasonMethod
             PrimaryColor = "#77dde7",
             SeasonFlag = SeasonFlags.Christmas,
             FirstDate = new DateTime(2024, 1, 11),
-            LastDate = new DateTime(2024, 1, 30)
+            LastDate = new DateTime(2024, 2, 13)
         },
         new SeasonStyle()
         {

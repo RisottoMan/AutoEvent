@@ -59,6 +59,13 @@ public class Plugin : Event<Config, Translation>, IEventSound, IEventMap
             if (player.CurrentItem == null)
             {
                 player.CurrentItem = player.AddItem(ItemType.Jailbird);
+                player.CurrentItem = player.AddItem(ItemType.Jailbird);
+                player.CurrentItem = player.AddItem(ItemType.Jailbird);
+                player.CurrentItem = player.AddItem(ItemType.Jailbird);
+                player.CurrentItem = player.AddItem(ItemType.Jailbird);
+                player.CurrentItem = player.AddItem(ItemType.Jailbird);
+                player.CurrentItem = player.AddItem(ItemType.Jailbird);
+                player.CurrentItem = player.AddItem(ItemType.Jailbird);
             }
         }
     }

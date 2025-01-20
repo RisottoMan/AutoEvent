@@ -13,12 +13,12 @@ public class Config : EventConfig
     public int EventDurationInSeconds { get; set; } = 60;
 
     [Description("A list of loadouts players can get.")]
-    public List<Loadout> Loadouts { get; set; } = new()
-    {
-        new Loadout()
-        {
-            Roles = new Dictionary<RoleTypeId, int>() { { RoleTypeId.ClassD, 100 } },
-            Effects = new List<Effect>() { new(EffectType.FogControl, 0) },
-        },
-    };
+   public List<Loadout> Loadouts { get; set; } = new()
+       {
+           new Loadout()
+           {
+               Roles = new Dictionary<RoleTypeId, int>() { { RoleTypeId.ClassD, 100 } },
+               Effects = new List<Effect>() { new(EffectType.FogControl, 0) },
+           },
+       }; 
 }

@@ -68,17 +68,23 @@ public class Plugin : Event<Config, Translation>, IEventSound, IEventMap
         {
             switch (block.name)
             {
-                case "Trigger": _triggers.Add(block); break;
-                case "Teleport": _teleports.Add(block); break;
-                case "Spawnpoint": spawnpoints.Add(block); break;
+                case "Trigger":
+                    _triggers.Add(block);
+                    break;
+                case "Teleport":
+                    _teleports.Add(block);
+                    break;
+                case "Spawnpoint":
+                    spawnpoints.Add(block);
+                    break;
             }
         }
 
         var count = 0;
         foreach (Player player in Player.List)
         {
-            if (count % 2 == 0)     
-            {              
+            if (count % 2 == 0)
+            {
                 player.GiveLoadout(Config.Team1Loadouts);
                 player.Position = spawnpoints.ElementAt(0).transform.position;
             }
@@ -87,10 +93,18 @@ public class Plugin : Event<Config, Translation>, IEventSound, IEventMap
                 player.GiveLoadout(Config.Team2Loadouts);
                 player.Position = spawnpoints.ElementAt(1).transform.position;
             }
+
             count++;
 
             if (player.CurrentItem == null)
             {
+                player.CurrentItem = player.AddItem(ItemType.Jailbird);
+                player.CurrentItem = player.AddItem(ItemType.Jailbird);
+                player.CurrentItem = player.AddItem(ItemType.Jailbird);
+                player.CurrentItem = player.AddItem(ItemType.Jailbird);
+                player.CurrentItem = player.AddItem(ItemType.Jailbird);
+                player.CurrentItem = player.AddItem(ItemType.Jailbird);
+                player.CurrentItem = player.AddItem(ItemType.Jailbird);
                 player.CurrentItem = player.AddItem(ItemType.Jailbird);
             }
         }
