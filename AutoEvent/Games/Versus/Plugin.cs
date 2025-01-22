@@ -155,8 +155,12 @@ public class Plugin : Event<Config, Translation>, IEventSound, IEventMap
         if (Scientist is null)
         {
             if (ClassD is not null)
+            {
                 ClassD.Heal(100);
-
+                ClassD.ClearInventory();
+                ClassD.CurrentItem = ClassD.AddItem(ItemType.Jailbird);
+            }
+            
             _eventState = EventState.ChooseScientist;
             return;
         }
@@ -164,8 +168,12 @@ public class Plugin : Event<Config, Translation>, IEventSound, IEventMap
         if (ClassD is null)
         {
             if (Scientist is not null)
+            {
                 Scientist.Heal(100);
-
+                Scientist.ClearInventory();
+                Scientist.CurrentItem = Scientist.AddItem(ItemType.Jailbird);
+            }
+            
             _eventState = EventState.ChooseClassD;
             return;
         }
