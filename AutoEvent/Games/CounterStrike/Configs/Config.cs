@@ -14,7 +14,7 @@ public class Config : EventConfig
     
     [Description("A list of loadouts for team NTF")]
     public List<Loadout> NTFLoadouts { get; set; } = new()
-    {
+    { 
         new Loadout()
         {
             Roles = new Dictionary<RoleTypeId, int>(){ { RoleTypeId.NtfSpecialist, 100 } },
