@@ -77,7 +77,19 @@ public static class ConfigManager
             // If the translation file is not found, then create a new one.
             if (!File.Exists(TranslationPath))
             {
-                string countryCode = new WebClient().DownloadString($"http://ipinfo.io/{Server.ServerIpAddress}/country").Trim(); // This is questionable?
+                string countryCode = "EN";
+                try
+                {
+                    using (WebClient client = new WebClient())
+                    {
+                        string url = $"http://ipinfo.io/{Server.ServerIpAddress}/country";
+                        countryCode = client.DownloadString(url).Trim();
+                    }
+                }
+                catch (WebException ex)
+                {
+                    DebugLogger.LogDebug(input:"Couldn't verify the server country. Providing default translation.");
+                }
                 DebugLogger.LogDebug($"[ConfigManager] The translation.yml file was not found. Creating a new translation for {countryCode} language...");
                 translations = LoadTranslationFromAssembly(countryCode);
             }
