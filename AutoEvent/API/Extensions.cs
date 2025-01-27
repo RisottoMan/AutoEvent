@@ -365,26 +365,34 @@ public static class Extensions
         {
             DebugLogger.LogDebug($"[PauseAudio] The AudioPlayer is null");
         }
-        
-        int clipId = audioPlayer.ClipsById.Keys.First();
-        if (audioPlayer.TryGetClip(clipId, out AudioClipPlayback clip))
+
+        try
         {
-            clip.IsPaused = true;
+            int clipId = audioPlayer.ClipsById.Keys.First();
+            if (audioPlayer.TryGetClip(clipId, out AudioClipPlayback clip))
+            {
+                clip.IsPaused = true;
+            }
         }
+        catch {}
     }
     
     public static void ResumeAudio(AudioPlayer audioPlayer)
     {
         if (audioPlayer is null)
         {
-            DebugLogger.LogDebug($"[ResumeAudio] The AudioPlayer is null");
+            DebugLogger.LogDebug($"[PauseAudio] The AudioPlayer is null");
         }
-        
-        int clipId = audioPlayer.ClipsById.Keys.First();
-        if (audioPlayer.TryGetClip(clipId, out AudioClipPlayback clip))
+
+        try
         {
-            clip.IsPaused = false;
+            int clipId = audioPlayer.ClipsById.Keys.First();
+            if (audioPlayer.TryGetClip(clipId, out AudioClipPlayback clip))
+            {
+                clip.IsPaused = true;
+            }
         }
+        catch {}
     }
     
     public static void StopAudio(AudioPlayer audioPlayer)
