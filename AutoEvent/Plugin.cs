@@ -10,7 +10,7 @@ public class AutoEvent : Plugin<Config>
 {
     public override string Name => "AutoEvent";
     public override string Author => "Created by a large community of programmers, map builders and just ordinary people, under the leadership of RisottoMan.";
-    public override Version Version => Version.Parse("9.10.1");
+    public override Version Version => Version.Parse("9.10.2");
     public override Version RequiredExiledVersion => new(9, 4, 0);
     public static string BaseConfigPath { get; set;}
     public static AutoEvent Singleton;
