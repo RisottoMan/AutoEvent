@@ -389,7 +389,7 @@ public static class Extensions
             int clipId = audioPlayer.ClipsById.Keys.First();
             if (audioPlayer.TryGetClip(clipId, out AudioClipPlayback clip))
             {
-                clip.IsPaused = true;
+                clip.IsPaused = false;
             }
         }
         catch {}
