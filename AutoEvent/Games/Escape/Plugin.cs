@@ -5,6 +5,7 @@ using PlayerRoles;
 using System.Collections.Generic;
 using System.Linq;
 using AutoEvent.Interfaces;
+using Exiled.API.Enums;
 using Exiled.API.Features;
 using UnityEngine;
 using Interactables.Interobjects.DoorUtils;
@@ -32,12 +33,14 @@ public class Plugin : Event<Config, Translation>, IEventSound
         Exiled.Events.Handlers.Player.Joined += _eventHandler.OnJoined;
         Exiled.Events.Handlers.Map.AnnouncingScpTermination += _eventHandler.OnAnnoucingScpTermination;
         Exiled.Events.Handlers.Scp173.PlacingTantrum += _eventHandler.OnPlacingTantrum;
+        Exiled.Events.Handlers.Scp173.UsingBreakneckSpeeds += _eventHandler.OnUsingBreakneckSpeeds;
     }
     protected override void UnregisterEvents()
     {
         Exiled.Events.Handlers.Player.Joined -= _eventHandler.OnJoined;
         Exiled.Events.Handlers.Map.AnnouncingScpTermination -= _eventHandler.OnAnnoucingScpTermination;
         Exiled.Events.Handlers.Scp173.PlacingTantrum -= _eventHandler.OnPlacingTantrum;
+        Exiled.Events.Handlers.Scp173.UsingBreakneckSpeeds -= _eventHandler.OnUsingBreakneckSpeeds;
         _eventHandler = null;
     }
 
@@ -56,6 +59,8 @@ public class Plugin : Event<Config, Translation>, IEventSound
         {
             player.GiveLoadout(Config.Scp173Loadout);
             player.Position = _startPos.transform.position;
+            player.EnableEffect(EffectType.Ensnared, 1, 10);
+            player.EnableEffect(EffectType.MovementBoost, 50);
         }
 
         AlphaWarheadController.Singleton.CurScenario.AdditionalTime = Config.EscapeResumeTime;

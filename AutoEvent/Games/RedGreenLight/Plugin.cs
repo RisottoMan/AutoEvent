@@ -86,6 +86,12 @@ public class Plugin : Event<Config, Translation>, IEventMap
 
     protected override bool IsRoundDone()
     {
+        int aliveCount = Player.List.Count(r => r.IsAlive);
+        int lineCount = Player.List.Count(player => player.Position.z > _redLine.transform.position.z);
+        if (aliveCount == lineCount)
+        {
+            return true;
+        }
         _countdown = _countdown > 0 ? _countdown -= FrameDelayInSeconds : 0;
         return !(EventTime.TotalSeconds < Config.TotalTimeInSeconds && Player.List.Count(r => r.IsAlive) > 0);
     }
