@@ -27,6 +27,7 @@ public class Plugin : Event<Config, Translation>, IEventMap
     private EventState _eventState;
     internal Dictionary<Player, float> PushCooldown;
     private Dictionary<Player, Quaternion> _playerRotation;
+    private Animator animator;
     protected override void RegisterEvents()
     {
         _eventHandler = new EventHandler(this);
@@ -135,12 +136,11 @@ public class Plugin : Event<Config, Translation>, IEventMap
     protected void UpdateRotateState(ref string text)
     {
         text = Translation.RedLight;
-        Vector3 rotation = _doll.transform.rotation.eulerAngles;
 
-        if (Mathf.Abs(rotation.y - 180) > 0.01f)
+        if (Mathf.Abs(_doll.transform.rotation.y) <= 0)
         {
-            rotation.y += 20;
-            _doll.transform.rotation = Quaternion.Euler(rotation);
+            animator = _doll.GetComponent<Animator>();
+            animator.Play("RotateONLight");
         }
         else
         {
@@ -192,18 +192,11 @@ public class Plugin : Event<Config, Translation>, IEventMap
     protected void UpdateReturnState(ref string text)
     {
         text = Translation.GreenLight;
-        Vector3 rotation = _doll.transform.rotation.eulerAngles;
-
-        if (Mathf.Abs(rotation.y - 0) > 0.01f)
-        {
-            rotation.y -= 20;
-            _doll.transform.rotation = Quaternion.Euler(rotation);
-        }
-        else
-        {
-            _playerRotation.Clear();
-            _eventState = 0;
-        }
+        
+        animator = _doll.GetComponent<Animator>();
+        animator.Play("RotateOFFLight");
+        _playerRotation.Clear();
+        _eventState = 0;
     }
 
     protected override void OnFinished()
