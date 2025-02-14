@@ -198,11 +198,16 @@ public class Plugin : Event<Config, Translation>, IEventMap
     protected void UpdateReturnState(ref string text)
     {
         text = Translation.GreenLight;
-
-        animator = _doll.GetComponent<Animator>();
-        animator.Play("RotateOFFLight");
-        _playerRotation.Clear();
-        _eventState = 0;
+        if (Mathf.Abs(_doll.transform.rotation.y) > 0)
+        {
+            animator = _doll.GetComponent<Animator>();
+            animator.Play("RotateOFFLight");
+        }
+        else
+        {
+            _playerRotation.Clear();
+            _eventState = 0;
+        }
     }
 
     protected override void OnFinished()
