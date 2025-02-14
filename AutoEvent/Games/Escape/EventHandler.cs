@@ -25,4 +25,9 @@ public class EventHandler
     {
         ev.IsAllowed = false;
     }
+    
+    public void OnUsingBreakneckSpeeds(UsingBreakneckSpeedsEventArgs ev)
+    {
+        ev.IsAllowed = false;
+    }
 }

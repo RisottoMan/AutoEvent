@@ -21,7 +21,6 @@ public class Config : EventConfig
         new Loadout()
         {
             Roles = new Dictionary<RoleTypeId, int>(){ { RoleTypeId.Scp173, 100 } },
-            Effects = new List<Effect>() { new(EffectType.Ensnared, 10) }
         }
     };
 }
