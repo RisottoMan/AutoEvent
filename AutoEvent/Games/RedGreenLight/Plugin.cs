@@ -58,6 +58,7 @@ public class Plugin : Event<Config, Translation>, IEventMap
                 case "RedLine": _redLine = gameObject; break;
                 case "Doll": _doll = gameObject; break;
             }
+            animator = _doll.GetComponent<Animator>();
         }
 
         foreach (Player player in Player.List)
@@ -145,7 +146,6 @@ public class Plugin : Event<Config, Translation>, IEventMap
 
         if (Mathf.Abs(_doll.transform.rotation.y) <= 0)
         {
-            animator = _doll.GetComponent<Animator>();
             animator.Play("RotateONLight");
         }
         else
@@ -200,7 +200,6 @@ public class Plugin : Event<Config, Translation>, IEventMap
         text = Translation.GreenLight;
         if (Mathf.Abs(_doll.transform.rotation.y) > 0)
         {
-            animator = _doll.GetComponent<Animator>();
             animator.Play("RotateOFFLight");
         }
         else
