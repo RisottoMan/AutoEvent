@@ -56,9 +56,8 @@ public class Plugin : Event<Config, Translation>, IEventMap
                 case "Spawnpoint": spawnpoints.Add(gameObject); break;
                 case "Wall": _wall = gameObject; break;
                 case "RedLine": _redLine = gameObject; break;
-                case "Doll": _doll = gameObject; break;
+                case "Doll": _doll = gameObject; animator = _doll.GetComponent<Animator>(); break;
             }
-            animator = _doll.GetComponent<Animator>();
         }
 
         foreach (Player player in Player.List)
