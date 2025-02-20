@@ -4,7 +4,7 @@ List of available languages:
 - [English](https://github.com/RisottoMan/AutoEvent/blob/main/AutoEvent/Translations/english.yml) created by SnivyFilms, RedForce
 - [Russian](https://github.com/RisottoMan/AutoEvent/blob/main/AutoEvent/Translations/russian.yml) created by RisottoMan
 - [Polish](https://github.com/RisottoMan/AutoEvent/blob/main/AutoEvent/Translations/polish.yml) created by Vretu, Tksemdem
-- [French](https://github.com/RisottoMan/AutoEvent/blob/main/AutoEvent/Translations/french.yml) created by RoboCnop
+- [French](https://github.com/RisottoMan/AutoEvent/blob/main/AutoEvent/Translations/french.yml) created by Robocnop, Antoniofo 
 - [Italian](https://github.com/RisottoMan/AutoEvent/blob/main/AutoEvent/Translations/italian.yml) created by NotZer0Two
 - [German](https://github.com/RisottoMan/AutoEvent/blob/main/AutoEvent/Translations/german.yml) created by SeekEDstroy
 - [Thai](https://github.com/RisottoMan/AutoEvent/blob/main/AutoEvent/Translations/thai.yml) created by karorogunso
