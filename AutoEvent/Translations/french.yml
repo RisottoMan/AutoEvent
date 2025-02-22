@@ -433,15 +433,15 @@ Team Death-Match:
 The floor is LAVA:
   start: |-
     <size=100><color=red>{time}</color></size>
-    Take weapons and climb up.
-  cycle: '<size=20><color=red><b>Alive: {count} players</b></color></size>'
+    Prend des armes et grimpe en haut.
+  cycle: '<size=20><color=red><b>En vie: {count} joueurs</b></color></size>'
   win: |-
-    <color=red><b>Winner
-    Player - {winner}</b></color>
-  all_dead: '<color=red><b>No one survived to the end.</b></color>'
-  died: '<color=red>Burned in Lava</color>'
-  name: 'The floor is LAVA'
-  description: 'Survival, in which you need to avoid lava and shoot at others.'
+    <color=red><b> Gagnant
+    Joueur - {winner}</b></color>
+  all_dead: '<color=red><b>Perssone na survecu jusqua la fin.</b></color>'
+  died: '<color=red>Brulée dans la lave !</color>'
+  name: 'Le sol cest de la lave !'
+  description: 'Un mode de jeu survie ou tu doit grimper et tuer tout les autres avec des armes ! Traduction par konoaru !'
   command_name: 'lava'
 Zombie Infection:
   start: |-
