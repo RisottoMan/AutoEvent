@@ -170,5 +170,6 @@
     <Exec Command="copy $(SolutionDir)BlankVersionInfo.txt $(SolutionDir)VersionInfo.cs" />
   </Target>
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="copy &quot;$(TargetPath)&quot; &quot;%appdata%\EXILED\Plugins&quot; /y" />
   </Target>
 </Project>
