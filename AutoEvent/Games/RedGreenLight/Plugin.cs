@@ -27,7 +27,6 @@ public class Plugin : Event<Config, Translation>, IEventMap
     private EventState _eventState;
     internal Dictionary<Player, float> PushCooldown;
     private Dictionary<Player, Quaternion> _playerRotation;
-    private Animator animator;
     protected override void RegisterEvents()
     {
         _eventHandler = new EventHandler(this);
@@ -56,7 +55,7 @@ public class Plugin : Event<Config, Translation>, IEventMap
                 case "Spawnpoint": spawnpoints.Add(gameObject); break;
                 case "Wall": _wall = gameObject; break;
                 case "RedLine": _redLine = gameObject; break;
-                case "Doll": _doll = gameObject; animator = _doll.GetComponent<Animator>(); break;
+                case "Doll": _doll = gameObject; break;
             }
         }
 
@@ -142,20 +141,15 @@ public class Plugin : Event<Config, Translation>, IEventMap
     protected void UpdateRotateState(ref string text)
     {
         text = Translation.RedLight;
-
-        if (Mathf.Abs(_doll.transform.rotation.y) <= 0)
+        
+        _doll.GetComponent<Animator>().Play("RotateONLight");
+        _playerRotation = new Dictionary<Player, Quaternion>();
+        _playerRotation = new Dictionary<Player, Quaternion>();
+        foreach (Player player in Player.List)
         {
-            animator.Play("RotateONLight");
+            _playerRotation.Add(player, player.CameraTransform.rotation);
         }
-        else
-        {
-            _playerRotation = new Dictionary<Player, Quaternion>();
-            foreach (Player player in Player.List)
-            {
-                _playerRotation.Add(player, player.CameraTransform.rotation);
-            }
-            _eventState++;
-        }
+        _eventState++;
     }
 
     protected void UpdateRedLightState(ref string text)
@@ -197,15 +191,10 @@ public class Plugin : Event<Config, Translation>, IEventMap
     protected void UpdateReturnState(ref string text)
     {
         text = Translation.GreenLight;
-        if (Mathf.Abs(_doll.transform.rotation.y) > 0)
-        {
-            animator.Play("RotateOFFLight");
-        }
-        else
-        {
-            _playerRotation.Clear();
-            _eventState = 0;
-        }
+
+        _doll.GetComponent<Animator>().Play("RotateOFFLight");
+        _playerRotation.Clear();
+        _eventState = 0;
     }
 
     protected override void OnFinished()
