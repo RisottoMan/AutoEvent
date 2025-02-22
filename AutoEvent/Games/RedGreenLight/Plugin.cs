@@ -27,7 +27,6 @@ public class Plugin : Event<Config, Translation>, IEventMap
     private EventState _eventState;
     internal Dictionary<Player, float> PushCooldown;
     private Dictionary<Player, Quaternion> _playerRotation;
-    private Animator animator;
     protected override void RegisterEvents()
     {
         _eventHandler = new EventHandler(this);
@@ -144,8 +143,6 @@ public class Plugin : Event<Config, Translation>, IEventMap
         text = Translation.RedLight;
         
         _doll.GetComponent<Animator>().Play("RotateONLight");
-        _playerRotation = new Dictionary<Player, Quaternion>();
-        _playerRotation = new Dictionary<Player, Quaternion>();
         foreach (Player player in Player.List)
         {
             _playerRotation.Add(player, player.CameraTransform.rotation);
