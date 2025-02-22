@@ -27,6 +27,7 @@ public class Plugin : Event<Config, Translation>, IEventMap
     private EventState _eventState;
     internal Dictionary<Player, float> PushCooldown;
     private Dictionary<Player, Quaternion> _playerRotation;
+    private Animator animator;
     protected override void RegisterEvents()
     {
         _eventHandler = new EventHandler(this);
