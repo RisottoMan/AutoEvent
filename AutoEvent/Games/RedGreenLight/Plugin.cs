@@ -143,6 +143,7 @@ public class Plugin : Event<Config, Translation>, IEventMap
         text = Translation.RedLight;
         
         _doll.GetComponent<Animator>().Play("RotateONLight");
+        _playerRotation = new Dictionary<Player, Quaternion>();
         foreach (Player player in Player.List)
         {
             _playerRotation.Add(player, player.CameraTransform.rotation);
@@ -189,7 +190,7 @@ public class Plugin : Event<Config, Translation>, IEventMap
     protected void UpdateReturnState(ref string text)
     {
         text = Translation.GreenLight;
-
+        
         _doll.GetComponent<Animator>().Play("RotateOFFLight");
         _playerRotation.Clear();
         _eventState = 0;
