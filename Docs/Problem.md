@@ -8,14 +8,14 @@
 - You haven't installed ProjectMER, so you have mini-games that won't need the maps.
 - Install the MapEditorReborn plugin so that the plugin can load maps: [(Github ProjectMER)](https://github.com/Michal78900/ProjectMER/releases/latest)
 
-![image](https://github.com/user-attachments/assets/312135a9-9106-4b86-805f-5c74d8024ff2)
+![image](https://github.com/user-attachments/assets/0ed636a3-9d08-4034-bc28-150a6646186b)
 
 - I do not know how to install ProjectMER. What should I do?
-![image](https://github.com/user-attachments/assets/7b5eca02-a64c-4476-b138-e30c98881a5f)
+![image](https://github.com/user-attachments/assets/6f292d36-b87c-4ab6-aa49-899e4480ea2b)
 
 ---
 ## 3) ProjectMER was not detected. AutoEvent will not be loaded until you install ProjectMER.
-![image](https://github.com/user-attachments/assets/818a486e-d6f2-4a32-80af-434f24515625)
+![image](![image](https://github.com/user-attachments/assets/b0355d75-31bc-43b8-980d-11d39e8bcc1c)
 - This is the same problem as in point 2. 
 - Install ProjectMER so that the plugin can load maps: [(Github ProjectMER)](https://github.com/Michal78900/ProjectMER/releases/latest)
 
