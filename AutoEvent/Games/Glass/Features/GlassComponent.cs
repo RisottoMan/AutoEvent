@@ -1,5 +1,5 @@
 ﻿using MEC;
-using PluginAPI.Core;
+using Exiled.API.Features;
 using UnityEngine;
 
 namespace AutoEvent.Games.Glass.Features;

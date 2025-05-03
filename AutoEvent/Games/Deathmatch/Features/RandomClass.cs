@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 using AutoEvent.API;
-using MapEditorReborn.API.Features.Objects;
 using UnityEngine;
 
 namespace AutoEvent.Games.Deathmatch

@@ -12,7 +12,7 @@
 
 using Exiled.API.Features.Items;
 using InventorySystem.Items;
-using PluginAPI.Core;
+using Exiled.API.Features;
 
 namespace AutoEvent.Events.EventArgs;
 

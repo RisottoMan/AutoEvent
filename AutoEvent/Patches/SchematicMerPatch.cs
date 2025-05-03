@@ -4,7 +4,7 @@ using HarmonyLib;
 
 namespace AutoEvent.Patches;
 
-[HarmonyPatch(typeof(MapEditorReborn.MapEditorReborn), nameof(MapEditorReborn.MapEditorReborn.SchematicsDir), MethodType.Getter)]
+[HarmonyPatch(typeof(ProjectMER.ProjectMER), nameof(ProjectMER.ProjectMER.SchematicsDir), MethodType.Getter)]
 public class SchematicMerPatch
 {
     public static bool Prefix(ref string __result)

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using CedMod;
-using PluginAPI.Core;
+using Exiled.API.Features;
 
 namespace AutoEvent.API;
 public class FriendlyFireSystem

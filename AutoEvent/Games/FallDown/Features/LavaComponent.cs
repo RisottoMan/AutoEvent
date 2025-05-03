@@ -1,4 +1,4 @@
-﻿using PluginAPI.Core;
+﻿using Exiled.API.Features;
 using UnityEngine;
 
 namespace AutoEvent.Games.FallDown;
@@ -23,7 +23,7 @@ public class LavaComponent : MonoBehaviour
         if (Player.Get(other.gameObject) is Player)
         {
             var pl = Player.Get(other.gameObject);
-            pl.Damage(500f, _plugin.Translation.Died);
+            pl.Hurt(500f, _plugin.Translation.Died);
         }
     }
 }

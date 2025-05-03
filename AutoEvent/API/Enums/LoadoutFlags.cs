@@ -11,7 +11,6 @@
 // -----------------------------------------
 
 using System;
-using PluginAPI.Roles;
 
 namespace AutoEvent.API.Enums;
 

@@ -13,9 +13,9 @@ public class EventManager
     public void RegisterInternalEvents()
     {
         bool isMerLoaded = true;
-        if (!AppDomain.CurrentDomain.GetAssemblies().Any(x => x.FullName.ToLower().Contains("mapeditorreborn")))
+        if (!AppDomain.CurrentDomain.GetAssemblies().Any(x => x.FullName.ToLower().Contains("projectmer")))
         {
-            DebugLogger.LogDebug("MapEditorReborn was not detected. AutoEvent will not be loaded until you install MapEditorReborn.", LogLevel.Error);
+            DebugLogger.LogDebug("MapEditorReborn was not detected. AutoEvent will not be loaded until you install ProjectMER.", LogLevel.Error);
             isMerLoaded = false;
         }
         

@@ -44,19 +44,18 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="ExMod.Exiled" Version="9.4.0" />
+    <PackageReference Include="ExMod.Exiled" Version="9.6.0-beta8" />
     <PackageReference Include="Fody" Version="6.8.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Lib.Harmony" Version="2.2.2" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="Northwood.PluginAPI" Version="13.1.2" />
     <PackageReference Include="NVorbis" Version="0.10.5" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="CedModV3" HintPath="$(SL_REFERENCES)\CedModV3.dll" />
-    <Reference Include="MapEditorReborn" HintPath="$(SL_REFERENCES)\MapEditorReborn.dll" />
+    <Reference Include="ProjectMER" HintPath="$(SL_REFERENCES)\ProjectMER.dll" />
     <Reference Include="NWAPIPermissionSystem" HintPath="$(SL_REFERENCES)\NWAPIPermissionSystem.dll" />
     <Reference Include="AdvancedMERTools" HintPath="$(SL_REFERENCES)\AdvancedMERTools.dll" />
     <Reference Include="AudioPlayerApi" HintPath="$(SL_REFERENCES)\AudioPlayerApi.dll" />
@@ -172,8 +171,5 @@
   </Target>
   <Target Name="ReplaceFile" BeforeTargets="ReplaceVars">
     <Exec Command="copy $(SolutionDir)BlankVersionInfo.txt $(SolutionDir)VersionInfo.cs" />
-  </Target>
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="copy &quot;$(TargetPath)&quot; &quot;%appdata%\EXILED\Plugins&quot; /y" />
   </Target>
 </Project>

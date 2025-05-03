@@ -1,8 +1,8 @@
 ﻿using System;
 using AutoEvent.Events.EventArgs;
 using Exiled.API.Enums;
+using Exiled.API.Features;
 using Exiled.Events.EventArgs.Player;
-using PluginAPI.Core;
 using UnityEngine;
 
 namespace AutoEvent.Games.Dodgeball;
@@ -26,7 +26,7 @@ public class EventHandler
             Player player = Player.Get(collider.gameObject);
             if (player != null && ev.Player != player)
             {
-                player.Damage(50, _translation.Knocked.Replace("{killer}", ev.Player.Nickname));
+                player.Hurt(50, _translation.Knocked.Replace("{killer}", ev.Player.Nickname));
                 ev.Projectile.DestroySelf();
                 break;
             }

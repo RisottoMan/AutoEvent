@@ -1,8 +1,8 @@
 ﻿using AutoEvent.Interfaces;
 using CommandSystem;
 using System;
+using Exiled.API.Features;
 using MEC;
-using PluginAPI.Core;
 using Exiled.Permissions.Extensions;
 
 namespace AutoEvent.Commands;
@@ -34,7 +34,7 @@ internal class Lobby : ICommand
 
         Round.IsLocked = true;
 
-        if (!Round.IsRoundStarted)
+        if (!Round.IsStarted)
         {
             Round.Start();
 

@@ -7,7 +7,6 @@ using System.Reflection;
 using AutoEvent.Interfaces;
 using Exiled.API.Extensions;
 using Exiled.Loader;
-using PluginAPI.Core;
 
 namespace AutoEvent;
 public static class ConfigManager
@@ -82,7 +81,7 @@ public static class ConfigManager
                 {
                     using (WebClient client = new WebClient())
                     {
-                        string url = $"http://ipinfo.io/{Server.ServerIpAddress}/country";
+                        string url = $"http://ipinfo.io/{Exiled.API.Features.Server.IpAddress}/country";
                         countryCode = client.DownloadString(url).Trim();
                     }
                 }

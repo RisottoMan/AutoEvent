@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using PluginAPI.Core;
+using Exiled.API.Features;
 
 namespace AutoEvent;
 public class DebugLogger
@@ -74,7 +74,7 @@ public class DebugLogger
                     Log.Info(input);
                     break;
                 case LogLevel.Warn:
-                    Log.Warning(input);
+                    Log.Warn(input);
                     break;
             }
         }

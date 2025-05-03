@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel;
 using AutoEvent.API;
-using MapEditorReborn.API.Features.Objects;
 using UnityEngine;
 using YamlDotNet.Serialization;
 

@@ -13,8 +13,8 @@ using Exiled.API.Extensions;
 using Exiled.API.Features;
 using Exiled.API.Features.Items;
 using InventorySystem.Items.Jailbird;
-using MapEditorReborn.API.Features;
 using PlayerRoles.Ragdolls;
+using ProjectMER.Features;
 using Object = UnityEngine.Object;
 
 namespace AutoEvent;
@@ -258,11 +258,11 @@ public static class Extensions
     {
         try
         {
-            var schematicObject = ObjectSpawner.SpawnSchematic(schematicName, pos, rot, scale, null);
+            var schematicObject = ObjectSpawner.SpawnSchematic(schematicName, pos, rot, scale);
 
             return new MapObject()
             {
-                AttachedBlocks = schematicObject.AttachedBlocks,
+                AttachedBlocks = schematicObject.AttachedBlocks.ToList(),
                 GameObject = schematicObject.gameObject
             };
         }

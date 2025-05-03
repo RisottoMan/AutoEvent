@@ -1,7 +1,7 @@
 ﻿using CommandSystem;
 using System;
 using PlayerRoles;
-using PluginAPI.Core;
+using Exiled.API.Features;
 using Exiled.Permissions.Extensions;
 
 namespace AutoEvent.Commands;
@@ -26,9 +26,9 @@ internal class Stop : ICommand
 
         AutoEvent.EventManager.CurrentEvent.StopEvent();
 
-        foreach (Player pl in Player.GetPlayers())
+        foreach (Player pl in Player.List)
         {
-            pl.SetRole(RoleTypeId.Spectator);
+            pl.Role.Set(RoleTypeId.Spectator);
         }
 
         response = "Killed all the players and the mini-game itself will end soon.";

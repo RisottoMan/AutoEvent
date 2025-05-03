@@ -1,12 +1,12 @@
-using System.Collections.ObjectModel;
-using MapEditorReborn.API.Features.Objects;
+using System.Collections.Generic;
+using ProjectMER.Features.Objects;
 using UnityEngine;
 
 namespace AutoEvent.API;
 
 public class MapObject
 {
-    public ObservableCollection<GameObject> AttachedBlocks { get; set; } = new();
+    public List<GameObject> AttachedBlocks { get; set; } = new();
     public GameObject GameObject { get; set; }
     public Vector3 Position
     {

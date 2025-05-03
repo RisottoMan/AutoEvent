@@ -1,17 +1,5 @@
-﻿// <copyright file="Log.cs" company="Redforce04#4091">
-// Copyright (c) Redforce04. All rights reserved.
-// </copyright>
-// -----------------------------------------
-//    Solution:         AutoEvent
-//    Project:          AutoEvent
-//    FileName:         SwingingEventArgs.cs
-//    Author:           Redforce04#4091
-//    Revision Date:    10/15/2023 7:11 PM
-//    Created Date:     10/15/2023 7:11 PM
-// -----------------------------------------
-
+﻿using Exiled.API.Features;
 using InventorySystem.Items;
-using PluginAPI.Core;
 
 namespace AutoEvent.Events.EventArgs;
 

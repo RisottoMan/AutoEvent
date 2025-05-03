@@ -1,5 +1,5 @@
 ﻿using InventorySystem.Items.ThrowableProjectiles;
-using PluginAPI.Core;
+using Exiled.API.Features;
 
 namespace AutoEvent.Events.EventArgs
 {

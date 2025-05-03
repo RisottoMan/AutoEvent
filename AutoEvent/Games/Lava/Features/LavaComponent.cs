@@ -1,5 +1,5 @@
 ﻿using PlayerStatsSystem;
-using PluginAPI.Core;
+using Exiled.API.Features;
 using UnityEngine;
 
 namespace AutoEvent.Games.Lava;
@@ -36,7 +36,7 @@ public class LavaComponent : MonoBehaviour
             if (Player.Get(other.gameObject) is Player)
             {
                 var pl = Player.Get(other.gameObject);
-                pl.Damage(new CustomReasonDamageHandler(_plugin.Translation.Died, 30));
+                pl.Hurt(new CustomReasonDamageHandler(_plugin.Translation.Died, 30));
             }
         }
     }
