@@ -6,12 +6,12 @@
 
 - [``AutoEvent.dll``](https://github.com/RisottoMan/AutoEvent/releases/latest) move to => ``EXILED/Plugins``
 
-- [``MapEditorReborn.dll``](https://github.com/RisottoMan/AutoEvent/releases/latest) move to => ``EXILED/Plugins``
+- [``ProjectMER.dll``](https://github.com/Michal78900/ProjectMER/releases/latest) move to => ``LabAPI-Beta\plugins\global``
 > If the latest MER release is causing you problems, then download it here.
 
 - [``Music.tar.gz``](https://github.com/RisottoMan/AutoEvent/releases/latest) unzip files to => ``EXILED/Configs/AutoEvent/Music``
 
-- [``Schematics.tar.gz``](https://github.com/KoT0XleB/AutoEvent-Exiled/releases/latest) unzip files to => ``EXILED/Configs/AutoEvent/Schematics``
+- [``Schematics.tar.gz``](https://github.com/RisottoMan/AutoEvent/releases/latest) unzip files to => ``EXILED/Configs/AutoEvent/Schematics``
 
 - Ensure that the Config has the following directories, and that they can be accessed to the server.
 ```yml
