@@ -11,6 +11,7 @@
 ![image](https://github.com/user-attachments/assets/0ed636a3-9d08-4034-bc28-150a6646186b)
 
 - I do not know how to install ProjectMER. What should I do?
+
 ![image](https://github.com/user-attachments/assets/6f292d36-b87c-4ab6-aa49-899e4480ea2b)
 
 ---
@@ -28,7 +29,7 @@
 
 ![image](https://github.com/user-attachments/assets/312135a9-9106-4b86-805f-5c74d8024ff2)
 - If the problem persists, download the latest release (or testing release) from [(Discord MER)](https://discord.gg/JwAfeSd79u): 
-![image](https://github.com/user-attachments/assets/d6ed4a8d-5dfc-42a4-818e-5924b6215438)
+![image](https://github.com/user-attachments/assets/224dbb89-4974-4e9c-bc8b-6df4149dda9f)
 
 ---
 ## 5) You need to download the map (something) to run this mini-game.
