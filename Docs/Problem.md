@@ -16,18 +16,17 @@
 
 ---
 ## 3) ProjectMER was not detected. AutoEvent will not be loaded until you install ProjectMER.
-![image](![image](https://github.com/user-attachments/assets/b0355d75-31bc-43b8-980d-11d39e8bcc1c)
 - This is the same problem as in point 2. 
 - Install ProjectMER so that the plugin can load maps: [(Github ProjectMER)](https://github.com/Michal78900/ProjectMER/releases/latest)
 
-![image](https://github.com/user-attachments/assets/312135a9-9106-4b86-805f-5c74d8024ff2)
+![image](https://github.com/user-attachments/assets/b0355d75-31bc-43b8-980d-11d39e8bcc1c)
 ---
 ## 4) You have installed the old version of 'ProjectMER' and cannot run this mini-game
 ![image](https://github.com/user-attachments/assets/e66573f4-1899-43a7-9724-01d3c9cd97ec)
 - It says what it means. You have an old version of ProjectMER. There are new features or a new version of SCP has been released. Therefore, errors appear.
 - Install the new version of ProjectMER so that the plugin can load schematics: [(Github ProjectMER)](https://github.com/Michal78900/ProjectMER/releases/latest)
 
-![image](https://github.com/user-attachments/assets/312135a9-9106-4b86-805f-5c74d8024ff2)
+![image](https://github.com/user-attachments/assets/b0355d75-31bc-43b8-980d-11d39e8bcc1c)
 - If the problem persists, download the latest release (or testing release) from [(Discord MER)](https://discord.gg/JwAfeSd79u): 
 ![image](https://github.com/user-attachments/assets/224dbb89-4974-4e9c-bc8b-6df4149dda9f)
 
