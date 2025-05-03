@@ -216,7 +216,7 @@ public static class Extensions
             player.GiveInfiniteAmmo(AmmoMode.None);
             player.IsGodModeEnabled = false;
             player.Scale = new Vector3(1, 1, 1);
-            player.Position = new Vector3(39.332f, 1014.766f, -31.922f);
+            player.Position = new Vector3(39.332f, 314.112f, -31.922f);
             player.ClearInventory();
         }
     }
@@ -227,29 +227,29 @@ public static class Extensions
         {
             if (MapUtils.GetSchematicDataByName(schematicName) is null)
             {
-                // Map is not installed for MER
+                // Map is not installed for ProjectMER
                 response = $"You need to download the map {schematicName} to run this mini-game.\n" +
                            $"Download and install Schematics.tar.gz from the github.";
                 return false;
             }
 
-            // The latest MER and Schematics are installed
+            // The latest ProjectMER and Schematics are installed
             response = $"The map {schematicName} exist and can be used.";
             return true;
         }
         catch (Exception _)
         {
-            // The old version of MER is installed
-            if (AppDomain.CurrentDomain.GetAssemblies().Any(x => x.FullName.ToLower().Contains("mapeditorreborn")))
+            // The old version of ProjectMER is installed
+            if (AppDomain.CurrentDomain.GetAssemblies().Any(x => x.FullName.ToLower().Contains("projectmer")))
             {
-                response = $"You have installed the old version of 'MapEditorReborn' and cannot run this mini-game.\n" +
-                           $"Install the latest version of 'MapEditorReborn'.";
+                response = $"You have installed the old version of 'ProjectMER' and cannot run this mini-game.\n" +
+                           $"Install the latest version of 'ProjectMER'.";
                 return false;
             }
         }
         
         // The MER is not installed
-        response = $"You need to download the 'MapEditorReborn' to run this mini-game.\n" +
+        response = $"You need to download the 'ProjectMER' to run this mini-game.\n" +
                    $"Read the installation instruction in the github.";
         return false;
     }

@@ -34,12 +34,12 @@ public class Plugin : Event<Config, Translation>, IEventSound, IEventMap
     {
         _eventHandler = new EventHandler(this);
         Exiled.Events.Handlers.Player.Hurting += _eventHandler.OnHurting;
-        Handlers.ChargingJailbird += _eventHandler.OnJailbirdCharge;
+        Exiled.Events.Handlers.Item.ChargingJailbird += _eventHandler.OnJailbirdCharge;
     }
     protected override void UnregisterEvents()
     {
         Exiled.Events.Handlers.Player.Hurting -= _eventHandler.OnHurting;
-        Handlers.ChargingJailbird -= _eventHandler.OnJailbirdCharge;
+        Exiled.Events.Handlers.Item.ChargingJailbird -= _eventHandler.OnJailbirdCharge;
         _eventHandler = null;
     }
 

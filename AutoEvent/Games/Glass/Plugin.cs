@@ -2,16 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using MEC;
-using PlayerRoles;
 using UnityEngine;
 using AutoEvent.Games.Glass.Features;
 using AutoEvent.Interfaces;
 using Mirror;
 using AdminToys;
 using Exiled.API.Features;
-using MapEditorReborn.API.Features;
-using MapEditorReborn.API.Features.Objects;
-using MapEditorReborn.API.Features.Serializable;
+using ProjectMER.Features;
+using ProjectMER.Features.Serializable;
 using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
 
@@ -25,7 +23,7 @@ public class Plugin : Event<Config, Translation>, IEventSound, IEventMap
     public MapInfo MapInfo { get; set; } = new()
     { 
         MapName = "Glass", 
-        Position = new Vector3(76f, 1026.5f, -43.68f),
+        Position = new Vector3(0, 40f, 0f),
         IsStatic = false
     };
     public SoundInfo SoundInfo { get; set; } = new()
@@ -137,6 +135,7 @@ public class Plugin : Event<Config, Translation>, IEventSound, IEventMap
     protected GameObject CreatePlatformByParent(GameObject parent, Vector3 position)
     {
         PrimitiveObjectToy prim = parent.GetComponent<PrimitiveObjectToy>();
+        /* <<< 03.05.2025 Move from MER to ProjectMER
         PrimitiveObject obj = ObjectSpawner.SpawnPrimitive(new PrimitiveSerializable()
         {
             PrimitiveType = prim.PrimitiveType,
@@ -146,6 +145,16 @@ public class Plugin : Event<Config, Translation>, IEventSound, IEventMap
         position,
         parent.transform.rotation,
         parent.transform.localScale);
+        */
+        var obj = ObjectSpawner.SpawnPrimitive(new SerializablePrimitive()
+        {
+            PrimitiveType = prim.PrimitiveType,
+            Position = position,
+            Scale = parent.transform.localScale,
+            Color = prim.MaterialColor.ToHex(),
+        });
+        obj.NetworkIsStatic = false;
+        // >>>
 
         NetworkServer.Spawn(obj.gameObject);
         _platforms.Add(obj.gameObject);

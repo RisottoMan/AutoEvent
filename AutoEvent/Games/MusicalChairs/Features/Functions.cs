@@ -1,9 +1,9 @@
 ﻿using Mirror;
 using System.Collections.Generic;
 using System.Linq;
-using MapEditorReborn.API.Features;
-using MapEditorReborn.API.Features.Objects;
-using MapEditorReborn.API.Features.Serializable;
+using LabApi.Features.Wrappers;
+using ProjectMER.Features;
+using ProjectMER.Features.Serializable;
 using UnityEngine;
 
 namespace AutoEvent.Games.MusicalChairs;
@@ -23,8 +23,8 @@ public class Functions
             float x = position.x + radius * Mathf.Cos(radians);
             float z = position.z + radius * Mathf.Sin(radians);
             Vector3 pos = new Vector3(x, parent.transform.position.y, z);
-
-            PrimitiveObject obj = ObjectSpawner.SpawnPrimitive(new PrimitiveSerializable()
+            /* <<< 03.05.2025 Move from MER to ProjectMER
+            PrimitiveObject obj = ObjectSpawner.SpawnPrimitive(new SerializablePrimitive()
             {
                 PrimitiveType = PrimitiveType.Cylinder,
                 Position = parent.transform.position,
@@ -34,7 +34,15 @@ public class Functions
             pos, 
             parent.transform.rotation, 
             parent.transform.localScale);
-
+            */
+            var obj = ObjectSpawner.SpawnPrimitive(new SerializablePrimitive()
+            {
+                PrimitiveType = PrimitiveType.Cylinder,
+                Position = parent.transform.position,
+                Scale =parent.transform.localScale,
+                Color = "yellow",
+            });
+            // >>>
             NetworkServer.Spawn(obj.gameObject);
             platformes.Add(obj.gameObject);
         }
@@ -67,7 +75,7 @@ public class Functions
             float z = position.z + radius * Mathf.Sin(radians);
             Vector3 pos = new Vector3(x, platforms[i].transform.position.y, z);
 
-            if (platforms[i].TryGetComponent(out PrimitiveObject primitiveObject))
+            if (platforms[i].TryGetComponent(out PrimitiveObjectToy primitiveObject))
             {
                 primitiveObject.Position = pos;
             }

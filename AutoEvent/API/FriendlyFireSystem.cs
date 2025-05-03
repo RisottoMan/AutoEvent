@@ -100,6 +100,7 @@ public class FriendlyFireSystem
     public static void EnableFriendlyFire()
     {
         DebugLogger.LogDebug("Enabling Friendly Fire.");
+        
         Server.FriendlyFire = true;
     }
 
@@ -114,6 +115,9 @@ public class FriendlyFireSystem
     {
         DebugLogger.LogDebug("Restoring Friendly Fire and Detector.");
         Server.FriendlyFire = IsFriendlyFireEnabledByDefault;
+
+        return; //03.05.2025 fix console errors
+        
         if (FriendlyFireAutoBanDefaultEnabled && FriendlyFireDetectorIsDisabled)
         {
             EnableFriendlyFireDetector();

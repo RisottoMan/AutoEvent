@@ -1,4 +1,4 @@
-﻿using AutoEvent.Events.EventArgs;
+﻿using Exiled.Events.EventArgs.Item;
 using Exiled.Events.EventArgs.Player;
 
 namespace AutoEvent.Games.Versus;

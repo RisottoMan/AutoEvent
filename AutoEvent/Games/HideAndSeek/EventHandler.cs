@@ -1,13 +1,10 @@
-﻿using AutoEvent.Events.EventArgs;
-using MEC;
-using PlayerStatsSystem;
-using System.Linq;
+﻿using System.Linq;
 using AutoEvent.API.Enums;
 using CustomPlayerEffects;
 using Exiled.API.Enums;
 using Exiled.API.Features;
+using Exiled.Events.EventArgs.Item;
 using Exiled.Events.EventArgs.Player;
-using InventorySystem.Items;
 
 namespace AutoEvent.Games.HideAndSeek;
 public class EventHandler
