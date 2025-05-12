@@ -1,7 +1,7 @@
 # Problems :trollface: - *How can I fix my problem?*
 ## 1) You do not have permission to use this command:
 ![image](https://github.com/user-attachments/assets/b96bbf64-e981-4f9a-8200-eb1aab1b8014)
-- Read here how to set permissions for your role: [(Press me)](https://github.com/RisottoMan/AutoEvent/blob/main/Docs/Installation.md)
+- Read here how to set permissions for your role: [(Press me)](https://github.com/SakredBara/AutoEvent/blob/main/Docs/Installation.md)
 ---
 ## 2) I only have one mini-game. What should I do?
 ![image](https://github.com/user-attachments/assets/c40ac4d8-7753-4627-bf39-d514d53c3b98)
@@ -34,7 +34,7 @@
 ## 5) You need to download the map (something) to run this mini-game.
 ![image](https://github.com/user-attachments/assets/1a71fb4f-08b3-4411-a693-25ac9aae26f6)
 - It says what it means. This map is not exist on your server, so the mini-game cannot be run.
-- You need to download *``Schematics.tar.gz``* from the [latest release](https://github.com/RisottoMan/AutoEvent/releases/latest).
+- You need to download *``Schematics.tar.gz``* from the [latest release](https://github.com/SakredBara/AutoEvent/releases/latest).
 
 ![image](https://github.com/user-attachments/assets/469eab25-2f94-4414-87dc-7402a5068aaf)
 - Unzip *``Schematics.tar.gz``* to ``EXILED/Configs/AutoEvent/Schematics`` folder.
