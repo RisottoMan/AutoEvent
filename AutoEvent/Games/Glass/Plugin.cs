@@ -8,8 +8,8 @@ using AutoEvent.Interfaces;
 using Mirror;
 using AdminToys;
 using Exiled.API.Features;
-using ProjectMER.Features;
-using ProjectMER.Features.Serializable;
+using MapEditorReborn.API.Features;
+using MapEditorReborn.API.Features.Serializable;
 using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
 
@@ -135,7 +135,7 @@ public class Plugin : Event<Config, Translation>, IEventSound, IEventMap
     protected GameObject CreatePlatformByParent(GameObject parent, Vector3 position)
     {
         PrimitiveObjectToy prim = parent.GetComponent<PrimitiveObjectToy>();
-        /* <<< 03.05.2025 Move from MER to ProjectMER
+        /* <<< 03.05.2025 Move from MER to MapEditorReborn
         PrimitiveObject obj = ObjectSpawner.SpawnPrimitive(new PrimitiveSerializable()
         {
             PrimitiveType = prim.PrimitiveType,
@@ -146,14 +146,14 @@ public class Plugin : Event<Config, Translation>, IEventSound, IEventMap
         parent.transform.rotation,
         parent.transform.localScale);
         */
-        var obj = ObjectSpawner.SpawnPrimitive(new SerializablePrimitive()
+        var obj = ObjectSpawner.SpawnPrimitive(new PrimitiveSerializable()
         {
             PrimitiveType = prim.PrimitiveType,
             Position = position,
             Scale = parent.transform.localScale,
             Color = prim.MaterialColor.ToHex(),
         });
-        obj.NetworkIsStatic = false;
+
         // >>>
 
         NetworkServer.Spawn(obj.gameObject);

@@ -8,8 +8,8 @@ namespace AutoEvent;
 public class AutoEvent : Plugin<Config>
 {
     public override string Name => "AutoEvent";
-    public override string Author => "Created by a large community of programmers, map builders and just ordinary people, under the leadership of RisottoMan.";
-    public override Version Version => Version.Parse("9.11.0");
+    public override string Author => "Created by a large community of programmers, map builders and just ordinary people, under the leadership of RisottoMan. MapEditorReborn for 14.1 port by Sakred_";
+    public override Version Version => Version.Parse("9.11.1");
     public override Version RequiredExiledVersion => new(9, 6, 0);
     public static string BaseConfigPath { get; set;}
     public static AutoEvent Singleton;

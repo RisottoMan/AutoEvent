@@ -14,7 +14,7 @@ using Exiled.API.Features;
 using Exiled.API.Features.Items;
 using InventorySystem.Items.Jailbird;
 using PlayerRoles.Ragdolls;
-using ProjectMER.Features;
+using MapEditorReborn.API.Features;
 using Object = UnityEngine.Object;
 
 namespace AutoEvent;
@@ -227,29 +227,29 @@ public static class Extensions
         {
             if (MapUtils.GetSchematicDataByName(schematicName) is null)
             {
-                // Map is not installed for ProjectMER
+                // Map is not installed for MapEditorReborn
                 response = $"You need to download the map {schematicName} to run this mini-game.\n" +
                            $"Download and install Schematics.tar.gz from the github.";
                 return false;
             }
 
-            // The latest ProjectMER and Schematics are installed
+            // The latest MapEditorReborn and Schematics are installed
             response = $"The map {schematicName} exist and can be used.";
             return true;
         }
         catch (Exception _)
         {
-            // The old version of ProjectMER is installed
-            if (AppDomain.CurrentDomain.GetAssemblies().Any(x => x.FullName.ToLower().Contains("projectmer")))
+            // The old version of MapEditorReborn is installed
+            if (AppDomain.CurrentDomain.GetAssemblies().Any(x => x.FullName.ToLower().Contains("mapeditorreborn")))
             {
-                response = $"You have installed the old version of 'ProjectMER' and cannot run this mini-game.\n" +
-                           $"Install the latest version of 'ProjectMER'.";
+                response = $"You have installed the old version of 'MapEditorReborn' and cannot run this mini-game.\n" +
+                           $"Install the latest version of 'MapEditorReborn'.";
                 return false;
             }
         }
         
         // The MER is not installed
-        response = $"You need to download the 'ProjectMER' to run this mini-game.\n" +
+        response = $"You need to download the 'MapEditorReborn' to run this mini-game.\n" +
                    $"Read the installation instruction in the github.";
         return false;
     }
@@ -258,7 +258,7 @@ public static class Extensions
     {
         try
         {
-            var schematicObject = ObjectSpawner.SpawnSchematic(schematicName, pos, rot, scale);
+            var schematicObject = ObjectSpawner.SpawnSchematic(schematicName, pos, rot, scale, null);
 
             return new MapObject()
             {

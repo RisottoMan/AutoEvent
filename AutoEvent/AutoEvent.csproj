@@ -54,28 +54,232 @@
     <PackageReference Include="NVorbis" Version="0.10.5" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="CedModV3" HintPath="$(SL_REFERENCES)\CedModV3.dll" />
-    <Reference Include="ProjectMER" HintPath="$(SL_REFERENCES)\ProjectMER.dll" />
-    <Reference Include="NWAPIPermissionSystem" HintPath="$(SL_REFERENCES)\NWAPIPermissionSystem.dll" />
-    <Reference Include="AdvancedMERTools" HintPath="$(SL_REFERENCES)\AdvancedMERTools.dll" />
-    <Reference Include="AudioPlayerApi" HintPath="$(SL_REFERENCES)\AudioPlayerApi.dll" />
+    <Reference Include="AdvancedMERTools">
+      <HintPath>C:\Users\sakre\Downloads\AdvancedMERTools.dll</HintPath>
+    </Reference>
+    <Reference Include="Assembly-CSharp-firstpass">
+      <HintPath>..\..\Desktop\Lazy Cherry Studios\Plugins\Ссылки\Assembly-CSharp-firstpass.dll</HintPath>
+    </Reference>
+    <Reference Include="AudioPlayerApi">
+      <HintPath>C:\Users\sakre\Downloads\AudioPlayerApi.dll</HintPath>
+    </Reference>
+    <Reference Include="CedModV3">
+      <HintPath>C:\Users\sakre\Downloads\CedModV3.dll</HintPath>
+    </Reference>
+    <Reference Include="MapEditorReborn">
+      <HintPath>C:\Users\sakre\Downloads\MapEditorReborn.dll</HintPath>
+    </Reference>
+    <Reference Include="Mirror">
+      <HintPath>..\..\Desktop\Lazy Cherry Studios\Plugins\Ссылки\Mirror.dll</HintPath>
+    </Reference>
     <Reference Include="Assembly-CSharp-Publicized" HintPath="$(SL_REFERENCES)\Assembly-CSharp-Halloween-Publicized.dll" />
-    <Reference Include="Mirror" HintPath="$(SL_REFERENCES)\Mirror.dll" />
-    <Reference Include="System" />
+    <Reference Include="Pooling">
+      <HintPath>..\..\Desktop\Lazy Cherry Studios\Plugins\Ссылки\Pooling.dll</HintPath>
+    </Reference>
     <Reference Include="System.ComponentModel.DataAnnotations" HintPath="$(SL_REFERENCES)\System.ComponentModel.DataAnnotations.dll" />
-    <Reference Include="UnityEngine" HintPath="$(SL_REFERENCES)\UnityEngine.dll" />
-    <Reference Include="UnityEngine.AssetBundleModule" HintPath="$(SL_REFERENCES)\UnityEngine.AssetBundleModule.dll" />
-    <Reference Include="UnityEngine.ParticleSystem" HintPath="$(SL_REFERENCES)\UnityEngine.ParticleSystemModule.dll" />
-    <Reference Include="UnityEngine.CoreModule" HintPath="$(SL_REFERENCES)\UnityEngine.CoreModule.dll" />
-    <Reference Include="UnityEngine.UnityWebRequestModule" HintPath="$(SL_REFERENCES)\UnityEngine.UnityWebRequestModule.dll" />
-    <Reference Include="UnityEngine.AnimationModule" HintPath="$(SL_REFERENCES)\UnityEngine.AnimationModule.dll" />
-    <Reference Include="UnityEngine.PhysicsModule" HintPath="$(SL_REFERENCES)\UnityEngine.PhysicsModule.dll" />
-    <Reference Include="Assembly-CSharp-firstpass" HintPath="$(SL_REFERENCES)\Assembly-CSharp-firstpass.dll" />
-    <Reference Include="UnityEngine.AudioModule" HintPath="$(SL_REFERENCES)\UnityEngine.AudioModule.dll" />
     <Reference Include="CommandSystem.Core" HintPath="$(SL_REFERENCES)\CommandSystem.Core.dll" />
     <Reference Include="NorthwoodLib" HintPath="$(SL_REFERENCES)\NorthwoodLib.dll" />
-    <Reference Include="Pooling" HintPath="$(SL_REFERENCES)\Pooling.dll" />
-    <Reference Include="CommandSanitizationFixes" HintPath="$(SL_REFERENCES)\CommandSanitizationFixes.dll" />
+    <Reference Include="UnityEngine">
+      <HintPath>..\..\Desktop\Lazy Cherry Studios\Plugins\Ссылки\UnityEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.AccessibilityModule">
+      <HintPath>..\..\Desktop\Lazy Cherry Studios\Plugins\Ссылки\UnityEngine.AccessibilityModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.AIModule">
+      <HintPath>..\..\Desktop\Lazy Cherry Studios\Plugins\Ссылки\UnityEngine.AIModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.AndroidJNIModule">
+      <HintPath>..\..\Desktop\Lazy Cherry Studios\Plugins\Ссылки\UnityEngine.AndroidJNIModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.AnimationModule">
+      <HintPath>..\..\Desktop\Lazy Cherry Studios\Plugins\Ссылки\UnityEngine.AnimationModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.AssetBundleModule">
+      <HintPath>..\..\Desktop\Lazy Cherry Studios\Plugins\Ссылки\UnityEngine.AssetBundleModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.AudioModule">
+      <HintPath>..\..\Desktop\Lazy Cherry Studios\Plugins\Ссылки\UnityEngine.AudioModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.ClothModule">
+      <HintPath>..\..\Desktop\Lazy Cherry Studios\Plugins\Ссылки\UnityEngine.ClothModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.ClusterInputModule">
+      <HintPath>..\..\Desktop\Lazy Cherry Studios\Plugins\Ссылки\UnityEngine.ClusterInputModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.ClusterRendererModule">
+      <HintPath>..\..\Desktop\Lazy Cherry Studios\Plugins\Ссылки\UnityEngine.ClusterRendererModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>..\..\Desktop\Lazy Cherry Studios\Plugins\Ссылки\UnityEngine.CoreModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.CrashReportingModule">
+      <HintPath>..\..\Desktop\Lazy Cherry Studios\Plugins\Ссылки\UnityEngine.CrashReportingModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.DirectorModule">
+      <HintPath>..\..\Desktop\Lazy Cherry Studios\Plugins\Ссылки\UnityEngine.DirectorModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.DSPGraphModule">
+      <HintPath>..\..\Desktop\Lazy Cherry Studios\Plugins\Ссылки\UnityEngine.DSPGraphModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.GameCenterModule">
+      <HintPath>..\..\Desktop\Lazy Cherry Studios\Plugins\Ссылки\UnityEngine.GameCenterModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.GIModule">
+      <HintPath>..\..\Desktop\Lazy Cherry Studios\Plugins\Ссылки\UnityEngine.GIModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.GridModule">
+      <HintPath>..\..\Desktop\Lazy Cherry Studios\Plugins\Ссылки\UnityEngine.GridModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.HotReloadModule">
+      <HintPath>..\..\Desktop\Lazy Cherry Studios\Plugins\Ссылки\UnityEngine.HotReloadModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.ImageConversionModule">
+      <HintPath>..\..\Desktop\Lazy Cherry Studios\Plugins\Ссылки\UnityEngine.ImageConversionModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.IMGUIModule">
+      <HintPath>..\..\Desktop\Lazy Cherry Studios\Plugins\Ссылки\UnityEngine.IMGUIModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.InputLegacyModule">
+      <HintPath>..\..\Desktop\Lazy Cherry Studios\Plugins\Ссылки\UnityEngine.InputLegacyModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.InputModule">
+      <HintPath>..\..\Desktop\Lazy Cherry Studios\Plugins\Ссылки\UnityEngine.InputModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.JSONSerializeModule">
+      <HintPath>..\..\Desktop\Lazy Cherry Studios\Plugins\Ссылки\UnityEngine.JSONSerializeModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.LocalizationModule">
+      <HintPath>..\..\Desktop\Lazy Cherry Studios\Plugins\Ссылки\UnityEngine.LocalizationModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.ParticleSystemModule">
+      <HintPath>..\..\Desktop\Lazy Cherry Studios\Plugins\Ссылки\UnityEngine.ParticleSystemModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.PerformanceReportingModule">
+      <HintPath>..\..\Desktop\Lazy Cherry Studios\Plugins\Ссылки\UnityEngine.PerformanceReportingModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.Physics2DModule">
+      <HintPath>..\..\Desktop\Lazy Cherry Studios\Plugins\Ссылки\UnityEngine.Physics2DModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.PhysicsModule">
+      <HintPath>..\..\Desktop\Lazy Cherry Studios\Plugins\Ссылки\UnityEngine.PhysicsModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.ProfilerModule">
+      <HintPath>..\..\Desktop\Lazy Cherry Studios\Plugins\Ссылки\UnityEngine.ProfilerModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.RuntimeInitializeOnLoadManagerInitializerModule">
+      <HintPath>..\..\Desktop\Lazy Cherry Studios\Plugins\Ссылки\UnityEngine.RuntimeInitializeOnLoadManagerInitializerModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.ScreenCaptureModule">
+      <HintPath>..\..\Desktop\Lazy Cherry Studios\Plugins\Ссылки\UnityEngine.ScreenCaptureModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.SharedInternalsModule">
+      <HintPath>..\..\Desktop\Lazy Cherry Studios\Plugins\Ссылки\UnityEngine.SharedInternalsModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.SpriteMaskModule">
+      <HintPath>..\..\Desktop\Lazy Cherry Studios\Plugins\Ссылки\UnityEngine.SpriteMaskModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.SpriteShapeModule">
+      <HintPath>..\..\Desktop\Lazy Cherry Studios\Plugins\Ссылки\UnityEngine.SpriteShapeModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.StreamingModule">
+      <HintPath>..\..\Desktop\Lazy Cherry Studios\Plugins\Ссылки\UnityEngine.StreamingModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.SubstanceModule">
+      <HintPath>..\..\Desktop\Lazy Cherry Studios\Plugins\Ссылки\UnityEngine.SubstanceModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.SubsystemsModule">
+      <HintPath>..\..\Desktop\Lazy Cherry Studios\Plugins\Ссылки\UnityEngine.SubsystemsModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.TerrainModule">
+      <HintPath>..\..\Desktop\Lazy Cherry Studios\Plugins\Ссылки\UnityEngine.TerrainModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.TerrainPhysicsModule">
+      <HintPath>..\..\Desktop\Lazy Cherry Studios\Plugins\Ссылки\UnityEngine.TerrainPhysicsModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.TextCoreFontEngineModule">
+      <HintPath>..\..\Desktop\Lazy Cherry Studios\Plugins\Ссылки\UnityEngine.TextCoreFontEngineModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.TextCoreTextEngineModule">
+      <HintPath>..\..\Desktop\Lazy Cherry Studios\Plugins\Ссылки\UnityEngine.TextCoreTextEngineModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.TextRenderingModule">
+      <HintPath>..\..\Desktop\Lazy Cherry Studios\Plugins\Ссылки\UnityEngine.TextRenderingModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.TilemapModule">
+      <HintPath>..\..\Desktop\Lazy Cherry Studios\Plugins\Ссылки\UnityEngine.TilemapModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.TLSModule">
+      <HintPath>..\..\Desktop\Lazy Cherry Studios\Plugins\Ссылки\UnityEngine.TLSModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UI">
+      <HintPath>..\..\Desktop\Lazy Cherry Studios\Plugins\Ссылки\UnityEngine.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UIElementsModule">
+      <HintPath>..\..\Desktop\Lazy Cherry Studios\Plugins\Ссылки\UnityEngine.UIElementsModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UIElementsNativeModule">
+      <HintPath>..\..\Desktop\Lazy Cherry Studios\Plugins\Ссылки\UnityEngine.UIElementsNativeModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UIModule">
+      <HintPath>..\..\Desktop\Lazy Cherry Studios\Plugins\Ссылки\UnityEngine.UIModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UmbraModule">
+      <HintPath>..\..\Desktop\Lazy Cherry Studios\Plugins\Ссылки\UnityEngine.UmbraModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UNETModule">
+      <HintPath>..\..\Desktop\Lazy Cherry Studios\Plugins\Ссылки\UnityEngine.UNETModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UnityAnalyticsCommonModule">
+      <HintPath>..\..\Desktop\Lazy Cherry Studios\Plugins\Ссылки\UnityEngine.UnityAnalyticsCommonModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UnityAnalyticsModule">
+      <HintPath>..\..\Desktop\Lazy Cherry Studios\Plugins\Ссылки\UnityEngine.UnityAnalyticsModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UnityConnectModule">
+      <HintPath>..\..\Desktop\Lazy Cherry Studios\Plugins\Ссылки\UnityEngine.UnityConnectModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UnityCurlModule">
+      <HintPath>..\..\Desktop\Lazy Cherry Studios\Plugins\Ссылки\UnityEngine.UnityCurlModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UnityTestProtocolModule">
+      <HintPath>..\..\Desktop\Lazy Cherry Studios\Plugins\Ссылки\UnityEngine.UnityTestProtocolModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UnityWebRequestAssetBundleModule">
+      <HintPath>..\..\Desktop\Lazy Cherry Studios\Plugins\Ссылки\UnityEngine.UnityWebRequestAssetBundleModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UnityWebRequestAudioModule">
+      <HintPath>..\..\Desktop\Lazy Cherry Studios\Plugins\Ссылки\UnityEngine.UnityWebRequestAudioModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UnityWebRequestModule">
+      <HintPath>..\..\Desktop\Lazy Cherry Studios\Plugins\Ссылки\UnityEngine.UnityWebRequestModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UnityWebRequestTextureModule">
+      <HintPath>..\..\Desktop\Lazy Cherry Studios\Plugins\Ссылки\UnityEngine.UnityWebRequestTextureModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UnityWebRequestWWWModule">
+      <HintPath>..\..\Desktop\Lazy Cherry Studios\Plugins\Ссылки\UnityEngine.UnityWebRequestWWWModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.VehiclesModule">
+      <HintPath>..\..\Desktop\Lazy Cherry Studios\Plugins\Ссылки\UnityEngine.VehiclesModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.VFXModule">
+      <HintPath>..\..\Desktop\Lazy Cherry Studios\Plugins\Ссылки\UnityEngine.VFXModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.VideoModule">
+      <HintPath>..\..\Desktop\Lazy Cherry Studios\Plugins\Ссылки\UnityEngine.VideoModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.VirtualTexturingModule">
+      <HintPath>..\..\Desktop\Lazy Cherry Studios\Plugins\Ссылки\UnityEngine.VirtualTexturingModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.VRModule">
+      <HintPath>..\..\Desktop\Lazy Cherry Studios\Plugins\Ссылки\UnityEngine.VRModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.WindModule">
+      <HintPath>..\..\Desktop\Lazy Cherry Studios\Plugins\Ссылки\UnityEngine.WindModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.XRModule">
+      <HintPath>..\..\Desktop\Lazy Cherry Studios\Plugins\Ссылки\UnityEngine.XRModule.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="..\.gitignore">

@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using LabApi.Features.Wrappers;
-using ProjectMER.Features;
-using ProjectMER.Features.Serializable;
+using MapEditorReborn.API.Features;
+using MapEditorReborn.API.Features.Serializable;
 using UnityEngine;
 
 namespace AutoEvent.Games.MusicalChairs;
@@ -23,7 +23,7 @@ public class Functions
             float x = position.x + radius * Mathf.Cos(radians);
             float z = position.z + radius * Mathf.Sin(radians);
             Vector3 pos = new Vector3(x, parent.transform.position.y, z);
-            /* <<< 03.05.2025 Move from MER to ProjectMER
+            /* <<< 03.05.2025 Move from MER to MapEditorReborn
             PrimitiveObject obj = ObjectSpawner.SpawnPrimitive(new SerializablePrimitive()
             {
                 PrimitiveType = PrimitiveType.Cylinder,
@@ -35,7 +35,7 @@ public class Functions
             parent.transform.rotation, 
             parent.transform.localScale);
             */
-            var obj = ObjectSpawner.SpawnPrimitive(new SerializablePrimitive()
+            var obj = ObjectSpawner.SpawnPrimitive(new PrimitiveSerializable()
             {
                 PrimitiveType = PrimitiveType.Cylinder,
                 Position = parent.transform.position,

@@ -1,8 +1,8 @@
 ﻿using AdminToys;
 using System.Collections.Generic;
 using System.Linq;
-using ProjectMER.Features;
-using ProjectMER.Features.Serializable;
+using MapEditorReborn.API.Features;
+using MapEditorReborn.API.Features.Serializable;
 using UnityEngine;
 
 namespace AutoEvent.Games.Spleef;
@@ -60,7 +60,7 @@ internal class Methods
         {
             Vector3 position = plugin.MapInfo.Map.Position + new Vector3(platform.PositionX, platform.PositionZ, platform.PositionY);
             PrimitiveObjectToy primaryObjectToy = primary.GetComponent<PrimitiveObjectToy>();
-            /* <<< 03.05.2025 Move from MER to ProjectMER
+            /* <<< 03.05.2025 Move from MER to MapEditorReborn
             PrimitiveObject newPlatform = ObjectSpawner.SpawnPrimitive(new PrimitiveSerializable()
             {
                 PrimitiveType = primaryObjectToy.PrimitiveType,
@@ -71,7 +71,7 @@ internal class Methods
             Quaternion.identity,
             new Vector3(platform.X, platform.Z, platform.Y));
             */
-            var newPlatform = ObjectSpawner.SpawnPrimitive(new SerializablePrimitive()
+            var newPlatform = ObjectSpawner.SpawnPrimitive(new PrimitiveSerializable()
             {
                 PrimitiveType = primaryObjectToy.PrimitiveType,
                 Position = position,
