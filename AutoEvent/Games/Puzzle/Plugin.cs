@@ -8,6 +8,7 @@ using AdminToys;
 using AutoEvent.Interfaces;
 using Exiled.API.Features;
 using Random = UnityEngine.Random;
+using MapEditorReborn.API.Features.Objects;
 
 namespace AutoEvent.Games.Puzzle;
 public class Plugin : Event<Config, Translation>, IEventSound, IEventMap
@@ -163,12 +164,12 @@ public class Plugin : Event<Config, Translation>, IEventSound, IEventMap
     {
         foreach (var platform in _platforms)
         {
-            platform.GetComponent<PrimitiveObjectToy>().NetworkMaterialColor = new Color(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f), 1f);
+            platform.GetComponent<PrimitiveObject>().Primitive.Color = new Color(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f), 1f);
         }
         
         foreach (GameObject colorIndicator in _colorIndicators)
         {
-            colorIndicator.GetComponent<PrimitiveObjectToy>().NetworkMaterialColor = new Color(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f), 1f);
+            colorIndicator.GetComponent<PrimitiveObject>().Primitive.Color = new Color(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f), 1f);
         }
 
         if (_countdown.TotalSeconds > 0)
@@ -181,11 +182,11 @@ public class Plugin : Event<Config, Translation>, IEventSound, IEventMap
             {
                 if (_fallingPlatforms.Contains(platform))
                 {
-                    platform.GetComponent<PrimitiveObjectToy>().NetworkMaterialColor = Color.magenta;
+                    platform.GetComponent<PrimitiveObject>().Primitive.Color = Color.magenta;
                 }
                 else
                 {
-                    platform.GetComponent<PrimitiveObjectToy>().NetworkMaterialColor = Color.green;
+                    platform.GetComponent<PrimitiveObject>().Primitive.Color = Color.green;
                 }
             }
         }
@@ -193,7 +194,7 @@ public class Plugin : Event<Config, Translation>, IEventSound, IEventMap
         {
             foreach (var platform in _platforms)
             {
-                platform.GetComponent<PrimitiveObjectToy>().NetworkMaterialColor = new Color(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f), 1f);
+                platform.GetComponent<PrimitiveObject>().Primitive.Color = new Color(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f), 1f);
             }
         }
 

@@ -472,7 +472,7 @@ namespace AutoEvent.Interfaces
                 catch (Exception e)
                 {
                     DebugLogger.LogDebug($"Caught an exception at Event.ProcessFrame().", LogLevel.Warn, true);
-                    DebugLogger.LogDebug($"{e}", LogLevel.Debug);
+                    DebugLogger.LogDebug($"{e}", LogLevel.Error, true);
                 }
 
                 EventTime += TimeSpan.FromSeconds(FrameDelayInSeconds);

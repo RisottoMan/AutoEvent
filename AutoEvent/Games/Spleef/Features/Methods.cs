@@ -1,9 +1,10 @@
 ﻿using AdminToys;
 using System.Collections.Generic;
 using System.Linq;
-using ProjectMER.Features;
-using ProjectMER.Features.Serializable;
+using MapEditorReborn.API.Features;
+using MapEditorReborn.API.Features.Serializable;
 using UnityEngine;
+using MapEditorReborn.API.Features.Objects;
 
 namespace AutoEvent.Games.Spleef;
 internal class Methods
@@ -59,26 +60,16 @@ internal class Methods
         foreach (SpleefPlatform platform in platforms)
         {
             Vector3 position = plugin.MapInfo.Map.Position + new Vector3(platform.PositionX, platform.PositionZ, platform.PositionY);
-            PrimitiveObjectToy primaryObjectToy = primary.GetComponent<PrimitiveObjectToy>();
-            /* <<< 03.05.2025 Move from MER to ProjectMER
+            PrimitiveObject primaryObject = primary.GetComponent<PrimitiveObject>();
             PrimitiveObject newPlatform = ObjectSpawner.SpawnPrimitive(new PrimitiveSerializable()
             {
-                PrimitiveType = primaryObjectToy.PrimitiveType,
+                PrimitiveType = primaryObject.Primitive.Type,
                 Position = position,
                 Color = platform.Color.ToHex()
             },
             position,
             Quaternion.identity,
             new Vector3(platform.X, platform.Z, platform.Y));
-            */
-            var newPlatform = ObjectSpawner.SpawnPrimitive(new SerializablePrimitive()
-            {
-                PrimitiveType = primaryObjectToy.PrimitiveType,
-                Position = position,
-                Scale = new Vector3(platform.X, platform.Z, platform.Y),
-                Color = platform.Color.ToHex(),
-            });
-            // >>>
 
             newPlatform.gameObject.AddComponent<FallPlatformComponent>();
             platformes.Add(newPlatform.gameObject);

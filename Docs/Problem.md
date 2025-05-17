@@ -1,30 +1,30 @@
 # Problems :trollface: - *How can I fix my problem?*
 ## 1) You do not have permission to use this command:
 ![image](https://github.com/user-attachments/assets/b96bbf64-e981-4f9a-8200-eb1aab1b8014)
-- Read here how to set permissions for your role: [(Press me)](https://github.com/RisottoMan/AutoEvent/blob/main/Docs/Installation.md)
+- Read here how to set permissions for your role: [(Press me)](https://github.com/RisottoMan/AutoEvent/blob/beta14.1-mer/Docs/Installation.md)
 ---
 ## 2) I only have one mini-game. What should I do?
 ![image](https://github.com/user-attachments/assets/c40ac4d8-7753-4627-bf39-d514d53c3b98)
-- You haven't installed ProjectMER, so you have mini-games that won't need the maps.
-- Install the MapEditorReborn plugin so that the plugin can load maps: [(Github ProjectMER)](https://github.com/Michal78900/ProjectMER/releases/latest)
+- You haven't installed MapEditorReborn, so you have mini-games that won't need the maps.
+- Install the MapEditorReborn plugin so that the plugin can load maps: [(Github MapEditorReborn)](https://github.com/Michal78900/MapEditorReborn/releases/latest)
 
 ![image](https://github.com/user-attachments/assets/0ed636a3-9d08-4034-bc28-150a6646186b)
 
-- I do not know how to install ProjectMER. What should I do?
+- I do not know how to install MapEditorReborn. What should I do?
 
 ![image](https://github.com/user-attachments/assets/6f292d36-b87c-4ab6-aa49-899e4480ea2b)
 
 ---
-## 3) ProjectMER was not detected. AutoEvent will not be loaded until you install ProjectMER.
+## 3) MapEditorReborn was not detected. AutoEvent will not be loaded until you install MapEditorReborn.
 - This is the same problem as in point 2. 
-- Install ProjectMER so that the plugin can load maps: [(Github ProjectMER)](https://github.com/Michal78900/ProjectMER/releases/latest)
+- Install MapEditorReborn so that the plugin can load maps: [(Github MapEditorReborn)](https://github.com/Michal78900/MapEditorReborn/releases/latest)
 
 ![image](https://github.com/user-attachments/assets/b0355d75-31bc-43b8-980d-11d39e8bcc1c)
 ---
-## 4) You have installed the old version of 'ProjectMER' and cannot run this mini-game
+## 4) You have installed the old version of 'MapEditorReborn' and cannot run this mini-game
 ![image](https://github.com/user-attachments/assets/e66573f4-1899-43a7-9724-01d3c9cd97ec)
-- It says what it means. You have an old version of ProjectMER. There are new features or a new version of SCP has been released. Therefore, errors appear.
-- Install the new version of ProjectMER so that the plugin can load schematics: [(Github ProjectMER)](https://github.com/Michal78900/ProjectMER/releases/latest)
+- It says what it means. You have an old version of MapEditorReborn. There are new features or a new version of SCP has been released. Therefore, errors appear.
+- Install the new version of MapEditorReborn so that the plugin can load schematics: [(Github MapEditorReborn)](https://github.com/Michal78900/MapEditorReborn/releases/latest)
 
 ![image](https://github.com/user-attachments/assets/b0355d75-31bc-43b8-980d-11d39e8bcc1c)
 - If the problem persists, download the latest release (or testing release) from [(Discord MER)](https://discord.gg/JwAfeSd79u): 
