@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using MEC;
 using UnityEngine;
@@ -27,6 +26,7 @@ namespace AutoEvent.Games.Light
         private GameObject _wall;
         private GameObject _doll;
         private GameObject _redLine;
+        private Animator _animator;
         private float _countdown;
         private EventState _eventState;
         internal Dictionary<Player, float> PushCooldown;
@@ -61,16 +61,13 @@ namespace AutoEvent.Games.Light
                     case "Spawnpoint": spawnpoints.Add(gameObject); break;
                     case "Wall": _wall = gameObject; break;
                     case "RedLine": _redLine = gameObject; break;
-                    case "Doll": _doll = gameObject; break;
+                    case "Doll":
+                    {
+                        _doll = gameObject;
+                        _animator = _doll.GetComponent<Animator>();
+                        break;
+                    }
                 }
-            }
-
-            if (_redLine == null || _doll == null)
-            {
-                Log.Error("Required objects not found: " +
-                          $"{(_redLine == null ? "RedLine " : "")}" +
-                          $"{(_doll == null ? "Doll" : "")}");
-                throw new InvalidOperationException("Map is missing required objects. Aborting event start.");
             }
 
             foreach (Player player in Player.List)
@@ -114,9 +111,6 @@ namespace AutoEvent.Games.Light
 
         protected override void ProcessFrame()
         {
-            if (_redLine == null || _doll == null)
-                return;
-
             string text = string.Empty;
             switch (_eventState)
             {
@@ -153,6 +147,7 @@ namespace AutoEvent.Games.Light
                 return;
 
             Extensions.PlayAudio("RedLight.ogg", 10, false);
+            _animator?.Play("RedLightAnimation");
             _countdown = Random.Range(4, 8);
             _eventState++;
         }
@@ -160,7 +155,10 @@ namespace AutoEvent.Games.Light
         protected void UpdateRotateState(ref string text)
         {
             text = Translation.RedLight;
-
+            
+            if (_animator != null && !_animator.GetCurrentAnimatorStateInfo(0).IsName("PauseAnimation"))
+                return;
+            
             _playerRotation = new Dictionary<Player, Quaternion>();
             foreach (Player player in Player.List)
             {
@@ -202,6 +200,7 @@ namespace AutoEvent.Games.Light
                 return;
 
             Extensions.PlayAudio("GreenLight.ogg", 10, false);
+            _animator?.Play("GreenLightAnimation");
             _countdown = Random.Range(1.5f, 4f);
             _eventState++;
         }

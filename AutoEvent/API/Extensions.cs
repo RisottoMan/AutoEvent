@@ -15,6 +15,9 @@ using Exiled.API.Features.Items;
 using InventorySystem.Items.Jailbird;
 using PlayerRoles.Ragdolls;
 using MapEditorReborn.API.Features;
+using MapEditorReborn.API.Features.Objects;
+using MapEditorReborn.API.Features.Serializable;
+using Mirror;
 using Object = UnityEngine.Object;
 
 namespace AutoEvent;
@@ -275,6 +278,23 @@ public static class Extensions
         return null;
     }
 
+    public static GameObject CreatePlatformByParent(GameObject parent, Vector3 position)
+    {
+        PrimitiveObject prim = parent.GetComponent<PrimitiveObject>();
+        PrimitiveObject obj = ObjectSpawner.SpawnPrimitive(new PrimitiveSerializable()
+        {
+            PrimitiveType = prim.Primitive.Type,
+            Position = position,
+            Color = prim.Primitive.Color.ToHex(),
+        },
+        position,
+        parent.transform.rotation,
+        parent.transform.localScale);
+
+        NetworkServer.Spawn(obj.gameObject);
+        return obj.gameObject;
+    }
+    
     public static void UnLoadMap(MapObject mapObject)
     {
         mapObject.Destroy();

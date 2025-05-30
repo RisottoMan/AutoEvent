@@ -305,7 +305,7 @@ Puzzle:
     Конец игры.
   winner: |-
     <b>{name}</b>
-    color=red>Победитель: {Winner}</color>
+    <color=red>Победитель: {winner}</color>
     Конец игры.
   died: '<color=red>Сгорел в лаве</color>'
   name: 'Пазл'

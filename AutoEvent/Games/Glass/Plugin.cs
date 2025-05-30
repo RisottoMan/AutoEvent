@@ -113,8 +113,11 @@ public class Plugin : Event<Config, Translation>, IEventSound, IEventMap
                 DebugLogger.LogDebug($"{e}");
             }
             
-            GameObject newPlatform = CreatePlatformByParent(platform, platform.transform.position + delta * (i + 1));
-            GameObject newPlatform1 = CreatePlatformByParent(platform1, platform1.transform.position + delta * (i + 1));
+            // Creating a platform by copying the parent
+            GameObject newPlatform = Extensions.CreatePlatformByParent(platform, platform.transform.position + delta * (i + 1));
+            _platforms.Add(newPlatform);
+            GameObject newPlatform1 = Extensions.CreatePlatformByParent(platform1, platform1.transform.position + delta * (i + 1)); 
+            _platforms.Add(newPlatform1);
             
             if (data.LeftSideIsDangerous)
             {
@@ -132,30 +135,6 @@ public class Plugin : Event<Config, Translation>, IEventSound, IEventMap
             player.GiveLoadout(Config.Loadouts);
             player.Position = _spawnpoints.transform.position;
         }
-    }
-
-    protected GameObject CreatePlatformByParent(GameObject parent, Vector3 position)
-    {
-        PrimitiveObject prim = parent.GetComponent<PrimitiveObject>();
-        PrimitiveObject obj = ObjectSpawner.SpawnPrimitive(new PrimitiveSerializable()
-
-        {
-
-            PrimitiveType = prim.Primitive.Type,
-
-            Position = position,
-
-            Color = prim.Primitive.Color.ToHex()
-
-        },
-
-        position,
-        parent.transform.rotation,
-        parent.transform.localScale);
-
-        NetworkServer.Spawn(obj.gameObject);
-        _platforms.Add(obj.gameObject);
-        return obj.gameObject;
     }
 
     protected override IEnumerator<float> BroadcastStartCountdown()
