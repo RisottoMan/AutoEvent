@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel;
 using YamlDotNet.Serialization;
 
+
 namespace AutoEvent.Interfaces;
 public class SoundInfo
 {

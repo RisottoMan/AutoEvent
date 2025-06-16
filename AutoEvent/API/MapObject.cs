@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using ProjectMER.Features.Objects;
+using MapEditorReborn.API.Features.Objects;
 using UnityEngine;
 
 namespace AutoEvent.API;

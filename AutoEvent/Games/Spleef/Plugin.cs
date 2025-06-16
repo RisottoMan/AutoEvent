@@ -17,7 +17,6 @@ public class Plugin : Event<Config, Translation>, IEventMap
     public override string Author { get; set; } = "Redforce04 (created logic code) && RisottoMan (modified map)";
     public override string CommandName { get; set; } = "spleef";
     protected override FriendlyFireSettings ForceEnableFriendlyFire { get; set; } = FriendlyFireSettings.Disable;
-    public EventHandler _eventHandler { get; set; }
     public MapInfo MapInfo { get; set; } = new()
     { 
         MapName = "Spleef",
@@ -28,9 +27,11 @@ public class Plugin : Event<Config, Translation>, IEventMap
         SoundName = "Fall_Guys_Winter_Fallympics.ogg",
         Volume = 7
     };
+
+    private EventHandler _eventHandler;
     private TimeSpan _countdown;
-    private List<GameObject> _platforms;
-    List<Loadout> _loadouts;
+    private List<Loadout> _loadouts;
+    
     protected override void RegisterEvents()
     {
         _eventHandler = new EventHandler(this);
@@ -46,13 +47,21 @@ public class Plugin : Event<Config, Translation>, IEventMap
     protected override void OnStart()
     {
         _countdown = TimeSpan.FromSeconds(Config.RoundDurationInSeconds);
-        _platforms = new();
         _loadouts = new List<Loadout>();
+        GameObject spawnpoint = new GameObject();
 
         GameObject lava = MapInfo.Map.AttachedBlocks.First(x => x.name == "Lava");
         lava.AddComponent<LavaComponent>().StartComponent(this);
-        _platforms = Methods.GeneratePlatforms(this);
 
+        foreach (GameObject gameObject in MapInfo.Map.AttachedBlocks)
+        {
+            switch(gameObject.name)
+            {
+                case "Spawnpoint": spawnpoint = gameObject; break;
+                case "Platform": gameObject.AddComponent<FallPlatformComponent>(); break; //todo
+            }
+        }
+        
         int count = Player.List.Count();
         switch (count)
         {
@@ -64,7 +73,7 @@ public class Plugin : Event<Config, Translation>, IEventMap
         foreach (Player ply in Player.List)
         {
             ply.GiveLoadout(_loadouts, LoadoutFlags.IgnoreWeapons);
-            ply.Position = MapInfo.Position + new Vector3(0, Config.LayerCount * 3f + 5, 0);
+            ply.Position = spawnpoint.transform.position;
         }
     }
 
@@ -101,7 +110,7 @@ public class Plugin : Event<Config, Translation>, IEventMap
 
     protected override void OnFinished()
     {
-        string text = string.Empty;
+        string text;
         int count = Player.List.Count(x => x.IsAlive);
 
         if (count > 1)
@@ -118,13 +127,5 @@ public class Plugin : Event<Config, Translation>, IEventMap
         }
 
         Extensions.Broadcast(text, 10);
-    }
-
-    protected override void OnCleanup()
-    {
-        foreach (var platform in _platforms)
-        {
-            GameObject.Destroy(platform);
-        }
     }
 }

@@ -8,10 +8,12 @@ using AutoEvent.Interfaces;
 using Mirror;
 using AdminToys;
 using Exiled.API.Features;
-using ProjectMER.Features;
-using ProjectMER.Features.Serializable;
+using MapEditorReborn.API.Features;
+using MapEditorReborn.API.Features.Objects;
+using MapEditorReborn.API.Features.Serializable;
 using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
+using MapEditorReborn.API.Features.Objects;
 
 namespace AutoEvent.Games.Glass;
 public class Plugin : Event<Config, Translation>, IEventSound, IEventMap
@@ -111,8 +113,11 @@ public class Plugin : Event<Config, Translation>, IEventSound, IEventMap
                 DebugLogger.LogDebug($"{e}");
             }
             
-            GameObject newPlatform = CreatePlatformByParent(platform, platform.transform.position + delta * (i + 1));
-            GameObject newPlatform1 = CreatePlatformByParent(platform1, platform1.transform.position + delta * (i + 1));
+            // Creating a platform by copying the parent
+            GameObject newPlatform = Extensions.CreatePlatformByParent(platform, platform.transform.position + delta * (i + 1));
+            _platforms.Add(newPlatform);
+            GameObject newPlatform1 = Extensions.CreatePlatformByParent(platform1, platform1.transform.position + delta * (i + 1)); 
+            _platforms.Add(newPlatform1);
             
             if (data.LeftSideIsDangerous)
             {
@@ -130,35 +135,6 @@ public class Plugin : Event<Config, Translation>, IEventSound, IEventMap
             player.GiveLoadout(Config.Loadouts);
             player.Position = _spawnpoints.transform.position;
         }
-    }
-
-    protected GameObject CreatePlatformByParent(GameObject parent, Vector3 position)
-    {
-        PrimitiveObjectToy prim = parent.GetComponent<PrimitiveObjectToy>();
-        /* <<< 03.05.2025 Move from MER to ProjectMER
-        PrimitiveObject obj = ObjectSpawner.SpawnPrimitive(new PrimitiveSerializable()
-        {
-            PrimitiveType = prim.PrimitiveType,
-            Position = position,
-            Color = prim.MaterialColor.ToHex()
-        },
-        position,
-        parent.transform.rotation,
-        parent.transform.localScale);
-        */
-        var obj = ObjectSpawner.SpawnPrimitive(new SerializablePrimitive()
-        {
-            PrimitiveType = prim.PrimitiveType,
-            Position = position,
-            Scale = parent.transform.localScale,
-            Color = prim.MaterialColor.ToHex(),
-        });
-        obj.NetworkIsStatic = false;
-        // >>>
-
-        NetworkServer.Spawn(obj.gameObject);
-        _platforms.Add(obj.gameObject);
-        return obj.gameObject;
     }
 
     protected override IEnumerator<float> BroadcastStartCountdown()

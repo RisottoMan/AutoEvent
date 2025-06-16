@@ -50,6 +50,11 @@ internal class List : ICommand
                 builder.AppendLine($"{ev.Name} [{ev.CommandName}]: {ev.Description}");
         }
 
+        if (!AutoEvent.EventManager.IsMerLoaded)
+        {
+            builder.AppendLine("\n<i><color=red>MapEditorReborn is not loaded. There are only those mini-games that don't run maps.</color></i>");
+        }
+        
         if (!isConsole)
         {
             builder.AppendLine("\nTo run an event, use the [<i><color=yellow>CommandName</color></i>] like following:");

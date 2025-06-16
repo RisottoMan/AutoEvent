@@ -1,10 +1,10 @@
 ﻿using Mirror;
 using System.Collections.Generic;
 using System.Linq;
-using LabApi.Features.Wrappers;
-using ProjectMER.Features;
-using ProjectMER.Features.Serializable;
+using MapEditorReborn.API.Features;
+using MapEditorReborn.API.Features.Serializable;
 using UnityEngine;
+using MapEditorReborn.API.Features.Objects;
 
 namespace AutoEvent.Games.MusicalChairs;
 public class Functions
@@ -23,28 +23,10 @@ public class Functions
             float x = position.x + radius * Mathf.Cos(radians);
             float z = position.z + radius * Mathf.Sin(radians);
             Vector3 pos = new Vector3(x, parent.transform.position.y, z);
-            /* <<< 03.05.2025 Move from MER to ProjectMER
-            PrimitiveObject obj = ObjectSpawner.SpawnPrimitive(new SerializablePrimitive()
-            {
-                PrimitiveType = PrimitiveType.Cylinder,
-                Position = parent.transform.position,
-                Color = "yellow",
-                Static = false
-            },
-            pos, 
-            parent.transform.rotation, 
-            parent.transform.localScale);
-            */
-            var obj = ObjectSpawner.SpawnPrimitive(new SerializablePrimitive()
-            {
-                PrimitiveType = PrimitiveType.Cylinder,
-                Position = parent.transform.position,
-                Scale =parent.transform.localScale,
-                Color = "yellow",
-            });
-            // >>>
-            NetworkServer.Spawn(obj.gameObject);
-            platformes.Add(obj.gameObject);
+            
+            // Creating a platform by copying the parent
+            GameObject platform = Extensions.CreatePlatformByParent(parent, pos);
+            platformes.Add(platform);
         }
 
         return platformes;
@@ -75,7 +57,7 @@ public class Functions
             float z = position.z + radius * Mathf.Sin(radians);
             Vector3 pos = new Vector3(x, platforms[i].transform.position.y, z);
 
-            if (platforms[i].TryGetComponent(out PrimitiveObjectToy primitiveObject))
+            if (platforms[i].TryGetComponent(out PrimitiveObject primitiveObject))
             {
                 primitiveObject.Position = pos;
             }

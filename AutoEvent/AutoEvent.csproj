@@ -44,7 +44,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="ExMod.Exiled" Version="9.6.0-beta8" />
+    <PackageReference Include="ExMod.Exiled" Version="9.6.0" />
     <PackageReference Include="Fody" Version="6.8.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -53,10 +53,9 @@
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="NVorbis" Version="0.10.5" />
   </ItemGroup>
-  <ItemGroup>
+<ItemGroup>
     <Reference Include="CedModV3" HintPath="$(SL_REFERENCES)\CedModV3.dll" />
-    <Reference Include="ProjectMER" HintPath="$(SL_REFERENCES)\ProjectMER.dll" />
-    <Reference Include="NWAPIPermissionSystem" HintPath="$(SL_REFERENCES)\NWAPIPermissionSystem.dll" />
+    <Reference Include="MapEditorReborn" HintPath="$(SL_REFERENCES)\MapEditorReborn.dll" />
     <Reference Include="AdvancedMERTools" HintPath="$(SL_REFERENCES)\AdvancedMERTools.dll" />
     <Reference Include="AudioPlayerApi" HintPath="$(SL_REFERENCES)\AudioPlayerApi.dll" />
     <Reference Include="Assembly-CSharp-Publicized" HintPath="$(SL_REFERENCES)\Assembly-CSharp-Halloween-Publicized.dll" />
@@ -75,7 +74,6 @@
     <Reference Include="CommandSystem.Core" HintPath="$(SL_REFERENCES)\CommandSystem.Core.dll" />
     <Reference Include="NorthwoodLib" HintPath="$(SL_REFERENCES)\NorthwoodLib.dll" />
     <Reference Include="Pooling" HintPath="$(SL_REFERENCES)\Pooling.dll" />
-    <Reference Include="CommandSanitizationFixes" HintPath="$(SL_REFERENCES)\CommandSanitizationFixes.dll" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="..\.gitignore">

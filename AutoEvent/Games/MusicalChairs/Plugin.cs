@@ -7,6 +7,7 @@ using AutoEvent.Interfaces;
 using AdminToys;
 using Exiled.API.Features;
 using Object = UnityEngine.Object;
+using MapEditorReborn.API.Features.Objects;
 
 namespace AutoEvent.Games.MusicalChairs;
 public class Plugin : Event<Config, Translation>, IEventSound, IEventMap
@@ -65,7 +66,7 @@ public class Plugin : Event<Config, Translation>, IEventSound, IEventMap
             }
         }
 
-        int count = Player.List.Count > 40 ? 40 : Player.List.Count - 1;
+        int count = Player.List.Count > 40 ? 40 : Player.List.Count - 0;
         Platforms = Functions.GeneratePlatforms(count, _parentPlatform, MapInfo.Position);
         
         foreach (Player player in Player.List)
@@ -171,7 +172,7 @@ public class Plugin : Event<Config, Translation>, IEventSound, IEventMap
                 if (!Platforms.Contains(hit.collider.gameObject))
                     continue;
 
-                if (hit.collider.GetComponent<PrimitiveObjectToy>())
+                if (hit.collider.GetComponent<PrimitiveObject>())
                 {
                     Extensions.GrenadeSpawn(player.Position, 0.1f, 0.1f, 0);
                     player.Kill(Translation.TouchAhead);
@@ -184,7 +185,7 @@ public class Plugin : Event<Config, Translation>, IEventSound, IEventMap
 
         foreach (var platform in Platforms)
         {
-            platform.GetComponent<PrimitiveObjectToy>().NetworkMaterialColor = Color.black;
+            platform.GetComponent<PrimitiveObject>().Primitive.Color = Color.black;
         }
 
         Extensions.PauseAudio(SoundInfo.AudioPlayer);
@@ -217,11 +218,11 @@ public class Plugin : Event<Config, Translation>, IEventSound, IEventMap
                 if (!Platforms.Contains(hit.collider.gameObject))
                     continue;
 
-                if (hit.collider.TryGetComponent(out PrimitiveObjectToy objectToy))
+                if (hit.collider.TryGetComponent(out PrimitiveObject objectToy))
                 {
-                    if (objectToy.NetworkMaterialColor == Color.black)
+                    if (objectToy.Primitive.Color == Color.black)
                     {
-                        objectToy.NetworkMaterialColor = Color.red;
+                        objectToy.Primitive.Color = Color.red;
                         playerClass.IsStandUpPlatform = true;
                     }
                 }
@@ -258,7 +259,7 @@ public class Plugin : Event<Config, Translation>, IEventSound, IEventMap
 
         foreach (var platform in Platforms)
         {
-            platform.GetComponent<PrimitiveObjectToy>().NetworkMaterialColor = Color.yellow;
+            platform.GetComponent<PrimitiveObject>().Primitive.Color = Color.yellow;
         }
         
         Extensions.ResumeAudio(SoundInfo.AudioPlayer);
