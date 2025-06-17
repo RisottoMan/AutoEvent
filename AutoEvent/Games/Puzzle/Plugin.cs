@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using MEC;
-using PlayerRoles;
-using UnityEngine;
 using AdminToys;
+using MEC;
+using UnityEngine;
 using AutoEvent.Interfaces;
 using Exiled.API.Features;
 using Random = UnityEngine.Random;
-using MapEditorReborn.API.Features.Objects;
 
 namespace AutoEvent.Games.Puzzle;
 public class Plugin : Event<Config, Translation>, IEventSound, IEventMap
@@ -164,12 +162,12 @@ public class Plugin : Event<Config, Translation>, IEventSound, IEventMap
     {
         foreach (var platform in _platforms)
         {
-            platform.GetComponent<PrimitiveObject>().Primitive.Color = new Color(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f), 1f);
+            platform.GetComponent<PrimitiveObjectToy>().NetworkMaterialColor = new Color(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f), 1f);
         }
         
         foreach (GameObject colorIndicator in _colorIndicators)
         {
-            colorIndicator.GetComponent<PrimitiveObject>().Primitive.Color = new Color(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f), 1f);
+            colorIndicator.GetComponent<PrimitiveObjectToy>().NetworkMaterialColor = new Color(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f), 1f);
         }
 
         if (_countdown.TotalSeconds > 0)
@@ -182,11 +180,11 @@ public class Plugin : Event<Config, Translation>, IEventSound, IEventMap
             {
                 if (_fallingPlatforms.Contains(platform))
                 {
-                    platform.GetComponent<PrimitiveObject>().Primitive.Color = Color.magenta;
+                    platform.GetComponent<PrimitiveObjectToy>().NetworkMaterialColor = Color.magenta;
                 }
                 else
                 {
-                    platform.GetComponent<PrimitiveObject>().Primitive.Color = Color.green;
+                    platform.GetComponent<PrimitiveObjectToy>().NetworkMaterialColor = Color.green;
                 }
             }
         }
@@ -194,7 +192,7 @@ public class Plugin : Event<Config, Translation>, IEventSound, IEventMap
         {
             foreach (var platform in _platforms)
             {
-                platform.GetComponent<PrimitiveObject>().Primitive.Color = new Color(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f), 1f);
+                platform.GetComponent<PrimitiveObjectToy>().NetworkMaterialColor = new Color(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f), 1f);
             }
         }
 

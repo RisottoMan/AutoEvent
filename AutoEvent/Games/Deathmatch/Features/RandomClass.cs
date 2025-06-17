@@ -2,8 +2,6 @@
 using AutoEvent.API;
 using UnityEngine;
 
-using MapEditorReborn.API.Features.Objects;
-
 namespace AutoEvent.Games.Deathmatch
 {
     internal class RandomClass

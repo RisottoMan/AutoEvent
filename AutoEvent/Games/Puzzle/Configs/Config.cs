@@ -38,7 +38,7 @@ public class Config : EventConfig
     public DifficultyItem NonFallingPlatforms { get; set; } = new DifficultyItem(5, 1);
 
     [Description("Uses random platform colors instead of green and magenta.")]
-    public bool UseRandomPlatformColors { get; set; } = false;
+    public bool UseRandomPlatformColors { get; set; } = true;
     
     [Description("A list of loadouts for team NTF")]
     public List<Loadout> Loadout { get; set; } = new()

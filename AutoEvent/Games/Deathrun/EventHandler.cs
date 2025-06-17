@@ -1,4 +1,5 @@
 using Exiled.Events.EventArgs.Player;
+using GameCore;
 using UnityEngine;
 
 namespace AutoEvent.Games.Deathrun;

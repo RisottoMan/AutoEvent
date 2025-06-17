@@ -5,15 +5,9 @@ using MEC;
 using UnityEngine;
 using AutoEvent.Games.Glass.Features;
 using AutoEvent.Interfaces;
-using Mirror;
-using AdminToys;
 using Exiled.API.Features;
-using MapEditorReborn.API.Features;
-using MapEditorReborn.API.Features.Objects;
-using MapEditorReborn.API.Features.Serializable;
 using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
-using MapEditorReborn.API.Features.Objects;
 
 namespace AutoEvent.Games.Glass;
 public class Plugin : Event<Config, Translation>, IEventSound, IEventMap

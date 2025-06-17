@@ -15,9 +15,9 @@ public class EventManager
     public void RegisterInternalEvents()
     {
         _isMerLoaded = true;
-        if (!AppDomain.CurrentDomain.GetAssemblies().Any(x => x.FullName.ToLower().Contains("mapeditorreborn")))
+        if (!AppDomain.CurrentDomain.GetAssemblies().Any(x => x.FullName.ToLower().Contains("projectmer")))
         {
-            DebugLogger.LogDebug("MapEditorReborn was not detected. The mini-games may not be available until you install MapEditorReborn.", LogLevel.Error);
+            DebugLogger.LogDebug("ProjectMER was not detected. The mini-games may not be available until you install ProjectMER.", LogLevel.Error);
             _isMerLoaded = false;
         }
 

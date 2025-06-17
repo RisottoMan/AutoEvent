@@ -1,12 +1,10 @@
 ﻿using MEC;
-using PlayerRoles;
 using System.Collections.Generic;
 using System.Linq;
 using AdminToys;
 using UnityEngine;
 using AutoEvent.Interfaces;
 using Exiled.API.Features;
-using MapEditorReborn.API.Features.Objects;
 
 namespace AutoEvent.Games.FallDown;
 public class Plugin : Event<Config, Translation>, IEventSound, IEventMap
@@ -64,7 +62,7 @@ public class Plugin : Event<Config, Translation>, IEventSound, IEventMap
         {
             foreach (var platform in _platforms)
             {
-                platform.GetComponent<PrimitiveObject>().Primitive.Color = Color.white;
+                platform.GetComponent<PrimitiveObjectToy>().NetworkMaterialColor = Color.white;
             }
         }
     }
@@ -95,7 +93,7 @@ public class Plugin : Event<Config, Translation>, IEventSound, IEventMap
         }
             
         var platform = _platforms.RandomItem();
-        platform.GetComponent<PrimitiveObject>().Primitive.Color = Color.red;
+        platform.GetComponent<PrimitiveObjectToy>().NetworkMaterialColor = Color.red;
         if (Config.PlatformsHaveColorWarning)
         {
             Timing.CallDelayed(Config.WarningDelayInSeconds.GetValue(_platformId, 169, 0, 3), () =>

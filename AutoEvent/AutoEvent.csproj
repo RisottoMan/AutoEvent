@@ -55,7 +55,7 @@
   </ItemGroup>
 <ItemGroup>
     <Reference Include="CedModV3" HintPath="$(SL_REFERENCES)\CedModV3.dll" />
-    <Reference Include="MapEditorReborn" HintPath="$(SL_REFERENCES)\MapEditorReborn.dll" />
+    <Reference Include="ProjectMER" HintPath="$(SL_REFERENCES)\ProjectMER.dll" />
     <Reference Include="AdvancedMERTools" HintPath="$(SL_REFERENCES)\AdvancedMERTools.dll" />
     <Reference Include="AudioPlayerApi" HintPath="$(SL_REFERENCES)\AudioPlayerApi.dll" />
     <Reference Include="Assembly-CSharp-Publicized" HintPath="$(SL_REFERENCES)\Assembly-CSharp-Halloween-Publicized.dll" />

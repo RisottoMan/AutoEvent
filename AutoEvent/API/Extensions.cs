@@ -10,15 +10,17 @@ using AutoEvent.API;
 using AutoEvent.API.Enums;
 using Exiled.API.Enums;
 using Exiled.API.Extensions;
-using Exiled.API.Features;
 using Exiled.API.Features.Items;
-using InventorySystem.Items.Jailbird;
+using LabApi.Features.Wrappers;
 using PlayerRoles.Ragdolls;
-using MapEditorReborn.API.Features;
-using MapEditorReborn.API.Features.Objects;
-using MapEditorReborn.API.Features.Serializable;
 using Mirror;
+using ProjectMER.Features;
+using ProjectMER.Features.Serializable;
+using Item = Exiled.API.Features.Items.Item;
+using JailbirdItem = InventorySystem.Items.Jailbird.JailbirdItem;
+using Map = Exiled.API.Features.Map;
 using Object = UnityEngine.Object;
+using Player = Exiled.API.Features.Player;
 
 namespace AutoEvent;
 public static class Extensions
@@ -230,29 +232,29 @@ public static class Extensions
         {
             if (MapUtils.GetSchematicDataByName(schematicName) is null)
             {
-                // Map is not installed for MapEditorReborn
+                // Map is not installed for ProjectMER
                 response = $"You need to download the map {schematicName} to run this mini-game.\n" +
                            $"Download and install Schematics.tar.gz from the github.";
                 return false;
             }
 
-            // The latest MapEditorReborn and Schematics are installed
+            // The latest ProjectMER and Schematics are installed
             response = $"The map {schematicName} exist and can be used.";
             return true;
         }
         catch (Exception _)
         {
-            // The old version of MapEditorReborn is installed
-            if (AppDomain.CurrentDomain.GetAssemblies().Any(x => x.FullName.ToLower().Contains("mapeditorreborn")))
+            // The old version of ProjectMER is installed
+            if (AppDomain.CurrentDomain.GetAssemblies().Any(x => x.FullName.ToLower().Contains("projectmer")))
             {
-                response = $"You have installed the old version of 'MapEditorReborn' and cannot run this mini-game.\n" +
-                           $"Install the latest version of 'MapEditorReborn'.";
+                response = $"You have installed the old version of 'ProjectMER' and cannot run this mini-game.\n" +
+                           $"Install the latest version of 'ProjectMER'.";
                 return false;
             }
         }
         
         // The MER is not installed
-        response = $"You need to download the 'MapEditorReborn' to run this mini-game.\n" +
+        response = $"You need to download the 'ProjectMER' to run this mini-game.\n" +
                    $"Read the installation instruction in the github.";
         return false;
     }
@@ -261,7 +263,7 @@ public static class Extensions
     {
         try
         {
-            var schematicObject = ObjectSpawner.SpawnSchematic(schematicName, pos, rot, scale, null);
+            var schematicObject = ObjectSpawner.SpawnSchematic(schematicName, pos, rot, scale);
 
             return new MapObject()
             {
@@ -280,16 +282,14 @@ public static class Extensions
 
     public static GameObject CreatePlatformByParent(GameObject parent, Vector3 position)
     {
-        PrimitiveObject prim = parent.GetComponent<PrimitiveObject>();
-        PrimitiveObject obj = ObjectSpawner.SpawnPrimitive(new PrimitiveSerializable()
+        PrimitiveObjectToy prim = parent.GetComponent<PrimitiveObjectToy>();
+        var obj = ObjectSpawner.SpawnPrimitive(new SerializablePrimitive()
         {
-            PrimitiveType = prim.Primitive.Type,
+            PrimitiveType = prim.Type,
             Position = position,
-            Color = prim.Primitive.Color.ToHex(),
-        },
-        position,
-        parent.transform.rotation,
-        parent.transform.localScale);
+            Scale = parent.transform.localScale,
+            Color = prim.Color.ToHex()
+        });
 
         NetworkServer.Spawn(obj.gameObject);
         return obj.gameObject;

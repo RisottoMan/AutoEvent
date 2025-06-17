@@ -1,10 +1,7 @@
-﻿using Mirror;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using MapEditorReborn.API.Features;
-using MapEditorReborn.API.Features.Serializable;
+using AdminToys;
 using UnityEngine;
-using MapEditorReborn.API.Features.Objects;
 
 namespace AutoEvent.Games.MusicalChairs;
 public class Functions
@@ -57,7 +54,7 @@ public class Functions
             float z = position.z + radius * Mathf.Sin(radians);
             Vector3 pos = new Vector3(x, platforms[i].transform.position.y, z);
 
-            if (platforms[i].TryGetComponent(out PrimitiveObject primitiveObject))
+            if (platforms[i].TryGetComponent(out PrimitiveObjectToy primitiveObject))
             {
                 primitiveObject.Position = pos;
             }
