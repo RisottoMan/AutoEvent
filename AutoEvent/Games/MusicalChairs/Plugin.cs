@@ -64,13 +64,8 @@ public class Plugin : Event<Config, Translation>, IEventSound, IEventMap
                 case "Cylinder-Parent": _parentPlatform = gameObject; break;
             }
         }
-
-        if (_parentPlatform is null)
-        {
-            Log.Error("Parent is null");
-        }
         
-        int count = Player.List.Count > 40 ? 40 : Player.List.Count - 0;
+        int count = Player.List.Count > 40 ? 40 : Player.List.Count - 1;
         Platforms = Functions.GeneratePlatforms(count, _parentPlatform, MapInfo.Position);
         
         foreach (Player player in Player.List)

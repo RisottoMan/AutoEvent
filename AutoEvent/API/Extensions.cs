@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using AdminToys;
 using UnityEngine;
 using PlayerRoles;
 using InventorySystem.Items.Pickups;
@@ -11,7 +12,6 @@ using AutoEvent.API.Enums;
 using Exiled.API.Enums;
 using Exiled.API.Extensions;
 using Exiled.API.Features.Items;
-using LabApi.Features.Wrappers;
 using PlayerRoles.Ragdolls;
 using Mirror;
 using ProjectMER.Features;
@@ -285,10 +285,10 @@ public static class Extensions
         PrimitiveObjectToy prim = parent.GetComponent<PrimitiveObjectToy>();
         var obj = ObjectSpawner.SpawnPrimitive(new SerializablePrimitive()
         {
-            PrimitiveType = prim.Type,
+            PrimitiveType = prim.PrimitiveType,
             Position = position,
             Scale = parent.transform.localScale,
-            Color = prim.Color.ToHex()
+            Color = prim.MaterialColor.ToHex()
         });
 
         NetworkServer.Spawn(obj.gameObject);

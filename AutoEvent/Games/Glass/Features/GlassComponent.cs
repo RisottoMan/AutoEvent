@@ -6,7 +6,7 @@ namespace AutoEvent.Games.Glass.Features;
 public class GlassComponent : MonoBehaviour
 {
     private BoxCollider collider;
-    public float RegenerationDelay { get; set; } = 0;
+    public float RegenerationDelay { get; set; } = 5;
     
     public void Init(float regenerationDelay)
     {
@@ -22,15 +22,15 @@ public class GlassComponent : MonoBehaviour
     
     void OnTriggerEnter(Collider other)
     {
-        if (Player.Get(other.gameObject) is Player)
+        if (Player.Get(other.gameObject) != null)
         {
-            Methods.ChangePosition(gameObject, Vector3.down * 5);
-                
-            if (RegenerationDelay > 0)
+            gameObject.transform.position += Vector3.down * 5;
+            
+            if (this.RegenerationDelay > 0)
             {
-                Timing.CallDelayed(RegenerationDelay, () =>
+                Timing.CallDelayed(this.RegenerationDelay, () =>
                 {
-                    Methods.ChangePosition(gameObject, Vector3.up * 5);
+                    gameObject.transform.position -= Vector3.down * 5;
                 });
             }
         }
