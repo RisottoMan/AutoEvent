@@ -6,7 +6,7 @@
 
 - [``AutoEvent.dll``](https://github.com/RisottoMan/AutoEvent/releases/latest) move to => ``EXILED/Plugins``
 
-- [``MapEditorReborn.dll``](https://github.com/RisottoMan/AutoEvent/tree/beta14.1-mer/releases/download/v.9.11.1/MapEditorReborn.dll) move to => ``EXILED/Plugins``
+- [``ProjectMER.dll``](https://github.com/Michal78900/ProjectMER/releases/tag/2025.6.2.2) move to => ``LabAPI/plugins/global``
 
 - [``Music.tar.gz``](https://github.com/RisottoMan/AutoEvent/releases/latest) unzip files to => ``EXILED/Configs/AutoEvent/Music``
 
