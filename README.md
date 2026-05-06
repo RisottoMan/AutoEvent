@@ -1,5 +1,5 @@
 # AutoEvent
-This repository is outdated. Follow this link to a supported fork by MedveMarci:
+This repository is deprecated. Please follow this link to the actively maintained fork by MedveMarci:
 https://github.com/MedveMarci/AutoEvent
 
 ![Logo](https://github.com/RisottoMan/AutoEvent/blob/beta14.1-mer/Photos/MGMER.png)
